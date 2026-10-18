@@ -308,9 +308,16 @@ export async function main() {
       () => smokeCounts(json('smoke'), json('smoke-discovery'), JSON.parse(readFileSync(join(root, 'ci/smoke-applicability.json'), 'utf8'))), 'smoke');
     delete env.PLAYWRIGHT_JSON_OUTPUT_NAME;
     delete env.DEBUG;
+    await phase('ui-selftest', process.execPath, ['ui-audit/run.mjs', '--selftest'], output => {
+      if (!output.includes('selftest OK') || !/^selftest: 23 finding\(s\)/m.test(output)) refuse();
+      return { detectedFindings: 23 };
+    });
+    await phase('ui-audit', process.execPath, ['ui-audit/run.mjs'], output => uiCounts(output,
+      JSON.parse(readFileSync(join(root, 'ui-audit/report.json'), 'utf8')),
+      JSON.parse(readFileSync(join(root, 'ui-audit/config.json'), 'utf8'))));
   } catch { /* Fixed phase status only; never echo raw errors. */ }
-  const summary = { ...publicSummary(binding, rows, fingerprints), sourceProfile: 'MAIN_CURRENT_APP',
-    deferredFeatureGates: ['PERMISSION_FULL', 'UI_AUDIT_FEATURE_BRANCH'], sourcePreserved: trackedFingerprint(root, paths) === fingerprints.source,
+  const summary = { ...publicSummary(binding, rows, fingerprints), sourceProfile: 'PERMISSION_APP_LIGHT',
+    deferredFeatureGates: ['PERMISSION_FULL'], hp1Execution: 'RETIRED', sourcePreserved: trackedFingerprint(root, paths) === fingerprints.source,
     peakOwnedBytes: peak, operatingCapBytes: 5 * GiB, minimumFreeBytes: 30 * GiB };
   if (!summary.sourcePreserved) summary.overallStatus = 'FAIL';
   const rendered = JSON.stringify(summary, null, 2);

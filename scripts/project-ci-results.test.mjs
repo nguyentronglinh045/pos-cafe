@@ -5,10 +5,13 @@ import { crc32 } from 'node:zlib';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
-import SmokeFailureReporter, { smokeStepDiagnostic, smokeTraceDiagnostics, smokeTraceEvents, smokeTraceSnapshotFacts, smokeTraceExpectFacts, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, publicSummary, privateDiagnostics, guardFailureCode, PROJECTS, PROJECT_PHASES, hash } from './project-ci-results.mjs';
+import SmokeFailureReporter, { smokeStepDiagnostic, smokeTraceDiagnostics, smokeTraceEvents, smokeTraceSnapshotFacts, smokeTraceExpectFacts, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, guardFailureCode, PROJECTS, PROJECT_PHASES, hash } from './project-ci-results.mjs';
 import { capturedCommand, trackedFingerprint, lightEnvironment, checkoutGit, allocatedBytes, coreLimitDisabled, browserRuntimeControlCanStart, gitCommitParents } from './project-ci.mjs';
 import { lightService, lightOwnerMatches, withLightCorePattern, stopLightUnit, coreDumpDisabled, linuxCorePatternAdapter } from './project-ci-launch.mjs';
 import { verifyReleaseRun, verifyReleaseEnvironment, verifyReleaseFiles, productionCommands, PRODUCTION_ENABLED } from './project-release.mjs';
+
+import { backendInvocation } from './project-backend.mjs';
+import { ci1TrustedRepository } from './permission-ci1-policy.mjs';
 
 const sha = '1'.repeat(40), other = '2'.repeat(40), digest = '3'.repeat(64);
 const env = { GITHUB_REPOSITORY: 'nguyentronglinh045/pos-cafe', GITHUB_REPOSITORY_ID: '1263057386', GITHUB_ACTIONS: 'true', RUNNER_ENVIRONMENT: 'github-hosted',
@@ -507,17 +510,16 @@ test('failed Playwright diagnostics expose known source locations and counts wit
   const safe=privateDiagnostics('',bad,[]);assert.deepEqual(safe.failedFiles,[]);assert.equal(safe.metrics.smokeUnexpected,undefined);
 });
 
-test('main light profile requires exactly its nine phases and refuses UI phase substitutions', () => {
+test('integrated light profile requires all eleven phases including both UI gates', () => {
   assert.deepEqual(PROJECT_PHASES, ['install','build','unit','tooling','node-tools','browser',
-    'smoke-discovery','smoke-preflight','smoke']);
+    'smoke-discovery','smoke-preflight','smoke','ui-selftest','ui-audit']);
   const rows=PROJECT_PHASES.map(id=>({id,status:'PASS',elapsedMs:1,exitCode:0,invocationSHA:digest,reportSHA:digest,counts:null}));
   assert.equal(publicSummary(binding,rows,{source:digest,lock:digest}).overallStatus,'PASS');
-  for(const id of ['ui-selftest','ui-audit']) {
-    assert.throws(()=>publicSummary(binding,[...rows,{...rows[0],id}],{source:digest,lock:digest}));
-    assert.throws(()=>publicSummary(binding,[...rows.slice(0,-1),{...rows.at(-1),id}],{source:digest,lock:digest}));
-  }
+  for (const length of [9,10])
+    assert.equal(publicSummary(binding,rows.slice(0,length),{source:digest,lock:digest}).overallStatus,'FAIL');
+  assert.throws(()=>publicSummary(binding,[...rows,{...rows[0],id:'extra'}],{source:digest,lock:digest}));
+  assert.throws(()=>publicSummary(binding,[...rows.slice(0,-2),rows.at(-1),rows.at(-2)],{source:digest,lock:digest}));
 });
-
 test('public evidence excludes arbitrary binding/count/raw fields and incomplete phase sets fail', () => {
   const rows = PROJECT_PHASES.map(id => ({ id, status: 'PASS', elapsedMs: 1, exitCode: 0, invocationSHA: digest, reportSHA: digest,
     counts: { pass: 1, raw: 'FAKE_PRIVATE_TOKEN' } }));
@@ -671,7 +673,7 @@ test('CD verifies canonical Git bytes across CRLF checkouts and rejects checker/
   const blob = checkoutGit(root, ['-c', 'core.autocrlf=true', 'hash-object', '-w', '--path=checker.txt', 'checker.txt']).trim();
   const canonical = execFileSync('git', ['-C', root, 'cat-file', 'blob', blob], { stdio: ['ignore', 'pipe', 'pipe'] });
   assert.equal(canonical.toString(), 'checker\nfixture\n');
-  const policy = { trustedFiles: { 'scripts/project-ci-results.mjs': hash(canonical), 'playwright.project-ci.config.ts': hash(canonical) } };
+  const policy = { trustedFiles: { 'scripts/project-ci-results.mjs': hash(canonical), 'playwright.project-ci.config.ts': hash(canonical), 'ui-audit/audit.js': hash(canonical), 'ui-audit/demo-buggy.html': hash(canonical) } };
   const files = Object.fromEntries(Object.keys(policy.trustedFiles).map(path => [path, canonical]));
   assert.equal(verifyReleaseFiles(files, policy), true);
   for (const path of Object.keys(files)) assert.throws(() => verifyReleaseFiles({ ...files, [path]: Buffer.from('changed') }, policy));
@@ -714,4 +716,23 @@ test('commit parent parser reads only canonical headers, never message or signat
   const text = headers + `\n\nmessage\nparent ${sha}\n`;
   assert.deepEqual(gitCommitParents(text), [base, head]);
   for (const value of ['', 'parent x\n\nmessage', 'parent '+head, null, 'x'.repeat(65537)+'\n\n']) assert.throws(() => gitCommitParents(value));
+});
+
+
+test('UI gate requires every target/viewport and rejects fresh or incomplete findings', () => {
+  const cfg = { states: [{ name: 'floor' }], viewports: [{ name: 'tablet' }] };
+  const output = ' ok   tablet floor 0 finding(s), 0 new\nno new UI anomalies';
+  assert.equal(uiCounts(output, [], cfg).run, 1);
+  assert.throws(() => uiCounts('no new UI anomalies', [], cfg));
+  assert.throws(() => uiCounts(output, [{ known: false }], cfg));
+});
+
+
+
+test('backend manual guard requires confirmation, immutable workflow/source and exact allowed repositories', () => {
+  assert.ok(backendInvocation({ ...env, GITHUB_EVENT_NAME: 'workflow_dispatch', CI1_CONFIRMATION: 'RUN_SYNTHETIC_PILOT' }, '/node', '/source').argv.includes('CI1_EXECUTION_AUTHORIZED=yes'));
+  assert.throws(() => backendInvocation({ ...env, CI1_CONFIRMATION: 'RUN_SYNTHETIC_PILOT' }, '/node', '/source'));
+  assert.equal(ci1TrustedRepository(env.GITHUB_REPOSITORY), true);
+  assert.equal(ci1TrustedRepository('nguyentronglinh045/pos-cafe-ci-preflight'), true);
+  assert.equal(ci1TrustedRepository('attacker/pos-cafe'), false);
 });

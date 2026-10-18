@@ -6,8 +6,8 @@ import { execFileSync } from 'node:child_process';
 
 export const PROJECT_REPOSITORY = 'nguyentronglinh045/pos-cafe';
 export const PROJECT_REPOSITORY_ID = 1263057386;
-// Current-main lane; permission/UI-audit sources remain on their feature branch.
-export const PROJECT_PHASES = Object.freeze(['install', 'build', 'unit', 'tooling', 'node-tools', 'browser', 'smoke-discovery', 'smoke-preflight', 'smoke']);
+// Integrated application lane; backend permission acceptance remains a separate gate.
+export const PROJECT_PHASES = Object.freeze(['install', 'build', 'unit', 'tooling', 'node-tools', 'browser', 'smoke-discovery', 'smoke-preflight', 'smoke', 'ui-selftest', 'ui-audit']);
 export const PROJECTS = Object.freeze(['desktop', 'tablet-landscape', 'phone-landscape', 'small-landscape', 'portrait', 'demo-runbook']);
 export const hash = value => createHash('sha256').update(value).digest('hex');
 const reject = () => { throw new Error('PROJECT_CI_RESULT_INVALID'); };
