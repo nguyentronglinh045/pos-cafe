@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
+import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import vm from 'node:vm';
 import {fullRuntimeLayout} from './permission-full-runtime-policy.mjs';
@@ -64,6 +65,11 @@ test('admission rejects getters and inherited facts before evaluating their valu
 
 test('argv reuses CI1 supervisor with narrow limits, exact norbind and an isolated builtin-only literal',()=>{
   const args=namespaceArgv(layout(),node,1234);
+  assert.equal(args[0],'/usr/bin/systemd-run');
+  const declaration=readFileSync(new URL('./permission-full-namespace-probe.mjs',import.meta.url),'utf8').match(/^const ENV=(\{[\s\S]*?\});$/m);
+  assert.ok(declaration);const environment=vm.runInNewContext(`(${declaration[1]})`,{},{timeout:1000});
+  assert.ok(environment.PATH.split(':').every(path=>['/usr/sbin','/usr/bin','/sbin','/bin'].includes(path)));
+  assert.equal(Object.keys(environment).some(key=>/^(NODE|LD)_/.test(key)),false);
   for(const arg of ['--property=CPUQuota=100%','--property=MemoryMax=268435456','--property=MemorySwapMax=0',
     '--property=TasksMax=64','--property=RuntimeMaxSec=60s','--property=TimeoutStopSec=10s','--property=LimitCORE=0',
     '--property=PrivateTmp=yes',`--property=BindPaths=${layout().root}:${layout().root}:norbind`]) assert.ok(args.includes(arg),arg);

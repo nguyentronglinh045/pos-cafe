@@ -10,7 +10,7 @@ import {withLightCorePattern,linuxCorePatternAdapter,coreDumpDisabled} from './p
 import {fullRuntimeLayout,fullRuntimeUnitProperties,assertFullRuntimeRootFacts} from './permission-full-runtime-policy.mjs';
 
 const REPO='nguyentronglinh045/pos-cafe', ID='1263057386', LIMIT=65536, RESERVE=30*1024**3;
-const ENV={PATH:'/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',LANG:'C',LC_ALL:'C',
+const ENV={PATH:'/usr/sbin:/usr/bin:/sbin:/bin',LANG:'C',LC_ALL:'C',
   GIT_OPTIONAL_LOCKS:'0',GIT_CONFIG_NOSYSTEM:'1',GIT_CONFIG_GLOBAL:'/dev/null'};
 const SHA=value=>createHash('sha256').update(value).digest('hex');
 const check=(condition)=>{if(!condition)throw new Error('NAMESPACE_PROBE_REFUSED');};
@@ -123,6 +123,7 @@ export function namespaceArgv(layout,node,hostPID) {
     '--property=MemoryMax=10737418240':'--property=MemoryMax=268435456','--property=TasksMax=2048':'--property=TasksMax=64',
     '--property=RuntimeMaxSec=1800s':'--property=RuntimeMaxSec=60s','--property=TimeoutStopSec=30s':'--property=TimeoutStopSec=10s'};
   const prefix=ci1LinuxRecipe(layout.runId,layout.attempt).systemdArgv.filter(a=>a!=='--property=PrivateTmp=yes').map(a=>replacements[a]??a);
+  prefix[0]='/usr/bin/systemd-run';
   return [...prefix,...fullRuntimeUnitProperties(layout),'/usr/bin/env','-i','PATH=/usr/bin:/bin','LANG=C','LC_ALL=C',
     n.path,'--input-type=module','--eval',NAMESPACE_UNIT_CODE,'--',layout.root,layout.nonce,layout.ownerLabel,
     layout.runId,String(layout.attempt),n.sha256,n.version,String(hostPID),SHA(NAMESPACE_UNIT_CODE)];

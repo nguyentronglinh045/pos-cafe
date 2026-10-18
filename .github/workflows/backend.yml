@@ -65,4 +65,4 @@ jobs:
           FULL_NAMESPACE_EXPECTED_SHA: ${{ inputs.expected_source_sha }}
         run: |
           ulimit -c 0
-          node scripts/permission-full-namespace-probe.mjs probe
+          /usr/local/n/versions/node/22.23.3/bin/node scripts/permission-full-namespace-probe.mjs probe
