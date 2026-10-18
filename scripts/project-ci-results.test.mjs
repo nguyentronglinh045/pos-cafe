@@ -676,3 +676,17 @@ test('CD verifies canonical Git bytes across CRLF checkouts and rejects checker/
   for (const path of Object.keys(files)) assert.throws(() => verifyReleaseFiles({ ...files, [path]: Buffer.from('changed') }, policy));
   assert.throws(() => verifyReleaseFiles(Object.fromEntries(Object.keys(files).map(path => [path, readFileSync(join(root, 'checker.txt'))])), policy));
 });
+
+test('binding refusal reports only a finite guard and never copies private event fields', () => {
+  const privateValue = 'synthetic-private-event-value';
+  const event = { repository: { id: 1263057386, full_name: 'nguyentronglinh045/pos-cafe' },
+    pull_request: { head: { sha }, merge_commit_sha: other, privateValue } };
+  assert.throws(() => sourceBinding({ ...env, GITHUB_EVENT_NAME: 'pull_request' }, event, sha), error => {
+    assert.equal(error.message, 'PROJECT_CI_RESULT_INVALID');
+    assert.equal(error.bindingGuard, 4);
+    assert.deepEqual(Object.keys(error), ['bindingGuard']);
+    assert.equal(JSON.stringify(error).includes(privateValue), false);
+    return true;
+  });
+  assert.throws(() => sourceBinding({ ...env, GITHUB_EVENT_NAME: 'workflow_dispatch' }, event, sha), error => error.bindingGuard === 6);
+});

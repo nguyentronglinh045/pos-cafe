@@ -486,19 +486,22 @@ const sameSet = (a, b) => a.length === b.length && new Set(a).size === a.length
   && [...a].sort().every((value, index) => value === [...b].sort()[index]);
 
 export function sourceBinding(env, event, actualSHA) {
+  // A finite ordinal diagnoses admission failures without exposing event data.
+  const deny = ordinal => { const error = new Error('PROJECT_CI_RESULT_INVALID'); error.bindingGuard = ordinal; throw error; };
   const hex = value => typeof value === 'string' && /^[a-f0-9]{40}$/.test(value);
   if (env.GITHUB_REPOSITORY !== PROJECT_REPOSITORY || env.GITHUB_REPOSITORY_ID !== String(PROJECT_REPOSITORY_ID)
     || event.repository?.id !== PROJECT_REPOSITORY_ID || !hex(actualSHA) || actualSHA !== env.GITHUB_SHA
     || !hex(env.GITHUB_WORKFLOW_SHA) || !/^[1-9][0-9]*$/.test(env.GITHUB_RUN_ID ?? '')
-    || !/^[1-9][0-9]*$/.test(env.GITHUB_RUN_ATTEMPT ?? '')) reject();
+    || !/^[1-9][0-9]*$/.test(env.GITHUB_RUN_ATTEMPT ?? '')) deny(1);
   let prHeadSHA = null;
   if (env.GITHUB_EVENT_NAME === 'push') {
-    if (event.after !== actualSHA || event.repository?.full_name !== PROJECT_REPOSITORY) reject();
+    if (event.after !== actualSHA || event.repository?.full_name !== PROJECT_REPOSITORY) deny(2);
   } else if (env.GITHUB_EVENT_NAME === 'pull_request') {
     prHeadSHA = event.pull_request?.head?.sha;
-    if (!hex(prHeadSHA) || event.pull_request?.merge_commit_sha !== actualSHA
-      || event.repository?.full_name !== PROJECT_REPOSITORY) reject();
-  } else reject();
+    if (!hex(prHeadSHA)) deny(3);
+    if (event.pull_request?.merge_commit_sha !== actualSHA) deny(4);
+    if (event.repository?.full_name !== PROJECT_REPOSITORY) deny(5);
+  } else deny(6);
   return { repository: PROJECT_REPOSITORY, repositoryID: PROJECT_REPOSITORY_ID, event: env.GITHUB_EVENT_NAME,
     sourceSHA: actualSHA, prHeadSHA, workflowSHA: env.GITHUB_WORKFLOW_SHA,
     runId: env.GITHUB_RUN_ID, attempt: Number(env.GITHUB_RUN_ATTEMPT) };

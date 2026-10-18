@@ -139,27 +139,37 @@ export async function capturedCommand(command, args, { cwd, env, output, guard, 
   });
 }
 
+let admissionStep = 0;
 export async function main() {
+  admissionStep = 1;
   if (process.platform !== 'linux' || process.env.GITHUB_ACTIONS !== 'true'
     || process.env.RUNNER_ENVIRONMENT !== 'github-hosted' || process.version !== 'v24.16.0') refuse();
   const root = resolve(process.cwd());
   // The resource supervisor remains privileged outside this service; app tests
   // and browsers run as the checkout owner, with no root fallback.
+  admissionStep = 2;
   if (!lightOwnerMatches(process.getuid(), statSync(root).uid)) refuse();
   const git = args => checkoutGit(root, args);
+  admissionStep = 3;
   if (git(['status', '--porcelain', '--untracked-files=all']).trim()) refuse();
   const paths = git(['ls-files', '-z']).split('\0').filter(Boolean).sort();
+  admissionStep = 4;
   const backendOnly = JSON.parse(readFileSync(join(root, 'ci/backend-only-tests.json'), 'utf8'));
   if (!Array.isArray(backendOnly) || backendOnly.length !== 1 || backendOnly.some(item =>
     !paths.includes(item.file) || !/^tests\/[A-Za-z0-9_./-]+\.tool\.test\.ts$/.test(item.file)
     || hash(readFileSync(join(root, item.file))) !== item.sourceSHA256 || item.requiresRealBackend !== true)) refuse();
+  admissionStep = 5;
   if (paths.some(path => /(^|\/)\.env(?:$|\.)/.test(path) && !path.endsWith('.env.example'))) refuse();
+  admissionStep = 6;
   const binding = sourceBinding(process.env, JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')), git(['rev-parse', 'HEAD']).trim());
   const unit = `pos-cafe-light-r${binding.runId}-a${binding.attempt}.service`;
   const cgroup = `/sys/fs/cgroup/system.slice/${unit}`;
   const limits = { 'cpu.max': '300000 100000', 'memory.max': String(8 * GiB), 'memory.swap.max': '0', 'pids.max': '1024' };
+  admissionStep = 7;
   if (!readFileSync('/proc/self/cgroup', 'utf8').trim().endsWith(`/system.slice/${unit}`)) refuse();
+  admissionStep = 8;
   for (const [name, value] of Object.entries(limits)) if (readFileSync(join(cgroup, name), 'utf8').trim() !== value) refuse();
+  admissionStep = 9;
   const fingerprints = { source: trackedFingerprint(root, paths), lock: hash(readFileSync(join(root, 'package-lock.json'))) };
   const task = mkdtempSync(join(process.env.RUNNER_TEMP, `pos-light-${binding.runId}-${binding.attempt}-`));
   const env = lightEnvironment(task, process.env);
@@ -300,5 +310,10 @@ export async function main() {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
-  main().catch(() => { console.log('PROJECT_CI_BLOCKED'); process.exitCode = 1; });
+  main().catch(error => {
+    console.log('PROJECT_CI_BLOCKED');
+    if (Number.isInteger(admissionStep) && admissionStep >= 0 && admissionStep <= 9) console.log(`PROJECT_CI_ADMISSION ${admissionStep}`);
+    if (Number.isInteger(error?.bindingGuard) && error.bindingGuard >= 1 && error.bindingGuard <= 6) console.log(`PROJECT_CI_BINDING_GUARD ${error.bindingGuard}`);
+    process.exitCode = 1;
+  });
 }
