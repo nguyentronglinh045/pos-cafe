@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { digest } from "../../scripts/permission-preflight-core.mjs";
+import { withFixtureCleanup } from "../../scripts/permission-fixture-diagnostics.mjs";
 import { cleanupIdentityFixture, db, fixtureEvidence, resetIdentityFixture, setupIdentityFixture, STORE_IDS } from "./permissionIdentityFixture";
 export * from "./permissionIdentityFixture";
 
@@ -77,7 +78,7 @@ export async function resetFinancialFixture() {
   await resetIdentityFixture();
 }
 export async function cleanupFinancialFixture() {
-  try {
+  await withFixtureCleanup(async () => {
     if (staged) {
       await resetFinancialFixture();
       fixtureEvidence.financialBusinessRestored = originalHash === await financialFingerprint();
@@ -92,5 +93,5 @@ export async function cleanupFinancialFixture() {
       for (const a of tableAcl) await db.query(`grant ${a.privilege} on public.${q(a.relname)} to ${q(a.rolname)}`);
       for (const a of columnAcl) await db.query(`grant ${a.privilege}(${q(a.attname)}) on public.${q(a.relname)} to ${q(a.rolname)}`);
     }
-  } finally { await cleanupIdentityFixture(); }
+  }, async () => { await cleanupIdentityFixture(); });
 }

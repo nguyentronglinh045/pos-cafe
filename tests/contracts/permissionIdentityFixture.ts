@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import pg from "pg";
 import { digest } from "../../scripts/permission-preflight-core.mjs";
 import { collectInventory } from "../../scripts/permission-inventory.mjs";
+import { fixtureCatalogDriftMask, withFixtureCleanup } from "../../scripts/permission-fixture-diagnostics.mjs";
 const profile = process.env.PIN_IDENTITY_RUNTIME;
 if (profile !== undefined && profile !== "close1") throw new Error("PIN_IDENTITY_RUNTIME_REFUSED");
 const runtime = profile === "close1"
@@ -17,13 +18,15 @@ let applied = false, staged = false, originalHelper = "", originalCatalogLock = 
 let employees: any[] = [], functions: string[] = [], acl: any[] = [], employeeAcl: any[] = [], employeeColumnAcl: any[] = [];
 let businessBefore = "";
 let catalogBefore = "";
+let catalogSurfacesBefore: any[] = [], catalogSurfacesCurrent: any[] = [];
 async function semanticCatalogHash() {
   const inventory = await collectInventory(db);
   // PostgreSQL may materialize a default ACL after a fixture revokes and
   // restores grants. observedGrants still checks each effective privilege.
-  return digest(inventory.surfaces.map(surface => surface.routine
+  catalogSurfacesCurrent = inventory.surfaces.map(surface => surface.routine
     ? { ...surface, routine: { ...surface.routine, aclHash: "EFFECTIVE_GRANTS_CHECKED" } }
-    : surface));
+    : surface);
+  return digest(catalogSurfacesCurrent);
 }
 export const fixtureEvidence: Record<string, unknown> = {};
 async function businessFingerprint() {
@@ -35,6 +38,7 @@ async function businessFingerprint() {
 export async function setupIdentityFixture(administration = false) {
   await db.connect(); fixtureEvidence.runtime = await assertBridgeFixture(db, env);
   catalogBefore = await semanticCatalogHash();
+  catalogSurfacesBefore = catalogSurfacesCurrent;
   employees = (await db.query("select * from public.employees order by id")).rows;
   businessBefore = await businessFingerprint();
   originalHelper = (await db.query("select pg_get_functiondef('public.has_employee_permission(public.employee_role,jsonb,text)'::regprocedure) d")).rows[0].d;
@@ -108,7 +112,7 @@ export async function resetIdentityFixture() {
   await db.query("commit");
 }
 export async function cleanupIdentityFixture() {
-  try {
+  await withFixtureCleanup(async () => {
     await db.query("rollback");
     if (staged) {
       await resetIdentityFixture();
@@ -139,9 +143,11 @@ export async function cleanupIdentityFixture() {
     await db.query("notify pgrst,'reload schema'");
     await assertBridgeFixture(db, env);
     fixtureEvidence.catalogSemanticsUnchanged = catalogBefore === await semanticCatalogHash();
-    if (!fixtureEvidence.catalogSemanticsUnchanged) throw new Error("IDENTITY_CATALOG_DRIFT");
+    if (!fixtureEvidence.catalogSemanticsUnchanged) throw Object.assign(new Error("IDENTITY_CATALOG_DRIFT"), {
+      permissionCatalogDriftMask: fixtureCatalogDriftMask(catalogSurfacesBefore, catalogSurfacesCurrent),
+    });
     fixtureEvidence.reverted = true;
-  } finally { await db.end(); }
+  }, async () => { await db.end(); });
 }
 export async function rpc(name: string, body: object = {}, token?: string, jwt = env.storeJwt) {
   const response = await fetch(env.api + "/rest/v1/rpc/" + name, { method: "POST", headers: {

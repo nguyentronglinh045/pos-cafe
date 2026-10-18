@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { digest, permissionFingerprint } from "../../scripts/permission-preflight-core.mjs";
 import { inspectCompatibilityPreparation, restoreCompatibilityPreparation } from "../../scripts/permission-compatibility-prepare.mjs";
 import { PROJECT, runtimeProof } from "../../scripts/permission-identity-runtime.mjs";
+import { FIXTURE_DRIFT_CODES, fixtureCleanupErrors, fixtureDriftCode } from "../../scripts/permission-fixture-diagnostics.mjs";
 import { cleanupReadFixture, db, env, fixtureEvidence, setupReadFixture, STORE_IDS } from "./permissionReadFixture";
 
 type CompatibilityReceipt = { installedByCaller: boolean } | undefined;
@@ -268,14 +269,17 @@ export async function cleanupImagesRuntimeFixture(receipt?: CompatibilityReceipt
     "IMAGE_STORAGE_BYTES_REMAIN", "IMAGE_STAGING_BUCKET_DELETE_FAILED", "IMAGE_STAGING_BUCKET_NOT_EMPTY",
     "IMAGE_CONTRACT_GATE_MISSING", "IMAGE_SCHEMA_RESTORE_MISMATCH", "IMAGE_STORAGE_METADATA_RESTORE_MISMATCH",
     "IMAGE_SENTINEL_METADATA_RESTORE_MISMATCH", "IMAGE_SENTINEL_BYTES_RESTORE_MISMATCH",
-    "IMAGE_STORAGE_PROOF_COUNT_MISMATCH", "IMAGE_STORAGE_BASELINE_UNREADABLE"]);
+    "IMAGE_STORAGE_PROOF_COUNT_MISMATCH", "IMAGE_STORAGE_BASELINE_UNREADABLE", ...FIXTURE_DRIFT_CODES]);
   const sqlstates = new Set(["0A000", "42501", "42704", "42P01", "42883", "42710", "2BP01", "23505", "23503",
     "23514", "55000", "57014", "40001", "40P01", "25P02", "42601", "22P02"]);
   const failed = (phase: string, step: string, error: unknown) => {
-    const value = error && typeof error === "object" ? error as { message?: unknown; code?: unknown } : {};
     failures.push(phase);
-    diagnostics.push({ phase, step, code: typeof value.message === "string" && codes.has(value.message)
-      ? value.message : "IMAGE_CLEANUP_STEP_FAILED", sqlstate: typeof value.code === "string" && sqlstates.has(value.code) ? value.code : null });
+    for (const nested of fixtureCleanupErrors(error)) {
+      const value = nested && typeof nested === "object" ? nested as { message?: unknown; code?: unknown } : {};
+      const code = fixtureDriftCode(nested) ?? value.message;
+      diagnostics.push({ phase, step, code: typeof code === "string" && codes.has(code)
+        ? code : "IMAGE_CLEANUP_STEP_FAILED", sqlstate: typeof value.code === "string" && sqlstates.has(value.code) ? value.code : null });
+    }
   };
   try {
     try { await verifyMarker(); } catch { serviceKey = ""; await db.end().catch(() => {}); throw new Error("IMAGE_FIXTURE_MARKER_REFUSED"); }

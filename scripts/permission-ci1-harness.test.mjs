@@ -37,7 +37,7 @@ test('suite diagnostics refuse ambiguous markers and bound unknown errors, count
   for(const value of [line+' PRIVATE_SECRET',line+'\n'+line,line.replace(' 1 1',' 01 1'),
     'CI1_SUITE_FAILURE 3 1 0 1 0 0 0 0','CI1_SUITE_FAILURE 1 129 0 1 0 0 0 0',
     'CI1_SUITE_FAILURE 1 0 0 1 0 0 0 0','CI1_SUITE_FAILURE 1 1 0 1 6 0 0 0',
-    'CI1_SUITE_FAILURE 1 1 0 1 0 15 0 0','CI1_SUITE_FAILURE 1 1 0 1 0 0 20 0',
+    'CI1_SUITE_FAILURE 1 1 0 1 0 15 0 0','CI1_SUITE_FAILURE 1 1 0 1 0 0 999 0',
     'CI1_SUITE_FAILURE 1 1 0 1 0 0 0 18','x'.repeat(1024**2+1)])assert.deepEqual(ci1SuiteFailureFacts(value),{});
   assert.equal(ci1SuiteDiagnostic(modules,Array(129).fill({})),null);
   for(const diagnostic of ['PRIVATE_SECRET',true,42,[],null])assert.equal(ci1SuiteFailureMarker('T09',{hookErrorCount:1,errorCount:0,diagnostic}),null);

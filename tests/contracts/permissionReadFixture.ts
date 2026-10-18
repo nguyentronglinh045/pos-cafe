@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { digest } from "../../scripts/permission-preflight-core.mjs";
+import { withFixtureCleanup } from "../../scripts/permission-fixture-diagnostics.mjs";
 import { cleanupFinancialFixture, db, fixtureEvidence, resetFinancialFixture, setupFinancialFixture } from "./permissionFinancialFixture";
 export * from "./permissionFinancialFixture";
 
@@ -85,7 +86,7 @@ export async function resetReadFixture() {
   await db.query("commit");
 }
 export async function cleanupReadFixture() {
-  try {
+  await withFixtureCleanup(async () => {
     if (staged) {
       await resetReadFixture();
       fixtureEvidence.readBusinessRestored = originalHash === await readFingerprint();
@@ -100,8 +101,8 @@ export async function cleanupReadFixture() {
       for (const a of tableAcl) await db.query(`grant select on public.${q(a.relname)} to ${role(a.rolname)}`);
       for (const a of columnAcl) await db.query(`grant select(${q(a.attname)}) on public.${q(a.relname)} to ${role(a.rolname)}`);
     }
-  } finally {
+  }, async () => {
     if (createdLegacyView) await db.query("drop view public.history_entries");
     await cleanupFinancialFixture();
-  }
+  });
 }

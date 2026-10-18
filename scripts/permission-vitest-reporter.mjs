@@ -1,5 +1,6 @@
 import { writeFileSync } from 'node:fs';
 import IdempotencyExecutionReporter from './idempotency-vitest-reporter.mjs';
+import { FIXTURE_DRIFT_CODES } from './permission-fixture-diagnostics.mjs';
 
 // This vocabulary is deliberately finite: arbitrary error codes can contain secrets.
 const diagnosticCodes = new Set([
@@ -10,6 +11,7 @@ const diagnosticCodes = new Set([
   'IMAGE_SENTINEL_METADATA_RESTORE_MISMATCH', 'IMAGE_SENTINEL_BYTES_RESTORE_MISMATCH',
   'IMAGE_STORAGE_PROOF_COUNT_MISMATCH', 'IMAGE_STORAGE_BASELINE_UNREADABLE', 'IMAGE_CLEANUP_STEP_FAILED',
   'IMAGE_FIXTURE_MARKER_REFUSED', 'IMAGE_FIXTURE_CLEANUP_IN_PROGRESS',
+  ...FIXTURE_DRIFT_CODES,
 ]);
 const diagnosticPhases = new Set(['compatibility', 'storage-objects', 'database-surface', 'read-fixture', 'source-runtime']);
 const diagnosticSteps = new Set([

@@ -1,4 +1,5 @@
 import { CI1_SUITES } from './permission-ci1-policy.mjs';
+import { FIXTURE_DRIFT_CODES } from './permission-fixture-diagnostics.mjs';
 
 // Only this fixed vocabulary can cross the private reporter boundary. Zero is
 // unknown, never a reflected error string or a successful cleanup assertion.
@@ -8,7 +9,7 @@ const cleanupCodes = ['IMAGE_COMPATIBILITY_STATE_DRIFT','IMAGE_STORAGE_SCOPE_REF
   'IMAGE_CONTRACT_GATE_MISSING','IMAGE_SCHEMA_RESTORE_MISMATCH','IMAGE_STORAGE_METADATA_RESTORE_MISMATCH',
   'IMAGE_SENTINEL_METADATA_RESTORE_MISMATCH','IMAGE_SENTINEL_BYTES_RESTORE_MISMATCH',
   'IMAGE_STORAGE_PROOF_COUNT_MISMATCH','IMAGE_STORAGE_BASELINE_UNREADABLE','IMAGE_CLEANUP_STEP_FAILED',
-  'IMAGE_FIXTURE_MARKER_REFUSED','IMAGE_FIXTURE_CLEANUP_IN_PROGRESS'];
+  'IMAGE_FIXTURE_MARKER_REFUSED','IMAGE_FIXTURE_CLEANUP_IN_PROGRESS',...FIXTURE_DRIFT_CODES];
 const cleanupPhases = ['compatibility','storage-objects','database-surface','read-fixture','source-runtime'];
 const cleanupSteps = ['restore-compatibility','delete-owned-storage','restore-functions','drop-image-tables','restore-storage',
   'restore-change-acl','restore-contract-gate','reload-schema','verify-schema','verify-storage-metadata',
@@ -33,7 +34,12 @@ export function ci1SuiteDiagnostic(modules, errors) {
   const originOrdinal = hooks.length ? 1 : errors.length ? 2 : 0;
   const error = (hooks.length ? hooks : errors)[0];
   const supplied = error?.permissionCleanupDiagnostics;
-  const detail = Array.isArray(supplied) && supplied.length > 0 && supplied.length <= 32 ? supplied[0] : null;
+  // Prefer the bounded catalog field mask if nested teardown also failed.
+  // All failures remain in the private permission report; this marker is a
+  // diagnostic selection, not a declaration of the primary/root cause.
+  const detail = Array.isArray(supplied) && supplied.length > 0 && supplied.length <= 32
+    ? supplied.find(item => typeof item?.code === 'string' && item.code.startsWith('IDENTITY_CATALOG_DRIFT_MASK_')
+      && FIXTURE_DRIFT_CODES.includes(item.code)) ?? supplied[0] : null;
   return {originOrdinal, phaseOrdinal:ordinal(cleanupPhases,detail?.phase), stepOrdinal:ordinal(cleanupSteps,detail?.step),
     codeOrdinal:ordinal(cleanupCodes,detail?.code ?? error?.message), sqlstateOrdinal:ordinal(cleanupSqlstates,detail?.sqlstate)};
 }
