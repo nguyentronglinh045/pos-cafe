@@ -1,0 +1,304 @@
+// GitHub Linux only. Raw subprocess output stays on the disposable runner.
+import { readFileSync, writeFileSync, appendFileSync, mkdirSync, mkdtempSync, lstatSync, statSync, readdirSync, statfsSync } from 'node:fs';
+import { resolve, join } from 'node:path';
+import { spawn, execFileSync } from 'node:child_process';
+import { pathToFileURL } from 'node:url';
+import { hash, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, smokeTraceDiagnostics, guardFailureCode } from './project-ci-results.mjs';
+import { lightOwnerMatches } from './project-ci-launch.mjs';
+
+const GiB = 1024 ** 3;
+const refuse = () => { throw new Error('PROJECT_CI_GUARD'); };
+// Failure-only runtime control. It never replaces the application preflight or
+// contributes a PASS to any required phase. No app code or network is loaded.
+export const BROWSER_PROBE_SOURCE = String.raw`
+let browser, stage = 1, crashed = 0, complete = 0, cleanup = 0;
+const step = value => { stage = value; console.log('PROJECT_BROWSER_RUNTIME_STAGE ' + value); };
+step(1);
+try {
+  const { chromium, expect } = await import('@playwright/test');
+  step(2); browser = await chromium.launch({ channel: 'chromium', timeout: 5000 });
+  step(3); const context = await browser.newContext();
+  const rootSession = await browser.newBrowserCDPSession();
+  let targetID;
+  rootSession.on('Target.targetCrashed', event => {
+    if (!targetID || event.targetId !== targetID) return;
+    const status = ['crashed','killed','abnormal','oom'].indexOf(event.status) + 1;
+    if (Number.isSafeInteger(event.errorCode) && event.errorCode >= 0 && event.errorCode <= 65535)
+      console.log('PROJECT_BROWSER_RUNTIME_TARGET_CRASH ' + status + ' ' + event.errorCode);
+  });
+  await rootSession.send('Target.setDiscoverTargets', { discover: true });
+  step(4); const page = await context.newPage();
+  page.on('crash', () => { if (!crashed) console.log('PROJECT_BROWSER_RUNTIME_CRASH 1'); crashed = 1; });
+  const pageSession = await context.newCDPSession(page);
+  targetID = (await pageSession.send('Target.getTargetInfo')).targetInfo.targetId;
+  await pageSession.detach();
+  step(5); await page.setContent('<!doctype html><main data-testid="ci-runtime-control">runtime control</main>', { timeout: 5000 });
+  const locator = page.getByTestId('ci-runtime-control');
+  step(6); if (await locator.count() !== 1) throw new Error();
+  step(7); if (!await locator.isVisible()) throw new Error();
+  step(8); await expect(locator).toBeVisible({ timeout: 1000 });
+  step(9); complete = 1;
+} catch (error) {
+  const ordinal = ['Error','TimeoutError','TypeError','ReferenceError'].indexOf(error?.name) + 1;
+  if (ordinal) console.log('PROJECT_BROWSER_RUNTIME_FAILURE ' + ordinal);
+}
+finally { try { if (browser) await browser.close(); cleanup = 1; } catch {} }
+console.log('PROJECT_BROWSER_RUNTIME_CONTROL ' + JSON.stringify({schemaVersion:'pos-browser-runtime-control-v1',stage,crashed,complete,cleanup}));
+`;
+export function browserRuntimeControlCanStart(procs, stat, ownPID) {
+  const lines = procs.trim().split(/\s+/);
+  const descendants = /^nr_descendants ([0-9]+)$/m.exec(stat);
+  return Number.isSafeInteger(ownPID) && ownPID > 0 && lines.length === 1
+    && lines[0] === String(ownPID) && descendants?.[1] === '0';
+}
+export function trackedFingerprint(root, paths) {
+  return hash(paths.map(path => path + '\0' + hash(readFileSync(join(root, path))) + '\0').join(''));
+}
+
+export function lightEnvironment(task, inherited) {
+  mkdirSync(join(task, 'home')); mkdirSync(join(task, 'tmp'));
+  for (const name of ['npm-user.conf', 'npm-global.conf']) writeFileSync(join(task, name), '', { flag: 'wx', mode: 0o600 });
+  const env = Object.fromEntries(['PATH', 'LANG', 'LC_ALL', 'TZ', 'SystemRoot'].filter(key => inherited[key]).map(key => [key, inherited[key]]));
+  return Object.assign(env, { HOME: join(task, 'home'), TMPDIR: join(task, 'tmp'), TMP: join(task, 'tmp'), TEMP: join(task, 'tmp'),
+    CI: 'true', NO_COLOR: '1', NODE_OPTIONS: '--max-old-space-size=1536',
+    NPM_CONFIG_CACHE: join(task, 'npm-cache'), NPM_CONFIG_USERCONFIG: join(task, 'npm-user.conf'), NPM_CONFIG_GLOBALCONFIG: join(task, 'npm-global.conf'),
+    NPM_CONFIG_FETCH_RETRIES: '0', PLAYWRIGHT_BROWSERS_PATH: join(task, 'browsers'),
+    VITE_DATA_MODE: 'mock', VITE_SUPABASE_URL: '', VITE_SUPABASE_ANON_KEY: '' });
+}
+
+export function checkoutGit(root, args) {
+  // The bounded root service reads the runner-owned checkout, never arbitrary
+  // repositories. Trust only this exact directory; capture errors privately.
+  return execFileSync('git', ['-c', `safe.directory=${root}`, '-C', root, ...args],
+    { encoding: 'utf8', timeout: 30000, maxBuffer: 8 * 1024 ** 2, stdio: ['ignore', 'pipe', 'pipe'] });
+}
+
+export function coreLimitDisabled(text) {
+  const value = /^Max core file size\s+(\S+)\s+(\S+)\s+bytes\s*$/m.exec(text);
+  return value?.[1] === '0' && value[2] === '0';
+}
+
+export function allocatedBytes(roots, facts = null) {
+  const seen = new Set(); let bytes = 0;
+  let coreFiles = 0, coreBytes = 0, largest = 0;
+  const walk = path => {
+    const item = lstatSync(path, { throwIfNoEntry: false });
+    if (!item || item.isSymbolicLink()) return;
+    const key = `${item.dev}:${item.ino}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    const allocated = item.blocks === undefined ? item.size : item.blocks * 512;
+    bytes += allocated;
+    if (item.isFile()) {
+      largest = Math.max(largest, allocated);
+      if (/(?:^|[/\\])core(?:\.[0-9]+)?$/.test(path)) { coreFiles++; coreBytes += allocated; }
+    }
+    if (item.isDirectory()) {
+      let names; try { names = readdirSync(path); } catch (error) { if (error.code === 'ENOENT') return; throw error; }
+      for (const name of names) if (name !== '.git') walk(join(path, name));
+    }
+  };
+  for (const root of roots) walk(root);
+  if (facts) Object.assign(facts, { ownedBytesAtCheckpoint: bytes, coreFileCount: coreFiles, coreAllocatedBytes: coreBytes, largestOwnedFileBytes: largest });
+  return bytes;
+}
+
+export async function capturedCommand(command, args, { cwd, env, output, guard, timeoutMs = 480000, maxBytes = 32 * 1024 ** 2, monitorMs = 5000 }) {
+  guard();
+  // A fresh file, never a pre-existing report from an earlier run/attempt.
+  writeFileSync(output, '', { flag: 'wx', mode: 0o600 });
+  return new Promise(resolveResult => {
+    const child = spawn(command, args, { cwd, env, detached: process.platform !== 'win32', stdio: ['ignore', 'pipe', 'pipe'] });
+    let size = 0, blocked = false, settled = false, escalation, blockCode = null;
+    const stop = code => {
+      blockCode ??= code;
+      blocked = true;
+      try { process.kill(process.platform === 'win32' ? child.pid : -child.pid, 'SIGTERM'); } catch { /* already exited */ }
+      escalation ??= setTimeout(() => {
+        try { process.kill(process.platform === 'win32' ? child.pid : -child.pid, 'SIGKILL'); } catch { /* already exited */ }
+      }, 5000);
+    };
+    const record = chunk => {
+      size += chunk.length;
+      if (size > maxBytes) stop('OUTPUT_LIMIT');
+      else if (!blocked) appendFileSync(output, chunk);
+    };
+    child.stdout.on('data', record); child.stderr.on('data', record);
+    const monitor = setInterval(() => { try { guard(); } catch (error) { stop(guardFailureCode(error)); } }, monitorMs);
+    const deadline = setTimeout(() => stop('COMMAND_TIMEOUT'), timeoutMs);
+    const finish = (code, signal) => {
+      if (settled) return; settled = true;
+      clearInterval(monitor); clearTimeout(deadline);
+      // A killed group must remain under escalation until every descendant dies.
+      clearTimeout(escalation);
+      resolveResult({ exitCode: Number.isInteger(code) ? code : null, blocked, blockCode,
+        signalCode: ['SIGTERM', 'SIGKILL', 'SIGABRT', 'SIGSEGV'].includes(signal) ? `PROCESS_${signal}` : null });
+    };
+    child.on('error', () => { stop('COMMAND_SPAWN_FAILED'); finish(null); });
+    child.on('close', finish);
+  });
+}
+
+export async function main() {
+  if (process.platform !== 'linux' || process.env.GITHUB_ACTIONS !== 'true'
+    || process.env.RUNNER_ENVIRONMENT !== 'github-hosted' || process.version !== 'v24.16.0') refuse();
+  const root = resolve(process.cwd());
+  // The resource supervisor remains privileged outside this service; app tests
+  // and browsers run as the checkout owner, with no root fallback.
+  if (!lightOwnerMatches(process.getuid(), statSync(root).uid)) refuse();
+  const git = args => checkoutGit(root, args);
+  if (git(['status', '--porcelain', '--untracked-files=all']).trim()) refuse();
+  const paths = git(['ls-files', '-z']).split('\0').filter(Boolean).sort();
+  const backendOnly = JSON.parse(readFileSync(join(root, 'ci/backend-only-tests.json'), 'utf8'));
+  if (!Array.isArray(backendOnly) || backendOnly.length !== 1 || backendOnly.some(item =>
+    !paths.includes(item.file) || !/^tests\/[A-Za-z0-9_./-]+\.tool\.test\.ts$/.test(item.file)
+    || hash(readFileSync(join(root, item.file))) !== item.sourceSHA256 || item.requiresRealBackend !== true)) refuse();
+  if (paths.some(path => /(^|\/)\.env(?:$|\.)/.test(path) && !path.endsWith('.env.example'))) refuse();
+  const binding = sourceBinding(process.env, JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')), git(['rev-parse', 'HEAD']).trim());
+  const unit = `pos-cafe-light-r${binding.runId}-a${binding.attempt}.service`;
+  const cgroup = `/sys/fs/cgroup/system.slice/${unit}`;
+  const limits = { 'cpu.max': '300000 100000', 'memory.max': String(8 * GiB), 'memory.swap.max': '0', 'pids.max': '1024' };
+  if (!readFileSync('/proc/self/cgroup', 'utf8').trim().endsWith(`/system.slice/${unit}`)) refuse();
+  for (const [name, value] of Object.entries(limits)) if (readFileSync(join(cgroup, name), 'utf8').trim() !== value) refuse();
+  const fingerprints = { source: trackedFingerprint(root, paths), lock: hash(readFileSync(join(root, 'package-lock.json'))) };
+  const task = mkdtempSync(join(process.env.RUNNER_TEMP, `pos-light-${binding.runId}-${binding.attempt}-`));
+  const env = lightEnvironment(task, process.env);
+  let peak = 0;
+  const guardFacts = {};
+  const guardRefuse = code => { throw Object.assign(new Error('PROJECT_CI_GUARD'), { code }); };
+  const guard = () => {
+    if (!coreLimitDisabled(readFileSync('/proc/self/limits', 'utf8'))) guardRefuse('RESOURCE_CORE_LIMIT');
+    const pattern = readFileSync('/proc/sys/kernel/core_pattern', 'utf8');
+    guardFacts.kernelCorePipe = pattern.startsWith('|') ? 1 : 0;
+    if (pattern !== 'core\n') guardRefuse('RESOURCE_CORE_PATTERN');
+    for (const [file, key] of [['memory.current', 'memoryCurrentBytes'], ['pids.current', 'pidsCurrent']])
+      guardFacts[key] = Number(readFileSync(join(cgroup, file), 'utf8').trim());
+    guardFacts.peakMemoryBytes = Math.max(guardFacts.peakMemoryBytes ?? 0, guardFacts.memoryCurrentBytes);
+    guardFacts.peakPids = Math.max(guardFacts.peakPids ?? 0, guardFacts.pidsCurrent);
+    for (const [file, keys] of [['memory.events', { oom: 'oomEvents', oom_kill: 'oomKills' }], ['pids.events', { max: 'pidsLimitEvents' }]])
+      for (const line of readFileSync(join(cgroup, file), 'utf8').trim().split('\n')) {
+        const [key, value] = line.split(/\s+/); if (keys[key]) guardFacts[keys[key]] = Number(value);
+      }
+    let freeNow = Number.MAX_SAFE_INTEGER;
+    for (const path of [root, task]) {
+      const disk = statfsSync(path), free = disk.bavail * disk.bsize;
+      guardFacts.minimumObservedFreeBytes = Math.min(guardFacts.minimumObservedFreeBytes ?? Number.MAX_SAFE_INTEGER, free);
+      freeNow = Math.min(freeNow, free);
+    }
+    guardFacts.initialFreeBytes ??= freeNow;
+    guardFacts.freeSpaceDecreaseBytes = Math.max(0, guardFacts.initialFreeBytes - freeNow);
+    peak = Math.max(peak, allocatedBytes([root, task], guardFacts));
+    if (freeNow < 30 * GiB) guardRefuse('RESOURCE_FREE_SPACE');
+    if (guardFacts.freeSpaceDecreaseBytes > 5 * GiB) guardRefuse('RESOURCE_HOST_GROWTH');
+    if (peak > 5 * GiB) guardRefuse('RESOURCE_OWNED_CAP');
+    for (const [name, value] of Object.entries(limits)) if (readFileSync(join(cgroup, name), 'utf8').trim() !== value) guardRefuse('RESOURCE_CGROUP_DRIFT');
+  };
+  const rows = [];
+  const phase = async (id, command, args, readCounts, diagnosticReport) => {
+    const started = Date.now(), output = join(task, `${id}.log`);
+    const invocationSHA = hash(JSON.stringify({ runId: binding.runId, attempt: binding.attempt, id, command, args,
+      sourceFingerprint: fingerprints.source, lockSHA: fingerprints.lock }));
+    let result = { exitCode: null, blocked: true }, counts = null, valid = false, failureCode = null;
+    try {
+      result = await capturedCommand(command, args, { cwd: root, env, output, guard });
+      if (!result.blocked && readCounts) counts = readCounts(readFileSync(output, 'utf8'));
+      if (trackedFingerprint(root, paths) !== fingerprints.source) guardRefuse('SOURCE_DRIFT');
+      valid = !result.blocked && result.exitCode === 0;
+    } catch (error) { valid = false; failureCode = guardFailureCode(error); }
+    try { guard(); } catch (error) { valid = false; failureCode ??= guardFailureCode(error); }
+    const info = lstatSync(output, { throwIfNoEntry: false });
+    const reportSHA = info?.isFile() ? hash(readFileSync(output)) : null;
+    let diagnostic = null;
+    if (!valid && info?.isFile()) {
+      let report = null; try { report = diagnosticReport ? json(diagnosticReport) : null; } catch { /* missing report stays unknown */ }
+      diagnostic = privateDiagnostics(readFileSync(output, 'utf8'), report, paths, root);
+      if (id === 'smoke-preflight') {
+        const trace = smokeTraceDiagnostics(report, root, paths);
+        diagnostic.codes.push(...trace.codes);
+        Object.assign(diagnostic.metrics, trace.metrics);
+        diagnostic.failedFiles = [...new Set([...diagnostic.failedFiles, ...trace.failedFiles])].slice(0, 32);
+        // Same pinned browser and limits, fresh static page, primary result
+        // remains FAIL even when the isolated runtime control completes.
+        try {
+          if (!browserRuntimeControlCanStart(readFileSync(join(cgroup, 'cgroup.procs'), 'utf8'),
+            readFileSync(join(cgroup, 'cgroup.stat'), 'utf8'), process.pid)) {
+            diagnostic.metrics.browserProbeSkippedOrdinal = 1;
+          } else {
+            const probeOutput = join(task, 'browser-runtime-control.log');
+            const probe = await capturedCommand(process.execPath, ['--input-type=module', '--eval', BROWSER_PROBE_SOURCE],
+              { cwd: root, env: { ...env, DEBUG: 'pw:browser' }, output: probeOutput, guard, timeoutMs: 15000, maxBytes: 32768 });
+            const probeInfo = lstatSync(probeOutput, { throwIfNoEntry: false });
+            diagnostic.metrics.browserProbeCommandCompleted = !probe.blocked && probe.exitCode === 0 ? 1 : 0;
+            if (probe.blockCode === 'COMMAND_TIMEOUT') diagnostic.metrics.browserProbeTimedOut = 1;
+            if (probeInfo?.isFile()) {
+              const control = privateDiagnostics(readFileSync(probeOutput, 'utf8'), null);
+              Object.assign(diagnostic.metrics, Object.fromEntries(Object.entries(control.metrics).filter(([key]) => key.startsWith('browserProbe'))));
+              for(const [key,value] of Object.entries(control.metrics))if(key.startsWith('browserNative'))
+                diagnostic.metrics['browserProbeNative'+key.slice('browserNative'.length)]=value;
+              if (control.metrics.browserCrashSignal) diagnostic.metrics.browserProbeCrashSignal = control.metrics.browserCrashSignal;
+            }
+            guard();
+            diagnostic.metrics.browserProbeDescendantsRemaining = browserRuntimeControlCanStart(
+              readFileSync(join(cgroup, 'cgroup.procs'), 'utf8'), readFileSync(join(cgroup, 'cgroup.stat'), 'utf8'), process.pid) ? 0 : 1;
+          }
+        } catch (error) {
+          diagnostic.metrics.browserProbeCommandCompleted = 0;
+          diagnostic.codes.push(guardFailureCode(error));
+        }
+      }
+    }
+    if (!valid) {
+      diagnostic ??= { codes: ['COMMAND_FAILED'], metrics: {}, failedFiles: [] };
+      diagnostic.codes = [...new Set([...diagnostic.codes, result.blockCode, result.signalCode, failureCode].filter(Boolean))];
+      Object.assign(diagnostic.metrics, guardFacts);
+    }
+    rows.push({ id, status: valid ? 'PASS' : 'FAIL', exitCode: result.exitCode, elapsedMs: Date.now() - started, counts, invocationSHA, reportSHA, diagnostic });
+    console.log(`PROJECT_CI_PHASE ${id} ${valid ? 'PASS' : 'FAIL'}`);
+    if (!valid) refuse();
+  };
+  const json = name => {
+    const file = join(task, `${name}.json`), info = lstatSync(file);
+    if (!info.isFile() || info.isSymbolicLink() || info.size > 32 * 1024 ** 2) refuse();
+    return JSON.parse(readFileSync(file, 'utf8'));
+  };
+  try {
+    await phase('install', 'npm', ['ci', '--no-fund']);
+    await phase('build', 'npm', ['run', 'build']);
+    await phase('unit', process.execPath, ['node_modules/vitest/vitest.mjs', 'run', '--coverage', '--maxWorkers=1', '--no-file-parallelism', '--retry=0',
+      '--reporter=json', `--outputFile=${join(task, 'unit.json')}`], () => vitestCounts(json('unit'), paths.filter(path => /^src\/.*\.(?:test|spec)\.tsx?$/.test(path)), root), 'unit');
+    await phase('tooling', process.execPath, ['node_modules/vitest/vitest.mjs', 'run', '--config=vitest.project-tooling.config.ts',
+      '--reporter=json', `--outputFile=${join(task, 'tooling.json')}`], () => vitestCounts(json('tooling'), paths.filter(path => /^tests\/.*\.tool\.test\.(?:ts|mjs)$/.test(path)), root, backendOnly), 'tooling');
+    await phase('node-tools', process.execPath, ['--test', '--test-concurrency=2', '--test-reporter=tap', ...paths.filter(path => /^scripts\/.*\.test\.mjs$/.test(path))], nodeCounts);
+    await phase('browser', process.execPath, ['node_modules/playwright/cli.js', 'install', 'chromium', '--no-shell']);
+    // JSON reporter uses its explicit file rather than public stdout.
+    env.PLAYWRIGHT_JSON_OUTPUT_NAME = join(task, 'smoke-discovery.json');
+    await phase('smoke-discovery', process.execPath, ['node_modules/playwright/cli.js', 'test', '--config=playwright.project-ci.config.ts', '--list', '--reporter=json']);
+    // Browser stderr remains in the bounded private capture. The public parser
+    // exports only its existing finite failure codes, never the debug text.
+    env.DEBUG = 'pw:browser,pw:webserver,pw:protocol';
+    env.PLAYWRIGHT_JSON_OUTPUT_NAME = join(task, 'smoke-preflight.json');
+    await phase('smoke-preflight', process.execPath, ['node_modules/playwright/cli.js', 'test', '--config=playwright.project-ci.config.ts', 'tests/smoke/pos-cafe.spec.ts:119',
+      '--project=desktop', '--workers=1', '--retries=0', '--forbid-only', '--trace=retain-on-failure', '--reporter=line,json,./scripts/project-ci-results.mjs'],
+      () => smokePreflightCounts(json('smoke-preflight'), json('smoke-discovery')), 'smoke-preflight');
+    env.DEBUG = 'pw:browser,pw:webserver';
+    env.PLAYWRIGHT_JSON_OUTPUT_NAME = join(task, 'smoke.json');
+    await phase('smoke', process.execPath, ['node_modules/playwright/cli.js', 'test', '--config=playwright.project-ci.config.ts', '--workers=2', '--retries=0', '--forbid-only', '--reporter=line,json,./scripts/project-ci-results.mjs'],
+      () => smokeCounts(json('smoke'), json('smoke-discovery'), JSON.parse(readFileSync(join(root, 'ci/smoke-applicability.json'), 'utf8'))), 'smoke');
+    delete env.PLAYWRIGHT_JSON_OUTPUT_NAME;
+    delete env.DEBUG;
+  } catch { /* Fixed phase status only; never echo raw errors. */ }
+  const summary = { ...publicSummary(binding, rows, fingerprints), sourceProfile: 'MAIN_CURRENT_APP',
+    deferredFeatureGates: ['PERMISSION_FULL', 'UI_AUDIT_FEATURE_BRANCH'], sourcePreserved: trackedFingerprint(root, paths) === fingerprints.source,
+    peakOwnedBytes: peak, operatingCapBytes: 5 * GiB, minimumFreeBytes: 30 * GiB };
+  if (!summary.sourcePreserved) summary.overallStatus = 'FAIL';
+  const rendered = JSON.stringify(summary, null, 2);
+  if (Buffer.byteLength(rendered) > 65536) refuse();
+  console.log(rendered);
+  if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+    `# POS light CI\n\nScope: LIGHT_MOCK_ONLY\n\n\`\`\`json\n${rendered}\n\`\`\`\n`);
+  if (summary.overallStatus !== 'PASS') process.exitCode = 1;
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+  main().catch(() => { console.log('PROJECT_CI_BLOCKED'); process.exitCode = 1; });
+}
