@@ -19,9 +19,26 @@
     "package.json": "c444db7f1e05ce130d88752ce27f8bf143f395696f9bf18054f265cb8ef54ca0",
     "package-lock.json": "1b6d400213384cd736ee7dd2108137d7b63b67a467bd9672886e220cc2f0cf0b",
     "tests/smoke/helpers.ts": "c257643a8a91aceee5cd004ae7afcc1062bbbfe90d82e308e861f55fd0b8e699",
-    "vercel.json": "c9dc103882632c479d5e0a385dfc600dc2e41e0f3e88810f8fc31574701f77eb",
+    "vercel.json": "b0f5528ba88104bd34f9f2ec601b974fb78679640d896aa150fcce45eb6e2a96",
     "ci/backend-only-tests.json": "758a2a7b5475753e037925e307fe0b513b0f2ae9af4cfd08427e82d47fa7fa8f",
     "tests/contracts/gates.tool.test.ts": "9deced5b290e611845255d27cb50f04a572d9a5146538e65fb66259e2a064070",
-    "playwright.project-ci.config.ts": "34f2073b1c3aa0967b583b282dfdaa71c7d87dd25a3721fb12bb135fd2b702d9"
+    "playwright.project-ci.config.ts": "34f2073b1c3aa0967b583b282dfdaa71c7d87dd25a3721fb12bb135fd2b702d9",
+    ".github/workflows/frontend-preview.yml": "e8dcbcba82bda664c1ff2265b241c13111df3c9f2a8d893b3fd21539df0000b4",
+    "scripts/project-preview.mjs": "035cb6f2aa4efc6f9022b45fcb61a3e7f94d97bed5c93085e7603c145633f802",
+    "scripts/project-release.mjs": "43f3e6b0bf8739a66113ab669bb44279e20e0272d57122b579f907ebcdf79b54"
+  },
+  "preview": {
+    "projectId": "prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en",
+    "projectName": "pos-cafe",
+    "teamSlug": "24tx810010-hcmutes-projects",
+    "repoId": 1263057386,
+    "protectionFields": [
+      "ssoProtection",
+      "passwordProtection",
+      "trustedIps",
+      "trustedSources",
+      "protectionBypass",
+      "optionsAllowlist"
+    ]
   }
 }

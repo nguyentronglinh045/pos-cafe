@@ -5,7 +5,8 @@
     "deploymentEnabled": false
   },
   "installCommand": "npm ci",
-  "buildCommand": "npm run build",
+  "ignoreCommand": "node scripts/project-preview.mjs ignore",
+  "buildCommand": "node scripts/project-preview.mjs build",
   "outputDirectory": "dist",
   "rewrites": [
     {
