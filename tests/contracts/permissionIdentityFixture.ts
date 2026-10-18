@@ -45,7 +45,12 @@ export async function setupIdentityFixture(administration = false) {
   acl = (await db.query(`select p.oid::regprocedure::text signature,coalesce(r.rolname,'PUBLIC') rolname,a.privilege_type privilege from pg_proc p join pg_namespace n on n.oid=p.pronamespace
     cross join lateral aclexplode(coalesce(p.proacl,acldefault('f',p.proowner))) a left join pg_roles r on r.oid=a.grantee
     where n.nspname='public' and (a.grantee=0 or r.rolname in ('anon','authenticated','service_role'))`)).rows;
-  employeeAcl = (await db.query("select grantee,privilege_type privilege from information_schema.role_table_grants where table_schema='public' and table_name='employees' and grantee in ('anon','authenticated','service_role')")).rows;
+  // PostgreSQL 17's information_schema.role_table_grants omits MAINTAIN.
+  // Capture the catalog privileges that REVOKE ALL below actually removes.
+  employeeAcl = (await db.query(`select r.rolname grantee,a.privilege_type privilege,a.is_grantable grantable
+    from pg_class c cross join lateral aclexplode(coalesce(c.relacl,acldefault('r',c.relowner))) a
+    join pg_roles r on r.oid=a.grantee
+    where c.oid='public.employees'::regclass and r.rolname in ('anon','authenticated','service_role')`)).rows;
   employeeColumnAcl = (await db.query(`select a.attname column_name,r.rolname grantee,x.privilege_type privilege from pg_attribute a
     cross join lateral aclexplode(a.attacl) x join pg_roles r on r.oid=x.grantee
     where a.attrelid='public.employees'::regclass and r.rolname in ('anon','authenticated','service_role')`)).rows;
@@ -134,7 +139,7 @@ export async function cleanupIdentityFixture() {
       for (const e of employees) await db.query("update public.employees set role=$2,permission_overrides=$3 where id=$1", [e.id, e.role, e.permission_overrides]);
       await db.query("alter table public.employees alter column role type public.employee_role using role::public.employee_role");
       for (const a of acl) await db.query(`grant ${a.privilege} on function ${a.signature} to ${a.rolname === 'PUBLIC' ? 'public' : q(a.rolname)}`);
-      for (const a of employeeAcl) await db.query(`grant ${a.privilege} on public.employees to ${q(a.grantee)}`);
+      for (const a of employeeAcl) await db.query(`grant ${a.privilege} on public.employees to ${q(a.grantee)}${a.grantable ? ' with grant option' : ''}`);
       for (const a of employeeColumnAcl) await db.query(`grant ${a.privilege}(${q(a.column_name)}) on public.employees to ${q(a.grantee)}`);
       await db.query("commit");
       await db.query("revoke pos_owner_recovery from postgres");

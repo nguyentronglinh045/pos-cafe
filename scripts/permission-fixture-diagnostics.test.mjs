@@ -119,6 +119,36 @@ test('actual identity semantic fingerprint still rejects ACL, routine and grant 
   }
 });
 
+test('identity table ACL snapshot and restore retain catalog-only privileges and grant options', async () => {
+  const source = readFileSync(new URL('../tests/contracts/permissionIdentityFixture.ts', import.meta.url), 'utf8');
+  const capture = source.match(/employeeAcl = \(await db\.query\([\s\S]*?\)\)\.rows;/)?.[0];
+  const restore = source.match(/for \(const a of employeeAcl\) await db\.query\([^\n]+/)?.[0];
+  assert.ok(capture); assert.ok(restore);
+  const privileges = ['INSERT', 'SELECT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER', 'MAINTAIN'];
+  const catalogRows = privileges.map(privilege => ({ grantee: 'service_role', privilege, grantable: privilege === 'SELECT' }));
+  const commands = [];
+  const exercise = runInNewContext(`(async () => { let employeeAcl; ${capture}\n${restore}\nreturn employeeAcl; })`, {
+    q: value => '"' + value.replaceAll('"', '""') + '"',
+    db: { query: async sql => {
+      if (sql.startsWith('grant ')) { commands.push(sql); return {}; }
+      // Model the documented PostgreSQL 17 view omission. This is a unit
+      // regression for the actual capture/restore code, not a DB execution.
+      if (sql.includes('information_schema.role_table_grants')) return { rows: catalogRows.filter(row => row.privilege !== 'MAINTAIN') };
+      assert.match(sql, /aclexplode\(coalesce\(c\.relacl,acldefault\('r',c\.relowner\)\)\)/);
+      assert.match(sql, /a\.is_grantable grantable/);
+      assert.match(sql, /c\.oid='public\.employees'::regclass/);
+      assert.match(sql, /r\.rolname in \('anon','authenticated','service_role'\)/);
+      return { rows: catalogRows };
+    } },
+  });
+  assert.deepEqual(await exercise(), catalogRows);
+  assert.equal(commands.length, 8);
+  assert.ok(commands.includes('grant MAINTAIN on public.employees to "service_role"'));
+  assert.ok(commands.includes('grant SELECT on public.employees to "service_role" with grant option'));
+  assert.equal(commands.filter(sql => sql.endsWith(' with grant option')).length, 1);
+  assert.ok(!commands.some(sql => /grant all/i.test(sql)));
+});
+
 test('all catalog masks cross the finite reporter and marker boundary without private values or changing failure', () => {
   for (let mask = 1; mask <= 255; mask++) {
     const code = fixtureDriftCode({ message: 'IDENTITY_CATALOG_DRIFT', permissionCatalogDriftMask: mask });
