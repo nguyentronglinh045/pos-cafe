@@ -4,13 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       confirmation:
-        description: 'Run synthetic T09/T10 only; no hosted DB/deploy. Type RUN_SYNTHETIC_PILOT'
+        description: 'Select the reviewed synthetic pilot or the small namespace probe; no hosted DB/deploy'
         required: true
         type: choice
         default: DO_NOT_RUN
         options:
           - DO_NOT_RUN
           - RUN_SYNTHETIC_PILOT
+          - RUN_NAMESPACE_PROBE
+      expected_source_sha:
+        description: 'Namespace probe only: exact reviewed 40-character commit SHA'
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -21,7 +27,7 @@ concurrency:
 
 jobs:
   pilot:
-    if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386'
+    if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386' && inputs.confirmation == 'RUN_SYNTHETIC_PILOT'
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     steps:
@@ -43,3 +49,20 @@ jobs:
         env:
           CI1_CONFIRMATION: ${{ inputs.confirmation == 'RUN_SYNTHETIC_PILOT' && 'RUN_SYNTHETIC_PILOT' || 'REFUSED' }}
         run: node scripts/project-backend.mjs
+
+  namespace-probe:
+    if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386' && inputs.confirmation == 'RUN_NAMESPACE_PROBE'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Probe only the owned root and private mount namespace
+        env:
+          FULL_NAMESPACE_CONFIRMATION: RUN_NAMESPACE_PROBE
+          FULL_NAMESPACE_EXPECTED_SHA: ${{ inputs.expected_source_sha }}
+        run: |
+          ulimit -c 0
+          node scripts/permission-full-namespace-probe.mjs probe
