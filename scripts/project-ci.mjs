@@ -139,6 +139,17 @@ export async function capturedCommand(command, args, { cwd, env, output, guard, 
   });
 }
 
+export function gitCommitParents(text) {
+  if (typeof text !== 'string' || Buffer.byteLength(text) > 8 * 1024 ** 2) refuse();
+  const end = text.indexOf('\n\n');
+  if (end < 0 || end > 65536) refuse();
+  // Inspect only real commit headers, never parent-looking message text.
+  return text.slice(0, end).split('\n').filter(line => line.startsWith('parent ')).map(line => {
+    if (!/^parent [a-f0-9]{40}$/.test(line)) refuse();
+    return line.slice(7);
+  });
+}
+
 let admissionStep = 0;
 export async function main() {
   admissionStep = 1;
@@ -161,7 +172,8 @@ export async function main() {
   admissionStep = 5;
   if (paths.some(path => /(^|\/)\.env(?:$|\.)/.test(path) && !path.endsWith('.env.example'))) refuse();
   admissionStep = 6;
-  const binding = sourceBinding(process.env, JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')), git(['rev-parse', 'HEAD']).trim());
+  const binding = sourceBinding(process.env, JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')),
+    git(['rev-parse', 'HEAD']).trim(), process.env.GITHUB_EVENT_NAME === 'pull_request' ? gitCommitParents(git(['cat-file', '-p', 'HEAD'])) : undefined);
   const unit = `pos-cafe-light-r${binding.runId}-a${binding.attempt}.service`;
   const cgroup = `/sys/fs/cgroup/system.slice/${unit}`;
   const limits = { 'cpu.max': '300000 100000', 'memory.max': String(8 * GiB), 'memory.swap.max': '0', 'pids.max': '1024' };

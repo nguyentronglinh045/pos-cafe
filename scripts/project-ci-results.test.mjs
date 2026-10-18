@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import SmokeFailureReporter, { smokeStepDiagnostic, smokeTraceDiagnostics, smokeTraceEvents, smokeTraceSnapshotFacts, smokeTraceExpectFacts, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, publicSummary, privateDiagnostics, guardFailureCode, PROJECTS, PROJECT_PHASES, hash } from './project-ci-results.mjs';
-import { capturedCommand, trackedFingerprint, lightEnvironment, checkoutGit, allocatedBytes, coreLimitDisabled, browserRuntimeControlCanStart } from './project-ci.mjs';
+import { capturedCommand, trackedFingerprint, lightEnvironment, checkoutGit, allocatedBytes, coreLimitDisabled, browserRuntimeControlCanStart, gitCommitParents } from './project-ci.mjs';
 import { lightService, lightOwnerMatches, withLightCorePattern, stopLightUnit, coreDumpDisabled, linuxCorePatternAdapter } from './project-ci-launch.mjs';
 import { verifyReleaseRun, verifyReleaseEnvironment, verifyReleaseFiles, productionCommands, PRODUCTION_ENABLED } from './project-release.mjs';
 
@@ -425,8 +425,9 @@ test('core restore requires stopped unit plus recursively empty or confirmed abs
 });
 
 test('source binding distinguishes tested PR merge from head and refuses mismatched SHA/event/repo', () => {
-  const event = { repository: { full_name: env.GITHUB_REPOSITORY, id: 1263057386 }, pull_request: { head: { sha: other }, merge_commit_sha: sha } };
-  assert.equal(sourceBinding({ ...env, GITHUB_EVENT_NAME: 'pull_request' }, event, sha).prHeadSHA, other);
+  const base = '4'.repeat(40);
+  const event = { repository: { full_name: env.GITHUB_REPOSITORY, id: 1263057386 }, pull_request: { head: { sha: other }, base: { sha: base }, merge_commit_sha: sha } };
+  assert.equal(sourceBinding({ ...env, GITHUB_EVENT_NAME: 'pull_request' }, event, sha, [base, other]).prHeadSHA, other);
   assert.throws(() => sourceBinding({ ...env, GITHUB_EVENT_NAME: 'pull_request' }, event, other));
   assert.throws(() => sourceBinding({ ...env, GITHUB_EVENT_NAME: 'pull_request_target' }, event, sha));
   assert.throws(() => sourceBinding(env, { after: other }, sha));
@@ -689,4 +690,28 @@ test('binding refusal reports only a finite guard and never copies private event
     return true;
   });
   assert.throws(() => sourceBinding({ ...env, GITHUB_EVENT_NAME: 'workflow_dispatch' }, event, sha), error => error.bindingGuard === 6);
+});
+
+test('PR admission binds actual Git parents even when webhook merge SHA is stale', () => {
+  const base = '4'.repeat(40), head = other;
+  const event = { repository: { full_name: env.GITHUB_REPOSITORY, id: 1263057386 },
+    pull_request: { head: { sha: head }, base: { sha: base }, merge_commit_sha: null } };
+  const prEnv = { ...env, GITHUB_EVENT_NAME: 'pull_request' };
+  for (const reportedMerge of [undefined, null, '5'.repeat(40)]) {
+    const result = sourceBinding(prEnv, { ...event, pull_request: { ...event.pull_request, merge_commit_sha: reportedMerge } }, sha, [base, head]);
+    assert.equal(result.sourceSHA, sha); assert.equal(result.prHeadSHA, head);
+  }
+  for (const parents of [undefined, [], [base], [head, base], [base, base], [base, '5'.repeat(40)], [base, head, sha]]) {
+    assert.throws(() => sourceBinding(prEnv, event, sha, parents), error => error.bindingGuard === 4);
+  }
+  assert.throws(() => sourceBinding({ ...prEnv, GITHUB_SHA: head }, event, head, [base, head]));
+  assert.throws(() => sourceBinding(prEnv, { ...event, pull_request: { ...event.pull_request, base: {} } }, sha, [base, head]));
+});
+
+test('commit parent parser reads only canonical headers, never message or signature lines', () => {
+  const base = '4'.repeat(40), head = other;
+  const headers = `tree ${digest.slice(0, 40)}\nparent ${base}\nparent ${head}\nauthor test\ncommitter test\ngpgsig signature\n parent ${sha}`;
+  const text = headers + `\n\nmessage\nparent ${sha}\n`;
+  assert.deepEqual(gitCommitParents(text), [base, head]);
+  for (const value of ['', 'parent x\n\nmessage', 'parent '+head, null, 'x'.repeat(65537)+'\n\n']) assert.throws(() => gitCommitParents(value));
 });

@@ -485,7 +485,7 @@ export function browserRuntimeControlFacts(text) {
 const sameSet = (a, b) => a.length === b.length && new Set(a).size === a.length
   && [...a].sort().every((value, index) => value === [...b].sort()[index]);
 
-export function sourceBinding(env, event, actualSHA) {
+export function sourceBinding(env, event, actualSHA, actualParents) {
   // A finite ordinal diagnoses admission failures without exposing event data.
   const deny = ordinal => { const error = new Error('PROJECT_CI_RESULT_INVALID'); error.bindingGuard = ordinal; throw error; };
   const hex = value => typeof value === 'string' && /^[a-f0-9]{40}$/.test(value);
@@ -499,7 +499,12 @@ export function sourceBinding(env, event, actualSHA) {
   } else if (env.GITHUB_EVENT_NAME === 'pull_request') {
     prHeadSHA = event.pull_request?.head?.sha;
     if (!hex(prHeadSHA)) deny(3);
-    if (event.pull_request?.merge_commit_sha !== actualSHA) deny(4);
+    // Webhook merge_commit_sha can be stale when GitHub creates the tested
+    // merge ref. Bind the actual Git object to this event's base and head.
+    const base = event.pull_request?.base?.sha;
+    if (!hex(base) || base === prHeadSHA || actualSHA === prHeadSHA || actualSHA === base
+      || !Array.isArray(actualParents) || actualParents.length !== 2
+      || actualParents[0] !== base || actualParents[1] !== prHeadSHA) deny(4);
     if (event.repository?.full_name !== PROJECT_REPOSITORY) deny(5);
   } else deny(6);
   return { repository: PROJECT_REPOSITORY, repositoryID: PROJECT_REPOSITORY_ID, event: env.GITHUB_EVENT_NAME,
