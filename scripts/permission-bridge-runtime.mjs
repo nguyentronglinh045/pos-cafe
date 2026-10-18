@@ -13,7 +13,9 @@ export const PROJECT = 'pos-cafe-perm-s31-t02-20261013';
 export const LINUX_ROOT = '/var/tmp/' + PROJECT;
 export const STORE_IDS = ['10000000-0000-4000-8000-000000000001','10000000-0000-4000-8000-000000000002'];
 export const EMPLOYEE_IDS = [1,2,3,4,5].map(n=>'20000000-0000-4000-8000-'+String(n).padStart(12,'0'));
-const wsl = args => execFileSync('wsl',['-d','Ubuntu-24.04','--',...args],{encoding:'utf8',maxBuffer:8*1024*1024,timeout:30000});
+const wsl = args => process.platform === 'win32'
+ ? execFileSync('wsl',['-d','Ubuntu-24.04','--',...args],{encoding:'utf8',maxBuffer:8*1024*1024,timeout:30000})
+ : execFileSync(args[0],args.slice(1),{encoding:'utf8',maxBuffer:8*1024*1024,timeout:30000});
 const configHash = text => digest(text.replaceAll('\r\n','\n').trim());
 const same = (a,b)=>JSON.stringify(a)===JSON.stringify(b);
 export function runtimeProof() {
