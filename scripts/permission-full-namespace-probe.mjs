@@ -10,6 +10,7 @@ import {withLightCorePattern,linuxCorePatternAdapter,coreDumpDisabled} from './p
 import {fullRuntimeLayout,fullRuntimeUnitProperties,assertFullRuntimeRootFacts} from './permission-full-runtime-policy.mjs';
 
 const REPO='nguyentronglinh045/pos-cafe', ID='1263057386', LIMIT=65536, RESERVE=30*1024**3;
+const CHECKOUT_CAP=128*1024**2, PUBLIC_SOURCE_CAP=64*1024**2;
 const ENV={PATH:'/usr/sbin:/usr/bin:/sbin:/bin',LANG:'C',LC_ALL:'C',
   GIT_OPTIONAL_LOCKS:'0',GIT_CONFIG_NOSYSTEM:'1',GIT_CONFIG_GLOBAL:'/dev/null'};
 const SHA=value=>createHash('sha256').update(value).digest('hex');
@@ -40,7 +41,7 @@ export function namespaceAdmission(input) {
   check(e.FULL_NAMESPACE_CONFIRMATION==='RUN_NAMESPACE_PROBE'&&inputs.confirmation==='RUN_NAMESPACE_PROBE'
     &&hex(e.FULL_NAMESPACE_EXPECTED_SHA,40)&&inputs.expected_source_sha===e.FULL_NAMESPACE_EXPECTED_SHA
     &&g.head===e.FULL_NAMESPACE_EXPECTED_SHA&&g.head===e.GITHUB_SHA&&g.head===e.GITHUB_WORKFLOW_SHA
-    &&hex(g.tree,40)&&hex(g.fingerprint,64)&&g.clean===true&&Number.isSafeInteger(g.bytes)&&g.bytes>0&&g.bytes<=64*1024**2);
+    &&hex(g.tree,40)&&hex(g.fingerprint,64)&&g.clean===true&&Number.isSafeInteger(g.bytes)&&g.bytes>0&&g.bytes<=CHECKOUT_CAP);
   check(typeof e.GITHUB_REF_NAME==='string'&&/^[A-Za-z0-9_./-]+$/.test(e.GITHUB_REF_NAME)&&!/\s/.test(e.GITHUB_REF_NAME)&&!e.GITHUB_REF_NAME.includes('..')
     &&e.GITHUB_REF===`refs/heads/${e.GITHUB_REF_NAME}`&&(ev.ref===e.GITHUB_REF_NAME||ev.ref===e.GITHUB_REF)
     &&e.GITHUB_WORKFLOW_REF===`${REPO}/.github/workflows/backend.yml@${e.GITHUB_REF}`);
@@ -163,10 +164,11 @@ export function namespaceTrackedInventory(tracked,unknown,entries,read) {
     &&Array.isArray(entries)&&entries.length<=20000&&typeof read==='function');
   const paths=new Set(tracked);check(paths.size===tracked.length);
   for(const path of tracked)check(typeof path==='string'&&ci1PublicationPath(path)===true);
-  let bytes=0;const files=new Map();
+  let bytes=0,publicBytes=0;const files=new Map();
   for(const entry of entries){const e=data(entry,['path','bytes','links']);check(typeof e.path==='string'&&!files.has(e.path)
-    &&Number.isSafeInteger(e.bytes)&&e.bytes>=0&&e.links===1);bytes+=e.bytes;check(bytes<=64*1024**2);
-    check(e.path==='.git'||e.path.startsWith('.git/')||paths.has(e.path));files.set(e.path,e);}
+    &&Number.isSafeInteger(e.bytes)&&e.bytes>=0&&e.links===1);bytes+=e.bytes;check(bytes<=CHECKOUT_CAP);
+    check(e.path==='.git'||e.path.startsWith('.git/')||paths.has(e.path));
+    if(paths.has(e.path)){publicBytes+=e.bytes;check(publicBytes<=PUBLIC_SOURCE_CAP);}files.set(e.path,e);}
   check(tracked.every(path=>files.has(path)));
   const hash=createHash('sha256');for(const path of [...tracked].sort()){
     const content=read(path);check(Buffer.isBuffer(content)&&content.length===files.get(path).bytes);
@@ -217,25 +219,33 @@ export function namespaceUnitAbsent(output,status) {
     &&output.trim().split('\n').sort().join('\n')==='ActiveState=inactive\nLoadState=not-found');return true;
 }
 async function main() {
-  let phase='ADMISSION';
+  let phase='ADMISSION_BOOT';
   try {
     check(process.argv.length===3&&process.argv[2]==='probe'&&process.platform==='linux'&&process.arch==='x64'
       &&process.env.FULL_NAMESPACE_CONFIRMATION==='RUN_NAMESPACE_PROBE'&&hex(process.env.FULL_NAMESPACE_EXPECTED_SHA,40)
       &&process.execArgv.length===0&&process.getuid()>0&&process.env.GITHUB_REPOSITORY===REPO&&process.env.GITHUB_REPOSITORY_ID===ID
       &&process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&process.env.GITHUB_EVENT_NAME==='workflow_dispatch');
+    phase='ADMISSION_WORKSPACE';
     const root=realpathSync(process.cwd());check(root===process.env.GITHUB_WORKSPACE&&lstatSync(root).uid===process.getuid()
       &&realpathSync(fileURLToPath(import.meta.url))===`${root}/scripts/permission-full-namespace-probe.mjs`);
+    phase='ADMISSION_EVENT';
     const eventPath=process.env.GITHUB_EVENT_PATH;check(lstatSync(eventPath).size<=LIMIT);
     const event=JSON.parse(readFileSync(eventPath,'utf8'));check(event.repository?.private===false
       &&event.repository?.id===Number(ID)&&event.repository?.full_name===REPO);
+    phase='ADMISSION_SOURCE';
     const before=snapshot(root),env={...process.env};
+    phase='ADMISSION_IDENTITY';
     const identity=namespaceAdmission({env,event,git:before,platform:process.platform,arch:process.arch,nodeVersion:process.version});
-    const node=nativeNode(),layout=fullRuntimeLayout(identity.runId,identity.attempt,randomBytes(16).toString('hex'),0);
+    phase='ADMISSION_NODE';
+    const node=nativeNode();
+    phase='ADMISSION_HOST';
+    const layout=fullRuntimeLayout(identity.runId,identity.attempt,randomBytes(16).toString('hex'),0);
     const cgroup='/sys/fs/cgroup/system.slice/'+identity.unit;noLinks('/var/tmp');noMount(layout.root);reserve(root);
     check(!lstatSync(layout.root,{throwIfNoEntry:false})&&!lstatSync(cgroup,{throwIfNoEntry:false}));
+    const host={tmp:metadata('/var/tmp'),namespace:readlinkSync('/proc/self/ns/mnt')};
+    phase='ADMISSION_HOST_UNIT';
     try{namespaceUnitAbsent(run('/usr/bin/systemctl',['show','--property=LoadState','--property=ActiveState',identity.unit]),0);}
     catch(error){check(error.code===undefined&&Number.isInteger(error.status));namespaceUnitAbsent(error.stdout,error.status);}
-    const host={tmp:metadata('/var/tmp'),namespace:readlinkSync('/proc/self/ns/mnt')};
     phase='SUPERVISOR';
     const receipt=withLightCorePattern(linuxCorePatternAdapter(identity.unit),()=>{
       check(coreDumpDisabled(readFileSync('/proc/self/limits','utf8'),readFileSync('/proc/sys/kernel/core_pattern','utf8')));

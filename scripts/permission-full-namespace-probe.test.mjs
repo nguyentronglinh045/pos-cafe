@@ -47,7 +47,8 @@ test('manual admission binds public repository, source SHA, workflow/ref and exa
   }
   const wrongRef=admission();wrongRef.event.ref='another';refused(()=>namespaceAdmission(wrongRef));
   const wrongInput=admission();wrongInput.event.inputs.expected_source_sha='f'.repeat(40);refused(()=>namespaceAdmission(wrongInput));
-  for(const [key,value] of Object.entries({head:'f'.repeat(40),clean:false,bytes:64*1024**2+1,fingerprint:'bad'})){
+  const boundary=admission();boundary.git.bytes=128*1024**2;assert.equal(namespaceAdmission(boundary).runId,'39128774085');
+  for(const [key,value] of Object.entries({head:'f'.repeat(40),clean:false,bytes:128*1024**2+1,fingerprint:'bad'})){
     const input=admission();input.git[key]=value;refused(()=>namespaceAdmission(input));
   }
 });
@@ -121,6 +122,17 @@ test('clean git with ignored private inputs rejects before any source payload re
   const tracked=['src/public.mjs'],entries=[{path:tracked[0],bytes:content.length,links:1},{path:'.git/config',bytes:100,links:1}];
   const result=namespaceTrackedInventory(tracked,[],entries,path=>{reads++;assert.equal(path,tracked[0]);return content;});
   assert.equal(reads,1);assert.equal(result.bytes,content.length+100);
+  for(const total of [70_710_176,128*1024**2]){
+    reads=0;const inventory=[entries[0],{path:'.git/objects/pack/pack-public.pack',bytes:total-content.length,links:1}];
+    assert.equal(namespaceTrackedInventory(tracked,[],inventory,path=>{reads++;assert.equal(path,tracked[0]);return content;}).bytes,total);
+    assert.equal(reads,1);
+  }
+  for(const inventory of [
+    [entries[0],{path:'.git/objects/pack/pack-public.pack',bytes:128*1024**2+1-content.length,links:1}],
+    [{...entries[0],bytes:64*1024**2+1}],
+  ]){
+    reads=0;refused(()=>namespaceTrackedInventory(tracked,[],inventory,()=>{reads++;return content;}));assert.equal(reads,0);
+  }
   for(const unknown of [['.env.local'],['artifacts/private-input.json']]){
     reads=0;refused(()=>namespaceTrackedInventory(tracked,unknown,entries,()=>{reads++;return content;}));assert.equal(reads,0);
   }
