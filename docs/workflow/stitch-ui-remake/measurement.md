@@ -52,7 +52,7 @@ Overlay trong suốt là phản ví dụ quan trọng: pixel diff có thể bằ
 
 V1 không có mode nhận bitmap làm expected trực tiếp. Nếu chỉ có ảnh: giữ raw, dựng normalized HTML độc lập với actual, ghi phần suy đoán và được chủ dự án duyệt; hoặc đánh giá thủ công và ghi fidelity **`NOT_ASSESSED`**. Không lấy actual UI làm reference, không kéo giãn ảnh một viewport thành reference của viewport khác.
 
-Xuất source Stitch và assets về local. Localize font, ảnh, icon và CSS trước: target chỉ nhận `http://localhost`, `http://127.0.0.1` hoặc `http://[::1]`; tài nguyên remote bị chặn khi capture. `designUrl` HTTPS chỉ là metadata truy nguồn, runner không mở nó. URL có username/password bị từ chối.
+Xuất source Stitch và assets về local. Localize font, ảnh, icon và CSS trước: target chỉ nhận `http://localhost`, `http://127.0.0.1` hoặc `http://[::1]`; request HTTP(S) ra ngoài loopback bị chặn khi capture. Đây không phải sandbox cho HTML tùy ý và không bảo đảm chặn WebSocket hay mọi kênh mạng khác; chỉ chạy export/mock đã kiểm nguồn. `designUrl` HTTPS chỉ là metadata truy nguồn, runner không mở nó. URL có username/password bị từ chối.
 
 Đặt bản export, normalized HTML và assets trong `artifacts/stitch/SCREEN/`. Khi cần một static server không thêm dependency, chạy ở terminal riêng:
 
