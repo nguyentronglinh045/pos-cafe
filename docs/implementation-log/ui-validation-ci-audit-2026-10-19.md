@@ -1,5 +1,7 @@
 # D7 — CI cho bộ đo UI và publish ui-audit, 19/10/2026
 
+Trạng thái cuối của code: [PR#9](https://github.com/nguyentronglinh045/pos-cafe/pull/9) đã merge vào main2da0d7e, tree khớp candidate đã review; cả hai CI trước merge và CI trên main sau merge đều SUCCESS đủ12phase. Bộ đo/calibration đã kiểm trên checkout Linux sạch. Operational audit COMPLETE39/39 và findings được phân loại, không nhận thành nghiệm thu UI. Hồ sơ11Markdown được phát hành riêng qua [PR#10→docs](https://github.com/nguyentronglinh045/pos-cafe/pull/10); kết quả merge/readback chính hồ sơ này xem metadata PR sau thực thi. Các checkpoint bên dưới giữ đúng lịch sử từng source, không thay kết quả cuối.
+
 ## Phạm vi được giao
 
 Chủ dự án yêu cầu làm nốt CI và publish ui-audit, kiểm kỹ rồi push/merge code vào main, hồ sơ vào docs như task trước. Pilot màn remake thật để task riêng. [Quyết định D7 và spec](../../openspec/changes/add-stitch-ui-remake-workflow/proposal.md), [requirements SUI09–10](../../openspec/changes/add-stitch-ui-remake-workflow/specs/stitch-ui-remake/spec.md), [testplan T17–23](../../openspec/changes/add-stitch-ui-remake-workflow/testplan.md).
@@ -126,9 +128,20 @@ Live readback PR#9 trước merge: headb581/base main, cả hai requiredchecksPA
 
 Sau khi đủ gate và reviewer CI đối chiếu độc lập hai live logs/summary/source/ref/protection, đã merge [PR#9→main](https://github.com/nguyentronglinh045/pos-cafe/pull/9) lúc `2026-10-19T05:07:39Z`, dùng `--merge --match-head-commit b581afeb0e68da468b7d4b642778e905984ffa8d`, không admin/force. Merge commit `2da0d7e10d65ed4e79c8628d65220582a6cbd32b`; fetch/readback xác minh stateMERGED, đúngbase/head, b581 là ancestor và tree `eca218246ad910ed0f934e27482eb13ad836b13a` bằng reviewedtree, `git diff b581 origin/main` rỗng. Không pull/switch/reset hai worktree WIP gốc.
 
-GitHub Contents trên main đọc được và blob khớp candidate: ui-audit/README `2e57d1e4921af3f18d85364640a5caec9963a161`, ui-remake/README `8651d3b9dea37dfad212bab13bfd0000f1f27433`, ui-audit/run.mjs `e3e5f406e708d920c50725faddd627189c790878`. [CI sau merge39202923597](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39202923597) đang chạy trên exactmain2da0d7e; chưa ghi PASS khi chưa xong.
+GitHub Contents trên main đọc được và blob khớp candidate: ui-audit/README `2e57d1e4921af3f18d85364640a5caec9963a161`, ui-remake/README `8651d3b9dea37dfad212bab13bfd0000f1f27433`, ui-audit/run.mjs `e3e5f406e708d920c50725faddd627189c790878`. [CI sau merge39202923597](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39202923597) đã **SUCCESS** trên exactmain2da0d7e, kết thúc05:13:04Z. Đủ12phasePASS/sourcePreservedtrue, fingerprint4b2e7d6c… khớp cả hai lượt trước merge. Unit637/637, Node133/133, UI100/100, remake11/11, audit23/16, preflight1PASS; tooling36PASS/1manualDeferred, smoke35PASS/31notapplicable giữ đúngprofile. Deferred vẫn PERMISSION_FULL/UI_AUDIT_APP_ACCEPTANCE; peakOwned982.638.592bytes. Log `ci-main-2da-success.log`, publicsummary `ci-main-2da-summary.json` dưới verification, không ghép source cũ thành PASS mới.
 
-Docs candidate chỉ mang11Markdown/spec/handoff từ branch `workflow/ui-validation-ci-docs`, base docs81e1f99; không nhập15commit/WIP ở checkout gốc. Hai reviewer sẽ kiểm candidate docs cuối trước push/merge đúngdocs. Kết quả execution/metadata hậu merge docs được ghi tại PR docs sau thực thi, không nhận commit chứa chính biên bản đã merge trước khi thực hiện. Không deploy, sửaUI, cập nhậtbaseline hoặc làm pilot.
+Docs candidate chỉ mang11Markdown/spec/handoff từ branch `workflow/ui-validation-ci-docs`, base docs81e1f99; không nhập15commit/WIP ở checkout gốc. Đã push và tạo [PR#10→docs](https://github.com/nguyentronglinh045/pos-cafe/pull/10), ban đầu exacthead041a58c. Kết quả execution/metadata hậu merge docs được ghi tại PR#10 sau thực thi, không nhận commit chứa chính biên bản đã merge trước khi thực hiện. Không deploy, sửaUI, cập nhậtbaseline hoặc làm pilot.
+
+## Review độc lập cuối
+
+Hai reviewer không tham gia tạo code/docs của sliceD7 đã APPROVE nội dung cuối: code `b581afeb0e68da468b7d4b642778e905984ffa8d`/treeeca218…; docs `041a58c35c1e9751b64a4962fea69452477a1176`/tree `6234c82e371bc589f82b2ba33b7bd6ac1ce48842`. Metadata ghi chính review/push/merge/readback thực tế được bổ sung sau, không thay hợp đồng/test/expected hoặc verdict.
+
+| Reviewer, scope | Kiểm độc lập và verdict |
+| --- | --- |
+| review_final_ui_code — CI/integrity/privacy/resource/policy/ủy quyền | APPROVE exactcodeb581 cho merge với match-head sau đối chiếu hai liveCI/JSONsummary/fingerprint, syntheticmergereftree và requiredchecks. APPROVE exactdocs041: hashes/local133/100/calibration/39audit, phân biệtappacceptance, lịch sửFAIL/cancel, actualcodemergeparents/tree/3blobs và scopecleanup. Không finding chặn còn mở. |
+| review_d7_audit_docs — audit/operator/lifecycle/spec/test/classifier/evidence | APPROVE exactcodeb581 và exactdocs041; kiểm6filedelta từ checkpoint48,32relative/crossbranchlinks/diffcheck, source/counts/hashclassifier142e426…, hai ảnhdesktop mới và4ảnhbyte-identical7f, đầy đủ42dòng classification. Không finding chặn còn mở. |
+
+Cả hai ghi mainCI39202923597 còn đang chạy tại thời điểm review; yêu cầu chờ kết quả, không suyPASS hoặc cấp quyền sửaapp/updatebaseline/deploy. Các finding readerOS/sourcePreserved và provenance trước đó đã xử lý, review lại đúng candidate; không bỏ reviewer bất đồng hoặc thay approval bằng majority. Chủ dự án chưa xác nhận đã xem/hiểu code; gói hướng dẫn đọc đã chuẩn bị, không gán owneracceptance.
 
 ## Cách đọc và tái hiện
 

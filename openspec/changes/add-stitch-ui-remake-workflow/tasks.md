@@ -29,8 +29,9 @@ Không tự đổi gate hiện hữu, update baseline, deploy, DB write hoặc c
 - [x] Publish audit portable13state×3vp; giữ detector/baseline lịch sử, siếtselftest23/14/16 và lifecycle/CLI/outputguards.
 - [x] Freeze codeb581; đồng bộ19trusted policy hashes canonical; fresh133Node/100UItests và11/23-14-16calibration trên đúng candidate; xử lý CI7f closeFAIL bằng drain request trong deadline cũ.
 - [x] Operational audit39target trên main/mock sourceb581 COMPLETE/setup0/sourcepreserved; đọc report/19ảnh/phân loại42nhóm/6newerror; không sửa app/updatebaseline.
-- [ ] Hai reviewer độc lập APPROVE candidatecode/docs D7, xử lý findings.
-- [ ] PushhaiPR mới, xác minh remote/source/base/12phaseCI; merge code→main/docs→docs với exactheadguard.
-- [ ] Readback state/mergeSHA/tree/canonicalfiles, CI trên main; lưu kết quả/handoff và tài nguyên.
+- [x] Hai reviewer độc lập APPROVE codeb581/docs041 D7 theo hai scope, xử lý findings; metadata review ghi sau không đổi nội dung.
+- [x] Push [PR#9→main](https://github.com/nguyentronglinh045/pos-cafe/pull/9) và [PR#10→docs](https://github.com/nguyentronglinh045/pos-cafe/pull/10), xác minh source/base/12phaseCI; code đã merge exactheadguard2da0d7e, readback tree/ancestry/canonicalfiles khớp.
+- [x] CI39202923597 trên main2da0d7e sau merge SUCCESS đủ12phase/sourcepreserved; lưu kết quả/handoff và tài nguyên. Fixturecleanup đã được cho phép nhưng automaticreview chặn trước thực thi, không xóa.
+- Kết quả merge/readback PR#10→docs được ghi tại [metadata hậu thực thi PR#10](https://github.com/nguyentronglinh045/pos-cafe/pull/10), gồm state/mergeSHA/tree/ancestry/files. Không tự nhận chính commit chứa checklist này đã merge trước thực thi.
 
 Pilot Stitch→màn app thật, nghiệm thu UI thực và production vẫn ngoài D7. Audit command được chạy để kiểm vận hành công cụ; findings của app không tự mở quyền sửa hoặc chấp nhận chúng.
