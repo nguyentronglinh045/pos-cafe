@@ -14,6 +14,10 @@
 - Companion files on the same branch: `CLAUDE.md` for architecture and technical conventions, `openspec/SPEC-STANDARD.md` for the mandatory spec standard.
 - Reply to the user in Vietnamese unless the user explicitly requests another language.
 
+## Remake UI from Google Stitch
+
+For reworking existing screens from Stitch, read [the shared workflow](docs/workflow/stitch-ui-remake/README.md) and its palette/measurement contracts. Use it with Codex or Claude. The approved standard is Teal A v1 and Be Vietnam Pro, with landscape support from568×320CSSpx. This workflow does not authorize a screen remake, new business behavior, reference acceptance, merge or deployment by itself.
+
 ## Confirmation rule
 
 - Before implementing any feature or code change, stop and confirm with the user when any requirement, behavior, scope, workflow, or expected result is unclear or easy to misunderstand.
