@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, symlink } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -34,6 +34,9 @@ test('screen-mode CLI binds approved reference/contract, refuses changed gates a
     const report=JSON.parse(await readFile(resolve(output,'report.json'),'utf8'));
     assert.equal(report.kind,'screen-remake');assert.equal(report.productAcceptance,'NOT_ASSESSED');assert.equal(report.cases[0].pixels.differentPixels,0);assert.equal(report.referenceSourceSha256,plan.referenceSourceSha256);
     await assert.rejects(run(['--config',path,'--out',output]),error=>error.code===2&&/refusing to overwrite/.test(error.stderr));
+    const linkTarget=resolve(base,'link-target');await mkdir(linkTarget);await symlink(linkTarget,resolve(base,'output-alias'),'junction');
+    await assert.rejects(run(['--config',path,'--out',resolve(base,'output-alias','must-not-write')]),error=>error.code===2&&/symlink\/junction/.test(error.stderr));
+    assert.equal(existsSync(resolve(linkTarget,'must-not-write')),false);
     c.cases[0].thresholds.maxDiffRatio=.1;await writeFile(path,JSON.stringify(c));
     await assert.rejects(run(['--config',path,'--out',resolve(base,'must-not-exist')]),error=>error.code===2&&/NOT_APPROVED/.test(error.stderr));
     assert.equal(existsSync(resolve(base,'must-not-exist')),false);

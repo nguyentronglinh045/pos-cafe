@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir, stat, realpath } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, stat, realpath, lstat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { createHash } from 'node:crypto';
@@ -188,6 +188,11 @@ export async function main(argv = process.argv.slice(2)) {
   const artifactRoot = resolve(root, 'artifacts/ui-remake');
   const output = outputArg ? within(artifactRoot, resolve(root, outputArg)) : resolve(artifactRoot, new Date().toISOString().replace(/[:.]/g,'-'));
   if (existsSync(output)) throw new Error('Output exists; refusing to overwrite retained evidence');
+  let parent=root;
+  for(const part of relative(root,output).split(sep)) {
+    parent=resolve(parent,part);
+    if(existsSync(parent) && (await lstat(parent)).isSymbolicLink()) throw new Error('Output symlink/junction is forbidden; evidence must remain in its declared artifact area');
+  }
   await mkdir(output, { recursive:true });
   within(root, await realpath(output));
   let written = 0;
