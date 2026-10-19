@@ -21,3 +21,16 @@
 - Kết quả thực thi merge PR#8 và readback cuối của cả hai nhánh được ghi tại [metadata/biên bản hậu merge PR#8](https://github.com/nguyentronglinh045/pos-cafe/pull/8), theo recipe exacthead/base/tree/ancestry trong [biên bản](../../../docs/implementation-log/stitch-ui-workflow-2026-10-19.md). Không tự nhận bước chứa chính commit tài liệu này đã merge trước thực thi.
 
 Không tự đổi gate hiện hữu, update baseline, deploy, DB write hoặc chấp nhận màn remake nào. Quyền merge chỉ cho đúng hai PR workflow này sau đủ kiểm chứng; không gom WIP khác.
+
+## Slice D7 — CI và publish ui-audit, pilot để riêng
+
+- [x] Khảo sát readiness, chọn ranh giới source main và ghi D7/SUI09–10/T17–23/traceability.
+- [x] Thêm12phaseCI/strictUIcalibrationreader, fullChromiumchannel và channel-bound approval.
+- [x] Publish audit portable13state×3vp; giữ detector/baseline lịch sử, siếtselftest23/14/16 và lifecycle/CLI/outputguards.
+- [x] Freeze code7f; đồng bộ19trusted policy hashes canonical; fresh133Node/100UItests và11/23-14-16calibration trên đúng candidate.
+- [x] Operational audit39target trên main/mock source7f COMPLETE/setup0; đọc report và19ảnh/phân loại42nhóm; exit1 do6newerror, không remake/sửa app/updatebaseline.
+- [ ] Hai reviewer độc lập APPROVE candidatecode/docs D7, xử lý findings.
+- [ ] PushhaiPR mới, xác minh remote/source/base/12phaseCI; merge code→main/docs→docs với exactheadguard.
+- [ ] Readback state/mergeSHA/tree/canonicalfiles, CI trên main; lưu kết quả/handoff và tài nguyên.
+
+Pilot Stitch→màn app thật, nghiệm thu UI thực và production vẫn ngoài D7. Audit command được chạy để kiểm vận hành công cụ; findings của app không tự mở quyền sửa hoặc chấp nhận chúng.

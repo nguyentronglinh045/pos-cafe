@@ -35,3 +35,17 @@ Report SHALL ghi config/reference/contract/source hashes, runtime thực, case/s
 ## SUI-08 — Đóng gói cho nhóm
 
 Code và docs SHALL tách nhánh đúng mô hình: `ui-remake/` trên nhánh code giữ công cụ, workflow vận hành, templates, palette/font và hướng dẫn đo cùng phiên bản; `docs` giữ spec, quyết định, biên bản và con trỏ, không giữ bản vận hành trùng. Có command chạy, template có thể điền, font license và review độc lập. Chỉ push payload đã review; không gom dirty WIP. Merge SHALL chỉ thực hiện khi được owner giao rõ, đủ kiểm chứng/review và đúng base; D6 cho phép PR #7→`main`, PR #8→`docs`, không deploy. Docs SHALL phân biệt tool selftest đã chạy với app UI/browser/device chưa chạy; raw Claude logs/private local paths không được đưa vào payload công khai.
+
+## SUI-09 — CI kiểm công cụ UI (D7)
+
+POS light CI SHALL chạy tất cả Node tests tracked của ui-remake và ui-audit sau khi Chromium đã được cài, với inventory tối thiểu bắt buộc; missing file, fail/skip/cancel/todo hoặc thiếu report SHALL không PASS. Hai calibration phase riêng SHALL kiểm ui-remake đủ11IDs duy nhất (5PASS/6FAIL có chủ đích,0ERROR), ui-audit đúng23findings/14required ruleclasses/16effective-target controls. Chúng SHALL kiểm structured report, source/config/reference/contract hashes, sourceHEAD thực và thời gian của invocation mới; exit0 hay chuỗi OK riêng lẻ không đủ.
+
+CI SHALL dùng full Chromium channel đã có, không cài thêm headless-shell chỉ để chạy tool. Channel SHALL nằm trong evidence và contract reference approval; thay chính sách channel SHALL invalidate approval cũ. Summary công khai chỉ có finite counts/hashes/codes được cho phép, không raw paths/DOM/images. Các guard resource/source/privacy và gate build/unit/smoke hiện hữu SHALL giữ nguyên. Trusted checker hashes SHALL theo canonical Git blobs; productionEnabled SHALL vẫn false.
+
+## SUI-10 — Publish rendered-UI audit trên main (D7)
+
+Main SHALL có detector/runner/config/fixtures, scripts và operator guide ui-audit dùng được với source main hiện tại; không nhập WIP app/phân quyền chỉ để phục vụ fixture. Default matrix giữ13state legacy đã có đối ứng trên main ×3viewport lịch sử; ba fixturestate phụ thuộc code chưa publish SHALL được ghi ngoài ma trận main, không nhận là đã kiểm. Pilot remake thật và nghiệm thu app568×320 SHALL vẫn ngoài D7.
+
+Vite dev watcher và dependency entry discovery SHALL không quét generated artifacts hoặc fixture backlink như source app. App SPA vẫn giữ `index.html` và toàn bộ source imports; kiểm Vite thật có fixture backlink SHALL hoàn tất trong thời hạn, HTTP phản hồi và watcher không đi vào artifact aliases.
+
+Runner SHALL từ chối CLI/selection/matrix rỗng hoặc không hợp lệ trước capture; không tự dùng lại cổng có server không xác minh; luôn đóng browser/context và server do task tạo khi lỗi/timeout. Selftest SHALL fail nếu count22/24, mất requiredclass hoặc effective-target control hỏng. Baseline SHALL giữ bytes của checkout nguồn hiện có và 36 keys lịch sử, ghi riêng provenance Git LF lịch sử và CRLF hiện tại; không regenerate/update hoặc nhận nó thành nghiệm thu UI mới. Warnings SHALL được báo để phân loại; failOn mặc định vẫn chỉ error mới, không âm thầm nâng/hạ gate. Full audit mock trên source main là kiểm vận hành công cụ; findings thật SHALL báo riêng và không tự sửa src hay nhận fixturePASS thành appPASS.

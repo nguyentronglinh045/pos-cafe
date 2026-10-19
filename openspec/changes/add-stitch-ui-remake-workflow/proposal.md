@@ -24,6 +24,7 @@ Nguồn: câu trả lời trực tiếp của chủ dự án ngày19/10/2026 tro
 | D4 | Palette A v1 đã chỉnh tương phản | Không dùng nguyên A của ảnh ban đầu. Quyết định này không phê duyệt mọi breakpoint/primitive/MUI migration trong proposal Claude cũ. |
 | D5 — 19/10/2026 | Chủ dự án yêu cầu chuyển workflow vận hành, templates, palette/font và hướng dẫn đo vào nhánh code, cạnh `ui-remake/`; spec và biên bản vẫn trên `docs` | Thay cách tách hoàn toàn tài liệu khỏi code. Hướng dẫn gắn phiên bản công cụ, có một bản gốc; `docs` chỉ giữ liên kết. Quy ước hai nhánh được cập nhật tương ứng. |
 | D6 — 19/10/2026 | Chủ dự án giao push lại hai PR, kiểm kỹ sau push rồi merge code→`main`, docs→`docs` | Thay giới hạn chỉ-push ban đầu cho đúng hai PR này. Giữ final candidate review, CI, kiểm remote và ranh giới payload; không cho phép deploy hoặc gom dirty WIP khác. |
+| D7 — 19/10/2026 | Sau rà readiness, chủ dự án giao làm nốt CI và publish ui-audit, kiểm kỹ rồi push/merge đúng code→main, docs→docs; pilot màn thật để task riêng | Thêm CI chạy tests/calibration và xuất bản audit tương thích main. Không nhập feature phân quyền WIP, đổi baseline, sửa app UI, deploy hoặc tiến hành pilot Stitch→màn thật. |
 
 Routine implementation choices của AI trong phạm vi công cụ: zero npm dependencies mới; tái dùng Playwright; local HTML reference, browser RGBA comparison, explicit thresholds; source/contract hash trước chạy; output mới, không tự overwrite baseline. Chọn hai worktree sạch từ origin/main và origin/docs, không đưa dirty WIP hoặc15commit docs khác vào gói push.
 
@@ -35,3 +36,11 @@ Routine implementation choices của AI trong phạm vi công cụ: zero npm dep
 - Ma trận browser và ngưỡng mỗi màn chốt trong task remake thực tế; không đặt “95% giống” chung. Chromium là môi trường kiểm tool hiện tại; không giả PASS WebKit/Firefox hoặc real device.
 
 Liên kết: [requirements](specs/stitch-ui-remake/spec.md), [design](design.md), [tests](testplan.md), [traceability](traceability.md), [tasks](tasks.md).
+
+## Slice D7 — đầu vào và ranh giới thực thi
+
+Readiness đã xác minh mainfc7d454/docs81e1f99: tests ui-remake hiện chỉ có lệnh local, CI9phases không chọn chúng; ui-audit chưa publish; chưa có màn thật được remake. D7 giải quyết hai điểm đầu. Workflow/spec vẫn giữ ở đúng nhánh theo D5.
+
+Routine choices trong quyền D7: thêm3phase sau browser (ui-tools tests, remake calibration, audit calibration), không đổi gate warning/error của audit; port audit phải do runner sở hữu. Giữ baseline lịch sử nguyên trạng có fingerprint và nguồn Git, không nhận baseline permission mới. Chọn13state tương ứng source main và3viewport legacy; ba state phụ thuộc unpublished permissioncomponents được ghi chưa áp dụng. Không còn câu hỏi nghiệp vụ chặn phần này; threshold/ngoại lệ của màn remake thật vẫn để pilot/task riêng.
+
+Hash package.json trong release policy đã lệch từ lần thêm aliases trước; slice này đồng bộ đúng canonical bytes của các file được review thay vì refresh hàng loạt từ checkout CRLF. Không đổi owner, environment protection, allowedbranch hoặc productionEnabled=false.
