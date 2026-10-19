@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "id": "pos-cafe-teal-a-v1",
+  "approvedAt": "2026-10-19",
+  "fontFamily": "Be Vietnam Pro",
+  "fontWeights": [400, 500, 600, 700],
+  "colors": {
+    "--bg": "#F4F6F9",
+    "--surface": "#FFFFFF",
+    "--surface-2": "#F8FAFC",
+    "--surface-sunk": "#EAEEF4",
+    "--ink": "#16202F",
+    "--ink-2": "#414B5C",
+    "--ink-3": "#667183",
+    "--muted": "#5B6678",
+    "--line": "#D5DCE6",
+    "--line-control": "#7F8A9D",
+    "--primary": "#0F766E",
+    "--primary-hover": "#115E59",
+    "--primary-active": "#134E4A",
+    "--primary-ink": "#FFFFFF",
+    "--primary-soft": "#F0FDFA",
+    "--primary-line": "#99F6E4",
+    "--success": "#15803D",
+    "--success-soft": "#ECFDF3",
+    "--warning": "#9A5B08",
+    "--warning-soft": "#FDF4E7",
+    "--danger": "#B4251E",
+    "--danger-soft": "#FEF1F0"
+  }
+}

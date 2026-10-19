@@ -1,0 +1,41 @@
+{
+  "sourceCommit": "47d54ca1ebb14fd864695f1d39dc734f39017c33",
+  "license": "SIL Open Font License 1.1",
+  "files": [
+    {
+      "file": "BeVietnamPro-Regular.ttf",
+      "bytes": 132948,
+      "sha256": "cd1ef6e9d7db28ad5cdb88a65ccbe693870e60d340b791f349d248342b4fe4c3",
+      "gitBlob": "dfa34c09fe2bae0626e00aa3265af2119345c27b",
+      "url": "https://raw.githubusercontent.com/google/fonts/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/bevietnampro/BeVietnamPro-Regular.ttf"
+    },
+    {
+      "file": "BeVietnamPro-Medium.ttf",
+      "bytes": 135980,
+      "sha256": "b60832bfa0fcd015158112c64d7e3fdad3b0c6287d1823f85a3103636e845268",
+      "gitBlob": "d6deb87afdd7ddf003f3d0ab1070ab9df1df0724",
+      "url": "https://raw.githubusercontent.com/google/fonts/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/bevietnampro/BeVietnamPro-Medium.ttf"
+    },
+    {
+      "file": "BeVietnamPro-SemiBold.ttf",
+      "bytes": 136736,
+      "sha256": "bd8e27eb02720b9d91e59e4f10a90878643219f25ce6a8d9a4f06a8a88d3bb71",
+      "gitBlob": "b25bad31fe8984d5db6cbce61a23323bbb68bc97",
+      "url": "https://raw.githubusercontent.com/google/fonts/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/bevietnampro/BeVietnamPro-SemiBold.ttf"
+    },
+    {
+      "file": "BeVietnamPro-Bold.ttf",
+      "bytes": 140300,
+      "sha256": "7f738fe5c43c8872807b20e2d30d42163618de8a4daf7f48a939adac32c16847",
+      "gitBlob": "52aadc6da089ed8ae647b5e0c8cac4f8b3e24750",
+      "url": "https://raw.githubusercontent.com/google/fonts/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/bevietnampro/BeVietnamPro-Bold.ttf"
+    },
+    {
+      "file": "OFL.txt",
+      "bytes": 4397,
+      "sha256": "6b7f8f73609a25ea78c891e34cf37b06f8a676b7ea986e941e43b009110f2a85",
+      "gitBlob": "9e2c1177b1e7b9b2f63e122d37f8c21bc5dddc65",
+      "url": "https://raw.githubusercontent.com/google/fonts/47d54ca1ebb14fd864695f1d39dc734f39017c33/ofl/bevietnampro/OFL.txt"
+    }
+  ]
+}
