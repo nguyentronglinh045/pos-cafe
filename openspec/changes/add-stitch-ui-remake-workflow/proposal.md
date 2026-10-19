@@ -8,7 +8,11 @@ Ngày: 19/10/2026. Phạm vi đã được người dùng giao: workflow chung C
 
 Đầu ra: [workflow](../../../docs/workflow/stitch-ui-remake/README.md), mẫu hồ sơ, chuẩn palette/font, hợp đồng đo; executable `ui-remake/` trên nhánh code. Không remake A04 hay màn khác trong task này, không sửa API/DB/permissions, không deploy hoặc merge vào main.
 
-## Quyết định đã chấp nhận
+## Câu hỏi phải chốt trước khi làm
+
+Không còn câu hỏi chặn trong phạm vi workflow và công cụ này: Q1–Q4 đã được chủ dự án trả lời, ghi thành D1–D4 bên dưới trước khi triển khai. Reference, deviations, viewport bổ sung và threshold của từng màn được chốt trong task remake tương ứng; chưa giao màn nào ở đây.
+
+## Quyết định đã chốt
 
 Nguồn: câu trả lời trực tiếp của chủ dự án ngày19/10/2026 trong chat tạo workflow; user yêu cầu “phải pushs workflow để người khác có thể dùng”.
 
