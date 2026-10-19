@@ -145,7 +145,7 @@ function markdown(report) {
 
 export async function main(argv = process.argv.slice(2)) {
   if (argv.length === 1 && argv[0] === '--help') {
-    console.log('UI remake measurement: --selftest | --config <repo-relative JSON> [--plan] [--out artifacts/ui-remake/NEW-RUN]\nWorkflow: https://github.com/nguyentronglinh045/pos-cafe/blob/workflow/stitch-ui-remake-docs/docs/workflow/stitch-ui-remake/README.md\nMeasurement PASS is not product acceptance. No reference update or installation is performed.'); return 0;
+    console.log('UI remake measurement: --selftest | --config <repo-relative JSON> [--plan] [--out artifacts/ui-remake/NEW-RUN]\nWorkflow: ui-remake/README.md (in this checkout)\nPublished: https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/README.md\nMeasurement PASS is not product acceptance. No reference update or installation is performed.'); return 0;
   }
   let configPath, outputArg, selftest = false, plan = false;
   for (let i=0;i<argv.length;i++) {
