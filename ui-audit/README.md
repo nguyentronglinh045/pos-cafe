@@ -26,11 +26,15 @@ config; không dùng một server không rõ source làm bằng chứng. Runner 
 và cây process server do nó tạo, kể cả khi setup/đo thất bại. Nó không sở hữu hay
 tắt server khác đang có trên máy.
 
+Config Vite của SPA chỉ dùng `index.html` làm dependency entry và bỏ generated
+artifacts/out/report khỏi watcher. Các fixture bảo vệ đường dẫn có junction về
+repo; giữ chúng để kiểm thử, không để Vite quét như source ứng dụng.
+
 ```sh
 node ui-audit/run.mjs --list
 node ui-audit/run.mjs --state floor --viewport tablet
 node ui-audit/run.mjs --selftest --selftest-report artifacts/ui-audit/selftest-<new-name>.json
-node --test ui-audit/runtime.test.mjs ui-audit/run.integration.test.mjs
+node --test --test-concurrency=1 ui-audit/runtime.test.mjs ui-audit/run.integration.test.mjs ui-audit/watch.test.mjs
 ```
 
 Report selftest là tùy chọn, phải là đường dẫn tương đối dưới `artifacts/ui-audit/`
@@ -65,9 +69,10 @@ selector là lỗi thật; ảnh của state không sinh finding trong lượt m
 ảnh cũ từ lượt trước. Ghi rõ state, viewport, selector, phép đo và lý do phân
 loại. Không sửa `src/` chỉ vì audit báo finding ngoài scope đã duyệt.
 
-Mã thoát: 0 khi không có **error mới ngoài baseline** và setup hoàn tất; 1 khi có
-error mới hoặc detector/runtime thất bại; lỗi chọn matrix/config cũng trả mã khác
-0. `failOn` hiện là `["error"]`: warning/info mới vẫn có trong báo cáo và vẫn phải
+Mã thoát app audit: 0 khi không có **error mới ngoài baseline** và setup hoàn tất;
+1 khi có error mới; 2 khi coverage/setup/runtime/cleanup/nguồn thất bại. Selftest
+FAIL trả1; chọn matrix/config sai trả mã khác0. `failOn` hiện là `["error"]`:
+warning/info mới vẫn có trong báo cáo và vẫn phải
 phân loại, nhưng không tự làm CI đỏ. Vì vậy exit0 không có nghĩa UI không còn lỗi.
 Audit chỉ kiểm các phần tử/state đang đo; không chứng nhận đầy đủ WCAG, bàn phím,
 thiết bị vật lý hay độ giống design.
