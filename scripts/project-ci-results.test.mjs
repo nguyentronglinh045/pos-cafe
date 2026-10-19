@@ -17,6 +17,26 @@ const binding = sourceBinding(env, { after: sha, repository: { full_name: env.GI
 
 const traceLines = events => [{type:'context-options',version:8,playwrightVersion:'1.60.0',browserName:'chromium'},
   ...events].map(event => JSON.stringify(event)).join('\n') + '\n';
+
+test('watch worker diagnostics publish only bounded numeric observations without worker errors, paths or arbitrary JSON',()=>{
+  const facts={version:1,stage:6,failureStage:5,httpStatus:200,generatedWatchCount:3,appSourceWatched:1,watchedPathCount:204,closed:1,exitOrdinal:2,exitCode:1,timeoutOrdinal:0,
+    error:'FAKE_PRIVATE_TOKEN',fixture:'/private/FAKE_PRIVATE_TOKEN',unknown:99};
+  const diagnostic=privateDiagnostics('# PROJECT_UI_WATCH_CONTROL '+JSON.stringify(facts),null);
+  assert.deepEqual(Object.fromEntries(Object.entries(diagnostic.metrics).filter(([key])=>key.startsWith('uiWatch'))),{
+    uiWatchStageOrdinal:6,uiWatchFailureStageOrdinal:5,uiWatchHTTPStatus:200,uiWatchGeneratedWatchCount:3,uiWatchAppSourceWatched:1,uiWatchWatchedPathCount:204,
+    uiWatchClosed:1,uiWatchExitOrdinal:2,uiWatchExitCode:1,uiWatchTimeoutOrdinal:0});
+  const safe=publicSummary(binding,[{id:'install',status:'FAIL',elapsedMs:1,exitCode:1,invocationSHA:digest,reportSHA:digest,counts:null,diagnostic}],{source:digest,lock:digest});
+  assert.equal(safe.phases[0].diagnostic.metrics.uiWatchFailureStageOrdinal,5);assert.equal(safe.overallStatus,'FAIL');
+  assert.equal(JSON.stringify(safe).includes('FAKE_PRIVATE_TOKEN'),false);
+  for(const raw of ['PROJECT_UI_WATCH_CONTROL {', 'PROJECT_UI_WATCH_CONTROL '+JSON.stringify({...facts,version:2}),
+    'not a marker PROJECT_UI_WATCH_CONTROL '+JSON.stringify(facts),'PROJECT_UI_WATCH_CONTROL '+JSON.stringify(facts)+' trailing',
+    'PROJECT_UI_WATCH_CONTROL '+JSON.stringify({...facts,raw:'x'.repeat(2048)})])
+    assert.equal(Object.keys(privateDiagnostics(raw,null).metrics).some(key=>key.startsWith('uiWatch')),false);
+  for(const [field,value] of Object.entries({stage:8,failureStage:-1,httpStatus:600,generatedWatchCount:1000001,appSourceWatched:2,watchedPathCount:'204',closed:true,exitOrdinal:6,exitCode:256,timeoutOrdinal:4})) {
+    const result=privateDiagnostics('PROJECT_UI_WATCH_CONTROL '+JSON.stringify({version:1,[field]:value}),null);
+    assert.equal(Object.keys(result.metrics).some(key=>key.startsWith('uiWatch')),false);
+  }
+});
 function storedTraceZip(entries) {
   const files = [], central = []; let offset = 0;
   for (const [name, text] of Object.entries(entries)) {

@@ -334,6 +334,17 @@ export function privateDiagnostics(output, report, expectedFiles = [], root = ''
   const protocolLine = /^[^\r\n{]*\bpw:protocol\b[^\r\n{]{0,64}\b(?:SEND|RECV)\b/;
   const rawLines = rawPrivateText.split(/\r\n|\r|\n/);
   const privateText = rawLines.filter(line => !protocolLine.test(line)).join('\n');
+  const watchFields = {stage:['uiWatchStageOrdinal',7],failureStage:['uiWatchFailureStageOrdinal',7],httpStatus:['uiWatchHTTPStatus',599],
+    generatedWatchCount:['uiWatchGeneratedWatchCount',1000000],appSourceWatched:['uiWatchAppSourceWatched',1],watchedPathCount:['uiWatchWatchedPathCount',1000000],
+    closed:['uiWatchClosed',1],exitOrdinal:['uiWatchExitOrdinal',5],exitCode:['uiWatchExitCode',255],timeoutOrdinal:['uiWatchTimeoutOrdinal',3]};
+  for (const line of rawLines) {
+    if (line.length > 2048) continue;
+    const match = /^\s*(?:#\s*)?PROJECT_UI_WATCH_CONTROL (\{[^\r\n]+\})\s*$/.exec(line);
+    if (!match) continue;
+    let control; try { control = JSON.parse(match[1]); } catch { continue; }
+    if (control?.version !== 1 || Array.isArray(control)) continue;
+    for (const [field,[key,max]] of Object.entries(watchFields)) if (integer(control[field]) && control[field] <= max) metrics[key] = control[field];
+  }
   Object.assign(metrics, browserRuntimeControlFacts(rawPrivateText));
   Object.assign(metrics, browserNativeFatalFacts(privateText));
   const failedStepIndex = rawLines.findIndex(line => line.trimStart().startsWith('PROJECT_SMOKE_FAILED_STEP '));
@@ -637,6 +648,8 @@ export function publicSummary(binding, rows, fingerprints) {
       metrics: Object.fromEntries(Object.entries(diagnostic.metrics).filter(([key, value]) =>
         ['numTotalTests', 'numPassedTests', 'numFailedTests', 'numPendingTests', 'numRuntimeErrorTestSuites', 'architectureAssertion',
           'minimumObservedFreeBytes', 'initialFreeBytes', 'freeSpaceDecreaseBytes', 'ownedBytesAtCheckpoint', 'coreFileCount', 'coreAllocatedBytes', 'largestOwnedFileBytes', 'kernelCorePipe',
+          'uiWatchStageOrdinal', 'uiWatchFailureStageOrdinal', 'uiWatchHTTPStatus', 'uiWatchGeneratedWatchCount', 'uiWatchAppSourceWatched', 'uiWatchWatchedPathCount',
+          'uiWatchClosed', 'uiWatchExitOrdinal', 'uiWatchExitCode', 'uiWatchTimeoutOrdinal',
           'smokeTestLine', 'smokeFailureProjectOrdinal', 'smokeHelperLine', 'smokeFailureLine', 'smokeFailureColumn',
           'smokeStepLocatorOrdinal', 'smokeStepCategoryOrdinal', 'smokeStepApiOrdinal', 'smokeStepSourceOrdinal', 'smokeStepDurationMs',
           'traceReadable', 'tracePageErrors', 'traceConsoleErrors', 'traceConsoleWarnings', 'traceHttp4xx', 'traceHttp5xx', 'traceModuleLine', 'traceModuleColumn',
