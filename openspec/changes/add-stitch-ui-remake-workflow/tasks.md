@@ -27,8 +27,8 @@ Không tự đổi gate hiện hữu, update baseline, deploy, DB write hoặc c
 - [x] Khảo sát readiness, chọn ranh giới source main và ghi D7/SUI09–10/T17–23/traceability.
 - [x] Thêm12phaseCI/strictUIcalibrationreader, fullChromiumchannel và channel-bound approval.
 - [x] Publish audit portable13state×3vp; giữ detector/baseline lịch sử, siếtselftest23/14/16 và lifecycle/CLI/outputguards.
-- [x] Freeze code7f; đồng bộ19trusted policy hashes canonical; fresh133Node/100UItests và11/23-14-16calibration trên đúng candidate.
-- [x] Operational audit39target trên main/mock source7f COMPLETE/setup0; đọc report và19ảnh/phân loại42nhóm; exit1 do6newerror, không remake/sửa app/updatebaseline.
+- [x] Freeze codeb581; đồng bộ19trusted policy hashes canonical; fresh133Node/100UItests và11/23-14-16calibration trên đúng candidate; xử lý CI7f closeFAIL bằng drain request trong deadline cũ.
+- [x] Operational audit39target trên main/mock sourceb581 COMPLETE/setup0/sourcepreserved; đọc report/19ảnh/phân loại42nhóm/6newerror; không sửa app/updatebaseline.
 - [ ] Hai reviewer độc lập APPROVE candidatecode/docs D7, xử lý findings.
 - [ ] PushhaiPR mới, xác minh remote/source/base/12phaseCI; merge code→main/docs→docs với exactheadguard.
 - [ ] Readback state/mergeSHA/tree/canonicalfiles, CI trên main; lưu kết quả/handoff và tài nguyên.

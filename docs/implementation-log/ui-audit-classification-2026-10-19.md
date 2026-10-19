@@ -1,8 +1,8 @@
 # Phân loại rendered-UI audit D7 — 19/10/2026
 
-Source `7f51a4f2ce2c034c70969c938c5272aa7a630e6a`, 13 state ×3 viewport (tablet1024×768, desktop1440×900, mobile844×390), COMPLETE39/39, setup0, source/baseline preserved. Lượt `2026-10-19T04:43:51.337Z` → `2026-10-19T04:47:22.025Z`, exit1 do6nhóm error mới ngoài baseline. Đây là kiểm vận hành audit trên app mock hiện hữu, không phải pilot Stitch, nghiệm thu app568×320 hoặc quyền cập nhật baseline.
+Source `b581afeb0e68da468b7d4b642778e905984ffa8d`, 13 state ×3 viewport (tablet1024×768, desktop1440×900, mobile844×390), COMPLETE39/39, setup0, source/baseline preserved. Lượt `2026-10-19T05:00:00.854Z` → `2026-10-19T05:03:31.345Z`, exit1 do6nhóm error mới ngoài baseline. Đây là kiểm vận hành audit trên app mock hiện hữu, không phải pilot Stitch, nghiệm thu app568×320 hoặc quyền cập nhật baseline.
 
-42nhóm findings:27warn/10error/5info;20nhóm ngoài baseline (14warn/6error). Đã mở19ảnh annotated hiện tại: root6tablet+7mobile, reviewer6desktop; timestamp ảnh đều thuộc lượt này. Phân loại:32nhóm đo thật theo rule cấu hình,3cảnh báo biên Ghi chú,7dương tính giả sr-only. Nhóm được gộp theo selector; cột số lượng là số finding cùng nhóm, không là số nhóm.
+42nhóm findings:27warn/10error/5info;20nhóm ngoài baseline (14warn/6error). Đã kiểm19ảnh annotated hiện tại, timestamp đều thuộc lượt này:10ảnh byte-identical lượt7f đã đọc,9ảnh khác được mở lại (root7tablet/mobile, reviewer2desktop). JSON findings deep-equal toàn bộ lượt7f; không dùng kết quả cũ thay source/coverage mới. Phân loại:32nhóm đo thật theo rule cấu hình,3cảnh báo biên Ghi chú,7dương tính giả sr-only. Nhóm được gộp theo selector; cột số lượng là số finding cùng nhóm, không là số nhóm.
 
 Các threshold minTarget24/minFont10/contrast4.5 thuộc cấu hình detector, không tự chứng nhận WCAG hoặc lỗi nghiệp vụ. Nút Ghi chú56×23 là cảnh báo sát ngưỡng; chưa chứng minh chức năng hỏng. Nhãn nav ẩn có chủ đích theo `LeftNav.tsx:44/54` và `RailButton.tsx:46`; bỏ chúng khỏi danh sách lỗi văn bản nhìn thấy, giữ finding/raw baseline nguyên trạng.
 
@@ -55,4 +55,4 @@ Menu mobile có control ngoài clip ban đầu; Playwright trial có thể cuộ
 
 Không chạy ui-audit:update; giữ36key lịch sử, không đổi severity/threshold và không sửa src. Các checkbox payment mỗiviewport có3control thiếu tên và16×16; select-all tablet/desktop đã tính vùng label112×20/118×21, không nhầm với16pxinput. Mobile label bị clip nên detector chỉ đo được16×16. Borderline contrast4.42/4.46 được giữ như cảnh báo đo, không phóng đại thành chứng nhận accessibility.
 
-Evidence local được giữ tại `artifacts/ui-audit/d7-verification/operational-7f` (report.md/json,status,19PNG), recipe và runtime xem [biên bản D7](ui-validation-ci-audit-2026-10-19.md). File này công khai kết quả phân loại, không publish raw DOM/images/path máy cá nhân.
+Evidence local được giữ tại `artifacts/ui-audit/d7-verification/operational-b581` (report.md/json,status,19PNG), recipe và runtime xem [biên bản D7](ui-validation-ci-audit-2026-10-19.md). File này công khai kết quả phân loại, không publish raw DOM/images/path máy cá nhân.
