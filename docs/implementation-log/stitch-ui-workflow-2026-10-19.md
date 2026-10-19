@@ -2,7 +2,7 @@
 
 ## Phạm vi
 
-Nguồn ủy quyền: chủ dự án chọn workflow kèm bộ đo chạy được và yêu cầu push cho nhóm; chốt landscape568×320CSSpx,BeVietnamPro,A v1 hiệu chỉnh tương phản. [Proposal và quyết định](../../openspec/changes/add-stitch-ui-remake-workflow/proposal.md). Task không remake màn, đổi API/DB/phân quyền, merge hay deploy.
+Nguồn ủy quyền: chủ dự án chọn workflow kèm bộ đo chạy được và yêu cầu push cho nhóm; chốt landscape568×320CSSpx,BeVietnamPro,A v1 hiệu chỉnh tương phản. [Proposal và quyết định](../../openspec/changes/add-stitch-ui-remake-workflow/proposal.md). Ban đầu chỉ cho push; D5–D6 bổ sung chuyển tài liệu vận hành vào code và merge riêng PR#7→main, PR#8→docs sau kiểm chứng. Task không remake màn, đổi API/DB/phân quyền hoặc deploy.
 
 Code tách worktree/branch `workflow/stitch-ui-remake-code` từ origin/main536d8f6. Docs `workflow/stitch-ui-remake-docs` từ origin/docs132e9d6. Không stage/commit/push dirty WIP ở checkout gốc hoặc15commit docs khác. Không cài npm/browser mới; tái dùng Playwright đang có và tải0.53MiB font/OFL từ google/fonts commit47d54ca1ebb14fd864695f1d39dc734f39017c33; giữ provenance và license.
 
@@ -113,3 +113,13 @@ Merge recipe theo D6: kiểm remote HEAD khớp reviewed candidate, PR base7=`ma
 | `review_final_ui_workflow` | Code trên + docs `c57841032732c10d099122937d8ba0be86cf4158` | **APPROVE**, 73links/9anchors/22tokens trong15Markdown không lỗi; scope/canonical ownership/D5–D6/provenance đúng; mở ảnh minimum hiện tại |
 
 Finding D5-F1: design.md còn câu vị trí workflow cũ. Đã sửa tại `c578410`, đồng bộ header AGENTS/CLAUDE phân biệt quy tắc chung và operator guides, P3 đọc D1–D6; reviewer xác nhận đóng. Delta này không đổi code hoặc link targets của code-review scope. Không còn finding chặn. Hai reviewer không sửa candidate, không thực hiện push/merge; bước hậu push/merge thuộc author theo D6. Metadata verdict/publication sau candidate không thay hợp đồng được review.
+
+### Hậu push và thực thi D6
+
+Đã đối chiếu remote HEAD code `0479955` / docs `e483573` với local sạch, PR#7 base=`main`, PR#8 base=`docs`, cả hai MERGEABLE; code diff27files chỉ package.json + ui-remake, docs diff14files chỉ Markdown. Hai base lúc kiểm là main536d8f6/docs132e9d6, không có WIP từ checkout gốc.
+
+CI mới đúng code `0479955`: [push run39194921456](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39194921456) và [PR run39194924395](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39194924395) đều **SUCCESS** trước merge. Docs là nhánh Markdown không có workflow CI riêng; không giả đã chạy CI docs hoặc thay review bằng CI cũ.
+
+PR#7 đã **MERGED vào main**, merge commit **`fc7d454979f049dcdb266e1e42dde4bd056ce9ff`**, dùng merge-commit và `--match-head-commit 0479955…`, không admin override. Đã fetch/readback origin/main: reviewed head là ancestor, tree **`6872977e3d05ed5ccb7ed6f3eca8ce2ee3120e48`** bằng đúng tree candidate. GitHub Contents API xác minh cả4operatorMD trên main có Git blobSHA đúng source; canonical links đã tồn tại.
+
+Kết quả merge cuối và source sau kiểm readback của **cả hai PR** được ghi trong metadata GitHub: [PR#7](https://github.com/nguyentronglinh045/pos-cafe/pull/7), [PR#8](https://github.com/nguyentronglinh045/pos-cafe/pull/8) (`state`, `headRefOid`, `mergeCommit`, `mergedAt` và phần biên bản hậu merge). PR#8 chứa chính biên bản này: không tự ghi nó MERGED trước khi lệnh thực thi; metadata PR giữ kết quả cuối sau merge. Tác giả kiểm lại exacthead/base/tree/ancestry và canonical docs links sau push metadata cuối, không đưa thay đổi code hoặc acceptance mới vào vòng này.

@@ -16,7 +16,8 @@
 - [x] Chuyển 4MD vận hành vào ui-remake; docs giữ con trỏ/spec/biên bản; cập nhật AGENTS/CLAUDE và mọi link đang dùng.
 - [x] Kiểm lại source cuối: 76tests/selftest, link/anchor/schema/palette, help và không có bản gốc trùng.
 - [x] Hai reviewer APPROVE candidate mới, đóng finding ownership cũ.
-- [ ] Push lại hai PR, đọc remote/checks/diff đúng HEAD; CI mới PASS.
-- [ ] Merge hai PR theo D6 và xác minh base/mergeSHA/tree/ancestry trên main/docs.
+- [x] Push lại hai PR, đọc remote/checks/diff đúng HEAD; hai CI mới của code0479955 SUCCESS, docs không có CI riêng.
+- [x] Merge PR#7 vào main theo D6; readback mergefc7d454, ancestry/tree và4file vận hành trên GitHub khớp candidate.
+- Kết quả thực thi merge PR#8 và readback cuối của cả hai nhánh được ghi tại [metadata/biên bản hậu merge PR#8](https://github.com/nguyentronglinh045/pos-cafe/pull/8), theo recipe exacthead/base/tree/ancestry trong [biên bản](../../../docs/implementation-log/stitch-ui-workflow-2026-10-19.md). Không tự nhận bước chứa chính commit tài liệu này đã merge trước thực thi.
 
 Không tự đổi gate hiện hữu, update baseline, deploy, DB write hoặc chấp nhận màn remake nào. Quyền merge chỉ cho đúng hai PR workflow này sau đủ kiểm chứng; không gom WIP khác.
