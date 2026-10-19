@@ -1,6 +1,7 @@
 <!--
   BẢN GỐC. File này sống trên nhánh `docs`, worktree `D:/Workspace/pos-cafe-docs`.
-  Từ 2026-09-07, hướng dẫn cho agent không còn đặt trên nhánh `main` nữa.
+  Quy tắc agent chung ở `docs` từ 2026-09-07; hướng dẫn vận hành công cụ
+  đi cùng code theo ngoại lệ được duyệt ngày 2026-10-19.
   Bản trên `main` chỉ là con trỏ và không được sửa.
 -->
 
@@ -8,7 +9,7 @@
 
 ## Where the agent instructions live
 
-- **This file lives on the `docs` branch and is committed.** Since 2026-09-07 the agent instructions no longer live on `main`.
+- **This file lives on the `docs` branch and is committed.** Project-wide agent rules live here since 2026-09-07; operator guides that ship with tooling follow the branch-model exception below.
 - Worktree: `D:/Workspace/pos-cafe-docs`. The copies at `D:/Workspace/pos-cafe` are pointers only; never edit them and never read them as guidance.
 - Reason for the move: on `main` both files were listed in `.git/info/exclude`, so they never travelled with the repository and were invisible from any worktree. On `docs` they are versioned, they follow the project, and they double as thesis source material.
 - Companion files on the same branch: `CLAUDE.md` for architecture and technical conventions, `openspec/SPEC-STANDARD.md` for the mandatory spec standard.

@@ -1,6 +1,7 @@
 <!--
   BẢN GỐC. File này sống trên nhánh `docs`, worktree `D:/Workspace/pos-cafe-docs`.
-  Từ 2026-09-07, hướng dẫn cho agent không còn đặt trên nhánh `main` nữa.
+  Quy tắc agent chung ở `docs` từ 2026-09-07; hướng dẫn vận hành công cụ
+  đi cùng code theo ngoại lệ được duyệt ngày 2026-10-19.
   Bản trên `main` chỉ là con trỏ và không được sửa.
 -->
 

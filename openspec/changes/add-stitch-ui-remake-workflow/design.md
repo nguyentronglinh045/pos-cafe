@@ -2,7 +2,7 @@
 
 ## Ranh giới
 
-Workflow nằm trên docs; runner/config/metrics/capture/fixtures/font và script aliases nằm trên code. `metrics.mjs` thuần ESM dùng được Node/browser; `capture.mjs` nhận Playwright Page; `run.mjs` phối hợp, không import adapter hay sửa `src/`. Fixture thanh toán chỉ là đối chứng tổng hợp, không triển khai UI sản phẩm.
+Workflow vận hành/templates/palette/measurement và runner/config/metrics/capture/fixtures/font, script aliases nằm trên code; spec, quyết định và biên bản nằm trên docs. `metrics.mjs` thuần ESM dùng được Node/browser; `capture.mjs` nhận Playwright Page; `run.mjs` phối hợp, không import adapter hay sửa `src/`. Fixture thanh toán chỉ là đối chứng tổng hợp, không triển khai UI sản phẩm.
 
 ## Hợp đồng đầu vào
 

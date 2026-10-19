@@ -11,7 +11,7 @@ Tiền điều kiện dùng chung:
 - **P0:** checkout code chứa `ui-remake/`, ghi HEAD/dirty state; Node và module Playwright/browser đã có theo [measurement](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/measurement.md). Không tải thêm dependency từ test.
 - **P1:** P0 + Chromium chạy được, font local còn nguyên provenance; fixture/test tự tạo context và đóng browser. Không có DB hoặc dữ liệu kinh doanh.
 - **P2:** P0 + folder output mới trong `artifacts/ui-remake/`, đủ budget; synthetic HTTP server của integration tự chọn loopback port và đóng khi xong.
-- **P3:** checkout docs candidate và code candidate xác định; đọc workflow/palette/templates/measurement, D1–D4 và nguồn của kịch bản. Không triển khai app khi forward-test.
+- **P3:** checkout docs candidate và code candidate xác định; đọc workflow/palette/templates/measurement, D1–D6 và nguồn của kịch bản. Không triển khai app khi forward-test.
 
 Các bước áp dụng **cho từng case**: **1.** Dựng tiền điều kiện và dữ liệu ở hàng tương ứng. **2.** Chạy file kiểm thử được chỉ ra bằng `node --test <file>`; với case review, thực hiện walkthrough/đối chiếu ở bảng expected thay vì giả runtime test. **3.** Đối chiếu expected của case, ghi lệnh/exit/count hoặc verdict cùng giới hạn vào [biên bản](../../../docs/implementation-log/stitch-ui-workflow-2026-10-19.md). T10 dùng lệnh CLI riêng; T11 đọc artifacts T10; T16 chỉ push sau đủ approval, rồi đọc remote SHA.
 
