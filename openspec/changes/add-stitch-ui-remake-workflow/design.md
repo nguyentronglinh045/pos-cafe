@@ -6,7 +6,7 @@ Workflow nằm trên docs; runner/config/metrics/capture/fixtures/font và scrip
 
 ## Hợp đồng đầu vào
 
-Schema chi tiết và mẫu tại [measurement](../../../docs/workflow/stitch-ui-remake/measurement.md). Các trường bắt buộc:
+Schema chi tiết và mẫu tại [measurement](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/measurement.md). Các trường bắt buộc:
 
 | Trường | Kiểu/ràng buộc |
 | --- | --- |
@@ -36,9 +36,13 @@ Output folder mới dưới artifacts/ui-remake, không overwrite. Dự toán24b
 
 Tái sử dụng dependency/browser sẵn bằng module env explicit; report môi trường thực. Lần tác giả chạy import `playwright` 1.60.0, khớp lockfile; `@playwright/test` 1.62.1 quan sát ở checkout dùng chung là package khác, không phải runtime của runner. Nhóm cài theo recipe môi trường của mình sau preflight disk; khác OS/browser/font thì phải hiệu chuẩn, không đem golden tùy ý sang môi trường khác.
 
+## Vị trí tài liệu vận hành — D5
+
+`ui-remake/README.md`, `templates.md`, `palette.md` và `measurement.md` trên nhánh code là bản gốc vận hành, version cùng runner/fixtures/font. Các liên kết source trong gói này là relative để theo đúng checkout. Nhánh `docs` giữ toàn bộ change OpenSpec, nguồn quyết định, biên bản review/kiểm thử và handoff; con trỏ cũ chỉ dẫn sang code. AGENTS/CLAUDE trên `docs` mô tả ngoại lệ này, không nhân đôi cả bộ quy tắc dự án vào code.
+
 ## Đánh đổi
 
 - Chọn reference HTML local v1 để đo DOM/font/anchors, thay cho suy ngược thông số từ bitmap. Bitmap-only cần bước normalized reference được review hoặc ghi phép đo thiếu.
 - Chọn metrics riêng, minh bạch mẫu số thay cho một điểm “giống95%”. Không có pixel metric nào chứng minh nghiệp vụ/quyền đúng.
-- Ship workflow bằng nhánh/PR, thay vì đẩy vào main kích hoạt production hoặc gom các WIP phân quyền. Được push không có nghĩa được merge.
-- D1–D4 ở proposal là lựa chọn owner; chi tiết phép đo do AI chọn trong phạm vi công cụ, sẽ kiểm bằng unit/browser/negative controls và hai reviewer trước bàn giao.
+- Ship workflow bằng hai PR với base riêng, giữ dirty WIP phân quyền ngoài payload. D6 cho phép merge đúng hai PR sau kiểm source/review/CI; Vercel Git deployment đang disabled và các release workflow chạy thủ công, không gọi deploy trong task này.
+- D1–D6 ở proposal là lựa chọn owner; chi tiết phép đo do AI chọn trong phạm vi công cụ, kiểm bằng unit/browser/negative controls và hai reviewer trước bàn giao.

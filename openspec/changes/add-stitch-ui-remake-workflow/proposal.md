@@ -1,12 +1,12 @@
 # Workflow remake UI từ Google Stitch
 
-Ngày: 19/10/2026. Phạm vi đã được người dùng giao: workflow chung Codex/Claude, bộ đo chạy được và push để nhóm dùng. Đây là thay đổi **quy trình/công cụ**, không đổi hành vi ứng dụng; bỏ `usecases.md` theo SPEC-STANDARD, giữ testplan và traceability. Phân mức review nhạy cảm về **quy trình nghiệm thu**, không phải quyền thực thi tài chính hay quyền triển khai UI.
+Ngày: 19/10/2026. Phạm vi đã được người dùng giao: workflow chung Codex/Claude, bộ đo chạy được và push để nhóm dùng; bổ sung D5–D6 cho vị trí tài liệu vận hành và merge đúng hai nhánh sau kiểm chứng. Đây là thay đổi **quy trình/công cụ**, không đổi hành vi ứng dụng; bỏ `usecases.md` theo SPEC-STANDARD, giữ testplan và traceability. Phân mức review nhạy cảm về **quy trình nghiệm thu**, không phải quyền thực thi tài chính hay quyền triển khai UI.
 
 ## Vấn đề và kết quả
 
 Ảnh/mockup Stitch chưa tự là yêu cầu nghiệp vụ hoặc chuẩn màu của dự án. Audit DOM hiện có không đo fidelity; ảnh implementation tự nhận làm expected chỉ chứng minh hồi quy. Cần pipeline từ nguồn độc lập → reference được chuẩn hóa/duyệt → UI thực tế, với bằng chứng tách biệt.
 
-Đầu ra: [workflow](../../../docs/workflow/stitch-ui-remake/README.md), mẫu hồ sơ, chuẩn palette/font, hợp đồng đo; executable `ui-remake/` trên nhánh code. Không remake A04 hay màn khác trong task này, không sửa API/DB/permissions, không deploy hoặc merge vào main.
+Đầu ra vận hành ở [ui-remake/ trên nhánh code](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/README.md): workflow, templates, chuẩn palette/font, hợp đồng đo và executable. Spec, quyết định và biên bản ở `docs`. Không remake A04 hay màn khác trong task này, không sửa API/DB/permissions hoặc deploy. D6 cho phép merge PR #7 vào `main` và PR #8 vào `docs` sau kiểm tra/review; không trộn hai nhánh với nhau.
 
 ## Câu hỏi phải chốt trước khi làm
 
@@ -22,6 +22,8 @@ Nguồn: câu trả lời trực tiếp của chủ dự án ngày19/10/2026 tro
 | D2 | Hỗ trợ thiết kế responsive landscape từ568×320CSSpx | Không giới hạn tablet; sampling không chứng minh mọi kích thước/thiết bị vật lý. |
 | D3 | Font Be Vietnam Pro | Không giữ Inter làm chuẩn. Reference phải chuẩn hóa font để sai lệch đúng chủ đích không bị chấm sai. |
 | D4 | Palette A v1 đã chỉnh tương phản | Không dùng nguyên A của ảnh ban đầu. Quyết định này không phê duyệt mọi breakpoint/primitive/MUI migration trong proposal Claude cũ. |
+| D5 — 19/10/2026 | Chủ dự án yêu cầu chuyển workflow vận hành, templates, palette/font và hướng dẫn đo vào nhánh code, cạnh `ui-remake/`; spec và biên bản vẫn trên `docs` | Thay cách tách hoàn toàn tài liệu khỏi code. Hướng dẫn gắn phiên bản công cụ, có một bản gốc; `docs` chỉ giữ liên kết. Quy ước hai nhánh được cập nhật tương ứng. |
+| D6 — 19/10/2026 | Chủ dự án giao push lại hai PR, kiểm kỹ sau push rồi merge code→`main`, docs→`docs` | Thay giới hạn chỉ-push ban đầu cho đúng hai PR này. Giữ final candidate review, CI, kiểm remote và ranh giới payload; không cho phép deploy hoặc gom dirty WIP khác. |
 
 Routine implementation choices của AI trong phạm vi công cụ: zero npm dependencies mới; tái dùng Playwright; local HTML reference, browser RGBA comparison, explicit thresholds; source/contract hash trước chạy; output mới, không tự overwrite baseline. Chọn hai worktree sạch từ origin/main và origin/docs, không đưa dirty WIP hoặc15commit docs khác vào gói push.
 

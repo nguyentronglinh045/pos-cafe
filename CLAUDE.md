@@ -30,6 +30,8 @@ git ls-tree -r --name-only docs         # full doc index (incl. archive/, implem
 
 Code is the final source of truth; docs describe verified state and may lag slightly.
 
+Operator instructions and templates that ship with tooling are versioned beside the tool on `main` (owner decision 2026-10-19). For existing-screen remakes from Stitch, start with `ui-remake/README.md` in the code checkout, or [the published operator workflow](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/README.md). Its templates, palette/font and measurement guide have one canonical copy there. Specs, decisions and verification/review records remain on `docs`; do not duplicate the operator package here.
+
 ## Current write protocol (2026-09-10)
 
 The approved implementation is described in `docs/implementation-log/phase-27-idempotent-write-operations.md` on this branch. Migrations 014–016 implement employee sessions and write protocol v1; deployment status and final evidence are recorded in that phase log. Use `IWriteOperationRepo` for production order/payment/void flows. Register immutable K/payload before execute; retries preserve them, server recovery is independent of local memory, and terminal R1 is historical. Pending TTL 24h never expires the order. Online only, no automatic replay on reconnect.

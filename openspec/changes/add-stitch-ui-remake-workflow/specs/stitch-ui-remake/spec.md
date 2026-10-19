@@ -34,4 +34,4 @@ Report SHALL ghi config/reference/contract/source hashes, runtime thực, case/s
 
 ## SUI-08 — Đóng gói cho nhóm
 
-Code và docs SHALL tách nhánh đúng mô hình, có command chạy và template có thể điền, font license và review độc lập. Chỉ push payload đã review của workflow; không gom dirty WIP, không merge/deploy. Docs SHALL phân biệt tool selftest đã chạy với app UI/browser/device chưa chạy; raw Claude logs/private local paths không được đưa vào payload công khai.
+Code và docs SHALL tách nhánh đúng mô hình: `ui-remake/` trên nhánh code giữ công cụ, workflow vận hành, templates, palette/font và hướng dẫn đo cùng phiên bản; `docs` giữ spec, quyết định, biên bản và con trỏ, không giữ bản vận hành trùng. Có command chạy, template có thể điền, font license và review độc lập. Chỉ push payload đã review; không gom dirty WIP. Merge SHALL chỉ thực hiện khi được owner giao rõ, đủ kiểm chứng/review và đúng base; D6 cho phép PR #7→`main`, PR #8→`docs`, không deploy. Docs SHALL phân biệt tool selftest đã chạy với app UI/browser/device chưa chạy; raw Claude logs/private local paths không được đưa vào payload công khai.

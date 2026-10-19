@@ -10,4 +10,12 @@
 - [x] Commit/push riêng code/docs, tạo PR để nhóm dùng; đọc lại remoteSHA và link.
 - [x] Lưu biên bản/handoff cùng lệnh tái hiện, giới hạn, review và trạng thái phát hành.
 
-Không tự đổi gate hiện hữu, update baseline, merge, deploy, DB write, xóa temp hoặc chấp nhận màn remake nào. Chỉ owner có thể thay scope/acceptance; authorization push hiện tại chỉ cho payload workflow này.
+## Bổ sung theo D5–D6 ngày 19/10/2026
+
+- [x] Chốt ngoại lệ tài liệu vận hành đi cùng code; ghi quyền merge PR#7→main, PR#8→docs sau kiểm kỹ.
+- [x] Chuyển 4MD vận hành vào ui-remake; docs giữ con trỏ/spec/biên bản; cập nhật AGENTS/CLAUDE và mọi link đang dùng.
+- [x] Kiểm lại source cuối: 76tests/selftest, link/anchor/schema/palette, help và không có bản gốc trùng.
+- [ ] Hai reviewer APPROVE candidate mới; push lại hai PR, đọc remote/checks/diff đúng HEAD.
+- [ ] Merge hai PR theo D6 và xác minh base/mergeSHA/tree/ancestry trên main/docs.
+
+Không tự đổi gate hiện hữu, update baseline, deploy, DB write hoặc chấp nhận màn remake nào. Quyền merge chỉ cho đúng hai PR workflow này sau đủ kiểm chứng; không gom WIP khác.

@@ -44,7 +44,7 @@ npm run test:ui-remake
 npm run ui-remake:selftest -- --out artifacts/ui-remake/NEW-RUN
 ```
 
-Author tái dùng dependency từ checkout khác bằng env explicit `UI_REMAKE_PLAYWRIGHT_MODULE` trỏ fileURL của modulePlaywright đã cài. Runner thực dùng `playwright`1.60.0, không phải `@playwright/test`1.62.1 được thấy ở khảo sát ban đầu. Teammate dùng dependency chuẩn của checkout mình, ghi đúng engine/OS/font và hiệu chuẩn lại. [Measurement](../workflow/stitch-ui-remake/measurement.md) mô tả các điều kiện và template source/contract approval.
+Author tái dùng dependency từ checkout khác bằng env explicit `UI_REMAKE_PLAYWRIGHT_MODULE` trỏ fileURL của modulePlaywright đã cài. Runner thực dùng `playwright`1.60.0, không phải `@playwright/test`1.62.1 được thấy ở khảo sát ban đầu. Teammate dùng dependency chuẩn của checkout mình, ghi đúng engine/OS/font và hiệu chuẩn lại. [Measurement](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/measurement.md) mô tả các điều kiện và template source/contract approval.
 
 ## Review và trạng thái
 
@@ -65,7 +65,7 @@ Hiện chưa có owner nghiệm thu màn UI nào. Hai approval không tự xác 
 
 Checkpoint cuối trước publication: C còn khoảng 182,50 GiB, D 92,24 GiB; không tạo WSL/Docker hay cài npm/browser. Evidence cuối giữ `candidate-02`; output thử cũ `development-01` + `candidate-01` có 92 files, tổng logical 2.883.552 bytes. Chủ dự án đã đồng ý xóa riêng hai thư mục này, nhưng lệnh native PowerShell bị bộ duyệt tự động từ chối với `blocked by policy`, kể cả sau xác minh đường dẫn và dùng literal paths. Chưa xóa, chưa có dung lượng thu hồi để báo; không đổi cách xóa để vượt chặn.
 
-## Publication và bàn giao
+## Publication lần đầu — trước D5–D6
 
 Đã push hai nhánh riêng theo D1, tạo PR và đọc lại remote refs/PR base/HEAD:
 
@@ -75,3 +75,32 @@ Checkpoint cuối trước publication: C còn khoảng 182,50 GiB, D 92,24 GiB;
 | Workflow/spec | `workflow/stitch-ui-remake-docs`, lần push đầu `e5e7b43c3550230f5f87a6a76308d3633246b20e`, base `docs`; metadata publication bổ sung sau đó | [PR #8](https://github.com/nguyentronglinh045/pos-cafe/pull/8) và [điểm bắt đầu](../workflow/stitch-ui-remake/README.md) |
 
 Nhóm dùng tài liệu ở ref workflow docs và chạy công cụ ở ref workflow code, không mặc định chúng đã có trên `docs`/`main` trước merge. Hai PR đang OPEN; không merge hoặc gọi workflow deploy. POS light CI được GitHub tự kích hoạt cho push/PR code; trạng thái kiểm lúc ghi biên bản còn đang chạy, không coi kết quả unit/selftest local là CI PASS. Trạng thái CI mới nhất xem tại PR #7; các phép đo mới vẫn cần tự chạy theo môi trường của người dùng.
+
+<a id="nguon-palette"></a>
+## Nguồn palette — chuyển từ tài liệu vận hành theo D5
+
+| Mốc | Bằng chứng và giới hạn |
+| --- | --- |
+| 2026-09-15T13:04:20.796Z | Chủ dự án chọn hướng A trong Claude session `fc10f114-32d6-4490-9e28-a8449ba009c3`; [artifact so sánh A/B/C](https://claude.ai/artifact/VS6wHCKPGXKsECrqw7TBa9) khớp ảnh đầu vào |
+| Sau mốc chọn A | [Artifact A v1 sửa tương phản](https://claude.ai/artifact/CehuqcxnbUjA1MHXsjyBLH) đổi viền control thành `#7F8A9D`, primary-soft thành `#F0FDFA`; lúc đó chưa có xác nhận riêng cho v1 |
+| 19/10/2026, D3–D4 | Chủ dự án xác nhận dùng A v1 đã sửa tương phản và Be Vietnam Pro cho workflow này; không duyệt mọi đề xuất breakpoint/MUI cũ |
+
+Đây là nguồn quyết định đã truy hồi từ dữ liệu local, không xác nhận đã chạy lại artifact trực tuyến. Không công bố raw transcript hoặc private log path. Hợp đồng thực thi 22 màu/font nằm trong `ui-remake/` trên nhánh code; lịch sử và giới hạn truy hồi có một bản tại đây.
+
+## Bổ sung D5–D6 — chuyển vị trí và quyền merge
+
+Nguồn: chủ dự án yêu cầu “chuyển workflow vận hành, templates và hướng dẫn đo sang nhánh code; giữ spec và biên bản ở docs, cập nhật quy ước rồi push lại hai PR”, sau push kiểm kỹ và merge code→main, docs→docs. Đây là quyền merge riêng PR#7/#8 sau đủ gate, không mở quyền deploy hoặc sửa app UI.
+
+Đã chuyển bản gốc `README.md`, `templates.md`, `palette.md`, `measurement.md` sang `ui-remake/`; docs giữ con trỏ và hồ sơ. Source links trong gói vận hành chuyển thành relative, CLI help chỉ tới hướng dẫn trong checkout. AGENTS/CLAUDE và chỉ mục trên docs quy định ngoại lệ tài liệu vận hành đi cùng công cụ. Source palette/fixture/font không đổi, code runtime chỉ đổi nội dung help.
+
+CI của candidate cũ `340c903` đã SUCCESS cho cả push và PR; đó là lịch sử, không thay CI/kiểm thử của candidate D5–D6. Candidate mới, review, remote readback và kết quả merge được ghi tại checkpoint tiếp theo. Không nhận dữ liệu cũ thành PASS source mới.
+
+### Kiểm chứng D5–D6 trước push lại
+
+Code candidate **`0479955df65f24fd50bc011ef279ab25c5c9a7a4`**, checkout sạch; không có app source hay dependency/lockfile thay đổi. Chạy lại `npm run test:ui-remake`: **76/76 PASS**, 0 fail/skip, exit0. Chạy `npm run ui-remake:selftest -- --out artifacts/ui-remake/relocated-01`: **11/11 controls đúng**, 5PASS/6FAIL có chủ đích, 0ERROR, exit0. Môi trường giữ Node24.16.0/Playwright1.60.0/Chromium148.0.7778.96/Windows, không cài thêm gói/browser.
+
+Report `artifacts/ui-remake/relocated-01/report.json` giữ source SHA **`8e976f83e1b40ee66d284e963d85b6b0f7730305ab927935648b3b99f58ad672`**; reference SHA `9cf839d41f8f7a4e67973f91a7402fb3d3b1a106227afecf0a3a75dab4e313d0` và contract SHA `76532f6fc530ecdfeb6ad306fe939c6c81478f3bc1c94082d1e9120b8a34723a` không đổi. `productAcceptance=NOT_ASSESSED`. Đã mở ảnh minimum-reference hiện tại, fixture vừa568×320; không dùng ảnh candidate cũ làm bằng chứng source mới.
+
+Rà package source/docs: **18 Markdown files, 84 local/cross-branch links, 9 anchors và 22 palette tokens**, 0 lỗi; link cross-branch được đối chiếu hai candidate checkout, sẽ kiểm URL canonical sau merge. Không còn ba bản templates/palette/measurement trùng trên docs. CLI `--help` trỏ `ui-remake/README.md` tại checkout và URL main; `git diff --check` sạch. Font/provenance/palette/fixture bytes không đổi.
+
+Merge recipe theo D6: kiểm remote HEAD khớp reviewed candidate, PR base7=`main`/8=`docs`, CI của candidate mới PASS và payload không chứa WIP khác; dùng merge có `--match-head-commit`, không admin override, không xóa nhánh. Đọc lại state/mergeSHA, xác nhận reviewed head là ancestor và merge tree khớp candidate trên từng base. Vercel `git.deploymentEnabled=false`, release/preview workflow chỉ workflow_dispatch; không dispatch trong task. Review mới và remote result được ghi sau checkpoint này.

@@ -8,14 +8,14 @@ Mã chuẩn là **TC-SUI-01 … TC-SUI-16**, tương ứng alias **T01 … T16**
 
 Tiền điều kiện dùng chung:
 
-- **P0:** checkout code chứa `ui-remake/`, ghi HEAD/dirty state; Node và module Playwright/browser đã có theo [measurement](../../../docs/workflow/stitch-ui-remake/measurement.md). Không tải thêm dependency từ test.
+- **P0:** checkout code chứa `ui-remake/`, ghi HEAD/dirty state; Node và module Playwright/browser đã có theo [measurement](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/measurement.md). Không tải thêm dependency từ test.
 - **P1:** P0 + Chromium chạy được, font local còn nguyên provenance; fixture/test tự tạo context và đóng browser. Không có DB hoặc dữ liệu kinh doanh.
 - **P2:** P0 + folder output mới trong `artifacts/ui-remake/`, đủ budget; synthetic HTTP server của integration tự chọn loopback port và đóng khi xong.
 - **P3:** checkout docs candidate và code candidate xác định; đọc workflow/palette/templates/measurement, D1–D4 và nguồn của kịch bản. Không triển khai app khi forward-test.
 
 Các bước áp dụng **cho từng case**: **1.** Dựng tiền điều kiện và dữ liệu ở hàng tương ứng. **2.** Chạy file kiểm thử được chỉ ra bằng `node --test <file>`; với case review, thực hiện walkthrough/đối chiếu ở bảng expected thay vì giả runtime test. **3.** Đối chiếu expected của case, ghi lệnh/exit/count hoặc verdict cùng giới hạn vào [biên bản](../../../docs/implementation-log/stitch-ui-workflow-2026-10-19.md). T10 dùng lệnh CLI riêng; T11 đọc artifacts T10; T16 chỉ push sau đủ approval, rồi đọc remote SHA.
 
-Các đường dẫn test sau thuộc [nhánh code, thư mục ui-remake](https://github.com/nguyentronglinh045/pos-cafe/tree/workflow/stitch-ui-remake-code/ui-remake). Có thể lọc test cụ thể bằng `node --test --test-name-pattern '<tên>' <file>`; không nhận ca bị lọc/skip thành coverage đã chạy. `npm run test:ui-remake` chạy toàn bộ 76 tests ở candidate ghi trong biên bản.
+Các đường dẫn test sau thuộc [nhánh code, thư mục ui-remake](https://github.com/nguyentronglinh045/pos-cafe/tree/main/ui-remake). Có thể lọc test cụ thể bằng `node --test --test-name-pattern '<tên>' <file>`; không nhận ca bị lọc/skip thành coverage đã chạy. `npm run test:ui-remake` chạy toàn bộ 76 tests ở candidate ghi trong biên bản.
 
 | Mã / alias | Mức | Tiền điều kiện | Dữ liệu thử cụ thể | Nơi hiện thực / cách tái hiện |
 | --- | --- | --- | --- | --- |
@@ -32,9 +32,9 @@ Các đường dẫn test sau thuộc [nhánh code, thư mục ui-remake](https:
 | TC-SUI-11 / T11 | E2E, kiểm evidence | P3 + T10 có report | `candidate-02/report.json`, `.md`, `minimum-reference.png`, `detect-palette-diff.png`; SHA của source/ref/contract trong biên bản | Mở JSON/Markdown và ảnh, đối chiếu source/env/count; biên bản mục Bằng chứng candidate cuối |
 | TC-SUI-12 / T12 | Tích hợp + review guard | P2/P3 | Synthetic actual/reference HTTP568×320, output đã có; parent output junction; approval ratio0→0,1; input actual.normalizationCss | `run.integration.test.mjs` thực chạy plan/approval/output/changedgate; `run.mjs` từ chối actual normalization và so source/ref trước–sau. Drift và actual-normalization path là đối chiếu source, không giả đã chạy mutation CLI |
 | TC-SUI-13 / T13 | E2E, walkthrough quy trình | P3 | Chỉ có bitmap, chưa có reference568×320, checkout không có `ui-audit/` | Workflow mục3/4/7 và measurement mục3/6; biên bản Forward-test ghi fidelity chưa đánh giá và audit NOT_RUN, không lấy selftest thay gate |
-| TC-SUI-14 / T14 | Tích hợp, review payload | P3 | Diff chỉ `ui-remake/`, package aliases và docs đã liệt kê; 4TTF+OFL; 22 màu; Claude session ID/artifact links, không rawJSONL/private path | `git diff --name-only <base> HEAD`, CLI `--help`; kiểm local Markdown links, palette table so JSON và font provenance; lưu verdict reviewer |
+| TC-SUI-14 / T14 | Tích hợp, review payload | P3 | Diff chỉ tooling/docs trong phạm vi; 4TTF+OFL; 22 màu; workflow vận hành có 4MD cạnh runner, docs chỉ con trỏ và hồ sơ | `git diff --name-only <base> HEAD`, CLI `--help`; kiểm local/cross-branch Markdown links và anchors, palette table so JSON, font provenance; xác nhận ba bản templates/palette/measurement cũ đã bỏ; lưu verdict reviewer |
 | TC-SUI-15 / T15 | E2E, walkthrough responsive | P3 | Minimum568×320;844×390;1024×600/768;1440×900;1920×1080; ultrawide và mỗi breakpoint±1 khai báo cho slice | Workflow mục4 và templates viewport; kiểm CTA/scroll/touch/focus, state dài; task này chỉ kiểm hợp đồng và fixtures, chưa chạy ma trận app/thiết bị thật |
-| TC-SUI-16 / T16 | Tích hợp, review/phát hành nhánh | P3 + hai reviewer đủ scope | Code `340c903…`, docs candidate cuối; refs `workflow/stitch-ui-remake-code` và `workflow/stitch-ui-remake-docs` | Biên bản ghi hai verdict; `git push origin <branch>` đúng ref, `git ls-remote --heads origin <branch>` khớp local HEAD; PR code→main và docs→docs, không merge |
+| TC-SUI-16 / T16 | Tích hợp, review/phát hành nhánh | P3 + hai reviewer đủ scope | Code/docs candidate cuối; refs `workflow/stitch-ui-remake-code` và `workflow/stitch-ui-remake-docs`; D6 cho phép merge riêng PR#7/#8 | Sau push: `git ls-remote` khớp HEAD, kiểm diff/base và CI trên đúng candidate, reviewer APPROVE; merge PR#7→main, PR#8→docs có match-head guard; đọc state/mergeSHA và tree/ancestry của cả hai nhánh đích. Không gọi deploy |
 
 ## Bước và expected theo từng case
 
@@ -55,6 +55,6 @@ Các đường dẫn test sau thuộc [nhánh code, thư mục ui-remake](https:
 | T13 | Forward-test workflow trên tình huống đầu vào Stitch và nguồn chưa đủ/missingaudit | Agent tạo đúng intake/plan; không remake app/tự duyệt threshold; NOT_RUN của productgate không biến PASS |
 | T14 | Review public payload paths/diff/license/links/code-docs split, commandhelp | Không privateClaude/rawlogs/secrets/unrelateddirty changes; tài liệu dùng được từ clone/branch rõ |
 | T15 | Review responsive matrix beyond min + breakpoint±1/browsers/zoom/touch/CTA rules | Phạm vi/ngoại lệ/mẫu số rõ; không gọi sampling bằng mọi thiết bị; viewport chưa códesign không cófidelity giả |
-| T16 | Hai reviewer độc lập kiểm candidate; push/readback branches/PR | Cả hai APPROVE phạm vi; push đúng source reviewed, no merge/deploy; remote SHA khớp |
+| T16 | Hai reviewer độc lập kiểm candidate; push/readback/CI đúng source; merge riêng hai PR theo D6 | Cả hai APPROVE phạm vi; remote SHA/base đúng; CI PASS, merged đúng main/docs và tree/ancestry khớp candidate; không deploy |
 
 T04–T09 có unit/browser controls; T10–T12 có CLI/integration và phần guard review ghi rõ ở bảng hiện thực. Không suy code review thành một mutation runtime đã chạy. T01/T02/T13/T14/T15 có review kịch bản/quy trình. Không chạy flow tài chính/DB trên production để chứng minh task tooling. Gate build/unit/smoke/ui-audit sản phẩm chỉ áp khi task remake thật sửa UI; lượt này không có app UI change.

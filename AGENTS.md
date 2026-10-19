@@ -16,7 +16,7 @@
 
 ## Remake UI from Google Stitch
 
-For reworking existing screens from Stitch, read [the shared workflow](docs/workflow/stitch-ui-remake/README.md) and its palette/measurement contracts. Use it with Codex or Claude. The approved standard is Teal A v1 and Be Vietnam Pro, with landscape support from568×320CSSpx. This workflow does not authorize a screen remake, new business behavior, reference acceptance, merge or deployment by itself.
+For reworking existing screens from Stitch, read [the shared operator workflow on main](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/README.md) (`ui-remake/README.md` in the code checkout), together with its local templates, palette and measurement contracts. Use it with Codex or Claude. The approved standard is Teal A v1 and Be Vietnam Pro, with landscape support from 568×320 CSS px. The workflow does not authorize a screen remake, new business behavior, reference acceptance, merge or deployment by itself; use the owner's current task authorization.
 
 ## Confirmation rule
 
@@ -30,6 +30,7 @@ For reworking existing screens from Stitch, read [the shared workflow](docs/work
   - `docs`: contains project information, including implemented features, planned or deferred features, technologies used, architecture decisions, and related project notes.
 - The `main` branch must not contain project documentation that belongs on `docs`.
 - The `docs` branch must not contain application code from `main`.
+- **Operator-documentation rule, approved 2026-10-19:** instructions, templates and setup/measurement contracts that ship with a tool live beside that tool on `main`, versioned with its code. For Stitch remake, `ui-remake/` is the single canonical operator package. Specs, decisions, implementation/review evidence and handoffs remain on `docs`. Keep pointers between branches, not duplicate operator documents. This does not move the general project rules or OpenSpec artifacts to `main`.
 
 ## Documentation workflow
 
