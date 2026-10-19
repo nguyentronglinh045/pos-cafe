@@ -48,6 +48,19 @@ Author tái dùng dependency từ checkout khác bằng env explicit `UI_REMAKE_
 
 ## Review và trạng thái
 
-Code candidate và hồ sơ trên đã khóa để hai reviewer độc lập kiểm công cụ/bằng chứng và workflow/phạm vi. Verdict, xử lý findings và publication sẽ được ghi sau review; hiện chưa có owner nghiệm thu màn UI nào.
+Hai reviewer không phải tác giả đã review và **APPROVE** trong phạm vi được giao:
+
+| Reviewer | Candidate / phạm vi | Kiểm độc lập và verdict |
+| --- | --- | --- |
+| `review_final_ui_code` | Code `340c903d60aa7f761cb05112ec75c81079350ee1`: phép đo, approval, output containment, capture, font/source evidence | Đọc runner/config/capture/metrics/server/provenance và report; tự chạy 65 tests PASS, 0 fail/skip; **APPROVE**, không blocker |
+| `review_final_ui_workflow` | Docs `c85c06442cc4a59f77ad633dbf7363e3d65de071` + code trên: scope, palette/font, contracts, forward-test, privacy và tái hiện | Kiểm CLI help/plan/hashes, 46 local links, hai ảnh current và kịch bản; **APPROVE** sau đóng F1/F2, không blocker |
+
+Xử lý findings: F1 thêm hai mục proposal đúng chuẩn và trạng thái không còn câu hỏi chặn; F2 bổ sung setup/level/dữ liệu/file-testname cho từng TC, phân biệt source review với mutation runtime chưa chạy. Khuyến nghị network đã sửa tại `b926033`: chỉ chặn remote HTTP(S), không hứa sandbox WebSocket/mọi giao thức. Code không đổi qua các vòng sửa docs. Các bổ sung review/publication sau candidate này chỉ ghi metadata thực tế.
+
+Hiện chưa có owner nghiệm thu màn UI nào. Hai approval không tự xác nhận remote push, merge hay deploy.
 
 Đường đọc giải thích cho chủ dự án: workflow → config/runner → capture/metrics → report. Đã chuẩn bị hướng dẫn này; chưa nhận xác nhận chủ dự án đã đọc hoặc hiểu code.
+
+## Tài nguyên và cleanup
+
+Checkpoint cuối trước publication: C còn khoảng 182,50 GiB, D 92,24 GiB; không tạo WSL/Docker hay cài npm/browser. Evidence cuối giữ `candidate-02`; output thử cũ `development-01` + `candidate-01` có 92 files, tổng logical 2.883.552 bytes. Chủ dự án đã đồng ý xóa riêng hai thư mục này, nhưng lệnh native PowerShell bị bộ duyệt tự động từ chối với `blocked by policy`, kể cả sau xác minh đường dẫn và dùng literal paths. Chưa xóa, chưa có dung lượng thu hồi để báo; không đổi cách xóa để vượt chặn.

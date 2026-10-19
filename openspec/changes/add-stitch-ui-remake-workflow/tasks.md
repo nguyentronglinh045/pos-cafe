@@ -6,7 +6,7 @@
 - [x] Soạn workflow, template, chuẩn palette/font, spec/design/testplan/traceability.
 - [x] Implement metrics/capture/config/runner, font local/OFL, positive/negative fixtures; không sửa UI app.
 - [x] Chạy final candidate tests và CLI selftest, kiểm ảnh/bằng chứng/source/env, forward-test workflow.
-- [ ] Hai reviewer không phải tác giả APPROVE final candidate và đóng findings.
+- [x] Hai reviewer không phải tác giả APPROVE final candidate và đóng findings.
 - [ ] Commit/push riêng code/docs, tạo PR để nhóm dùng; đọc lại remoteSHA và link.
 - [ ] Lưu biên bản/handoff cùng lệnh tái hiện, giới hạn, review và trạng thái phát hành.
 
