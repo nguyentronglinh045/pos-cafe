@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "kind": "selftest",
+  "title": "Đối chứng bộ đo, không phải nghiệm thu UI ứng dụng",
+  "clock": "2026-10-19T03:00:00.000Z",
+  "referenceFiles": ["ui-remake/fixtures/payment.html"],
+  "defaults": {
+    "actual": {"url":"fixture://payment","ready":"main"},
+    "reference": {"url":"fixture://payment","ready":"main"},
+    "anchors": [
+      {"id":"card","actual":"@card","reference":"@card"},
+      {"id":"title","actual":"@title","reference":"@title"},
+      {"id":"total","actual":"@total","reference":"@total"},
+      {"id":"complete","actual":"@complete","reference":"@complete"}
+    ],
+    "criticalSelectors": [{"id":"complete","selector":"@complete"}],
+    "thresholds": {"channelThreshold":0,"maxDiffRatio":0,"geometryTolerancePx":0,"minTargetPx":44},
+    "selftestExpectation": "PASS"
+  },
+  "cases": [
+    {"id":"minimum","viewport":{"width":568,"height":320}},
+    {"id":"phone","viewport":{"width":844,"height":390}},
+    {"id":"tablet","viewport":{"width":1024,"height":768}},
+    {"id":"desktop","viewport":{"width":1440,"height":900}},
+    {"id":"long-vietnamese","viewport":{"width":568,"height":320},"actual":{"url":"fixture://payment?mode=long","ready":"main"},"reference":{"url":"fixture://payment?mode=long","ready":"main"}},
+    {"id":"detect-shift","viewport":{"width":1024,"height":768},"actual":{"url":"fixture://payment?mode=shift","ready":"main"},"selftestExpectation":"FAIL"},
+    {"id":"detect-palette","viewport":{"width":1024,"height":768},"actual":{"url":"fixture://payment?mode=palette","ready":"main"},"selftestExpectation":"FAIL"},
+    {"id":"detect-occlusion","viewport":{"width":568,"height":320},"actual":{"url":"fixture://payment?mode=covered","ready":"main"},"selftestExpectation":"FAIL"},
+    {"id":"detect-small-target","viewport":{"width":568,"height":320},"actual":{"url":"fixture://payment?mode=tiny","ready":"main"},"selftestExpectation":"FAIL"},
+    {"id":"detect-font","viewport":{"width":568,"height":320},"actual":{"url":"fixture://payment?mode=font","ready":"main"},"selftestExpectation":"FAIL"},
+    {"id":"detect-overflow","viewport":{"width":568,"height":320},"actual":{"url":"fixture://payment?mode=overflow","ready":"main"},"selftestExpectation":"FAIL"}
+  ]
+}

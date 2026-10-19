@@ -4,6 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "ui-remake": "node ui-remake/run.mjs",
+    "ui-remake:selftest": "node ui-remake/run.mjs --selftest",
+    "test:ui-remake": "node --test ui-remake/config.test.mjs ui-remake/metrics.test.mjs ui-remake/capture.test.mjs ui-remake/run.test.mjs ui-remake/run.integration.test.mjs ui-remake/serve-reference.test.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",

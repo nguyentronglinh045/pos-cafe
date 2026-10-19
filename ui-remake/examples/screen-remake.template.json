@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "kind": "screen-remake",
+  "title": "REPLACE: màn, trạng thái, task được giao",
+  "designUrl": "https://stitch.withgoogle.com/projects/REPLACE?node-id=REPLACE",
+  "actualSourceRoot": ".",
+  "dataMode": "mock",
+  "serverRecipe": "VITE_DATA_MODE=mock npm run dev -- --host 127.0.0.1 --port 5173",
+  "clock": "2026-10-19T03:00:00.000Z",
+  "referenceFiles": ["artifacts/stitch/SCREEN/raw.html", "artifacts/stitch/SCREEN/normalized.html"],
+  "referenceApproval": null,
+  "defaults": {
+    "actual": {"url":"http://127.0.0.1:5173","ready":"@REPLACE-screen","steps":[]},
+    "reference": {"url":"http://127.0.0.1:4174/normalized.html","ready":"[data-reference-state=default]"},
+    "anchors": [{"id":"primary-action","actual":"@REPLACE-action","reference":"[data-reference=primary-action]"}],
+    "criticalSelectors": [{"id":"primary-action","selector":"@REPLACE-action","reference":"[data-reference=primary-action]"}],
+    "thresholds": {"channelThreshold":0,"maxDiffRatio":0,"geometryTolerancePx":0,"minTargetPx":44}
+  },
+  "cases": [
+    {"id":"minimum-default","viewport":{"width":568,"height":320}},
+    {"id":"tablet-default","viewport":{"width":1024,"height":768}},
+    {"id":"desktop-default","viewport":{"width":1440,"height":900}}
+  ]
+}
