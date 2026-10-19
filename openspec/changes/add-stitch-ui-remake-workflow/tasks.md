@@ -15,7 +15,8 @@
 - [x] Chốt ngoại lệ tài liệu vận hành đi cùng code; ghi quyền merge PR#7→main, PR#8→docs sau kiểm kỹ.
 - [x] Chuyển 4MD vận hành vào ui-remake; docs giữ con trỏ/spec/biên bản; cập nhật AGENTS/CLAUDE và mọi link đang dùng.
 - [x] Kiểm lại source cuối: 76tests/selftest, link/anchor/schema/palette, help và không có bản gốc trùng.
-- [ ] Hai reviewer APPROVE candidate mới; push lại hai PR, đọc remote/checks/diff đúng HEAD.
+- [x] Hai reviewer APPROVE candidate mới, đóng finding ownership cũ.
+- [ ] Push lại hai PR, đọc remote/checks/diff đúng HEAD; CI mới PASS.
 - [ ] Merge hai PR theo D6 và xác minh base/mergeSHA/tree/ancestry trên main/docs.
 
 Không tự đổi gate hiện hữu, update baseline, deploy, DB write hoặc chấp nhận màn remake nào. Quyền merge chỉ cho đúng hai PR workflow này sau đủ kiểm chứng; không gom WIP khác.

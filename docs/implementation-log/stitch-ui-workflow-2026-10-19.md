@@ -104,3 +104,12 @@ Report `artifacts/ui-remake/relocated-01/report.json` giữ source SHA **`8e976f
 Rà package source/docs: **18 Markdown files, 84 local/cross-branch links, 9 anchors và 22 palette tokens**, 0 lỗi; link cross-branch được đối chiếu hai candidate checkout, sẽ kiểm URL canonical sau merge. Không còn ba bản templates/palette/measurement trùng trên docs. CLI `--help` trỏ `ui-remake/README.md` tại checkout và URL main; `git diff --check` sạch. Font/provenance/palette/fixture bytes không đổi.
 
 Merge recipe theo D6: kiểm remote HEAD khớp reviewed candidate, PR base7=`main`/8=`docs`, CI của candidate mới PASS và payload không chứa WIP khác; dùng merge có `--match-head-commit`, không admin override, không xóa nhánh. Đọc lại state/mergeSHA, xác nhận reviewed head là ancestor và merge tree khớp candidate trên từng base. Vercel `git.deploymentEnabled=false`, release/preview workflow chỉ workflow_dispatch; không dispatch trong task. Review mới và remote result được ghi sau checkpoint này.
+
+### Review độc lập D5–D6
+
+| Reviewer | Phạm vi/candidate | Verdict và phép kiểm độc lập |
+| --- | --- | --- |
+| `review_final_ui_code` | Code `0479955df65f24fd50bc011ef279ab25c5c9a7a4`, cross-links sang docs `334969b` | **APPROVE**, 49tests PASS/0fail/skip; 41links/22tokens đúng; kiểm lại report và hashes547sourcefiles/7referencefiles/config/contract/22actual-referencePNGs |
+| `review_final_ui_workflow` | Code trên + docs `c57841032732c10d099122937d8ba0be86cf4158` | **APPROVE**, 73links/9anchors/22tokens trong15Markdown không lỗi; scope/canonical ownership/D5–D6/provenance đúng; mở ảnh minimum hiện tại |
+
+Finding D5-F1: design.md còn câu vị trí workflow cũ. Đã sửa tại `c578410`, đồng bộ header AGENTS/CLAUDE phân biệt quy tắc chung và operator guides, P3 đọc D1–D6; reviewer xác nhận đóng. Delta này không đổi code hoặc link targets của code-review scope. Không còn finding chặn. Hai reviewer không sửa candidate, không thực hiện push/merge; bước hậu push/merge thuộc author theo D6. Metadata verdict/publication sau candidate không thay hợp đồng được review.
