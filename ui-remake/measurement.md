@@ -28,7 +28,7 @@ Nếu chưa có dependency, hai lệnh `node` cuối có thể thất bại; đ�
 
 ```powershell
 npm ci
-.\node_modules\.bin\playwright.cmd install chromium
+.\node_modules\.bin\playwright.cmd install chromium --no-shell
 ```
 
 Không chạy lại `npm ci` trên môi trường đang dùng chỉ để có vẻ sạch; lệnh này thay dependency tree. Không dùng `npx` kéo thêm package hoặc tải mọi engine. Bản công bố này **không có số đo dung lượng một lượt cài sạch** để áp dụng cho mọi máy: phải ước tính bằng lockfile, cache hiện có và browser đúng phiên bản trước khi chạy. Nếu chưa biết mức tăng tối đa hoặc không giữ được dự trữ thì dừng phần cài và báo phần thiếu. Nếu bất kỳ ước tính hoặc tổng lượt cài vượt 1 GB, thông báo nổi bật **LỚN HƠN 1 GB** kèm số/khoảng; kích thước source/font không phải ước tính cài dependency.
@@ -47,6 +47,8 @@ node ui-remake/run.mjs --config ui-remake/examples/selftest.json --out artifacts
 Selftest có **11 controls**: 5 positive (minimum, phone, tablet, desktop, tiếng Việt dài) và 6 negative (dịch vị trí, sai palette, overlay trong suốt, target nhỏ, sai font, overflow). Selftest PASS nghĩa là từng kết quả đo khớp expectation PASS/FAIL; negative controls phải thực sự FAIL phép đo. Đây là fixture, không phải màn hình thanh toán đã được làm lại hoặc nghiệm thu ứng dụng.
 
 Overlay trong suốt là phản ví dụ quan trọng: pixel diff có thể bằng **0** nhưng control không bấm tới được, nên kiểm responsive phải FAIL. Một điểm số ảnh không thay kiểm tương tác. Selftest hiện được xác minh trên **Chromium**; không suy PASS Firefox/WebKit. `browser` cho phép `chromium` (mặc định), `firefox`, `webkit` nếu engine đó đã có; runner không tự cài.
+
+Với Chromium, runner và browser tests dùng explicit `channel: "chromium"` để tái dùng full browser, khớp CI đang cài `--no-shell`; không cần tải thêm headless-shell. Channel nằm trong report và contract hash. Reference approval tạo bằng chính sách cũ phải được lập kế hoạch và duyệt lại; không tự chép hash mới vào quyết định cũ. Firefox/WebKit giữ launch mặc định và phải được hiệu chuẩn riêng.
 
 ## 3. Chuẩn bị reference và config thật
 
@@ -70,7 +72,7 @@ Sao chép [screen-remake.template.json](examples/screen-remake.template.json#L1)
 | `designUrl` | HTTPS của thiết kế gốc, metadata |
 | `actualSourceRoot`, `dataMode`, `serverRecipe` | Root source app khai báo; `mock`; recipe khởi động rõ ràng. Runner không khởi động server app/reference hộ người chạy |
 | `clock` | Chuỗi thời điểm ISO cố định cho lần capture |
-| `browser` | `chromium` / `firefox` / `webkit`, tùy chọn |
+| `browser` | `chromium` / `firefox` / `webkit`, tùy chọn; Chromium dùng full channel đã khóa trong contract |
 | `referenceFiles` | Danh sách file nguồn/assets/raw/normalized/CSS cần đóng băng, đường dẫn trong root code; không tự khám phá đủ dependency của HTML |
 | `referenceApproval` | `by`, `at`, `sourceSha256`, `contractSha256` gắn quyết định duyệt thật, theo bước dưới |
 | `defaults`, `cases` | Default và 1–32 case; mỗi case có `id` duy nhất, `viewport`, hai target và phép đo |
