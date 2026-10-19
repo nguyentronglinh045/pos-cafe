@@ -6,7 +6,8 @@ import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import { createServer } from 'node:http';
 import { parseArgs, selectMatrix, assessSelftest, REQUIRED_RULES, TARGET_CHECK_NAMES,
-  prepareReportPath, writeNewReport, verifySource, assertPortFree, startDevServer, stopDevServer } from './runtime.mjs';
+  prepareReportPath, writeNewReport, verifySource, assertPortFree, startDevServer, stopDevServer,
+  runAuditMatrix, getDevServerDiagnostics } from './runtime.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const config = JSON.parse(fs.readFileSync(path.join(root, 'ui-audit', 'config.json'), 'utf8'));
@@ -168,4 +169,59 @@ test('only local explicit mock environments are accepted for the app audit', asy
   await assert.rejects(startDevServer({ ...serverConfig(port, 'ready'), baseUrl: 'https://example.com' }, root), /local HTTP/);
   const cfg = serverConfig(port, 'ready'); cfg.devServer.env.VITE_DATA_MODE = 'supabase';
   await assert.rejects(startDevServer(cfg, root), /explicitly use mock/);
+});
+
+test('navigation, detector and screenshot errors retain partial findings and continue the configured matrix', async () => {
+  const retained = [], closed = [], checkpoints = [], failures = [];
+  const browser = { newContext: async () => ({ close: async () => { closed.push(true); } }) };
+  const targets = ['navigation', 'detector', 'screenshot', 'healthy'].map(name => ({ name }));
+  const result = await runAuditMatrix({ browser, targets, viewports: [{ name: 'tablet', width: 1024, height: 768 }],
+    onFailure: failure => failures.push(failure), onProgress: progress => checkpoints.push(progress),
+    runTarget: async ({ target, stage }) => {
+      stage(target.name);
+      if (target.name === 'screenshot' || target.name === 'healthy') retained.push({ target: target.name });
+      if (target.name !== 'healthy') throw new Error(`seeded ${target.name} failure\nextra stack detail`);
+    } });
+  assert.equal(result.expectedPairs, 4);
+  assert.equal(result.attemptedPairs, 4);
+  assert.equal(result.completedPairs, 1);
+  assert.equal(closed.length, 4);
+  assert.deepEqual(retained.map(finding => finding.target), ['screenshot', 'healthy']);
+  assert.deepEqual(failures.map(failure => failure.stage), ['navigation', 'detector', 'screenshot']);
+  assert.equal(checkpoints.length, 4);
+  assert.deepEqual(checkpoints.map(progress => progress.completedPairs), [0, 0, 0, 1]);
+  assert(failures.every(failure => !failure.detail.includes('\n')));
+});
+
+test('context creation/cleanup failures are incomplete pairs and do not abort later states', async () => {
+  let created = 0, visited = 0;
+  const browser = { newContext: async () => {
+    const index = created++;
+    if (index === 0) throw new Error('SEEDED_CONTEXT_CREATE');
+    return { close: async () => { if (index === 1) throw new Error('SEEDED_CONTEXT_CLOSE'); } };
+  } };
+  const result = await runAuditMatrix({ browser, targets: ['first', 'second', 'third'].map(name => ({ name })),
+    viewports: [{ name: 'tablet', width: 1024, height: 768 }], runTarget: async () => { visited++; } });
+  assert.equal(created, 3);
+  assert.equal(visited, 2);
+  assert.equal(result.attemptedPairs, 3);
+  assert.equal(result.completedPairs, 1);
+  assert.deepEqual(result.failures.map(failure => failure.stage), ['context', 'context-cleanup']);
+});
+
+test('owned server diagnostics remain available and bounded after startup becomes ready', async () => {
+  const port = await freePort(), cfg = serverConfig(port, 'ready');
+  cfg.devServer.command = `"${process.execPath}" -e "process.stdout.write('A'.repeat(6000)+'SAFE_DIAGNOSTIC'); setInterval(()=>process.stdout.write('AFTER_READY'),25); import('./ui-audit/fixtures/lifecycle-server.mjs')"`;
+  let child;
+  try {
+    child = await startDevServer(cfg, root);
+    await new Promise(resolve => setTimeout(resolve, 80));
+    const diagnostic = getDevServerDiagnostics(child);
+    assert.equal(diagnostic.pid, child.pid);
+    assert(diagnostic.tail.length <= 4096);
+    assert(diagnostic.tail.includes('SAFE_DIAGNOSTIC'));
+    assert(diagnostic.tail.includes('AFTER_READY'));
+    assert.equal(getDevServerDiagnostics(null), null);
+  } finally { await stopDevServer(child); }
+  await portReleased(cfg.baseUrl);
 });

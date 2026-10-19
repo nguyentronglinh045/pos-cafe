@@ -26,7 +26,7 @@
     ".github/workflows/frontend-preview.yml": "e8dcbcba82bda664c1ff2265b241c13111df3c9f2a8d893b3fd21539df0000b4",
     "scripts/project-preview.mjs": "035cb6f2aa4efc6f9022b45fcb61a3e7f94d97bed5c93085e7603c145633f802",
     "scripts/project-release.mjs": "43f3e6b0bf8739a66113ab669bb44279e20e0272d57122b579f907ebcdf79b54",
-    "scripts/project-ui-results.mjs": "247dff789ecf504ec91a13d128aedbe7be996696ad5ba644c13b07706db4e347"
+    "scripts/project-ui-results.mjs": "bf4aee4b2fbd0ab03976afa156db346ec2f762aecf77e67c6a91db8e6b667372"
   },
   "preview": {
     "projectId": "prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en",

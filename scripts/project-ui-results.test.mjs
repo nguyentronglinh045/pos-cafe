@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createHash } from 'node:crypto';
 import { mkdtempSync, mkdirSync, writeFileSync, symlinkSync, realpathSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { tmpdir, platform, release, arch } from 'node:os';
 import { join, dirname } from 'node:path';
 import { REMAKE_TEST_FILES, REMAKE_CONTROLS, AUDIT_RULES, AUDIT_TARGET_CHECKS, AUDIT_SOURCE_FILES,
   uiTestInventory, readUIFile, readUIJSON, requireFreshUIOutput, uiEvidenceContext, remakeSelftestCounts, auditSelftestCounts } from './project-ui-results.mjs';
@@ -14,7 +14,7 @@ function control() {
   const image = Buffer.alloc(33); Buffer.from([137,80,78,71,13,10,26,10]).copy(image);image.write('IHDR',12);image.writeUInt32BE(568,16);image.writeUInt32BE(320,20);
   const cases = Object.entries(REMAKE_CONTROLS).map(([id,selftestExpectation]) => ({id,selftestExpectation,viewport:{width:568,height:320},
     thresholds:{channelThreshold:0,maxDiffRatio:0,geometryTolerancePx:0,minTargetPx:44}}));
-  const expected = {root:'/synthetic',head:sha,...environment,files:Object.values(AUDIT_SOURCE_FILES).map(path => ({path,bytes:10,sha256:digest})),
+  const expected = {root:'/synthetic',head:sha,...environment,auditOS:`${platform()} ${release()} ${arch()}`,files:Object.values(AUDIT_SOURCE_FILES).map(path => ({path,bytes:10,sha256:digest})),
     sourceSha256:null,config:{clock:'2026-10-19T03:00:00.000Z',cases},configSha256:digest,referenceSourceSha256:digest,contractSha256:digest,
     referenceFiles:[],fontProvenance:{sourceCommit:sha}};
   expected.sourceSha256=hash(JSON.stringify(expected.files));
@@ -36,8 +36,9 @@ function control() {
 function auditControl() {
   const {expected}=control();
   const report={version:1,kind:'ui-audit-selftest',status:'PASS',productAcceptance:'NOT_ASSESSED',startedAt:new Date(1500).toISOString(),finishedAt:new Date(2500).toISOString(),
+    sourcePreserved:true,errors:[],
     expectedFindingCount:23,findingCount:23,requiredRules:[...AUDIT_RULES],detectedRules:[...AUDIT_RULES],missingRules:[],
-    targetChecks:Object.fromEntries(AUDIT_TARGET_CHECKS.map(key=>[key,true])),source:{head:sha,...Object.fromEntries(Object.keys(AUDIT_SOURCE_FILES).map(key=>[key,digest]))},environment:{...environment}};
+    targetChecks:Object.fromEntries(AUDIT_TARGET_CHECKS.map(key=>[key,true])),source:{head:sha,...Object.fromEntries(Object.keys(AUDIT_SOURCE_FILES).map(key=>[key,digest]))},environment:{...environment,os:expected.auditOS}};
   return {report,expected};
 }
 
@@ -98,6 +99,10 @@ for(const [name,edit] of [
   ['extra untrusted target control',r=>r.targetChecks.FAKE_PRIVATE=true],['wrong detector hash',r=>r.source.detectorSha256='0'.repeat(64)],
   ['wrong helper hash',r=>r.source.runtimeSha256='0'.repeat(64)],['wrong HEAD',r=>r.source.head='9'.repeat(40)],
   ['stale report',r=>r.startedAt=new Date(999).toISOString()],['wrong browser',r=>r.environment.engine='firefox'],['overall FAIL',r=>r.status='FAIL'],
+  ['short platform instead of full audit OS',r=>r.environment.os=process.platform],['changed OS release',r=>r.environment.os=`${platform()} another-release ${arch()}`],
+  ['OS prefix with extra data',r=>r.environment.os+=' extra'],['wrong architecture',r=>r.environment.os=`${platform()} ${release()} another-architecture`],
+  ['source drift flag',r=>r.sourcePreserved=false],['missing source preservation',r=>delete r.sourcePreserved],
+  ['runtime error list',r=>r.errors=['SEEDED_FAILURE']],['missing runtime error list',r=>delete r.errors],
 ]) test(`audit evidence refuses ${name}`,()=>{const {report,expected}=auditControl();edit(report);assert.throws(()=>auditSelftestCounts(report,expected,times));});
 
 test('bounded readers refuse traversal, symlink parents, malformed JSON, oversized files and reused output',()=>{
@@ -130,6 +135,7 @@ test('context binds canonical source records, font bytes, installed runtime and 
   put('package-lock.json',JSON.stringify({packages:{'node_modules/playwright':{version:'1.60.0'}}}));files.add('package-lock.json');
   const expected=uiEvidenceContext(root,[...files],sha);
   assert.equal(expected.root,realpathSync(root));assert.equal(expected.playwrightVersion,'1.60.0');assert.equal(expected.files.length,files.size);
+  assert.equal(expected.os,process.platform);assert.equal(expected.auditOS,`${platform()} ${release()} ${arch()}`);
   assert.equal(expected.sourceSha256,hash(JSON.stringify(expected.files)));
   const cases=config.cases.map(item=>({...config.defaults,...item,thresholds:{...config.defaults.thresholds,...item.thresholds}}));
   assert.equal(expected.contractSha256,hash(JSON.stringify({kind:'selftest',referenceSourceSha256:expected.referenceSourceSha256,clock:config.clock,browser:'chromium',channel:'chromium',cases})));

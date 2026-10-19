@@ -2,6 +2,7 @@
 import { createHash } from 'node:crypto';
 import { lstatSync, readFileSync, realpathSync } from 'node:fs';
 import { resolve, relative, isAbsolute, sep } from 'node:path';
+import { platform, release, arch } from 'node:os';
 
 const reject = () => { throw new Error('PROJECT_CI_UI_RESULT_INVALID'); };
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -86,7 +87,7 @@ export function uiEvidenceContext(root, paths, head, node = process.version, os 
   const playwrightVersion = readUIJSON(root,'node_modules/playwright/package.json',1024 ** 2).version;
   const lockedVersion = readUIJSON(root,'package-lock.json',4 * 1024 ** 2).packages?.['node_modules/playwright']?.version;
   if (!/^\d+\.\d+\.\d+$/.test(playwrightVersion) || playwrightVersion !== lockedVersion) reject();
-  return {root:realpathSync(root),head,node,os,files,sourceSha256:hash(JSON.stringify(files)),config:cfg,configSha256:hash(configBytes),
+  return {root:realpathSync(root),head,node,os,auditOS:`${platform()} ${release()} ${arch()}`,files,sourceSha256:hash(JSON.stringify(files)),config:cfg,configSha256:hash(configBytes),
     referenceFiles,referenceSourceSha256,contractSha256,fontProvenance,playwrightVersion};
 }
 
@@ -161,13 +162,14 @@ export function remakeSelftestCounts(report, expected, {startedAfter,finishedBef
 
 export function auditSelftestCounts(report, expected, {startedAfter,finishedBefore}) {
   if (!report || report.version !== 1 || report.kind !== 'ui-audit-selftest' || report.status !== 'PASS'
-    || report.productAcceptance !== 'NOT_ASSESSED' || report.error !== undefined || report.expectedFindingCount !== 23 || report.findingCount !== 23
+    || report.productAcceptance !== 'NOT_ASSESSED' || report.error !== undefined || report.sourcePreserved !== true || !same(report.errors,[])
+    || typeof expected.auditOS !== 'string' || report.expectedFindingCount !== 23 || report.findingCount !== 23
     || !sameSet(report.requiredRules,AUDIT_RULES) || !unique(report.detectedRules)
     || report.detectedRules.length > 32 || report.detectedRules.some(rule => typeof rule !== 'string' || !/^[a-z][a-z-]{0,63}$/.test(rule))
     || AUDIT_RULES.some(rule => !report.detectedRules.includes(rule)) || !same(report.missingRules,[])
     || !report.targetChecks || !sameSet(Object.keys(report.targetChecks),AUDIT_TARGET_CHECKS)
     || Object.values(report.targetChecks).some(value => value !== true)) reject();
-  currentTime(report,startedAfter,finishedBefore); environment(report.environment,expected);
+  currentTime(report,startedAfter,finishedBefore); environment(report.environment,{...expected,os:expected.auditOS});
   if (report.source?.head !== expected.head) reject();
   for (const [field,path] of Object.entries(AUDIT_SOURCE_FILES)) {
     const record = expected.files.find(item => item.path === path);

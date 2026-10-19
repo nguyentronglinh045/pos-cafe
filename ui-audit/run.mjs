@@ -19,8 +19,10 @@
  * not a URL. See `states` in config.json and README.md.
  */
 import { platform, release, arch } from 'node:os';
+import { createHash } from 'node:crypto';
 import { parseArgs, selectMatrix, sourceIdentity, verifySource, assessSelftest, TARGET_CHECK_NAMES,
-  prepareReportPath, writeNewReport, loadPlaywright, startDevServer, stopDevServer } from './runtime.mjs';
+  prepareReportPath, writeNewReport, loadPlaywright, startDevServer, stopDevServer,
+  getDevServerDiagnostics, runAuditMatrix, setupFailure } from './runtime.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL, fileURLToPath } from 'node:url';
@@ -114,14 +116,16 @@ function tally(findings, field) {
   return [...m.entries()].sort((a, b) => b[1] - a[1]);
 }
 
-function writeMarkdown(all, targets, viewports, setupFailures = []) {
+function writeMarkdown(all, targets, viewports, setupFailures = [], coverage = {}) {
   const fresh = all.filter((f) => !f.known);
   const lines = [];
   lines.push('# UI audit report', '');
   lines.push(`generated: ${new Date().toISOString()}`);
   lines.push(`targets: ${targets.length} x viewports: ${viewports.length}`);
   lines.push(`findings: ${all.length} total, ${fresh.length} not in baseline`, '');
-  lines.push(`setup failures: ${setupFailures.length}`, '');
+  lines.push(`setup failures: ${setupFailures.length}`);
+  lines.push(`coverage: ${coverage.completedPairs ?? 0}/${targets.length * viewports.length} completed`);
+  lines.push(`status: ${coverage.status || 'INCOMPLETE'}`, '');
 
   if (setupFailures.length) {
     lines.push('## Blocking setup failures', '');
@@ -130,6 +134,11 @@ function writeMarkdown(all, targets, viewports, setupFailures = []) {
     for (const failure of setupFailures)
       lines.push(`| ${failure.target} | ${failure.viewport} | ${failure.detail.replaceAll('|', '\\|')} |`);
     lines.push('');
+  }
+
+  if (coverage.serverDiagnostics?.tail && setupFailures.length) {
+    lines.push('## Owned server diagnostic tail (private runtime output)', '');
+    lines.push('```text', coverage.serverDiagnostics.tail.replaceAll('```', '[fence]').slice(-4096), '```', '');
   }
 
   lines.push('## By severity', '');
@@ -282,6 +291,31 @@ let browser = null;
 let exitCode = 0;
 const all = [];
 const setupFailures = [];
+const startedAt = new Date().toISOString();
+const environment = { node: process.version, os: `${platform()} ${release()} ${arch()}`,
+  engine: 'chromium', channel: 'chromium', browserVersion: null, playwrightVersion: null };
+const operationalSource = () => ({ ...sourceIdentity(here),
+  baselineSha256: createHash('sha256').update(fs.readFileSync(baselinePath)).digest('hex') });
+const source = { before: operationalSource(), after: null, preserved: null };
+let progress = { expectedPairs: targets.length * viewports.length, attemptedPairs: 0, completedPairs: 0 };
+let finishedAt = null;
+const status = () => !finishedAt || setupFailures.length || progress.completedPairs !== progress.expectedPairs ? 'INCOMPLETE' : 'COMPLETE';
+const checkpoint = () => {
+  const runStatus = { version: 1, kind: 'ui-audit-run', status: status(), productAcceptance: 'NOT_ASSESSED',
+    startedAt, finishedAt, ...progress, setupFailures, source, environment, serverDiagnostics: getDevServerDiagnostics(devServer) };
+  // Keep the historical finding-array contract; completeness is explicit in the
+  // Markdown and the additional ignored status receipt, never inferred from [].
+  fs.writeFileSync(path.join(here, 'report.json'), JSON.stringify(all, null, 2));
+  fs.writeFileSync(path.join(outDir, 'status.json'), JSON.stringify(runStatus, null, 2));
+  writeMarkdown(all, targets, viewports, setupFailures, runStatus);
+};
+const recordFailure = failure => {
+  setupFailures.push(failure);
+  exitCode = 2;
+  console.log(`SETUP-FAIL ${failure.viewport.padEnd(8)} ${failure.target.padEnd(24)} ${failure.detail}`);
+  const diagnostics = getDevServerDiagnostics(devServer);
+  if (diagnostics?.tail) console.log(`Owned dev server diagnostic tail (max4096 chars):\n${diagnostics.tail}`);
+};
 let stopping = false;
 const cleanup = async () => {
   try { await browser?.close(); }
@@ -290,110 +324,86 @@ const cleanup = async () => {
 for (const [signal, code] of [['SIGINT', 130], ['SIGTERM', 143]]) process.once(signal, async () => {
   if (stopping) return;
   stopping = true;
-  try { await cleanup(); } finally { process.exit(code); }
+  recordFailure(setupFailure('__run__', 'all', 'interrupted', new Error(signal)));
+  try { await cleanup(); }
+  finally { finishedAt = new Date().toISOString(); checkpoint(); process.exit(code); }
 });
 
+checkpoint();
+let outerStage = 'server-start';
 try {
   devServer = await startDevServer(cfg, root, { onStarted: child => { devServer = child; } });
-
-  const { chromium } = await loadPlaywright();
-  browser = await chromium.launch({ channel: 'chromium', headless: true });
+  outerStage = 'browser-start';
+  const playwright = await loadPlaywright();
+  environment.playwrightVersion = playwright.version;
+  browser = await playwright.chromium.launch({ channel: 'chromium', headless: true });
+  environment.browserVersion = browser.version();
   const ctxOpts = {};
   if (cfg.storageState && fs.existsSync(path.join(here, cfg.storageState))) {
     ctxOpts.storageState = path.join(here, cfg.storageState);
   }
-
-  for (const vp of viewports) {
-    for (const target of targets) {
-      // A fresh context per target: pos-cafe persists store pairing and session
-      // in localStorage, so a reused context would skip the landing screen and
-      // make every target after the first one order-dependent.
-      const ctx = await browser.newContext({
-        ...ctxOpts,
-        viewport: { width: vp.width, height: vp.height },
-        deviceScaleFactor: 1,
-      });
+  outerStage = 'matrix';
+  await runAuditMatrix({ browser, targets, viewports, contextOptions: ctxOpts,
+    onFailure: recordFailure,
+    onProgress: ({ failures: _failures, ...current }) => { progress = current; checkpoint(); },
+    runTarget: async ({ context: ctx, target, viewport: vp, stage }) => {
+      // Each state has a fresh context; store pairing cannot leak between cases.
+      stage('detector-install');
+      await ctx.addInitScript({ content: auditSrc });
+      const page = await ctx.newPage();
+      const url = new URL(target.route, cfg.baseUrl).toString();
+      stage('navigation');
       try {
-        // audit.js is installed before any page script, so it survives client-side
-        // navigation and stays callable at any point in a state's step sequence.
-        await ctx.addInitScript({ content: auditSrc });
-        const page = await ctx.newPage();
-
-        const url = new URL(target.route, cfg.baseUrl).toString();
-        let stepError = null;
-        try {
-          await page.goto(url, { waitUntil: 'networkidle', timeout: cfg.timeout || 30000 });
-        } catch {
-          await page.goto(url, { waitUntil: 'domcontentloaded' });
-        }
-        if (cfg.waitFor) await page.waitForSelector(sel(cfg.waitFor), { timeout: 10000 });
-
-        try {
-          await runSteps(page, target.steps);
-        } catch (err) {
-          stepError = String(err.message).split('\n')[0];
-        }
-
-        await page.waitForTimeout(cfg.settleMs ?? 400); // let animations finish
-        await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
-
-        if (stepError) {
-          setupFailures.push({ target: target.name, viewport: vp.name, detail: stepError });
-          console.log(`SETUP-FAIL ${vp.name.padEnd(8)} ${target.name.padEnd(24)} ${stepError}`);
-          exitCode = Math.max(exitCode, 2);
-          continue;
-        }
-
-        const raw = await page.evaluate((o) => window.__uiAudit(o), {
-          minTarget: cfg.minTarget ?? 24,
-          minFont: cfg.minFont ?? 10,
-          contrastMin: cfg.contrastMin ?? 4.5,
-          checkContrast: cfg.checkContrast !== false,
-          ignore: cfg.ignore || '',
-        });
-
-        // null unless a drawer/modal was up, in which case only that layer was audited
-        const scope = await page.evaluate(() => window.__uiAuditScope || null);
-
-        for (const f of raw) {
-          if (severityOverride[f.rule]) f.severity = severityOverride[f.rule];
-          f.scope = scope;
-          f.target = target.name;
-          f.route = target.route;
-          f.viewport = vp.name;
-          f.key = keyOf(f, target, vp, collapse);
-        }
-        const grouped = collapse ? collapseFindings(raw) : raw.map((f) => ({ ...f, count: 1, examples: [f.sel] }));
-        for (const f of grouped) {
-          f.known = baseline.has(f.key);
-          all.push(f);
-        }
-
-        const fresh = grouped.filter((f) => !f.known);
-        // Keep evidence for accepted findings too. The review workflow requires
-        // opening the annotated element before classifying a result; limiting
-        // screenshots to regressions left `out/` empty on a clean baseline run.
-        if (grouped.length) {
-          await page.evaluate((fs2) => window.__uiAuditMark(fs2), grouped);
-          const name = target.name.replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '') || 'root';
-          await page.screenshot({ path: path.join(outDir, `${name}__${vp.name}.png`), fullPage: true });
-        }
-
-        const bad = fresh.filter((f) => failOn.has(f.severity)).length;
-        console.log(
-          `${bad ? 'FAIL' : ' ok '}  ${vp.name.padEnd(8)} ${target.name.padEnd(24)} ` +
-            `${grouped.length} finding(s), ${fresh.length} new` +
-            (scope ? `  [scoped to top layer ${scope}]` : ''),
-        );
-      } finally { await ctx.close(); }
-    }
-  }
+        await page.goto(url, { waitUntil: 'networkidle', timeout: cfg.timeout || 30000 });
+      } catch {
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: cfg.timeout || 30000 });
+      }
+      stage('steps');
+      if (cfg.waitFor) await page.waitForSelector(sel(cfg.waitFor), { timeout: 10000 });
+      await runSteps(page, target.steps);
+      stage('settle-fonts');
+      await page.waitForTimeout(cfg.settleMs ?? 400);
+      await page.evaluate(() => document.fonts && document.fonts.ready);
+      stage('detector');
+      const raw = await page.evaluate((o) => window.__uiAudit(o), {
+        minTarget: cfg.minTarget ?? 24,
+        minFont: cfg.minFont ?? 10,
+        contrastMin: cfg.contrastMin ?? 4.5,
+        checkContrast: cfg.checkContrast !== false,
+        ignore: cfg.ignore || '',
+      });
+      const scope = await page.evaluate(() => window.__uiAuditScope || null);
+      for (const finding of raw) {
+        if (severityOverride[finding.rule]) finding.severity = severityOverride[finding.rule];
+        Object.assign(finding, { scope, target: target.name, route: target.route, viewport: vp.name,
+          key: keyOf(finding, target, vp, collapse) });
+      }
+      const grouped = collapse ? collapseFindings(raw) : raw.map(f => ({ ...f, count: 1, examples: [f.sel] }));
+      for (const finding of grouped) { finding.known = baseline.has(finding.key); all.push(finding); }
+      // Preserve detected findings even if annotation/screenshot subsequently fails.
+      const fresh = grouped.filter(finding => !finding.known);
+      if (grouped.length) {
+        stage('annotation');
+        await page.evaluate(fs2 => window.__uiAuditMark(fs2), grouped);
+        stage('screenshot');
+        const name = target.name.replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '') || 'root';
+        await page.screenshot({ path: path.join(outDir, `${name}__${vp.name}.png`), fullPage: true });
+      }
+      const bad = fresh.filter(finding => failOn.has(finding.severity)).length;
+      console.log(`${bad ? 'FAIL' : ' ok '}  ${vp.name.padEnd(8)} ${target.name.padEnd(24)} ` +
+        `${grouped.length} finding(s), ${fresh.length} new` + (scope ? `  [scoped to top layer ${scope}]` : ''));
+    },
+  });
+} catch (error) {
+  recordFailure(setupFailure('__run__', 'all', outerStage, error));
 } finally {
-  await cleanup();
+  try { await cleanup(); }
+  catch (error) { recordFailure(setupFailure('__run__', 'all', 'cleanup', error)); }
+  try { source.after = operationalSource(); verifySource(source.before, source.after); source.preserved = true; }
+  catch (error) { source.preserved = false; recordFailure(setupFailure('__run__', 'all', 'source-validation', error)); }
+  finishedAt = new Date().toISOString();
+  checkpoint();
 }
-
-fs.writeFileSync(path.join(here, 'report.json'), JSON.stringify(all, null, 2));
-writeMarkdown(all, targets, viewports, setupFailures);
 
 console.log('');
 console.log(`total ${all.length} finding(s): ${tally(all, 'severity').map(([k, v]) => `${k}=${v}`).join(' ') || 'none'}`);
@@ -427,7 +437,11 @@ if (blocking.length) {
   }
   console.log(`\nannotated screenshots: ${path.relative(process.cwd(), outDir)}`);
   console.log('Classify the annotated findings; baseline changes require explicit owner approval.');
-  process.exit(1);
+  process.exit(exitCode || 1);
 }
-console.log('\nno new UI anomalies');
-process.exit(exitCode);
+if (exitCode) {
+  console.log('\nAudit INCOMPLETE; no clean result is claimed.');
+  process.exit(exitCode);
+}
+console.log('\nno new UI anomalies at configured blocking severities; warnings/info remain in the report');
+process.exit(0);

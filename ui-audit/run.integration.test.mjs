@@ -4,8 +4,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { randomUUID, createHash } from 'node:crypto';
-import { spawnSync } from 'node:child_process';
+import { spawnSync, execFileSync } from 'node:child_process';
+import { platform, release, arch } from 'node:os';
 import { REQUIRED_RULES, TARGET_CHECK_NAMES } from './runtime.mjs';
+import { auditSelftestCounts } from '../scripts/project-ui-results.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const runner = path.join(root, 'ui-audit', 'run.mjs');
@@ -16,7 +18,18 @@ const outputPath = label => `artifacts/ui-audit/test-cli-${label}-${randomUUID()
 
 test('real browser selftest emits source-bound PASS and refuses an existing report', () => {
   const output = outputPath('chromium');
+  // Derive the consumer's facts independently, before launching the producer.
+  // In particular, its full audit OS is not the remake runner's platform field.
+  const auditFiles = ['audit.js','demo-buggy.html','effective-targets.html','run.mjs','config.json','runtime.mjs'];
+  const moduleUrl = process.env.UI_AUDIT_PLAYWRIGHT_MODULE || import.meta.resolve('playwright');
+  const expected = {head:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),node:process.version,os:platform(),
+    auditOS:`${platform()} ${release()} ${arch()}`,
+    playwrightVersion:JSON.parse(fs.readFileSync(fileURLToPath(new URL('./package.json',moduleUrl)),'utf8')).version,
+    files:auditFiles.map(file=>{const bytes=fs.readFileSync(path.join(root,'ui-audit',file));
+      return {path:`ui-audit/${file}`,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')};})};
+  const startedAfter = Date.now();
   const result = run(['--selftest', '--selftest-report', output]);
+  const finishedBefore = Date.now();
   assert.equal(result.status, 0, result.stdout + result.stderr);
   assert.match(result.stdout, /selftest: 23 finding\(s\)/);
   assert.match(result.stdout, /selftest OK/);
@@ -40,6 +53,12 @@ test('real browser selftest emits source-bound PASS and refuses an existing repo
   for (const [field, file] of Object.entries({ detectorSha256: 'audit.js', fixtureSha256: 'demo-buggy.html',
     effectiveTargetsSha256: 'effective-targets.html', runnerSha256: 'run.mjs', configSha256: 'config.json', runtimeSha256: 'runtime.mjs' })) {
     assert.equal(report.source[field], createHash('sha256').update(fs.readFileSync(path.join(root, 'ui-audit', file))).digest('hex'));
+  }
+  assert.deepEqual(auditSelftestCounts(report,expected,{startedAfter,finishedBefore}),
+    {run:1,pass:1,fail:0,skip:0,detectedFindings:23,targetControls:16});
+  for (const edit of [r=>r.environment.os=platform(),r=>r.sourcePreserved=false,r=>r.errors.push('SEEDED_CONSUMER_REJECTION')]) {
+    const corrupted=structuredClone(report);edit(corrupted);
+    assert.throws(()=>auditSelftestCounts(corrupted,expected,{startedAfter,finishedBefore}));
   }
   const overwrite = run(['--selftest', '--selftest-report', output]);
   assert.notEqual(overwrite.status, 0);

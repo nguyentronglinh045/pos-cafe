@@ -51,6 +51,14 @@ khác trên máy thay cho version module thực đã dùng.
 - `ui-audit/report.md`: tổng hợp finding và setup failure.
 - `ui-audit/report.json`: finding dạng máy đọc.
 - `ui-audit/out/*.png`: ảnh annotated của state/viewport có finding, kể cả baseline.
+- `ui-audit/out/status.json`: receipt của lượt hiện tại, expected/attempted/completed
+  pairs, setup failures, thời gian, hash nguồn/baseline trước–sau và runtime thực.
+
+Runner ghi checkpoint sau từng cặp. Report mới bắt đầu `INCOMPLETE` và chỉ thành
+`COMPLETE` khi đủ matrix, không có setup/runtime/cleanup failure. Lỗi navigation,
+detector hoặc screenshot được ghi rõ stage; runner thử các cặp còn lại, giữ finding
+đã đo và trả exit2 nếu coverage thiếu. Diagnostic tail tối đa4096ký tự chỉ lấy từ
+server do runner tạo. `COMPLETE` nói về coverage, không phải nghiệm thu UI.
 
 Các output trên bị git-ignore. Mở ảnh của **lượt hiện tại** trước khi kết luận
 selector là lỗi thật; ảnh của state không sinh finding trong lượt mới có thể là
@@ -87,8 +95,12 @@ hàng thật. Ba fixture/state compatibility/required-PIN trên nhánh permissio
 
 `baseline.json` là tập key `state :: viewport :: rule :: selector`, không phải ảnh
 thiết kế. Phiên bản được publish giữ nguyên 36 key lịch sử từ commit
-`d78c929c9ce6f6c09790bbfa4135b1cc47d0f1b1` (16/09/2026), SHA256
-`79fe315c36c21db23a66724939b085e5ac4065d16780e2a0d26e1f9da5c87080`.
+`d78c929c9ce6f6c09790bbfa4135b1cc47d0f1b1` (16/09/2026). File Git lịch sử
+dùng LF (blob `2861d0ef1d0d556afb4508f4d5344ce8583171e1`, SHA256
+`bf94db0428557376481f01a3cabea474c73eef156a95218ae09cbf960d4ffd42`).
+File được publish giữ bytes CRLF của checkout nguồn hiện có, SHA256
+`79fe315c36c21db23a66724939b085e5ac4065d16780e2a0d26e1f9da5c87080`;
+khác line ending, cùng nội dung 36 key. Không gọi hai raw hash là cùng một file bytes.
 Đó là mốc chặn hồi quy đã ghi nhận; không có nghĩa các finding đã được sửa.
 
 **Không tự chạy `npm run ui-audit:update`.** Chỉ chạy sau khi chủ dự án xem danh

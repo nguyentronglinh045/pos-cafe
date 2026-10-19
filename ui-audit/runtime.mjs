@@ -226,6 +226,50 @@ export async function stopDevServer(child) {
   }
 }
 
+const serverLogs = new WeakMap();
+export function getDevServerDiagnostics(child) {
+  if (!child) return null;
+  return { pid: child.pid ?? null, exitCode: child.exitCode, signalCode: child.signalCode,
+    tail: (serverLogs.get(child) || '').slice(-4096) };
+}
+
+export function setupFailure(target, viewport, stage, error) {
+  return { target, viewport, stage,
+    detail: `${stage}: ${String(error?.message || error).split('\n')[0]}`.slice(0, 1200) };
+}
+
+// Measurement errors are coverage failures, never empty clean measurements.
+// Retain previous findings and attempt the remaining configured pairs. Progress
+// callbacks can persist checkpoints before a later runtime failure or abort.
+export async function runAuditMatrix({ browser, targets, viewports, contextOptions = {}, runTarget,
+  onFailure = () => {}, onProgress = () => {} }) {
+  const failures = [];
+  const progress = { expectedPairs: targets.length * viewports.length, attemptedPairs: 0, completedPairs: 0 };
+  for (const viewport of viewports) {
+    for (const target of targets) {
+      let context, stage = 'context', failed = false;
+      const record = (error, at = stage) => {
+        failed = true;
+        const failure = setupFailure(target.name, viewport.name, at, error);
+        failures.push(failure); onFailure(failure);
+      };
+      progress.attemptedPairs += 1;
+      try {
+        context = await browser.newContext({ ...contextOptions,
+          viewport: { width: viewport.width, height: viewport.height }, deviceScaleFactor: 1 });
+        await runTarget({ context, target, viewport, stage: value => { stage = value; } });
+      } catch (error) { record(error); }
+      finally {
+        try { await context?.close(); }
+        catch (error) { record(error, 'context-cleanup'); }
+      }
+      if (!failed) progress.completedPairs += 1;
+      await onProgress({ ...progress, failures: [...failures] });
+    }
+  }
+  return { ...progress, failures };
+}
+
 export async function startDevServer(conf, root, { onStarted = () => {} } = {}) {
   const ds = conf.devServer;
   if (!ds || typeof ds.command !== 'string' || !ds.command.trim()) throw new Error('Audit needs its own devServer command');
@@ -237,8 +281,9 @@ export async function startDevServer(conf, root, { onStarted = () => {} } = {}) 
     stdio: ['ignore', 'pipe', 'pipe'], detached: process.platform !== 'win32', windowsHide: true });
   onStarted(child);
   let log = '', launchError;
+  serverLogs.set(child, log);
   child.once('error', error => { launchError = error; });
-  const append = data => { log = (log + String(data)).slice(-4096); };
+  const append = data => { log = (log + String(data)).slice(-4096); serverLogs.set(child, log); };
   child.stdout?.on('data', append);
   child.stderr?.on('data', append);
   try {
