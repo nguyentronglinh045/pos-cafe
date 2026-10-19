@@ -57,10 +57,21 @@ Hai reviewer không phải tác giả đã review và **APPROVE** trong phạm v
 
 Xử lý findings: F1 thêm hai mục proposal đúng chuẩn và trạng thái không còn câu hỏi chặn; F2 bổ sung setup/level/dữ liệu/file-testname cho từng TC, phân biệt source review với mutation runtime chưa chạy. Khuyến nghị network đã sửa tại `b926033`: chỉ chặn remote HTTP(S), không hứa sandbox WebSocket/mọi giao thức. Code không đổi qua các vòng sửa docs. Các bổ sung review/publication sau candidate này chỉ ghi metadata thực tế.
 
-Hiện chưa có owner nghiệm thu màn UI nào. Hai approval không tự xác nhận remote push, merge hay deploy.
+Hiện chưa có owner nghiệm thu màn UI nào. Hai approval không tự xác nhận merge hay deploy.
 
 Đường đọc giải thích cho chủ dự án: workflow → config/runner → capture/metrics → report. Đã chuẩn bị hướng dẫn này; chưa nhận xác nhận chủ dự án đã đọc hoặc hiểu code.
 
 ## Tài nguyên và cleanup
 
 Checkpoint cuối trước publication: C còn khoảng 182,50 GiB, D 92,24 GiB; không tạo WSL/Docker hay cài npm/browser. Evidence cuối giữ `candidate-02`; output thử cũ `development-01` + `candidate-01` có 92 files, tổng logical 2.883.552 bytes. Chủ dự án đã đồng ý xóa riêng hai thư mục này, nhưng lệnh native PowerShell bị bộ duyệt tự động từ chối với `blocked by policy`, kể cả sau xác minh đường dẫn và dùng literal paths. Chưa xóa, chưa có dung lượng thu hồi để báo; không đổi cách xóa để vượt chặn.
+
+## Publication và bàn giao
+
+Đã push hai nhánh riêng theo D1, tạo PR và đọc lại remote refs/PR base/HEAD:
+
+| Gói | Ref / xác minh | Đường dùng chung |
+| --- | --- | --- |
+| Công cụ | `workflow/stitch-ui-remake-code`, remote HEAD `340c903d60aa7f761cb05112ec75c81079350ee1`, base `main` | [PR #7](https://github.com/nguyentronglinh045/pos-cafe/pull/7) |
+| Workflow/spec | `workflow/stitch-ui-remake-docs`, lần push đầu `e5e7b43c3550230f5f87a6a76308d3633246b20e`, base `docs`; metadata publication bổ sung sau đó | [PR #8](https://github.com/nguyentronglinh045/pos-cafe/pull/8) và [điểm bắt đầu](../workflow/stitch-ui-remake/README.md) |
+
+Nhóm dùng tài liệu ở ref workflow docs và chạy công cụ ở ref workflow code, không mặc định chúng đã có trên `docs`/`main` trước merge. Hai PR đang OPEN; không merge hoặc gọi workflow deploy. POS light CI được GitHub tự kích hoạt cho push/PR code; trạng thái kiểm lúc ghi biên bản còn đang chạy, không coi kết quả unit/selftest local là CI PASS. Trạng thái CI mới nhất xem tại PR #7; các phép đo mới vẫn cần tự chạy theo môi trường của người dùng.
