@@ -3,5 +3,5 @@
 *.html text eol=lf
 config.json text eol=lf
 .gitattributes text eol=lf
-audit.js -text
-baseline.json -text
+audit.js -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+baseline.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
