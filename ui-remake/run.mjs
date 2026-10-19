@@ -166,6 +166,10 @@ export async function main(argv = process.argv.slice(2)) {
   const engine = cfg.browser || 'chromium';
   if (!['chromium','firefox','webkit'].includes(engine)) throw new Error('Unsupported browser engine');
   const palette = await readJson(resolve(here, 'palette-a-v1.json'));
+  const fontProvenance = await readJson(resolve(here,'fonts/provenance.json'));
+  const expectedFontFiles = ['BeVietnamPro-Regular.ttf','BeVietnamPro-Medium.ttf','BeVietnamPro-SemiBold.ttf','BeVietnamPro-Bold.ttf','OFL.txt'];
+  if (fontProvenance.files?.length !== expectedFontFiles.length || expectedFontFiles.some(name => fontProvenance.files.filter(f=>f.file===name).length!==1)) throw new Error('FONT_PROVENANCE_INVALID: expected four font weights and their license');
+  for (const font of fontProvenance.files) { const actual=await fileRecord(`ui-remake/fonts/${font.file}`);if(actual.sha256!==font.sha256 || actual.bytes!==font.bytes)throw new Error(`FONT_INTEGRITY_FAILED: ${font.file}`); }
   const refs = [];
   for (const path of [...new Set([...(cfg.referenceFiles || []), 'ui-remake/palette-a-v1.json', 'ui-remake/fonts/provenance.json', ...['Regular','Medium','SemiBold','Bold'].map(w => `ui-remake/fonts/BeVietnamPro-${w}.ttf`)])].sort()) refs.push(await fileRecord(path));
   for (const item of cfg.cases) {
@@ -194,6 +198,7 @@ export async function main(argv = process.argv.slice(2)) {
   try {
     const playwright = await loadPlaywright(); browser = await playwright[engine].launch({ headless:true });
     report.environment.browserVersion = browser.version();
+    report.environment.fontSourceCommit=fontProvenance.sourceCommit;
     report.environment.playwrightModule = process.env.UI_REMAKE_PLAYWRIGHT_MODULE || 'playwright';
     const moduleUrl=process.env.UI_REMAKE_PLAYWRIGHT_MODULE || import.meta.resolve('playwright');
     report.environment.playwrightVersion=(await readJson(fileURLToPath(new URL('./package.json',moduleUrl)))).version;
