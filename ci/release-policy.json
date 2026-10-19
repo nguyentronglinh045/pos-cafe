@@ -10,13 +10,13 @@
   "trustedFiles": {
     ".github/workflows/ci.yml": "14fc00e62e1ca40e6cc71b004085ba7d411e6ad9bd0a3aed4c1185d644498705",
     "scripts/project-ci-launch.mjs": "b59418a2e3613fc3fdc94c8b83d9b52879cdad1cc6f9d9ab77d3311860b4c3ac",
-    "scripts/project-ci.mjs": "cfd8954aa0852ae50392a9c5f9393c91dbc8314131642eedf76b6129929d94d0",
-    "scripts/project-ci-results.mjs": "a6e7a0d3faf370ac66e336c4c341278859c82ccc2b0c15dca35a30666f2161ae",
+    "scripts/project-ci.mjs": "ff144c1bc12e2f50bb36c90019f75f7af52e8ca3ff7b6d663030c173a4c6995f",
+    "scripts/project-ci-results.mjs": "e436b5981f18e38ca92212bfc4c4a4c0c87c7fbf5af23f0223a8f0be44ef663a",
     "vitest.config.ts": "1cb32e60581f3bc8c6f2a6e487e2c337a89d40f3ae966b82896792ce5b077042",
     "vitest.project-tooling.config.ts": "a85416abe41bd3bdb8b70262c82b102be5c48d1e1b5edfdad0eaf7ad9e2b9c31",
     "playwright.config.ts": "ab6f474cd4094ede9c33ff2f6fc376f97e28587413fc5c69fbf0d97c5a17d838",
     "ci/smoke-applicability.json": "d6e979e708c75a891f809e797a6d4d127269b7e716b9109a51aab46d1c2e7b3e",
-    "package.json": "c444db7f1e05ce130d88752ce27f8bf143f395696f9bf18054f265cb8ef54ca0",
+    "package.json": "a7fc92bc3d0d48d9fb63b44b1f44fd0aa5ec4f109aee86ca5891e7c0cd98d4e6",
     "package-lock.json": "1b6d400213384cd736ee7dd2108137d7b63b67a467bd9672886e220cc2f0cf0b",
     "tests/smoke/helpers.ts": "c257643a8a91aceee5cd004ae7afcc1062bbbfe90d82e308e861f55fd0b8e699",
     "vercel.json": "b0f5528ba88104bd34f9f2ec601b974fb78679640d896aa150fcce45eb6e2a96",
@@ -25,7 +25,8 @@
     "playwright.project-ci.config.ts": "34f2073b1c3aa0967b583b282dfdaa71c7d87dd25a3721fb12bb135fd2b702d9",
     ".github/workflows/frontend-preview.yml": "e8dcbcba82bda664c1ff2265b241c13111df3c9f2a8d893b3fd21539df0000b4",
     "scripts/project-preview.mjs": "035cb6f2aa4efc6f9022b45fcb61a3e7f94d97bed5c93085e7603c145633f802",
-    "scripts/project-release.mjs": "43f3e6b0bf8739a66113ab669bb44279e20e0272d57122b579f907ebcdf79b54"
+    "scripts/project-release.mjs": "43f3e6b0bf8739a66113ab669bb44279e20e0272d57122b579f907ebcdf79b54",
+    "scripts/project-ui-results.mjs": "247dff789ecf504ec91a13d128aedbe7be996696ad5ba644c13b07706db4e347"
   },
   "preview": {
     "projectId": "prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en",

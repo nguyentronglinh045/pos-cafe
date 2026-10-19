@@ -1,0 +1,7 @@
+*.mjs text eol=lf
+*.md text eol=lf
+*.html text eol=lf
+config.json text eol=lf
+.gitattributes text eol=lf
+audit.js -text
+baseline.json -text

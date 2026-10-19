@@ -6,8 +6,9 @@ import { execFileSync } from 'node:child_process';
 
 export const PROJECT_REPOSITORY = 'nguyentronglinh045/pos-cafe';
 export const PROJECT_REPOSITORY_ID = 1263057386;
-// Current-main lane; permission/UI-audit sources remain on their feature branch.
-export const PROJECT_PHASES = Object.freeze(['install', 'build', 'unit', 'tooling', 'node-tools', 'browser', 'smoke-discovery', 'smoke-preflight', 'smoke']);
+// Current-main lane; UI tools are calibrated, app UI acceptance remains separate.
+export const PROJECT_PHASES = Object.freeze(['install', 'build', 'unit', 'tooling', 'node-tools', 'browser',
+  'ui-tools', 'ui-remake-selftest', 'ui-audit-selftest', 'smoke-discovery', 'smoke-preflight', 'smoke']);
 export const PROJECTS = Object.freeze(['desktop', 'tablet-landscape', 'phone-landscape', 'small-landscape', 'portrait', 'demo-runbook']);
 export const hash = value => createHash('sha256').update(value).digest('hex');
 const reject = () => { throw new Error('PROJECT_CI_RESULT_INVALID'); };
@@ -631,7 +632,7 @@ export function publicSummary(binding, rows, fingerprints) {
   if (!/^[a-f0-9]{64}$/.test(fingerprints.source) || !/^[a-f0-9]{64}$/.test(fingerprints.lock)) reject();
   const phases = rows.map(({ id, status, elapsedMs, exitCode, counts, invocationSHA, reportSHA, diagnostic }) => ({ id, status, elapsedMs, exitCode, invocationSHA, reportSHA,
     counts: counts ? Object.fromEntries(Object.entries(counts).filter(([key, value]) =>
-      ['discovered', 'run', 'pass', 'fail', 'skip', 'manualDeferred', 'acceptedFindings', 'detectedFindings'].includes(key) && integer(value))) : null,
+      ['discovered', 'run', 'pass', 'fail', 'skip', 'manualDeferred', 'acceptedFindings', 'detectedFindings', 'positiveControls', 'negativeControls', 'targetControls'].includes(key) && integer(value))) : null,
     diagnostic: diagnostic ? { codes: diagnostic.codes.filter(code => DIAGNOSTIC_CODES.includes(code)),
       metrics: Object.fromEntries(Object.entries(diagnostic.metrics).filter(([key, value]) =>
         ['numTotalTests', 'numPassedTests', 'numFailedTests', 'numPendingTests', 'numRuntimeErrorTestSuites', 'architectureAssertion',

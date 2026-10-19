@@ -4,6 +4,13 @@ import { contractDigest, assertApproved } from './run.mjs';
 const cfg = () => ({kind:'screen-remake',designUrl:'https://stitch.withgoogle.com/projects/test',clock:'2026-10-19T03:00:00Z',actualSourceRoot:'.',dataMode:'mock',serverRecipe:'mock-local',cases:[{id:'min',viewport:{width:568,height:320},thresholds:{maxDiffRatio:0},anchors:[{id:'a',actual:'button',reference:'button'}]}]});
 const approve = c => { const h=contractDigest(c,'reference-hash');c.referenceApproval={by:'owner',at:'2026-10-19T03:00:00Z',sourceSha256:'reference-hash',contractSha256:h};return h;};
 test('approval binds reference content and the measurement contract',()=>{const c=cfg(), h=approve(c);assert.doesNotThrow(()=>assertApproved(c,'reference-hash',h));assert.throws(()=>assertApproved(c,'modified-reference',h),/NOT_APPROVED/)});
+test('approval stored before the explicit Chromium channel policy must be reviewed again',()=>{
+  const c=cfg();
+  // Digest captured from the published pre-channel contract, not recomputed
+  // with the new policy under test.
+  c.referenceApproval={by:'owner',at:'2026-10-19T03:00:00Z',sourceSha256:'reference-hash',contractSha256:'73f1204831e367e976b80b1d797ce09e41f9182aaaf5ed1536c2f54eaaab9a86'};
+  assert.throws(()=>assertApproved(c,'reference-hash',contractDigest(c,'reference-hash')),/NOT_APPROVED/);
+});
 for(const [name,edit] of [
   ['threshold',c=>c.cases[0].thresholds.maxDiffRatio=1],
   ['viewport',c=>c.cases[0].viewport.width=844],

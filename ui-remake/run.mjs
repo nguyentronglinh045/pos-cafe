@@ -16,7 +16,7 @@ const readJson = async path => JSON.parse((await readFile(path, 'utf8')).replace
 const selector = value => value.startsWith('@') ? `[data-testid=${JSON.stringify(value.slice(1))}]` : value;
 
 export function contractDigest(cfg, referenceSourceSha256) {
-  return hash(JSON.stringify({kind:cfg.kind,designUrl:cfg.designUrl,referenceSourceSha256,clock:cfg.clock,browser:cfg.browser || 'chromium',actualSourceRoot:cfg.actualSourceRoot,dataMode:cfg.dataMode,serverRecipe:cfg.serverRecipe,cases:cfg.cases}));
+  return hash(JSON.stringify({kind:cfg.kind,designUrl:cfg.designUrl,referenceSourceSha256,clock:cfg.clock,browser:cfg.browser || 'chromium',channel:(cfg.browser || 'chromium') === 'chromium' ? 'chromium' : null,actualSourceRoot:cfg.actualSourceRoot,dataMode:cfg.dataMode,serverRecipe:cfg.serverRecipe,cases:cfg.cases}));
 }
 
 export function assertApproved(cfg, referenceSourceSha256, contractSha256) {
@@ -201,7 +201,8 @@ export async function main(argv = process.argv.slice(2)) {
   let browser, compareContext;
   const report = { version:1, title:cfg.title, kind:cfg.kind, status:'NOT_RUN', productAcceptance:'NOT_ASSESSED', startedAt:new Date().toISOString(), configSha256:hash(configBytes), referenceSourceSha256, contractSha256, referenceApproval:cfg.referenceApproval || null, referenceFiles:refs, source, actualSource:{...actualSource,declaredRoot:actualSourceRoot,serverRecipe:cfg.serverRecipe || 'in-process synthetic fixture server',dataMode:cfg.dataMode || 'synthetic',binding:cfg.kind==='selftest'?'in-process-fixture':'declared-by-config; server/source binding requires operator review'}, budget, environment:{node:process.version,os:platform(),release:release(),arch:arch(),engine,locale:'vi-VN',timezone:'Asia/Ho_Chi_Minh',dpr:1,clock:cfg.clock,colorScheme:'light',animations:'disabled',capture:'viewport; two identical PNG captures required'}, cases:[] };
   try {
-    const playwright = await loadPlaywright(); browser = await playwright[engine].launch({ headless:true });
+    const playwright = await loadPlaywright(); browser = await playwright[engine].launch({ headless:true, ...(engine === 'chromium' ? { channel:'chromium' } : {}) });
+    report.environment.channel = engine === 'chromium' ? 'chromium' : null;
     report.environment.browserVersion = browser.version();
     report.environment.fontSourceCommit=fontProvenance.sourceCommit;
     report.environment.playwrightModule = process.env.UI_REMAKE_PLAYWRIGHT_MODULE || 'playwright';

@@ -7,7 +7,7 @@ import { observePage, stabilizePage } from './capture.mjs';
 // failed setup, never a skipped test presented as successful browser evidence.
 const { chromium } = await import(process.env.UI_REMAKE_PLAYWRIGHT_MODULE || 'playwright');
 let browser;
-before(async () => { browser = await chromium.launch({ headless: true, timeout: 20_000 }); });
+before(async () => { browser = await chromium.launch({ headless: true, channel: 'chromium', timeout: 20_000 }); });
 after(async () => { if (browser) await browser.close(); });
 
 const settings = {

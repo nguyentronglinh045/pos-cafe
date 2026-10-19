@@ -507,15 +507,22 @@ test('failed Playwright diagnostics expose known source locations and counts wit
   const safe=privateDiagnostics('',bad,[]);assert.deepEqual(safe.failedFiles,[]);assert.equal(safe.metrics.smokeUnexpected,undefined);
 });
 
-test('main light profile requires exactly its nine phases and refuses UI phase substitutions', () => {
+test('main light profile requires all twelve phases, including UI calibration, without app acceptance substitutions', () => {
   assert.deepEqual(PROJECT_PHASES, ['install','build','unit','tooling','node-tools','browser',
-    'smoke-discovery','smoke-preflight','smoke']);
+    'ui-tools','ui-remake-selftest','ui-audit-selftest','smoke-discovery','smoke-preflight','smoke']);
   const rows=PROJECT_PHASES.map(id=>({id,status:'PASS',elapsedMs:1,exitCode:0,invocationSHA:digest,reportSHA:digest,counts:null}));
   assert.equal(publicSummary(binding,rows,{source:digest,lock:digest}).overallStatus,'PASS');
-  for(const id of ['ui-selftest','ui-audit']) {
+  for(const id of ['ui-selftest','ui-audit','ui-tools']) {
     assert.throws(()=>publicSummary(binding,[...rows,{...rows[0],id}],{source:digest,lock:digest}));
     assert.throws(()=>publicSummary(binding,[...rows.slice(0,-1),{...rows.at(-1),id}],{source:digest,lock:digest}));
   }
+  for (const index of [6,7,8]) {
+    assert.throws(()=>publicSummary(binding,rows.filter((_,i)=>i!==index),{source:digest,lock:digest}));
+    const bad=structuredClone(rows);bad[index].status='FAIL';
+    assert.equal(publicSummary(binding,bad,{source:digest,lock:digest}).overallStatus,'FAIL');
+  }
+  const reordered=structuredClone(rows);[reordered[6],reordered[7]]=[reordered[7],reordered[6]];
+  assert.throws(()=>publicSummary(binding,reordered,{source:digest,lock:digest}));
 });
 
 test('public evidence excludes arbitrary binding/count/raw fields and incomplete phase sets fail', () => {
@@ -525,6 +532,19 @@ test('public evidence excludes arbitrary binding/count/raw fields and incomplete
   assert.equal(result.overallStatus, 'PASS');
   assert.equal(JSON.stringify(result).includes('FAKE_PRIVATE_TOKEN'), false);
   assert.equal(publicSummary(binding, rows.slice(0, -1), { source: digest, lock: digest }).overallStatus, 'FAIL');
+});
+
+test('public UI calibration counts stay finite, numeric and separate from product acceptance', () => {
+  const rows=PROJECT_PHASES.map(id=>({id,status:'PASS',elapsedMs:1,exitCode:0,invocationSHA:digest,reportSHA:digest,
+    counts:{run:11,pass:11,positiveControls:5,negativeControls:6,targetControls:16,detectedFindings:23,
+      productAcceptance:'FAKE_PRIVATE_TOKEN',raw:'FAKE_PRIVATE_TOKEN'}}));
+  const result=publicSummary(binding,rows,{source:digest,lock:digest});
+  assert.equal(result.overallStatus,'PASS');assert.equal(result.phases[7].counts.negativeControls,6);
+  assert.equal(result.phases[8].counts.targetControls,16);assert.equal(JSON.stringify(result).includes('FAKE_PRIVATE_TOKEN'),false);
+  for(const value of [NaN,Infinity,-1,Number.MAX_SAFE_INTEGER+1,'23']) {
+    rows[8].counts.detectedFindings=value;
+    assert.equal(Object.hasOwn(publicSummary(binding,rows,{source:digest,lock:digest}).phases[8].counts,'detectedFindings'),false);
+  }
 });
 
 test('failed Vitest diagnostics retain known counters and source paths without raw messages or credentials', () => {

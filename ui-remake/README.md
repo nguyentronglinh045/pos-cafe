@@ -83,6 +83,8 @@ node ui-remake/run.mjs --config ui-remake/examples/selftest.json --out artifacts
 
 Các lệnh trên kiểm công cụ bằng fixture tổng hợp; **không là nghiệm thu UI ứng dụng**. Selftest phải thực sự chạy ma trận positive/negative và kiểm lỗi mong đợi; “có ảnh đầu ra” chưa đủ chứng minh detector hoạt động.
 
+POS light CI chạy các Node tests UI trong phase `ui-tools`, rồi hai phase `ui-remake-selftest` và `ui-audit-selftest` sau khi cài browser. Hai calibration reports phải khớp source/config/contract và invocation mới; exit 0 hoặc một dòng OK không tự đủ. CI này kiểm công cụ, không chạy pilot Stitch → màn app hay tự nghiệm thu findings của app.
+
 Với app, tạo config từ schema/example thật theo [measurement.md](measurement.md), dùng hai URL **local** cho reference và actual, readiness/actions, viewport/state, anchor mapping, tolerance hình học, channel threshold, max diff ratio và critical regions đã chốt. Chạy `node ui-remake/run.mjs --config <config.json> --out <evidence-dir>`.
 
 Đọc JSON/Markdown, expected/actual/diff/overlay và phép đo từng anchor/critical region. Kiểm capture sạch, đủ state, font thực đã tải, reference hash, source fingerprint và environment; lỗi capture không phải sai khác thiết kế. Không tự nới ngưỡng, đổi reference hay cập nhật baseline để qua gate.
@@ -98,7 +100,7 @@ Với app, tạo config từ schema/example thật theo [measurement.md](measure
 | Rendered UI audit | Gate bên dưới + phân loại findings và xem ảnh | Exit 0 một mình không đủ |
 | Review/nghiệm thu | Reviewer độc lập và quyết định chủ dự án | Không tự cấp quyền merge/deploy |
 
-**Kiểm audit có sẵn trước khi hứa chạy:** `ui-audit/` đã được dùng như công cụ local WIP, nhưng không được mặc định có trong checkout từ remote. Kiểm `package.json`, file và source cụ thể. Nếu thiếu audit bắt buộc, ghi `NOT_RUN`, nêu nguồn thiếu và **chặn nghiệm thu sản phẩm**; không coi comparison runner là công cụ thay thế. Không kéo WIP người khác vào nhánh để tạo PASS.
+**Rendered audit đi cùng code:** xem [ui-audit/README.md](../ui-audit/README.md) và scripts audit trong `package.json` của checkout đang dùng. Bản công khai có detector/calibration và ma trận legacy tương ứng source main; không nhập fixture màn phân quyền chưa publish. Nếu checkout cũ thiếu audit bắt buộc, ghi `NOT_RUN` và **chặn nghiệm thu sản phẩm**; comparison runner không thay gate này. Baseline lịch sử được giữ nguyên, không phải bằng chứng app hiện tại đã được nghiệm thu.
 
 Khi audit có sẵn, chạy tuần tự:
 
