@@ -40,19 +40,38 @@ async function worker() {
     assert(address && typeof address === 'object' && address.port > 0);
     const origin = `http://127.0.0.1:${address.port}`;
     stage(4);
-    const response = await fetch(origin, { signal: AbortSignal.timeout(2000) });
+    const httpDeadline = Date.now() + 2000;
+    const signal = AbortSignal.timeout(2000);
+    const response = await fetch(origin, { signal });
     facts.httpStatus = response.status;
     assert.equal(response.status, 200);
     assert.match(await response.text(), /\/src\/main\.tsx/);
+    // Fetch the real application module as a browser bootstrap does. An HTML
+    // response alone need not register its script in every watcher version.
+    const entry = await fetch(`${origin}/src/main.tsx`, { signal });
+    facts.httpStatus = entry.status;
+    assert.equal(entry.status, 200);
+    assert.match(entry.headers.get('content-type') || '', /(?:text|application)\/javascript\b/i);
+    const javascript = await entry.text();
+    assert.match(javascript, /\bcreateRoot\b/);
+    assert.match(javascript, /\bAppProviders\b/);
     stage(5);
-    const watched = server.watcher.getWatched();
-    const watchedPaths = Object.entries(watched).flatMap(([directory, entries]) => [directory, ...entries.map(entry => path.join(directory, entry))]);
+    const readWatchedPaths = () => Object.entries(server.watcher.getWatched())
+      .flatMap(([directory, entries]) => [directory, ...entries.map(entry => path.join(directory, entry))]);
+    const appSourceWatched = paths => paths.some(full => path.resolve(full) === path.join(root, 'src', 'main.tsx'));
+    let watchedPaths = readWatchedPaths();
+    // Asynchronous registration shares the original HTTP budget; no new wait
+    // allowance is introduced after the HTML and module requests.
+    while (!appSourceWatched(watchedPaths) && Date.now() < httpDeadline && !signal.aborted) {
+      await new Promise(resolve => setTimeout(resolve, Math.min(25, Math.max(1, httpDeadline - Date.now()))));
+      watchedPaths = readWatchedPaths();
+    }
     const generated = watchedPaths.filter(full => /\/artifacts(?:\/|$)|\/ui-audit\/out(?:\/|$)|\/ui-audit\/report\.(json|md)$/.test(full.replaceAll('\\', '/')));
     facts.watchedPathCount = Math.min(watchedPaths.length, 1000000);
     facts.generatedWatchCount = Math.min(generated.length, 1000000);
-    facts.appSourceWatched = Number(watchedPaths.some(full => path.resolve(full) === path.join(root, 'src', 'main.tsx')));
+    facts.appSourceWatched = Number(appSourceWatched(watchedPaths));
     assert.deepEqual(generated, [], 'generated artifacts/root-backlinks must never enter the live watcher');
-    assert(watchedPaths.some(full => path.resolve(full) === path.join(root, 'src', 'main.tsx')), 'real application source remains watched');
+    assert(appSourceWatched(watchedPaths), 'real application source remains watched');
     result = { status: 'PASS', closed: false, origin, watchedPathCount: watchedPaths.length,
       generatedWatchCount: generated.length, fixture };
   } catch (error) {
