@@ -1,6 +1,7 @@
 <!--
   BẢN GỐC. File này sống trên nhánh `docs`, worktree `D:/Workspace/pos-cafe-docs`.
-  Từ 2026-09-07, hướng dẫn cho agent không còn đặt trên nhánh `main` nữa.
+  Quy tắc agent chung ở `docs` từ 2026-09-07; hướng dẫn vận hành công cụ
+  đi cùng code theo ngoại lệ được duyệt ngày 2026-10-19.
   Bản trên `main` chỉ là con trỏ và không được sửa.
 -->
 
@@ -29,6 +30,8 @@ git ls-tree -r --name-only docs         # full doc index (incl. archive/, implem
 ```
 
 Code is the final source of truth; docs describe verified state and may lag slightly.
+
+Operator instructions and templates that ship with tooling are versioned beside the tool on `main` (owner decision 2026-10-19). For existing-screen remakes from Stitch, start with `ui-remake/README.md` in the code checkout, or [the published operator workflow](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/README.md). Its templates, palette/font and measurement guide have one canonical copy there. Specs, decisions and verification/review records remain on `docs`; do not duplicate the operator package here.
 
 ## Current write protocol (2026-09-10)
 

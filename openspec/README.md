@@ -1,5 +1,9 @@
 # OpenSpec cho pos-cafe
 
+## Workflow remake UI Stitch — 19/10/2026
+
+[add-stitch-ui-remake-workflow](changes/add-stitch-ui-remake-workflow/proposal.md) đóng gói quy trình dùng chung Codex/Claude và công cụ đo, paletteA v1/BeVietnamPro/landscape568×320CSSpx. Đây là tooling, không phải triển khai UI sản phẩm; [workflow](../docs/workflow/stitch-ui-remake/README.md) và [testplan](changes/add-stitch-ui-remake-workflow/testplan.md) tách measurement khỏi nghiệm thu ứng dụng.
+
 ## Cập nhật bộ chống trùng ngày 2026-09-10
 
 [add-idempotent-write-operations](changes/add-idempotent-write-operations/proposal.md) có **bảy loại artifact / 13 file Markdown**, gồm 33 requirement, 12 use case, 93 testcase gốc và các ma trận biến thể. [Testplan](changes/add-idempotent-write-operations/testplan.md) ghi expected trước code; [đối chiếu review ngoài](../docs/reviews/2026-09-07-idempotency/15-doi-chieu-review-ngoai-va-bien-tap.md) ghi các đính chính sau mốc ba reviewer. Chủ dự án đã duyệt triển khai ngày 2026-09-10; docs đã push `0ecf84d`. Code `main@3ada48c` và tests đã nghiệm thu tại [phase 27](../docs/implementation-log/phase-27-idempotent-write-operations.md), đã push code sau khi đủ gate; chưa deploy migration thật. Ước lượng 76,5 + 2n giờ là dự báo công sức; không có quỹ giờ tuần cố định.

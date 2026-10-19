@@ -1,6 +1,7 @@
 <!--
   BẢN GỐC. File này sống trên nhánh `docs`, worktree `D:/Workspace/pos-cafe-docs`.
-  Từ 2026-09-07, hướng dẫn cho agent không còn đặt trên nhánh `main` nữa.
+  Quy tắc agent chung ở `docs` từ 2026-09-07; hướng dẫn vận hành công cụ
+  đi cùng code theo ngoại lệ được duyệt ngày 2026-10-19.
   Bản trên `main` chỉ là con trỏ và không được sửa.
 -->
 
@@ -8,11 +9,15 @@
 
 ## Where the agent instructions live
 
-- **This file lives on the `docs` branch and is committed.** Since 2026-09-07 the agent instructions no longer live on `main`.
+- **This file lives on the `docs` branch and is committed.** Project-wide agent rules live here since 2026-09-07; operator guides that ship with tooling follow the branch-model exception below.
 - Worktree: `D:/Workspace/pos-cafe-docs`. The copies at `D:/Workspace/pos-cafe` are pointers only; never edit them and never read them as guidance.
 - Reason for the move: on `main` both files were listed in `.git/info/exclude`, so they never travelled with the repository and were invisible from any worktree. On `docs` they are versioned, they follow the project, and they double as thesis source material.
 - Companion files on the same branch: `CLAUDE.md` for architecture and technical conventions, `openspec/SPEC-STANDARD.md` for the mandatory spec standard.
 - Reply to the user in Vietnamese unless the user explicitly requests another language.
+
+## Remake UI from Google Stitch
+
+For reworking existing screens from Stitch, read [the shared operator workflow on main](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/README.md) (`ui-remake/README.md` in the code checkout), together with its local templates, palette and measurement contracts. Use it with Codex or Claude. The approved standard is Teal A v1 and Be Vietnam Pro, with landscape support from 568×320 CSS px. The workflow does not authorize a screen remake, new business behavior, reference acceptance, merge or deployment by itself; use the owner's current task authorization.
 
 ## Confirmation rule
 
@@ -26,6 +31,7 @@
   - `docs`: contains project information, including implemented features, planned or deferred features, technologies used, architecture decisions, and related project notes.
 - The `main` branch must not contain project documentation that belongs on `docs`.
 - The `docs` branch must not contain application code from `main`.
+- **Operator-documentation rule, approved 2026-10-19:** instructions, templates and setup/measurement contracts that ship with a tool live beside that tool on `main`, versioned with its code. For Stitch remake, `ui-remake/` is the single canonical operator package. Specs, decisions, implementation/review evidence and handoffs remain on `docs`. Keep pointers between branches, not duplicate operator documents. This does not move the general project rules or OpenSpec artifacts to `main`.
 
 ## Documentation workflow
 
