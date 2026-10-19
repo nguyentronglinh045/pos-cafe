@@ -55,6 +55,11 @@ async function worker() {
     const javascript = await entry.text();
     assert.match(javascript, /\bcreateRoot\b/);
     assert.match(javascript, /\bAppProviders\b/);
+    // A transformed entry can still have static-import work in flight. Drain
+    // that request lifecycle before closing its optimizer/plugin containers.
+    // This public Vite API consumes the existing shared HTTP budget.
+    assert(Date.now() < httpDeadline, 'application bootstrap must finish within the shared HTTP budget');
+    await bounded(server.waitForRequestsIdle(), Math.max(1, httpDeadline - Date.now()), 'VITE_WATCH_HTTP_IDLE_TIMEOUT');
     stage(5);
     const readWatchedPaths = () => Object.entries(server.watcher.getWatched())
       .flatMap(([directory, entries]) => [directory, ...entries.map(entry => path.join(directory, entry))]);
