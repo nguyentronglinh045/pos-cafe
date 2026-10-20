@@ -4309,6 +4309,10 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     expect(!!ownerHeaders).toBe(true);
     const statusAfterFault = (await state.db.query("select status,last_error_code from private.initial_seed_workflows where store_id=$1", [state.storeId])).rows[0];
     expect(statusAfterFault).toEqual({ status: "needs_retry", last_error_code: "PERMISSION_UPDATE_UNAVAILABLE" });
+    const seedCreationAudit = async () => (await state.db.query(`select kind,outcome,credential_changed
+      from public.employee_admin_audit where store_id=$1 and kind='initial_seed_employee' order by request_id`, [state.storeId])).rows;
+    const firstSeedAudit = await seedCreationAudit();
+    expect(firstSeedAudit).toEqual([{ kind: "initial_seed_employee", outcome: "applied", credential_changed: false }]);
     const seedCanaries = [NEW_PIN, key, ownerHeaders!["x-pos-employee-token"], ownerHash];
     await captureTc18Scenario(page, "seed:fault", seedCanaries,
       { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls });
@@ -4356,6 +4360,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     expect({ stage_id: menuAtComplete.stage_id, receipt: menuAtComplete.receipt, committed_at: menuAtComplete.committed_at })
       .toEqual({ stage_id: menuBeforeReplay.stage_id, receipt: menuBeforeReplay.receipt,
         committed_at: menuBeforeReplay.committed_at });
+    expect(await seedCreationAudit()).toEqual(firstSeedAudit);
     await captureTc18Scenario(page, "seed:success", seedCanaries,
       { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls });
     const generation = (await state.db.query("select run_generation::int generation from private.initial_seed_workflows where store_id=$1", [state.storeId])).rows[0].generation;
@@ -4363,6 +4368,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     await replayCommittedStageThroughRest(page, "menu", ownerHeaders!["x-pos-employee-token"], generation);
     expect(await tc18ProtectedState(state.db)).toBe(beforeReplay);
     expect(await stageReplayEvidence("menu")).toEqual(menuAtComplete);
+    expect(await seedCreationAudit()).toEqual(firstSeedAudit);
     await captureTc18Scenario(page, "seed:replay", seedCanaries,
       { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls });
     const graph = await stageSnapshot();

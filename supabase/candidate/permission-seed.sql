@@ -26,7 +26,7 @@ begin
  insert into public.employee_admin_audit(store_id,actor_type,actor_key,request_id,target_id,kind,outcome,proposed_after,actual_after,
   actor_effective,catalog_revision,credential_changed,occurred_at)
  values(p_store,'employee',p_actor.id::text,p_event,target.id,'initial_seed_employee','applied',private.permission_employee_snapshot(target),
-  private.permission_employee_snapshot(target),rights,(select revision from public.permission_catalog_state where singleton),true,private.write_clock());
+  private.permission_employee_snapshot(target),rights,(select revision from public.permission_catalog_state where singleton),false,private.write_clock());
  insert into public.store_change_signals values(p_store,'permission',1,p_event,target.id)
  on conflict(store_id,topic) do update set revision=public.store_change_signals.revision+1,event_id=p_event,target_id=target.id;
 end $$;

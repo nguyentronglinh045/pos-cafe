@@ -8,12 +8,15 @@ import{assertLegacyDependencyBoundary}from'./permission-legacy-head.mjs';
 import{t04Lifecycle,t04StageEnvironment,assertT04ResourceFacts,assertT04ContainerContinuity,t04BaselineMemberships,t04RestoreFailureFacts}from'./permission-runtime-t04-fixture.mjs';
 import{CI1_LIMITS,CI1_PROJECT,ci1Identity}from'./permission-ci1-policy.mjs';
 import{ci1FailureExport,ci1IsolatedFailure,t04CommandOptions}from'./permission-runtime-t04-worker.mjs';
+import{t04CorrelateRestoreLog,T04_RESTORE_SQLSTATES,t04CorrelateServerLog,
+ t04RestoreConstraintTarget,t04ConstraintCatalogFacts,T04_DIAGNOSTIC_BOUNDS,t04LogCapabilityMask}from'./permission-runtime-t04-restore-diagnostic.mjs';
 const catalog=runtimeStageCatalog().filter(s=>s.runtimeProfile==='SUPABASE_T04'),ids=catalog.map(s=>s.stage);
 const sha='a'.repeat(40),digest='b'.repeat(64);
 const row=id=>{const n=catalog.find(s=>s.stage===id).required.length;return{stage:id,status:'PASS',required:n,run:n,discovered:n,
  pass:n,fail:0,skip:0,retry:0,sourceSHA:sha,reportSHA:digest,invocationSHA:digest,supplementalOracles:'NOT_PROVEN_BY_STAGE_COUNTS'};};
 function fixture(change={}){const seen=[],closed=[],prepared=[],reset=[];return{seen,closed,prepared,reset,adapter:{guard(){},async bootstrap(){},async physical(){return digest;},
  async baseline(){return digest;},async preserved(){return true;},async checkpoint(){return{archiveSHA:digest,storageSHA:digest};},
+ async preflight(){return{status:'PASS',archiveSHA:digest,storageSHA:digest,baselineSHA:digest,physicalSHA:digest};},
  async prepare(id){prepared.push(id);},async afterStage(){return digest;},async restore(stage,beforeResetSHA){reset.push(stage);
    return{stage,status:'RESTORED_ORIGINAL',beforeResetSHA,archiveSHA:digest,baselineSHA:digest,physicalSHA:digest};},async stage(id){seen.push(id);return row(id);},
  async close(){closed.push(true);return true;},...change}};}
@@ -89,6 +92,44 @@ test('private pg_restore failures project finite categories through both public 
  assert(!JSON.stringify(ci1FailureExport(failure)).includes('FAKE_PRIVATE_KEY'));
  for(const delta of[{t04RestoreErrorOrdinal:16},{t04RestoreErrorOrdinal:-1},{t04RestoreCommandOrdinal:25},{t04RestoreCommandOrdinal:'SECRET'},{stderr:privateText}]){
   const invalid={...failure,facts:{...failure.facts,...delta}};assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(invalid.facts)),{});
+  assert.notDeepEqual(ci1FailureExport(invalid),invalid);assert.throws(()=>ci1IsolatedFailure(receipt(invalid),ci1Identity('123',1),sha));
+ }
+});
+
+test('restore server error needs exact private primary and statement correlation on the same backend PID',()=>{
+ const primary='cannot drop inherited constraint "FAKE_PRIVATE" of relation "FAKE_PRIVATE"';
+ const command='ALTER TABLE ONLY private.FAKE_PRIVATE DROP CONSTRAINT FAKE_PRIVATE;',prefix='%m [%p] %q%u@%d ';
+ const client='pg_restore: error: could not execute query: ERROR:  '+primary+'\nCommand was: '+command+'\n';
+ const line=(pid,level,body)=>`2026-10-20 09:00:00.123 UTC [${pid}] supabase_admin@postgres ${level}:  ${body}`;
+ const error=line(42,'ERROR','42P16: '+primary),statement=line(42,'STATEMENT',command);
+ const noise=line(7,'ERROR','42501: background permission denied')+'\n'+line(7,'STATEMENT','SELECT 1;');
+ const actual=t04CorrelateRestoreLog(client,noise+'\n'+error+'\n'+line(42,'LOCATION','private_location')+'\n'+statement,prefix);
+ assert.deepEqual(actual,{t04RestoreLogObserved:1,t04RestoreSqlstateOrdinal:T04_RESTORE_SQLSTATES.indexOf('42P16')+1});
+ assert(!JSON.stringify(actual).includes('FAKE_PRIVATE'));
+ for(const log of[error,statement,error+'\n'+line(7,'STATEMENT',command),error+'\n'+line(42,'STATEMENT','SELECT 1;'),
+  line(42,'ERROR','42P16: different primary')+'\n'+statement,
+  error+'\n'+line(42,'STATEMENT',`SELECT '${command} ERROR: 42P16: ${primary}';`)])
+  assert.deepEqual(t04CorrelateRestoreLog(client,log,prefix),{t04RestoreLogObserved:0,t04RestoreSqlstateOrdinal:0});
+ assert.deepEqual(t04CorrelateRestoreLog(client,error+'\n'+statement+'\n'+error+'\n'+statement,prefix),{t04RestoreLogObserved:2,t04RestoreSqlstateOrdinal:0});
+});
+test('restore log parser rejects unsupported/truncated/oversized material and never projects an unknown SQLSTATE string',()=>{
+ const primary='fixed message',command='ALTER TABLE public.example DROP CONSTRAINT example;',prefix='%m [%p] ';
+ const client='pg_restore: error: could not execute query: ERROR:  '+primary+'\nCommand was: '+command;
+ const log='2026-10-20 09:00:00 UTC [42] ERROR:  ZZZZZ: '+primary+'\n2026-10-20 09:00:00 UTC [42] STATEMENT:  '+command;
+ assert.deepEqual(t04CorrelateRestoreLog(client,log,prefix),{t04RestoreLogObserved:1,t04RestoreSqlstateOrdinal:0});
+ for(const p of['%i','%m [%p] %p ','%m [%p] %z ','x'.repeat(257)])assert.deepEqual(t04CorrelateRestoreLog(client,log,p),{t04RestoreLogObserved:3,t04RestoreSqlstateOrdinal:0});
+ for(const [c,l]of[[undefined,log],[client,{}],[client,'x'.repeat(1024**2+1)],['pg_restore: '+ 'x'.repeat(1024**2),log],
+  [client,log+'\n'+'x'.repeat(65537)],[client,log+'\n'.repeat(10001)],[client+'\n'+client,log]])
+  assert.deepEqual(t04CorrelateRestoreLog(c,l,prefix),{t04RestoreLogObserved:0,t04RestoreSqlstateOrdinal:0});
+});
+test('server restore diagnostics are independently range-checked at parser and final public exporter',()=>{
+ const facts={t04StageOrdinal:10,t04BoundaryOrdinal:15,t04RestoreLogObserved:1,t04RestoreSqlstateOrdinal:T04_RESTORE_SQLSTATES.length};
+ const failure={stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:1,facts};
+ const receipt=f=>({schemaVersion:'permission-ci1-isolated-failure-v1',runId:'123',attempt:1,sourceSHA:sha,failure:f,cleanupFailure:null});
+ assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(facts)),facts);assert.deepEqual(ci1FailureExport(failure),failure);
+ assert(ci1IsolatedFailure(receipt(failure),ci1Identity('123',1),sha));
+ for(const delta of[{t04RestoreLogObserved:5},{t04RestoreSqlstateOrdinal:T04_RESTORE_SQLSTATES.length+1},{t04RestoreSqlstateOrdinal:-1},{privateLog:'FAKE_PRIVATE'}]){
+  const invalid={...failure,facts:{...facts,...delta}};assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(invalid.facts)),{});
   assert.notDeepEqual(ci1FailureExport(invalid),invalid);assert.throws(()=>ci1IsolatedFailure(receipt(invalid),ci1Identity('123',1),sha));
  }
 });
@@ -171,11 +212,96 @@ test('T04 diagnostic transport accepts bounded numeric stage facts and refuses r
 });
 test('physical drift or logical preservation failure prevents next stage and retains NOT_RUN rows',async()=>{
  for(const kind of['physical','preserved']){
-  let calls=0;const f=fixture(kind==='physical'?{async physical(){return++calls>2?'c'.repeat(64):digest;}}
-   :{async preserved(){return++calls<2;}}),r=await runT04Profile(f.adapter);
+  let completed=false;const f=fixture({async stage(id){f.seen.push(id);completed=true;return row(id);},
+   ...(kind==='physical'?{async physical(){return completed?'c'.repeat(64):digest;}}
+    :{async preserved(){return!completed;}})}),r=await runT04Profile(f.adapter);
   assert.equal(r.status,'FAIL');assert.deepEqual(f.seen,ids.slice(0,1));assert.equal(r.stages[0].status,'FAIL');
   assert(r.stages.slice(1).every(s=>s.status==='NOT_RUN'));assert.equal(f.closed.length,1);
   assert.equal(JSON.parse(renderT04Evidence({...r,...metadata}).json).status,'FAIL');
+ }
+});
+
+test('runner preflight is mandatory before all nineteen business stages and cannot change checkpoint identity',async()=>{
+ const valid={status:'PASS',archiveSHA:digest,storageSHA:digest,baselineSHA:digest,physicalSHA:digest};
+ for(const delta of[{status:'FAIL'},{archiveSHA:'c'.repeat(64)},{storageSHA:'c'.repeat(64)},
+  {baselineSHA:'c'.repeat(64)},{physicalSHA:'c'.repeat(64)},{extra:'PRIVATE'}]){
+  const f=fixture({async preflight(){return{...valid,...delta};}}),r=await runT04Profile(f.adapter);
+  assert.equal(r.failure,'bootstrap');assert.equal(r.runnerPreflight,'FAIL');assert.equal(f.closed.length,1);
+  assert.equal(f.seen.length,0);assert.equal(f.reset.length,0);assert(r.stages.every(s=>s.status==='NOT_RUN'));
+  assert.equal(JSON.parse(renderT04Evidence({...r,...metadata}).json).runnerPreflight,'FAIL');
+ }
+ for(const change of[{preflight:undefined},{async preflight(){throw Error('controlled log unavailable');}}]){
+  const f=fixture(change),r=await runT04Profile(f.adapter);assert.equal(r.runnerPreflight,'FAIL');assert.equal(f.seen.length,0);
+ }
+ const order=[],f=fixture({async preflight(){order.push('preflight');return valid;},async stage(id){order.push(id);return row(id);}});
+ const r=await runT04Profile(f.adapter);assert.equal(r.status,'PASS');assert.deepEqual(order,['preflight',...ids]);
+ assert.equal(r.runnerPreflight,'PASS');assert.equal(r.resets.length,10);
+ for(const state of['FAIL','NOT_RUN',undefined])assert.throws(()=>renderT04Evidence({...r,...metadata,runnerPreflight:state}));
+});
+
+test('controlled observability requires the actual session PID and division-by-zero SQLSTATE without exporting the PID',()=>{
+ const prefix='%m [%p] ',command='select 1 / 0;',primary='division by zero';
+ const pair=pid=>`2026-10-20 09:00:00 UTC [${pid}] ERROR:  22012: ${primary}\n2026-10-20 09:00:00 UTC [${pid}] STATEMENT:  ${command}`;
+ const result=t04CorrelateServerLog(primary,command,pair(12)+'\n'+pair(13),prefix,12);
+ assert.deepEqual(result,{t04RestoreLogObserved:1,t04RestoreSqlstateOrdinal:T04_RESTORE_SQLSTATES.indexOf('22012')+1});
+ assert.equal(t04CorrelateServerLog(primary,command,pair(13),prefix,12).t04RestoreLogObserved,0);
+ for(const pid of[0,-1,2147483648,'12',NaN])assert.equal(t04CorrelateServerLog(primary,command,pair(12),prefix,pid).t04RestoreLogObserved,0);
+});
+
+test('failed constraint target accepts a complete unique pg_restore command and refuses extra SQL or ambiguous framing',()=>{
+ const stderr=command=>'pg_restore: error: could not execute query: ERROR:  fixed\nCommand was: '+command+'\n';
+ assert.deepEqual(t04RestoreConstraintTarget(stderr('ALTER TABLE IF EXISTS ONLY auth.users DROP CONSTRAINT IF EXISTS users_pkey;')),
+  {schema:'auth',table:'users',constraint:'users_pkey'});
+ assert.deepEqual(t04RestoreConstraintTarget(stderr('ALTER TABLE "A"."t""x" DROP CONSTRAINT "c x";')),
+  {schema:'A',table:'t"x',constraint:'c x'});
+ for(const command of['ALTER TABLE auth.users DROP CONSTRAINT users_pkey; SELECT 1;',
+  'ALTER TABLE users DROP CONSTRAINT users_pkey;','ALTER TABLE auth.users DROP CONSTRAINT "";',
+  'ALTER TABLE auth.users DROP CONSTRAINT "'+ 'x'.repeat(64)+'";',
+  'ALTER TABLE auth.users DROP CONSTRAINT users_pkey;\nSELECT 1;',
+  'ALTER TABLE auth.users DROP CONSTRAINT users_pkey;\nCommand was: DROP TABLE auth.users;'])
+  assert.equal(t04RestoreConstraintTarget(stderr(command)),null);
+ assert.equal(t04RestoreConstraintTarget(stderr('ALTER TABLE auth.users DROP CONSTRAINT users_pkey;').repeat(2)),null);
+});
+
+test('finite constraint facts require unique logical catalog/archive binding even after restore changes object OIDs',()=>{
+ const target={schema:'realtime',table:'messages',constraint:'messages_pkey'},r={...target,oid:12345,owner:'supabase_admin',kind:'p',
+  local:false,inherited:1,parent:true,dependencies:9};
+ const toc='2999; 2606 12345 CONSTRAINT realtime messages messages_pkey supabase_admin\n';
+ const facts=t04ConstraintCatalogFacts(target,[r],toc);
+ assert.deepEqual(facts,{t04RestoreTargetObserved:1,t04RestoreSchemaOrdinal:5,t04RestoreConstraintKind:3,
+  t04RestoreConstraintLocal:0,t04RestoreConstraintInherited:1,t04RestoreConstraintParent:1,t04RestoreDependencyMask:9});
+ for(const rows of[[],[r,r],[{...r,oid:'12345'}],[{...r,constraint:'another'}],[{...r,inherited:-1}],[{...r,dependencies:32}]])
+  assert.deepEqual(t04ConstraintCatalogFacts(target,rows,toc),{t04RestoreTargetObserved:3});
+ assert.deepEqual(t04ConstraintCatalogFacts(target,[{...r,oid:87654}],toc),facts);
+ for(const text of[toc.replace('12345','0'),toc.replace('12345','4294967296'),toc+toc,
+  toc.replace('CONSTRAINT','FK CONSTRAINT'),toc.replace('messages_pkey','another')])
+  assert.deepEqual(t04ConstraintCatalogFacts(target,[r],text),{t04RestoreTargetObserved:4});
+ const spaced={...target,constraint:'c x'};
+ assert.deepEqual(t04ConstraintCatalogFacts(spaced,[{...r,...spaced}],toc),{t04RestoreTargetObserved:4});
+ assert(!JSON.stringify(facts).includes('messages'));assert(!JSON.stringify(facts).includes('12345'));
+});
+
+test('log capability mask identifies each unsupported channel component without exporting configuration',()=>{
+ const logging={collector:'off',destination:'stderr',prefix:'%m [%p] '};
+ assert.equal(t04LogCapabilityMask('json-file',logging),15);assert.equal(t04LogCapabilityMask('local',logging),15);
+ assert.equal(t04LogCapabilityMask('none',logging),14);
+ assert.equal(t04LogCapabilityMask('json-file',{...logging,collector:'on'}),13);
+ assert.equal(t04LogCapabilityMask('json-file',{...logging,destination:'csvlog'}),11);
+ assert.equal(t04LogCapabilityMask('json-file',{...logging,prefix:'%z'}),7);
+ assert.equal(t04LogCapabilityMask(undefined,undefined),0);
+});
+
+test('every finite catalog/preflight metric is bounded independently at both public exporters',()=>{
+ const base={stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:1};
+ for(const[key,[min,max]]of Object.entries(T04_DIAGNOSTIC_BOUNDS)){
+  const facts={t04StageOrdinal:0,[key]:max},failure={...base,facts};
+  assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(facts)),facts);
+  assert.deepEqual(ci1FailureExport(failure),failure);
+  for(const value of[min-1,max+1,'1']){
+   const invalid={...base,facts:{...facts,[key]:value}};
+   assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(invalid.facts)),{});
+   assert.notDeepEqual(ci1FailureExport(invalid),invalid);
+  }
  }
 });
 test('bootstrap, quota, skipped or retried stage and cleanup failures cannot close T04',async()=>{

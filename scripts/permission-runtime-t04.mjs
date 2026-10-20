@@ -10,6 +10,7 @@ import{trackedFingerprint}from'./project-ci.mjs';
 import{realAdapter,readCi1LinuxEnvelope,ci1HarnessFailureMarker}from'./permission-runtime-t04-adapter.mjs';
 import{assertCi1Envelope,ci1Identity,ci1ProcessEnvironment,CI1_PROJECT,CI1_RUNTIME}from'./permission-ci1-policy.mjs';
 import{t04Lifecycle,t04StageEnvironment,createT04FixtureBoundary,assertT04ResourceFacts}from'./permission-runtime-t04-fixture.mjs';
+import{T04_DIAGNOSTIC_BOUNDS}from'./permission-runtime-t04-restore-diagnostic.mjs';
 
 const catalog=runtimeStageCatalog().filter(s=>s.runtimeProfile==='SUPABASE_T04');
 const ids=catalog.map(s=>s.stage),refuse=()=>{throw Error('PERMISSION_T04_RUNTIME_REFUSED');};
@@ -25,6 +26,7 @@ export function t04TimeBudget(startedAtEpochMs,now){
 const factBounds={t04StageOrdinal:[0,19],t04FailureOrdinal:[0,4],t04RunnerErrors:[0,10000],t04HookErrors:[0,10000],
  t04MissingRequired:[0,10000],t04FirstFailedRequired:[0,10000],t04BoundaryOrdinal:[1,19],t04BoundaryExit:[0,255],
  t04RestoreErrorOrdinal:[0,15],t04RestoreCommandOrdinal:[0,24],
+ ...T04_DIAGNOSTIC_BOUNDS,
  t04FailedTests:[0,10000],t04FirstFailedLine:[0,100000],t04TestErrorCodeOrdinal:[0,RUNTIME_ERROR_CODES.length],
  t04TestErrorNameOrdinal:[0,5],t04TestErrorMatcherOrdinal:[0,8]};
 export function t04SafeFailureMetric(key,value){const bounds=factBounds[key];return!!bounds&&Number.isSafeInteger(value)&&value>=bounds[0]&&value<=bounds[1];}
@@ -50,13 +52,19 @@ export function t04FailureFacts(stderr){
   }catch{return{};}
 }
 export async function runT04Profile(adapter){
-  const rows=[],resets=[];let failure=null,physical=null,baseline=null,cleanup=false,checkpoint=null;
+  const rows=[],resets=[];let failure=null,physical=null,baseline=null,cleanup=false,checkpoint=null,runnerPreflight='NOT_RUN';
   try{
     adapter.guard();await adapter.bootstrap();physical=await adapter.physical();baseline=await adapter.baseline();
     if(![physical,baseline].every(h=>typeof h==='string'&&/^[a-f0-9]{64}$/.test(h)))refuse();
     checkpoint=await adapter.checkpoint(baseline);
     if(!checkpoint||Object.keys(checkpoint).sort().join(',')!=='archiveSHA,storageSHA'
       ||!Object.values(checkpoint).every(h=>/^[a-f0-9]{64}$/.test(h)))refuse();
+    runnerPreflight='FAIL';const proof=await adapter.preflight();
+    if(!proof||Object.keys(proof).sort().join(',')!=='archiveSHA,baselineSHA,physicalSHA,status,storageSHA'
+      ||proof.status!=='PASS'||proof.archiveSHA!==checkpoint.archiveSHA||proof.storageSHA!==checkpoint.storageSHA
+      ||proof.baselineSHA!==baseline||proof.physicalSHA!==physical||await adapter.physical()!==physical
+      ||!await adapter.preserved(baseline))refuse();
+    runnerPreflight='PASS';
     for(const stage of ids){
       if(failure){rows.push({stage,status:'NOT_RUN'});continue;}
       try{
@@ -82,12 +90,13 @@ export async function runT04Profile(adapter){
     for(const stage of ids)if(!rows.some(r=>r.stage===stage))rows.push({stage,status:'NOT_RUN'});}
   finally{try{cleanup=await adapter.close()===true;}catch{}if(!cleanup)failure??='cleanup';}
   return{schemaVersion:'permission-t04-runtime-v1',scope:'T04_NINETEEN_STAGES_ONLY',status:failure?'FAIL':'PASS',failure,
-    stages:rows,physicalBackendSHA:physical,logicalBaselineSHA:baseline,fixtureCheckpoint:checkpoint,resets,cleanup,
+    stages:rows,physicalBackendSHA:physical,logicalBaselineSHA:baseline,fixtureCheckpoint:checkpoint,resets,cleanup,runnerPreflight,
     full35BusinessRuntime:'NOT_RUN',remainingBusinessStages:16,supplementalOracles:'NOT_PROVEN_BY_STAGE_COUNTS'};
 }
 export function renderT04Evidence(receipt){
   if(receipt?.schemaVersion!=='permission-t04-runtime-v1'||receipt.scope!=='T04_NINETEEN_STAGES_ONLY'
     ||!['PASS','FAIL'].includes(receipt.status)||receipt.full35BusinessRuntime!=='NOT_RUN'||receipt.remainingBusinessStages!==16
+    ||!['NOT_RUN','FAIL','PASS'].includes(receipt.runnerPreflight)
     ||receipt.supplementalOracles!=='NOT_PROVEN_BY_STAGE_COUNTS'||typeof receipt.cleanup!=='boolean'
     ||!/^[1-9][0-9]{0,19}$/.test(receipt.runId??'')||!Number.isSafeInteger(receipt.attempt)||receipt.attempt<1||receipt.attempt>1000
     ||!['sourceFingerprint','lockSHA'].every(k=>/^[a-f0-9]{64}$/.test(receipt[k]??''))
@@ -111,7 +120,8 @@ export function renderT04Evidence(receipt){
       ||row.fail!==0||row.skip!==0||row.retry!==0||row.supplementalOracles!=='NOT_PROVEN_BY_STAGE_COUNTS'
       ||!['reportSHA','invocationSHA'].every(k=>/^[a-f0-9]{64}$/.test(row[k]??''))))refuse();
   }
-  if(receipt.status==='PASS'&&(receipt.failure!==null||!receipt.cleanup||receipt.stages.some(r=>r.status!=='PASS')
+  if(receipt.runnerPreflight!=='PASS'&&(receipt.stages.some(r=>r.status!=='NOT_RUN')||receipt.resets.length!==0))refuse();
+  if(receipt.status==='PASS'&&(receipt.runnerPreflight!=='PASS'||receipt.failure!==null||!receipt.cleanup||receipt.stages.some(r=>r.status!=='PASS')
     ||cp===null||receipt.resets.length!==resetStages.length
     ||!['physicalBackendSHA','logicalBaselineSHA'].every(k=>/^[a-f0-9]{64}$/.test(receipt[k]??''))))refuse();
   if(receipt.status==='FAIL'){
@@ -121,7 +131,7 @@ export function renderT04Evidence(receipt){
       ||failed>=0&&receipt.stages.some((r,i)=>r.status!==(i<failed?'PASS':i===failed?'FAIL':'NOT_RUN')))refuse();
   }
   const keys=['schemaVersion','scope','status','failure','stages','physicalBackendSHA','logicalBaselineSHA','cleanup',
-    'fixtureCheckpoint','resets',
+    'fixtureCheckpoint','resets','runnerPreflight',
     'full35BusinessRuntime','remainingBusinessStages','supplementalOracles','repository','runId','attempt','sourceSHA','workflowSHA',
     'sourceFingerprint','lockSHA'];
   if(Object.keys(receipt).some(k=>!keys.includes(k))||Object.keys(receipt).length!==keys.length)refuse();
@@ -175,7 +185,8 @@ async function main(){
     if(Number.isInteger(error?.t04BoundaryOrdinal)&&error.t04BoundaryOrdinal>=1&&error.t04BoundaryOrdinal<=19){
       facts.t04BoundaryOrdinal=error.t04BoundaryOrdinal;
       if(Number.isInteger(error?.status)&&error.status>=0&&error.status<=255)facts.t04BoundaryExit=error.status;
-      if(error.t04BoundaryOrdinal===15&&error.t04RestoreFacts)for(const key of['t04RestoreErrorOrdinal','t04RestoreCommandOrdinal'])
+      if(t04SafeFailureMetric('t04PreflightOrdinal',error?.t04PreflightOrdinal))facts.t04PreflightOrdinal=error.t04PreflightOrdinal;
+      if(error.t04RestoreFacts)for(const key of['t04RestoreErrorOrdinal','t04RestoreCommandOrdinal',...Object.keys(T04_DIAGNOSTIC_BOUNDS)])
         if(t04SafeFailureMetric(key,error.t04RestoreFacts[key]))facts[key]=error.t04RestoreFacts[key];
     }
     try{const path=join(outputRoot,stage+'-runner.json'),s=lstatSync(path);
@@ -191,6 +202,7 @@ async function main(){
     checkpoint:async baseline=>{boundary=await createT04FixtureBoundary({root,identity,guard,physical,baseline,preserved:adapter.preserved,deadline,
       resourceGuard:()=>assertT04ResourceFacts(readCi1LinuxEnvelope(root,identity),identity)});
       return{archiveSHA:boundary.archiveSHA,storageSHA:boundary.storageSHA};},
+    preflight:()=>boundary.preflight(),
     prepare:stage=>boundary.prepare(stage),afterStage:stage=>boundary.observe(t04Lifecycle(stage).post),restore:(stage,hash)=>boundary.restore(stage,hash),
     stage:stage=>executeRuntimeStage(stage,{sourceRoot:source,outputRoot,
       baseEnv:t04StageEnvironment(stage,env,stage==='realtime-e2e'?boundary.privateDirectory(stage):undefined),sourceSHA,sourceFingerprint,lockSHA,

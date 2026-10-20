@@ -866,9 +866,14 @@ test("TC-PIN-10/13/14 bootstrap creates a forced owner and receipt-driven insert
     const employee = await call("permission_get_initial_seed_status");
     expect(employee.data.stages[0]).toMatchObject({ stage: "employee", status: "committed" });
     const cashierId = (await db.query("select id from public.employees where store_id=$1 and seed_key='demo.employee.demo-emp-cashier'", [sid])).rows[0].id;
+    const seedCreationAudit = async () => (await db.query(`select target_id,kind,outcome,credential_changed
+      from public.employee_admin_audit where store_id=$1 and kind='initial_seed_employee' order by request_id`, [sid])).rows;
+    const firstSeedAudit = await seedCreationAudit();
+    expect(firstSeedAudit).toEqual([{ target_id: cashierId, kind: "initial_seed_employee", outcome: "applied", credential_changed: false }]);
     await db.query("update public.employees set passcode_hash=extensions.crypt('246810',extensions.gen_salt('bf')) where id=$1", [cashierId]);
     await call("permission_run_initial_seed_stage", [{ runGeneration: 2, stage: "employee" }]);
     expect((await db.query("select passcode_hash=extensions.crypt('246810',passcode_hash) preserved from public.employees where id=$1", [cashierId])).rows[0].preserved).toBe(true);
+    expect(await seedCreationAudit()).toEqual(firstSeedAudit);
     await call("permission_run_initial_seed_stage", [{ runGeneration: 2, stage: "menu" }]);
     const finished = await call("permission_run_initial_seed_stage", [{ runGeneration: 2, stage: "floor" }]);
     expect(finished.data).toMatchObject({ status: "completed", autoEligible: false, runGeneration: 2 });

@@ -1,11 +1,13 @@
 import {readFileSync,writeFileSync,lstatSync,statSync,realpathSync,mkdirSync,readlinkSync} from 'node:fs';
-import {execFileSync} from 'node:child_process';
+import {execFileSync,spawnSync} from 'node:child_process';
 import {join,dirname} from 'node:path';
 import {runtimeStageCatalog} from './permission-runtime-catalog.mjs';
 import {runtimeHash} from './permission-runtime-results.mjs';
 import {CI1_PROJECT,CI1_RUNTIME,CI1_LIMITS,ci1Identity,ci1TrustedRepository} from './permission-ci1-policy.mjs';
 import {coreDumpDisabled} from './project-ci-launch.mjs';
 import{containerContinuityHash}from'./permission-runtime-container-state.mjs';
+import{t04CorrelateRestoreLog,t04CorrelateServerLog,T04_RESTORE_SQLSTATES,
+ t04RestoreConstraintTarget,t04ConstraintCatalogFacts,t04LogCapabilityMask}from'./permission-runtime-t04-restore-diagnostic.mjs';
 
 const catalog=runtimeStageCatalog().filter(s=>s.runtimeProfile==='SUPABASE_T04');
 const resets=new Set(['candidate-e2e','candidate-seed-recovery-database','candidate-roles-e2e','realtime-e2e',
@@ -111,8 +113,8 @@ export function assertT04ContainerContinuity(before,after,{stopped=false,cgroup,
 // One immutable logical checkpoint of this newly created synthetic capsule.
 // It never opens a remote endpoint or replaces the database/container/volume.
 export async function createT04FixtureBoundary({root,identity,guard,resourceGuard,physical,baseline,preserved,deadline}){
-  let step=1;
-  const failure=error=>{if(error&&typeof error==='object')error.t04BoundaryOrdinal=step;return error;};
+  let step=1,preflightPhase=0;
+  const failure=error=>{if(error&&typeof error==='object'){error.t04BoundaryOrdinal=step;error.t04PreflightOrdinal=preflightPhase;}return error;};
   const checked=fn=>async(...args)=>{try{return await fn(...args);}catch(error){throw failure(error);}};
   try{
   guard();check(process.platform==='linux'&&process.getuid?.()===0&&process.versions.node==='24.16.0'
@@ -145,6 +147,7 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
   const env=environment();check(env.controlPath===join(privateRoot,'fixture-control.json'));
   const files=[join(privateRoot,'bridge.env'),env.controlPath].map(path=>{ownFile(path,65536);return{path,bytes:readFileSync(path)};});
   step=3;
+  const logOptions='-c log_error_verbosity=verbose -c log_min_error_statement=error -c log_min_messages=error';
   const db=new pg.Client({connectionString:env.dsn,statement_timeout:30000,connectionTimeoutMillis:5000});await db.connect();
   try{
   const rows=async sql=>(await db.query(sql)).rows;
@@ -179,6 +182,10 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
     return runtimeHash({metadata,buckets,payloads});
   };
   await binding();const originalPhysical=await physical(),originalFinancial=await financial(),originalStorage=await storage();
+  const databaseIdentity=async()=>runtimeHash(await rows(`select current_database() database,
+    (select oid from pg_database where datname=current_database()) oid,(select system_identifier::text from pg_control_system()) system_identifier`));
+  const originalDatabaseIdentity=await databaseIdentity();
+  const resetPhysical=async()=>{continuity(true);check(await databaseIdentity()===originalDatabaseIdentity);};
   check(await preserved(baseline));
   step=4;
   const globals=async()=>{
@@ -199,6 +206,21 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
     .filter(r=>r.setconfig.length>0);
   const originalSettings=runtimeHash(await settings());
   const originalRoles=await globals();check(!originalRoles.some(r=>r.rolname==='pos_owner_recovery'));
+  const logging=(await rows(`select current_setting('log_destination') destination,current_setting('logging_collector') collector,
+    current_setting('log_line_prefix') prefix`))[0];
+  const logCapability=t04LogCapabilityMask(dbContainer.HostConfig?.LogConfig?.Type,logging);
+  const readLogs=since=>{
+    if(logCapability!==15){
+      throw Object.assign(Error('T04_LOG_UNSUPPORTED'),{t04RestoreFacts:{t04RestoreLogObserved:3,t04RestoreSqlstateOrdinal:0,t04RestoreLogCapabilityMask:logCapability}});
+    }
+    resourceGuard();check(Date.now()+1000<deadline);
+    const logs=spawnSync('docker',['logs','--since',since,'--tail','128',dbContainer.Id],
+      {timeout:Math.min(5000,deadline-Date.now()),killSignal:'SIGKILL',maxBuffer:1024**2,stdio:['ignore','pipe','pipe']});
+    resourceGuard();const size=(logs.stdout?.length??0)+(logs.stderr?.length??0);
+    if(logs.status!==0||logs.error||size>1024**2)throw Object.assign(Error('T04_LOG_READ_FAILED'),
+      {t04RestoreFacts:{t04RestoreLogObserved:4,t04RestoreSqlstateOrdinal:0,t04RestoreLogCapabilityMask:logCapability}});
+    return Buffer.concat([logs.stdout??Buffer.alloc(0),logs.stderr??Buffer.alloc(0)]);
+  };
   const publicSchema=async()=>rows(`select pg_get_userbyid(n.nspowner) owner,obj_description(n.oid,'pg_namespace') comment,
     (select jsonb_agg(jsonb_build_object('grantor',pg_get_userbyid(a.grantor),'grantee',
       case when a.grantee=0 then 'PUBLIC' else pg_get_userbyid(a.grantee) end,'privilege',a.privilege_type,'grantable',a.is_grantable)
@@ -221,6 +243,8 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
   const archive=call('docker',['exec','--user','postgres',dbContainer.Id,'pg_dump','-U','supabase_admin','-d','postgres','--format=custom'],
     {maxBuffer:8*1024**2,timeout:45000});check(archive.length>0&&archive.length<=8*1024**2);
   writeFileSync(archivePath,archive,{flag:'wx',mode:0o400});const archiveInfo=ownFile(archivePath,8*1024**2),archiveSHA=runtimeHash(archive);
+  const toc=call('docker',['exec','-i','--user','postgres',dbContainer.Id,'pg_restore','--list'],
+    {input:archive,maxBuffer:1024**2,timeout:10000}).toString('utf8');
   step=7;
   check(await storage()===originalStorage&&await financial()===originalFinancial&&await preserved(baseline)&&await physical()===originalPhysical);
   const phase=async expected=>{
@@ -253,9 +277,10 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
     }
     return observe(lifecycle.pre);
   };
-  const restore=async(stage,beforeResetSHA)=>{
+  const restore=async(stage,beforeResetSHA,preflight=false)=>{
     step=11;
-    guard();check(t04Lifecycle(stage).reset&&/^[a-f0-9]{64}$/.test(beforeResetSHA)&&await physical()===originalPhysical);
+    guard();check((preflight?stage==='runner-preflight':t04Lifecycle(stage).reset)
+      &&/^[a-f0-9]{64}$/.test(beforeResetSHA)&&await physical()===originalPhysical);
     // Check protected payload/metadata BEFORE restore can hide a regression.
     check(await storage()===originalStorage);await binding();
     const currentRoles=await globals(),allowed=currentRoles.filter(r=>r.rolname!=='pos_owner_recovery');
@@ -276,8 +301,40 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
     // Reestablish precisely that base before replaying the original archive.
     sql("create schema public authorization pg_database_owner; grant all on schema public to pg_database_owner; grant usage on schema public to public; comment on schema public is 'standard public schema';");
     step=15;
-    call('docker',['exec','-i','--user','postgres',dbContainer.Id,'pg_restore','--clean','--if-exists','--single-transaction','--exit-on-error',
-      '-U','supabase_admin','-d','postgres'],{input:archive,maxBuffer:1024**2,timeout:60000});
+    const restoreStarted=new Date().toISOString();
+    try{call('docker',['exec','-i','--env','PGOPTIONS='+logOptions,
+      '--user','postgres',dbContainer.Id,'pg_restore','--clean','--if-exists','--single-transaction','--exit-on-error',
+      '-U','supabase_admin','-d','postgres'],{input:archive,maxBuffer:1024**2,timeout:60000});}
+    catch(error){
+      // Read once, inside the same deadline/quota, without changing the failed
+      // SQL/transaction or retrying it. Diagnostic failure keeps the original error.
+      let facts;
+      try{facts=t04CorrelateRestoreLog(error?.stderr,readLogs(restoreStarted),logging.prefix);}
+      catch(logError){facts=logError?.t04RestoreFacts??{t04RestoreLogObserved:4,t04RestoreSqlstateOrdinal:0};}
+      facts.t04RestoreLogCapabilityMask=logCapability;
+      // The failed pg_restore transaction has rolled back. Its preceding manual
+      // schema drop has not. Missing targets remain UNKNOWN, never an assumption.
+      const target=t04RestoreConstraintTarget(error?.stderr);
+      facts.t04RestoreTargetObserved=target?0:2;
+      if(target&&facts.t04RestoreLogObserved===1)try{
+        resourceGuard();check(Date.now()+6000<deadline);await resetPhysical();
+        await db.query('begin read only');
+        try{
+          await db.query("set local statement_timeout='5s'");
+          const result=await db.query(`select c.oid,n.nspname schema,t.relname "table",c.conname "constraint",
+            pg_get_userbyid(t.relowner) owner,c.contype kind,c.conislocal "local",c.coninhcount inherited,(c.conparentid<>0) parent,
+            (select coalesce(bit_or(case d.classid when 'pg_constraint'::regclass then 1 when 'pg_trigger'::regclass then 2
+              when 'pg_rewrite'::regclass then 4 when 'pg_class'::regclass then 8 else 16 end),0)::int from pg_depend d
+              where (d.refclassid='pg_constraint'::regclass and d.refobjid=c.oid)
+                 or (c.conindid<>0 and d.refclassid='pg_class'::regclass and d.refobjid=c.conindid)) dependencies
+            from pg_constraint c join pg_class t on t.oid=c.conrelid join pg_namespace n on n.oid=t.relnamespace
+            where n.nspname=$1 and t.relname=$2 and c.conname=$3`,[target.schema,target.table,target.constraint]);
+          facts={...facts,...t04ConstraintCatalogFacts(target,result.rows,toc)};
+        }finally{await db.query('rollback');}
+        resourceGuard();await resetPhysical();
+      }catch{facts.t04RestoreTargetObserved=0;for(const key of Object.keys(facts))if(/^t04Restore(?:Schema|Constraint|Dependency)/.test(key))delete facts[key];}
+      if(error&&typeof error==='object')error.t04RestoreFacts={...error.t04RestoreFacts,...facts};throw error;
+    }
     step=16;for(const f of files){ownFile(f.path,65536);writeFileSync(f.path,f.bytes,{mode:0o600});}
     check(runtimeHash(await globals())===runtimeHash(originalRoles)&&runtimeHash(await memberships())===originalMemberships
       &&runtimeHash(await settings())===originalSettings&&(await hook()).length===0
@@ -290,7 +347,35 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
     check(ready&&await physical()===originalPhysical&&await preserved(baseline)&&await storage()===originalStorage);
     return {stage,status:'RESTORED_ORIGINAL',beforeResetSHA,archiveSHA,baselineSHA:baseline,physicalSHA:originalPhysical};
   };
-  return{prepare:checked(prepare),observe:checked(observe),restore:checked(restore),archiveSHA,storageSHA:originalStorage,close:()=>db.end(),
+  const preflight=checked(async()=>{
+    preflightPhase=1;step=7;resourceGuard();check(await physical()===originalPhysical);
+    if(logCapability!==15)throw Object.assign(Error('T04_LOG_UNSUPPORTED'),
+      {t04RestoreFacts:{t04RestoreLogObserved:3,t04RestoreSqlstateOrdinal:0,t04RestoreLogCapabilityMask:logCapability}});
+    // The fixture DSN is deliberately non-superuser. Only the local privileged
+    // psql control and pg_restore connection receive these diagnostic GUCs.
+    const since=new Date().toISOString(),command='select 1 / 0;';let controlError;
+    try{call('docker',['exec','--env','PGOPTIONS='+logOptions,'--user','postgres',dbContainer.Id,
+      'psql','-XAt','-v','ON_ERROR_STOP=1','-U','supabase_admin','-d','postgres',
+      '-c','select pg_backend_pid();','-c',command],{timeout:10000});}catch(error){controlError=error;}
+    const pidText=controlError?.stdout?.toString('utf8')??'',client=controlError?.stderr?.toString('utf8')??'';
+    const headers=[...client.matchAll(/^ERROR:\s+([^\r\n]*)/gm)];
+    if(![1,3].includes(controlError?.status))throw Object.assign(Error('T04_CONTROL_EXIT_REFUSED'),
+      {t04RestoreFacts:{t04PreflightControlOrdinal:1,t04RestoreLogCapabilityMask:logCapability}});
+    if(!/^[1-9][0-9]{0,9}\r?\n$/.test(pidText)||headers.length!==1)throw Object.assign(Error('T04_CONTROL_FRAMING_REFUSED'),
+      {t04RestoreFacts:{t04PreflightControlOrdinal:2,t04RestoreLogCapabilityMask:logCapability}});
+    const facts=t04CorrelateServerLog(headers[0][1].trim(),command,readLogs(since),logging.prefix,Number(pidText.trim()));
+    facts.t04RestoreLogCapabilityMask=logCapability;
+    facts.t04PreflightControlOrdinal=facts.t04RestoreLogObserved!==1?3
+      :facts.t04RestoreSqlstateOrdinal!==T04_RESTORE_SQLSTATES.indexOf('22012')+1?4:0;
+    if(facts.t04RestoreLogObserved!==1||facts.t04RestoreSqlstateOrdinal!==T04_RESTORE_SQLSTATES.indexOf('22012')+1)
+      throw Object.assign(Error('T04_LOG_CONTROL_FAILED'),{t04RestoreFacts:facts});
+    preflightPhase=2;
+    const before=await observe('legacy'),result=await restore('runner-preflight',before,true);
+    preflightPhase=0;
+    return{status:'PASS',archiveSHA,storageSHA:originalStorage,baselineSHA:result.baselineSHA,physicalSHA:result.physicalSHA};
+  });
+  return{prepare:checked(prepare),observe:checked(observe),restore:checked((stage,hash)=>restore(stage,hash)),preflight,
+    archiveSHA,storageSHA:originalStorage,close:()=>db.end(),
     privateDirectory:stage=>{try{step=19;check(stage==='realtime-e2e');const path=join(privateRoot,'t04-realtime');
       check(!lstatSync(path,{throwIfNoEntry:false}));guard();mkdirSync(path,{mode:0o700});
       check(statSync(path).dev===device&&realpathSync(path)===path);return path;}catch(error){throw failure(error);}}};
