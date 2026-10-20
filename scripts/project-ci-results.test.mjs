@@ -559,6 +559,15 @@ test('public evidence excludes arbitrary binding/count/raw fields and incomplete
   assert.equal(publicSummary(binding, rows.slice(0, -1), { source: digest, lock: digest }).overallStatus, 'FAIL');
 });
 
+test('public native diagnostics independently reject out-of-domain numbers even without private parser',()=>{
+ const limits={pg16Operation:4,pg16Step:30,pg16ErrorCodeOrdinal:21,pg16ErrorNameOrdinal:5,pg16ErrorMatcherOrdinal:8,
+  pg16RunnerErrors:10000,pg16HookErrors:10000,pg16FailedTests:10000,pg16RootRemoved:1,pg16ProcessReleased:1};
+ const project=metrics=>publicSummary(binding,[{id:'install',status:'FAIL',elapsedMs:1,exitCode:1,invocationSHA:digest,reportSHA:digest,
+  diagnostic:{codes:['COMMAND_FAILED'],metrics,failedFiles:[]}}],{source:digest,lock:digest}).phases[0].diagnostic.metrics;
+ assert.deepEqual(project(limits),limits);
+ for(const [key,max]of Object.entries(limits))for(const v of[max+1,Number.MAX_SAFE_INTEGER,-1,1.5,'1',Infinity])assert.equal(Object.hasOwn(project({[key]:v}),key),false);
+ assert.deepEqual(project({raw:'SECRET',pg16Step:30,pg16RootRemoved:1}),{pg16Step:30,pg16RootRemoved:1});
+});
 test('public UI calibration counts stay finite, numeric and separate from product acceptance', () => {
   const rows=PROJECT_PHASES.map(id=>({id,status:'PASS',elapsedMs:1,exitCode:0,invocationSHA:digest,reportSHA:digest,
     counts:{run:11,pass:11,positiveControls:5,negativeControls:6,targetControls:16,detectedFindings:23,

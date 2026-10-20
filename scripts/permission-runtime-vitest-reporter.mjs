@@ -1,4 +1,5 @@
 import {runtimeReporterContext,reporterFile,writeRuntimeReport} from './permission-runtime-results.mjs';
+import {runtimeErrorFacts} from './permission-runtime-error-facts.mjs';
 
 export default class RuntimeVitestReporter {
   onInit(){this.context=runtimeReporterContext();this.discovery=[];this.seen=new Set();}
@@ -18,7 +19,9 @@ export default class RuntimeVitestReporter {
       .flatMap(s=>typeof s.errors==='function'?s.errors():Array.isArray(s.errors)?s.errors:[]);
     const results=modules.flatMap(m=>[...m.children.allTests()].map(t=>({...this.identity(t),
       state:t.result().state,attempts:1+(t.diagnostic()?.retryCount??NaN)+(t.diagnostic()?.repeatCount??NaN)})));
+    const firstError=errors[0]??hookErrors[0]??modules.flatMap(m=>[...m.children.allTests()].flatMap(t=>t.result().errors??[]))[0];
     writeRuntimeReport(this.context,{complete:true,runnerExit:reason,errorCount:errors.length,hookErrorCount:hookErrors.length,
+      failureFacts:runtimeErrorFacts(firstError),
       discovery:this.discovery,results,selectedFiles:[...new Set(modules.map(m=>reporterFile(this.context.sourceRoot,m.moduleId)))]});
   }
 }

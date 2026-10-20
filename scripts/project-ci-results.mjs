@@ -290,9 +290,24 @@ export function guardFailureCode(error) {
   return error?.message === 'PROJECT_CI_RESULT_INVALID' ? 'RESULT_INVALID' : 'GUARD_REFUSED';
 }
 
+const PG16_PUBLIC_LIMITS=Object.freeze({pg16Operation:4,pg16Step:30,pg16ErrorCodeOrdinal:21,pg16ErrorNameOrdinal:5,
+ pg16ErrorMatcherOrdinal:8,pg16RunnerErrors:10000,pg16HookErrors:10000,pg16FailedTests:10000,pg16RootRemoved:1,pg16ProcessReleased:1});
+export function pg16FailureMetrics(output){
+  if(typeof output!=='string'||Buffer.byteLength(output)>1024**2)return{};
+  const lines=output.split(/\r?\n/).filter(l=>l.startsWith('PERMISSION_PG16_FAILURE_FACTS '));if(lines.length!==1)return{};
+  try{const v=JSON.parse(lines[0].slice('PERMISSION_PG16_FAILURE_FACTS '.length)),limits={operation:4,step:30,errorCodeOrdinal:21,
+    errorNameOrdinal:5,errorMatcherOrdinal:8,runnerErrors:10000,hookErrors:10000,failedTests:10000};
+    if(!v||Object.keys(v).sort().join(',')!==[...Object.keys(limits),'rootRemoved','processReleased'].sort().join(',')
+      ||!Object.entries(limits).every(([k,max])=>Number.isInteger(v[k])&&v[k]>=0&&v[k]<=max)
+      ||typeof v.rootRemoved!=='boolean'||typeof v.processReleased!=='boolean')return{};
+    return{...Object.fromEntries(Object.keys(limits).map(k=>['pg16'+k[0].toUpperCase()+k.slice(1),v[k]])),
+      pg16RootRemoved:Number(v.rootRemoved),pg16ProcessReleased:Number(v.processReleased)};
+  }catch{return{};}
+}
 export function privateDiagnostics(output, report, expectedFiles = [], root = '') {
   const codes = ['COMMAND_FAILED'];
   const metrics = {};
+  Object.assign(metrics,pg16FailureMetrics(output));
   for (const [key, value] of Object.entries(report ?? {})) if (['numTotalTests', 'numPassedTests', 'numFailedTests', 'numPendingTests', 'numRuntimeErrorTestSuites'].includes(key) && integer(value)) metrics[key] = value;
   if (!report) codes.push('REPORT_MISSING');
   if (metrics.numFailedTests > 0) codes.push('VITEST_ASSERTION');
@@ -647,6 +662,8 @@ export function publicSummary(binding, rows, fingerprints) {
     diagnostic: diagnostic ? { codes: diagnostic.codes.filter(code => DIAGNOSTIC_CODES.includes(code)),
       metrics: Object.fromEntries(Object.entries(diagnostic.metrics).filter(([key, value]) =>
         ['numTotalTests', 'numPassedTests', 'numFailedTests', 'numPendingTests', 'numRuntimeErrorTestSuites', 'architectureAssertion',
+          'pg16Operation','pg16Step','pg16ErrorCodeOrdinal','pg16ErrorNameOrdinal','pg16ErrorMatcherOrdinal',
+          'pg16RunnerErrors','pg16HookErrors','pg16FailedTests','pg16RootRemoved','pg16ProcessReleased',
           'minimumObservedFreeBytes', 'initialFreeBytes', 'freeSpaceDecreaseBytes', 'ownedBytesAtCheckpoint', 'coreFileCount', 'coreAllocatedBytes', 'largestOwnedFileBytes', 'kernelCorePipe',
           'uiWatchStageOrdinal', 'uiWatchFailureStageOrdinal', 'uiWatchHTTPStatus', 'uiWatchGeneratedWatchCount', 'uiWatchAppSourceWatched', 'uiWatchWatchedPathCount',
           'uiWatchClosed', 'uiWatchExitOrdinal', 'uiWatchExitCode', 'uiWatchTimeoutOrdinal',
@@ -668,7 +685,8 @@ export function publicSummary(binding, rows, fingerprints) {
           'browserNativeFatalObserved', 'browserNativeFatalSourceOrdinal', 'browserNativeFatalLine', 'browserNativeFatalReasonMask',
           'browserProbeNativeFatalObserved', 'browserProbeNativeFatalSourceOrdinal', 'browserProbeNativeFatalLine', 'browserProbeNativeFatalReasonMask',
           'smokeExpected', 'smokeUnexpected', 'smokeSkipped', 'smokeFlaky', 'smokeProgressIndex', 'smokeProgressTotal',
-          'memoryCurrentBytes', 'peakMemoryBytes', 'pidsCurrent', 'peakPids', 'oomEvents', 'oomKills', 'pidsLimitEvents'].includes(key) && integer(value))),
+          'memoryCurrentBytes', 'peakMemoryBytes', 'pidsCurrent', 'peakPids', 'oomEvents', 'oomKills', 'pidsLimitEvents'].includes(key) && integer(value)
+          &&(!Object.hasOwn(PG16_PUBLIC_LIMITS,key)||value<=PG16_PUBLIC_LIMITS[key]))),
       failedFiles: diagnostic.failedFiles.filter(path => /^(?:src|tests)\/[A-Za-z0-9_./-]+\.(?:ts|tsx|mjs)$/.test(path)).slice(0, 32) } : null }));
   return { schemaVersion: 'pos-cafe-light-ci-v1', verificationScope: 'LIGHT_AND_NATIVE_PG16_ONLY', repository: PROJECT_REPOSITORY, repositoryID: PROJECT_REPOSITORY_ID,
     event: binding.event, sourceSHA: binding.sourceSHA, prHeadSHA: binding.prHeadSHA, workflowSHA: binding.workflowSHA,

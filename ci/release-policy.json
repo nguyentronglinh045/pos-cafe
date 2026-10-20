@@ -11,7 +11,7 @@
     ".github/workflows/ci.yml": "14fc00e62e1ca40e6cc71b004085ba7d411e6ad9bd0a3aed4c1185d644498705",
     "scripts/project-ci-launch.mjs": "db2ce0777c9bcd314320a7378fb03bfa0dfb18696ca597fc73f733742bd46273",
     "scripts/project-ci.mjs": "73e82f4fa6708f796f9b56d0383fde3c791bed14623c4a8077bd1753d3a5b7bc",
-    "scripts/project-ci-results.mjs": "cf35009a0e84da91127ee2d49ea2fb5e0171cafc6d89eb5b0e30d5ce0e415075",
+    "scripts/project-ci-results.mjs": "34f4d16fd134428f35a0ba11c65d366eea03fab5fa28124a227fac4f29039c29",
     "vitest.config.ts": "1cb32e60581f3bc8c6f2a6e487e2c337a89d40f3ae966b82896792ce5b077042",
     "vitest.project-tooling.config.ts": "a85416abe41bd3bdb8b70262c82b102be5c48d1e1b5edfdad0eaf7ad9e2b9c31",
     "playwright.config.ts": "780a3bd5eb4bbb256a2fb1f81cb78a000bf2ee82fd0a2b4e752184eeaa19dba5",
@@ -32,8 +32,11 @@
     "ui-audit/baseline.json": "79fe315c36c21db23a66724939b085e5ac4065d16780e2a0d26e1f9da5c87080",
     "ui-audit/audit.js": "cb775fb2b9ff0517d4fd9137870f9192457b1695ba9dda5858af57647ec9d7e6",
     "ui-audit/demo-buggy.html": "4c1424232be357167b1cf643ff1baa602d2987856317d40460d95f6358662cce",
-    "scripts/permission-runtime-pg16.mjs": "5e53c7bbcc867e155c5aed245fcd6457dff118f47cacee877d6ca60f04a8aa7e",
-    "scripts/permission-runtime-pg16-cleanup.mjs": "3a47c5a59c08411a702d4622b74dd514395072be9878630f3dc6a1f54109efa8"
+    "scripts/permission-runtime-pg16.mjs": "c13578f465b7c39421e93e5a90ab29d6b1e1ad42be6f24062637c38316d45f32",
+    "scripts/permission-runtime-pg16-cleanup.mjs": "3a47c5a59c08411a702d4622b74dd514395072be9878630f3dc6a1f54109efa8",
+    "scripts/permission-runtime-error-facts.mjs": "1002b188305c37b16b1da2ba7d71f4c5621940de9cb8992aef781ffc0832e323",
+    "scripts/permission-runtime-vitest-reporter.mjs": "6d53b33d615ed2dcaf48906206c13cb3df177cad47001bb55c4d54abcc10666b",
+    "scripts/project-ci-results.test.mjs": "b7488d6566c51cd65e7381114ed27804b1640eb1f274f706bde114174f3743f8"
   },
   "preview": {
     "projectId": "prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en",

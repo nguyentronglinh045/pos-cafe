@@ -8,17 +8,25 @@ import{executeRuntimeStage,prepareRuntimeDirectory}from'./permission-runtime-sta
 import{allocatedBytes,trackedFingerprint}from'./project-ci.mjs';
 import{coreDumpDisabled}from'./project-ci-launch.mjs';
 import{pg16Layout,createPg16Control,removePg16Root}from'./permission-runtime-pg16-cleanup.mjs';
+import{runtimeErrorFacts,safeRuntimeErrorFacts}from'./permission-runtime-error-facts.mjs';
 export{pg16Layout}from'./permission-runtime-pg16-cleanup.mjs';
 
 const GiB=1024**3,stage='legacy-t01-database',expected=runtimeStage(stage),refuse=()=>{throw Error('PERMISSION_PG16_RUNTIME_REFUSED');};
 const check=x=>{if(!x)refuse();};
+let diagnosticStep=0;
+export function pg16FailureRecord(error,operation,step,cleanup,report){
+  const facts=safeRuntimeErrorFacts(report?.failureFacts)??runtimeErrorFacts(error),n=(v,max)=>Number.isInteger(v)&&v>=0&&v<=max?v:0;
+  return{operation:n(operation,4),step:n(step,30),rootRemoved:cleanup?.rootRemoved===true,processReleased:cleanup?.processReleased===true,
+    ...facts,runnerErrors:n(report?.errorCount,10000),hookErrors:n(report?.hookErrorCount,10000),
+    failedTests:Array.isArray(report?.results)?n(report.results.filter(r=>r?.state==='failed').length,10000):0};
+}
 export async function runPg16Profile(adapter){
   let result=null,physical=null,failure=null,cleanup=null,operation='BOOTSTRAP';
   try{adapter.guard();await adapter.bootstrap();physical=await adapter.physical();check(/^[a-f0-9]{64}$/.test(physical));
     operation='STAGE';result=await adapter.stage();check(result?.stage===stage&&result.status==='PASS'&&result.required===expected.required.length
       &&Number.isSafeInteger(result.run)&&result.run>=result.required&&result.pass===result.run&&result.fail===0&&result.skip===0&&result.retry===0);
     operation='POSTCHECK';adapter.guard();check(await adapter.physical()===physical);
-  }catch{failure=operation;}
+  }catch(error){failure=operation;try{adapter.diagnostic?.(error,operation);}catch{}}
   finally{try{cleanup=await adapter.close();}catch{}if(cleanup?.rootRemoved!==true||cleanup?.processReleased!==true)failure??='CLEANUP';}
   return{schemaVersion:'permission-pg16-runtime-v1',scope:'NATIVE_PG16_T01_ONLY',status:failure?'FAIL':'PASS',failure,
     stage:result,physicalSHA:physical,cleanup,full35BusinessRuntime:'NOT_RUN',remainingBusinessStages:34,
@@ -48,14 +56,17 @@ export function renderPg16Evidence(r,binding){
   const json=JSON.stringify(r,null,2)+'\n';check(Buffer.byteLength(json)<=16384);return{json};
 }
 async function main(){
+  diagnosticStep=1;
   check(process.argv.length===3&&process.platform==='linux'&&process.getuid?.()>0&&process.env.GITHUB_ACTIONS==='true'
     &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&process.env.GITHUB_REPOSITORY==='nguyentronglinh045/pos-cafe'
     &&process.env.GITHUB_REPOSITORY_ID==='1263057386');
   const source=realpathSync(process.cwd()),layout=pg16Layout(process.env.GITHUB_RUN_ID,Number(process.env.GITHUB_RUN_ATTEMPT));
+  diagnosticStep=2;
   check(readFileSync('/proc/self/cgroup','utf8').trim()==='0::/system.slice/'+layout.unit);
   const cg='/sys/fs/cgroup/system.slice/'+layout.unit,scalar=n=>readFileSync(cg+'/'+n,'utf8').trim(),uid=process.getuid();
   check(scalar('cpu.max')==='300000 100000'&&scalar('memory.max')===String(8*GiB)&&scalar('memory.swap.max')==='0'&&scalar('pids.max')==='1024');
   const binary='/usr/lib/postgresql/16/bin/',git=args=>execFileSync('git',args,{cwd:source,encoding:'utf8',timeout:10000,maxBuffer:128*1024});
+  diagnosticStep=3;
   const paths=git(['ls-files','-z']).split('\0').filter(Boolean).sort(),sourceSHA=git(['rev-parse','HEAD']).trim();
   check(sourceSHA===process.env.GITHUB_SHA&&!git(['diff','--name-only','HEAD','--']).trim());
   const sourceFingerprint=trackedFingerprint(source,paths),lockSHA=runtimeHash(readFileSync(join(source,'package-lock.json')));
@@ -78,9 +89,11 @@ async function main(){
   const call=(name,args,cleanup=false)=>{if(cleanup)rootGuard();else guard();
     return execFileSync(name,args,{encoding:'utf8',timeout:cleanup?15000:30000,maxBuffer:1024**2,stdio:['ignore','pipe','pipe'],
       env:{PATH:'/usr/bin:/bin',LANG:'C.UTF-8',HOME:layout.root,TMPDIR:layout.root}});};
+  diagnosticStep=4;
   for(const n of['postgres','pg_ctl','initdb']){const s=lstatSync(binary+n);check(s.isFile()&&!s.isSymbolicLink()&&s.uid===0&&realpathSync(binary+n)===binary+n);}
   check(/^postgres \(PostgreSQL\) 16\.\d+/.test(call(binary+'postgres',['--version'])));
   const output=prepareRuntimeDirectory(source,resolve(process.argv[2]),guard);
+  diagnosticStep=5;
   const processProof=pid=>{
     check(Number.isInteger(pid)&&pid>1&&lstatSync('/proc/'+pid).uid===uid&&realpathSync('/proc/'+pid+'/exe')===binary+'postgres');
     const argv=readFileSync('/proc/'+pid+'/cmdline','utf8').split('\0');check(argv.includes('-D')&&argv[argv.indexOf('-D')+1]===layout.data);
@@ -88,24 +101,30 @@ async function main(){
     check(coreDumpDisabled(readFileSync('/proc/'+pid+'/limits','utf8'),readFileSync('/proc/sys/kernel/core_pattern','utf8')));
     const s=readFileSync('/proc/'+pid+'/stat','utf8');return s.slice(s.lastIndexOf(')')+2).split(' ')[19];
   };
-  const receipt=await runPg16Profile({guard,
+  let diagnostic=null;
+  const receipt=await runPg16Profile({guard,diagnostic:(error,operation)=>{
+    let report=null;try{const p=join(output,stage+'-runner.json'),s=lstatSync(p);if(s.isFile()&&!s.isSymbolicLink()&&s.size<=1024**2)report=JSON.parse(readFileSync(p));}catch{}
+    diagnostic=pg16FailureRecord(error,['BOOTSTRAP','STAGE','POSTCHECK','CLEANUP'].indexOf(operation)+1,diagnosticStep,null,report);
+  },
     bootstrap:async()=>{
+      diagnosticStep=6;
       guard();mkdirSync(layout.root,{mode:0o700});created=true;Object.assign(rootInfo,lstatSync(layout.root));rootGuard();
       createPg16Control(layout,source,sourceSHA);
       mkdirSync(layout.private,{mode:0o700});mkdirSync(layout.root+'/socket',{mode:0o700});
-      call(binary+'initdb',['-D',layout.data,'--username=postgres','--auth=trust','--encoding=UTF8','--locale=C.UTF-8','--no-instructions']);
+      diagnosticStep=7;call(binary+'initdb',['-D',layout.data,'--username=postgres','--auth=trust','--encoding=UTF8','--locale=C.UTF-8','--no-instructions']);
       const options=`-h 127.0.0.1 -p ${layout.port} -k ${layout.root}/socket -c shared_buffers=32MB -c max_connections=40 -c max_wal_size=128MB -c min_wal_size=80MB -c fsync=on`;
-      call(binary+'pg_ctl',['-D',layout.data,'-l',layout.private+'/server.log','-w','-t','15','-o',options,'start']);
+      diagnosticStep=8;call(binary+'pg_ctl',['-D',layout.data,'-l',layout.private+'/server.log','-w','-t','15','-o',options,'start']);
+      diagnosticStep=9;
       const pid=Number(readFileSync(layout.data+'/postmaster.pid','utf8').split('\n')[0]);started={pid,ticks:processProof(pid)};
-      const pg=(await import('pg')).default;db=new pg.Client({connectionString:`postgresql://postgres@127.0.0.1:${layout.port}/postgres`,connectionTimeoutMillis:5000,statement_timeout:30000});await db.connect();
-      const bootstrap=await import('./permission-fixture-bootstrap.mjs');await bootstrap.bootstrapFixture({adminDsn:`postgresql://postgres@127.0.0.1:${layout.port}/postgres`,
+      diagnosticStep=10;const pg=(await import('pg')).default;db=new pg.Client({connectionString:`postgresql://postgres@127.0.0.1:${layout.port}/postgres`,connectionTimeoutMillis:5000,statement_timeout:30000});await db.connect();
+      diagnosticStep=11;const bootstrap=await import('./permission-fixture-bootstrap.mjs');diagnosticStep=12;await bootstrap.bootstrapFixture({adminDsn:`postgresql://postgres@127.0.0.1:${layout.port}/postgres`,
         expectedDataDirectory:layout.data,runtimeDirectory:layout.private});guard();
     },
-    physical:async()=>{guard();check(started&&processProof(started.pid)===started.ticks);
+    physical:async()=>{diagnosticStep=13;guard();check(started&&processProof(started.pid)===started.ticks);
       const r=(await db.query("select current_setting('server_version_num')::int version,current_setting('data_directory') directory,(select system_identifier::text from pg_control_system()) identifier")).rows[0];
       check(r.version>=160000&&r.version<170000&&r.directory===layout.data&&/^\d+$/.test(r.identifier));serverVersionNum=r.version;return runtimeHash(r);},
-    stage:()=>executeRuntimeStage(stage,{sourceRoot:source,outputRoot:output,baseEnv:{...process.env,IDEM_ENV_FILE:layout.private+'/observer.env'},
-      sourceSHA,sourceFingerprint,lockSHA,runId:process.env.GITHUB_RUN_ID,guard,deadline}),
+    stage:()=>{diagnosticStep=14;return executeRuntimeStage(stage,{sourceRoot:source,outputRoot:output,baseEnv:{...process.env,IDEM_ENV_FILE:layout.private+'/observer.env'},
+      sourceSHA,sourceFingerprint,lockSHA,runId:process.env.GITHUB_RUN_ID,guard,deadline});},
     close:async()=>{
       try{if(db)await db.end();}catch{/* Exact owned server shutdown below also closes this fixture-only connection. */}
       if(!created)return{rootRemoved:true,processReleased:true,allocatedBeforeBytes:0,measuredFreeDeltaBytes:0};
@@ -123,8 +142,10 @@ async function main(){
   Object.assign(receipt,{sourceSHA,sourceFingerprint,lockSHA,runId:process.env.GITHUB_RUN_ID,serverVersionNum});
   writeFileSync(join(output,'profile-safe.json'),JSON.stringify(receipt)+'\n',{flag:'wx',mode:0o600});
   if(receipt.status==='PASS')console.log('PERMISSION_PG16_PROFILE '+JSON.stringify(JSON.parse(renderPg16Evidence(receipt,{sourceSHA,sourceFingerprint,lockSHA,runId:process.env.GITHUB_RUN_ID}).json)));
-  else{console.log('PERMISSION_PG16_PROFILE_FAILED '+JSON.stringify({schemaVersion:'permission-pg16-failure-v1',
-    operation:['BOOTSTRAP','STAGE','POSTCHECK','CLEANUP'].indexOf(receipt.failure)+1,
-    rootRemoved:receipt.cleanup?.rootRemoved===true,processReleased:receipt.cleanup?.processReleased===true}));process.exitCode=1;}
+  else{diagnostic??=pg16FailureRecord(null,4,diagnosticStep,null,null);
+    diagnostic.rootRemoved=receipt.cleanup?.rootRemoved===true;diagnostic.processReleased=receipt.cleanup?.processReleased===true;
+    console.log('PERMISSION_PG16_FAILURE_FACTS '+JSON.stringify(diagnostic));process.exitCode=1;}
 }
-if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){try{await main();}catch{console.error('PERMISSION_PG16_RUNTIME_REFUSED');process.exitCode=1;}}
+if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){try{await main();}catch(error){
+  console.error('PERMISSION_PG16_FAILURE_FACTS '+JSON.stringify(pg16FailureRecord(error,0,diagnosticStep,null,null)));
+  console.error('PERMISSION_PG16_RUNTIME_REFUSED');process.exitCode=1;}}

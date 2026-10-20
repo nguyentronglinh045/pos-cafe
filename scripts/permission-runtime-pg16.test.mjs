@@ -1,9 +1,19 @@
 import test from'node:test';
 import assert from'node:assert/strict';
-import{pg16Layout,runPg16Profile,pg16ProfileCounts,renderPg16Evidence}from'./permission-runtime-pg16.mjs';
+import{pg16Layout,runPg16Profile,pg16ProfileCounts,renderPg16Evidence,pg16FailureRecord}from'./permission-runtime-pg16.mjs';
+import{pg16FailureMetrics,privateDiagnostics}from'./project-ci-results.mjs';
 import{runtimeStage}from'./permission-runtime-catalog.mjs';
 import{pg16ControlMatches}from'./permission-runtime-pg16-cleanup.mjs';
 const digest='a'.repeat(64),sha='b'.repeat(40),required=runtimeStage('legacy-t01-database').required.length;
+test('native failure facts survive private capture as bounded ordinals without raw SQL, test names or credentials',()=>{
+ const f=pg16FailureRecord({name:'Error',code:'23505',message:'SECRET',query:'SECRET'},1,12,{rootRemoved:true,processReleased:true},null);
+ const line='PERMISSION_PG16_FAILURE_FACTS '+JSON.stringify(f),m=pg16FailureMetrics(line);
+ assert.equal(m.pg16Operation,1);assert.equal(m.pg16Step,12);assert.equal(m.pg16RootRemoved,1);assert(m.pg16ErrorCodeOrdinal>0);
+ assert.equal(JSON.stringify(privateDiagnostics(line,null)).includes('SECRET'),false);
+ assert.equal(privateDiagnostics(line,null).metrics.pg16Step,12);
+ for(const v of[{...f,raw:'SECRET'},{...f,step:31},{...f,rootRemoved:1}])assert.deepEqual(pg16FailureMetrics('PERMISSION_PG16_FAILURE_FACTS '+JSON.stringify(v)),{});
+ assert.deepEqual(pg16FailureMetrics(line+'\n'+line),{});
+});
 const row={stage:'legacy-t01-database',status:'PASS',required,run:required,discovered:required,pass:required,fail:0,skip:0,retry:0,
  sourceSHA:sha,reportSHA:digest,invocationSHA:digest,supplementalOracles:'NOT_PROVEN_BY_STAGE_COUNTS'};
 const binding={sourceSHA:sha,sourceFingerprint:digest,lockSHA:digest,runId:'123'};
