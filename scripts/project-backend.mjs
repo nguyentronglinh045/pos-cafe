@@ -1,10 +1,18 @@
 import { spawnSync } from 'node:child_process';
 import { readFileSync, appendFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { resolve, dirname, basename } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { withLightCorePattern, linuxCorePatternAdapter } from './project-ci-launch.mjs';
 import { ci1WorkerLayout } from './permission-ci1-intake.mjs';
 import { ci1WorkerPlan, ci1PublicExport, ci1FailureExport } from './permission-ci1-worker.mjs';
+import { allocatedOutsideBytes } from './permission-ci1-outside.mjs';
+
+export function backendOutsideAdmission(measuredBytes) {
+  const budgetBytes=1024**3,reservedFutureBytes=16*1024**2;
+  if(!Number.isSafeInteger(measuredBytes)||measuredBytes<0||measuredBytes>budgetBytes-reservedFutureBytes)
+    throw Error('BACKEND_OUTSIDE_BUDGET_REFUSED');
+  return {measuredBytes,budgetBytes,reservedFutureBytes,technicalQuota:false};
+}
 
 export function backendInvocation(env, node, root) {
   if (env.GITHUB_REPOSITORY !== 'nguyentronglinh045/pos-cafe' || env.GITHUB_REPOSITORY_ID !== '1263057386' || env.GITHUB_EVENT_NAME !== 'workflow_dispatch'
@@ -52,6 +60,11 @@ export function backendFailureEvidence(worker, evidence, env) {
 function main() {
   if (process.platform !== 'linux' || process.env.GITHUB_ACTIONS !== 'true' || process.env.RUNNER_ENVIRONMENT !== 'github-hosted') throw new Error();
   const { argv, layout } = backendInvocation(process.env, process.execPath, process.cwd());
+  const nodeRoot=dirname(dirname(process.execPath));
+  const nodeAccountingRoot=['x64','arm64'].includes(basename(nodeRoot))?dirname(nodeRoot):nodeRoot;
+  const outside=backendOutsideAdmission(allocatedOutsideBytes([process.cwd(),process.env.RUNNER_TEMP,
+    resolve(process.env.RUNNER_TEMP,'../_actions'),nodeAccountingRoot]));
+  console.log('BACKEND_OUTSIDE_ADMISSION '+JSON.stringify(outside));
   const child = withLightCorePattern(linuxCorePatternAdapter(layout.identity.unit),
     () => spawnSync('sudo', argv, { encoding: 'utf8', timeout: 1900000, maxBuffer: 1024 ** 2 }));
   console.log('PROJECT_BACKEND_CORE_PATTERN_RESTORED');

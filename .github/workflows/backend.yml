@@ -67,6 +67,11 @@ jobs:
         env:
           CI1_CONFIRMATION: ${{ inputs.confirmation == 'RUN_SYNTHETIC_PILOT' && 'RUN_SYNTHETIC_PILOT' || 'REFUSED' }}
         run: node scripts/project-backend.mjs
+      - name: Reclaim the owned backend loop after process release
+        if: always()
+        env:
+          CI1_RECLAIM_AUTHORIZED: 'yes'
+        run: node scripts/permission-ci1-reclaim.mjs
 
   namespace-probe:
     if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386' && inputs.confirmation == 'RUN_NAMESPACE_PROBE'
