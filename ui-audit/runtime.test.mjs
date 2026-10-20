@@ -109,8 +109,13 @@ test('junction parent rejection occurs before mkdir can create a directory in so
   const target = path.join(root, 'artifacts', 'ui-audit', `junction-target-${randomUUID()}`);
   fs.mkdirSync(target, { recursive: true });
   fs.symlinkSync(target, parent, process.platform === 'win32' ? 'junction' : 'dir');
-  assert.throws(() => prepareReportPath(root, `artifacts/ui-audit/${id}/must-not-exist/report.json`), /physical directory/);
-  assert.equal(fs.existsSync(path.join(target, 'must-not-exist')), false);
+  try {
+    assert.throws(() => prepareReportPath(root, `artifacts/ui-audit/${id}/must-not-exist/report.json`), /physical directory/);
+    assert.equal(fs.existsSync(path.join(target, 'must-not-exist')), false);
+  } finally {
+    fs.unlinkSync(parent);
+    fs.rmSync(target, { recursive: true });
+  }
 });
 
 const listen = server => new Promise((resolve, reject) => {

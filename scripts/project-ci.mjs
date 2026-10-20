@@ -294,6 +294,12 @@ export async function main() {
       '--reporter=json', `--outputFile=${join(task, 'tooling.json')}`], () => vitestCounts(json('tooling'), paths.filter(path => /^tests\/.*\.tool\.test\.(?:ts|mjs)$/.test(path)), root, backendOnly), 'tooling');
     await phase('node-tools', process.execPath, ['--test', '--test-concurrency=2', '--test-reporter=tap', ...paths.filter(path => /^scripts\/.*\.test\.mjs$/.test(path))], nodeCounts);
     await phase('browser', process.execPath, ['node_modules/playwright/cli.js', 'install', 'chromium', '--no-shell']);
+    await phase('runtime-reporters', process.execPath, ['scripts/permission-runtime-reporter-selftest.mjs'], output => {
+      const line=output.split('\n').find(value=>value.startsWith('PERMISSION_REPORTER_SELFTEST '));
+      const c=JSON.parse(line?.slice('PERMISSION_REPORTER_SELFTEST '.length)??'null');
+      if(!c||c.run!==4||c.pass!==4||c.fail!==0||c.skip!==0||c.positiveControls!==2||c.negativeControls!==2)refuse();
+      return c;
+    });
     await phase('ui-tools', process.execPath, ['--test', '--test-concurrency=1', '--test-reporter=tap', ...uiTests], nodeCounts);
     // The controls deliberately include detected defects. Only these synthetic
     // calibration phases accept seeded measurement failures; app gates do not.

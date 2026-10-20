@@ -6,6 +6,7 @@ import { isAbsolute, join, relative, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { scanCanaryArtifactDirectory } from '../tests/contracts/permissionCanaryOracle.ts';
 import { CANARY_SCENARIOS } from '../tests/contracts/permissionCanaryScenarioMatrix.ts';
+import { tc18ReporterArguments } from './permission-runtime-canary-binding.mjs';
 
 const fail = code => { throw new Error(code); };
 
@@ -55,7 +56,8 @@ export function runTc18(output) {
     let run;
     try {
       run = spawnSync(process.execPath, [resolve('node_modules/@playwright/test/cli.js'), 'test',
-        '-c', 'playwright.pin-tc18.config.ts', '--workers=1', '--retries=0', '--forbid-only'], {
+        '-c', 'playwright.pin-tc18.config.ts', '--workers=1', '--retries=0', '--forbid-only',
+        ...tc18ReporterArguments(root)], {
         cwd: process.cwd(), timeout: 25 * 60_000, stdio: ['ignore', log, log],
         env: { ...process.env, PIN_CANARY_CONTROL_FILE: controlFile,
           PIN_CANARY_ARTIFACT_DIR: join(root, 'runtime'), PIN_CANARY_OUTPUT_DIR: join(root, 'test-results'),
