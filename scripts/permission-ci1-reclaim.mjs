@@ -6,10 +6,21 @@ import {ci1WorkerLayout,ci1BytesHash} from './permission-ci1-intake.mjs';
 import {CI1_LIMITS} from './permission-ci1-policy.mjs';
 
 const refuse=()=>{throw Error('CI1_RECLAIM_REFUSED');};
+export function reclaimUnitState(result,populated){
+  if(result?.error||result.signal||![0,1,4].includes(result.status)||typeof result.stdout!=='string'
+    ||Buffer.byteLength(result.stdout)>4096||![0,null].includes(populated))refuse();
+  const lines=result.stdout.trim().split('\n');
+  if(lines.length!==2||lines.some(l=>l.split('=').length!==2)||new Set(lines.map(l=>l.split('=')[0])).size!==2)refuse();
+  const fields=Object.fromEntries(lines.map(l=>l.trim().split('=')));
+  if(Object.keys(fields).sort().join(',')!=='ActiveState,LoadState')refuse();
+  if(fields.LoadState==='not-found'&&fields.ActiveState==='inactive'&&populated===null)return'inactive';
+  if(result.status===0&&fields.LoadState==='loaded'&&['inactive','failed'].includes(fields.ActiveState))return fields.ActiveState;
+  refuse();
+}
 export function assertReclaimFacts(f,control,expected){
   if(!f||f.rootOwned!==true||f.controlOwned!==true||f.imageOwned!==true||f.imageLinks!==1
     ||!Number.isSafeInteger(f.imageBytes)||f.imageBytes<0||f.imageBytes>CI1_LIMITS.filesystemBytes
-    ||!['inactive','failed'].includes(f.unitActiveState)||f.attachedLoops!==0||f.ownedMounts!==0
+    ||!['inactive','failed'].includes(f.unitActiveState)||![0,null].includes(f.unitPopulated)||f.attachedLoops!==0||f.ownedMounts!==0
     ||control?.runId!==expected.runId||control.attempt!==expected.attempt||control.sourceSHA!==expected.sourceSHA
     ||control.unit!==expected.unit||control.workerSHA!==expected.workerSHA)refuse();
   return true;
@@ -36,7 +47,12 @@ function reclaim(root,layout){
   owned(layout.task,'directory',0o700);const controlPath=layout.task+'/run-control.json';
   if(owned(controlPath,'file',0o400).size>4096)refuse();const control=JSON.parse(readFileSync(controlPath));
   const expected={...layout.identity,sourceSHA:process.env.GITHUB_SHA,workerSHA:ci1BytesHash(readFileSync(root+'/scripts/permission-ci1-worker.mjs'))};
-  const unitActiveState=run('systemctl',['show',layout.identity.unit,'--property=ActiveState','--value']).trim();
+  const unitResult=spawnSync('systemctl',['show',layout.identity.unit,'--property=LoadState','--property=ActiveState'],
+    {encoding:'utf8',timeout:5000,maxBuffer:4096,stdio:['ignore','pipe','pipe']});
+  let unitPopulated;
+  try{const match=/^populated ([01])$/m.exec(readFileSync('/sys/fs/cgroup/system.slice/'+layout.identity.unit+'/cgroup.events','utf8'));
+    if(!match)refuse();unitPopulated=Number(match[1]);}catch(error){if(error.code!=='ENOENT')throw error;unitPopulated=null;}
+  const unitActiveState=reclaimUnitState(unitResult,unitPopulated);
   const mounts=run('findmnt',['--kernel','--list','--noheadings','--raw','--output','TARGET']).trim().split('\n');
   const ownedMounts=mounts.filter(p=>p===layout.volume||p.startsWith(layout.volume+'/')).length;
   const image=lstatSync(layout.image,{throwIfNoEntry:false});
@@ -49,7 +65,7 @@ function reclaim(root,layout){
   owned(layout.image,'file',0o600);
   const attachedLoops=run('losetup',['--noheadings','--associated',layout.image]).trim()?1:0;
   assertReclaimFacts({rootOwned:true,controlOwned:true,imageOwned:true,imageLinks:image.nlink,imageBytes:image.size,
-    unitActiveState,attachedLoops,ownedMounts},control,expected);
+    unitActiveState,unitPopulated,attachedLoops,ownedMounts},control,expected);
   const before=statfsSync(layout.task),beforeBytes=before.bavail*before.bsize;
   const current=owned(layout.image,'file',0o600);
   if(current.dev!==image.dev||current.ino!==image.ino||current.size!==image.size||current.nlink!==1)refuse();

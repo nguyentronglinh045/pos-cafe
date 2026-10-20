@@ -5,9 +5,16 @@ import { readFileSync } from 'node:fs';
 import { ci1Identity } from './permission-ci1-policy.mjs';
 import { ci1WorkerPlan, runCi1Worker, ci1EdgeCacheProof, ci1PublicExport, ci1EdgeBundleArguments,
   ci1AcquireDaemons, ci1CloseDaemons, ci1TerminateDaemon, ci1FailureExport, ci1DockerFailureCode,
-  ci1OwnedMountCount, ci1UnmountFailureCode, ci1IsolatedFailure, ci1IsolatedError, ci1PullImage } from './permission-ci1-worker.mjs';
+  ci1OwnedMountCount, ci1UnmountFailureCode, ci1IsolatedFailure, ci1IsolatedError, ci1PullImage,ci1SourceIntakeAdmission } from './permission-ci1-worker.mjs';
 import { renderCi1Evidence } from './permission-ci1-evidence.mjs';
 import { backendEvidence, backendFailureEvidence } from './project-backend.mjs';
+
+test('source intake keeps full source and Git metadata within96MiB and reports finite mismatches',()=>{
+  assert.equal(ci1SourceIntakeAdmission(73910245,1031,true,true).sourceIntakeBytes,73910245);
+  for(const args of [[96*1024**2+1,1031,true,true],[1,100001,true,true],[1,1031,false,true],[1,1031,true,false]]){
+    assert.throws(()=>ci1SourceIntakeAdmission(...args),e=>e.ci1FailureCode==='INTAKE_REFUSED'&&typeof e.ci1Facts.sourceIntakeBytes==='number');
+  }
+});
 
 // Every Linux fact, adapter and cache below is fake unit data. No Linux/DB/CI is started.
 const identity = ci1Identity('12345', 1);

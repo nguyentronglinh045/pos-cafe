@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { posix } from 'node:path';
 import { CI1_LIMITS, CI1_PROJECT, ci1Identity, ci1TrustedRepository } from './permission-ci1-policy.mjs';
 
-export const CI1_SETUP = Object.freeze({ sourceBytes: 64 * 1024 ** 2, npmBytes: 512 * 1024 ** 2,
+export const CI1_SETUP = Object.freeze({ sourceBytes: 96 * 1024 ** 2, npmBytes: 512 * 1024 ** 2,
   npmTarBytes: 32 * 1024 ** 2, toolBytes: 128 * 1024 ** 2, unpackBytes: 256 * 1024 ** 2,
   edgeBytes: 512 * 1024 ** 2, exportBytes: 1024 ** 2, cacheConcurrency: 2, commandTimeoutMs: 300000 });
 export const ci1BytesHash = bytes => createHash('sha256').update(bytes).digest('hex');

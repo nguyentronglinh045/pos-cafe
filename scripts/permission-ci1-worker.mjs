@@ -55,7 +55,8 @@ const failureMetrics = ['hostFreeBytes', 'memoryBytes', 'oom', 'pidsEvents', 'me
   'harnessPhaseOrdinal', 'harnessFailureOrdinal', 'harnessExitOrdinal', 'harnessNpmFailureOrdinal',
   'suiteOrdinal','suiteHookErrorCount','suiteRunErrorCount','suiteErrorOriginOrdinal',
   'suiteCleanupPhaseOrdinal','suiteCleanupStepOrdinal','suiteCleanupCodeOrdinal','suiteCleanupSqlstateOrdinal',
-  'preservationComponentDriftMask','preservationFinancialDriftMask'];
+    'preservationComponentDriftMask','preservationFinancialDriftMask',
+    'sourceIntakeBytes','sourceIntakeFiles','sourceHeadMatches','sourceClean','sourceIntakeRefusalOrdinal'];
 
 export async function ci1PullImage(run, reference, guard = () => {}, wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds)), onAttempt = () => {}) {
   if (typeof reference !== 'string' || !/^public\.ecr\.aws\/supabase\/[a-z0-9._-]+@sha256:[a-f0-9]{64}$/.test(reference)) refused();
@@ -282,19 +283,29 @@ function supervisor(layout, env) {
   return proof;
 }
 
+export function ci1SourceIntakeAdmission(bytes,files,headMatches,clean){
+  const facts={sourceIntakeBytes:bytes,sourceIntakeFiles:files,sourceHeadMatches:headMatches===true?1:0,sourceClean:clean===true?1:0};
+  if(!Number.isSafeInteger(bytes)||bytes<0||bytes>CI1_SETUP.sourceBytes||!Number.isSafeInteger(files)||files<1||files>100000
+    ||headMatches!==true||clean!==true)throw Object.assign(new Error('CI1_WORKER_REFUSED'),{ci1FailureCode:'INTAKE_REFUSED',ci1Facts:facts});
+  return facts;
+}
 function boundedTree(root, maximum, countMaximum = 100000) {
   root = realpathSync(root); const device = statSync(root).dev;
   const output = []; let bytes = 0;
   const visit = (directory, prefix = '') => {
     for (const entry of readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
       const path = join(directory, entry.name), name = prefix + entry.name, info = lstatSync(path);
-      if (info.isSymbolicLink() || info.dev !== device || /[\r\n\0]/.test(name)) refused();
+      const reject=ordinal=>{throw Object.assign(new Error('CI1_WORKER_REFUSED'),{ci1FailureCode:'INTAKE_REFUSED',
+        ci1Facts:{sourceIntakeBytes:bytes,sourceIntakeFiles:output.length,sourceIntakeRefusalOrdinal:ordinal}});};
+      if (info.isSymbolicLink()) reject(1);
+      if (info.dev !== device) reject(2);
+      if (/[\r\n\0]/.test(name)) reject(3);
       if (info.isDirectory()) visit(path, name + '/');
       else if (info.isFile()) {
         bytes += info.size;
-        if (bytes > maximum || output.length >= countMaximum) refused();
+        if (bytes > maximum || output.length >= countMaximum) reject(4);
         output.push({ path: name, bytes: info.size, sha256: ci1BytesHash(readFileSync(path)) });
-      } else refused();
+      } else reject(5);
     }
   }; visit(root);
   return { files: output, bytes, sha256: ci1BytesHash(JSON.stringify(output)) };
@@ -687,8 +698,10 @@ async function setup(layout, input, parentEnv) {
         for (const file of ['npm-user.conf', 'npm-global.conf']) writeFileSync(`${root}/run/${file}`, '', { mode: 0o600 });
       } else if (stage === 'source-tools') {
         operation = 'SOURCE_INTAKE';
-        if (boundedTree(input, CI1_SETUP.sourceBytes).bytes > CI1_SETUP.sourceBytes || run('git', ['-c', `safe.directory=${input}`, '-C', input, 'rev-parse', 'HEAD']).trim() !== baseEnv.GITHUB_SHA
-          || run('git', ['-c', `safe.directory=${input}`, '-C', input, 'status', '--porcelain', '--untracked-files=all']).trim()) refused();
+        const tree=boundedTree(input,CI1_SETUP.sourceBytes);
+        ci1SourceIntakeAdmission(tree.bytes,tree.files.length,
+          run('git',['-c',`safe.directory=${input}`,'-C',input,'rev-parse','HEAD']).trim()===baseEnv.GITHUB_SHA,
+          run('git',['-c',`safe.directory=${input}`,'-C',input,'status','--porcelain','--untracked-files=all']).trim()==='');
         source = `${root}/source`;
         operation = 'SOURCE_CLONE';
         run('git', ['-c', `safe.directory=${input}`, '-c', 'core.hooksPath=/dev/null', 'clone', '--no-hardlinks', '--depth=1', '--no-local', '--', 'file://' + input, source]);

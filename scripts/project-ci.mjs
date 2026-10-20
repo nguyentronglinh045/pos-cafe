@@ -293,13 +293,28 @@ export async function main() {
     await phase('tooling', process.execPath, ['node_modules/vitest/vitest.mjs', 'run', '--config=vitest.project-tooling.config.ts',
       '--reporter=json', `--outputFile=${join(task, 'tooling.json')}`], () => vitestCounts(json('tooling'), paths.filter(path => /^tests\/.*\.tool\.test\.(?:ts|mjs)$/.test(path)), root, backendOnly), 'tooling');
     await phase('node-tools', process.execPath, ['--test', '--test-concurrency=2', '--test-reporter=tap', ...paths.filter(path => /^scripts\/.*\.test\.mjs$/.test(path))], nodeCounts);
-    await phase('browser', process.execPath, ['node_modules/playwright/cli.js', 'install', 'chromium', '--no-shell']);
+    // The pinned operator config uses the default Chromium headless shell.
+    // Install it alongside full Chromium within the same existing 5GiB budget.
+    await phase('browser', process.execPath, ['node_modules/playwright/cli.js', 'install', 'chromium']);
     await phase('runtime-reporters', process.execPath, ['scripts/permission-runtime-reporter-selftest.mjs'], output => {
       const line=output.split('\n').find(value=>value.startsWith('PERMISSION_REPORTER_SELFTEST '));
       const c=JSON.parse(line?.slice('PERMISSION_REPORTER_SELFTEST '.length)??'null');
       if(!c||c.run!==4||c.pass!==4||c.fail!==0||c.skip!==0||c.positiveControls!==2||c.negativeControls!==2)refuse();
       return c;
     });
+    const {staticProfileCounts}=await import('./permission-runtime-static.mjs');
+    const staticOutput=join(root,'artifacts',`permission-static-${binding.runId}-${binding.attempt}`);
+    const staticEnv={GITHUB_ACTIONS:'true',RUNNER_ENVIRONMENT:'github-hosted',GITHUB_REPOSITORY:binding.repository,
+      GITHUB_REPOSITORY_ID:binding.repositoryID,GITHUB_SHA:binding.sourceSHA,GITHUB_RUN_ID:binding.runId,
+      GITHUB_RUN_ATTEMPT:String(binding.attempt),RUNNER_TEMP:task};
+    const previous=Object.fromEntries(Object.keys(staticEnv).map(key=>[key,env[key]]));
+    Object.assign(env,staticEnv);
+    try{await phase('permission-static',process.execPath,['scripts/permission-runtime-static.mjs',staticOutput],output=>{
+      const lines=output.split('\n').filter(line=>line.startsWith('PERMISSION_STATIC_PROFILE '));
+      if(lines.length!==1)refuse();
+      return staticProfileCounts(JSON.parse(lines[0].slice('PERMISSION_STATIC_PROFILE '.length)),{
+        sourceSHA:binding.sourceSHA,sourceFingerprint:fingerprints.source,lockSHA:fingerprints.lock,runId:binding.runId});
+    });}finally{for(const [key,value]of Object.entries(previous)){if(value===undefined)delete env[key];else env[key]=value;}}
     await phase('ui-tools', process.execPath, ['--test', '--test-concurrency=1', '--test-reporter=tap', ...uiTests], nodeCounts);
     // The controls deliberately include detected defects. Only these synthetic
     // calibration phases accept seeded measurement failures; app gates do not.

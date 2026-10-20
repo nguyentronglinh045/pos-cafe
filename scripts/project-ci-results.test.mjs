@@ -531,7 +531,7 @@ test('failed Playwright diagnostics expose known source locations and counts wit
 
 test('permission light profile requires all fourteen phases, including UI calibration, without app acceptance substitutions', () => {
   assert.deepEqual(PROJECT_PHASES, ['install','build','unit','tooling','node-tools','browser',
-    'runtime-reporters','ui-tools','ui-remake-selftest','ui-audit-selftest','smoke-discovery','smoke-preflight','smoke','ui-selftest','ui-audit']);
+    'runtime-reporters','permission-static','ui-tools','ui-remake-selftest','ui-audit-selftest','smoke-discovery','smoke-preflight','smoke','ui-selftest','ui-audit']);
   const rows=PROJECT_PHASES.map(id=>({id,status:'PASS',elapsedMs:1,exitCode:0,invocationSHA:digest,reportSHA:digest,counts:null}));
   assert.equal(publicSummary(binding,rows,{source:digest,lock:digest}).overallStatus,'PASS');
   for(const id of ['ui-selftest','ui-audit','ui-tools']) {

@@ -8,7 +8,7 @@ export const PROJECT_REPOSITORY = 'nguyentronglinh045/pos-cafe';
 export const PROJECT_REPOSITORY_ID = 1263057386;
 // Current-main lane; UI tools are calibrated, app UI acceptance remains separate.
 export const PROJECT_PHASES = Object.freeze(['install', 'build', 'unit', 'tooling', 'node-tools', 'browser',
-  'runtime-reporters', 'ui-tools', 'ui-remake-selftest', 'ui-audit-selftest', 'smoke-discovery', 'smoke-preflight', 'smoke', 'ui-selftest', 'ui-audit']);
+  'runtime-reporters', 'permission-static', 'ui-tools', 'ui-remake-selftest', 'ui-audit-selftest', 'smoke-discovery', 'smoke-preflight', 'smoke', 'ui-selftest', 'ui-audit']);
 export const PROJECTS = Object.freeze(['desktop', 'tablet-landscape', 'phone-landscape', 'small-landscape', 'portrait', 'demo-runbook']);
 export const hash = value => createHash('sha256').update(value).digest('hex');
 const reject = () => { throw new Error('PROJECT_CI_RESULT_INVALID'); };
