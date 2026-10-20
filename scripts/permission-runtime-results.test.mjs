@@ -100,3 +100,25 @@ test('PERM required-name subset cannot hide ad-hoc grep/shard/project filtering 
     assert.throws(()=>validateRuntimeStage({...expected,exactDiscovery:false},r,forged,0));
   }
 });
+
+test('fixed validation refusal ordinals retain all sixteen original strict sections',()=>{
+ const checks=[
+  [1,()=>[expected,report(),context,1]],
+  [2,()=>[null,report(),context,0]],
+  [3,()=>[expected,report(),{...context,sourceSHA:'private'},0]],
+  [4,()=>[{...expected,configSHA:'f'.repeat(64)},report(),context,0]],
+  [5,()=>[{...expected,argv:['relative','run']},report(),context,0]],
+  [6,()=>[expected,{...report(),stage:'wrong'},context,0]],
+  [7,()=>[expected,{...report(),sourceSHA:'f'.repeat(40)},context,0]],
+  [8,()=>[expected,{...report(),argv:[...argv,'--private']},context,0]],
+  [9,()=>[expected,{...report(),errorCount:1},context,0]],
+  [10,()=>[expected,{...report(),results:[]},context,0]],
+  [11,()=>[{...expected,required:[identity,identity]},report(),context,0]],
+  [12,()=>{const r=report();r.discovery[0].disabled=true;return[expected,r,context,0];}],
+  [13,()=>{const r=report();r.results[0].state='timedOut';return[expected,r,context,0];}],
+  [14,()=>{const r=report();r.discovery[0].project='other';r.results[0].project='other';return[expected,r,context,0];}],
+  [15,()=>{const r=report();mutations['unexpected discovery'](r);return[expected,r,context,0];}],
+  [16,()=>[expected,{...report(),selectedFiles:[]},context,0]],
+ ];
+ for(const[ordinal,args]of checks)assert.throws(()=>validateRuntimeStage(...args()),e=>e.message==='PERMISSION_RUNTIME_RESULTS_REFUSED'&&e.runtimeResultFailureOrdinal===ordinal);
+});

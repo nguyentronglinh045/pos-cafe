@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtempSync,mkdirSync,writeFileSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-import {tc18ReporterArguments} from './permission-runtime-canary-binding.mjs';
+import {tc18ReporterArguments,tc18RuntimeBinding} from './permission-runtime-canary-binding.mjs';
 
 function fixture(run){const source=mkdtempSync(join(tmpdir(),'permission-canary-binding-')),root=join(source,'scan'),outside=join(source,'outside');
   mkdirSync(root);mkdirSync(outside);
@@ -23,4 +23,11 @@ test('TC18 rejects the counterexample external output channel before browser lau
 test('TC18 rejects a different checkout or stage context',()=>fixture(f=>{
   f.c.sourceRoot=f.outside;f.save();assert.throws(()=>tc18ReporterArguments(f.root,f.env,f.source));
   f.c.sourceRoot=f.source;f.c.stage='other';f.save();assert.throws(()=>tc18ReporterArguments(f.root,f.env,f.source));
+}));
+
+test('TC18 wrapper receipt binding contains exact source run config and invocation fields without paths',()=>fixture(f=>{
+ f.save();const b=tc18RuntimeBinding(f.root,f.env,f.source);
+ const keys=['stage','sourceSHA','sourceFingerprint','lockSHA','configSHA','runId','invocationSHA'];
+ assert.deepEqual(b,Object.fromEntries(keys.map(k=>[k,f.c[k]])));assert.equal(tc18RuntimeBinding('unused',{}),null);
+ assert.equal(JSON.stringify(b).includes(f.source),false);
 }));

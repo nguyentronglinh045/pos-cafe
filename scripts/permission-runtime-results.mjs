@@ -11,34 +11,43 @@ const key=x=>JSON.stringify([x.file,x.name,x.project??null]);
 // This validates observations produced by real runner reporters. It cannot run
 // tests, provision a backend, or close the independent supplemental oracles.
 export function validateRuntimeStage(expected,report,context,exitCode) {
+  let refusal=1;
+  // Fixed validation sections only; predicates and PASS criteria stay intact.
+  const check=value=>{if(!value){const error=Error('PERMISSION_RUNTIME_RESULTS_REFUSED');error.runtimeResultFailureOrdinal=refusal;throw error;}};
   check(exitCode===0);
+  refusal=2;
   check(expected&&Array.isArray(expected.required)&&expected.required.length>0);
+  refusal=3;
   check(context&&hex(context.sourceSHA,40)&&hex(context.sourceFingerprint,64)&&hex(context.lockSHA,64)
     &&hex(context.configSHA,64)&&typeof context.runId==='string'&&/^[1-9][0-9]{0,19}$/.test(context.runId));
-  check(expected.configSHA===context.configSHA);
+  refusal=4;check(expected.configSHA===context.configSHA);
+  refusal=5;
   check(Array.isArray(expected.argv)&&expected.argv.length>1&&expected.argv.every(a=>typeof a==='string'&&!/[\r\n\0]/.test(a))
     &&isAbsolute(expected.argv[0])&&context.invocationSHA===runtimeHash(expected.argv));
-  check(report?.schemaVersion==='permission-runtime-stage-v1'&&report.stage===expected.stage&&report.runner===expected.runner);
+  refusal=6;check(report?.schemaVersion==='permission-runtime-stage-v1'&&report.stage===expected.stage&&report.runner===expected.runner);
+  refusal=7;
   for(const k of ['sourceSHA','sourceFingerprint','lockSHA','configSHA','runId','invocationSHA'])check(report[k]===context[k]);
-  check(JSON.stringify(report.argv)===JSON.stringify(expected.argv));
+  refusal=8;check(JSON.stringify(report.argv)===JSON.stringify(expected.argv));
+  refusal=9;
   check(hex(context.invocationSHA,64)&&report.complete===true&&report.errorCount===0&&report.hookErrorCount===0
     &&report.runnerExit==='passed'&&Array.isArray(report.discovery)&&Array.isArray(report.results));
-  check(report.discovery.length>0&&report.discovery.length<=10000&&report.results.length===report.discovery.length);
+  refusal=10;check(report.discovery.length>0&&report.discovery.length<=10000&&report.results.length===report.discovery.length);
   const allowedFiles=new Set(expected.files),required=new Set(expected.required.map(key));
-  check(required.size===expected.required.length&&allowedFiles.size===expected.files.length);
+  refusal=11;check(required.size===expected.required.length&&allowedFiles.size===expected.files.length);
   const discovery=new Map(),results=new Map();
-  for(const x of report.discovery){
+  refusal=12;for(const x of report.discovery){
     check(x&&typeof x.name==='string'&&x.name.length>0&&x.name.length<=4096&&allowedFiles.has(x.file)
       &&(x.project===null||typeof x.project==='string')&&!discovery.has(key(x)));
     check(x.retry===0&&x.repeats===1&&x.expectedFailure===false&&x.exclusive===false&&x.disabled===false);
     discovery.set(key(x),x);
   }
-  for(const x of report.results){
+  refusal=13;for(const x of report.results){
     check(x&&discovery.has(key(x))&&!results.has(key(x))&&x.state==='passed'&&x.attempts===1);
     results.set(key(x),x);
   }
-  for(const k of required)check(discovery.has(k));
-  if(expected.exactDiscovery===true)check(required.size===discovery.size);
+  refusal=14;for(const k of required)check(discovery.has(k));
+  refusal=15;if(expected.exactDiscovery===true)check(required.size===discovery.size);
+  refusal=16;
   check(report.selectedFiles?.length===allowedFiles.size&&new Set(report.selectedFiles).size===allowedFiles.size
     &&report.selectedFiles.every(f=>allowedFiles.has(f)));
   return {stage:expected.stage,status:'PASS',required:required.size,discovered:discovery.size,run:results.size,

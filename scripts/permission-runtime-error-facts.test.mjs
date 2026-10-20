@@ -104,3 +104,31 @@ test('Realtime first failure ordinal binds only fixed scenario/device/oracle lab
  assert(!Object.hasOwn(runtimeRunnerFailureFacts({stage:'other',required:[item]},r),'realtimeFirstFailureOrdinal'));
  for(const value of[-1,481,1.5,'1'])assert.throws(()=>runtimeRunnerFailureFacts({stage:'realtime-e2e',required:[item]},{...r,results:[{...r.results[0],realtimeFirstFailureOrdinal:value}]}));
 });
+
+import{LEGACY_BROWSER_GUARD_CODES}from'./permission-runtime-error-facts.mjs';
+test('legacy guard ordinals append 28..33 without changing the original 27 structured codes',()=>{
+ const old=["ERR_MODULE_NOT_FOUND","ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX","ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING","ENOENT","EACCES","ECONNREFUSED","ETIMEDOUT","23502","23503","23505","23514","42501","42601","42703","42883","42P01","42P07","3F000","57P03","57014","53300","PIN_CHANGE_REQUIRED","EMPLOYEE_SESSION_REQUIRED","INVALID_EMPLOYEE_REQUEST","AUTH_REQUIRED","WRITE_PROTOCOL_UNSUPPORTED","FORBIDDEN"];
+ assert.deepEqual(RUNTIME_ERROR_CODES.slice(0,27),old);assert.equal(RUNTIME_ERROR_CODES.length,33);
+ for(const[ordinal,code]of old.entries())assert.equal(runtimeErrorFacts({code}).errorCodeOrdinal,ordinal+1);
+ for(const[i,code]of LEGACY_BROWSER_GUARD_CODES.entries()){
+  assert.equal(runtimeErrorFacts(new Error(code)).errorCodeOrdinal,28+i);
+  assert.equal(runtimePlaywrightFailureFacts({message:'Error: '+code}).failureFacts.errorCodeOrdinal,28+i);
+  assert.equal(runtimePlaywrightFailureFacts({message:code}).failureFacts.errorCodeOrdinal,28+i);
+  assert.deepEqual(safeRuntimeErrorFacts(runtimeErrorFacts(new Error(code))),runtimeErrorFacts(new Error(code)));
+ }
+});
+test('legacy message classification refuses prefix suffix multiline stack header quoted and Received decoys',()=>{
+ for(const code of LEGACY_BROWSER_GUARD_CODES){
+  for(const message of['PRIVATE '+code,code+' PRIVATE','Error: '+code+' PRIVATE','Error: '+code+'\n',' '+code,code+' ','"'+code+'"','Expected: "'+code+'"','Error\n    at '+code,'Error: Error: '+code,'expect(received).toBe(expected)\nReceived: "'+code+'"']){
+   assert.equal(runtimeErrorFacts({message}).errorCodeOrdinal,0);
+   const out=runtimePlaywrightFailureFacts({message,stack:'Error: '+code});assert.equal(out.failureFacts.errorCodeOrdinal,0);assert(!JSON.stringify(out).includes('PRIVATE'));
+  }
+ }
+ assert.equal(runtimePlaywrightFailureFacts({message:'Error: UNKNOWN_PRIVATE_GUARD'}).failureFacts.errorCodeOrdinal,0);
+});
+test('structured known codes keep precedence over exact legacy helper messages',()=>{
+ for(const code of LEGACY_BROWSER_GUARD_CODES){
+  assert.equal(runtimeErrorFacts({code:'23505',message:code}).errorCodeOrdinal,10);
+  assert.equal(runtimePlaywrightFailureFacts({code:'23505',message:'Error: '+code}).failureFacts.errorCodeOrdinal,10);
+ }
+});

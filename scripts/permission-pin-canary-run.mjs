@@ -6,7 +6,7 @@ import { isAbsolute, join, relative, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { scanCanaryArtifactDirectory } from '../tests/contracts/permissionCanaryOracle.ts';
 import { CANARY_SCENARIOS } from '../tests/contracts/permissionCanaryScenarioMatrix.ts';
-import { tc18ReporterArguments } from './permission-runtime-canary-binding.mjs';
+import { tc18ReporterArguments, tc18RuntimeBinding } from './permission-runtime-canary-binding.mjs';
 
 const fail = code => { throw new Error(code); };
 
@@ -45,7 +45,8 @@ export function runTc18(output) {
   const within = relative(resolve('artifacts'), root);
   if (!within || isAbsolute(within) || within.startsWith('..') || resolve('artifacts', within) !== root || existsSync(root))
     fail('PIN_CANARY_FRESH_OUTPUT_REQUIRED');
-  mkdirSync(root, { recursive: true });
+  mkdirSync(root, { recursive: true, mode: 0o700 });
+  const runtimeBinding = tc18RuntimeBinding(root);
   const controlDirectory = mkdtempSync(join(tmpdir(), 'pos-cafe-tc18-control-'));
   const controlFile = join(controlDirectory, 'canaries.jsonl');
   writeFileSync(controlFile, '', { mode: 0o600 });
@@ -77,7 +78,8 @@ export function runTc18(output) {
   receipt.startedUtc = startedUtc;
   receipt.endedUtc = new Date().toISOString();
   receipt.controlDeleted = true;
-  writeFileSync(join(root, 'artifact-scan-safe.json'), JSON.stringify(receipt, null, 2) + '\n');
+  if (runtimeBinding) receipt.runtimeBinding = runtimeBinding;
+  writeFileSync(join(root, 'artifact-scan-safe.json'), JSON.stringify(receipt, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
   return receipt;
 }
 

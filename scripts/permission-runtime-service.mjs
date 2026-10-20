@@ -14,6 +14,7 @@ import{t04TimeBudget}from'./permission-runtime-t04.mjs';
 import{serviceProfile,serviceConfig,serviceEventProfile}from'./permission-runtime-service-profile.mjs';
 import{readStoppedServicePeer}from'./permission-runtime-service-peer.mjs';
 import{serviceSafeFailureMetric,serviceStageErrorFacts,serviceRunnerFailureFacts}from'./permission-runtime-service-diagnostic.mjs';
+import{readTc18WrapperReceipt}from'./permission-runtime-tc18-diagnostic.mjs';
 
 const check=x=>{if(!x)throw Error('PERMISSION_SERVICE_RUNTIME_REFUSED');};
 export function servicePreparedEnvironment(id,privateRoot){
@@ -167,6 +168,14 @@ async function main(){
      Object.assign(facts,serviceRunnerFailureFacts(expected,r));facts.serviceReportObserved=1;
     }
    }catch{/* Invalid/missing reports never become PASS or invented counts. */}
+   if(stage==='pin-tc18-wrapper'){
+    Object.assign(facts,{serviceTc18ReceiptObserved:2,serviceTc18WrapperStatus:0,serviceTc18WrapperCodeOrdinal:0,serviceTc18ControlDeleted:0});
+    try{
+     guard();const command=runtimeStageCommand(stage,{sourceRoot:source,outputRoot});
+     Object.assign(facts,readTc18WrapperReceipt({sourceRoot:source,outputRoot:command.reportRoot,device:statSync(root).dev,
+      expected:{stage,sourceSHA,sourceFingerprint,lockSHA,configSHA:expected.configSHA,runId:identity.runId,invocationSHA:runtimeHash(command.runnerArgv)}}));
+    }catch{/* Receipt admission failure preserves the original bounded facts. */}
+   }
    console.error('SERVICE_FAILURE_FACTS '+JSON.stringify(facts));
   },
   close:async()=>{if(db)await db.end();return true;}});

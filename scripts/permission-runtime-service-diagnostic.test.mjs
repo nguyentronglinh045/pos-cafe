@@ -32,3 +32,14 @@ test('each diagnostic boundary rejects unknown, noninteger and out-of-range fact
  assert.deepEqual(serviceFailureFacts('SERVICE_FAILURE_FACTS '+JSON.stringify({...baseline,raw:'SECRET'})),{});
  assert.equal(serviceSafeFailureMetric('raw',1),false);
 });
+
+test('TC18 result counts distinguish skipped timedOut interrupted and attempt anomalies from passed once',()=>{
+ const required=Array.from({length:5},(_,i)=>({file:'test.ts',name:String(i),project:null}));
+ const results=required.map((x,i)=>({...x,state:['passed','timedOut','interrupted','skipped','passed'][i],attempts:i===4?2:1,failureLine:77,raw:'PRIVATE'}));
+ const f=serviceRunnerFailureFacts({stage:'pin-tc18-wrapper',required},{discovery:required,results});
+ assert.equal(f.serviceFailedTests,0);assert.equal(f.serviceTc18PassedOnceCount,1);assert.equal(f.serviceTc18NonPassedCount,3);
+ assert.equal(f.serviceTc18AttemptAnomalies,1);assert.equal(f.serviceTc18FirstNonPassedRequired,2);assert.equal(f.serviceTc18FirstNonPassedLine,77);assert(!JSON.stringify(f).includes('PRIVATE'));
+ const exit=serviceStageErrorFacts({runtimeStageChildExitCode:1,runtimeResultFailureOrdinal:1});
+ assert.equal(exit.serviceChildExitObserved,1);assert.equal(exit.serviceChildExitCode,1);assert.equal(exit.serviceResultFailureOrdinal,1);
+ for(const value of[null,undefined,256,-1,'PRIVATE']){const r=serviceStageErrorFacts({runtimeStageChildExitCode:value});assert.equal(r.serviceChildExitObserved,0);assert.equal(r.serviceChildExitCode,0);}
+});

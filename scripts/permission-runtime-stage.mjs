@@ -24,7 +24,7 @@ export function prepareRuntimeDirectory(sourceRoot,outputRoot,guard){
   return out;
 }
 export async function executeRuntimeStage(stage,{sourceRoot,outputRoot,baseEnv,sourceSHA,sourceFingerprint,lockSHA,runId,guard,deadline}){
-  let boundary=1;
+  let boundary=1,childExitCode;
   try{
   const s=runtimeStage(stage),root=resolve(sourceRoot),out=resolve(outputRoot);
   check(realpathSync(root)===root&&realpathSync(out)===out&&!lstatSync(out).isSymbolicLink()
@@ -47,10 +47,11 @@ export async function executeRuntimeStage(stage,{sourceRoot,outputRoot,baseEnv,s
   boundary=4;const child=await capturedCommand(process.execPath,command.argv,{cwd:root,
     env:{...baseEnv,PERMISSION_RUNTIME_CONTEXT:contextPath,PERM_RUN_ID:runtimeApplicationRunId(stage,runId),PERM_RUN_STAGE:stage,PERM_RUN_CONFIG:configSHA},
     output:join(out,stage+'-private.log'),guard,timeoutMs:Math.min(s.timeoutMs,remaining),maxBytes:1024**2});
+  childExitCode=child.exitCode;
   boundary=5;unchanged();check(child.blocked===false&&child.signalCode===null);
   boundary=6;const resultPath=join(command.reportRoot,stage+'-runner.json'),info=lstatSync(resultPath);
   check(info.isFile()&&!info.isSymbolicLink()&&info.size<=1024**2&&realpathSync(resultPath)===resultPath);
   const report=JSON.parse(readFileSync(resultPath));
   boundary=7;return validateRuntimeStage(expected,report,context,child.exitCode);
-  }catch(error){if(error&&typeof error==='object')error.runtimeStageBoundaryOrdinal=boundary;throw error;}
+  }catch(error){if(error&&typeof error==='object'){error.runtimeStageBoundaryOrdinal=boundary;if(boundary>=5)error.runtimeStageChildExitCode=childExitCode??null;}throw error;}
 }

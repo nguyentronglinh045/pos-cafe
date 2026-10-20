@@ -1,10 +1,14 @@
 // Only fixed ordinals leave private exception objects. Never serialize messages,
 // query/params, expected/actual values, URLs, paths or stack text.
+// Only exact source-fixed helper messages are eligible; no substring or SQL text.
+export const LEGACY_BROWSER_GUARD_CODES=Object.freeze(["LEGACY_BROWSER_FIXTURE_BINDING_MISMATCH","FRESH_LEGACY_BROWSER_FIXTURE_REQUIRED","LEGACY_BROWSER_TENANT_POLICY_REQUIRED","UNEXPECTED_LEGACY_FINANCIAL_GRANT","LEGACY_BROWSER_TABLE_MISSING","LEGACY_BROWSER_READ_GRANT_RESTORE_FAILED"]);
 export const RUNTIME_ERROR_CODES=Object.freeze(['ERR_MODULE_NOT_FOUND','ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX',
  'ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING','ENOENT','EACCES','ECONNREFUSED','ETIMEDOUT',
- '23502','23503','23505','23514','42501','42601','42703','42883','42P01','42P07','3F000','57P03','57014','53300','PIN_CHANGE_REQUIRED','EMPLOYEE_SESSION_REQUIRED','INVALID_EMPLOYEE_REQUEST','AUTH_REQUIRED','WRITE_PROTOCOL_UNSUPPORTED','FORBIDDEN']);
+ '23502','23503','23505','23514','42501','42601','42703','42883','42P01','42P07','3F000','57P03','57014','53300','PIN_CHANGE_REQUIRED','EMPLOYEE_SESSION_REQUIRED','INVALID_EMPLOYEE_REQUEST','AUTH_REQUIRED','WRITE_PROTOCOL_UNSUPPORTED','FORBIDDEN',...LEGACY_BROWSER_GUARD_CODES]);
 export function runtimeErrorFacts(error){
- return{errorCodeOrdinal:RUNTIME_ERROR_CODES.indexOf(error?.code)+1,
+ const codeOrdinal=RUNTIME_ERROR_CODES.indexOf(error?.code)+1;
+ const guardOrdinal=LEGACY_BROWSER_GUARD_CODES.indexOf(error?.message);
+ return{errorCodeOrdinal:codeOrdinal||(guardOrdinal>=0?28+guardOrdinal:0),
   errorNameOrdinal:['Error','TypeError','SyntaxError','AssertionError','TimeoutError'].indexOf(error?.name)+1,
   errorMatcherOrdinal:['toBe','toEqual','toStrictEqual','toBeTruthy','toBeFalsy','toContain','toThrow','toBeGreaterThan'].indexOf(error?.matcherResult?.name)+1};
 }
@@ -65,6 +69,9 @@ export function runtimePlaywrightFailureFacts(error,file){
  const failureFacts=runtimeErrorFacts(error);let realtimeFailureMask=0,realtimeFirstFailureOrdinal=0;
  if(typeof error?.message==='string'&&Buffer.byteLength(error.message)<=65536){
   const message=error.message.replace(/\x1b\[[0-9;]*m/g,'');
+  // Playwright 1.60 serializes plain Error.message as exactly Error: <literal>.
+  const guardOrdinal=LEGACY_BROWSER_GUARD_CODES.findIndex(code=>message==='Error: '+code||message===code);
+  if(failureFacts.errorCodeOrdinal===0&&guardOrdinal>=0)failureFacts.errorCodeOrdinal=28+guardOrdinal;
   // First fixed scenario/device/oracle combination: 24 * 2 * 10 = 480.
   for(const m of message.matchAll(/(?:^|[\s'"\[,])(cycle-(?:10|[1-9])-(?:grant|revoke)|global-catalog-(?:grant|revoke)|lost-signal-grant|restored-signal-revoke)\/device([01]): REALTIME_TIMING_ORACLE_FAILED:([a-z0-9-]{1,64})(?=$|[\s'"\],.])/g)){
    const phase=REALTIME_FAILURE_SCENARIOS.indexOf(m[1]),oracle=REALTIME_FAILURE_ORACLES.indexOf(m[3]);
@@ -78,7 +85,7 @@ export function runtimePlaywrightFailureFacts(error,file){
   const matcher=matchers.length===1?matchers[0]:null;
   const received=matcher?message.slice(matcher.index+matcher[0].length).split(/\r?\n/).filter(line=>/^[\t ]*Received:/.test(line)):[];
   const scalar=received.length===1?/^[\t ]*Received:[\t ]*"([A-Z][A-Z0-9_]{0,63})"[\t ]*$/.exec(received[0]):null;
-  if(failureFacts.errorCodeOrdinal===0&&scalar)failureFacts.errorCodeOrdinal=RUNTIME_ERROR_CODES.indexOf(scalar[1])+1;
+  if(failureFacts.errorCodeOrdinal===0&&scalar)failureFacts.errorCodeOrdinal=RUNTIME_ERROR_CODES.slice(0,27).indexOf(scalar[1])+1;
   if(failureFacts.errorMatcherOrdinal===0&&matcher)failureFacts.errorMatcherOrdinal=['toBe','toEqual','toStrictEqual','toBeTruthy','toBeFalsy','toContain','toThrow','toBeGreaterThan'].indexOf(matcher[1])+1;
   for(const m of message.matchAll(/REALTIME_TIMING_ORACLE_FAILED:([a-z0-9-]{1,64})(?=$|[\s'"\],.])/g)){
    const ordinal=REALTIME_FAILURE_ORACLES.indexOf(m[1]);if(ordinal>=0)realtimeFailureMask|=2**ordinal;
