@@ -1,3 +1,4 @@
+import{pullPinnedImage as ci1PullImage,imagePullRegistryOrdinal,dockerFailureFacts,DOCKER_DIAGNOSTIC_BOUNDS,dockerSafeFailureMetric}from'./permission-runtime-image-pull.mjs';
 // Local preparation source. Every effectful entry point requires future explicit
 // execution authorization on a public standard GitHub Linux runner.
 import { readFileSync, writeFileSync, mkdirSync, existsSync, realpathSync, lstatSync, statSync, statfsSync,
@@ -49,7 +50,7 @@ const failureCodes = ['GUARD_REFUSED', 'INTAKE_REFUSED', 'COMMAND_FAILED', 'COMM
   'EDGE_CACHE_ENTRY', 'EDGE_CACHE_TYPE', 'EDGE_CACHE_PACKAGE', 'EDGE_CACHE_VERSION', 'EDGE_CACHE_PIN',
   'EDGE_CACHE_METADATA', 'EDGE_CACHE_NAME', 'EDGE_CACHE_SRI', 'EDGE_CACHE_TARBALL', 'EDGE_CACHE_DEPENDENCIES',
   'EDGE_CACHE_BOUND', 'EDGE_CACHE_INCOMPLETE', 'UNMOUNT_BUSY', 'UNMOUNT_PERMISSION', 'UNMOUNT_NOT_MOUNTED', 'UNKNOWN'];
-const failureMetrics = ['hostFreeBytes', 'memoryBytes', 'oom', 'pidsEvents', 'memoryCurrentBytes', 'pidsCurrent',
+const failureMetrics = [...Object.keys(DOCKER_DIAGNOSTIC_BOUNDS),'hostFreeBytes', 'memoryBytes', 'oom', 'pidsEvents', 'memoryCurrentBytes', 'pidsCurrent',
   'cpuMatches', 'memoryLimitMatches', 'swapLimitMatches', 'pidsLimitMatches', 'cgroupMatches', 'runtimeMatches', 'loggingMatches',
   'loopImageBytes', 'loopAllocatedBytes', 'loopFilesystemBytes', 'loopFreeBytes', 'loopOffset', 'loopSizeLimit', 'mountMatches', 'ownerMatches', 'imageOrdinal', 'edgePackageOrdinal',
   'edgeVersionMajor', 'edgeVersionMinor', 'edgeVersionPatch', 'edgeVersionCopy', 'edgeCacheEntryCount', 'edgeRegistryMetadataPresent', 'loopNestedMounts',
@@ -64,26 +65,7 @@ const failureMetrics = ['hostFreeBytes', 'memoryBytes', 'oom', 'pidsEvents', 'me
     ...Object.keys(T04_DIAGNOSTIC_BOUNDS),
     't04FailedTests','t04FirstFailedLine','t04TestErrorCodeOrdinal','t04TestErrorNameOrdinal','t04TestErrorMatcherOrdinal'];
 
-export async function ci1PullImage(run, reference, guard = () => {}, wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds)), onAttempt = () => {}) {
-  if (typeof reference !== 'string' || !/^public\.ecr\.aws\/supabase\/[a-z0-9._-]+@sha256:[a-f0-9]{64}$/.test(reference)) refused();
-  for (let attempt = 1; attempt <= 3; attempt++) {
-    guard(); onAttempt(attempt);
-    try { run('docker', ['pull', '--quiet', '--platform', 'linux/amd64', reference]); return reference; }
-    catch (error) {
-      if (error?.ci1FailureCode !== 'DOCKER_REGISTRY_RATE_LIMIT') throw error;
-      if (attempt === 3) {
-        // Supabase's own CLI supports this public mirror. Keep the exact OCI
-        // manifest digest: no tag resolution, new version or credentials.
-        const mirror = reference.replace(/^public\.ecr\.aws\//, 'ghcr.io/');
-        guard(); onAttempt(4);
-        run('docker', ['pull', '--quiet', '--platform', 'linux/amd64', mirror]);
-        return mirror;
-      }
-    }
-    await wait(attempt === 1 ? 10000 : 30000);
-    guard();
-  }
-}
+export{ci1PullImage};
 export function ci1UnmountFailureCode(stderr) {
   if (typeof stderr !== 'string' || Buffer.byteLength(stderr) > 1024 ** 2) return null;
   for (const [code, pattern] of Object.entries({ UNMOUNT_BUSY: /target is busy|device or resource busy/i,
@@ -132,6 +114,7 @@ export function ci1FailureExport(value) {
   };
   const facts = Object.fromEntries(Object.entries(value.facts ?? {}).filter(([key, number]) =>
     failureMetrics.includes(key) && Number.isSafeInteger(number) && number >= 0
+    &&(!key.startsWith('docker')||dockerSafeFailureMetric(key,number))
     && (!key.startsWith('t04') || t04SafeFailureMetric(key,number))));
   if (Object.keys(facts).length) output.facts = facts;
   return output;
@@ -261,7 +244,10 @@ function commandRunner(env, guard = () => {}) {
       maxBuffer: 1024 ** 2, stdio: ['ignore', 'pipe', 'pipe'], ...t04CommandOptions(options,Date.now()) }); }
     catch (error) {
       error.ci1Command = failureCommands.includes(basename(command)) ? basename(command) : null;
-      if (basename(command) === 'docker') error.ci1FailureCode = ci1DockerFailureCode(error.stderr);
+      if (basename(command) === 'docker') {
+        error.ci1FailureCode = ci1DockerFailureCode(error.stderr);
+        if(args[0]==='pull')error.ci1Facts={...error.ci1Facts,...dockerFailureFacts(error.stderr)};
+      }
       if (basename(command) === 'umount') error.ci1FailureCode = ci1UnmountFailureCode(error.stderr);
       throw error;
     }
@@ -676,7 +662,7 @@ async function setup(layout, input, parentEnv) {
   const adapter = {
     supervisor: guard,
     operation: () => operation,
-    failureFacts: () => ({ imageOrdinal, ...(imagePullAttempt ? { imagePullAttempt, imageRegistryOrdinal: imagePullAttempt === 4 ? 2 : 1 } : {}) }),
+    failureFacts: () => ({ imageOrdinal, ...(imagePullAttempt ? { imagePullAttempt, imageRegistryOrdinal: imagePullRegistryOrdinal(imagePullAttempt) } : {}) }),
     cleanupFailure: () => cleanupFailure,
     stage: async stage => {
       operation = null;

@@ -1996,6 +1996,24 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
         expect(response.status()).toBe(200);
         return await response.json() as Record<string, any>;
       };
+      if (dropPoint === "before") {
+        // Wrong-login denial has its own strict boundary before any successful
+        // direct login can alter sessions or hide a credential/evidence effect.
+        const beforeWrongLogin = await tc18ProtectedState(state.db);
+        const deniedLogin = page.waitForResponse(response => response.request().method() === "POST"
+          && response.url().includes("/rest/v1/rpc/permission_start_session")
+          && response.request().postDataJSON()?.p_employee_id === ownerId
+          && response.request().postDataJSON()?.p_pin === "384729");
+        await page.getByTestId(`employee-${ownerId}`).click();
+        for (const digit of "384729") await page.getByTestId(`pin-${digit}`).click();
+        await page.getByTestId("unlock-button").click();
+        const denied = await deniedLogin;
+        expect(denied.status()).toBe(200);
+        expect(await denied.json()).toMatchObject({ error: { code: "INVALID_PIN" } });
+        await expect(page.getByText("PIN không đúng. Vui lòng thử lại.", { exact: true })).toBeVisible();
+        expect(await tc18ProtectedState(state.db)).toBe(beforeWrongLogin);
+        expect(completionCalls).toBe(1);
+      }
       const newPinLogin = await login("384729");
       const tempPinLogin = await login(TEMP_PIN);
       const after = (await state.db.query(`select pin_change_required,permission_revision::int revision,

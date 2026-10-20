@@ -65,12 +65,12 @@ test('Docker failures expose bounded fixed categories and image ordinal without 
 });
 
 test('pinned image pulls retry only rate limits with bounded guarded backoff, never tests or other failures', async () => {
-  const reference='public.ecr.aws/supabase/postgres@sha256:'+'a'.repeat(64), calls=[], waits=[], attempts=[];let guards=0;
+  const reference='public.ecr.aws/supabase/postgres@sha256:'+'a'.repeat(64),primary=reference.replace('public.ecr.aws/','ghcr.io/'), calls=[], waits=[], attempts=[];let guards=0;
   const rate=()=>Object.assign(new Error('FAKE_UNIT_SECRET'),{ci1FailureCode:'DOCKER_REGISTRY_RATE_LIMIT'});
   const run=(command,args)=>{calls.push([command,args]);if(calls.length<3)throw rate();return 'ok';};
-  assert.equal(await ci1PullImage(run,reference,()=>{guards++;},async ms=>{waits.push(ms);},n=>attempts.push(n)),reference);
+  assert.equal(await ci1PullImage(run,reference,()=>{guards++;},async ms=>{waits.push(ms);},n=>attempts.push(n)),primary);
   assert.deepEqual(attempts,[1,2,3]);assert.deepEqual(waits,[10000,30000]);assert.equal(guards,5);
-  assert.ok(calls.every(([command,args])=>command==='docker'&&JSON.stringify(args)===JSON.stringify(['pull','--quiet','--platform','linux/amd64',reference])));
+  assert.ok(calls.every(([command,args])=>command==='docker'&&JSON.stringify(args)===JSON.stringify(['pull','--quiet','--platform','linux/amd64',primary])));
   let exhausted=0;await assert.rejects(ci1PullImage(()=>{exhausted++;throw rate();},reference,()=>{},async()=>{}));assert.equal(exhausted,4);
   for(const code of ['DOCKER_REGISTRY_AUTH','DOCKER_NETWORK','DOCKER_NO_SPACE',undefined]) {
     let count=0;await assert.rejects(ci1PullImage(()=>{count++;throw Object.assign(new Error('FAKE_UNIT_SECRET'),{ci1FailureCode:code});},reference,
@@ -80,21 +80,21 @@ test('pinned image pulls retry only rate limits with bounded guarded backoff, ne
   await assert.rejects(ci1PullImage(()=>assert.fail('arbitrary reference'), 'private/FAKE_UNIT_SECRET:latest'));
 });
 
-test('official image mirror is attempted once after three ECR rate failures with identical digest and platform', async () => {
+test('original ECR is attempted once after three GHCR rate failures with identical digest and platform', async () => {
   const reference='public.ecr.aws/supabase/postgres@sha256:'+'a'.repeat(64),mirror=reference.replace('public.ecr.aws/','ghcr.io/');
   const calls=[],attempts=[],waits=[];let guards=0;
   const rate=()=>Object.assign(new Error('FAKE_UNIT_SECRET'),{ci1FailureCode:'DOCKER_REGISTRY_RATE_LIMIT'});
   const result=await ci1PullImage((command,args)=>{calls.push([command,args]);if(calls.length<4)throw rate();},reference,()=>{guards++;},async ms=>waits.push(ms),n=>attempts.push(n));
-  assert.equal(result,mirror);assert.deepEqual(attempts,[1,2,3,4]);assert.deepEqual(waits,[10000,30000]);assert.equal(guards,6);
-  assert.deepEqual(calls.map(([command,args])=>[command,...args]),[reference,reference,reference,mirror].map(ref=>['docker','pull','--quiet','--platform','linux/amd64',ref]));
+  assert.equal(result,reference);assert.deepEqual(attempts,[1,2,3,4]);assert.deepEqual(waits,[10000,30000]);assert.equal(guards,6);
+  assert.deepEqual(calls.map(([command,args])=>[command,...args]),[mirror,mirror,mirror,reference].map(ref=>['docker','pull','--quiet','--platform','linux/amd64',ref]));
   let count=0;await assert.rejects(ci1PullImage(()=>{count++;throw rate();},reference,()=>{if(count===3)throw new Error('guard');},async()=>{}));assert.equal(count,3);
   for(const invalid of ['ghcr.io/supabase/postgres@sha256:'+'a'.repeat(64),'public.ecr.aws/other/postgres@sha256:'+'a'.repeat(64),reference+'?mirror=private',reference.replace('@sha256:',':')])
     await assert.rejects(ci1PullImage(()=>assert.fail('invalid registry'),invalid));
   const fake=adapter();fake.operation=()=> 'IMAGE_PULL';
-  fake.failureFacts=()=>({imageOrdinal:1,imagePullAttempt:4,imageRegistryOrdinal:2,raw:'FAKE_UNIT_SECRET'});
+  fake.failureFacts=()=>({imageOrdinal:1,imagePullAttempt:4,imageRegistryOrdinal:1,raw:'FAKE_UNIT_SECRET'});
   fake.stage=async()=>{throw rate();};
   const failureResult=await runCi1Worker(fake,identity);
-  assert.deepEqual(failureResult.failure.facts,{imageOrdinal:1,imagePullAttempt:4,imageRegistryOrdinal:2});
+  assert.deepEqual(failureResult.failure.facts,{imageOrdinal:1,imagePullAttempt:4,imageRegistryOrdinal:1});
   assert.equal(JSON.stringify(failureResult).includes('FAKE_UNIT_SECRET'),false);
 });
 
