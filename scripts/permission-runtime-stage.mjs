@@ -1,11 +1,18 @@
 import {readFileSync,writeFileSync,mkdirSync,lstatSync,realpathSync,statSync} from 'node:fs';
 import {resolve,join,relative,isAbsolute} from 'node:path';
 import {execFileSync} from 'node:child_process';
+import {randomUUID} from 'node:crypto';
 import {runtimeHash,validateRuntimeStage} from './permission-runtime-results.mjs';
 import {runtimeStage,runtimeStageCommand,runtimeConfigBinding} from './permission-runtime-catalog.mjs';
 import {capturedCommand,trackedFingerprint} from './project-ci.mjs';
 
 const check=x=>{if(!x)throw Error('PERMISSION_RUNTIME_STAGE_REFUSED');};
+export function runtimeApplicationRunId(stage,runId){
+  runtimeStage(stage);check(typeof runId==='string'&&/^[1-9][0-9]{0,19}$/.test(runId));
+  // The legacy preflight's existing application contract requires a UUID.
+  // Reporter context.runId independently retains the exact GitHub numeric ID.
+  return stage==='legacy-t01-database'?randomUUID():runId;
+}
 export function prepareRuntimeDirectory(sourceRoot,outputRoot,guard){
   const root=realpathSync(sourceRoot),out=resolve(outputRoot),rel=relative(root,out);
   check(!isAbsolute(rel)&&rel.replaceAll('\\','/').startsWith('artifacts/')&&!rel.split(/[\\/]/).includes('..'));
@@ -36,7 +43,7 @@ export async function executeRuntimeStage(stage,{sourceRoot,outputRoot,baseEnv,s
   // Per-stage raw output never enters public evidence. The enclosing supervisor
   // owns the same write budget and kills the group on timeout/quota failure.
   const child=await capturedCommand(process.execPath,command.argv,{cwd:root,
-    env:{...baseEnv,PERMISSION_RUNTIME_CONTEXT:contextPath,PERM_RUN_ID:runId,PERM_RUN_STAGE:stage,PERM_RUN_CONFIG:configSHA},
+    env:{...baseEnv,PERMISSION_RUNTIME_CONTEXT:contextPath,PERM_RUN_ID:runtimeApplicationRunId(stage,runId),PERM_RUN_STAGE:stage,PERM_RUN_CONFIG:configSHA},
     output:join(out,stage+'-private.log'),guard,timeoutMs:Math.min(s.timeoutMs,remaining),maxBytes:1024**2});
   unchanged();check(child.blocked===false&&child.signalCode===null);
   const resultPath=join(command.reportRoot,stage+'-runner.json'),info=lstatSync(resultPath);

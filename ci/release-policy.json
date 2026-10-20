@@ -36,7 +36,8 @@
     "scripts/permission-runtime-pg16-cleanup.mjs": "3a47c5a59c08411a702d4622b74dd514395072be9878630f3dc6a1f54109efa8",
     "scripts/permission-runtime-error-facts.mjs": "1002b188305c37b16b1da2ba7d71f4c5621940de9cb8992aef781ffc0832e323",
     "scripts/permission-runtime-vitest-reporter.mjs": "6d53b33d615ed2dcaf48906206c13cb3df177cad47001bb55c4d54abcc10666b",
-    "scripts/project-ci-results.test.mjs": "b7488d6566c51cd65e7381114ed27804b1640eb1f274f706bde114174f3743f8"
+    "scripts/project-ci-results.test.mjs": "b7488d6566c51cd65e7381114ed27804b1640eb1f274f706bde114174f3743f8",
+    "scripts/permission-runtime-stage.mjs": "bff9858755adb86fc8a6a280f504caf3442df97735ec077701d7b692e4f985f4"
   },
   "preview": {
     "projectId": "prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en",
