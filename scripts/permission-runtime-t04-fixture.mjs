@@ -5,6 +5,7 @@ import {runtimeStageCatalog} from './permission-runtime-catalog.mjs';
 import {runtimeHash} from './permission-runtime-results.mjs';
 import {CI1_PROJECT,CI1_RUNTIME,CI1_LIMITS,ci1Identity,ci1TrustedRepository} from './permission-ci1-policy.mjs';
 import {coreDumpDisabled} from './project-ci-launch.mjs';
+import{containerContinuityHash}from'./permission-runtime-container-state.mjs';
 
 const catalog=runtimeStageCatalog().filter(s=>s.runtimeProfile==='SUPABASE_T04');
 const resets=new Set(['candidate-e2e','candidate-seed-recovery-database','candidate-roles-e2e','realtime-e2e',
@@ -56,8 +57,8 @@ export function assertT04ContainerContinuity(before,after,{stopped=false,cgroup,
   check(Array.isArray(before)&&Array.isArray(after)&&before.length===12&&after.length===12
     &&new Set(after.map(c=>c.Id)).size===12);
   for(const old of before){
-    const current=after.find(c=>c.Id===old.Id);check(current&&runtimeHash([current.Config,current.HostConfig,current.Mounts])
-      ===runtimeHash([old.Config,old.HostConfig,old.Mounts])&&current.Config.Labels?.['com.supabase.cli.project']===CI1_PROJECT);
+    const current=after.find(c=>c.Id===old.Id);check(current&&containerContinuityHash(current)
+      ===containerContinuityHash(old)&&current.Config.Labels?.['com.supabase.cli.project']===CI1_PROJECT);
     const isDB=current.Name==='/supabase_db_'+CI1_PROJECT;
     check(current.State.Running===(!stopped||isDB));
     for(const mount of current.Mounts)check(mount.Type==='tmpfs'||['bind','volume'].includes(mount.Type)&&statSync(mount.Source).dev===device);
@@ -75,6 +76,7 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
   let step=1;
   const failure=error=>{if(error&&typeof error==='object')error.t04BoundaryOrdinal=step;return error;};
   const checked=fn=>async(...args)=>{try{return await fn(...args);}catch(error){throw failure(error);}};
+  try{
   guard();check(process.platform==='linux'&&process.getuid?.()===0&&process.versions.node==='24.16.0'
     &&root===realpathSync(root)&&realpathSync(process.cwd())===join(root,'source'));
   const runtime=await import('./permission-identity-runtime.mjs');
@@ -100,6 +102,7 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
     readCgroup:pid=>readFileSync(`/proc/${pid}/cgroup`,'utf8'),readLimits:pid=>readFileSync(`/proc/${pid}/limits`,'utf8'),
     pattern:readFileSync('/proc/sys/kernel/core_pattern','utf8')});
   continuity(false);
+  step=3;
   const environment=()=>runtime.parseBridgeEnvironment({IDEM_ENV_FILE:join(privateRoot,'bridge.env')});
   const env=environment();check(env.controlPath===join(privateRoot,'fixture-control.json'));
   const files=[join(privateRoot,'bridge.env'),env.controlPath].map(path=>{ownFile(path,65536);return{path,bytes:readFileSync(path)};});
@@ -242,4 +245,5 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
       check(!lstatSync(path,{throwIfNoEntry:false}));guard();mkdirSync(path,{mode:0o700});
       check(statSync(path).dev===device&&realpathSync(path)===path);return path;}catch(error){throw failure(error);}}};
   }catch(error){await db.end().catch(()=>{});throw failure(error);}
+  }catch(error){throw failure(error);}
 }
