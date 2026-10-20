@@ -6,8 +6,7 @@
 
 Dùng `ui-audit` mỗi khi công việc chạm vào giao diện: sửa layout, đổi component,
 đổi token Tailwind, thêm màn hình, hoặc khi người dùng báo "nút bấm không ăn",
-"chữ bị cắt", "icon mất", "màn hình tablet vỡ". Đây là cách duy nhất trong repo
-phát hiện lỗi chỉ xuất hiện sau khi trình duyệt đã render.
+"chữ bị cắt", "icon mất", "màn hình tablet vỡ". Bộ đo phát hiện một số lỗi chỉ xuất hiện sau khi trình duyệt đã render.
 
 Không dùng nó thay cho `npm test` (logic) hay `npm run smoke` (luồng nghiệp vụ).
 Nó chỉ trả lời một câu hỏi: *giao diện sau khi render có đo được lỗi nào không.*
@@ -16,7 +15,10 @@ Nó chỉ trả lời một câu hỏi: *giao diện sau khi render có đo đư
 
 1. `npm run ui-audit:selftest` — phải ra 23 finding và in `selftest OK`. Nếu
    không, bộ đo đang hỏng; sửa bộ đo trước, đừng tin bất kỳ kết quả nào khác.
-2. `npm run ui-audit` — chạy trên ứng dụng thật.
+   Đồng thời đủ 14 required rules và 16 effective-target controls. JSON tùy chọn
+   ghi dưới artifacts/ui-audit/ bằng --selftest-report, không ghi đè.
+2. `npm run ui-audit` — chạy UI ứng dụng với backend mock trên server do runner sở hữu.
+   Cổng bận phải FAIL; không dùng lại server không rõ source/mode.
 3. Đọc `ui-audit/report.md`, không đọc `report.json` trừ khi cần lọc bằng script.
 4. Xem ảnh trong `ui-audit/out/` trước khi kết luận một finding là lỗi thật.
    Ảnh đã khoanh sẵn đúng phần tử bị bắt; phán đoán từ selector không thôi rất

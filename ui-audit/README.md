@@ -1,176 +1,136 @@
-# UI audit — dò lỗi giao diện đã render
+# UI audit — kiểm tra giao diện đã render
 
-Bộ này đo DOM thật của ứng dụng đang chạy (`getBoundingClientRect`,
-`getComputedStyle`, `elementFromPoint`) để tìm các lỗi mà đọc code không ra:
+Bộ đo đọc DOM và style thực trong Chromium để tìm control bị che, vùng bấm nhỏ,
+chữ bị cắt, nội dung tràn, ảnh/icon hỏng và một số vấn đề tương phản hoặc tên
+truy cập. Nó bổ sung cho test logic, smoke nghiệp vụ và phép so thiết kế
+[ui-remake](../ui-remake/README.md); không thay thế các kiểm tra đó.
 
-- nút bị lớp phủ trong suốt che mất click,
-- icon render 0x0 vì font icon không tải được,
-- chuỗi `undefined` / `[object Object]` lọt ra màn hình,
-- vùng chạm nhỏ hơn ngón tay,
-- chữ bị cắt mà không có dấu `…`,
-- phần tử tràn ngang viewport,
-- tương phản dưới ngưỡng WCAG AA.
+## Chạy từ checkout code
 
-Không có mô hình AI trong vòng lặp và không so ảnh chụp màn hình. Cùng một trang
-luôn cho ra cùng một kết quả, nên có thể đặt vào CI và chặn hồi quy.
+Dùng dependency Playwright đã khóa trong `package-lock.json` và Chromium tương
+ứng. Không thêm một package/browser khác chỉ cho audit. Cài dependency/browser
+phải theo quy tắc dung lượng của dự án; runner không tự tải gì.
 
-Bảng đầy đủ 18 luật nằm ở [UPSTREAM-README.md](UPSTREAM-README.md) — đó là bản
-gốc của bộ kit, giữ nguyên để về sau còn so được với phiên bản mới.
-
-## Chạy
-
-```bash
+```sh
+npm run ui-audit:selftest
 npm run ui-audit
 ```
 
-Lệnh này tự bật dev server ở chế độ mock (`VITE_DATA_MODE=mock`, cổng 5178) nếu
-chưa có, chạy hết các trạng thái trong `config.json` trên cả ba viewport, rồi tắt
-server. Nếu đã có sẵn server ở cổng đó thì nó dùng lại và không tắt.
+Selftest phải in **đúng 23 findings**, đủ 14 lớp lỗi bắt buộc, 16 đối chứng vùng
+bấm/vùng cuộn đạt và `selftest OK`. Selftest hỏng thì dừng trước khi tin audit.
 
-Các lệnh khác:
+Runner tự mở dev server riêng tại `127.0.0.1:5178`, cưỡng định cấu hình mock bằng
+`VITE_DATA_MODE=mock`, URL/key Supabase rỗng; context mới cho từng state/viewport.
+**Cổng đang bận sẽ làm lệnh thất bại**. Đóng server cũ hoặc chọn cổng riêng trong
+config; không dùng một server không rõ source làm bằng chứng. Runner dừng browser
+và cây process server do nó tạo, kể cả khi setup/đo thất bại. Nó không sở hữu hay
+tắt server khác đang có trên máy.
 
-```bash
-npm run ui-audit:selftest              # kiểm tra chính bộ đo, xem mục bên dưới
-node ui-audit/run.mjs --list           # liệt kê trạng thái và viewport đã cấu hình
-node ui-audit/run.mjs --state floor    # chỉ chạy một trạng thái
-node ui-audit/run.mjs --viewport tablet
-npm run ui-audit:update                # chốt kết quả hiện tại thành baseline
+Config Vite của SPA chỉ dùng `index.html` làm dependency entry và bỏ generated
+artifacts/out/report khỏi watcher. Các fixture bảo vệ đường dẫn có junction về
+repo; giữ chúng để kiểm thử, không để Vite quét như source ứng dụng.
+
+```sh
+node ui-audit/run.mjs --list
+node ui-audit/run.mjs --state floor --viewport tablet
+node ui-audit/run.mjs --selftest --selftest-report artifacts/ui-audit/selftest-<new-name>.json
+node --test --test-concurrency=1 ui-audit/runtime.test.mjs ui-audit/run.integration.test.mjs ui-audit/watch.test.mjs
 ```
 
-Kết quả:
+Report selftest là tùy chọn, phải là đường dẫn tương đối dưới `artifacts/ui-audit/`
+và tên `.json` mới; runner từ chối ghi đè hoặc đi qua symlink/junction. JSON v1 có
+`kind: ui-audit-selftest`, PASS/FAIL, 23 findings, 14 required rules, 16 target
+checks, thời gian, Git HEAD/hash nguồn trước/sau và browser/runtime thực.
+`productAcceptance: NOT_ASSESSED` luôn được giữ: selftest chỉ chứng minh detector.
 
-- `ui-audit/report.md` — bảng tổng hợp theo severity, theo luật, theo trạng thái,
-  rồi tới từng finding. Đây là file nên đọc.
-- `ui-audit/report.json` — cùng dữ liệu, dạng máy đọc.
-- `ui-audit/out/*.png` — ảnh chụp toàn trang, có khoanh đỏ/cam đúng chỗ bị bắt.
-- Mã thoát 1 khi xuất hiện finding chưa nằm trong `baseline.json`.
+Mặc định import module `playwright` mà `@playwright/test` đã phụ thuộc; version
+được đọc từ chính module vừa nạp. Chạy trong worktree có thể trỏ tới dependency
+đã cài bằng `UI_AUDIT_PLAYWRIGHT_MODULE` (file URL tới `playwright/index.mjs`). Đây
+là override môi trường, phải ghi lại khi dùng làm bằng chứng. Browser dùng
+`channel: chromium`, headless, DPR1; không lấy version package `@playwright/test`
+khác trên máy thay cho version module thực đã dùng.
 
-Ba file kết quả đều nằm trong `.gitignore`. Chỉ `baseline.json` được commit.
+## Đọc và phân loại kết quả
 
-## Tự kiểm tra bộ đo trước khi tin kết quả
+- `ui-audit/report.md`: tổng hợp finding và setup failure.
+- `ui-audit/report.json`: finding dạng máy đọc.
+- `ui-audit/out/*.png`: ảnh annotated của state/viewport có finding, kể cả baseline.
+- `ui-audit/out/status.json`: receipt của lượt hiện tại, expected/attempted/completed
+  pairs, setup failures, thời gian, hash nguồn/baseline trước–sau và runtime thực.
 
-`demo-buggy.html` là một trang có sẵn chín lỗi cố ý. Nếu bộ đo ngừng thấy chúng
-thì mọi lần chạy sạch trên ứng dụng thật đều là kết quả giả.
+Runner ghi checkpoint sau từng cặp. Report mới bắt đầu `INCOMPLETE` và chỉ thành
+`COMPLETE` khi đủ matrix, không có setup/runtime/cleanup failure. Lỗi navigation,
+detector hoặc screenshot được ghi rõ stage; runner thử các cặp còn lại, giữ finding
+đã đo và trả exit2 nếu coverage thiếu. Diagnostic tail tối đa4096ký tự chỉ lấy từ
+server do runner tạo. `COMPLETE` nói về coverage, không phải nghiệm thu UI.
 
-```bash
-npm run ui-audit:selftest
-```
+Các output trên bị git-ignore. Mở ảnh của **lượt hiện tại** trước khi kết luận
+selector là lỗi thật; ảnh của state không sinh finding trong lượt mới có thể là
+ảnh cũ từ lượt trước. Ghi rõ state, viewport, selector, phép đo và lý do phân
+loại. Không sửa `src/` chỉ vì audit báo finding ngoài scope đã duyệt.
 
-Phải ra 23 finding trên trang lỗi mẫu, đủ các luật trong danh sách
-`SELFTEST_REQUIRED`, và qua các đối chứng vùng bấm/vùng cuộn trong
-`effective-targets.html`. Chạy lệnh này sau mỗi lần sửa `audit.js`, và trước
-khi tin một báo cáo "không có lỗi nào".
+Mã thoát app audit: 0 khi không có **error mới ngoài baseline** và setup hoàn tất;
+1 khi có error mới; 2 khi coverage/setup/runtime/cleanup/nguồn thất bại. Selftest
+FAIL trả1; chọn matrix/config sai trả mã khác0. `failOn` hiện là `["error"]`:
+warning/info mới vẫn có trong báo cáo và vẫn phải
+phân loại, nhưng không tự làm CI đỏ. Vì vậy exit0 không có nghĩa UI không còn lỗi.
+Audit chỉ kiểm các phần tử/state đang đo; không chứng nhận đầy đủ WCAG, bàn phím,
+thiết bị vật lý hay độ giống design.
 
-## Trạng thái, không phải route
+## Phạm vi state/viewport
 
-pos-cafe không có router URL. Toàn bộ ứng dụng là một trang, điều hướng bằng
-zustand store (`src/app/useAppStore.ts`), nên chỉ có đúng một URL là `/`. Vì vậy
-mục tiêu đo ở đây là **trạng thái** — một tên, kèm vài bước Playwright để đi tới
-màn hình cần đo:
+Config tích hợp permission bao phủ 16 state: landing, store-pairing,
+passcode, floor, order-drawer, order-cart, menu-editor, report, employees, settings,
+clear-demo-dialog, payment và receipt-preview. State con kế thừa steps của cha bằng
+`extends`; `@ten` là `[data-testid="ten"]`. Hỗ trợ `click`, `clickAll`, `fill` +
+`value`, `press`, `waitFor` + `state`, `wait` và `timeout` riêng từng bước.
 
-```json
-{
-  "name": "order-cart",
-  "describe": "drawer goi mon co 1 mon trong gio",
-  "extends": "order-drawer",
-  "steps": [
-    { "click": "@menu-item-3e43bb8c-198f-443f-83ab-18696983edaa" },
-    { "click": "@modifier-confirm" },
-    { "waitFor": "@order-cart-line" }
-  ]
-}
-```
+Giữ ba viewport lịch sử: tablet 1024×768, desktop 1440×900, mobile ngang 844×390;
+tổng **48 cặp**, gồm ba state compatibility-update-gate, compatibility-created-store và required-pin-change. Đây là kiểm thử vận hành audit trên app mock hiện có. Không phải
+pilot remake màn Stitch và không chứng minh toàn app đạt 568×320. Gate responsive
+568×320 trở lên của từng màn remake nằm trong workflow `ui-remake/`.
 
-- `@ten` là viết tắt của `[data-testid="ten"]`. Chuỗi không có `@` được hiểu là
-  CSS selector thường.
-- `extends` nối tiếp các bước của trạng thái cha, nên phần đăng nhập chỉ viết một
-  lần ở `floor` rồi mọi drawer kế thừa lại.
-- Các bước hỗ trợ: `click`, `clickAll`, `fill` + `value`, `press`, `waitFor`
-  (+ `state`), `wait` (mili giây), và `timeout` riêng cho từng bước.
-- Mỗi trạng thái chạy trong một browser context mới, vì ứng dụng lưu phiên ghép
-  cửa hàng vào localStorage; dùng lại context thì trạng thái sau sẽ phụ thuộc
-  trạng thái trước.
+Công thức login và fixture lấy từ `tests/smoke/helpers.ts` và
+`tests/smoke/demo-runbook.spec.ts`: mã mock `0001-X8F3QA`, admin
+`6b7bd350-7db2-4160-8471-cca2668c070d`, PIN mock `123456`. Không dùng thông tin cửa
+hàng thật. Checkout tích hợp dùng admin synthetic `30000000-0000-4000-8000-000000000011`; ba fixture compatibility/required-PIN được giữ để kiểm candidate permission.
 
-Dữ liệu mock dùng chung với `tests/smoke` — mã cửa hàng `0001-X8F3QA`, nhân viên
-`6b7bd350-…`, PIN `123456`, bàn `7b035353-…`, món `3e43bb8c-…`. Khi cần thêm màn
-hình, lấy test id từ `tests/smoke/demo-runbook.spec.ts` là nhanh nhất.
+## Baseline và quyền chấp nhận
 
-Danh sách trạng thái hiện có cố tình để nhỏ: `landing`, `store-pairing`,
-`passcode`, `floor`, `order-drawer`, `order-cart`, `menu-editor`, `report`.
-Thêm màn hình là thêm một khối vào `states` trong `config.json`, không phải sửa
-code.
+`baseline.json` là tập key `state :: viewport :: rule :: selector`, không phải ảnh
+thiết kế. Phiên bản được publish giữ nguyên 36 key lịch sử từ commit
+`d78c929c9ce6f6c09790bbfa4135b1cc47d0f1b1` (16/09/2026). File Git lịch sử
+dùng LF (blob `2861d0ef1d0d556afb4508f4d5344ce8583171e1`, SHA256
+`bf94db0428557376481f01a3cabea474c73eef156a95218ae09cbf960d4ffd42`).
+File được publish giữ bytes CRLF của checkout nguồn hiện có, SHA256
+`79fe315c36c21db23a66724939b085e5ac4065d16780e2a0d26e1f9da5c87080`;
+khác line ending, cùng nội dung 36 key. Không gọi hai raw hash là cùng một file bytes.
+Đó là mốc chặn hồi quy đã ghi nhận; không có nghĩa các finding đã được sửa.
 
-## Năm bản vá riêng cho pos-cafe
+**Không tự chạy `npm run ui-audit:update`.** Chỉ chạy sau khi chủ dự án xem danh
+sách đã phân loại và cho phép cập nhật đúng baseline. `--update` chỉ chấp nhận
+matrix đầy đủ; không kết hợp filter state/viewport để vô tình bỏ key ngoài scope.
+Task publish/CI này không cập nhật baseline, thay severity, hạ threshold hay sửa UI
+để làm gate xanh.
 
-`audit.js` là bản gốc của kit cộng thêm năm chỗ, đều có chú thích trong file:
+## Detector và giới hạn
 
-1. **Chỉ đo lớp trên cùng** (`scopeToTopLayer`). Khi drawer đang mở, mọi control
-   của nền đều bị che, nên `hit-blocked` và `overlapping-controls` bắn ra toàn bộ
-   nền và chôn mất finding thật. Bộ đo tìm phần tử `position: fixed` phủ ≥ 60%
-   viewport và chỉ soi bên trong nó. Lần chạy đầu giảm từ 70 xuống 13 finding chỉ
-   nhờ bản vá này.
-2. **Bỏ qua lớp thông báo** (`skipTransientOverlays`). `react-hot-toast` render
-   một container `position: fixed` + `pointer-events: none` phủ gần hết viewport.
-   Toast trôi qua trong vài giây và làm `hit-blocked` bắn ra ngẫu nhiên tuỳ tốc độ
-   chạy. Đặc trưng "fixed + click xuyên qua + cỡ viewport" chỉ có ở lớp thông báo,
-   nên bỏ qua trọn container là an toàn.
-3. **Không đoán màu nền gradient.** Thẻ tổng quan trong drawer báo cáo dùng nền
-   gradient teal; `backgroundColor` của nó trong suốt nên bộ đo cũ leo lên tới nền
-   trắng và báo sai tương phản. Nay gặp `background-image` khác `none` thì bỏ qua
-   phép đo tương phản thay vì đoán.
-4. **Đo phần control thật sự lộ ra** (`exposedRect`). Khi control nằm ngoài phần
-   đang thấy của vùng cuộn, tọa độ DOM của nó có thể trùng footer. Phép đo hit
-   và chồng lấn chỉ dùng phần giao với vùng nhìn thấy của các ancestor có
-   overflow cắt nội dung và viewport. Kích thước control để xét `tiny-target`
-   vẫn lấy từ layout gốc. Control bị `overflow: clip/hidden` cắt hẳn và không có
-   vùng cuộn bên trong để đưa nó ra lại nhận `clipped-interactive`.
-5. **Đo vùng bấm của input có nhãn** (`tapTargetRect`). Checkbox/radio gắn với
-   `<label>` dùng vùng nhãn thật sự lộ ra và nhận hit để xét `tiny-target`, thay
-   vì chỉ kích thước ô native hay toàn bộ hình chữ nhật của nhãn. Nhãn bị lớp
-   khác hoặc phần tử tương tác bên trong che gần hết và control nhỏ không có
-   nhãn đủ rộng vẫn bị phát hiện. Nếu input có nhiều nhãn, bộ đo chọn vùng bấm
-   hữu dụng nhất. Nhãn ở dưới vùng cuộn được đo sau khi cuộn tới và phục hồi
-   vị trí cuộn ban đầu. Input native `disabled` không cần diện tích bấm tối thiểu.
+Detector hiện có năm nhóm điều chỉnh cho pos-cafe, giữ chú thích trong `audit.js`:
 
-Ngoài ra `run.mjs` gộp các finding chỉ khác nhau ở `:nth-of-type(N)` và chuẩn hoá
-id kiểu `useId` của React (`#:r5:`). Một danh sách 40 món hỏng cùng kiểu sẽ ra
-một dòng kèm `x40`, và baseline không vỡ khi dữ liệu seed đổi. Tắt bằng
-`"collapse": false`.
+1. Scope lớp fixed phủ viewport trên cùng để không bắt nhầm control nền sau modal.
+2. Bỏ container toast fixed, pointer-events:none, cỡ viewport.
+3. Bỏ phép đo contrast ở backdrop gradient/image thay vì đoán nền phẳng.
+4. Đo phần control thật sự lộ ra sau clipping/scroll; báo `clipped-interactive`
+   khi không thể cuộn để đưa control ra.
+5. Dùng vùng label có hit thực của input, chọn label hữu dụng và phục hồi scroll.
 
-## Quy trình tiếp nhận trên codebase đã lớn
+Runner gộp selector chỉ khác `nth-of-type` và chuẩn hóa React `useId` để một lỗi
+lặp không thành hàng chục baseline key. Contrast là ước lượng DOM trong phạm vi
+hỗ trợ; các phần bị bỏ qua không nhận PASS. Recharts được loại trừ trong config.
 
-1. Chạy `npm run ui-audit:selftest`, phải OK.
-2. Chạy `npm run ui-audit`, đọc `report.md`, phân loại lỗi thật và dương tính giả.
-3. Chạy `npm run ui-audit:update` một lần và commit `baseline.json`. Toàn bộ
-   finding hiện tại được chấp nhận, build xanh trở lại.
-4. Từ đó chỉ finding **mới** mới làm đỏ build, nên không lỗi UI nào thuộc các
-   nhóm này lọt thêm vào được.
-5. Giảm dần baseline. Mỗi lỗi sửa xong là một dòng bị xoá.
-
-Finding được định danh bằng trạng thái + viewport + luật + selector, không bằng
-pixel, nên thay đổi layout không liên quan sẽ không làm baseline nhiễu như cách
-so ảnh chụp.
-
-## Loại trừ
-
-Thêm `data-ui-audit-skip` vào một nhánh DOM, hoặc thêm selector vào `ignore`
-trong `config.json`. Hiện đang loại trừ biểu đồ recharts trong drawer báo cáo.
-
-`severityOverride` trong `config.json` cho phép hạ hoặc nâng mức của một luật mà
-không phải sửa `audit.js`, giữ cho bản vá còn dễ so với kit gốc.
-
-## CI
-
-```yaml
-- run: npm ci && npx playwright install --with-deps chromium
-- run: npm run ui-audit:selftest
-- run: npm run ui-audit
-- uses: actions/upload-artifact@v4
-  if: failure()
-  with:
-    name: ui-audit-screenshots
-    path: ui-audit/out/
-```
-
-Bộ này dùng `chromium` từ `@playwright/test` đã có sẵn trong `devDependencies`,
-không thêm gói `playwright` riêng để tránh hai bản Playwright lệch phiên bản.
+[UPSTREAM-README.md](UPSTREAM-README.md) lưu mô tả kit lịch sử chưa xác minh nguồn
+phát hành/license, không phải hướng dẫn cài hay chấp nhận baseline hiện tại.
+Nguồn trong repo bắt đầu ở commit `bccec3af9c1ea501dcbdf166deec6dd8d52e2941`.
+Không suy một license ngoài từ tên "upstream" và không thêm attribution chưa có
+bằng chứng. Specs, quyết định và biên bản kiểm/review sống trên nhánh `docs`; hướng
+dẫn vận hành chỉ có bản gốc cạnh công cụ trên `main`.

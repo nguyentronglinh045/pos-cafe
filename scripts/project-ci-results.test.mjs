@@ -529,20 +529,23 @@ test('failed Playwright diagnostics expose known source locations and counts wit
   const safe=privateDiagnostics('',bad,[]);assert.deepEqual(safe.failedFiles,[]);assert.equal(safe.metrics.smokeUnexpected,undefined);
 });
 
-test('main light profile requires all twelve phases, including UI calibration, without app acceptance substitutions', () => {
+test('permission light profile requires all fourteen phases, including UI calibration, without app acceptance substitutions', () => {
   assert.deepEqual(PROJECT_PHASES, ['install','build','unit','tooling','node-tools','browser',
     'ui-tools','ui-remake-selftest','ui-audit-selftest','smoke-discovery','smoke-preflight','smoke','ui-selftest','ui-audit']);
   const rows=PROJECT_PHASES.map(id=>({id,status:'PASS',elapsedMs:1,exitCode:0,invocationSHA:digest,reportSHA:digest,counts:null}));
   assert.equal(publicSummary(binding,rows,{source:digest,lock:digest}).overallStatus,'PASS');
   for(const id of ['ui-selftest','ui-audit','ui-tools']) {
     assert.throws(()=>publicSummary(binding,[...rows,{...rows[0],id}],{source:digest,lock:digest}));
-    assert.throws(()=>publicSummary(binding,[...rows.slice(0,-1),{...rows.at(-1),id}],{source:digest,lock:digest}));
+    assert.throws(()=>publicSummary(binding,[{...rows[0],id},...rows.slice(1)],{source:digest,lock:digest}));
   }
-  for (const index of [6,7,8]) {
+  for (const index of [6,7,8,12]) {
     assert.throws(()=>publicSummary(binding,rows.filter((_,i)=>i!==index),{source:digest,lock:digest}));
     const bad=structuredClone(rows);bad[index].status='FAIL';
     assert.equal(publicSummary(binding,bad,{source:digest,lock:digest}).overallStatus,'FAIL');
   }
+  assert.equal(publicSummary(binding,rows.slice(0,-1),{source:digest,lock:digest}).overallStatus,'FAIL');
+  const failedAudit=structuredClone(rows);failedAudit.at(-1).status='FAIL';
+  assert.equal(publicSummary(binding,failedAudit,{source:digest,lock:digest}).overallStatus,'FAIL');
   const reordered=structuredClone(rows);[reordered[6],reordered[7]]=[reordered[7],reordered[6]];
   assert.throws(()=>publicSummary(binding,reordered,{source:digest,lock:digest}));
 });

@@ -1,3 +1,7 @@
+> Historical kit text; external upstream and license have not been independently identified.
+> Use [the project operator guide](README.md) for current setup, CI and owner-approved baseline rules.
+> The install/update snippets below are historical examples, not authorization to install or accept findings.
+
 # UI Audit
 
 A deterministic detector for rendered-UI defects that code review does not catch:

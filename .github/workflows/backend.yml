@@ -12,6 +12,7 @@ on:
           - DO_NOT_RUN
           - RUN_SYNTHETIC_PILOT
           - RUN_NAMESPACE_PROBE
+          - RUN_CAPACITY_PROBE
       expected_source_sha:
         description: 'Namespace probe only: exact reviewed 40-character commit SHA'
         required: false
@@ -26,6 +27,23 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  capacity-probe:
+    if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386' && inputs.confirmation == 'RUN_CAPACITY_PROBE'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Measure host capacity before any package or image download
+        env:
+          PERMISSION_CAPACITY_CONFIRMATION: RUN_CAPACITY_PROBE
+          PERMISSION_CAPACITY_EXPECTED_SHA: ${{ inputs.expected_source_sha }}
+        run: |
+          ulimit -c 0
+          /usr/local/n/versions/node/22.23.3/bin/node scripts/permission-capacity-probe.mjs
+
   pilot:
     if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386' && inputs.confirmation == 'RUN_SYNTHETIC_PILOT'
     runs-on: ubuntu-24.04
