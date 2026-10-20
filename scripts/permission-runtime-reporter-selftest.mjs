@@ -19,8 +19,16 @@ export function reporterSelftest(root=process.cwd()){
       const vitest=kind.startsWith('vitest'),negative=kind==='vitest-hook-failure'||kind==='playwright-retry';
       const testFile=join(dir,'example.test.mjs'),configFile=join(dir,'config.mjs');
       const name='suite > required',project=vitest?null:'reporter-selftest';
+      // Exercise the pinned runner's real title formatter before DB profiles:
+      // object placeholders quote strings in Vitest4; %s preserves canonical IDs.
+      const expiryCases=[['expiry-minus-1ms','2026-09-22T00:04:59.999Z',true],
+        ['expiry','2026-09-22T00:05:00.000Z',false],['expiry-plus-1ms','2026-09-22T00:05:00.001Z',false]];
+      const canonicalTitle=offset=>'TC-PIN-08 completion rechecks '+offset+' after waiting for identity lock';
+      const titleControls=vitest&&!negative
+        ?`test.each(${JSON.stringify(expiryCases)})('TC-PIN-08 completion rechecks %s after waiting for identity lock',()=>expect(true).toBe(true));
+          test.each(${JSON.stringify(expiryCases.map(([offset])=>({offset})))})('object-v4 TC-PIN-08 completion rechecks $offset after waiting for identity lock',()=>expect(true).toBe(true));`:'';
       writeFileSync(testFile,vitest
-        ?`import {test,expect,afterAll,describe} from 'vitest';describe('suite',()=>{test('required',()=>expect(2+2).toBe(4));${negative?"afterAll(()=>{throw Error('SELFTEST_PRIVATE_ERROR_MUST_NOT_LEAK');});":''}});\n`
+        ?`import {test,expect,afterAll,describe} from 'vitest';describe('suite',()=>{test('required',()=>expect(2+2).toBe(4));${titleControls}${negative?"afterAll(()=>{throw Error('SELFTEST_PRIVATE_ERROR_MUST_NOT_LEAK');});":''}});\n`
         :`import {test,expect} from '@playwright/test';test.describe('suite',()=>{test('required',async(${negative?'{}':'{page}'},info)=>{${negative?"expect(info.retry).toBe(1);":"await page.goto('data:text/html,<button>OK</button>');await expect(page.getByRole('button',{name:'OK'})).toBeVisible();"}});});\n`);
       const file=relative(root,testFile).replaceAll('\\','/');
       writeFileSync(configFile,vitest
@@ -37,8 +45,18 @@ export function reporterSelftest(root=process.cwd()){
         encoding:'utf8',timeout:45000,maxBuffer:128*1024});
       check(!child.error&&!child.signal);
       const raw=readFileSync(join(dir,kind+'-runner.json'),'utf8');check(!raw.includes('SELFTEST_PRIVATE_ERROR_MUST_NOT_LEAK'));
-      const report=JSON.parse(raw),expected={stage:kind,runner,required:[{file,name,project}],files:[file],configSHA,exactDiscovery:true,argv:command};
-      if(!negative){validateRuntimeStage(expected,report,context,child.status);}
+      const required=[{file,name,project},...(vitest&&!negative?expiryCases.flatMap(([offset])=>[
+        {file,name:'suite > '+canonicalTitle(offset),project},
+        {file,name:'suite > object-v4 '+canonicalTitle("'"+offset+"'"),project}]):[])];
+      const report=JSON.parse(raw),expected={stage:kind,runner,required,files:[file],configSHA,exactDiscovery:true,argv:command};
+      if(!negative){
+        const observed=validateRuntimeStage(expected,report,context,child.status);
+        if(vitest){
+          check(observed.run===7);
+          const wrong={...expected,required:required.map(x=>({...x,name:x.name.replace(/'([^']+)'/g,'$1')}))};
+          let rejected=false;try{validateRuntimeStage(wrong,report,context,child.status);}catch{rejected=true;}check(rejected);
+        }
+      }
       else{
         let rejected=false;try{validateRuntimeStage(expected,report,context,child.status);}catch{rejected=true;}check(rejected);
         if(vitest)check(child.status!==0&&report.hookErrorCount>0&&report.results.every(r=>r.state==='passed'));

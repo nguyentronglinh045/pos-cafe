@@ -5,6 +5,7 @@ import { CI1_LIMITS, CI1_PROJECT, CI1_RUNTIME, CI1_SUITES, assertCi1Envelope, as
 import { runCi1Pilot, ci1LinuxRecipe, ci1ContainersCoreDisabled, ci1SystemdProperty, ci1HarnessFailureMarker, ci1HarnessFailureFacts } from './permission-ci1-harness.mjs';
 import { summarizeCi1Modules } from './permission-ci1-vitest-reporter.mjs';
 import { ci1SuiteDiagnostic, ci1SuiteFailureMarker, ci1SuiteFailureFacts, ci1PreservationMask, ci1PreservationFacts } from './permission-ci1-diagnostics.mjs';
+import {ci1CatalogFailureMarker} from './permission-ci1-preservation.mjs';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import { createHash } from 'node:crypto';
@@ -86,7 +87,7 @@ test('actual fixture capture and verification retain the original whole-snapshot
   assert.ok(start>0&&end>start);
   const hash=value=>createHash('sha256').update(typeof value==='string'?value:JSON.stringify(value)).digest('hex');
   let value={catalog:'a'.repeat(64),financial:Array(6).fill('b'.repeat(32)),metadata:[{fake:'PRIVATE_SECRET'}],buckets:[],payloads:['c'.repeat(64)]};
-  const context={snapshot:async()=>value,state:{},hash,ci1PreservationMask};
+  const context={snapshot:async()=>value,state:{},hash,ci1PreservationMask,ci1CatalogFailureMarker};
   runInNewContext(source.slice(start,end).replaceAll('export ','')+'\nthis.capture=captureCi1Baseline;this.verify=verifyCi1Baseline;',context);
   const original=hash(value),baseline=await context.capture();assert.equal(baseline,original);
   const markers=[];assert.equal(await context.verify(baseline,m=>markers.push(m)),true);assert.deepEqual(markers,[]);

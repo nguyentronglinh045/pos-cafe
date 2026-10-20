@@ -263,10 +263,10 @@ test.each(["recovery-first", "completion-first"])("TC-PIN-08 recovery/complete l
 });
 
 test.each([
-  { offset: "expiry-minus-1ms", moment: "2026-09-22T00:04:59.999Z", applied: true },
-  { offset: "expiry", moment: "2026-09-22T00:05:00.000Z", applied: false },
-  { offset: "expiry-plus-1ms", moment: "2026-09-22T00:05:00.001Z", applied: false },
-])("TC-PIN-08 completion rechecks $offset after waiting for identity lock", async ({ moment, applied }) => {
+  ["expiry-minus-1ms", "2026-09-22T00:04:59.999Z", true],
+  ["expiry", "2026-09-22T00:05:00.000Z", false],
+  ["expiry-plus-1ms", "2026-09-22T00:05:00.001Z", false],
+] as const)("TC-PIN-08 completion rechecks %s after waiting for identity lock", async (_offset, moment, applied) => {
   const originalClock = (await db.query("select pg_get_functiondef('private.write_clock()'::regprocedure) definition")).rows[0].definition;
   const barrier = await connection(); const runner = await connection();
   try {

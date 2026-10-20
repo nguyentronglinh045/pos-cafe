@@ -7,6 +7,7 @@ import { coreDumpDisabled } from './project-ci-launch.mjs';
 import { CI1_LIMITS, CI1_PROJECT, CI1_RUNTIME, CI1_SUITES, assertCi1Envelope, assertCi1WriteBoundary, ci1ProcessEnvironment, ci1Identity, ci1Invocation, ci1SuiteResult, ci1Hash } from './permission-ci1-policy.mjs';
 import { renderCi1Evidence } from './permission-ci1-evidence.mjs';
 import { ci1SuiteFailureMarker, ci1SuiteFailureFacts, ci1PreservationFacts } from './permission-ci1-diagnostics.mjs';
+import {ci1CatalogFailureFacts} from './permission-ci1-preservation.mjs';
 
 const refused = () => { throw new Error('CI1_HARNESS_REFUSED'); };
 const stopped = id => ({ id, status: 'NOT_RUN', exitCode: null, counts: null });
@@ -38,7 +39,7 @@ export function ci1HarnessFailureMarker(phase, error) {
 }
 export function ci1HarnessFailureFacts(stderr) {
   if (typeof stderr !== 'string' || Buffer.byteLength(stderr) > CI1_LIMITS.outputBytes) return {};
-  const suiteFacts = {...ci1SuiteFailureFacts(stderr),...ci1PreservationFacts(stderr)};
+  const suiteFacts = {...ci1SuiteFailureFacts(stderr),...ci1PreservationFacts(stderr),...ci1CatalogFailureFacts(stderr)};
   const lines = stderr.split(/\r?\n/).filter(line=>line.startsWith('CI1_HARNESS_FAILURE'));
   if (lines.length === 0) return suiteFacts;
   if (lines.length !== 1) return {};

@@ -5,6 +5,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { CI1_PROJECT, CI1_RUNTIME } from './permission-ci1-policy.mjs';
 import { ci1ImagesIntake, ci1PinnedImageProof } from './permission-ci1-intake.mjs';
 import { ci1PreservationMask } from './permission-ci1-diagnostics.mjs';
+import {ci1PreservationSurfaces,ci1CatalogFailureMarker} from './permission-ci1-preservation.mjs';
 import * as runtime from './permission-identity-runtime.mjs';
 import { collectInventory } from './permission-inventory.mjs';
 import pg from 'pg';
@@ -93,8 +94,7 @@ async function snapshot() {
   if (!state) refuse();
   await runtime.assertBridgeFixture(state.db, state.env);
   const inventory = await collectInventory(state.db);
-  const catalog = hash(inventory.surfaces.map(surface => surface.routine
-    ? { ...surface, routine: { ...surface.routine, aclHash: 'EFFECTIVE_GRANTS_CHECKED' } } : surface));
+  const catalogSurfaces=ci1PreservationSurfaces(inventory.surfaces),catalog=hash(catalogSurfaces);
   const financial = [];
   for (const name of ['orders', 'order_items', 'order_item_options', 'payments', 'write_operations', 'order_events']) {
     financial.push((await state.db.query(`select md5(coalesce(jsonb_agg(to_jsonb(t) order by to_jsonb(t)::text),'[]')::text) h from public.${name} t`)).rows[0].h);
@@ -109,13 +109,16 @@ async function snapshot() {
     if (actual !== object.sha256) refuse();
     payloads.push(actual);
   }
-  return { catalog, financial, metadata, buckets, payloads };
+  const value={catalog,financial,metadata,buckets,payloads};
+  // Keep private diagnostic input outside the original hashed snapshot shape.
+  Object.defineProperty(value,'catalogSurfaces',{value:catalogSurfaces});
+  return value;
 }
 
 const preservationHashes = value => ({components:[value.catalog,hash(value.financial),hash(value.metadata),hash(value.buckets),hash(value.payloads)],financial:value.financial});
 export const captureCi1Baseline = async () => {
   const value=await snapshot(),baseline=hash(value);
-  state.baseline={hash:baseline,hashes:preservationHashes(value)};
+  state.baseline={hash:baseline,hashes:preservationHashes(value),catalogSurfaces:value.catalogSurfaces};
   return baseline;
 };
 export const verifyCi1Baseline = async (before, diagnostic=()=>{}) => {
@@ -124,6 +127,8 @@ export const verifyCi1Baseline = async (before, diagnostic=()=>{}) => {
   if(!preserved&&state.baseline?.hash===before){
     const marker=ci1PreservationMask(state.baseline.hashes,preservationHashes(value));
     if(marker)try{diagnostic(marker);}catch{/* Observations cannot alter preservation acceptance. */}
+    const catalogMarker=ci1CatalogFailureMarker(state.baseline.catalogSurfaces,value.catalogSurfaces);
+    if(catalogMarker)try{diagnostic(catalogMarker);}catch{/* Never replace the failed whole-snapshot comparison. */}
   }
   return preserved;
 };

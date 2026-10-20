@@ -1,9 +1,10 @@
 // Private server/client/catalog correlation. Only the allowlisted bounded
 // integers leave the fixture; never export log text, SQL, identifiers or PID.
+import {CI1_CATALOG_DIAGNOSTIC_BOUNDS} from './permission-ci1-preservation.mjs';
 export const T04_RESTORE_SQLSTATES=Object.freeze(['2BP01','55006','42P01','42704','42501','42710','23505','23503','23514','0A000',
  'XX000','XX001','XX002','54000','53300','53200','53100','57014','25P02','42601','3F000','28P01','08006','40001','40P01',
  '55000','42P16','42P17','42809','42883','42703','22023','23502','25001','53400','53000','57P01','57P03','P0001','22012']);
-export const T04_DIAGNOSTIC_BOUNDS=Object.freeze({t04PartitionRefusalOrdinal:[0,8],t04PreflightOrdinal:[0,2],t04RestoreLogObserved:[0,4],
+export const T04_DIAGNOSTIC_BOUNDS=Object.freeze({...CI1_CATALOG_DIAGNOSTIC_BOUNDS,t04PartitionRefusalOrdinal:[0,8],t04PreflightOrdinal:[0,2],t04RestoreLogObserved:[0,4],
  t04RestoreSqlstateOrdinal:[0,T04_RESTORE_SQLSTATES.length],t04RestoreTargetObserved:[0,4],t04RestoreSchemaOrdinal:[0,10],
  t04RestoreLogCapabilityMask:[0,15],t04PreflightControlOrdinal:[0,4],
  t04RestoreConstraintKind:[0,6],t04RestoreConstraintLocal:[0,1],t04RestoreConstraintInherited:[0,32767],
