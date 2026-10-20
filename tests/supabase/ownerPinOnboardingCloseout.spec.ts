@@ -4668,7 +4668,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
           errorMessage: { captured: true, data: visibleText },
           screenshotText: { captured: true, data: { text: visibleText, pixels: screenshot } },
         } }).checkedSinkCount).toBe(10);
-      await operatorPage.getByRole("button", { name: "Đã bàn giao PIN · xóa khỏi trang" }).click();
+      await operatorPage.getByRole("button", { name: "Xóa PIN khỏi trang", exact: true }).click();
       expect(await operatorPage.getByLabel("PIN tạm mới · đúng 6 chữ số").inputValue()).toBe("");
       await page.locator('[data-testid^="employee-"]').first().click();
       for (const digit of pin) await page.getByTestId(`pin-${digit}`).click();
