@@ -1725,6 +1725,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     };
     expect(await storageCode(upload)).toEqual({ status: 400, code: "AccessDenied" });
     expect(await storageCode(remove)).toEqual({ status: 400, code: "AccessDenied" });
+    mkdirSync("artifacts/permission-close2-20261011", { recursive: true });
     writeFileSync("artifacts/permission-close2-20261011/tc03-transport-observed.json", JSON.stringify({
       read: read.status(), patch: patch.status(), upload: await storageCode(upload), remove: await storageCode(remove),
       storageCount, bucketCount,

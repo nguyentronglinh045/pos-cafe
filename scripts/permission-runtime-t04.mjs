@@ -27,7 +27,7 @@ const factBounds={t04StageOrdinal:[0,19],t04FailureOrdinal:[0,4],t04RunnerErrors
  t04MissingRequired:[0,10000],t04FirstFailedRequired:[0,10000],t04BoundaryOrdinal:[1,19],t04BoundaryExit:[0,255],
  t04RestoreErrorOrdinal:[0,15],t04RestoreCommandOrdinal:[0,24],
  ...T04_DIAGNOSTIC_BOUNDS,
- t04RealtimeFailureMask:[0,1023],t04FailedTests:[0,10000],t04FirstFailedLine:[0,100000],t04TestErrorCodeOrdinal:[0,RUNTIME_ERROR_CODES.length],
+ t04RealtimeFailureMask:[0,1023],t04RealtimeFirstFailureOrdinal:[0,480],t04FailedTests:[0,10000],t04FirstFailedLine:[0,100000],t04TestErrorCodeOrdinal:[0,RUNTIME_ERROR_CODES.length],
  t04TestErrorNameOrdinal:[0,5],t04TestErrorMatcherOrdinal:[0,8]};
 export function t04SafeFailureMetric(key,value){const bounds=factBounds[key];return!!bounds&&Number.isSafeInteger(value)&&value>=bounds[0]&&value<=bounds[1];}
 export function t04RunnerFailureFacts(expected,r){

@@ -45,9 +45,8 @@ export function runtimeRunnerFailureFacts(expected,r){
  const finite=safeRuntimeErrorFacts(result?.failureFacts);
  if(finite)for(const[k,v]of Object.entries(finite))facts['test'+k[0].toUpperCase()+k.slice(1)]=v;
  if(Number.isSafeInteger(result?.failureLine)&&result.failureLine>=0&&result.failureLine<=100000)facts.firstFailedLine=result.failureLine;
- if(expected.stage==='realtime-e2e'&&Object.hasOwn(result??{},'realtimeFailureMask')){
-  const value=result.realtimeFailureMask;if(!Number.isSafeInteger(value)||value<0||value>1023)throw Error('RUNTIME_FAILURE_REPORT_REFUSED');
-  facts.realtimeFailureMask=value;
+ if(expected.stage==='realtime-e2e')for(const[key,max]of[['realtimeFailureMask',1023],['realtimeFirstFailureOrdinal',480]])if(Object.hasOwn(result??{},key)){
+  const value=result[key];if(!Number.isSafeInteger(value)||value<0||value>max)throw Error('RUNTIME_FAILURE_REPORT_REFUSED');facts[key]=value;
  }
  for(const[k,v]of[['runnerErrors',r.errorCount],['hookErrors',r.hookErrorCount]])if(Number.isSafeInteger(v)&&v>=0&&v<=10000)facts[k]=v;
  return facts;
@@ -58,13 +57,19 @@ export function runtimeRunnerFailureFacts(expected,r){
 export const REALTIME_FAILURE_ORACLES=Object.freeze(['signal-arrival','dom-apply','foreground-online',
  'signal-and-apply-records','no-resume-during-measurement','revision-authority-chain','chain-budget-5s',
  'fallback-poll-budget-30s','fallback-apply-budget-35s','signal-apply-budget-5s']);
+export const REALTIME_FAILURE_SCENARIOS=Object.freeze([...Array.from({length:10},(_,i)=>['cycle-'+(i+1)+'-grant','cycle-'+(i+1)+'-revoke']).flat(),'global-catalog-grant','global-catalog-revoke','lost-signal-grant','restored-signal-revoke']);
 export function runtimePlaywrightFailureFacts(error,file){
  let failureLine=runtimeErrorLine(error,file);const location=error?.location;
  if(typeof file==='string'&&typeof location?.file==='string'&&location.file.replaceAll('\\','/')===file.replaceAll('\\','/')
   &&Number.isSafeInteger(location.line)&&location.line>=1&&location.line<=100000)failureLine=location.line;
- const failureFacts=runtimeErrorFacts(error);let realtimeFailureMask=0;
+ const failureFacts=runtimeErrorFacts(error);let realtimeFailureMask=0,realtimeFirstFailureOrdinal=0;
  if(typeof error?.message==='string'&&Buffer.byteLength(error.message)<=65536){
   const message=error.message.replace(/\x1b\[[0-9;]*m/g,'');
+  // First fixed scenario/device/oracle combination: 24 * 2 * 10 = 480.
+  for(const m of message.matchAll(/(?:^|[\s'"\[,])(cycle-(?:10|[1-9])-(?:grant|revoke)|global-catalog-(?:grant|revoke)|lost-signal-grant|restored-signal-revoke)\/device([01]): REALTIME_TIMING_ORACLE_FAILED:([a-z0-9-]{1,64})(?=$|[\s'"\],.])/g)){
+   const phase=REALTIME_FAILURE_SCENARIOS.indexOf(m[1]),oracle=REALTIME_FAILURE_ORACLES.indexOf(m[3]);
+   if(phase>=0&&oracle>=0){realtimeFirstFailureOrdinal=(phase*2+Number(m[2]))*10+oracle+1;break;}
+  }
   // These are serialized assertion literals, not an invented JS error.code.
   // Classify exactly one complete Received scalar after a single matcher
   // header. Count every Received field before whitelisting: unknown values,
@@ -79,5 +84,5 @@ export function runtimePlaywrightFailureFacts(error,file){
    const ordinal=REALTIME_FAILURE_ORACLES.indexOf(m[1]);if(ordinal>=0)realtimeFailureMask|=2**ordinal;
   }
  }
- return{failureFacts,failureLine,...(realtimeFailureMask?{realtimeFailureMask}:{})};
+ return{failureFacts,failureLine,...(realtimeFailureMask?{realtimeFailureMask}:{}),...(realtimeFirstFailureOrdinal?{realtimeFirstFailureOrdinal}:{})};
 }

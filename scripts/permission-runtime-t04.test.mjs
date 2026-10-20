@@ -338,3 +338,8 @@ test('Realtime finite mask is independently bounded at T04 parser and final work
   assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(facts)),{});
   assert(!Object.hasOwn(t04FinalFailureExport({facts}).facts??{},'t04RealtimeFailureMask'));}
 });
+
+test('Realtime first failure ordinal is independently bounded at parser and final exporter',()=>{
+ for(const value of[0,1,480]){const facts={t04StageOrdinal:13,t04RealtimeFirstFailureOrdinal:value};assert.equal(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(facts)).t04RealtimeFirstFailureOrdinal,value);assert.equal(t04FinalFailureExport({facts}).facts.t04RealtimeFirstFailureOrdinal,value);}
+ for(const value of[-1,481,1.5,'1']){const facts={t04StageOrdinal:13,t04RealtimeFirstFailureOrdinal:value};assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(facts)),{});assert(!Object.hasOwn(t04FinalFailureExport({facts}).facts??{},'t04RealtimeFirstFailureOrdinal'));}
+});

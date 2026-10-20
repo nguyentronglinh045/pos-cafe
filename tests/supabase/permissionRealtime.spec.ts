@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import pg from 'pg';
+import { installPermissionTimingProbe } from '../../scripts/permission-realtime-probe.mjs';
 import { randomUUID } from 'node:crypto';
 import { EMPLOYEE_IDS, STORE_IDS, runtimeProof } from '../../scripts/permission-identity-runtime.mjs';
 import { assertActivatedCandidate, candidateEnvironment, installStoreSession, refreshStoreSession } from './permissionCandidateEnvironment';
@@ -7,6 +8,7 @@ import { assertActivatedCandidate, candidateEnvironment, installStoreSession, re
 type TimingProbe = {
   blockSignals: boolean;
   subscriptions: number;
+  ready: { store: boolean; catalog: boolean };
   resumes: { time: number; event: string }[];
   signals: { time: number; table: string; revision: number; targetId: string | null; dropped: boolean }[];
   nav: { time: number; present: boolean }[];
@@ -15,56 +17,7 @@ type TimingProbe = {
 declare global { interface Window { permissionTimingProbe: TimingProbe } }
 
 async function probe(page: Page) {
-  await page.addInitScript(() => {
-    const state: TimingProbe = { blockSignals: false, subscriptions: 0, resumes: [], signals: [], nav: [], requests: [] };
-    window.permissionTimingProbe = state;
-    const NativeWebSocket = window.WebSocket;
-    window.WebSocket = class extends NativeWebSocket {
-      constructor(url: string | URL, protocols?: string | string[]) {
-        super(url, protocols);
-        this.addEventListener('message', event => {
-          if (typeof event.data !== 'string') return;
-          let message;
-          try { message = JSON.parse(event.data); } catch { return; }
-          const name = Array.isArray(message) ? message[3] : message.event;
-          const payload = Array.isArray(message) ? message[4] : message.payload;
-          if (name === 'phx_reply' && payload?.status === 'ok' && Array.isArray(payload.response?.postgres_changes)) {
-            if (state.subscriptions > 0) state.resumes.push({ time: performance.now(), event: 'realtime-rejoin' });
-            state.subscriptions++;
-          }
-          const data = payload?.data, row = data?.record;
-          if (name !== 'postgres_changes' || !row || !['store_change_signals', 'permission_catalog_signals'].includes(data.table)) return;
-          if (data.table === 'store_change_signals' && row.topic !== 'permission') return;
-          state.signals.push({ time: performance.now(), table: data.table, revision: Number(row.revision), targetId: row.target_id ?? null, dropped: state.blockSignals });
-          // Controlled transport loss, before the app listener receives this
-          // event. HTTP remains online so the real foreground poll must repair.
-          if (state.blockSignals) event.stopImmediatePropagation();
-        });
-      }
-    };
-    const originalFetch = window.fetch.bind(window);
-    window.fetch = async (...args) => {
-      const url = String(args[0] instanceof Request ? args[0].url : args[0]);
-      const name = /\/rpc\/(permission_get_revision|permission_get_authority)(?:\?|$)/.exec(url)?.[1];
-      const start = performance.now();
-      const response = await originalFetch(...args);
-      if (name) {
-        const originalText = response.text.bind(response), originalJson = response.json.bind(response);
-        const finished = () => state.requests.push({ name, start, end: performance.now(), ok: response.ok });
-        response.text = async () => { const body = await originalText(); finished(); return body; };
-        response.json = async () => { const body = await originalJson(); finished(); return body; };
-      }
-      return response;
-    };
-    for (const event of ['focus', 'online']) window.addEventListener(event, () => state.resumes.push({ time: performance.now(), event }));
-    document.addEventListener('visibilitychange', () => state.resumes.push({ time: performance.now(), event: `visibility:${document.visibilityState}` }));
-    let previous: boolean | undefined;
-    const observer = new MutationObserver(() => {
-      const present = document.querySelector('[data-testid="nav-report"]') !== null;
-      if (present !== previous) { previous = present; state.nav.push({ time: performance.now(), present }); }
-    });
-    observer.observe(document, { childList: true, subtree: true });
-  });
+  await page.addInitScript(installPermissionTimingProbe, { storeId: STORE_IDS[0] });
 }
 
 async function login(page: Page) {
@@ -75,7 +28,7 @@ async function login(page: Page) {
   await page.getByTestId('unlock-button').click();
   await expect(page.getByTestId('floor-view')).toBeVisible({ timeout: 15_000 });
   expect(await page.evaluate(() => document.visibilityState)).toBe('visible');
-  await expect.poll(() => page.evaluate(() => window.permissionTimingProbe.subscriptions), { timeout: 15_000 }).toBeGreaterThan(0);
+  await expect.poll(() => page.evaluate(() => window.permissionTimingProbe.ready), { timeout: 15_000 }).toEqual({ store: true, catalog: true });
 }
 
 test('TC-PERM-55 real Realtime twenty changes, catalog, reconnect and lost-signal fallback', async ({ browser }, info) => {

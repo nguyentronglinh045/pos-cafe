@@ -93,3 +93,14 @@ test('serialized Received provenance refuses header decoys, unknown actuals, dup
  assert.equal(positive.failureFacts.errorCodeOrdinal,RUNTIME_ERROR_CODES.indexOf('EMPLOYEE_SESSION_REQUIRED')+1);
  assert.equal(positive.failureFacts.errorMatcherOrdinal,1);
 });
+
+test('Realtime first failure ordinal binds only fixed scenario/device/oracle labels and stays absent outside its canonical stage',()=>{
+ for(const[label,device,oracle,ordinal]of[['cycle-1-grant',0,'signal-arrival',1],['global-catalog-revoke',0,'signal-and-apply-records',424],['restored-signal-revoke',1,'signal-apply-budget-5s',480]]){
+  const out=runtimePlaywrightFailureFacts({message:label+'/device'+device+': REALTIME_TIMING_ORACLE_FAILED:'+oracle});assert.equal(out.realtimeFirstFailureOrdinal,ordinal);
+ }
+ for(const message of['private-cycle-1-grant/device0: REALTIME_TIMING_ORACLE_FAILED:signal-arrival','cycle-11-grant/device0: REALTIME_TIMING_ORACLE_FAILED:signal-arrival','cycle-1-grant/device2: REALTIME_TIMING_ORACLE_FAILED:signal-arrival','cycle-1-grant/device0: REALTIME_TIMING_ORACLE_FAILED:private'])assert(!Object.hasOwn(runtimePlaywrightFailureFacts({message}),'realtimeFirstFailureOrdinal'));
+ const item={file:'test.ts',name:'required',project:null},r={discovery:[item],results:[{...item,state:'failed',realtimeFirstFailureOrdinal:480}]};
+ assert.equal(runtimeRunnerFailureFacts({stage:'realtime-e2e',required:[item]},r).realtimeFirstFailureOrdinal,480);
+ assert(!Object.hasOwn(runtimeRunnerFailureFacts({stage:'other',required:[item]},r),'realtimeFirstFailureOrdinal'));
+ for(const value of[-1,481,1.5,'1'])assert.throws(()=>runtimeRunnerFailureFacts({stage:'realtime-e2e',required:[item]},{...r,results:[{...r.results[0],realtimeFirstFailureOrdinal:value}]}));
+});
