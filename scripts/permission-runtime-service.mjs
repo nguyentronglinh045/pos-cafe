@@ -2,7 +2,7 @@ import{readFileSync,writeFileSync,lstatSync,statSync,realpathSync}from'node:fs';
 import{join,dirname,resolve}from'node:path';
 import{execFileSync}from'node:child_process';
 import{pathToFileURL}from'node:url';
-import{runtimeStage}from'./permission-runtime-catalog.mjs';
+import{runtimeStage,runtimeStageCommand}from'./permission-runtime-catalog.mjs';
 import{runtimeHash}from'./permission-runtime-results.mjs';
 import{executeRuntimeStage,prepareRuntimeDirectory}from'./permission-runtime-stage.mjs';
 import{trackedFingerprint}from'./project-ci.mjs';
@@ -13,6 +13,7 @@ import{ci1HarnessFailureMarker}from'./permission-runtime-t04-adapter.mjs';
 import{t04TimeBudget}from'./permission-runtime-t04.mjs';
 import{serviceProfile,serviceConfig,serviceEventProfile}from'./permission-runtime-service-profile.mjs';
 import{readStoppedServicePeer}from'./permission-runtime-service-peer.mjs';
+import{serviceSafeFailureMetric,serviceStageErrorFacts,serviceRunnerFailureFacts}from'./permission-runtime-service-diagnostic.mjs';
 
 const check=x=>{if(!x)throw Error('PERMISSION_SERVICE_RUNTIME_REFUSED');};
 export function servicePreparedEnvironment(id,privateRoot){
@@ -25,8 +26,8 @@ export function serviceFailureFacts(stderr){
  if(typeof stderr!=='string'||Buffer.byteLength(stderr)>1024**2)return{};
  const lines=stderr.split(/\r?\n/).filter(l=>l.startsWith('SERVICE_FAILURE_FACTS '));if(lines.length!==1)return{};
  try{const p=JSON.parse(lines[0].slice('SERVICE_FAILURE_FACTS '.length));
-  check(p&&Object.keys(p).every(k=>['serviceStageOrdinal','serviceSetupOrdinal'].includes(k))
-   &&Object.values(p).every(v=>Number.isInteger(v)&&v>=0&&v<=8));return p;
+  check(p&&Object.hasOwn(p,'serviceStageOrdinal')&&Object.hasOwn(p,'serviceSetupOrdinal')
+   &&Object.entries(p).every(([k,v])=>serviceSafeFailureMetric(k,v)));return p;
  }catch{return{};}
 }
 export async function runServiceProfile(profile,adapter){
@@ -150,7 +151,24 @@ async function main(){
    }else check(profile.id==='PIN_CANARY');setupOrdinal=3;
   },physical,prepare:async()=>{check(Date.now()<deadline);},
   stage:stage=>executeRuntimeStage(stage,{sourceRoot:source,outputRoot,baseEnv:env,sourceSHA,sourceFingerprint,lockSHA,runId:identity.runId,guard,deadline}),
-  diagnostic:stage=>console.error('SERVICE_FAILURE_FACTS '+JSON.stringify({serviceStageOrdinal:profile.stages.indexOf(stage)+1,serviceSetupOrdinal:setupOrdinal})),
+  diagnostic:(stage,error)=>{
+   const facts={serviceStageOrdinal:profile.stages.indexOf(stage)+1,serviceSetupOrdinal:setupOrdinal,...serviceStageErrorFacts(error),serviceReportObserved:0};
+   const expected=profile.stages.includes(stage)?runtimeStage(stage):null;
+   if(expected)try{
+    const command=runtimeStageCommand(stage,{sourceRoot:source,outputRoot}),path=join(command.reportRoot,stage+'-runner.json'),s=lstatSync(path,{throwIfNoEntry:false});
+    if(!s)facts.serviceReportObserved=3;
+    else{
+     facts.serviceReportObserved=2;
+     check(s.isFile()&&!s.isSymbolicLink()&&s.nlink===1&&s.uid===0&&(s.mode&0o077)===0&&s.size<=1024**2
+      &&s.dev===statSync(root).dev&&realpathSync(path)===path);
+     const r=JSON.parse(readFileSync(path));
+     check(r.stage===stage&&r.sourceSHA===sourceSHA&&r.sourceFingerprint===sourceFingerprint&&r.lockSHA===lockSHA
+      &&r.configSHA===expected.configSHA&&r.runId===identity.runId&&r.invocationSHA===runtimeHash(command.runnerArgv));
+     Object.assign(facts,serviceRunnerFailureFacts(expected,r));facts.serviceReportObserved=1;
+    }
+   }catch{/* Invalid/missing reports never become PASS or invented counts. */}
+   console.error('SERVICE_FAILURE_FACTS '+JSON.stringify(facts));
+  },
   close:async()=>{if(db)await db.end();return true;}});
  Object.assign(receipt,{repository:process.env.GITHUB_REPOSITORY,runId:identity.runId,attempt:identity.attempt,
   sourceSHA,workflowSHA:process.env.GITHUB_WORKFLOW_SHA,sourceFingerprint,lockSHA,stoppedPeerSHA});

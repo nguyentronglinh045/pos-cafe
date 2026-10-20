@@ -4,7 +4,7 @@ import{execFileSync}from'node:child_process';
 import{pathToFileURL}from'node:url';
 import{runtimeStageCatalog}from'./permission-runtime-catalog.mjs';
 import{runtimeHash}from'./permission-runtime-results.mjs';
-import{safeRuntimeErrorFacts,RUNTIME_ERROR_CODES}from'./permission-runtime-error-facts.mjs';
+import{runtimeRunnerFailureFacts,RUNTIME_ERROR_CODES}from'./permission-runtime-error-facts.mjs';
 import{executeRuntimeStage,prepareRuntimeDirectory}from'./permission-runtime-stage.mjs';
 import{trackedFingerprint}from'./project-ci.mjs';
 import{realAdapter,readCi1LinuxEnvelope,ci1HarnessFailureMarker}from'./permission-runtime-t04-adapter.mjs';
@@ -31,18 +31,7 @@ const factBounds={t04StageOrdinal:[0,19],t04FailureOrdinal:[0,4],t04RunnerErrors
  t04TestErrorNameOrdinal:[0,5],t04TestErrorMatcherOrdinal:[0,8]};
 export function t04SafeFailureMetric(key,value){const bounds=factBounds[key];return!!bounds&&Number.isSafeInteger(value)&&value>=bounds[0]&&value<=bounds[1];}
 export function t04RunnerFailureFacts(expected,r){
- if(!Array.isArray(expected?.required)||!Array.isArray(r?.discovery)||!Array.isArray(r.results)
-  ||[expected.required,r.discovery,r.results].some(a=>a.length>10000))refuse();
- const key=x=>JSON.stringify([x.file,x.name,x.project??null]),found=new Set(r.discovery.map(key));
- const facts={t04MissingRequired:expected.required.filter(x=>!found.has(key(x))).length,
-  t04FirstFailedRequired:expected.required.findIndex(x=>r.results.some(y=>key(y)===key(x)&&y.state==='failed'))+1,
-  t04FailedTests:r.results.filter(x=>x.state==='failed').length};
- const first=expected.required[facts.t04FirstFailedRequired-1],result=first&&r.results.find(y=>key(y)===key(first));
- const finite=safeRuntimeErrorFacts(result?.failureFacts);
- if(finite)for(const[k,v]of Object.entries(finite))facts['t04Test'+k[0].toUpperCase()+k.slice(1)]=v;
- if(t04SafeFailureMetric('t04FirstFailedLine',result?.failureLine))facts.t04FirstFailedLine=result.failureLine;
- for(const[k,v]of[['t04RunnerErrors',r.errorCount],['t04HookErrors',r.hookErrorCount]])if(t04SafeFailureMetric(k,v))facts[k]=v;
- return facts;
+ return Object.fromEntries(Object.entries(runtimeRunnerFailureFacts(expected,r)).map(([k,v])=>['t04'+k[0].toUpperCase()+k.slice(1),v]));
 }
 export function t04FailureFacts(stderr){
   if(typeof stderr!=='string'||Buffer.byteLength(stderr)>1024**2)return{};

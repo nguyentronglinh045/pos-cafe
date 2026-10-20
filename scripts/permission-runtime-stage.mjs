@@ -24,6 +24,8 @@ export function prepareRuntimeDirectory(sourceRoot,outputRoot,guard){
   return out;
 }
 export async function executeRuntimeStage(stage,{sourceRoot,outputRoot,baseEnv,sourceSHA,sourceFingerprint,lockSHA,runId,guard,deadline}){
+  let boundary=1;
+  try{
   const s=runtimeStage(stage),root=resolve(sourceRoot),out=resolve(outputRoot);
   check(realpathSync(root)===root&&realpathSync(out)===out&&!lstatSync(out).isSymbolicLink()
     &&statSync(out).dev===statSync(root).dev&&typeof guard==='function'&&Number.isFinite(deadline));
@@ -32,22 +34,23 @@ export async function executeRuntimeStage(stage,{sourceRoot,outputRoot,baseEnv,s
   const unchanged=()=>{guard();check(git(['rev-parse','HEAD']).trim()===sourceSHA&&trackedFingerprint(root,paths)===sourceFingerprint
     &&runtimeHash(readFileSync(join(root,'package-lock.json')))===lockSHA);};
   unchanged();
-  const configSHA=runtimeConfigBinding(stage,readFileSync(join(root,s.config.path)));
+  boundary=2;const configSHA=runtimeConfigBinding(stage,readFileSync(join(root,s.config.path)));
   const command=runtimeStageCommand(stage,{sourceRoot:root,outputRoot:out});
   const expected={...s,argv:command.runnerArgv};
   const context={stage,runner:s.runner,sourceSHA,sourceFingerprint,lockSHA,configSHA,runId,
     invocationSHA:runtimeHash(expected.argv),sourceRoot:root,outputRoot:command.reportRoot};
-  const contextPath=join(out,stage+'-context.json');
+  boundary=3;const contextPath=join(out,stage+'-context.json');
   writeFileSync(contextPath,JSON.stringify(context),{flag:'wx',mode:0o600});
   const remaining=deadline-Date.now();check(remaining>1000);
   // Per-stage raw output never enters public evidence. The enclosing supervisor
   // owns the same write budget and kills the group on timeout/quota failure.
-  const child=await capturedCommand(process.execPath,command.argv,{cwd:root,
+  boundary=4;const child=await capturedCommand(process.execPath,command.argv,{cwd:root,
     env:{...baseEnv,PERMISSION_RUNTIME_CONTEXT:contextPath,PERM_RUN_ID:runtimeApplicationRunId(stage,runId),PERM_RUN_STAGE:stage,PERM_RUN_CONFIG:configSHA},
     output:join(out,stage+'-private.log'),guard,timeoutMs:Math.min(s.timeoutMs,remaining),maxBytes:1024**2});
-  unchanged();check(child.blocked===false&&child.signalCode===null);
-  const resultPath=join(command.reportRoot,stage+'-runner.json'),info=lstatSync(resultPath);
+  boundary=5;unchanged();check(child.blocked===false&&child.signalCode===null);
+  boundary=6;const resultPath=join(command.reportRoot,stage+'-runner.json'),info=lstatSync(resultPath);
   check(info.isFile()&&!info.isSymbolicLink()&&info.size<=1024**2&&realpathSync(resultPath)===resultPath);
   const report=JSON.parse(readFileSync(resultPath));
-  return validateRuntimeStage(expected,report,context,child.exitCode);
+  boundary=7;return validateRuntimeStage(expected,report,context,child.exitCode);
+  }catch(error){if(error&&typeof error==='object')error.runtimeStageBoundaryOrdinal=boundary;throw error;}
 }

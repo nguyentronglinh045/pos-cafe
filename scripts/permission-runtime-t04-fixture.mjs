@@ -8,6 +8,7 @@ import {coreDumpDisabled} from './project-ci-launch.mjs';
 import{containerContinuityHash}from'./permission-runtime-container-state.mjs';
 import{t04CorrelateRestoreLog,t04CorrelateServerLog,T04_RESTORE_SQLSTATES,
  t04RestoreConstraintTarget,t04ConstraintCatalogFacts,t04LogCapabilityMask}from'./permission-runtime-t04-restore-diagnostic.mjs';
+import{T04_PARTITION_CONSTRAINT_QUERY,t04PartitionConstraintPlan}from'./permission-runtime-t04-partition.mjs';
 
 const catalog=runtimeStageCatalog().filter(s=>s.runtimeProfile==='SUPABASE_T04');
 const resets=new Set(['candidate-e2e','candidate-seed-recovery-database','candidate-roles-e2e','realtime-e2e',
@@ -246,6 +247,33 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
   const toc=call('docker',['exec','-i','--user','postgres',dbContainer.Id,'pg_restore','--list'],
     {input:archive,maxBuffer:1024**2,timeout:10000}).toString('utf8');
   step=7;
+  const partitionPlan=async()=>{
+    resourceGuard();check(Date.now()+6000<deadline);
+    await db.query('begin read only');
+    try{
+      await db.query("set local statement_timeout='5s'");
+      const result=await db.query(T04_PARTITION_CONSTRAINT_QUERY);
+      return t04PartitionConstraintPlan(result.rows,toc);
+    }finally{await db.query('rollback');resourceGuard();}
+  };
+  const originalPartitions=await partitionPlan(),originalPartitionSHA=runtimeHash(originalPartitions.topology);
+  const dropPartitionRoot=statement=>{
+    const since=new Date().toISOString();
+    try{call('docker',['exec','--env','PGOPTIONS='+logOptions,'--user','postgres',dbContainer.Id,
+      'psql','-XAtq','-v','ON_ERROR_STOP=1','-U','supabase_admin','-d','postgres',
+      '-c','select pg_backend_pid();','-c',statement],{timeout:10000});}
+    catch(error){
+      let facts={t04RestoreLogObserved:0,t04RestoreSqlstateOrdinal:0};
+      try{
+        const pid=error?.stdout?.toString('utf8')??'',client=error?.stderr?.toString('utf8')??'';
+        const headers=[...client.matchAll(/^ERROR:\s+([^\r\n]*)/gm)];
+        if(/^[1-9][0-9]{0,9}\r?\n$/.test(pid)&&headers.length===1)
+          facts=t04CorrelateServerLog(headers[0][1].trim(),statement,readLogs(since),logging.prefix,Number(pid.trim()));
+      }catch(logError){facts=logError?.t04RestoreFacts??{t04RestoreLogObserved:4,t04RestoreSqlstateOrdinal:0};}
+      facts.t04RestoreLogCapabilityMask=logCapability;
+      if(error&&typeof error==='object')error.t04RestoreFacts={...error.t04RestoreFacts,...facts};throw error;
+    }
+  };
   check(await storage()===originalStorage&&await financial()===originalFinancial&&await preserved(baseline)&&await physical()===originalPhysical);
   const phase=async expected=>{
     await binding();const e=environment();
@@ -295,7 +323,16 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
     // Only these source-defined synthetic app schemas and one known new global role.
     // If restore fails after this commit, the attempt fails; never adopt a new baseline.
     step=13;sql("drop schema public cascade; drop schema private cascade; alter role authenticator reset pgrst.db_pre_request;");
-    step=14;if(currentRoles.some(r=>r.rolname==='pos_owner_recovery'))sql('drop role pos_owner_recovery');
+    step=14;
+    // PG17's archive emits DROP for inherited PK constraints, which cannot be
+    // dropped directly. Resolve one complete archived realtime family and drop
+    // only its root with RESTRICT; the server removes its inherited children.
+    // This pre-clean commits separately, just like the existing schema prelude.
+    // Any failure still fails the attempt; never retry or weaken pg_restore.
+    await resetPhysical();
+    const partitions=await partitionPlan();check(runtimeHash(partitions.topology)===originalPartitionSHA);
+    dropPartitionRoot(partitions.dropSQL);
+    if(currentRoles.some(r=>r.rolname==='pos_owner_recovery'))sql('drop role pos_owner_recovery');
     // A whole-database PG17 dump assumes initdb's public schema already exists:
     // it can emit owner/ACL/comment deltas but never CREATE SCHEMA public.
     // Reestablish precisely that base before replaying the original archive.
@@ -335,7 +372,8 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
       }catch{facts.t04RestoreTargetObserved=0;for(const key of Object.keys(facts))if(/^t04Restore(?:Schema|Constraint|Dependency)/.test(key))delete facts[key];}
       if(error&&typeof error==='object')error.t04RestoreFacts={...error.t04RestoreFacts,...facts};throw error;
     }
-    step=16;for(const f of files){ownFile(f.path,65536);writeFileSync(f.path,f.bytes,{mode:0o600});}
+    step=16;check(runtimeHash((await partitionPlan()).topology)===originalPartitionSHA);
+    for(const f of files){ownFile(f.path,65536);writeFileSync(f.path,f.bytes,{mode:0o600});}
     check(runtimeHash(await globals())===runtimeHash(originalRoles)&&runtimeHash(await memberships())===originalMemberships
       &&runtimeHash(await settings())===originalSettings&&(await hook()).length===0
       &&runtimeHash(await publicSchema())===runtimeHash(originalPublicSchema));

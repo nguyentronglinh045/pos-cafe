@@ -13,6 +13,7 @@ import { ci1LinuxRecipe, readCi1LinuxEnvelope, ci1SystemdProperty, ci1HarnessFai
 import { renderCi1Evidence } from './permission-ci1-evidence.mjs';
 import{t04TimeBudget}from'./permission-runtime-t04.mjs';
 import{renderServiceEvidence,serviceFailureFacts}from'./permission-runtime-service.mjs';
+import{SERVICE_DIAGNOSTIC_BOUNDS,serviceSafeFailureMetric}from'./permission-runtime-service-diagnostic.mjs';
 import{ACTIVE_PROFILE}from'./permission-runtime-service-policy.mjs';
 import{serviceConfig,serviceEventProfile}from'./permission-runtime-service-profile.mjs';
 import{servicePeerLayout,startedServicePeer,recordStoppedServicePeer}from'./permission-runtime-service-peer.mjs';
@@ -63,7 +64,7 @@ const failureMetrics = ['hostFreeBytes', 'memoryBytes', 'oom', 'pidsEvents', 'me
   'suiteCleanupPhaseOrdinal','suiteCleanupStepOrdinal','suiteCleanupCodeOrdinal','suiteCleanupSqlstateOrdinal',
     'preservationComponentDriftMask','preservationFinancialDriftMask',
     'sourceIntakeBytes','sourceIntakeFiles','sourceHeadMatches','sourceClean','sourceIntakeRefusalOrdinal',
-    'serviceStageOrdinal','serviceSetupOrdinal'];
+    ...Object.keys(SERVICE_DIAGNOSTIC_BOUNDS)];
 
 export async function ci1PullImage(run, reference, guard = () => {}, wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds)), onAttempt = () => {}) {
   if (typeof reference !== 'string' || !/^public\.ecr\.aws\/supabase\/[a-z0-9._-]+@sha256:[a-f0-9]{64}$/.test(reference)) refused();
@@ -133,8 +134,7 @@ export function ci1FailureExport(value) {
   };
   const facts = Object.fromEntries(Object.entries(value.facts ?? {}).filter(([key, number]) =>
     failureMetrics.includes(key) && Number.isSafeInteger(number) && number >= 0
-    && (key !== 'serviceStageOrdinal' || number <= 4)
-    && (key !== 'serviceSetupOrdinal' || number <= 3)));
+    && (!key.startsWith('service') || serviceSafeFailureMetric(key,number))));
   if (Object.keys(facts).length) output.facts = facts;
   return output;
 }

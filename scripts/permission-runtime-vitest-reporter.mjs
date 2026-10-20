@@ -1,5 +1,6 @@
 import {runtimeReporterContext,reporterFile,writeRuntimeReport} from './permission-runtime-results.mjs';
-import {runtimeErrorFacts,runtimeErrorLine} from './permission-runtime-error-facts.mjs';
+import {runtimeErrorFacts,runtimeErrorLine,runtimeErrorLocation} from './permission-runtime-error-facts.mjs';
+import {fixtureDriftCode,FIXTURE_DRIFT_CODES} from './permission-fixture-diagnostics.mjs';
 
 export default class RuntimeVitestReporter {
   onInit(){this.context=runtimeReporterContext();this.discovery=[];this.seen=new Set();}
@@ -23,6 +24,8 @@ export default class RuntimeVitestReporter {
     const firstError=errors[0]??hookErrors[0]??modules.flatMap(m=>[...m.children.allTests()].flatMap(t=>t.result().errors??[]))[0];
     writeRuntimeReport(this.context,{complete:true,runnerExit:reason,errorCount:errors.length,hookErrorCount:hookErrors.length,
       failureFacts:runtimeErrorFacts(firstError),
+      failureLocation:runtimeErrorLocation(firstError,this.context.sourceRoot),
+      fixtureDriftOrdinal:FIXTURE_DRIFT_CODES.indexOf(fixtureDriftCode(firstError))+1,
       discovery:this.discovery,results,selectedFiles:[...new Set(modules.map(m=>reporterFile(this.context.sourceRoot,m.moduleId)))]});
   }
 }
