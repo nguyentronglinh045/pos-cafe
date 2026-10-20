@@ -6,8 +6,9 @@ import { execFileSync } from 'node:child_process';
 
 export const PROJECT_REPOSITORY = 'nguyentronglinh045/pos-cafe';
 export const PROJECT_REPOSITORY_ID = 1263057386;
-// Integrated application lane; backend permission acceptance remains a separate gate.
-export const PROJECT_PHASES = Object.freeze(['install', 'build', 'unit', 'tooling', 'node-tools', 'browser', 'smoke-discovery', 'smoke-preflight', 'smoke', 'ui-selftest', 'ui-audit']);
+// Current-main lane; UI tools are calibrated, app UI acceptance remains separate.
+export const PROJECT_PHASES = Object.freeze(['install', 'build', 'unit', 'tooling', 'node-tools', 'browser',
+  'ui-tools', 'ui-remake-selftest', 'ui-audit-selftest', 'smoke-discovery', 'smoke-preflight', 'smoke', 'ui-selftest', 'ui-audit']);
 export const PROJECTS = Object.freeze(['desktop', 'tablet-landscape', 'phone-landscape', 'small-landscape', 'portrait', 'demo-runbook']);
 export const hash = value => createHash('sha256').update(value).digest('hex');
 const reject = () => { throw new Error('PROJECT_CI_RESULT_INVALID'); };
@@ -333,6 +334,17 @@ export function privateDiagnostics(output, report, expectedFiles = [], root = ''
   const protocolLine = /^[^\r\n{]*\bpw:protocol\b[^\r\n{]{0,64}\b(?:SEND|RECV)\b/;
   const rawLines = rawPrivateText.split(/\r\n|\r|\n/);
   const privateText = rawLines.filter(line => !protocolLine.test(line)).join('\n');
+  const watchFields = {stage:['uiWatchStageOrdinal',7],failureStage:['uiWatchFailureStageOrdinal',7],httpStatus:['uiWatchHTTPStatus',599],
+    generatedWatchCount:['uiWatchGeneratedWatchCount',1000000],appSourceWatched:['uiWatchAppSourceWatched',1],watchedPathCount:['uiWatchWatchedPathCount',1000000],
+    closed:['uiWatchClosed',1],exitOrdinal:['uiWatchExitOrdinal',5],exitCode:['uiWatchExitCode',255],timeoutOrdinal:['uiWatchTimeoutOrdinal',3]};
+  for (const line of rawLines) {
+    if (line.length > 2048) continue;
+    const match = /^\s*(?:#\s*)?PROJECT_UI_WATCH_CONTROL (\{[^\r\n]+\})\s*$/.exec(line);
+    if (!match) continue;
+    let control; try { control = JSON.parse(match[1]); } catch { continue; }
+    if (control?.version !== 1 || Array.isArray(control)) continue;
+    for (const [field,[key,max]] of Object.entries(watchFields)) if (integer(control[field]) && control[field] <= max) metrics[key] = control[field];
+  }
   Object.assign(metrics, browserRuntimeControlFacts(rawPrivateText));
   Object.assign(metrics, browserNativeFatalFacts(privateText));
   const failedStepIndex = rawLines.findIndex(line => line.trimStart().startsWith('PROJECT_SMOKE_FAILED_STEP '));
@@ -631,11 +643,13 @@ export function publicSummary(binding, rows, fingerprints) {
   if (!/^[a-f0-9]{64}$/.test(fingerprints.source) || !/^[a-f0-9]{64}$/.test(fingerprints.lock)) reject();
   const phases = rows.map(({ id, status, elapsedMs, exitCode, counts, invocationSHA, reportSHA, diagnostic }) => ({ id, status, elapsedMs, exitCode, invocationSHA, reportSHA,
     counts: counts ? Object.fromEntries(Object.entries(counts).filter(([key, value]) =>
-      ['discovered', 'run', 'pass', 'fail', 'skip', 'manualDeferred', 'acceptedFindings', 'detectedFindings'].includes(key) && integer(value))) : null,
+      ['discovered', 'run', 'pass', 'fail', 'skip', 'manualDeferred', 'acceptedFindings', 'detectedFindings', 'positiveControls', 'negativeControls', 'targetControls'].includes(key) && integer(value))) : null,
     diagnostic: diagnostic ? { codes: diagnostic.codes.filter(code => DIAGNOSTIC_CODES.includes(code)),
       metrics: Object.fromEntries(Object.entries(diagnostic.metrics).filter(([key, value]) =>
         ['numTotalTests', 'numPassedTests', 'numFailedTests', 'numPendingTests', 'numRuntimeErrorTestSuites', 'architectureAssertion',
           'minimumObservedFreeBytes', 'initialFreeBytes', 'freeSpaceDecreaseBytes', 'ownedBytesAtCheckpoint', 'coreFileCount', 'coreAllocatedBytes', 'largestOwnedFileBytes', 'kernelCorePipe',
+          'uiWatchStageOrdinal', 'uiWatchFailureStageOrdinal', 'uiWatchHTTPStatus', 'uiWatchGeneratedWatchCount', 'uiWatchAppSourceWatched', 'uiWatchWatchedPathCount',
+          'uiWatchClosed', 'uiWatchExitOrdinal', 'uiWatchExitCode', 'uiWatchTimeoutOrdinal',
           'smokeTestLine', 'smokeFailureProjectOrdinal', 'smokeHelperLine', 'smokeFailureLine', 'smokeFailureColumn',
           'smokeStepLocatorOrdinal', 'smokeStepCategoryOrdinal', 'smokeStepApiOrdinal', 'smokeStepSourceOrdinal', 'smokeStepDurationMs',
           'traceReadable', 'tracePageErrors', 'traceConsoleErrors', 'traceConsoleWarnings', 'traceHttp4xx', 'traceHttp5xx', 'traceModuleLine', 'traceModuleColumn',

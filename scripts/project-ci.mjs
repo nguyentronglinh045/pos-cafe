@@ -5,6 +5,7 @@ import { spawn, execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { hash, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, smokeTraceDiagnostics, guardFailureCode } from './project-ci-results.mjs';
 import { lightOwnerMatches } from './project-ci-launch.mjs';
+import { uiTestInventory, readUIFile, readUIJSON, uiEvidenceContext, remakeSelftestCounts, auditSelftestCounts, requireFreshUIOutput } from './project-ui-results.mjs';
 
 const GiB = 1024 ** 3;
 const refuse = () => { throw new Error('PROJECT_CI_GUARD'); };
@@ -164,6 +165,7 @@ export async function main() {
   admissionStep = 3;
   if (git(['status', '--porcelain', '--untracked-files=all']).trim()) refuse();
   const paths = git(['ls-files', '-z']).split('\0').filter(Boolean).sort();
+  const uiTests = uiTestInventory(paths);
   admissionStep = 4;
   const backendOnly = JSON.parse(readFileSync(join(root, 'ci/backend-only-tests.json'), 'utf8'));
   if (!Array.isArray(backendOnly) || backendOnly.length !== 1 || backendOnly.some(item =>
@@ -292,6 +294,21 @@ export async function main() {
       '--reporter=json', `--outputFile=${join(task, 'tooling.json')}`], () => vitestCounts(json('tooling'), paths.filter(path => /^tests\/.*\.tool\.test\.(?:ts|mjs)$/.test(path)), root, backendOnly), 'tooling');
     await phase('node-tools', process.execPath, ['--test', '--test-concurrency=2', '--test-reporter=tap', ...paths.filter(path => /^scripts\/.*\.test\.mjs$/.test(path))], nodeCounts);
     await phase('browser', process.execPath, ['node_modules/playwright/cli.js', 'install', 'chromium', '--no-shell']);
+    await phase('ui-tools', process.execPath, ['--test', '--test-concurrency=1', '--test-reporter=tap', ...uiTests], nodeCounts);
+    // The controls deliberately include detected defects. Only these synthetic
+    // calibration phases accept seeded measurement failures; app gates do not.
+    const remakeOutput = `artifacts/ui-remake/ci-${binding.runId}-${binding.attempt}`;
+    requireFreshUIOutput(root, remakeOutput);
+    const remakeStarted = Date.now();
+    await phase('ui-remake-selftest', process.execPath, ['ui-remake/run.mjs', '--selftest', '--out', remakeOutput], () =>
+      remakeSelftestCounts(readUIJSON(root, `${remakeOutput}/report.json`), uiEvidenceContext(root, paths, binding.sourceSHA),
+        {startedAfter:remakeStarted,finishedBefore:Date.now(),readArtifact:name => readUIFile(root,`${remakeOutput}/${name}`)}));
+    const auditOutput = `artifacts/ui-audit/ci-${binding.runId}-${binding.attempt}`;
+    requireFreshUIOutput(root, auditOutput);
+    const auditStarted = Date.now();
+    await phase('ui-audit-selftest', process.execPath, ['ui-audit/run.mjs', '--selftest', '--selftest-report', `${auditOutput}/selftest.json`], () =>
+      auditSelftestCounts(readUIJSON(root, `${auditOutput}/selftest.json`), uiEvidenceContext(root, paths, binding.sourceSHA),
+        {startedAfter:auditStarted,finishedBefore:Date.now()}));
     // JSON reporter uses its explicit file rather than public stdout.
     env.PLAYWRIGHT_JSON_OUTPUT_NAME = join(task, 'smoke-discovery.json');
     await phase('smoke-discovery', process.execPath, ['node_modules/playwright/cli.js', 'test', '--config=playwright.project-ci.config.ts', '--list', '--reporter=json']);

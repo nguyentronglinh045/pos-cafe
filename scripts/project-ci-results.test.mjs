@@ -1,3 +1,5 @@
+import { backendInvocation } from './project-backend.mjs';
+import { ci1TrustedRepository } from './permission-ci1-policy.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFileSync, writeFileSync, mkdtempSync, mkdirSync, existsSync, linkSync } from 'node:fs';
@@ -10,9 +12,6 @@ import { capturedCommand, trackedFingerprint, lightEnvironment, checkoutGit, all
 import { lightService, lightOwnerMatches, withLightCorePattern, stopLightUnit, coreDumpDisabled, linuxCorePatternAdapter } from './project-ci-launch.mjs';
 import { verifyReleaseRun, verifyReleaseEnvironment, verifyReleaseFiles, productionCommands, PRODUCTION_ENABLED } from './project-release.mjs';
 
-import { backendInvocation } from './project-backend.mjs';
-import { ci1TrustedRepository } from './permission-ci1-policy.mjs';
-
 const sha = '1'.repeat(40), other = '2'.repeat(40), digest = '3'.repeat(64);
 const env = { GITHUB_REPOSITORY: 'nguyentronglinh045/pos-cafe', GITHUB_REPOSITORY_ID: '1263057386', GITHUB_ACTIONS: 'true', RUNNER_ENVIRONMENT: 'github-hosted',
   GITHUB_EVENT_NAME: 'push', GITHUB_SHA: sha, GITHUB_WORKFLOW_SHA: sha, GITHUB_RUN_ID: '123', GITHUB_RUN_ATTEMPT: '1' };
@@ -20,6 +19,26 @@ const binding = sourceBinding(env, { after: sha, repository: { full_name: env.GI
 
 const traceLines = events => [{type:'context-options',version:8,playwrightVersion:'1.60.0',browserName:'chromium'},
   ...events].map(event => JSON.stringify(event)).join('\n') + '\n';
+
+test('watch worker diagnostics publish only bounded numeric observations without worker errors, paths or arbitrary JSON',()=>{
+  const facts={version:1,stage:6,failureStage:5,httpStatus:200,generatedWatchCount:3,appSourceWatched:1,watchedPathCount:204,closed:1,exitOrdinal:2,exitCode:1,timeoutOrdinal:0,
+    error:'FAKE_PRIVATE_TOKEN',fixture:'/private/FAKE_PRIVATE_TOKEN',unknown:99};
+  const diagnostic=privateDiagnostics('# PROJECT_UI_WATCH_CONTROL '+JSON.stringify(facts),null);
+  assert.deepEqual(Object.fromEntries(Object.entries(diagnostic.metrics).filter(([key])=>key.startsWith('uiWatch'))),{
+    uiWatchStageOrdinal:6,uiWatchFailureStageOrdinal:5,uiWatchHTTPStatus:200,uiWatchGeneratedWatchCount:3,uiWatchAppSourceWatched:1,uiWatchWatchedPathCount:204,
+    uiWatchClosed:1,uiWatchExitOrdinal:2,uiWatchExitCode:1,uiWatchTimeoutOrdinal:0});
+  const safe=publicSummary(binding,[{id:'install',status:'FAIL',elapsedMs:1,exitCode:1,invocationSHA:digest,reportSHA:digest,counts:null,diagnostic}],{source:digest,lock:digest});
+  assert.equal(safe.phases[0].diagnostic.metrics.uiWatchFailureStageOrdinal,5);assert.equal(safe.overallStatus,'FAIL');
+  assert.equal(JSON.stringify(safe).includes('FAKE_PRIVATE_TOKEN'),false);
+  for(const raw of ['PROJECT_UI_WATCH_CONTROL {', 'PROJECT_UI_WATCH_CONTROL '+JSON.stringify({...facts,version:2}),
+    'not a marker PROJECT_UI_WATCH_CONTROL '+JSON.stringify(facts),'PROJECT_UI_WATCH_CONTROL '+JSON.stringify(facts)+' trailing',
+    'PROJECT_UI_WATCH_CONTROL '+JSON.stringify({...facts,raw:'x'.repeat(2048)})])
+    assert.equal(Object.keys(privateDiagnostics(raw,null).metrics).some(key=>key.startsWith('uiWatch')),false);
+  for(const [field,value] of Object.entries({stage:8,failureStage:-1,httpStatus:600,generatedWatchCount:1000001,appSourceWatched:2,watchedPathCount:'204',closed:true,exitOrdinal:6,exitCode:256,timeoutOrdinal:4})) {
+    const result=privateDiagnostics('PROJECT_UI_WATCH_CONTROL '+JSON.stringify({version:1,[field]:value}),null);
+    assert.equal(Object.keys(result.metrics).some(key=>key.startsWith('uiWatch')),false);
+  }
+});
 function storedTraceZip(entries) {
   const files = [], central = []; let offset = 0;
   for (const [name, text] of Object.entries(entries)) {
@@ -510,16 +529,24 @@ test('failed Playwright diagnostics expose known source locations and counts wit
   const safe=privateDiagnostics('',bad,[]);assert.deepEqual(safe.failedFiles,[]);assert.equal(safe.metrics.smokeUnexpected,undefined);
 });
 
-test('integrated light profile requires all eleven phases including both UI gates', () => {
+test('main light profile requires all twelve phases, including UI calibration, without app acceptance substitutions', () => {
   assert.deepEqual(PROJECT_PHASES, ['install','build','unit','tooling','node-tools','browser',
-    'smoke-discovery','smoke-preflight','smoke','ui-selftest','ui-audit']);
+    'ui-tools','ui-remake-selftest','ui-audit-selftest','smoke-discovery','smoke-preflight','smoke','ui-selftest','ui-audit']);
   const rows=PROJECT_PHASES.map(id=>({id,status:'PASS',elapsedMs:1,exitCode:0,invocationSHA:digest,reportSHA:digest,counts:null}));
   assert.equal(publicSummary(binding,rows,{source:digest,lock:digest}).overallStatus,'PASS');
-  for (const length of [9,10])
-    assert.equal(publicSummary(binding,rows.slice(0,length),{source:digest,lock:digest}).overallStatus,'FAIL');
-  assert.throws(()=>publicSummary(binding,[...rows,{...rows[0],id:'extra'}],{source:digest,lock:digest}));
-  assert.throws(()=>publicSummary(binding,[...rows.slice(0,-2),rows.at(-1),rows.at(-2)],{source:digest,lock:digest}));
+  for(const id of ['ui-selftest','ui-audit','ui-tools']) {
+    assert.throws(()=>publicSummary(binding,[...rows,{...rows[0],id}],{source:digest,lock:digest}));
+    assert.throws(()=>publicSummary(binding,[...rows.slice(0,-1),{...rows.at(-1),id}],{source:digest,lock:digest}));
+  }
+  for (const index of [6,7,8]) {
+    assert.throws(()=>publicSummary(binding,rows.filter((_,i)=>i!==index),{source:digest,lock:digest}));
+    const bad=structuredClone(rows);bad[index].status='FAIL';
+    assert.equal(publicSummary(binding,bad,{source:digest,lock:digest}).overallStatus,'FAIL');
+  }
+  const reordered=structuredClone(rows);[reordered[6],reordered[7]]=[reordered[7],reordered[6]];
+  assert.throws(()=>publicSummary(binding,reordered,{source:digest,lock:digest}));
 });
+
 test('public evidence excludes arbitrary binding/count/raw fields and incomplete phase sets fail', () => {
   const rows = PROJECT_PHASES.map(id => ({ id, status: 'PASS', elapsedMs: 1, exitCode: 0, invocationSHA: digest, reportSHA: digest,
     counts: { pass: 1, raw: 'FAKE_PRIVATE_TOKEN' } }));
@@ -527,6 +554,19 @@ test('public evidence excludes arbitrary binding/count/raw fields and incomplete
   assert.equal(result.overallStatus, 'PASS');
   assert.equal(JSON.stringify(result).includes('FAKE_PRIVATE_TOKEN'), false);
   assert.equal(publicSummary(binding, rows.slice(0, -1), { source: digest, lock: digest }).overallStatus, 'FAIL');
+});
+
+test('public UI calibration counts stay finite, numeric and separate from product acceptance', () => {
+  const rows=PROJECT_PHASES.map(id=>({id,status:'PASS',elapsedMs:1,exitCode:0,invocationSHA:digest,reportSHA:digest,
+    counts:{run:11,pass:11,positiveControls:5,negativeControls:6,targetControls:16,detectedFindings:23,
+      productAcceptance:'FAKE_PRIVATE_TOKEN',raw:'FAKE_PRIVATE_TOKEN'}}));
+  const result=publicSummary(binding,rows,{source:digest,lock:digest});
+  assert.equal(result.overallStatus,'PASS');assert.equal(result.phases[7].counts.negativeControls,6);
+  assert.equal(result.phases[8].counts.targetControls,16);assert.equal(JSON.stringify(result).includes('FAKE_PRIVATE_TOKEN'),false);
+  for(const value of [NaN,Infinity,-1,Number.MAX_SAFE_INTEGER+1,'23']) {
+    rows[8].counts.detectedFindings=value;
+    assert.equal(Object.hasOwn(publicSummary(binding,rows,{source:digest,lock:digest}).phases[8].counts,'detectedFindings'),false);
+  }
 });
 
 test('failed Vitest diagnostics retain known counters and source paths without raw messages or credentials', () => {
@@ -717,7 +757,6 @@ test('commit parent parser reads only canonical headers, never message or signat
   assert.deepEqual(gitCommitParents(text), [base, head]);
   for (const value of ['', 'parent x\n\nmessage', 'parent '+head, null, 'x'.repeat(65537)+'\n\n']) assert.throws(() => gitCommitParents(value));
 });
-
 
 test('UI gate requires every target/viewport and rejects fresh or incomplete findings', () => {
   const cfg = { states: [{ name: 'floor' }], viewports: [{ name: 'tablet' }] };

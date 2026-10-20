@@ -6,6 +6,7 @@ const env = pinOnboardEnvironment();
 export default defineConfig({
   testDir: "./tests/supabase",
   testMatch: /ownerPinOnboardingCloseout\.spec\.ts/,
+  grepInvert: /TC-PIN-18/,
   timeout: 60_000,
   retries: 0,
   forbidOnly: true,

@@ -18,8 +18,11 @@
  * so a "target" is usually a named *state* reached by a short list of steps,
  * not a URL. See `states` in config.json and README.md.
  */
-import { chromium } from '@playwright/test';
-import { spawn, spawnSync } from 'node:child_process';
+import { platform, release, arch } from 'node:os';
+import { createHash } from 'node:crypto';
+import { parseArgs, selectMatrix, sourceIdentity, verifySource, assessSelftest, TARGET_CHECK_NAMES,
+  prepareReportPath, writeNewReport, loadPlaywright, startDevServer, stopDevServer,
+  getDevServerDiagnostics, runAuditMatrix, setupFailure } from './runtime.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL, fileURLToPath } from 'node:url';
@@ -27,116 +30,24 @@ import { pathToFileURL, fileURLToPath } from 'node:url';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const auditSrc = fs.readFileSync(path.join(here, 'audit.js'), 'utf8');
 
-const args = process.argv.slice(2);
-const flag = (name) => args.includes(name);
-const value = (name) => (args.includes(name) ? args[args.indexOf(name) + 1] : null);
-
-const UPDATE = flag('--update');
-const SELFTEST = flag('--selftest');
-const LIST = flag('--list');
-const ONLY_STATE = value('--state');
-const ONLY_ROUTE = value('--route');
-const ONLY_VIEWPORT = value('--viewport');
-
+const root = path.resolve(here, '..');
+const options = parseArgs(process.argv.slice(2));
 const cfg = JSON.parse(fs.readFileSync(path.join(here, 'config.json'), 'utf8'));
 const outDir = path.join(here, 'out');
 const baselinePath = path.join(here, 'baseline.json');
-
-// ---------------------------------------------------------------- selectors
-// "@foo" is shorthand for [data-testid="foo"]; anything else is raw CSS.
 const sel = (s) => (s.startsWith('@') ? `[data-testid="${s.slice(1)}"]` : s);
 
-// ---------------------------------------------------------------- targets
-/** Flatten `routes` (URL based) and `states` (step driven) into one list. */
-function buildTargets(conf) {
-  const byName = new Map((conf.states || []).map((s) => [s.name, s]));
-  const resolveSteps = (state, seen = new Set()) => {
-    if (seen.has(state.name)) throw new Error(`state "${state.name}" extends itself`);
-    seen.add(state.name);
-    const parent = state.extends ? byName.get(state.extends) : null;
-    if (state.extends && !parent) throw new Error(`state "${state.name}" extends unknown "${state.extends}"`);
-    return [...(parent ? resolveSteps(parent, seen) : []), ...(state.steps || [])];
-  };
-
-  const targets = [];
-  for (const route of conf.routes || []) {
-    targets.push({ name: route, kind: 'route', route, steps: [], describe: '' });
-  }
-  for (const state of conf.states || []) {
-    if (state.skip) continue;
-    targets.push({
-      name: state.name,
-      kind: 'state',
-      route: state.route || (conf.routes && conf.routes[0]) || '/',
-      steps: resolveSteps(state),
-      describe: state.describe || '',
-    });
-  }
-  return targets;
+if (options.help) {
+  console.log(`UI audit (local mock only)
+  npm run ui-audit:selftest
+  node ui-audit/run.mjs --selftest --selftest-report artifacts/ui-audit/<new-name>.json
+  node ui-audit/run.mjs --list
+  node ui-audit/run.mjs [--state NAME | --route PATH] [--viewport NAME]
+  --update accepts findings only after explicit owner review and approval.
+See ui-audit/README.md. Pilot remaking a real Stitch screen is separate.`);
+  process.exit(0);
 }
-
-// ---------------------------------------------------------------- dev server
-async function reachable(url, timeoutMs = 2500) {
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), timeoutMs);
-  try {
-    await fetch(url, { signal: ctrl.signal });
-    return true;
-  } catch {
-    return false;
-  } finally {
-    clearTimeout(t);
-  }
-}
-
-async function startDevServer(conf) {
-  const ds = conf.devServer;
-  if (!ds || !ds.command) return null;
-  if (await reachable(conf.baseUrl)) {
-    console.log(`dev server already up at ${conf.baseUrl}`);
-    return null;
-  }
-  console.log(`starting dev server: ${ds.command}`);
-  const child = spawn(ds.command, {
-    shell: true,
-    cwd: path.resolve(here, '..'),
-    env: { ...process.env, ...(ds.env || {}) },
-    stdio: ['ignore', 'pipe', 'pipe'],
-    detached: process.platform !== 'win32', // own process group, so the tree can be signalled
-  });
-  const log = [];
-  child.stdout.on('data', (d) => log.push(String(d)));
-  child.stderr.on('data', (d) => log.push(String(d)));
-
-  const deadline = Date.now() + (ds.readyTimeoutMs || 90000);
-  while (Date.now() < deadline) {
-    if (child.exitCode !== null) {
-      throw new Error(`dev server exited early:\n${log.join('').slice(-1200)}`);
-    }
-    if (await reachable(conf.baseUrl)) {
-      console.log(`dev server ready at ${conf.baseUrl}`);
-      return child;
-    }
-    await new Promise((r) => setTimeout(r, 500));
-  }
-  throw new Error(`dev server never became ready at ${conf.baseUrl}:\n${log.join('').slice(-1200)}`);
-}
-
-function stopDevServer(child) {
-  if (!child || child.exitCode !== null) return;
-  // Vite runs as a child of npm, so the whole process tree has to go.
-  // spawnSync, not spawn: process.exit() further down would kill an async
-  // taskkill before it ran and leave the dev server listening.
-  if (process.platform === 'win32') {
-    spawnSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio: 'ignore' });
-  } else {
-    try {
-      process.kill(-child.pid, 'SIGTERM');
-    } catch {
-      child.kill('SIGTERM');
-    }
-  }
-}
+const selftestReportPath = options.selftestReport ? prepareReportPath(root, options.selftestReport) : null;
 
 // ---------------------------------------------------------------- steps
 async function runSteps(page, steps) {
@@ -205,14 +116,16 @@ function tally(findings, field) {
   return [...m.entries()].sort((a, b) => b[1] - a[1]);
 }
 
-function writeMarkdown(all, targets, viewports, setupFailures = []) {
+function writeMarkdown(all, targets, viewports, setupFailures = [], coverage = {}) {
   const fresh = all.filter((f) => !f.known);
   const lines = [];
   lines.push('# UI audit report', '');
   lines.push(`generated: ${new Date().toISOString()}`);
   lines.push(`targets: ${targets.length} x viewports: ${viewports.length}`);
   lines.push(`findings: ${all.length} total, ${fresh.length} not in baseline`, '');
-  lines.push(`setup failures: ${setupFailures.length}`, '');
+  lines.push(`setup failures: ${setupFailures.length}`);
+  lines.push(`coverage: ${coverage.completedPairs ?? 0}/${targets.length * viewports.length} completed`);
+  lines.push(`status: ${coverage.status || 'INCOMPLETE'}`, '');
 
   if (setupFailures.length) {
     lines.push('## Blocking setup failures', '');
@@ -221,6 +134,11 @@ function writeMarkdown(all, targets, viewports, setupFailures = []) {
     for (const failure of setupFailures)
       lines.push(`| ${failure.target} | ${failure.viewport} | ${failure.detail.replaceAll('|', '\\|')} |`);
     lines.push('');
+  }
+
+  if (coverage.serverDiagnostics?.tail && setupFailures.length) {
+    lines.push('## Owned server diagnostic tail (private runtime output)', '');
+    lines.push('```text', coverage.serverDiagnostics.tail.replaceAll('```', '[fence]').slice(-4096), '```', '');
   }
 
   lines.push('## By severity', '');
@@ -272,119 +190,92 @@ function writeMarkdown(all, targets, viewports, setupFailures = []) {
 }
 
 // ---------------------------------------------------------------- selftest
-// demo-buggy.html carries nine deliberate defects. If the harness stops seeing
-// them the harness is broken, and every clean run against the real app is a lie.
-const SELFTEST_REQUIRED = [
-  'hit-blocked',
-  'empty-icon',
-  'placeholder-leak',
-  'bad-inline-style',
-  'tiny-target',
-  'overflow-x',
-  'no-accessible-name',
-  'broken-image',
-  'low-contrast',
-  'tiny-font',
-  'clipped-text',
-  'bad-class-token',
-  'zero-size-interactive',
-  'overlapping-controls',
-];
-const SELFTEST_MIN = 18;
-const SELFTEST_MAX = 30;
-
 async function selftest() {
-  const file = pathToFileURL(path.join(here, 'demo-buggy.html')).toString();
-  const browser = await chromium.launch({ channel: process.env.CI === 'true' ? 'chromium' : undefined });
-  const ctx = await browser.newContext({ viewport: { width: 1024, height: 768 }, deviceScaleFactor: 1 });
-  await ctx.addInitScript({ content: auditSrc });
-  const page = await ctx.newPage();
-  await page.goto(file, { waitUntil: 'load' });
-  await page.waitForTimeout(300);
-  const findings = await page.evaluate(() => window.__uiAudit());
-  const controls = await ctx.newPage();
-  await controls.goto(pathToFileURL(path.join(here, 'effective-targets.html')).toString(), { waitUntil: 'load' });
-  const targetFindings = await controls.evaluate(() => window.__uiAudit());
-  const scrollOffsetsRestored = await controls.evaluate(() =>
-    document.getElementById('offscreen-label-scroll').scrollTop === 0);
-  const inactiveLabelsDoNotToggle = await controls.evaluate(() => {
-    const covered = document.getElementById('anchor-label-input');
-    const disabled = document.getElementById('disabled-input');
-    document.getElementById('anchor-cover').click();
-    disabled.parentElement.click();
-    return !covered.checked && !disabled.checked;
-  });
-  await browser.close();
-
-  const rules = new Set(findings.map((f) => f.rule));
-  const missing = SELFTEST_REQUIRED.filter((r) => !rules.has(r));
-
+  const startedAt = new Date().toISOString();
+  const source = sourceIdentity(here);
+  const environment = { node: process.version, os: `${platform()} ${release()} ${arch()}`,
+    engine: 'chromium', channel: 'chromium', browserVersion: null, playwrightVersion: null };
+  let browser, ctx, findings = [], targetFindings = [];
+  let targetChecks = Object.fromEntries(TARGET_CHECK_NAMES.map(name => [name, false]));
+  const errors = [];
+  try {
+    const playwright = await loadPlaywright();
+    environment.playwrightVersion = playwright.version;
+    browser = await playwright.chromium.launch({ channel: 'chromium', headless: true });
+    environment.browserVersion = browser.version();
+    ctx = await browser.newContext({ viewport: { width: 1024, height: 768 }, deviceScaleFactor: 1 });
+    await ctx.addInitScript({ content: auditSrc });
+    const page = await ctx.newPage();
+    await page.goto(pathToFileURL(path.join(here, 'demo-buggy.html')).toString(), { waitUntil: 'load' });
+    await page.waitForTimeout(300);
+    findings = await page.evaluate(() => window.__uiAudit());
+    const controls = await ctx.newPage();
+    await controls.goto(pathToFileURL(path.join(here, 'effective-targets.html')).toString(), { waitUntil: 'load' });
+    targetFindings = await controls.evaluate(() => window.__uiAudit());
+    const scrollOffsetsRestored = await controls.evaluate(() =>
+      document.getElementById('offscreen-label-scroll').scrollTop === 0);
+    const inactiveLabelsDoNotToggle = await controls.evaluate(() => {
+      const covered = document.getElementById('anchor-label-input');
+      const disabled = document.getElementById('disabled-input');
+      document.getElementById('anchor-cover').click();
+      disabled.parentElement.click();
+      return !covered.checked && !disabled.checked;
+    });
+    const has = (rule, selector) => targetFindings.some(f => f.rule === rule && f.sel === selector);
+    targetChecks = {
+      labelUsesEffectiveArea: !has('tiny-target', '#healthy-label-input'),
+      coveredLabelKeepsTinyFinding: has('tiny-target', '#partly-label-input'),
+      validCornerUsesReachableArea: !has('tiny-target', '#corner-label-input'),
+      choosesReachableAssociatedLabel: !has('tiny-target', '#multi-label-input'),
+      interactiveChildDoesNotActivateInput: has('tiny-target', '#anchor-label-input'),
+      clippedControlIsReported: has('clipped-interactive', '#clipped-button'),
+      innerScrollerCanRevealControl: !has('clipped-interactive', '#nested-button'),
+      offscreenLabelCanBeMeasuredAfterScroll: !has('tiny-target', '#offscreen-label-input'),
+      scrollOffsetsRestored,
+      disabledControlHasNoTapRequirement: !has('tiny-target', '#disabled-input'),
+      inactiveLabelsDoNotToggle,
+      bareSmallControlDetected: has('tiny-target', '#small-button'),
+      scrollClippedHitIgnored: !has('hit-blocked', '#off-scroll'),
+      scrollClippedOverlapIgnored: !has('overlapping-controls', '#off-scroll'),
+      trulyCoveredHitDetected: has('hit-blocked', '#covered-button'),
+      trulyCoveredOverlapDetected: has('overlapping-controls', '#covered-button'),
+    };
+  } catch (error) { errors.push(String(error.message || error)); }
+  finally {
+    try { await ctx?.close(); } catch (error) { errors.push(`Context cleanup failed: ${error.message}`); }
+    try { await browser?.close(); } catch (error) { errors.push(`Browser cleanup failed: ${error.message}`); }
+  }
+  let sourcePreserved = false;
+  try { verifySource(source, sourceIdentity(here)); sourcePreserved = true; }
+  catch (error) { errors.push(error.message); }
+  const assessment = assessSelftest(findings, targetChecks);
+  const status = assessment.status === 'PASS' && !errors.length ? 'PASS' : 'FAIL';
   console.log(`selftest: ${findings.length} finding(s) on demo-buggy.html`);
-  console.log(`  severity: ${tally(findings, 'severity').map(([k, v]) => `${k}=${v}`).join(' ')}`);
-  for (const [rule, n] of tally(findings, 'rule')) console.log(`  ${rule.padEnd(24)} ${n}`);
-
-  let ok = true;
-  if (missing.length) {
-    ok = false;
-    console.log(`\nFAIL missing rule(s): ${missing.join(', ')}`);
-  }
-  if (findings.length < SELFTEST_MIN || findings.length > SELFTEST_MAX) {
-    ok = false;
-    console.log(`\nFAIL finding count ${findings.length} outside expected ${SELFTEST_MIN}..${SELFTEST_MAX}`);
-  }
-  const has = (rule, sel) => targetFindings.some(f => f.rule === rule && f.sel === sel);
-  const targetChecks = {
-    labelUsesEffectiveArea: !has('tiny-target', '#healthy-label-input'),
-    coveredLabelKeepsTinyFinding: has('tiny-target', '#partly-label-input'),
-    validCornerUsesReachableArea: !has('tiny-target', '#corner-label-input'),
-    choosesReachableAssociatedLabel: !has('tiny-target', '#multi-label-input'),
-    interactiveChildDoesNotActivateInput: has('tiny-target', '#anchor-label-input'),
-    clippedControlIsReported: has('clipped-interactive', '#clipped-button'),
-    innerScrollerCanRevealControl: !has('clipped-interactive', '#nested-button'),
-    offscreenLabelCanBeMeasuredAfterScroll: !has('tiny-target', '#offscreen-label-input'),
-    scrollOffsetsRestored: scrollOffsetsRestored,
-    disabledControlHasNoTapRequirement: !has('tiny-target', '#disabled-input'),
-    inactiveLabelsDoNotToggle: inactiveLabelsDoNotToggle,
-    bareSmallControlDetected: has('tiny-target', '#small-button'),
-    scrollClippedHitIgnored: !has('hit-blocked', '#off-scroll'),
-    scrollClippedOverlapIgnored: !has('overlapping-controls', '#off-scroll'),
-    trulyCoveredHitDetected: has('hit-blocked', '#covered-button'),
-    trulyCoveredOverlapDetected: has('overlapping-controls', '#covered-button'),
-  };
-  for (const [name, passed] of Object.entries(targetChecks)) {
-    if (!passed) { ok = false; console.log(`FAIL effective-target control: ${name}`); }
-  }
+  console.log(`  severity: ${tally(findings, 'severity').map(([key, value]) => `${key}=${value}`).join(' ')}`);
+  for (const [rule, count] of tally(findings, 'rule')) console.log(`  ${rule.padEnd(24)} ${count}`);
+  if (findings.length !== 23) console.log(`FAIL finding count ${findings.length}; expected exactly 23`);
+  if (assessment.missingRules.length) console.log(`FAIL missing rules: ${assessment.missingRules.join(', ')}`);
+  for (const [name, passed] of Object.entries(targetChecks)) if (!passed) console.log(`FAIL effective-target control: ${name}`);
   if (Object.values(targetChecks).every(Boolean)) console.log('effective-target controls OK');
-  console.log(
-    ok
-      ? '\nselftest OK - harness detects every seeded defect class'
-      : '\nselftest FAILED - fix the harness before trusting any app result',
-  );
-  process.exit(ok ? 0 : 1);
+  for (const error of errors) console.log(`FAIL ${error}`);
+  const report = { version: 1, kind: 'ui-audit-selftest', productAcceptance: 'NOT_ASSESSED',
+    startedAt, finishedAt: new Date().toISOString(), ...assessment, status, source, environment, sourcePreserved, errors };
+  if (selftestReportPath) writeNewReport(root, selftestReportPath, report);
+  console.log(status === 'PASS' ? '\nselftest OK - exactly 23 findings, 14 required rules and 16 effective-target controls' :
+    '\nselftest FAILED - fix the harness before trusting any app result');
+  return status === 'PASS' ? 0 : 1;
 }
 
-if (SELFTEST) await selftest();
+if (options.selftest) process.exit(await selftest());
 
 // ---------------------------------------------------------------- main
-const targets = buildTargets(cfg).filter(
-  (t) =>
-    (!ONLY_STATE || (t.kind === 'state' && t.name === ONLY_STATE)) &&
-    (!ONLY_ROUTE || (t.kind === 'route' && t.route === ONLY_ROUTE)),
-);
-const viewports = (cfg.viewports || [{ name: 'desktop', width: 1440, height: 900 }]).filter(
-  (v) => !ONLY_VIEWPORT || v.name === ONLY_VIEWPORT,
-);
-
-if (LIST) {
+const { targets, viewports } = selectMatrix(cfg, options);
+if (options.list) {
   console.log('targets:');
-  for (const t of targets) console.log(`  ${t.kind.padEnd(6)} ${t.name.padEnd(24)} ${t.describe}`);
+  for (const target of targets) console.log(`  ${target.kind.padEnd(6)} ${target.name.padEnd(24)} ${target.describe}`);
   console.log('viewports:');
-  for (const v of viewports) console.log(`  ${v.name.padEnd(10)} ${v.width}x${v.height}`);
+  for (const vp of viewports) console.log(`  ${vp.name.padEnd(10)} ${vp.width}x${vp.height}`);
   process.exit(0);
-}
-if (!targets.length) {
-  console.error('no targets matched. try: node ui-audit/run.mjs --list');
-  process.exit(2);
 }
 
 fs.mkdirSync(outDir, { recursive: true });
@@ -396,60 +287,84 @@ const failOn = new Set(cfg.failOn || ['error']);
 const severityOverride = cfg.severityOverride || {};
 
 let devServer = null;
+let browser = null;
 let exitCode = 0;
 const all = [];
 const setupFailures = [];
+const startedAt = new Date().toISOString();
+const environment = { node: process.version, os: `${platform()} ${release()} ${arch()}`,
+  engine: 'chromium', channel: 'chromium', browserVersion: null, playwrightVersion: null };
+const operationalSource = () => ({ ...sourceIdentity(here),
+  baselineSha256: createHash('sha256').update(fs.readFileSync(baselinePath)).digest('hex') });
+const source = { before: operationalSource(), after: null, preserved: null };
+let progress = { expectedPairs: targets.length * viewports.length, attemptedPairs: 0, completedPairs: 0 };
+let finishedAt = null;
+const status = () => !finishedAt || setupFailures.length || progress.completedPairs !== progress.expectedPairs ? 'INCOMPLETE' : 'COMPLETE';
+const checkpoint = () => {
+  const runStatus = { version: 1, kind: 'ui-audit-run', status: status(), productAcceptance: 'NOT_ASSESSED',
+    startedAt, finishedAt, ...progress, setupFailures, source, environment, serverDiagnostics: getDevServerDiagnostics(devServer) };
+  // Keep the historical finding-array contract; completeness is explicit in the
+  // Markdown and the additional ignored status receipt, never inferred from [].
+  fs.writeFileSync(path.join(here, 'report.json'), JSON.stringify(all, null, 2));
+  fs.writeFileSync(path.join(outDir, 'status.json'), JSON.stringify(runStatus, null, 2));
+  writeMarkdown(all, targets, viewports, setupFailures, runStatus);
+};
+const recordFailure = failure => {
+  setupFailures.push(failure);
+  exitCode = 2;
+  console.log(`SETUP-FAIL ${failure.viewport.padEnd(8)} ${failure.target.padEnd(24)} ${failure.detail}`);
+  const diagnostics = getDevServerDiagnostics(devServer);
+  if (diagnostics?.tail) console.log(`Owned dev server diagnostic tail (max4096 chars):\n${diagnostics.tail}`);
+};
+let stopping = false;
+const cleanup = async () => {
+  try { await browser?.close(); }
+  finally { await stopDevServer(devServer); }
+};
+for (const [signal, code] of [['SIGINT', 130], ['SIGTERM', 143]]) process.once(signal, async () => {
+  if (stopping) return;
+  stopping = true;
+  recordFailure(setupFailure('__run__', 'all', 'interrupted', new Error(signal)));
+  try { await cleanup(); }
+  finally { finishedAt = new Date().toISOString(); checkpoint(); process.exit(code); }
+});
 
+checkpoint();
+let outerStage = 'server-start';
 try {
-  devServer = await startDevServer(cfg);
-
-  const browser = await chromium.launch({ channel: process.env.CI === 'true' ? 'chromium' : undefined });
+  devServer = await startDevServer(cfg, root, { onStarted: child => { devServer = child; } });
+  outerStage = 'browser-start';
+  const playwright = await loadPlaywright();
+  environment.playwrightVersion = playwright.version;
+  browser = await playwright.chromium.launch({ channel: 'chromium', headless: true });
+  environment.browserVersion = browser.version();
   const ctxOpts = {};
   if (cfg.storageState && fs.existsSync(path.join(here, cfg.storageState))) {
     ctxOpts.storageState = path.join(here, cfg.storageState);
   }
-
-  for (const vp of viewports) {
-    for (const target of targets) {
-      // A fresh context per target: pos-cafe persists store pairing and session
-      // in localStorage, so a reused context would skip the landing screen and
-      // make every target after the first one order-dependent.
-      const ctx = await browser.newContext({
-        ...ctxOpts,
-        viewport: { width: vp.width, height: vp.height },
-        deviceScaleFactor: 1,
-      });
-      // audit.js is installed before any page script, so it survives client-side
-      // navigation and stays callable at any point in a state's step sequence.
+  outerStage = 'matrix';
+  await runAuditMatrix({ browser, targets, viewports, contextOptions: ctxOpts,
+    onFailure: recordFailure,
+    onProgress: ({ failures: _failures, ...current }) => { progress = current; checkpoint(); },
+    runTarget: async ({ context: ctx, target, viewport: vp, stage }) => {
+      // Each state has a fresh context; store pairing cannot leak between cases.
+      stage('detector-install');
       await ctx.addInitScript({ content: auditSrc });
       const page = await ctx.newPage();
-
       const url = new URL(target.route, cfg.baseUrl).toString();
-      let stepError = null;
+      stage('navigation');
       try {
         await page.goto(url, { waitUntil: 'networkidle', timeout: cfg.timeout || 30000 });
       } catch {
-        await page.goto(url, { waitUntil: 'domcontentloaded' });
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: cfg.timeout || 30000 });
       }
-      if (cfg.waitFor) await page.waitForSelector(sel(cfg.waitFor), { timeout: 10000 }).catch(() => {});
-
-      try {
-        await runSteps(page, target.steps);
-      } catch (err) {
-        stepError = String(err.message).split('\n')[0];
-      }
-
-      await page.waitForTimeout(cfg.settleMs ?? 400); // let animations finish
-      await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
-
-      if (stepError) {
-        setupFailures.push({ target: target.name, viewport: vp.name, detail: stepError });
-        console.log(`SETUP-FAIL ${vp.name.padEnd(8)} ${target.name.padEnd(24)} ${stepError}`);
-        exitCode = Math.max(exitCode, 2);
-        await ctx.close();
-        continue;
-      }
-
+      stage('steps');
+      if (cfg.waitFor) await page.waitForSelector(sel(cfg.waitFor), { timeout: 10000 });
+      await runSteps(page, target.steps);
+      stage('settle-fonts');
+      await page.waitForTimeout(cfg.settleMs ?? 400);
+      await page.evaluate(() => document.fonts && document.fonts.ready);
+      stage('detector');
       const raw = await page.evaluate((o) => window.__uiAudit(o), {
         minTarget: cfg.minTarget ?? 24,
         minFont: cfg.minFont ?? 10,
@@ -457,52 +372,38 @@ try {
         checkContrast: cfg.checkContrast !== false,
         ignore: cfg.ignore || '',
       });
-
-      // null unless a drawer/modal was up, in which case only that layer was audited
       const scope = await page.evaluate(() => window.__uiAuditScope || null);
-
-      for (const f of raw) {
-        if (severityOverride[f.rule]) f.severity = severityOverride[f.rule];
-        f.scope = scope;
-        f.target = target.name;
-        f.route = target.route;
-        f.viewport = vp.name;
-        f.key = keyOf(f, target, vp, collapse);
+      for (const finding of raw) {
+        if (severityOverride[finding.rule]) finding.severity = severityOverride[finding.rule];
+        Object.assign(finding, { scope, target: target.name, route: target.route, viewport: vp.name,
+          key: keyOf(finding, target, vp, collapse) });
       }
-      const grouped = collapse ? collapseFindings(raw) : raw.map((f) => ({ ...f, count: 1, examples: [f.sel] }));
-      for (const f of grouped) {
-        f.known = baseline.has(f.key);
-        all.push(f);
-      }
-
-      const fresh = grouped.filter((f) => !f.known);
-      // Keep evidence for accepted findings too. The review workflow requires
-      // opening the annotated element before classifying a result; limiting
-      // screenshots to regressions left `out/` empty on a clean baseline run.
-      // The required PIN gate must retain three viewport images even when it
-      // has zero findings, so closeout can inspect the rendered form itself.
-      if (grouped.length || target.name === 'required-pin-change') {
-        await page.evaluate((fs2) => window.__uiAuditMark(fs2), grouped);
+      const grouped = collapse ? collapseFindings(raw) : raw.map(f => ({ ...f, count: 1, examples: [f.sel] }));
+      for (const finding of grouped) { finding.known = baseline.has(finding.key); all.push(finding); }
+      // Preserve detected findings even if annotation/screenshot subsequently fails.
+      const fresh = grouped.filter(finding => !finding.known);
+      if (grouped.length) {
+        stage('annotation');
+        await page.evaluate(fs2 => window.__uiAuditMark(fs2), grouped);
+        stage('screenshot');
         const name = target.name.replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '') || 'root';
         await page.screenshot({ path: path.join(outDir, `${name}__${vp.name}.png`), fullPage: true });
       }
-
-      const bad = fresh.filter((f) => failOn.has(f.severity)).length;
-      console.log(
-        `${bad ? 'FAIL' : ' ok '}  ${vp.name.padEnd(8)} ${target.name.padEnd(24)} ` +
-          `${grouped.length} finding(s), ${fresh.length} new` +
-          (scope ? `  [scoped to top layer ${scope}]` : ''),
-      );
-      await ctx.close();
-    }
-  }
-  await browser.close();
+      const bad = fresh.filter(finding => failOn.has(finding.severity)).length;
+      console.log(`${bad ? 'FAIL' : ' ok '}  ${vp.name.padEnd(8)} ${target.name.padEnd(24)} ` +
+        `${grouped.length} finding(s), ${fresh.length} new` + (scope ? `  [scoped to top layer ${scope}]` : ''));
+    },
+  });
+} catch (error) {
+  recordFailure(setupFailure('__run__', 'all', outerStage, error));
 } finally {
-  stopDevServer(devServer);
+  try { await cleanup(); }
+  catch (error) { recordFailure(setupFailure('__run__', 'all', 'cleanup', error)); }
+  try { source.after = operationalSource(); verifySource(source.before, source.after); source.preserved = true; }
+  catch (error) { source.preserved = false; recordFailure(setupFailure('__run__', 'all', 'source-validation', error)); }
+  finishedAt = new Date().toISOString();
+  checkpoint();
 }
-
-fs.writeFileSync(path.join(here, 'report.json'), JSON.stringify(all, null, 2));
-writeMarkdown(all, targets, viewports, setupFailures);
 
 console.log('');
 console.log(`total ${all.length} finding(s): ${tally(all, 'severity').map(([k, v]) => `${k}=${v}`).join(' ') || 'none'}`);
@@ -515,7 +416,7 @@ if (setupFailures.length) {
     console.log(`  ${failure.target} [${failure.viewport}] ${failure.detail}`);
 }
 
-if (UPDATE) {
+if (options.update) {
   if (setupFailures.length) {
     console.log('baseline not updated because one or more targets were not audited');
     process.exit(2);
@@ -535,8 +436,12 @@ if (blocking.length) {
     console.log(`    ${f.detail}${f.label ? `  ("${f.label}")` : ''}`);
   }
   console.log(`\nannotated screenshots: ${path.relative(process.cwd(), outDir)}`);
-  console.log('accept them all with: node ui-audit/run.mjs --update');
-  process.exit(1);
+  console.log('Classify the annotated findings; baseline changes require explicit owner approval.');
+  process.exit(exitCode || 1);
 }
-console.log('\nno new UI anomalies');
-process.exit(exitCode);
+if (exitCode) {
+  console.log('\nAudit INCOMPLETE; no clean result is claimed.');
+  process.exit(exitCode);
+}
+console.log('\nno new UI anomalies at configured blocking severities; warnings/info remain in the report');
+process.exit(0);

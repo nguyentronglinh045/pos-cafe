@@ -10,6 +10,7 @@ export default defineConfig({
   ...onboardCloseout,
   outputDir: process.env.PIN_CANARY_OUTPUT_DIR,
   grep: /TC-PIN-18/,
+  grepInvert: [], // clear the parent exclusion; wrapper is mandatory above
   reporter: [["./scripts/permission-pin-canary-reporter.mjs",
     { outputFile: process.env.PIN_CANARY_SAFE_FILE }]],
 });
