@@ -49,15 +49,21 @@ test('unknown/missing/duplicated CLI options and subset baseline acceptance fail
     { update: false, selftest: false, list: false, state: 'floor', viewport: 'tablet' });
 });
 
-test('published matrix is 13 main states by 3 historical viewports and uses the main mock admin', () => {
+test('permission matrix keeps 13 main states and adds all 3 permission states on 3 viewports', () => {
   const matrix = selectMatrix(config);
-  assert.equal(matrix.targets.length, 13);
+  assert.deepEqual(matrix.targets.map(target => target.name), [
+    'landing', 'store-pairing', 'passcode', 'floor', 'order-drawer', 'order-cart',
+    'menu-editor', 'report', 'employees', 'settings', 'clear-demo-dialog', 'payment',
+    'receipt-preview', 'compatibility-update-gate', 'compatibility-created-store', 'required-pin-change',
+  ]);
+  assert.equal(matrix.targets.length, 16);
   assert.equal(matrix.viewports.length, 3);
   assert.deepEqual(matrix.viewports.map(vp => [vp.width, vp.height]), [[1024, 768], [1440, 900], [844, 390]]);
   const floor = matrix.targets.find(target => target.name === 'floor');
-  assert(floor.steps.some(step => step.click === '@employee-6b7bd350-7db2-4160-8471-cca2668c070d'));
-  assert(!JSON.stringify(matrix).includes('30000000-0000-4000-8000-000000000011'));
-  assert(!matrix.targets.some(target => /compatibility|required-pin/.test(target.name)));
+  assert(floor.steps.some(step => step.click === '@employee-30000000-0000-4000-8000-000000000011'));
+  assert(!floor.steps.some(step => step.click === '@employee-6b7bd350-7db2-4160-8471-cca2668c070d'));
+  assert.deepEqual(matrix.targets.filter(target => /compatibility|required-pin/.test(target.name)).map(target => target.name),
+    ['compatibility-update-gate', 'compatibility-created-store', 'required-pin-change']);
 });
 
 test('a nonexistent viewport/state or empty matrix cannot return a green audit', () => {

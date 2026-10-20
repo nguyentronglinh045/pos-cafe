@@ -14,7 +14,7 @@ on:
           - RUN_NAMESPACE_PROBE
           - RUN_CAPACITY_PROBE
       expected_source_sha:
-        description: 'Namespace probe only: exact reviewed 40-character commit SHA'
+        description: 'Namespace or capacity probe: exact reviewed 40-character commit SHA'
         required: false
         type: string
         default: ''
