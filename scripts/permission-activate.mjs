@@ -1,3 +1,4 @@
+import { permissionOperatorFailure } from './permission-operator-error.mjs';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -91,4 +92,4 @@ export async function activateDatabase(rawConfig,options={}){
   finally{await db.end().catch(()=>{});}
 }
 export async function main(path=process.argv[2]){return activateDatabase(explicitConfig(path));}
-if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){try{process.stdout.write(JSON.stringify(await main())+'\n');}catch(error){process.stderr.write(JSON.stringify({status:'BLOCKED',code:error instanceof ActivationError?error.code:'ACTIVATION_FAILED'})+'\n');process.exitCode=1;}}
+if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){try{process.stdout.write(JSON.stringify(await main())+'\n');}catch(error){process.stderr.write(JSON.stringify(permissionOperatorFailure(error instanceof ActivationError?error.code:'ACTIVATION_FAILED')??{status:'BLOCKED',code:error instanceof ActivationError?error.code:'ACTIVATION_FAILED'})+'\n');process.exitCode=1;}}

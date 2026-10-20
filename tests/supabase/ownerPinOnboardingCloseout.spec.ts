@@ -1,9 +1,13 @@
 import { expect, test, type APIResponse, type Page } from "@playwright/test";
-import { createHash, randomInt, randomUUID } from "node:crypto";
+import { createHash, createHmac, randomInt, randomUUID } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { appendFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { createClient, type SupabaseClient, type RealtimeChannel } from "@supabase/supabase-js";
 import { SupabaseRealtimePort } from "../../src/adapters/supabase/realtimePort";
+import { mapSupabaseError } from "../../src/adapters/supabase/errors";
+import { SupabaseAuthRepo } from "../../src/adapters/supabase/authRepo";
+import type { SupabaseAnyClient } from "../../src/adapters/supabase/repoShared";
 import pg from "pg";
 import { createOwnerRecoveryServer, createPgRecoveryExecutor, verifyPgRecoveryRole } from "../../scripts/owner-recovery-operator-core.mjs";
 import { assertNoCanaryLeaks, readCanaryArtifactFiles, type CanaryCapture, type CanarySink } from "../contracts/permissionCanaryOracle.ts";
@@ -83,20 +87,111 @@ async function waitForTc18Delivery(db: pg.Client, storeId: string, received: str
   throw new Error("PIN_CANARY_REALTIME_DELIVERY_NOT_READY");
 }
 
+// A single PostgreSQL statement observes one consistent snapshot. Only hashes
+// leave PostgreSQL; failed equality assertions cannot print credentials or PINs.
+// The two exclusions model the specific allowed effects, never a new baseline.
+async function tc18ProtectedState(db: pg.Client, allowedEffect?: 'admin-denial' | 'seed-fault') {
+  const relations = ['public.stores','public.store_settings','public.employees','private.employee_sessions',
+    'public.employee_admin_audit','private.employee_admin_requests','public.store_change_signals',
+    'private.store_no_reservations','private.bootstrap_requests','private.initial_seed_workflows','private.initial_seed_stages',
+    'public.categories','public.menu_items','public.option_groups','public.option_values','public.menu_item_option_groups',
+    'public.floor_areas','public.tables','public.floor_decor_items','public.orders','public.order_items',
+    'public.order_item_options','public.payments','public.write_operations','public.order_events']
+    .filter(name => allowedEffect !== 'admin-denial' || !['public.employee_admin_audit','private.employee_admin_requests'].includes(name));
+  const ownedStore = allowedEffect === 'seed-fault' ? fixture?.storeId : undefined;
+  if (allowedEffect === 'seed-fault' && !ownedStore) throw new Error('PIN_CANARY_STORE_MISSING');
+  const query = relations.map(name => {
+    const row = allowedEffect === 'seed-fault' && name === 'public.stores'
+      ? "case when t.id=$1::uuid then to_jsonb(t)-'seed_status'-'updated_at' else to_jsonb(t) end"
+      : allowedEffect === 'seed-fault' && name === 'private.initial_seed_workflows'
+        ? "case when t.store_id=$1::uuid then to_jsonb(t)-'status'-'workflow_revision'-'last_error_code'-'updated_at' else to_jsonb(t) end"
+        : 'to_jsonb(t)';
+    return `select '${name}' relation,coalesce(jsonb_agg(${row} order by (${row})::text),'[]'::jsonb) rows from ${name} t`;
+  }).join(' union all ');
+  return (await db.query(`select encode(extensions.digest(jsonb_agg(to_jsonb(s) order by relation)::text,'sha256'),'hex') hash from (${query}) s`, ownedStore ? [ownedStore] : [])).rows[0].hash as string;
+}
+
+async function assertAdminMacBinding(db: pg.Client, storeId: string, binding: {
+  kind: 'complete_required_pin_change' | 'owner_recovery'; actorKey: string; targetId: string; request: Record<string, any>;
+}) {
+  const rows = (await db.query(
+    'select r.*,k.secret_bytes from private.employee_admin_requests r join private.permission_request_mac_keys k on k.key_version=r.mac_key_version where r.store_id=$1 and r.request_id=$2 and r.actor_key=$3',
+    [storeId, binding.request.requestId, binding.actorKey])).rows;
+  expect(rows.length).toBe(1);
+  const row = rows[0];
+  expect(row.kind).toBe(binding.kind); expect(row.actor_type).toBe(binding.kind === 'owner_recovery' ? 'operator' : 'employee');
+  expect(Buffer.isBuffer(row.secret_bytes)).toBe(true); expect(Buffer.isBuffer(row.payload_mac)).toBe(true);
+  expect(row.payload_mac).toHaveLength(32); expect(row.mac_key_version).toBeGreaterThan(0);
+  expect(row.audit_keys).toEqual([[storeId, row.actor_type, binding.actorKey, binding.request.requestId, binding.targetId]]);
+  // Expected input comes from the independent test request, never the stored MAC.
+  // PostgreSQL supplies JSONB text canonicalization; Node crypto computes HMAC.
+  const preimage = binding.kind === 'complete_required_pin_change'
+    ? { kind: binding.kind, targetId: binding.targetId, requestId: binding.request.requestId,
+        expectedRevision: binding.request.expectedRevision,
+        newPinMac: createHmac('sha256', row.secret_bytes).update(binding.request.newPin).digest('hex') }
+    : { kind: binding.kind, targetId: binding.targetId, payload: binding.request };
+  const canonical = (await db.query('select $1::jsonb::text value', [JSON.stringify(preimage)])).rows[0].value;
+  expect(row.payload_mac.equals(createHmac('sha256', row.secret_bytes).update(canonical).digest())).toBe(true);
+  expect(row.payload_mac.equals(createHash('sha256').update(canonical).digest())).toBe(false);
+  // Register the key as a private canary once, through this scenario's existing record.
+  return row.secret_bytes.toString('hex') as string;
+}
+
+function assertCapturedReceiptProjection(groups: { admin: any[]; bootstrap: any[]; workflows: any[]; stages: any[] }, audit: any[], signals: any[]) {
+  const keys = (value: object, expected: string[]) => expect(Object.keys(value).sort()).toEqual([...expected].sort());
+  for (const { row } of audit) keys(row, ['store_id','actor_type','actor_key','request_id','target_id','kind','outcome','reason',
+    'before_snapshot','proposed_after','actual_after','actor_effective','catalog_revision','credential_changed','operator_case_ref','operator_proof_ref','occurred_at','details']);
+  for (const { row } of signals) keys(row, ['store_id','topic','revision','event_id','target_id']);
+  for (const { row } of groups.admin) {
+    keys(row, ['store_id','actor_type','actor_key','request_id','kind','payload_mac','mac_key_version','terminal_outcome','audit_keys']);
+    expect(/^\\x[a-f0-9]{64}$/.test(row.payload_mac)).toBe(true); expect(row.mac_key_version).toBeGreaterThan(0);
+    expect(row.audit_keys).toHaveLength(1);
+    for (const address of row.audit_keys) {
+      expect(address).toHaveLength(5);
+      expect(audit.filter(({ row: a }) => JSON.stringify([a.store_id,a.actor_type,a.actor_key,a.request_id,a.target_id]) === JSON.stringify(address))).toHaveLength(1);
+    }
+    if (['complete_required_pin_change','owner_recovery'].includes(row.kind)) {
+      if (row.terminal_outcome.ok) {
+        keys(row.terminal_outcome, ['ok','outcome','data']);
+        keys(row.terminal_outcome.data, ['credentialChanged','pinChangeRequired','employeeRevision']);
+      } else { keys(row.terminal_outcome, ['ok','error']); keys(row.terminal_outcome.error, ['code','message','details']); }
+    }
+  }
+  for (const { row } of groups.bootstrap) {
+    keys(row, ['store_id','request_id','owner_id','canonical_input','outcome']);
+    keys(row.canonical_input, ['ownerId','storeNo','displayName','address','seedDemo']);
+    keys(row.outcome, ['ok','outcome','data']); keys(row.outcome.data, ['storeId','storeNo','ownerId','seedRequested','seedWorkflowId']);
+  }
+  for (const { row } of groups.workflows) keys(row, ['workflow_id','store_id','requested','template_version','status','workflow_revision',
+    'auto_claimed_at','run_generation','last_error_code','created_at','updated_at']);
+  for (const { row } of groups.stages) {
+    keys(row, ['workflow_id','stage','stage_id','status','committed_at','receipt']);
+    if (row.receipt !== null) {
+      keys(row.receipt, ['stage','stageId','runGeneration','committedAt']);
+      expect(row.receipt.stage).toBe(row.stage); expect(row.receipt.stageId).toBe(row.stage_id);
+      expect(row.status).toBe('committed');
+    }
+  }
+}
+
 async function captureTc18Scenario(page: Page, scenario: CanaryScenario, canaries: string[], input: {
   realtime: string[]; console: string[]; telemetry: string[]; urls: string[]; messages?: unknown[];
+  macBinding?: { kind: "complete_required_pin_change" | "owner_recovery"; actorKey: string; targetId: string; request: Record<string, any> };
 }) {
-  registerTc18Canaries(scenario, canaries);
   const state = fixture!;
+  const scopedCanaries = input.macBinding ? [...canaries, await assertAdminMacBinding(state.db, state.storeId!, input.macBinding)] : canaries;
+  registerTc18Canaries(scenario, scopedCanaries);
   const db = state.db;
   const audit = (await db.query("select to_jsonb(a) row from public.employee_admin_audit a order by request_id")).rows;
-  const registry = [
-    ...(await db.query("select to_jsonb(r) row from private.employee_admin_requests r order by request_id")).rows,
-    ...(await db.query("select to_jsonb(b) row from private.bootstrap_requests b order by request_id")).rows,
-    ...(await db.query("select to_jsonb(w) row from private.initial_seed_workflows w order by workflow_id")).rows,
-    ...(await db.query("select to_jsonb(s) row from private.initial_seed_stages s order by workflow_id,stage")).rows,
-  ];
+  const groups = {
+    admin: (await db.query("select to_jsonb(r) row from private.employee_admin_requests r order by request_id")).rows,
+    bootstrap: (await db.query("select to_jsonb(b) row from private.bootstrap_requests b order by request_id")).rows,
+    workflows: (await db.query("select to_jsonb(w) row from private.initial_seed_workflows w order by workflow_id")).rows,
+    stages: (await db.query("select to_jsonb(s) row from private.initial_seed_stages s order by workflow_id,stage")).rows,
+  };
+  const registry = [...groups.admin,...groups.bootstrap,...groups.workflows,...groups.stages];
   const signals = (await db.query("select to_jsonb(s) row from public.store_change_signals s order by topic")).rows;
+  assertCapturedReceiptProjection(groups, audit, signals);
   const browserStorage = await page.evaluate(async () => {
     const databases: unknown[] = [];
     for (const entry of await indexedDB.databases()) {
@@ -134,7 +229,7 @@ async function captureTc18Scenario(page: Page, scenario: CanaryScenario, canarie
   const safeArtifact = JSON.stringify({ scenario, source: 'runtime', sinkCount: 11,
     rowCounts: { audit: audit.length, registry: registry.length, signals: signals.length } });
   writeFileSync(metadataPath, safeArtifact + '\n');
-  const report: CanaryScenarioCapture = { scenario, canaries, sinks: {
+  const report: CanaryScenarioCapture = { scenario, canaries: scopedCanaries, sinks: {
     audit: { captured: true, data: audit },
     registry: { captured: true, data: registry },
     signal: { captured: true, data: signals },
@@ -148,7 +243,7 @@ async function captureTc18Scenario(page: Page, scenario: CanaryScenario, canarie
     screenshotText: { captured: true, data: { text, pixels: screenshot } },
   } };
   tc18RuntimeReports.push(report);
-  expect(assertNoCanaryLeaks({ canaries, requiredSinks: ["audit", "registry", "signal", "realtime",
+  expect(assertNoCanaryLeaks({ canaries: scopedCanaries, requiredSinks: ["audit", "registry", "signal", "realtime",
     "browserStorage", "url", "console", "telemetry", "artifact", "errorMessage", "screenshotText"],
   observations: report.sinks as Partial<Record<CanarySink, CanaryCapture>> }).checkedSinkCount).toBe(11);
 }
@@ -426,6 +521,49 @@ async function expectSingleBootstrapStore() {
     (select count(*)::int from private.store_no_reservations where store_no=$2) reservations,
     (select count(*)::int from auth.users where id=$1) auth_users`, [state.storeId, state.storeNo])).rows[0];
   expect(snapshot).toEqual({ stores: 1, settings: 1, owners: 1, workflows: 1, bootstraps: 1, reservations: 1, auth_users: 1 });
+}
+
+async function assertOnlyRestrictedGateControls(page: Page, proofRetry = false) {
+  const controls = await page.locator('button,input,select,textarea,a[href],[role="button"],[contenteditable="true"]').evaluateAll(elements =>
+    elements.map(e => ({ tag: e.tagName.toLowerCase(), id: e.getAttribute('data-testid'), text: (e.textContent ?? '').trim(),
+      type: e.getAttribute('type') })));
+  expect(controls).toHaveLength(proofRetry ? 6 : 5);
+  const families = controls.map(c => {
+    if (c.tag === 'input' && c.type === 'password' && ['required-new-pin','required-confirm-pin'].includes(c.id ?? '')) return 'required-pin-form';
+    if (c.tag === 'button' && (c.id === 'complete-required-pin' || proofRetry && c.text === 'Thử lại')) return 'required-pin-form';
+    if (c.tag === 'button' && c.text === 'Đăng xuất') return 'logout';
+    if (c.tag === 'button' && c.text === 'Đổi quán') return 'change-store';
+    return 'UNEXPECTED_CONTROL';
+  });
+  expect([...new Set(families)].sort()).toEqual(['change-store','logout','required-pin-form']);
+  for (const id of ['required-new-pin','required-confirm-pin','complete-required-pin']) await expect(page.getByTestId(id)).toHaveCount(1);
+  await expect(page.getByRole('button', { name: 'Đăng xuất', exact: true })).toHaveCount(1);
+  await expect(page.getByRole('button', { name: 'Đổi quán', exact: true })).toHaveCount(1);
+}
+
+async function persistentMarkerNames(page: Page) {
+  return page.evaluate(async () => {
+    const databases: Array<{ name: string; stores: Array<{ name: string; keys: unknown[] }> }> = [];
+    for (const entry of await indexedDB.databases()) {
+      if (!entry.name) continue;
+      const db = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open(entry.name!);
+        request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+      try {
+        const stores: Array<{ name: string; keys: unknown[] }> = [];
+        for (const name of [...db.objectStoreNames].sort()) {
+          const keys = await new Promise<unknown[]>((resolve, reject) => { const result: unknown[] = [];
+            const request = db.transaction(name, 'readonly').objectStore(name).openKeyCursor();
+            request.onsuccess = () => { const cursor = request.result; if (!cursor) { resolve(result); return; }
+              result.push(cursor.key); cursor.continue(); }; request.onerror = () => reject(request.error); });
+          stores.push({ name, keys });
+        }
+        databases.push({ name: entry.name, stores });
+      } finally { db.close(); }
+    }
+    return { local: Object.keys(localStorage).sort(), session: Object.keys(sessionStorage).sort(),
+      cookies: document.cookie.split(';').map(v => v.trim().split('=')[0]).filter(Boolean).sort(),
+      databases: databases.sort((a,b) => a.name.localeCompare(b.name)) };
+  });
 }
 
 function watchStoreKeyExposure(page: Page) {
@@ -1123,6 +1261,48 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     expect(anonymousBody).not.toHaveProperty("authority");
     expect((await state.db.query(`select count(*)::int n from private.employee_sessions
       where store_id=$1`, [state.storeId])).rows[0].n).toBe(1);
+    // An authentically signed, already expired credential against the fixed
+    // synthetic Auth/REST target. The signing key never leaves this process.
+    await assertFixtureBinding(state.db);
+    let signingKey: string;
+    try { signingKey = execFileSync('docker', ['exec', 'supabase_auth_' + env.project, 'printenv', 'GOTRUE_JWT_SECRET'],
+      { encoding: 'utf8', stdio: ['ignore','pipe','ignore'], timeout: 5000, maxBuffer: 512 }).trim(); }
+    catch { throw new Error('PIN_EXPIRED_SESSION_FIXTURE_UNAVAILABLE'); }
+    if (signingKey.length < 32 || signingKey.length > 256) throw new Error('PIN_EXPIRED_SESSION_FIXTURE_REFUSED');
+    const encode = (value: object) => Buffer.from(JSON.stringify(value)).toString('base64url');
+    const now = Math.floor(Date.now() / 1000);
+    const signedJwt = (exp: number) => {
+      const input = encode({ alg: 'HS256', typ: 'JWT' }) + '.' + encode({ sub: state.storeId,
+        role: 'authenticated', aud: 'authenticated', iat: now - 120, exp });
+      return input + '.' + createHmac('sha256', signingKey).update(input).digest('base64url');
+    };
+    const beforeExpiredSession = await tc18ProtectedState(state.db);
+    // The same key and every other claim must first pass. Only exp changes in
+    // the negative control, ruling out a signature/audience/configuration error.
+    const valid = await page.request.post(`${env.api}/rest/v1/rpc/permission_get_store_session`, {
+      headers: { apikey: env.anonKey, authorization: 'Bearer ' + signedJwt(now + 60), 'x-pos-permission-contract': '2' }, data: {},
+    });
+    expect(valid.status()).toBe(200);
+    expect(await valid.json()).toMatchObject({ ok: true, data: { storeId: state.storeId } });
+    const expired = await page.request.post(`${env.api}/rest/v1/rpc/permission_get_store_session`, {
+      headers: { apikey: env.anonKey, authorization: 'Bearer ' + signedJwt(now - 60), 'x-pos-permission-contract': '2' }, data: {},
+    });
+    expect(expired.status()).toBe(401);
+    const expiredError = await expired.json();
+    expect(expiredError.code).toBe('PGRST303');
+    let storeReads = 0;
+    const staleClient = { auth: { getSession: async () => ({ data: { session: { user: { id: state.storeId } } }, error: null }) },
+      rpc: async (name: string) => {
+        if (name === 'permission_get_contract') return { data: { permissionContractVersion: 2, writeProtocolVersion: 1 }, error: null };
+        if (name !== 'permission_get_store_session') throw new Error('PIN_EXPIRED_SESSION_UNEXPECTED_RPC');
+        storeReads += 1;
+        return { data: null, error: expiredError };
+      } } as unknown as SupabaseAnyClient;
+    // Feed the actual REST rejection into the production adapter. The passcode
+    // component's AUTH_REQUIRED context independently checks the exact UI text.
+    await expect(new SupabaseAuthRepo(staleClient).getStoreSession()).rejects.toMatchObject({ code: 'AUTH_REQUIRED' });
+    expect(storeReads).toBe(1);
+    expect(await tc18ProtectedState(state.db)).toBe(beforeExpiredSession);
   });
 
   test("TC-PIN-02 restricted proof, network failure, reload and revoked gate", async ({ page }) => {
@@ -1148,6 +1328,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     await submitCreate(page, false);
     await acknowledgeAndReachRestricted(page);
     await expect(page.getByTestId("complete-required-pin")).toBeEnabled();
+    await assertOnlyRestrictedGateControls(page);
     await page.evaluate(() => { window.dispatchEvent(new Event("blur")); window.dispatchEvent(new Event("offline")); });
     await expect(page.getByTestId("complete-required-pin")).toBeDisabled();
     await expect(page.getByTestId("app-shell")).toHaveCount(0);
@@ -1182,6 +1363,8 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     await page.route("**/rest/v1/rpc/permission_check_required_pin_session", route => route.abort("failed"));
     await page.evaluate(() => window.dispatchEvent(new Event("focus")));
     await expect(page.getByText("Chưa kiểm tra được phiên. Vui lòng thử lại khi có kết nối.", { exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Thử lại", exact: true })).toBeVisible();
+    await assertOnlyRestrictedGateControls(page, true);
     await expect(page.getByTestId("complete-required-pin")).toBeDisabled();
     await expect(page.getByTestId("floor-view")).toHaveCount(0);
     await page.unroute("**/rest/v1/rpc/permission_check_required_pin_session");
@@ -1695,6 +1878,8 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     const completed = await rpc("permission_complete_required_pin_change", { p_request: request }, firstLogin!.token as string);
     expect(completed).toMatchObject({ ok: true, outcome: "applied", data: {
       credentialChanged: true, pinChangeRequired: false, employeeRevision: 1 } });
+    expect(Object.keys(completed).sort()).toEqual(["data", "ok", "outcome"]);
+    expect(Object.keys(completed.data).sort()).toEqual(["credentialChanged", "employeeRevision", "pinChangeRequired"]);
     const after = (await state.db.query(`select e.pin_change_required,e.permission_revision::int revision,
       (select count(*)::int from public.employee_admin_audit where store_id=$1) audit,
       (select count(*)::int from private.employee_admin_requests where store_id=$1) registry,
@@ -1926,8 +2111,14 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
         { ...valid, seedDemo: false },
         { ...valid, ownerId: randomUUID() },
       ]) {
+        const beforeConflict = await tc18ProtectedState(state.db);
         const conflict = await route.fetch({ postData: JSON.stringify({ p_request: altered }) });
-        expect(await conflict.json()).toMatchObject({ error: { code: "BOOTSTRAP_CONFLICT" } });
+        const actual = await conflict.json();
+        expect(actual).toMatchObject({ error: { code: "BOOTSTRAP_CONFLICT" } });
+        expect(mapSupabaseError({ message: actual.error.code }, "PERMISSION_UPDATE_UNAVAILABLE"))
+          .toMatchObject({ code: "BOOTSTRAP_CONFLICT",
+            message: "Thông tin tạo quán không khớp yêu cầu ban đầu. Đã dừng để tránh tạo trùng quán." });
+        expect(await tc18ProtectedState(state.db)).toBe(beforeConflict);
       }
       const foreignEmail = `foreign-${randomUUID()}@store.pos.local`;
       const foreignSignup = await fetch(`${env.api}/auth/v1/signup`, {
@@ -2113,6 +2304,11 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
   for (const drop of ["reserve", "signup", "bootstrap"] as const) {
     test(`TC-PIN-11 ${drop} transport failure before execute retries one canonical create`, async ({ page }) => {
       const capture = await installCreateTransport(page, drop, "before");
+      let beforeAuthFailure: string | undefined;
+      if (drop === 'signup') await page.route('**/auth/v1/signup', async route => {
+        beforeAuthFailure = await tc18ProtectedState(fixture!.db);
+        await route.fallback();
+      });
       await openCreate(page);
       await submitCreate(page);
       const expectedMessage = drop === "signup"
@@ -2121,6 +2317,10 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       await expect(page.getByText(expectedMessage, { exact: true }).first()).toBeVisible();
       await expect(page.getByTestId("create-store-button")).toHaveText("Thử lại tạo quán");
       expect(capture.counts[drop]).toBe(1);
+      if (drop === 'signup') {
+        expect(typeof beforeAuthFailure).toBe('string');
+        expect(await tc18ProtectedState(fixture!.db)).toBe(beforeAuthFailure);
+      }
       await page.getByTestId("create-store-button").click();
       await expect(page.getByTestId("create-store-result")).toBeVisible({ timeout: 15_000 });
       expect(capture.reserveRequestIds.length).toBeGreaterThanOrEqual(1);
@@ -2421,17 +2621,34 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
   test("TC-PIN-12 hard reload loses the in-memory Key, does not recreate, and accepts the externally saved Key", async ({ page }) => {
     const assertNoKeyExposure = watchStoreKeyExposure(page);
     const capture = await installCreateTransport(page);
+    let beforeBootstrapMarkers: Awaited<ReturnType<typeof persistentMarkerNames>> | undefined;
+    // Auth pairing may persist its own session. Observe marker names after Auth
+    // finishes and before the bootstrap request; no guessed SDK storage allowlist.
+    await page.route("**/rest/v1/rpc/permission_bootstrap_store", async route => {
+      beforeBootstrapMarkers ??= await persistentMarkerNames(page);
+      await route.fallback();
+    });
     await openCreate(page);
+    const beforeAuthMarkers = await persistentMarkerNames(page);
+    // Verified pinned supabase-js2.108.1 default (SupabaseClient.ts:318).
+    // App client does not override storageKey/userStorage/implicit flow.
+    // This is the legitimate Auth session, never an application Key/ACK marker.
+    const authStorageKey = 'sb-' + new URL(env.api).hostname.split('.')[0] + '-auth-token';
+    const afterAuthMarkers = { ...beforeAuthMarkers, local: [...new Set([...beforeAuthMarkers.local, authStorageKey])].sort() };
     await submitCreate(page);
     await expect(page.getByTestId("create-store-result")).toBeVisible({ timeout: 15_000 });
     const savedKey = (await page.getByTestId("result-store-key").textContent()) ?? "";
     expect(savedKey.length > 0).toBe(true);
+    expect(beforeBootstrapMarkers).toBeDefined();
+    expect(beforeBootstrapMarkers).toEqual(afterAuthMarkers);
+    expect(await persistentMarkerNames(page)).toEqual(beforeBootstrapMarkers);
     const persistedBefore = await page.evaluate(key => JSON.stringify({ ...localStorage, ...sessionStorage }).includes(key), savedKey);
     expect(persistedBefore).toBe(false);
     await assertNoKeyExposure(savedKey);
     await page.reload();
-    await expect(page.getByTestId("reload-store-key-notice")).toContainText("Hệ thống không thể hiển thị lại Store Key chưa được lưu.");
+    await expect(page.getByTestId("reload-store-key-notice")).toHaveText("Trang đã tải lại. Nếu bạn vừa tạo quán, hãy dùng Store Key đã lưu để ghép quán khi cần. Hệ thống không thể hiển thị lại Store Key chưa được lưu.");
     await expect(page.getByTestId("create-store-result")).toHaveCount(0);
+    expect(await persistentMarkerNames(page)).toEqual(beforeBootstrapMarkers);
     await expect(page.getByTestId("passcode-screen")).toBeVisible({ timeout: 15_000 });
     expect(page.url().includes(savedKey)).toBe(false);
     expect(await page.evaluate(key => JSON.stringify({ ...localStorage, ...sessionStorage }).includes(key), savedKey)).toBe(false);
@@ -3533,6 +3750,11 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     });
 
     await waitForTc18Delivery(state.db, state.storeId!, directFrames, "complete");
+    const adminCounts = async () => (await state.db.query(`select
+      (select count(*)::int from public.employee_admin_audit) audit,
+      (select count(*)::int from private.employee_admin_requests) registry`)).rows[0];
+    expect(await adminCounts()).toEqual({ audit: 0, registry: 0 });
+    const beforeDenial = await tc18ProtectedState(state.db, 'admin-denial');
     await page.getByTestId("required-new-pin").fill(TEMP_PIN);
     await page.getByTestId("required-confirm-pin").fill(TEMP_PIN);
     await page.getByTestId("complete-required-pin").click();
@@ -3546,13 +3768,15 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       target_id: owner.id, kind: "complete_required_pin_change", outcome: "denied",
       reason: "PIN_REUSE_NOT_ALLOWED", credential_changed: false });
     expect(denied.actual_after).toEqual(denied.before_snapshot);
+    expect(await tc18ProtectedState(state.db, 'admin-denial')).toBe(beforeDenial);
+    expect(await adminCounts()).toEqual({ audit: 1, registry: 1 });
     const deniedRegistry = (await state.db.query(`select payload_mac,mac_key_version,terminal_outcome
       from private.employee_admin_requests where store_id=$1 and request_id=$2`, [state.storeId, denialId])).rows[0];
     expect(deniedRegistry.payload_mac).toHaveLength(32);
     expect(deniedRegistry.mac_key_version).toBeGreaterThan(0);
     expect(deniedRegistry.terminal_outcome).toMatchObject({ error: { code: "PIN_REUSE_NOT_ALLOWED" } });
     await captureTc18Scenario(page, "complete:denial", [TEMP_PIN, canaryPin, key, session.token, owner.passcode_hash],
-      { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls, messages: [deniedRegistry.terminal_outcome] });
+      { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, macBinding: { kind: "complete_required_pin_change", actorKey: owner.id, targetId: owner.id, request: completionCalls[0].request }, urls, messages: [deniedRegistry.terminal_outcome] });
 
     await page.getByTestId("required-new-pin").fill(canaryPin);
     await page.getByTestId("required-confirm-pin").fill(canaryPin);
@@ -3589,8 +3813,9 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     expect(signal).toMatchObject({ topic: "permission", event_id: appliedId, target_id: owner.id });
     await expect.poll(() => realtimeFrames.some(frame => frame.includes(appliedId)), { timeout: 15_000 }).toBe(true);
     await captureTc18Scenario(page, "complete:success", [canaryPin, key, session.token, hash],
-      { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls, messages: [stored.terminal_outcome] });
+      { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, macBinding: { kind: "complete_required_pin_change", actorKey: owner.id, targetId: owner.id, request: completionCalls[1].request }, urls, messages: [stored.terminal_outcome] });
 
+    const beforeReplay = await tc18ProtectedState(state.db);
     const headers = completionCalls[1].headers;
     const replay = await page.request.post(`${env.api}/rest/v1/rpc/permission_complete_required_pin_change`, {
       headers: { apikey: headers.apikey, authorization: headers.authorization,
@@ -3599,6 +3824,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     });
     expect(replay.ok()).toBe(true);
     expect((await replay.json()).error?.code).toBe("EMPLOYEE_SESSION_REQUIRED");
+    expect(await tc18ProtectedState(state.db)).toBe(beforeReplay);
     expect((await state.db.query("select count(*)::int n from public.employee_admin_audit where store_id=$1", [state.storeId])).rows[0].n).toBe(2);
     await captureTc18Scenario(page, "complete:replay", [canaryPin, key, session.token, hash],
       { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls });
@@ -3700,7 +3926,9 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     const request = { requestId: randomUUID(), storeId: state.storeId, targetId: owner.id,
       operatorRef: "tc18-local", caseRef: "tc18-case", proofRef: "tc18-proof", newPin: pin };
     const before = (await state.db.query("select count(*)::int n from public.employee_admin_audit where store_id=$1", [state.storeId])).rows[0].n;
+    const beforeDenial = await tc18ProtectedState(state.db);
     const denied = (await state.db.query("select private.permission_recover_owner($1) result", [request])).rows[0].result;
+    expect(await tc18ProtectedState(state.db)).toBe(beforeDenial);
     expect(denied.error?.code).toBe("FORBIDDEN");
     expect((await state.db.query("select count(*)::int n from public.employee_admin_audit where store_id=$1", [state.storeId])).rows[0].n).toBe(before);
     await captureTc18Scenario(page, "recovery:denial", [pin, key, owner.passcode_hash],
@@ -3732,7 +3960,9 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       await state.db.query(`create trigger tc18_recovery_audit_fault before insert on public.employee_admin_audit
         for each row execute function private.tc18_recovery_audit_fault()`);
       faultInstalled = true;
+      const beforeFault = await tc18ProtectedState(state.db);
       faultResult = await recover(request);
+      expect(await tc18ProtectedState(state.db)).toBe(beforeFault);
       expect(faultResult.error?.code).toBe("PERMISSION_UPDATE_UNAVAILABLE");
       expect((await state.db.query("select count(*)::int n from public.employee_admin_audit where store_id=$1", [state.storeId])).rows[0].n).toBe(before);
       await captureTc18Scenario(page, "recovery:fault", [pin, key, owner.passcode_hash],
@@ -3747,11 +3977,13 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     await expect.poll(() => realtimeFrames.some(frame => frame.includes(request.requestId)), { timeout: 15_000 }).toBe(true);
     const appliedHash = (await state.db.query("select passcode_hash from public.employees where id=$1", [owner.id])).rows[0].passcode_hash;
     await captureTc18Scenario(page, "recovery:success", [pin, key, owner.passcode_hash, appliedHash],
-      { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls, messages: [applied] });
+      { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, macBinding: { kind: "owner_recovery", actorKey: request.operatorRef, targetId: owner.id, request: request }, urls, messages: [applied] });
+    const beforeReplay = await tc18ProtectedState(state.db);
     const replayed = await recover(request);
+    expect(await tc18ProtectedState(state.db)).toBe(beforeReplay);
     expect(replayed).toMatchObject({ ok: true, outcome: "replayed" });
     await captureTc18Scenario(page, "recovery:replay", [pin, key, owner.passcode_hash, appliedHash],
-      { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls, messages: [replayed] });
+      { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, macBinding: { kind: "owner_recovery", actorKey: request.operatorRef, targetId: owner.id, request: request }, urls, messages: [replayed] });
     const changed = (await state.db.query(`select passcode_hash,pin_change_required,permission_revision::int revision,
       passcode_hash=extensions.crypt($2,passcode_hash) matches from public.employees where id=$1`, [owner.id, pin])).rows[0];
     expect(changed).toMatchObject({ pin_change_required: true, matches: true, revision: 2 });
@@ -3826,7 +4058,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       expect(await recover(lostRequest)).toMatchObject({ ok: true, outcome: "replayed" });
       const lostHash = (await state.db.query("select passcode_hash from public.employees where id=$1", [owner.id])).rows[0].passcode_hash;
       await captureTc18Scenario(page, "recovery:lostAck", [pin, lostPin, key, owner.passcode_hash, lostHash],
-        { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls });
+        { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, macBinding: { kind: "owner_recovery", actorKey: lostRequest.operatorRef, targetId: owner.id, request: lostRequest }, urls });
     } finally {
       await caller.end().catch(() => undefined);
       if (callerPid) {
@@ -3890,23 +4122,29 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
             { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls });
         });
       let denialProbed = false;
+      let beforeFault: string | undefined;
       await page.route("**/rest/v1/rpc/permission_bootstrap_store", async route => {
         if (!denialProbed) {
           denialProbed = true;
           const valid = route.request().postDataJSON() as { p_request: Record<string, unknown> };
+          const beforeDenial = await tc18ProtectedState(state.db);
           const denied = await route.fetch({ postData: JSON.stringify({ p_request: { ...valid.p_request, displayName: "" } }) });
+          expect(await tc18ProtectedState(state.db)).toBe(beforeDenial);
           expect(denied.ok()).toBe(true);
           expect((await denied.json()).error?.code).toBe("INVALID_WRITE_REQUEST");
           expect((await state.db.query("select count(*)::int n from private.bootstrap_requests")).rows[0].n).toBe(0);
           await captureTc18Scenario(page, "bootstrap:denial", [capture.signupSecret!],
             { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls });
         }
+        if (faultInstalled) beforeFault = await tc18ProtectedState(state.db);
         await route.fallback();
       });
       await openCreate(page);
       await submitCreate(page);
       await expectPendingCreateFrozen(page);
       expect(denialProbed).toBe(true);
+      expect(typeof beforeFault).toBe("string");
+      expect(await tc18ProtectedState(state.db)).toBe(beforeFault);
       expect(capture.counts.bootstrap).toBe(1);
       expect((await state.db.query("select count(*)::int n from public.stores")).rows[0].n).toBe(0);
       expect((await state.db.query("select count(*)::int n from private.bootstrap_requests")).rows[0].n).toBe(0);
@@ -3940,6 +4178,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       await expect(page.getByTestId("passcode-screen")).toBeVisible();
       await expect(page.getByTestId("result-store-key")).toHaveCount(0);
       expect(!!bootstrapHeaders).toBe(true);
+      const beforeReplay = await tc18ProtectedState(state.db);
       const directReplay = await page.request.post(`${env.api}/rest/v1/rpc/permission_bootstrap_store`, {
         headers: { apikey: bootstrapHeaders!.apikey, authorization: bootstrapHeaders!.authorization,
           "x-pos-permission-contract": "2", "content-type": "application/json" },
@@ -3947,6 +4186,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       });
       expect(directReplay.ok()).toBe(true);
       expect((await directReplay.json()).outcome).toBe("replayed");
+      expect(await tc18ProtectedState(state.db)).toBe(beforeReplay);
       urls.push(`${env.api}/rest/v1/rpc/permission_bootstrap_store`);
       await captureTc18Scenario(page, "bootstrap:replay", [capture.signupSecret!, key],
         { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls });
@@ -4027,8 +4267,30 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     const state = fixture!;
     const ownerHash = (await state.db.query("select passcode_hash from public.employees where store_id=$1 and role='owner'", [state.storeId])).rows[0].passcode_hash;
     await installTc15MenuFault();
+    let menuFaultObserved = false;
+    await page.route("**/rest/v1/rpc/permission_run_initial_seed_stage", async route => {
+      if (route.request().postDataJSON()?.p_request?.stage !== 'menu') { await route.fallback(); return; }
+      const metadata = async () => (await state.db.query(`select w.status,w.workflow_revision::int revision,w.last_error_code,
+        w.updated_at workflow_updated_at,s.seed_status,s.updated_at store_updated_at
+        from private.initial_seed_workflows w join public.stores s on s.id=w.store_id where s.id=$1`, [state.storeId])).rows[0];
+      const beforeMetadata = await metadata();
+      expect(beforeMetadata).toMatchObject({ status: 'in_progress', seed_status: 'pending', last_error_code: null });
+      const beforeFault = await tc18ProtectedState(state.db, 'seed-fault');
+      const response = await route.fetch();
+      expect((await response.json()).error?.code).toBe('PERMISSION_UPDATE_UNAVAILABLE');
+      expect(await tc18ProtectedState(state.db, 'seed-fault')).toBe(beforeFault);
+      const afterMetadata = await metadata();
+      expect(afterMetadata).toMatchObject({ status: 'needs_retry', seed_status: 'failed',
+        last_error_code: 'PERMISSION_UPDATE_UNAVAILABLE', revision: beforeMetadata.revision + 1 });
+      expect(afterMetadata.workflow_updated_at.getTime()).toBeGreaterThanOrEqual(beforeMetadata.workflow_updated_at.getTime());
+      expect(afterMetadata.store_updated_at.getTime()).toBeGreaterThanOrEqual(beforeMetadata.store_updated_at.getTime());
+      menuFaultObserved = true;
+      await route.fulfill({ response });
+    });
     await loginWithNewPin(page);
     await expect(page.getByTestId("retry-initial-seed")).toBeVisible({ timeout: 20_000 });
+    expect(menuFaultObserved).toBe(true);
+    await page.unroute("**/rest/v1/rpc/permission_run_initial_seed_stage");
     await expect(page.getByText("Chưa hoàn tất dữ liệu mẫu. Bạn vẫn có thể vào quán hoặc chọn thử lại.", { exact: true }).first()).toBeVisible();
     expect((await stageSnapshot()).stages.map(row => row.status)).toEqual(["committed", "pending", "pending"]);
     expect(!!ownerHeaders).toBe(true);
@@ -4037,11 +4299,17 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     const seedCanaries = [NEW_PIN, key, ownerHeaders!["x-pos-employee-token"], ownerHash];
     await captureTc18Scenario(page, "seed:fault", seedCanaries,
       { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls });
+    const beforeDenial = await tc18ProtectedState(state.db);
     const denial = await page.request.post(`${env.api}/rest/v1/rpc/permission_run_initial_seed_stage`, {
       headers: ownerHeaders!, data: { p_request: { stage: "menu", runGeneration: 0 } },
     });
     expect(denial.ok()).toBe(true);
-    expect((await denial.json()).error?.code).toBe("INITIAL_SEED_ATTEMPT_STALE");
+    const actualDenial = await denial.json();
+    expect(actualDenial.error?.code).toBe("INITIAL_SEED_ATTEMPT_STALE");
+    expect(mapSupabaseError({ message: actualDenial.error.code }, 'PERMISSION_UPDATE_UNAVAILABLE'))
+      .toMatchObject({ code: 'INITIAL_SEED_ATTEMPT_STALE',
+        message: 'Tiến trình dữ liệu mẫu đã thay đổi. Kiểm tra trạng thái trước khi thử lại.' });
+    expect(await tc18ProtectedState(state.db)).toBe(beforeDenial);
     expect((await stageSnapshot()).stages.map(row => row.status)).toEqual(["committed", "pending", "pending"]);
     await captureTc18Scenario(page, "seed:denial", seedCanaries,
       { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls });
@@ -4078,7 +4346,9 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     await captureTc18Scenario(page, "seed:success", seedCanaries,
       { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls });
     const generation = (await state.db.query("select run_generation::int generation from private.initial_seed_workflows where store_id=$1", [state.storeId])).rows[0].generation;
+    const beforeReplay = await tc18ProtectedState(state.db);
     await replayCommittedStageThroughRest(page, "menu", ownerHeaders!["x-pos-employee-token"], generation);
+    expect(await tc18ProtectedState(state.db)).toBe(beforeReplay);
     expect(await stageReplayEvidence("menu")).toEqual(menuAtComplete);
     await captureTc18Scenario(page, "seed:replay", seedCanaries,
       { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls });
@@ -4171,6 +4441,15 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       await state.db.query(`create trigger tc18_completion_audit_fault before insert on public.employee_admin_audit
         for each row execute function private.tc18_completion_audit_fault()`);
       faultInstalled = true;
+      let faultObserved = false;
+      await page.route("**/rest/v1/rpc/permission_complete_required_pin_change", async route => {
+        const beforeFault = await tc18ProtectedState(state.db);
+        const response = await route.fetch();
+        expect((await response.json()).error?.code).toBe('PERMISSION_UPDATE_UNAVAILABLE');
+        expect(await tc18ProtectedState(state.db)).toBe(beforeFault);
+        faultObserved = true;
+        await route.fulfill({ response });
+      });
       await page.getByTestId("required-new-pin").fill(canaryPin);
       await page.getByTestId("required-confirm-pin").fill(canaryPin);
       await page.getByTestId("complete-required-pin").click();
@@ -4178,6 +4457,8 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       await expect(page.getByTestId("session-notice")).toHaveText(
         "Chưa xác nhận được việc đổi PIN. Vui lòng đăng nhập lại bằng PIN mới; nếu chưa được, thử lại bằng PIN tạm.");
       expect(requests).toHaveLength(1);
+      expect(faultObserved).toBe(true);
+      await page.unroute("**/rest/v1/rpc/permission_complete_required_pin_change");
       expect((await state.db.query("select count(*)::int n from public.employee_admin_audit where store_id=$1", [state.storeId])).rows[0].n).toBe(0);
       expect((await state.db.query("select passcode_hash,pin_change_required from public.employees where id=$1", [owner.id])).rows[0])
         .toEqual({ passcode_hash: owner.passcode_hash, pin_change_required: true });
@@ -4216,7 +4497,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     const committedHash = (await state.db.query("select passcode_hash from public.employees where id=$1", [owner.id])).rows[0].passcode_hash;
     await captureTc18Scenario(page, "complete:lostAck", [canaryPin, key, owner.passcode_hash,
       committedHash, requests[1].headers["x-pos-employee-token"]],
-    { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, urls });
+    { realtime: realtimeFrames, console: consoleRows, telemetry: telemetryRows, macBinding: { kind: "complete_required_pin_change", actorKey: owner.id, targetId: owner.id, request: requests[1].payload }, urls });
     await page.locator('[data-testid^="employee-"]').first().click();
     for (const digit of canaryPin) await page.getByTestId(`pin-${digit}`).click();
     await page.getByTestId("unlock-button").click();
@@ -4296,8 +4577,27 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       await operatorPage.getByLabel("PIN tạm mới · đúng 6 chữ số").fill(pin);
       await operatorPage.getByLabel(/Tôi đã đối chiếu hồ sơ/).check();
       const requestId = await operatorPage.getByLabel("Mã yêu cầu").inputValue();
+      let recoveryCalls = 0;
+      operatorPage.on('request', request => { if (request.url().endsWith('/api/recover')) recoveryCalls += 1; });
+      await operatorPage.route('**/api/recover', async route => {
+        const committed = await route.fetch();
+        expect((await committed.json()).outcome).toBe('applied');
+        await route.abort('failed');
+      });
       await operatorPage.getByRole("button", { name: "Phát hành PIN tạm" }).click();
-      await expect(operatorPage.getByText(/Đã phát hành PIN tạm/)).toBeVisible();
+      await expect(operatorPage.getByText('Chưa xác nhận được việc khôi phục PIN. Kiểm tra hồ sơ trước khi thử lại cùng yêu cầu.', { exact: true })).toBeVisible();
+      await expect(operatorPage.getByRole('button', { name: 'Thử lại cùng yêu cầu' })).toBeVisible();
+      expect(recoveryCalls).toBe(1);
+      expect(await operatorPage.getByLabel('Mã yêu cầu').inputValue()).toBe(requestId);
+      // A real PostgreSQL commit preceded the lost HTTP ACK. Nothing replays
+      // until this explicit operator action; the historical replay changes no rows.
+      const beforeReplay = await tc18ProtectedState(state.db);
+      await operatorPage.unroute('**/api/recover');
+      await operatorPage.getByRole('button', { name: 'Thử lại cùng yêu cầu' }).click();
+      await expect(operatorPage.getByText(/Đã tìm thấy receipt của yêu cầu này/)).toBeVisible();
+      expect(recoveryCalls).toBe(2);
+      expect(await operatorPage.getByLabel('Mã yêu cầu').inputValue()).toBe(requestId);
+      expect(await tc18ProtectedState(state.db)).toBe(beforeReplay);
       expect((await state.db.query(`select actor_type,actor_key,request_id,operator_case_ref,operator_proof_ref
         from public.employee_admin_audit where store_id=$1 and request_id=$2`, [state.storeId, requestId])).rows[0])
         .toMatchObject({ actor_type: "operator", actor_key: "tc18-operator-local", request_id: requestId,

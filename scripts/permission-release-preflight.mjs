@@ -1,3 +1,4 @@
+import { permissionOperatorFailure, attachPermissionOperatorMessage } from './permission-operator-error.mjs';
 import { readFileSync } from 'node:fs';
 import { resolve, basename, dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -10,7 +11,7 @@ import { activationBundleManifest, inspectExpectedEmptyTarget } from './permissi
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const sha = /^[a-f0-9]{64}$/;
 const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
-const fail = code => { throw new PreflightError(code); };
+const fail = code => { throw attachPermissionOperatorMessage(new PreflightError(code), code); };
 const bindingKeys = ['projectRef', 'backendHost', 'database', 'sourceFingerprint', 'bundleHash'];
 const binding = target => Object.fromEntries(bindingKeys.map(key => [key, target[key]]));
 
@@ -135,7 +136,8 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
     process.stdout.write(JSON.stringify(report) + '\n');
     if (report.status !== 'READY') process.exitCode = 1;
   } catch (error) {
-    process.stderr.write(JSON.stringify({ status: 'BLOCKED', code: error instanceof PreflightError ? error.reason : 'PERMISSION_TOOL_UNAVAILABLE' }) + '\n');
+    const code = error instanceof PreflightError ? error.reason : 'PERMISSION_TOOL_UNAVAILABLE';
+    process.stderr.write(JSON.stringify(permissionOperatorFailure(code) ?? { status: 'BLOCKED', code }) + '\n');
     process.exitCode = 1;
   }
 }

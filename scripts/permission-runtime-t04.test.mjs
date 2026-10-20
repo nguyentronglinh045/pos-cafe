@@ -5,7 +5,7 @@ import{runtimeStageCatalog}from'./permission-runtime-catalog.mjs';
 import{backendInvocation}from'./project-backend-t04.mjs';
 import{reclaimUnitState}from'./permission-runtime-t04-reclaim.mjs';
 import{assertLegacyDependencyBoundary}from'./permission-legacy-head.mjs';
-import{t04Lifecycle,t04StageEnvironment,assertT04ResourceFacts,assertT04ContainerContinuity}from'./permission-runtime-t04-fixture.mjs';
+import{t04Lifecycle,t04StageEnvironment,assertT04ResourceFacts,assertT04ContainerContinuity,t04BaselineMemberships}from'./permission-runtime-t04-fixture.mjs';
 import{CI1_LIMITS,CI1_PROJECT,ci1Identity}from'./permission-ci1-policy.mjs';
 import{ci1FailureExport,ci1IsolatedFailure,t04CommandOptions}from'./permission-runtime-t04-worker.mjs';
 const catalog=runtimeStageCatalog().filter(s=>s.runtimeProfile==='SUPABASE_T04'),ids=catalog.map(s=>s.stage);
@@ -70,6 +70,19 @@ test('T04 actual failed-test selector cannot confuse earlier skipped or pending 
  }
  const facts=t04RunnerFailureFacts({required},{discovery:[],results:[],errorCount:0,hookErrorCount:0});
  assert.equal(facts.t04MissingRequired,2);assert.equal(facts.t04FirstFailedRequired,0);assert(!('t04FirstFailedLine'in facts));
+});
+
+test('T04 reset permits only PG17 fixed ADMIN-only creator edge and still requires every unrelated baseline edge unchanged',()=>{
+ const original=[{role:'base_role',member:'base_member',grantor:'supabase_admin',admin_option:false,inherit_option:true,set_option:true}];
+ const edge={role:'pos_owner_recovery',member:'postgres',grantor:'supabase_admin',admin_option:true,inherit_option:false,set_option:false};
+ assert.deepEqual(t04BaselineMemberships(original,false),original);assert.deepEqual(t04BaselineMemberships([...original,edge],true),original);
+ for(const delta of[{member:'authenticated'},{grantor:'postgres'},{admin_option:false},{inherit_option:true},{set_option:true},{raw:'PRIVATE'}])
+  assert.throws(()=>t04BaselineMemberships([...original,{...edge,...delta}],true));
+ for(const rows of[original,[...original,edge,edge],[...original,edge,{...edge,role:'another',member:'pos_owner_recovery'}]])
+  assert.throws(()=>t04BaselineMemberships(rows,true));
+ assert.throws(()=>t04BaselineMemberships([...original,edge],false));
+ for(const rows of[[{...original[0],set_option:false},edge],[...original,{...original[0],role:'extra_role'},edge]])
+  assert.notDeepEqual(t04BaselineMemberships(rows,true),original);
 });
 
 test('T04 orchestrator runs exactly nineteen canonical stages, preserves physical and logical backend and closes once',async()=>{

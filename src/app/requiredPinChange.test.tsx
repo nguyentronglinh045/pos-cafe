@@ -125,6 +125,20 @@ describe("required PIN gate", () => {
     expect(session.completeRequiredPinChange).not.toHaveBeenCalled();
   });
 
+  it("returns to login on completion revision conflict without replay", async () => {
+    const { ports, session } = makePorts();
+    session.completeRequiredPinChange.mockRejectedValueOnce(new AppError("EMPLOYEE_VERSION_CONFLICT", "raw backend detail"));
+    renderGate(ports);
+    await waitFor(() => expect(screen.getByTestId("complete-required-pin")).toBeEnabled());
+    fireEvent.change(screen.getByTestId("required-new-pin"), { target: { value: "384729" } });
+    fireEvent.change(screen.getByTestId("required-confirm-pin"), { target: { value: "384729" } });
+    fireEvent.click(screen.getByTestId("complete-required-pin"));
+    await waitFor(() => expect(useAppStore.getState().sessionNotice).toBe("PIN hoặc trạng thái tài khoản đã thay đổi. Vui lòng đăng nhập lại."));
+    expect(usePermissionSession.getState()).toMatchObject({ session: null, requiredPinSession: null, bundle: null });
+    expect(session.completeRequiredPinChange).toHaveBeenCalledOnce();
+    expect(screen.queryByText("raw backend detail")).not.toBeInTheDocument();
+  });
+
   it("shows exact PIN reuse and malformed request responses", async () => {
     const { ports, session } = makePorts();
     session.completeRequiredPinChange.mockRejectedValueOnce(new AppError("PIN_REUSE_NOT_ALLOWED", "internal"))

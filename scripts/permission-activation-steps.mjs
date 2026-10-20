@@ -1,7 +1,8 @@
+import { attachPermissionOperatorMessage } from './permission-operator-error.mjs';
 import { readFileSync } from 'node:fs';
 import { ACTIVATION_SQL_ORDER, inspectAllTenantRows } from './permission-activation-bundle.mjs';
 
-export class ActivationError extends Error { constructor(code){super(code);this.name='ActivationError';this.code=code;} }
+export class ActivationError extends Error { constructor(code){super(code);this.name='ActivationError';this.code=code;attachPermissionOperatorMessage(this,code);} }
 const fail=code=>{throw new ActivationError(code);};
 export function stripTopLevelTransactions(sql){
   let mask='',i=0,state='code',tag='';

@@ -13,6 +13,21 @@ const resets=new Set(['candidate-e2e','candidate-seed-recovery-database','candid
   'transition-database','transition-e2e','transition-compatibility-database']);
 const fail=()=>{throw Error('T04_FIXTURE_BOUNDARY_REFUSED');};
 const check=value=>{if(!value)fail();};
+// PG17 grants a non-superuser creator ADMIN-only membership in its new role.
+// The fixed fixture creator is postgres; the bootstrap superuser is supabase_admin.
+// Keep all unrelated edges byte-for-byte for the original-baseline comparison.
+export function t04BaselineMemberships(rows,hasRecovery){
+ check(Array.isArray(rows)&&rows.length<=10000&&typeof hasRecovery==='boolean');
+ const fields=['role','member','grantor','admin_option','inherit_option','set_option'];
+ for(const row of rows)check(row&&Object.keys(row).sort().join(',')===fields.slice().sort().join(',')
+  &&['role','member','grantor'].every(k=>typeof row[k]==='string'&&Buffer.byteLength(row[k])>=1&&Buffer.byteLength(row[k])<=63)
+  &&['admin_option','inherit_option','set_option'].every(k=>typeof row[k]==='boolean'));
+ const related=rows.filter(r=>[r.role,r.member,r.grantor].includes('pos_owner_recovery'));
+ if(hasRecovery)check(related.length===1&&related[0].role==='pos_owner_recovery'&&related[0].member==='postgres'
+  &&related[0].grantor==='supabase_admin'&&related[0].admin_option===true&&related[0].inherit_option===false&&related[0].set_option===false);
+ else check(related.length===0);
+ return rows.filter(r=>![r.role,r.member,r.grantor].includes('pos_owner_recovery'));
+}
 // The same real resource/write/namespace facts are required while eleven
 // services are deliberately stopped. Container continuity is checked separately;
 // no read-back fact is changed to pretend that stopped containers are running.
@@ -217,7 +232,7 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
     const recovery=currentRoles.find(r=>r.rolname==='pos_owner_recovery');
     if(recovery)check(['rolsuper','rolinherit','rolcreaterole','rolcreatedb','rolcanlogin','rolreplication','rolbypassrls']
       .every(k=>recovery[k]===false)&&recovery.rolconnlimit===-1&&recovery.rolvaliduntil===null&&recovery.rolconfig===null);
-    check(runtimeHash(allowed)===runtimeHash(originalRoles)&&runtimeHash(await memberships())===originalMemberships
+    check(runtimeHash(allowed)===runtimeHash(originalRoles)&&runtimeHash(t04BaselineMemberships(await memberships(),!!recovery))===originalMemberships
       &&runtimeHash(await settings())===originalSettings);
     const hooks=await hook();check(hooks.length<=1&&hooks.every(r=>r.setdatabase===0&&r.setting==='pgrst.db_pre_request=public.permission_contract_pre_request'));
     const info=ownFile(archivePath,8*1024**2);check(info.ino===archiveInfo.ino&&info.dev===archiveInfo.dev&&runtimeHash(readFileSync(archivePath))===archiveSHA);

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { digest } from "../../scripts/permission-preflight-core.mjs";
 import { withFixtureCleanup } from "../../scripts/permission-fixture-diagnostics.mjs";
-import { cleanupFinancialFixture, db, fixtureEvidence, resetFinancialFixture, setupFinancialFixture } from "./permissionFinancialFixture";
+import { cleanupFinancialFixture, db, env, fixtureEvidence, resetFinancialFixture, setupFinancialFixture } from "./permissionFinancialFixture";
 export * from "./permissionFinancialFixture";
 
 export const readRelations = ["stores", "store_settings", "employees", "categories", "menu_items", "option_groups", "option_values", "menu_item_option_groups",
@@ -68,6 +68,22 @@ export async function setupReadFixture() {
       'permission_list_order_history','permission_get_order_history_detail','get_payment_receipt','permission_get_sales_report','permission_list_report_orders','permission_get_menu_admin',
       'permission_get_floor_admin','permission_get_settings_admin','permission_get_store_display'))`)).rows.map(r => r.d);
   await db.query("notify pgrst,'reload schema'");
+  // NOTIFY is asynchronous. Probe this newly added read surface without an
+  // employee token, so readiness cannot create/refresh a session or business row.
+  // Only the cache-miss response is transient; tested operations are never retried.
+  const deadline = Date.now() + 3000;
+  while (Date.now() < deadline) {
+    const response = await fetch(env.api + "/rest/v1/rpc/permission_get_floor_operational", {
+      method: "POST", headers: { apikey: env.anonKey, Authorization: "Bearer " + env.storeJwt,
+        "Content-Type": "application/json" }, body: "{}",
+      signal: AbortSignal.timeout(Math.max(1, Math.min(1000, deadline - Date.now()))),
+    });
+    const result = await response.json();
+    if (response.status === 200 && result?.ok === false && result.error?.code === "EMPLOYEE_SESSION_REQUIRED") return;
+    if (response.status !== 404 || result?.code !== "PGRST202") throw new Error("READ_API_READINESS_REFUSED");
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+  throw new Error("READ_API_NOT_READY");
 }
 export async function resetReadFixture() {
   if (!staged) return;

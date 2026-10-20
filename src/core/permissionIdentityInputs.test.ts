@@ -27,7 +27,9 @@ describe("required PIN input", () => {
   const required = { requestId: id, expectedRevision: 0, newPin: "927416" };
   it("accepts only the restricted completion payload", () => expect(parseRequiredPinChange(required)).toEqual(required));
   it.each(["currentPin", "targetId", "role", "pinChangeRequired", "confirmPin"])("rejects extra %s", key => {
-    expect(() => parseRequiredPinChange({ ...required, [key]: "123456" })).toThrow(expect.objectContaining({ code: "INVALID_EMPLOYEE_REQUEST" }));
+    expect(() => parseRequiredPinChange({ ...required, [key]: "123456" })).toThrow(expect.objectContaining({
+      code: "INVALID_EMPLOYEE_REQUEST", message: "Yêu cầu đổi PIN không hợp lệ. Vui lòng thử lại.",
+    }));
   });
   it.each(["", "12345", "1234567", "１２３４５６", 123456, null])("rejects non-ASCII/sized PIN %s", newPin => {
     expect(() => parseRequiredPinChange({ ...required, newPin })).toThrow(expect.objectContaining({ code: "INVALID_EMPLOYEE_REQUEST", message: "PIN mới phải gồm 6 chữ số." }));

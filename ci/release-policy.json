@@ -41,7 +41,8 @@
     "scripts/permission-runtime-pin-ui.mjs": "a5effa0a9c2a97ad1c35151aa4f8bfb1a35331e3d88edf9f4cdd4fc82bae93f1",
     "scripts/permission-pin-ui-policy.mjs": "d23227f8f872c33aa02634e80695577cdf6caaa0040a116f19bc7c1f2adc906e",
     "ui-audit/required-pin-change.html": "8ae36b6c25b987f3090c6222c99fd52653f70788974699cb3e14a883d37f40b9",
-    "ui-audit/runtime.mjs": "41af4591f6e1c9b6171adb46f169ff274b3a4358e075dedc8a65143b9ff181ce"
+    "ui-audit/runtime.mjs": "41af4591f6e1c9b6171adb46f169ff274b3a4358e075dedc8a65143b9ff181ce",
+    "scripts/permission-operator-error.mjs": "36a838cab79798a66dc46185d8472bf8e434a52bacfb322f122995a221f1abb7"
   },
   "preview": {
     "projectId": "prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en",

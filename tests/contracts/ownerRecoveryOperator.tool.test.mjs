@@ -1,7 +1,18 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { randomUUID } from 'node:crypto';
 import { createOwnerRecoveryServer, createPgRecoveryExecutor, projectRecoveryResult,
-  recoveryMessages, validateRecoveryRequest } from '../../scripts/owner-recovery-operator-core.mjs';
+  validateRecoveryRequest } from '../../scripts/owner-recovery-operator-core.mjs';
+
+// Independent exact wording from the accepted context contract, not the production map.
+const expectedRecoveryMessages = {
+  "OWNER_RECOVERY_REVIEW_REQUIRED": "Chưa đủ căn cứ khôi phục chủ quán. Cần xác minh hồ sơ hỗ trợ.",
+  "OWNER_PROTECTED": "Tài khoản cần khôi phục phải là chủ quán đang hoạt động.",
+  "NOT_FOUND": "Không tìm thấy tài khoản cần khôi phục.",
+  "FORBIDDEN": "Bạn không có quyền thực hiện thao tác này.",
+  "ADMIN_REQUEST_REUSED": "Mã yêu cầu đã được dùng cho nội dung khác. Vui lòng tạo yêu cầu mới.",
+  "PERMISSION_UPDATE_UNAVAILABLE": "Chưa xác nhận được việc khôi phục PIN. Kiểm tra hồ sơ trước khi thử lại cùng yêu cầu.",
+  "INVALID_EMPLOYEE_REQUEST": "PIN mới phải gồm 6 chữ số."
+};
 
 const launchCode = 'operator-test-code-keep-out-of-reports-2026';
 const pin = '729461';
@@ -76,7 +87,7 @@ describe('owner recovery operator boundary', () => {
     for (const code of ['OWNER_RECOVERY_REVIEW_REQUIRED', 'OWNER_PROTECTED', 'NOT_FOUND',
       'FORBIDDEN', 'ADMIN_REQUEST_REUSED', 'PERMISSION_UPDATE_UNAVAILABLE', 'INVALID_EMPLOYEE_REQUEST']) {
       const result = projectRecoveryResult({ ok: false, error: { code, message: 'raw SQL secret' } });
-      expect(result).toEqual({ ok: false, error: { code, message: recoveryMessages[code] } });
+      expect(result).toEqual({ ok: false, error: { code, message: expectedRecoveryMessages[code] } });
       expect(JSON.stringify(result)).not.toContain('raw SQL secret');
     }
     expect(validateRecoveryRequest({ ...request(), newPin: '１２３４５６' }).error.code).toBe('INVALID_EMPLOYEE_REQUEST');
@@ -95,7 +106,7 @@ describe('owner recovery operator boundary', () => {
     const response = await post('/api/recover', request(), { Cookie: cookie, 'X-CSRF-Token': session.csrf });
     expect(response.status).toBe(409);
     expect(await response.json()).toEqual({ ok: false, error: { code: 'PERMISSION_UPDATE_UNAVAILABLE',
-      message: recoveryMessages.PERMISSION_UPDATE_UNAVAILABLE } });
+      message: expectedRecoveryMessages.PERMISSION_UPDATE_UNAVAILABLE } });
     for (let i = 0; i < 5; i++) expect((await post('/api/unlock', { code: 'incorrect-code' })).status).toBe(403);
     expect((await post('/api/unlock', { code: launchCode })).status).toBe(429);
   });

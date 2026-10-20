@@ -105,9 +105,44 @@ async function apiJson(api: string, key: string, path: string, method: string, b
   return result;
 }
 
-async function refused(config: object, code: string, options: object = {}) {
+const expectedOperatorMessages: Record<string,string> = {
+  "RELEASE_TARGET_NOT_EMPTY": "Đích phát hành còn dữ liệu quán. Đã dừng kích hoạt.",
+  "TARGET_STORE_SET_MISMATCH": "Dữ liệu đích đã thay đổi. Đã dừng kích hoạt.",
+  "TARGET_TENANT_SCHEMA_MISMATCH": "Lược đồ dữ liệu quán đã thay đổi. Đã dừng để rà soát.",
+  "ACTIVATION_TARGET_NOT_EMPTY": "Đích phát hành còn dữ liệu quán. Đã dừng kích hoạt.",
+  "ACTIVATION_STORE_SET_MISMATCH": "Dữ liệu đích đã thay đổi. Đã dừng kích hoạt.",
+  "ACTIVATION_TENANT_SCHEMA_MISMATCH": "Lược đồ dữ liệu quán đã thay đổi. Đã dừng để rà soát.",
+  "INVALID_TARGET_CONFIG": "Cấu hình đích phát hành không hợp lệ."
+};
+
+// Source-owned synthetic public/private tables plus catalog and exact sequence
+// state. SQL returns digests only; a refusal cannot hide a target-row mutation.
+async function refusalState(db: pg.Client, expectedWriterId?: string) {
+  const relations = (await db.query(`select n.nspname schema,c.relname name,c.relkind kind from pg_class c
+    join pg_namespace n on n.oid=c.relnamespace where n.nspname in ('public','private') and c.relkind in ('r','p','S') order by 1,2`)).rows;
+  if (!relations.length || relations.length > 200) fail('CANARY_REFUSAL_RELATIONS_REFUSED');
+  const values: unknown[] = [];
+  const quote = (value: string) => '"' + value.replaceAll('"','""') + '"';
+  for (const row of relations) {
+    const name = quote(row.schema) + '.' + quote(row.name);
+    if (row.kind === 'S') values.push({ name, state: (await db.query(`select last_value::text,is_called from ${name}`)).rows });
+    else {
+      const skip = expectedWriterId && row.schema === 'public' && row.name === 'stores';
+      const digest = (await db.query(`select encode(extensions.digest(coalesce(jsonb_agg(to_jsonb(t) order by to_jsonb(t)::text),'[]'::jsonb)::text,'sha256'),'hex') hash from ${name} t${skip ? ' where t.id<>$1::uuid' : ''}`, skip ? [expectedWriterId] : [])).rows[0].hash;
+      values.push({ name, digest });
+    }
+  }
+  return sha({ catalog: await catalogHash(db), values });
+}
+
+async function refused(db: pg.Client, config: object, code: string, options: object = {}, expectedWriterId?: string) {
+  const before = await refusalState(db, expectedWriterId);
   try { await activateDatabase(config, options); } catch (error: any) {
-    if (error?.code === code) return;
+    if (error?.code === code) {
+      if (Object.hasOwn(expectedOperatorMessages, code) && error.operatorMessage !== expectedOperatorMessages[code]) fail('CANARY_OPERATOR_MESSAGE_MISMATCH');
+      if (await refusalState(db, expectedWriterId) !== before) fail('CANARY_REFUSAL_TARGET_STATE_CHANGED');
+      return;
+    }
     const actual = typeof error?.code === 'string' && /^[A-Z0-9_]{1,80}$/.test(error.code)
       ? error.code : 'UNKNOWN';
     fail(`CANARY_WRONG_REFUSAL_${actual}`);
@@ -129,8 +164,13 @@ async function releasePreflight(db: pg.Client, target: ReturnType<typeof status>
 }
 
 async function releaseRefused(db: pg.Client, target: ReturnType<typeof status>, patch: object, code: string) {
+  const before = await refusalState(db);
   try { await releasePreflight(db, target, patch); } catch (error: any) {
-    if (error?.reason === code) return;
+    if (error?.reason === code) {
+      if (Object.hasOwn(expectedOperatorMessages, code) && error.operatorMessage !== expectedOperatorMessages[code]) fail('CANARY_RELEASE_OPERATOR_MESSAGE_MISMATCH');
+      if (await refusalState(db) !== before) fail('CANARY_RELEASE_REFUSAL_TARGET_STATE_CHANGED');
+      return;
+    }
     fail('CANARY_WRONG_RELEASE_REFUSAL');
   }
   fail('CANARY_UNEXPECTED_RELEASE_READY');
@@ -166,9 +206,9 @@ test('TC-PIN-19 isolated empty target: orphan, schema drift, post-DDL rollback, 
     const config = { schemaVersion: 1, mode: 'synthetic-activation', connectionString: target.DB_URL,
       database: 'postgres', marker, storeIds: [], sourceFingerprint: permissionFingerprint(),
       bundleHash: activationBundleManifest().sha256, mappingFiles: [], expectedEmptyStoreSet: true };
-    await refused({ ...config, expectedEmptyStoreSet: false }, 'INVALID_ACTIVATION_CONFIG');
+    await refused(db, { ...config, expectedEmptyStoreSet: false }, 'INVALID_ACTIVATION_CONFIG');
     const { expectedEmptyStoreSet: _emptyOptIn, ...ordinaryConfig } = config;
-    await refused(ordinaryConfig, 'INVALID_ACTIVATION_CONFIG');
+    await refused(db, ordinaryConfig, 'INVALID_ACTIVATION_CONFIG');
     const releaseReady = await releasePreflight(db, target);
     if (releaseReady.status !== 'READY' || releaseReady.expectedEmptyStoreSet !== true
       || releaseReady.emptyTarget?.empty !== true || releaseReady.emptyTarget?.schemaMatches !== true
@@ -184,10 +224,10 @@ test('TC-PIN-19 isolated empty target: orphan, schema drift, post-DDL rollback, 
     await releaseRefused(db, target, { backendHost: 'localhost' }, 'TARGET_BINDING_MISMATCH');
     await releaseRefused(db, target, { sourceFingerprint: '0'.repeat(64) }, 'SOURCE_FINGERPRINT_MISMATCH');
     await releaseRefused(db, target, { bundleHash: '0'.repeat(64) }, 'BUNDLE_HASH_MISMATCH');
-    await refused({ ...config, marker: 'wrong-canary-marker' }, 'ACTIVATION_TARGET_BINDING_MISMATCH');
-    await refused({ ...config, database: 'wrong_database' }, 'ACTIVATION_DATABASE_MISMATCH');
-    await refused({ ...config, sourceFingerprint: '0'.repeat(64) }, 'SOURCE_FINGERPRINT_MISMATCH');
-    await refused({ ...config, bundleHash: '0'.repeat(64) }, 'BUNDLE_HASH_MISMATCH');
+    await refused(db, { ...config, marker: 'wrong-canary-marker' }, 'ACTIVATION_TARGET_BINDING_MISMATCH');
+    await refused(db, { ...config, database: 'wrong_database' }, 'ACTIVATION_DATABASE_MISMATCH');
+    await refused(db, { ...config, sourceFingerprint: '0'.repeat(64) }, 'SOURCE_FINGERPRINT_MISMATCH');
+    await refused(db, { ...config, bundleHash: '0'.repeat(64) }, 'BUNDLE_HASH_MISMATCH');
 
     // Auth and Storage objects are deliberately outside the tenant table set.
     const unrelatedIds: string[] = [];
@@ -224,19 +264,19 @@ test('TC-PIN-19 isolated empty target: orphan, schema drift, post-DDL rollback, 
     await db.query(`insert into public.employees(id,store_id,name,role,passcode_hash)
       values($1,$2,'Canary orphan','cashier','opaque-fixture')`, [BAD_EMPLOYEE, BAD_STORE]);
     await db.query('set session_replication_role=origin');
-    await refused(config, 'ACTIVATION_TARGET_NOT_EMPTY');
+    await refused(db, config, 'ACTIVATION_TARGET_NOT_EMPTY');
     await releaseRefused(db, target, {}, 'RELEASE_TARGET_NOT_EMPTY');
     await db.query('delete from public.employees where id=$1', [BAD_EMPLOYEE]);
 
     await db.query('set session_replication_role=replica');
     await db.query(`insert into public.categories(id,store_id,name) values($1,$2,'Canary orphan category')`, [randomUUID(), BAD_STORE]);
     await db.query('set session_replication_role=origin');
-    await refused(config, 'ACTIVATION_TARGET_NOT_EMPTY');
+    await refused(db, config, 'ACTIVATION_TARGET_NOT_EMPTY');
     await releaseRefused(db, target, {}, 'RELEASE_TARGET_NOT_EMPTY');
     await db.query('delete from public.categories where store_id=$1', [BAD_STORE]);
 
     await db.query('create table public.canary_extra_tenant(id uuid primary key,store_id uuid not null)');
-    await refused(config, 'ACTIVATION_TENANT_SCHEMA_MISMATCH');
+    await refused(db, config, 'ACTIVATION_TENANT_SCHEMA_MISMATCH');
     await releaseRefused(db, target, {}, 'TARGET_TENANT_SCHEMA_MISMATCH');
     await db.query('drop table public.canary_extra_tenant');
 
@@ -245,12 +285,14 @@ test('TC-PIN-19 isolated empty target: orphan, schema drift, post-DDL rollback, 
     await writer.query('begin');
     let writerOpen = true;
     try {
-      await writer.query("insert into public.stores(id,store_no,name) values($1,9822,'Canary writer before lock')", [writerStoreId]);
-      const blockedActivation = refused(config, 'ACTIVATION_STORE_SET_MISMATCH');
+      const expectedWriter = (await writer.query("insert into public.stores(id,store_no,name) values($1,9822,'Canary writer before lock') returning to_jsonb(stores) row", [writerStoreId])).rows[0].row;
+      const blockedActivation = refused(db, config, 'ACTIVATION_STORE_SET_MISMATCH', {}, writerStoreId);
       await waitForLock(observer, 'pos-cafe-permission-activate');
       await writer.query('commit');
       writerOpen = false;
       await blockedActivation;
+      if (sha((await db.query("select to_jsonb(s) row from public.stores s where id=$1", [writerStoreId])).rows[0]?.row) !== sha(expectedWriter))
+        fail("CANARY_EXPECTED_WRITER_ROW_CHANGED");
     } finally { if (writerOpen) await writer.query('rollback').catch(() => {}); }
     if ((await db.query('select count(*)::int n from public.stores where id=$1', [writerStoreId])).rows[0]?.n !== 1)
       fail('CANARY_WRITER_BEFORE_LOCK_NOT_COMMITTED');
@@ -259,7 +301,7 @@ test('TC-PIN-19 isolated empty target: orphan, schema drift, post-DDL rollback, 
     if (!(await inspectAllTenantRows(db)).empty) fail('CANARY_WRITER_BEFORE_LOCK_CLEANUP_FAILED');
 
     const beforeFault = await catalogHash(db);
-    await refused(config, 'SYNTHETIC_FRAGMENT_FAULT', { failAfterFragment: 3 });
+    await refused(db, config, 'SYNTHETIC_FRAGMENT_FAULT', { failAfterFragment: 3 });
     if (await catalogHash(db) !== beforeFault) fail('CANARY_POST_DDL_ROLLBACK_FAILED');
 
     // The later writer starts only while activation owns every tenant-table

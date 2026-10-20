@@ -116,3 +116,14 @@ test("PIN semantic denial keeps the restricted credential for corrected input", 
   await expect(repo.completeRequiredPinChange({ ...complete, newPin: "123456" })).rejects.toMatchObject({ code: "PIN_REUSE_NOT_ALLOWED" });
   expect(employeeCredential(client).token).toBe("r".repeat(43));
 });
+
+test("PIN completion rejects a spoofed target before RPC and preserves the restricted credential", async () => {
+  const { client, rpc } = clientWith([Promise.resolve(requiredResponse())]);
+  const repo = new SupabasePermissionIdentityRepo(client);
+  await repo.startSession(e.id, "123456");
+  await expect(repo.completeRequiredPinChange({ ...complete, targetId: e.id } as never)).rejects.toMatchObject({
+    code: "INVALID_EMPLOYEE_REQUEST", message: "Yêu cầu đổi PIN không hợp lệ. Vui lòng thử lại.",
+  });
+  expect(rpc).toHaveBeenCalledTimes(1);
+  expect(employeeCredential(client).token).toBe("r".repeat(43));
+});

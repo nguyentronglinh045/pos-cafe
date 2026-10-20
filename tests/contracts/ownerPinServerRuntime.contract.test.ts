@@ -1,3 +1,4 @@
+import { projectRecoveryResult } from "../../scripts/owner-recovery-operator-core.mjs";
 import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { afterAll, afterEach, beforeAll, expect, test } from "vitest";
@@ -678,6 +679,8 @@ test("TC-PIN-05/09 all eight recovery transitions preserve credential policy and
       const alteredPayload = (await db.query("select private.permission_recover_owner($1) result", [{ ...request, newPin: "111111" }])).rows[0].result;
       await db.query("reset role");
       expect(alteredPayload).toMatchObject({ error: { code: "ADMIN_REQUEST_REUSED" } });
+      expect(projectRecoveryResult(alteredPayload)).toEqual({ ok: false, error: { code: "ADMIN_REQUEST_REUSED",
+        message: "Mã yêu cầu đã được dùng cho nội dung khác. Vui lòng tạo yêu cầu mới." } });
       const unprivilegedReplay = (await db.query("select private.permission_recover_owner($1) result", [request])).rows[0].result;
       expect(unprivilegedReplay).toMatchObject({ error: { code: "FORBIDDEN" } });
       await db.query("set local role pos_owner_recovery");
@@ -696,6 +699,18 @@ test("TC-PIN-05/09 all eight recovery transitions preserve credential policy and
     }
   }
 });
+
+
+// Independent expected operator context after a real database refusal.
+const expectedRecoveryMessages: Record<string, string> = {
+  "OWNER_RECOVERY_REVIEW_REQUIRED": "Chưa đủ căn cứ khôi phục chủ quán. Cần xác minh hồ sơ hỗ trợ.",
+  "OWNER_PROTECTED": "Tài khoản cần khôi phục phải là chủ quán đang hoạt động.",
+  "NOT_FOUND": "Không tìm thấy tài khoản cần khôi phục.",
+  "FORBIDDEN": "Bạn không có quyền thực hiện thao tác này.",
+  "ADMIN_REQUEST_REUSED": "Mã yêu cầu đã được dùng cho nội dung khác. Vui lòng tạo yêu cầu mới.",
+  "PERMISSION_UPDATE_UNAVAILABLE": "Chưa xác nhận được việc khôi phục PIN. Kiểm tra hồ sơ trước khi thử lại cùng yêu cầu.",
+  "INVALID_EMPLOYEE_REQUEST": "PIN mới phải gồm 6 chữ số."
+};
 
 test("TC-PIN-05 recovery rejects refs, PIN and targets with an unchanged identity and evidence snapshot", async () => {
   await db.query("begin");
@@ -739,6 +754,7 @@ test("TC-PIN-05 recovery rejects refs, PIN and targets with an unchanged identit
       ])).rows[0].result;
       await db.query("reset role");
       expect(result.error?.code, label).toBe(expectedCode);
+      expect(projectRecoveryResult(result), label).toEqual({ ok: false, error: { code: expectedCode, message: expectedRecoveryMessages[expectedCode] } });
       expect(result).not.toHaveProperty("data");
       expect(await snapshot() === before, label).toBe(true);
     }
@@ -766,6 +782,7 @@ test("TC-PIN-05 owner, manager, cashier and foreign owner tokens cannot assume o
       )::text value`)).rows[0].value as string;
       const denied = (await db.query("select private.permission_recover_owner($1::jsonb) result", [request])).rows[0].result;
       expect(denied.error?.code, label).toBe("FORBIDDEN");
+      expect(projectRecoveryResult(denied), label).toEqual({ ok: false, error: { code: "FORBIDDEN", message: "Bạn không có quyền thực hiện thao tác này." } });
       const after = (await db.query(`select jsonb_build_object(
         'employees',(select coalesce(jsonb_agg(to_jsonb(e) order by e.id),'[]'::jsonb) from public.employees e),
         'sessions',(select coalesce(jsonb_agg(to_jsonb(s) order by s.token_hash),'[]'::jsonb) from private.employee_sessions s),
