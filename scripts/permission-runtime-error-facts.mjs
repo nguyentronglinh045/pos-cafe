@@ -14,3 +14,9 @@ export function safeRuntimeErrorFacts(value){
   ||!Object.entries(ranges).every(([k,max])=>Number.isInteger(value[k])&&value[k]>=0&&value[k]<=max))return null;
  return Object.fromEntries(Object.keys(ranges).map(k=>[k,value[k]]));
 }
+export function runtimeErrorLine(error,file){
+ if(typeof file!=='string'||!file||typeof error?.stack!=='string'||Buffer.byteLength(error.stack)>65536)return 0;
+ const path=file.replaceAll('\\','/').replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+ const match=new RegExp('^\\s+at (?:[^()\\r\\n]+ \\()?(?:file://)?'+path+':([0-9]{1,6}):[0-9]{1,5}\\)?[ \\t]*$','m').exec(error.stack.replaceAll('\\','/'));
+ const line=Number(match?.[1]);return Number.isInteger(line)&&line>=1&&line<=100000?line:0;
+}

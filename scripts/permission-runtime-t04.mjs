@@ -4,6 +4,7 @@ import{execFileSync}from'node:child_process';
 import{pathToFileURL}from'node:url';
 import{runtimeStageCatalog}from'./permission-runtime-catalog.mjs';
 import{runtimeHash}from'./permission-runtime-results.mjs';
+import{safeRuntimeErrorFacts,RUNTIME_ERROR_CODES}from'./permission-runtime-error-facts.mjs';
 import{executeRuntimeStage,prepareRuntimeDirectory}from'./permission-runtime-stage.mjs';
 import{trackedFingerprint}from'./project-ci.mjs';
 import{realAdapter,readCi1LinuxEnvelope,ci1HarnessFailureMarker}from'./permission-runtime-t04-adapter.mjs';
@@ -21,15 +22,30 @@ export function t04TimeBudget(startedAtEpochMs,now){
   if(!Number.isSafeInteger(outerEnd)||deadline-now<60000||harnessTimeoutMs<=deadline-now)refuse();
   return{deadline,harnessTimeoutMs};
 }
-const factKeys=['t04StageOrdinal','t04FailureOrdinal','t04RunnerErrors','t04HookErrors','t04MissingRequired','t04FirstFailedRequired','t04BoundaryOrdinal','t04BoundaryExit'];
+const factBounds={t04StageOrdinal:[0,19],t04FailureOrdinal:[0,4],t04RunnerErrors:[0,10000],t04HookErrors:[0,10000],
+ t04MissingRequired:[0,10000],t04FirstFailedRequired:[0,10000],t04BoundaryOrdinal:[1,19],t04BoundaryExit:[0,255],
+ t04FailedTests:[0,10000],t04FirstFailedLine:[0,100000],t04TestErrorCodeOrdinal:[0,RUNTIME_ERROR_CODES.length],
+ t04TestErrorNameOrdinal:[0,5],t04TestErrorMatcherOrdinal:[0,8]};
+export function t04SafeFailureMetric(key,value){const bounds=factBounds[key];return!!bounds&&Number.isSafeInteger(value)&&value>=bounds[0]&&value<=bounds[1];}
+export function t04RunnerFailureFacts(expected,r){
+ if(!Array.isArray(expected?.required)||!Array.isArray(r?.discovery)||!Array.isArray(r.results)
+  ||[expected.required,r.discovery,r.results].some(a=>a.length>10000))refuse();
+ const key=x=>JSON.stringify([x.file,x.name,x.project??null]),found=new Set(r.discovery.map(key));
+ const facts={t04MissingRequired:expected.required.filter(x=>!found.has(key(x))).length,
+  t04FirstFailedRequired:expected.required.findIndex(x=>r.results.some(y=>key(y)===key(x)&&y.state==='failed'))+1,
+  t04FailedTests:r.results.filter(x=>x.state==='failed').length};
+ const first=expected.required[facts.t04FirstFailedRequired-1],result=first&&r.results.find(y=>key(y)===key(first));
+ const finite=safeRuntimeErrorFacts(result?.failureFacts);
+ if(finite)for(const[k,v]of Object.entries(finite))facts['t04Test'+k[0].toUpperCase()+k.slice(1)]=v;
+ if(t04SafeFailureMetric('t04FirstFailedLine',result?.failureLine))facts.t04FirstFailedLine=result.failureLine;
+ for(const[k,v]of[['t04RunnerErrors',r.errorCount],['t04HookErrors',r.hookErrorCount]])if(t04SafeFailureMetric(k,v))facts[k]=v;
+ return facts;
+}
 export function t04FailureFacts(stderr){
   if(typeof stderr!=='string'||Buffer.byteLength(stderr)>1024**2)return{};
   const rows=stderr.split(/\r?\n/).filter(l=>l.startsWith('T04_FAILURE_FACTS '));if(rows.length!==1)return{};
   try{const p=JSON.parse(rows[0].slice('T04_FAILURE_FACTS '.length));
-    if(!p||Object.keys(p).some(k=>!factKeys.includes(k))||!Number.isInteger(p.t04StageOrdinal)||p.t04StageOrdinal<0||p.t04StageOrdinal>19
-      ||Object.values(p).some(v=>!Number.isSafeInteger(v)||v<0||v>10000)
-      ||p.t04BoundaryOrdinal!==undefined&&(p.t04BoundaryOrdinal<1||p.t04BoundaryOrdinal>19)
-      ||p.t04BoundaryExit!==undefined&&p.t04BoundaryExit>255)return{};return p;
+    if(!p||!Object.hasOwn(p,'t04StageOrdinal')||!Object.entries(p).every(([k,v])=>t04SafeFailureMetric(k,v)))return{};return p;
   }catch{return{};}
 }
 export async function runT04Profile(adapter){
@@ -164,11 +180,7 @@ async function main(){
       const r=JSON.parse(readFileSync(path)),expected=catalog.find(c=>c.stage===stage);
       if(!expected||r.stage!==stage||r.sourceSHA!==sourceSHA||r.sourceFingerprint!==sourceFingerprint||r.lockSHA!==lockSHA
         ||!Array.isArray(r.discovery)||!Array.isArray(r.results)||r.discovery.length>10000||r.results.length>10000)refuse();
-      const key=x=>JSON.stringify([x.file,x.name,x.project??null]),found=new Set(r.discovery.map(key));
-      facts.t04MissingRequired=expected.required.filter(x=>!found.has(key(x))).length;
-      facts.t04FirstFailedRequired=expected.required.findIndex(x=>r.results.some(y=>key(y)===key(x)&&y.state!=='passed'))+1;
-      for(const[k,v]of[['t04RunnerErrors',r.errorCount],['t04HookErrors',r.hookErrorCount]])
-        if(Number.isSafeInteger(v)&&v>=0&&v<=10000)facts[k]=v;
+      Object.assign(facts,t04RunnerFailureFacts(expected,r));
     }catch{/* Missing or malformed private runner report adds no invented counts. */}
     console.error('T04_FAILURE_FACTS '+JSON.stringify(facts));
   };

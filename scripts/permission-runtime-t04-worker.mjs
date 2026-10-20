@@ -11,7 +11,7 @@ import { coreDumpDisabled } from './project-ci-launch.mjs';
 import { CI1_LIMITS, CI1_PROJECT, CI1_RUNTIME, ci1ProcessEnvironment, assertCi1Envelope, ci1TrustedRepository } from './permission-ci1-policy.mjs';
 import { ci1LinuxRecipe, readCi1LinuxEnvelope, ci1SystemdProperty, ci1HarnessFailureFacts } from './permission-ci1-harness.mjs';
 import { renderCi1Evidence } from './permission-ci1-evidence.mjs';
-import {renderT04Evidence,t04FailureFacts,t04TimeBudget} from './permission-runtime-t04.mjs';
+import {renderT04Evidence,t04FailureFacts,t04TimeBudget,t04SafeFailureMetric} from './permission-runtime-t04.mjs';
 import { CI1_SETUP, ci1BytesHash, ci1NpmIntake, ci1ToolsIntake, ci1CheckTarListing, ci1EdgeIntake,
   assertCi1Supervisor, ci1WorkerLayout, ci1ImagesIntake } from './permission-ci1-intake.mjs';
 
@@ -58,7 +58,8 @@ const failureMetrics = ['hostFreeBytes', 'memoryBytes', 'oom', 'pidsEvents', 'me
   'suiteCleanupPhaseOrdinal','suiteCleanupStepOrdinal','suiteCleanupCodeOrdinal','suiteCleanupSqlstateOrdinal',
     'preservationComponentDriftMask','preservationFinancialDriftMask',
     'sourceIntakeBytes','sourceIntakeFiles','sourceHeadMatches','sourceClean','sourceIntakeRefusalOrdinal',
-    't04StageOrdinal','t04FailureOrdinal','t04RunnerErrors','t04HookErrors','t04MissingRequired','t04FirstFailedRequired','t04BoundaryOrdinal','t04BoundaryExit'];
+    't04StageOrdinal','t04FailureOrdinal','t04RunnerErrors','t04HookErrors','t04MissingRequired','t04FirstFailedRequired','t04BoundaryOrdinal','t04BoundaryExit',
+    't04FailedTests','t04FirstFailedLine','t04TestErrorCodeOrdinal','t04TestErrorNameOrdinal','t04TestErrorMatcherOrdinal'];
 
 export async function ci1PullImage(run, reference, guard = () => {}, wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds)), onAttempt = () => {}) {
   if (typeof reference !== 'string' || !/^public\.ecr\.aws\/supabase\/[a-z0-9._-]+@sha256:[a-f0-9]{64}$/.test(reference)) refused();
@@ -128,8 +129,7 @@ export function ci1FailureExport(value) {
   };
   const facts = Object.fromEntries(Object.entries(value.facts ?? {}).filter(([key, number]) =>
     failureMetrics.includes(key) && Number.isSafeInteger(number) && number >= 0
-    && (key !== 't04BoundaryOrdinal' || number >= 1 && number <= 19)
-    && (key !== 't04BoundaryExit' || number <= 255)));
+    && (!key.startsWith('t04') || t04SafeFailureMetric(key,number))));
   if (Object.keys(facts).length) output.facts = facts;
   return output;
 }

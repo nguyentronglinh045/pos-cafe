@@ -41,6 +41,14 @@ describe('owner recovery operator boundary', () => {
       headers: { 'Content-Type': 'application/json', Origin: 'http://elsewhere.invalid' },
       body: JSON.stringify({ code: launchCode }) });
     expect(badOrigin.status).toBe(403);
+    // Valid JSON/code/Origin: only the byte limit should prevent this unlock.
+    const oversizedBody=JSON.stringify({code:launchCode})+' '.repeat(16_384);
+    expect(Buffer.byteLength(oversizedBody)).toBeGreaterThan(16_384);
+    const oversized=await fetch(base+'/api/unlock',{method:'POST',
+      headers:{'Content-Type':'application/json',Origin:base},body:oversizedBody,redirect:'manual'});
+    expect(oversized.status).toBe(400);
+    expect(await oversized.json()).toEqual({ok:false});
+    expect(calls).toHaveLength(0);
     const unlocked = await post('/api/unlock', { code: launchCode });
     expect(unlocked.status).toBe(200);
     const cookie = unlocked.headers.get('set-cookie');

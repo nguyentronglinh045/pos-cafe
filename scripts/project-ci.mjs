@@ -5,6 +5,7 @@ import { spawn, execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { hash, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, smokeTraceDiagnostics, guardFailureCode } from './project-ci-results.mjs';
 import { lightOwnerMatches } from './project-ci-launch.mjs';
+import { pinUiActionRoot } from './permission-pin-ui-policy.mjs';
 import { uiTestInventory, readUIFile, readUIJSON, uiEvidenceContext, remakeSelftestCounts, auditSelftestCounts, requireFreshUIOutput } from './project-ui-results.mjs';
 
 const GiB = 1024 ** 3;
@@ -213,7 +214,8 @@ export async function main() {
     }
     guardFacts.initialFreeBytes ??= freeNow;
     guardFacts.freeSpaceDecreaseBytes = Math.max(0, guardFacts.initialFreeBytes - freeNow);
-    peak = Math.max(peak, allocatedBytes([root, join(root,'.git'), task, nativeRoot], guardFacts));
+    peak = Math.max(peak, allocatedBytes([root, join(root,'.git'), task, nativeRoot, pinUiActionRoot(root)], guardFacts));
+    if (allocatedBytes([pinUiActionRoot(root)]) > 64 * 1024 ** 2) guardRefuse('RESOURCE_OWNED_CAP');
     if (freeNow < 30 * GiB) guardRefuse('RESOURCE_FREE_SPACE');
     if (guardFacts.freeSpaceDecreaseBytes > 5 * GiB) guardRefuse('RESOURCE_HOST_GROWTH');
     if (peak > 5 * GiB) guardRefuse('RESOURCE_OWNED_CAP');
@@ -360,9 +362,11 @@ export async function main() {
       if (!output.includes('selftest OK') || !/^selftest: 23 finding\(s\)/m.test(output)) refuse();
       return { detectedFindings: 23 };
     });
-    await phase('ui-audit', process.execPath, ['ui-audit/run.mjs'], output => uiCounts(output,
+    Object.assign(env,staticEnv);
+    try { await phase('ui-audit', process.execPath, ['scripts/permission-runtime-pin-ui.mjs'], output => uiCounts(output,
       JSON.parse(readFileSync(join(root, 'ui-audit/report.json'), 'utf8')),
       JSON.parse(readFileSync(join(root, 'ui-audit/config.json'), 'utf8'))));
+    } finally { for(const [key,value]of Object.entries(previous)){if(value===undefined)delete env[key];else env[key]=value;} }
   } catch { /* Fixed phase status only; never echo raw errors. */ }
   const summary = { ...publicSummary(binding, rows, fingerprints), sourceProfile: 'PERMISSION_APP_LIGHT',
     deferredFeatureGates: ['PERMISSION_FULL'], hp1Execution: 'RETIRED', sourcePreserved: trackedFingerprint(root, paths) === fingerprints.source,

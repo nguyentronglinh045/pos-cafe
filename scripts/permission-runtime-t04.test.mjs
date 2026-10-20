@@ -1,6 +1,6 @@
 import test from'node:test';
 import assert from'node:assert/strict';
-import{runT04Profile,renderT04Evidence,t04FailureFacts,t04TimeBudget}from'./permission-runtime-t04.mjs';
+import{runT04Profile,renderT04Evidence,t04FailureFacts,t04TimeBudget,t04RunnerFailureFacts}from'./permission-runtime-t04.mjs';
 import{runtimeStageCatalog}from'./permission-runtime-catalog.mjs';
 import{backendInvocation}from'./project-backend-t04.mjs';
 import{reclaimUnitState}from'./permission-runtime-t04-reclaim.mjs';
@@ -46,6 +46,32 @@ test('final isolated/public failure projection enforces boundary ordinal/exit bo
   assert.notDeepEqual(projected,invalid);assert.throws(()=>ci1IsolatedFailure(receipt(invalid),ci1Identity('123',1),sha));
  }
 });
+test('T04 assertion diagnostic parser and final exporter independently reject out-of-range ordinals and private raw fields',()=>{
+ const facts={t04StageOrdinal:4,t04FirstFailedRequired:4,t04FailedTests:9,t04FirstFailedLine:184,
+  t04TestErrorCodeOrdinal:0,t04TestErrorNameOrdinal:4,t04TestErrorMatcherOrdinal:2};
+ const failure={stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:1,facts};
+ assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(facts)),facts);assert.deepEqual(ci1FailureExport(failure),failure);
+ const receipt=f=>({schemaVersion:'permission-ci1-isolated-failure-v1',runId:'123',attempt:1,sourceSHA:sha,failure:f,cleanupFailure:null});
+ assert(ci1IsolatedFailure(receipt(failure),ci1Identity('123',1),sha));
+ for(const delta of[{t04FirstFailedLine:100001},{t04FirstFailedLine:-1},{t04TestErrorCodeOrdinal:999},
+  {t04TestErrorNameOrdinal:6},{t04TestErrorMatcherOrdinal:9},{t04FailedTests:10001},{t04StageOrdinal:20},{raw:'SECRET'}]){
+  const invalid={...failure,facts:{...facts,...delta}};assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(invalid.facts)),{});
+  assert.notDeepEqual(ci1FailureExport(invalid),invalid);assert.throws(()=>ci1IsolatedFailure(receipt(invalid),ci1Identity('123',1),sha));
+ }
+});
+
+test('T04 actual failed-test selector cannot confuse earlier skipped or pending required tests with a later assertion failure',()=>{
+ const required=[{file:'x.test.ts',name:'first'},{file:'x.test.ts',name:'second'}];
+ for(const state of['skipped','pending']){
+  const facts=t04RunnerFailureFacts({required},{discovery:required,errorCount:0,hookErrorCount:0,results:[{...required[0],state},
+   {...required[1],state:'failed',failureLine:184,failureFacts:{errorCodeOrdinal:0,errorNameOrdinal:4,errorMatcherOrdinal:2}}]});
+  assert.equal(facts.t04FirstFailedRequired,2);assert.equal(facts.t04FailedTests,1);assert.equal(facts.t04FirstFailedLine,184);
+  assert.equal(facts.t04TestErrorMatcherOrdinal,2);assert.equal(facts.t04MissingRequired,0);
+ }
+ const facts=t04RunnerFailureFacts({required},{discovery:[],results:[],errorCount:0,hookErrorCount:0});
+ assert.equal(facts.t04MissingRequired,2);assert.equal(facts.t04FirstFailedRequired,0);assert(!('t04FirstFailedLine'in facts));
+});
+
 test('T04 orchestrator runs exactly nineteen canonical stages, preserves physical and logical backend and closes once',async()=>{
  const f=fixture(),r=await runT04Profile(f.adapter);assert.equal(r.status,'PASS');assert.deepEqual(f.seen,ids);assert.equal(f.closed.length,1);
  assert.equal(r.remainingBusinessStages,16);assert.equal(r.full35BusinessRuntime,'NOT_RUN');

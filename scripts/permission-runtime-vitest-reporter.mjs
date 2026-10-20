@@ -1,5 +1,5 @@
 import {runtimeReporterContext,reporterFile,writeRuntimeReport} from './permission-runtime-results.mjs';
-import {runtimeErrorFacts} from './permission-runtime-error-facts.mjs';
+import {runtimeErrorFacts,runtimeErrorLine} from './permission-runtime-error-facts.mjs';
 
 export default class RuntimeVitestReporter {
   onInit(){this.context=runtimeReporterContext();this.discovery=[];this.seen=new Set();}
@@ -17,8 +17,9 @@ export default class RuntimeVitestReporter {
   onTestRunEnd(modules,errors,reason){
     const hookErrors=modules.flatMap(m=>[m,...(m.children.allSuites?.()??[])])
       .flatMap(s=>typeof s.errors==='function'?s.errors():Array.isArray(s.errors)?s.errors:[]);
-    const results=modules.flatMap(m=>[...m.children.allTests()].map(t=>({...this.identity(t),
-      state:t.result().state,attempts:1+(t.diagnostic()?.retryCount??NaN)+(t.diagnostic()?.repeatCount??NaN)})));
+    const results=modules.flatMap(m=>[...m.children.allTests()].map(t=>{const result=t.result();return{...this.identity(t),
+      state:result.state,attempts:1+(t.diagnostic()?.retryCount??NaN)+(t.diagnostic()?.repeatCount??NaN),
+      ...(result.state==='failed'?{failureFacts:runtimeErrorFacts(result.errors?.[0]),failureLine:runtimeErrorLine(result.errors?.[0],m.moduleId)}:{})};}));
     const firstError=errors[0]??hookErrors[0]??modules.flatMap(m=>[...m.children.allTests()].flatMap(t=>t.result().errors??[]))[0];
     writeRuntimeReport(this.context,{complete:true,runnerExit:reason,errorCount:errors.length,hookErrorCount:hookErrors.length,
       failureFacts:runtimeErrorFacts(firstError),

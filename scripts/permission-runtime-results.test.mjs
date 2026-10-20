@@ -60,6 +60,18 @@ test('Vitest reporter captures nested hook errors and diagnostic retries rather 
   assert.equal(r.hookErrorCount,1);assert.equal(r.results[0].attempts,2);assert(!raw.includes('sensitive hook text'));
   assert.throws(()=>validateRuntimeStage(expected,r,context,0));
 }));
+test('Vitest failed result records only exact test line and finite error facts, excluding actual/expected/private stack text',()=>fixture(root=>{
+ const reporter=new VitestReporter();reporter.context={...context,stage:'example',runner:'vitest',sourceRoot:root,outputPath:join(root,'result.json')};
+ reporter.discovery=[];reporter.seen=new Set();
+ const module={moduleId:join(root,identity.file),project:{name:''},errors:()=>[],children:{allTests:()=>[t],allSuites:()=>[]}};
+ const error={name:'AssertionError',stack:'SECRET\n at assertion ('+module.moduleId+':184:2)',matcherResult:{name:'toEqual',actual:'SECRET',expected:'SECRET'}};
+ const t={module,fullName:identity.name,options:{},result:()=>({state:'failed',errors:[error]}),diagnostic:()=>({retryCount:0,repeatCount:0})};
+ reporter.onTestModuleCollected(module);reporter.onTestRunEnd([module],[],'failed');
+ const raw=readFileSync(reporter.context.outputPath,'utf8'),r=JSON.parse(raw);
+ assert.equal(r.results[0].state,'failed');assert.equal(r.results[0].failureLine,184);assert.equal(r.results[0].failureFacts.errorMatcherOrdinal,2);
+ assert(!raw.includes('SECRET'));assert.throws(()=>validateRuntimeStage(expected,r,context,1));
+}));
+
 test('Playwright reporter preserves describe ancestry, project and actual duplicate attempts',()=>fixture(root=>{
   const project={name:'desktop',repeatEach:1},t={location:{file:join(root,identity.file)},title:'required',
     titlePath:()=>['','desktop','example.test.ts','suite','required'],parent:{project:()=>project},retries:0,
