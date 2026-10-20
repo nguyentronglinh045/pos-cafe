@@ -5,7 +5,7 @@ import{runtimeStageCatalog}from'./permission-runtime-catalog.mjs';
 import{backendInvocation}from'./project-backend-t04.mjs';
 import{reclaimUnitState}from'./permission-runtime-t04-reclaim.mjs';
 import{assertLegacyDependencyBoundary}from'./permission-legacy-head.mjs';
-import{t04Lifecycle,t04StageEnvironment,assertT04ResourceFacts,assertT04ContainerContinuity,t04BaselineMemberships}from'./permission-runtime-t04-fixture.mjs';
+import{t04Lifecycle,t04StageEnvironment,assertT04ResourceFacts,assertT04ContainerContinuity,t04BaselineMemberships,t04RestoreFailureFacts}from'./permission-runtime-t04-fixture.mjs';
 import{CI1_LIMITS,CI1_PROJECT,ci1Identity}from'./permission-ci1-policy.mjs';
 import{ci1FailureExport,ci1IsolatedFailure,t04CommandOptions}from'./permission-runtime-t04-worker.mjs';
 const catalog=runtimeStageCatalog().filter(s=>s.runtimeProfile==='SUPABASE_T04'),ids=catalog.map(s=>s.stage);
@@ -70,6 +70,27 @@ test('T04 actual failed-test selector cannot confuse earlier skipped or pending 
  }
  const facts=t04RunnerFailureFacts({required},{discovery:[],results:[],errorCount:0,hookErrorCount:0});
  assert.equal(facts.t04MissingRequired,2);assert.equal(facts.t04FirstFailedRequired,0);assert(!('t04FirstFailedLine'in facts));
+});
+
+test('private pg_restore failures project finite categories through both public boundaries without SQL or identifiers',()=>{
+ const privateText='pg_restore: error: could not execute query: ERROR: cannot drop extension FAKE_PRIVATE_KEY because other objects depend on it\nDETAIL: FAKE_PRIVATE_KEY\nCommand was: DROP EXTENSION IF EXISTS FAKE_PRIVATE_KEY;';
+ const facts=t04RestoreFailureFacts(Buffer.from(privateText));assert.deepEqual(facts,{t04RestoreErrorOrdinal:1,t04RestoreCommandOrdinal:2});
+ assert.deepEqual(t04RestoreFailureFacts('pg_restore: error: ERROR: relation "FAKE_PRIVATE_KEY" already exists\nCommand was: CREATE TABLE FAKE_PRIVATE_KEY (id int);'),
+  {t04RestoreErrorOrdinal:2,t04RestoreCommandOrdinal:13});
+ assert.deepEqual(t04RestoreFailureFacts('pg_restore: error: UNKNOWN FAKE_PRIVATE_KEY'),{t04RestoreErrorOrdinal:0,t04RestoreCommandOrdinal:0});
+ assert.deepEqual(t04RestoreFailureFacts('pg_restore: error: could not execute query: ERROR: permission denied for schema private\nDETAIL: already exists\nCommand was: CREATE FUNCTION private.fn() returns text language sql as $$ select \'already exists\' $$;'),
+  {t04RestoreErrorOrdinal:4,t04RestoreCommandOrdinal:20});
+ for(const raw of[undefined,{},'unrelated FAKE_PRIVATE_KEY','pg_restore:'+ 'x'.repeat(1024**2),Buffer.alloc(1024**2+1)])assert.deepEqual(t04RestoreFailureFacts(raw),{});
+ const failure={stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:1,
+  facts:{t04StageOrdinal:10,t04BoundaryOrdinal:15,t04BoundaryExit:1,...facts}};
+ const receipt=f=>({schemaVersion:'permission-ci1-isolated-failure-v1',runId:'123',attempt:1,sourceSHA:sha,failure:f,cleanupFailure:null});
+ assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(failure.facts)),failure.facts);
+ assert.deepEqual(ci1FailureExport(failure),failure);assert(ci1IsolatedFailure(receipt(failure),ci1Identity('123',1),sha));
+ assert(!JSON.stringify(ci1FailureExport(failure)).includes('FAKE_PRIVATE_KEY'));
+ for(const delta of[{t04RestoreErrorOrdinal:16},{t04RestoreErrorOrdinal:-1},{t04RestoreCommandOrdinal:25},{t04RestoreCommandOrdinal:'SECRET'},{stderr:privateText}]){
+  const invalid={...failure,facts:{...failure.facts,...delta}};assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(invalid.facts)),{});
+  assert.notDeepEqual(ci1FailureExport(invalid),invalid);assert.throws(()=>ci1IsolatedFailure(receipt(invalid),ci1Identity('123',1),sha));
+ }
 });
 
 test('T04 reset permits only PG17 fixed ADMIN-only creator edge and still requires every unrelated baseline edge unchanged',()=>{

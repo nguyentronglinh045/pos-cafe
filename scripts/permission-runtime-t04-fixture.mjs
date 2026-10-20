@@ -13,6 +13,29 @@ const resets=new Set(['candidate-e2e','candidate-seed-recovery-database','candid
   'transition-database','transition-e2e','transition-compatibility-database']);
 const fail=()=>{throw Error('T04_FIXTURE_BOUNDARY_REFUSED');};
 const check=value=>{if(!value)fail();};
+// Only fixed ordinals leave the private pg_restore stderr buffer. No SQL,
+// identifiers, DETAIL text, paths or exception messages enter public evidence.
+export function t04RestoreFailureFacts(stderr){
+ if(Buffer.isBuffer(stderr)){if(stderr.length>1024**2)return{};stderr=stderr.toString('utf8');}
+ if(typeof stderr!=='string'||Buffer.byteLength(stderr)>1024**2||!stderr.includes('pg_restore:'))return{};
+ const primary=stderr.match(/^pg_restore: error: could not execute query: (?:ERROR|FATAL):\s*([^\r\n]*)/m)?.[1]
+  ??stderr.match(/^pg_restore: error: ((?!could not execute query:)[^\r\n]*)/m)?.[1]??'';
+ const errors=[/^cannot drop .* because other objects depend on it$/i,/ already exists$/i,/ does not exist$/i,
+  /^(?:permission denied|must be (?:owner|superuser)|not permitted)/i,/^.*violates foreign key constraint/i,
+  /^duplicate key value|^.*violates unique constraint/i,/^.*violates check constraint|^.*violates not-null constraint/i,
+  /^syntax error/i,/^.*(?:not supported|unsupported)/i,/^.*(?:being accessed by other users|active .*connection)/i,
+  /^(?:invalid (?:value|parameter)|unrecognized configuration parameter)/i,/^(?:no space left|could not (?:read|write|open) file)/i,
+  /^(?:statement timeout|lock timeout|canceling statement)/i,/^.*cannot run inside a transaction block/i,
+  /^(?:input file.*(?:not|too)|unexpected end of file|did not find magic string)/i];
+ const command=stderr.match(/(?:^|\n)Command was: ([^\r\n]*)/)?.[1]??'';
+ const commands=[/^DROP SCHEMA\b/,/^DROP EXTENSION\b/,/^DROP TABLE\b/,/^ALTER TABLE\b.*\bDROP CONSTRAINT\b/,
+  /^DROP FUNCTION\b/,/^DROP TYPE\b/,/^DROP TRIGGER\b/,/^DROP POLICY\b/,/^DROP PUBLICATION\b/,
+  /^DROP EVENT TRIGGER\b/,/^CREATE SCHEMA\b/,/^CREATE EXTENSION\b/,/^CREATE TABLE\b/,/^ALTER TABLE\b/,
+  /^COPY\b/,/^COMMENT\b/,/^(?:GRANT|REVOKE)\b/,/^SET\b/,/^SELECT\b/,/^CREATE FUNCTION\b/,
+  /^CREATE POLICY\b/,/^CREATE PUBLICATION\b/,/^DROP\b/,/^CREATE\b/];
+ return{t04RestoreErrorOrdinal:errors.findIndex(p=>p.test(primary))+1,
+  t04RestoreCommandOrdinal:commands.findIndex(p=>p.test(command))+1};
+}
 // PG17 grants a non-superuser creator ADMIN-only membership in its new role.
 // The fixed fixture creator is postgres; the bootstrap superuser is supabase_admin.
 // Keep all unrelated edges byte-for-byte for the original-baseline comparison.
@@ -105,7 +128,7 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
     resourceGuard();check(Date.now()+1000<deadline);
     const value=execFileSync(name,args,{input,env,timeout:Math.min(timeout,deadline-Date.now()),maxBuffer,
       stdio:[input===undefined?'ignore':'pipe','pipe','pipe']});resourceGuard();return value;
-    }catch(error){throw failure(error);}
+    }catch(error){if(step===15&&error&&typeof error==='object')error.t04RestoreFacts=t04RestoreFailureFacts(error.stderr);throw failure(error);}
   };
   step=2;
   const inspect=()=>JSON.parse(call('docker',['inspect',...['db','auth','rest','kong','storage','realtime','edge_runtime','studio',
@@ -176,6 +199,13 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
     .filter(r=>r.setconfig.length>0);
   const originalSettings=runtimeHash(await settings());
   const originalRoles=await globals();check(!originalRoles.some(r=>r.rolname==='pos_owner_recovery'));
+  const publicSchema=async()=>rows(`select pg_get_userbyid(n.nspowner) owner,obj_description(n.oid,'pg_namespace') comment,
+    (select jsonb_agg(jsonb_build_object('grantor',pg_get_userbyid(a.grantor),'grantee',
+      case when a.grantee=0 then 'PUBLIC' else pg_get_userbyid(a.grantee) end,'privilege',a.privilege_type,'grantable',a.is_grantable)
+      order by a.grantor,a.grantee,a.privilege_type,a.is_grantable)
+      from aclexplode(coalesce(n.nspacl,acldefault('n',n.nspowner))) a) acl
+    from pg_namespace n where n.nspname='public'`);
+  const originalPublicSchema=await publicSchema();check(originalPublicSchema.length===1);
   const hook=async()=>rows(`select setdatabase,setting from pg_db_role_setting s join pg_roles r on r.oid=s.setrole,
     lateral unnest(s.setconfig) setting where r.rolname='authenticator' and setting like 'pgrst.db_pre_request=%' order by setdatabase,setting`);
   check((await hook()).length===0);
@@ -241,12 +271,17 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
     // If restore fails after this commit, the attempt fails; never adopt a new baseline.
     step=13;sql("drop schema public cascade; drop schema private cascade; alter role authenticator reset pgrst.db_pre_request;");
     step=14;if(currentRoles.some(r=>r.rolname==='pos_owner_recovery'))sql('drop role pos_owner_recovery');
+    // A whole-database PG17 dump assumes initdb's public schema already exists:
+    // it can emit owner/ACL/comment deltas but never CREATE SCHEMA public.
+    // Reestablish precisely that base before replaying the original archive.
+    sql("create schema public authorization pg_database_owner; grant all on schema public to pg_database_owner; grant usage on schema public to public; comment on schema public is 'standard public schema';");
     step=15;
     call('docker',['exec','-i','--user','postgres',dbContainer.Id,'pg_restore','--clean','--if-exists','--single-transaction','--exit-on-error',
       '-U','supabase_admin','-d','postgres'],{input:archive,maxBuffer:1024**2,timeout:60000});
     step=16;for(const f of files){ownFile(f.path,65536);writeFileSync(f.path,f.bytes,{mode:0o600});}
     check(runtimeHash(await globals())===runtimeHash(originalRoles)&&runtimeHash(await memberships())===originalMemberships
-      &&runtimeHash(await settings())===originalSettings&&(await hook()).length===0);
+      &&runtimeHash(await settings())===originalSettings&&(await hook()).length===0
+      &&runtimeHash(await publicSchema())===runtimeHash(originalPublicSchema));
     step=17;call('docker',['start',...services],{timeout:45000});
     step=18;
     const until=Math.min(deadline,Date.now()+45000);let ready=false;

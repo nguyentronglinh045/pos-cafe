@@ -24,6 +24,7 @@ export function t04TimeBudget(startedAtEpochMs,now){
 }
 const factBounds={t04StageOrdinal:[0,19],t04FailureOrdinal:[0,4],t04RunnerErrors:[0,10000],t04HookErrors:[0,10000],
  t04MissingRequired:[0,10000],t04FirstFailedRequired:[0,10000],t04BoundaryOrdinal:[1,19],t04BoundaryExit:[0,255],
+ t04RestoreErrorOrdinal:[0,15],t04RestoreCommandOrdinal:[0,24],
  t04FailedTests:[0,10000],t04FirstFailedLine:[0,100000],t04TestErrorCodeOrdinal:[0,RUNTIME_ERROR_CODES.length],
  t04TestErrorNameOrdinal:[0,5],t04TestErrorMatcherOrdinal:[0,8]};
 export function t04SafeFailureMetric(key,value){const bounds=factBounds[key];return!!bounds&&Number.isSafeInteger(value)&&value>=bounds[0]&&value<=bounds[1];}
@@ -174,6 +175,8 @@ async function main(){
     if(Number.isInteger(error?.t04BoundaryOrdinal)&&error.t04BoundaryOrdinal>=1&&error.t04BoundaryOrdinal<=19){
       facts.t04BoundaryOrdinal=error.t04BoundaryOrdinal;
       if(Number.isInteger(error?.status)&&error.status>=0&&error.status<=255)facts.t04BoundaryExit=error.status;
+      if(error.t04BoundaryOrdinal===15&&error.t04RestoreFacts)for(const key of['t04RestoreErrorOrdinal','t04RestoreCommandOrdinal'])
+        if(t04SafeFailureMetric(key,error.t04RestoreFacts[key]))facts[key]=error.t04RestoreFacts[key];
     }
     try{const path=join(outputRoot,stage+'-runner.json'),s=lstatSync(path);
       if(!s.isFile()||s.isSymbolicLink()||s.size>1024**2||realpathSync(path)!==path)refuse();

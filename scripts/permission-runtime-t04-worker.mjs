@@ -59,6 +59,7 @@ const failureMetrics = ['hostFreeBytes', 'memoryBytes', 'oom', 'pidsEvents', 'me
     'preservationComponentDriftMask','preservationFinancialDriftMask',
     'sourceIntakeBytes','sourceIntakeFiles','sourceHeadMatches','sourceClean','sourceIntakeRefusalOrdinal',
     't04StageOrdinal','t04FailureOrdinal','t04RunnerErrors','t04HookErrors','t04MissingRequired','t04FirstFailedRequired','t04BoundaryOrdinal','t04BoundaryExit',
+    't04RestoreErrorOrdinal','t04RestoreCommandOrdinal',
     't04FailedTests','t04FirstFailedLine','t04TestErrorCodeOrdinal','t04TestErrorNameOrdinal','t04TestErrorMatcherOrdinal'];
 
 export async function ci1PullImage(run, reference, guard = () => {}, wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds)), onAttempt = () => {}) {

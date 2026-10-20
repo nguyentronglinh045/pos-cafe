@@ -1623,6 +1623,19 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       expect(await snapshot()).not.toBe(before);
     } finally { await state.db.query("rollback"); }
     expect(await snapshot()).toBe(before);
+    // Pairing/compatibility metadata remains available, with an exact minimal
+    // projection: neither employee authority nor seed/business payload belongs here.
+    const contractMetadata = await page.request.post(`${env.api}/rest/v1/rpc/permission_get_contract`, {
+      headers: { ...authHeaders!, "x-pos-employee-token": restrictedToken! }, data: {},
+    });
+    expect(contractMetadata.status()).toBe(200);
+    expect(await contractMetadata.json()).toEqual({ permissionContractVersion: 2, writeProtocolVersion: 1 });
+    const storeMetadata = await page.request.post(`${env.api}/rest/v1/rpc/permission_get_store_session`, {
+      headers: { ...authHeaders!, "x-pos-employee-token": restrictedToken! }, data: {},
+    });
+    expect(storeMetadata.status()).toBe(200);
+    expect(await storeMetadata.json()).toEqual({ ok: true, data: { storeId: state.storeId, storeNo: state.storeNo } });
+    expect(await snapshot()).toBe(before);
     for (const route of routes) {
       const grant = granted.find(row => row.signature.replace(/^public\./, "") === route.signature);
       expect(grant).toBeDefined();
@@ -2180,7 +2193,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       await page.getByTestId("go-passcode").click();
       const pairedSession = await pairedSessionResponse;
       expect(pairedSession.ok()).toBe(true);
-      expect(await pairedSession.json()).toMatchObject({ ok: true, data: { storeId: state.storeId, storeNo } });
+      expect(await pairedSession.json()).toEqual({ ok: true, data: { storeId: state.storeId, storeNo } });
       await expect(page.getByTestId("passcode-screen")).toBeVisible();
       expect(capture.counts).toMatchObject({ reserve: 1, signup: 1, bootstrap: 1 });
       await expectSingleBootstrapStore();
