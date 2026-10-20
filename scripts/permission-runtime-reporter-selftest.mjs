@@ -1,3 +1,4 @@
+import{RUNTIME_ERROR_CODES}from'./permission-runtime-error-facts.mjs';
 import {mkdtempSync,mkdirSync,writeFileSync,readFileSync,rmSync,lstatSync,realpathSync,readdirSync} from 'node:fs';
 import {resolve,relative,join} from 'node:path';
 import {spawnSync,execFileSync} from 'node:child_process';
@@ -29,7 +30,7 @@ export function reporterSelftest(root=process.cwd()){
           test.each(${JSON.stringify(expiryCases.map(([offset])=>({offset})))})('object-v4 TC-PIN-08 completion rechecks $offset after waiting for identity lock',()=>expect(true).toBe(true));`:'';
       writeFileSync(testFile,vitest
         ?`import {test,expect,afterAll,describe} from 'vitest';describe('suite',()=>{test('required',()=>expect(2+2).toBe(4));${titleControls}${negative?"afterAll(()=>{throw Error('SELFTEST_PRIVATE_ERROR_MUST_NOT_LEAK');});":''}});\n`
-        :`import {test,expect} from '@playwright/test';test.describe('suite',()=>{test('required',async(${negative?'{}':'{page}'},info)=>{${negative?"expect(info.retry).toBe(1);":"await page.goto('data:text/html,<button>OK</button>');await expect(page.getByRole('button',{name:'OK'})).toBeVisible();"}});});\n`);
+        :`import {test,expect} from '@playwright/test';test.describe('suite',()=>{test('required',async(${negative?'{}':'{page}'},info)=>{${negative?"if(info.retry===0)expect('EMPLOYEE_SESSION_REQUIRED','SELFTEST_PRIVATE_ERROR_MUST_NOT_LEAK REALTIME_TIMING_ORACLE_FAILED:signal-arrival').toBe('PIN_CHANGE_REQUIRED');expect(info.retry).toBe(1);":"await page.goto('data:text/html,<button>OK</button>');await expect(page.getByRole('button',{name:'OK'})).toBeVisible();"}});});\n`);
       const file=relative(root,testFile).replaceAll('\\','/');
       writeFileSync(configFile,vitest
         ?`export default {test:{include:[${JSON.stringify(file)}],environment:'node',allowOnly:false,retry:0,maxWorkers:1,fileParallelism:false,passWithNoTests:false}};\n`
@@ -60,7 +61,9 @@ export function reporterSelftest(root=process.cwd()){
       else{
         let rejected=false;try{validateRuntimeStage(expected,report,context,child.status);}catch{rejected=true;}check(rejected);
         if(vitest)check(child.status!==0&&report.hookErrorCount>0&&report.results.every(r=>r.state==='passed'));
-        else check(child.status===0&&report.results[0].state==='passed'&&report.results[0].attempts===2&&report.discovery[0].retry===1);
+        else{check(child.status===0&&report.results[0].state==='passed'&&report.results[0].attempts===2&&report.discovery[0].retry===1);
+          check(Number.isSafeInteger(report.failureLine)&&report.failureLine>=1&&report.failureLine<=100000&&report.realtimeFailureMask===1);
+          check(Object.keys(report.failureFacts).sort().join(',')==='errorCodeOrdinal,errorMatcherOrdinal,errorNameOrdinal');check(report.failureFacts.errorCodeOrdinal===RUNTIME_ERROR_CODES.indexOf('EMPLOYEE_SESSION_REQUIRED')+1&&report.failureFacts.errorMatcherOrdinal===1);}
       }
       counts.pass++;
     }

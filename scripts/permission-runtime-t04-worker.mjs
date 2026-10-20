@@ -63,7 +63,7 @@ const failureMetrics = [...Object.keys(DOCKER_DIAGNOSTIC_BOUNDS),'hostFreeBytes'
     't04StageOrdinal','t04FailureOrdinal','t04RunnerErrors','t04HookErrors','t04MissingRequired','t04FirstFailedRequired','t04BoundaryOrdinal','t04BoundaryExit',
     't04RestoreErrorOrdinal','t04RestoreCommandOrdinal',
     ...Object.keys(T04_DIAGNOSTIC_BOUNDS),
-    't04FailedTests','t04FirstFailedLine','t04TestErrorCodeOrdinal','t04TestErrorNameOrdinal','t04TestErrorMatcherOrdinal'];
+    't04RealtimeFailureMask','t04FailedTests','t04FirstFailedLine','t04TestErrorCodeOrdinal','t04TestErrorNameOrdinal','t04TestErrorMatcherOrdinal'];
 
 export{ci1PullImage};
 export function ci1UnmountFailureCode(stderr) {

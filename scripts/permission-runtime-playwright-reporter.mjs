@@ -1,8 +1,9 @@
 import {runtimeReporterContext,reporterFile,writeRuntimeReport} from './permission-runtime-results.mjs';
+import{runtimePlaywrightFailureFacts}from'./permission-runtime-error-facts.mjs';
 
 export default class RuntimePlaywrightReporter {
   onBegin(config,suite){
-    this.context=runtimeReporterContext();this.results=new Map();this.errors=0;
+    this.context=runtimeReporterContext();this.results=new Map();this.errors=0;this.firstFailure=null;
     this.identity=t=>({file:reporterFile(this.context.sourceRoot,t.location.file),name:t.titlePath().slice(3).join(' > ')||t.title,
       project:t.parent.project()?.name||null});
     this.discovery=suite.allTests().map(t=>({...this.identity(t),retry:t.retries,repeats:t.parent.project()?.repeatEach??config.repeatEach,
@@ -11,8 +12,11 @@ export default class RuntimePlaywrightReporter {
     this.selectedFiles=[...new Set(this.discovery.map(t=>t.file))];
   }
   onTestEnd(test,result){const x=this.identity(test),k=JSON.stringify(x),old=this.results.get(k);
-    this.results.set(k,{...x,state:result.status,attempts:(old?.attempts??0)+1});}
-  onError(){this.errors++;}
-  onEnd(result){writeRuntimeReport(this.context,{complete:true,runnerExit:result.status,errorCount:this.errors,hookErrorCount:0,
+    const failed=['failed','timedOut','interrupted'].includes(result.status),error=result.error??result.errors?.[0];
+    const facts=failed?runtimePlaywrightFailureFacts(error,test.location.file):null;
+    if(failed)this.firstFailure??=facts;
+    this.results.set(k,{...x,state:result.status,attempts:(old?.attempts??0)+1,...(facts??{})});}
+  onError(error){this.errors++;this.firstFailure??=runtimePlaywrightFailureFacts(error);}
+  onEnd(result){writeRuntimeReport(this.context,{complete:true,runnerExit:result.status,errorCount:this.errors,hookErrorCount:0,...(this.firstFailure??{}),
     discovery:this.discovery,results:[...this.results.values()],selectedFiles:this.selectedFiles});}
 }

@@ -2,7 +2,7 @@
 // query/params, expected/actual values, URLs, paths or stack text.
 export const RUNTIME_ERROR_CODES=Object.freeze(['ERR_MODULE_NOT_FOUND','ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX',
  'ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING','ENOENT','EACCES','ECONNREFUSED','ETIMEDOUT',
- '23502','23503','23505','23514','42501','42601','42703','42883','42P01','42P07','3F000','57P03','57014','53300']);
+ '23502','23503','23505','23514','42501','42601','42703','42883','42P01','42P07','3F000','57P03','57014','53300','PIN_CHANGE_REQUIRED','EMPLOYEE_SESSION_REQUIRED','INVALID_EMPLOYEE_REQUEST','AUTH_REQUIRED','WRITE_PROTOCOL_UNSUPPORTED','FORBIDDEN']);
 export function runtimeErrorFacts(error){
  return{errorCodeOrdinal:RUNTIME_ERROR_CODES.indexOf(error?.code)+1,
   errorNameOrdinal:['Error','TypeError','SyntaxError','AssertionError','TimeoutError'].indexOf(error?.name)+1,
@@ -45,6 +45,39 @@ export function runtimeRunnerFailureFacts(expected,r){
  const finite=safeRuntimeErrorFacts(result?.failureFacts);
  if(finite)for(const[k,v]of Object.entries(finite))facts['test'+k[0].toUpperCase()+k.slice(1)]=v;
  if(Number.isSafeInteger(result?.failureLine)&&result.failureLine>=0&&result.failureLine<=100000)facts.firstFailedLine=result.failureLine;
+ if(expected.stage==='realtime-e2e'&&Object.hasOwn(result??{},'realtimeFailureMask')){
+  const value=result.realtimeFailureMask;if(!Number.isSafeInteger(value)||value<0||value>1023)throw Error('RUNTIME_FAILURE_REPORT_REFUSED');
+  facts.realtimeFailureMask=value;
+ }
  for(const[k,v]of[['runnerErrors',r.errorCount],['hookErrors',r.hookErrorCount]])if(Number.isSafeInteger(v)&&v>=0&&v<=10000)facts[k]=v;
  return facts;
+}
+
+// Fixed labels already emitted by the existing TC55 timing assertion. Raw
+// error message/location/stack never enter the private runner report.
+export const REALTIME_FAILURE_ORACLES=Object.freeze(['signal-arrival','dom-apply','foreground-online',
+ 'signal-and-apply-records','no-resume-during-measurement','revision-authority-chain','chain-budget-5s',
+ 'fallback-poll-budget-30s','fallback-apply-budget-35s','signal-apply-budget-5s']);
+export function runtimePlaywrightFailureFacts(error,file){
+ let failureLine=runtimeErrorLine(error,file);const location=error?.location;
+ if(typeof file==='string'&&typeof location?.file==='string'&&location.file.replaceAll('\\','/')===file.replaceAll('\\','/')
+  &&Number.isSafeInteger(location.line)&&location.line>=1&&location.line<=100000)failureLine=location.line;
+ const failureFacts=runtimeErrorFacts(error);let realtimeFailureMask=0;
+ if(typeof error?.message==='string'&&Buffer.byteLength(error.message)<=65536){
+  const message=error.message.replace(/\x1b\[[0-9;]*m/g,'');
+  // These are serialized assertion literals, not an invented JS error.code.
+  // Classify exactly one complete Received scalar after a single matcher
+  // header. Count every Received field before whitelisting: unknown values,
+  // duplicate fields and trailing payloads must never select a header code.
+  const matchers=[...message.matchAll(/\bexpect\(received\)(?:\.not)?\.(toBe|toEqual|toStrictEqual|toBeTruthy|toBeFalsy|toContain|toThrow|toBeGreaterThan)\(expected\)/g)];
+  const matcher=matchers.length===1?matchers[0]:null;
+  const received=matcher?message.slice(matcher.index+matcher[0].length).split(/\r?\n/).filter(line=>/^[\t ]*Received:/.test(line)):[];
+  const scalar=received.length===1?/^[\t ]*Received:[\t ]*"([A-Z][A-Z0-9_]{0,63})"[\t ]*$/.exec(received[0]):null;
+  if(failureFacts.errorCodeOrdinal===0&&scalar)failureFacts.errorCodeOrdinal=RUNTIME_ERROR_CODES.indexOf(scalar[1])+1;
+  if(failureFacts.errorMatcherOrdinal===0&&matcher)failureFacts.errorMatcherOrdinal=['toBe','toEqual','toStrictEqual','toBeTruthy','toBeFalsy','toContain','toThrow','toBeGreaterThan'].indexOf(matcher[1])+1;
+  for(const m of message.matchAll(/REALTIME_TIMING_ORACLE_FAILED:([a-z0-9-]{1,64})(?=$|[\s'"\],.])/g)){
+   const ordinal=REALTIME_FAILURE_ORACLES.indexOf(m[1]);if(ordinal>=0)realtimeFailureMask|=2**ordinal;
+  }
+ }
+ return{failureFacts,failureLine,...(realtimeFailureMask?{realtimeFailureMask}:{})};
 }

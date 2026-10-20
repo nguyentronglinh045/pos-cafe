@@ -328,3 +328,13 @@ test('manual T04 invocation requires exact expected source and selects its own w
  assert.throws(()=>reclaimUnitState({status:1,stdout:'LoadState=not-found=garbage\nActiveState=inactive\n'},null));
  assert.throws(()=>assertLegacyDependencyBoundary('/unowned',{artifacts:'/unowned/artifacts',target:'/unowned/target',source:'/unowned/target/source'}));
 });
+
+import{ci1FailureExport as t04FinalFailureExport}from'./permission-runtime-t04-worker.mjs';
+test('Realtime finite mask is independently bounded at T04 parser and final worker exporter',()=>{
+ for(const mask of[0,1,1023]){const facts={t04StageOrdinal:13,t04RealtimeFailureMask:mask};
+  assert.equal(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(facts)).t04RealtimeFailureMask,mask);
+  assert.equal(t04FinalFailureExport({stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:1,facts}).facts.t04RealtimeFailureMask,mask);}
+ for(const mask of[-1,1024,1.5,'1']){const facts={t04StageOrdinal:13,t04RealtimeFailureMask:mask};
+  assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(facts)),{});
+  assert(!Object.hasOwn(t04FinalFailureExport({facts}).facts??{},'t04RealtimeFailureMask'));}
+});

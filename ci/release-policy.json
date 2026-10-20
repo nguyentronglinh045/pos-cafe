@@ -34,7 +34,7 @@
     "ui-audit/demo-buggy.html": "4c1424232be357167b1cf643ff1baa602d2987856317d40460d95f6358662cce",
     "scripts/permission-runtime-pg16.mjs": "c13578f465b7c39421e93e5a90ab29d6b1e1ad42be6f24062637c38316d45f32",
     "scripts/permission-runtime-pg16-cleanup.mjs": "3a47c5a59c08411a702d4622b74dd514395072be9878630f3dc6a1f54109efa8",
-    "scripts/permission-runtime-error-facts.mjs": "0bd0ac6bce18ef62b63a27b5c7247da8067f64e811839019e324c06b22c540e8",
+    "scripts/permission-runtime-error-facts.mjs": "71ef91bed54822fe7891f1bcb312f972b04071a271ee2572505ed1f76635e7c0",
     "scripts/permission-runtime-vitest-reporter.mjs": "08b532b0bd2ff64bc8225fc96a7e496f4098e8314e62ee49d186abac996f3252",
     "scripts/project-ci-results.test.mjs": "b7488d6566c51cd65e7381114ed27804b1640eb1f274f706bde114174f3743f8",
     "scripts/permission-runtime-stage.mjs": "2b9cb5a73369a9bd8645ff3d47ad1d90be08d51803083a090436113de9d1a71a",
