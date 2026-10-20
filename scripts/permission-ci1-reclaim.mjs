@@ -6,6 +6,15 @@ import {ci1WorkerLayout,ci1BytesHash} from './permission-ci1-intake.mjs';
 import {CI1_LIMITS} from './permission-ci1-policy.mjs';
 
 const refuse=()=>{throw Error('CI1_RECLAIM_REFUSED');};
+let checkpoint=0;
+export const reclaimMountArguments=()=>['--kernel','--noheadings','--raw','--output','TARGET'];
+export function reclaimFailureFacts(value){
+  if(!value||Object.keys(value).sort().join(',')!=='checkpoint,commandExit,schemaVersion'
+    ||value.schemaVersion!=='permission-ci1-reclaim-failure-v1'||!Number.isInteger(value.checkpoint)
+    ||value.checkpoint<0||value.checkpoint>12||!Number.isInteger(value.commandExit)
+    ||value.commandExit<0||value.commandExit>255)refuse();
+  return value;
+}
 export function reclaimUnitState(result,populated){
   if(result?.error||result.signal||![0,1,4].includes(result.status)||typeof result.stdout!=='string'
     ||Buffer.byteLength(result.stdout)>4096||![0,null].includes(populated))refuse();
@@ -27,6 +36,7 @@ export function assertReclaimFacts(f,control,expected){
 }
 const run=(name,args)=>execFileSync(name,args,{encoding:'utf8',timeout:5000,maxBuffer:32768,stdio:['ignore','pipe','pipe']});
 function admission(){
+  checkpoint=1;
   const e=process.env;
   if(process.platform!=='linux'||e.GITHUB_ACTIONS!=='true'||e.RUNNER_ENVIRONMENT!=='github-hosted'
     ||e.GITHUB_REPOSITORY!=='nguyentronglinh045/pos-cafe'||e.GITHUB_REPOSITORY_ID!=='1263057386'
@@ -40,6 +50,7 @@ function admission(){
   return {root,layout:ci1WorkerLayout(e.GITHUB_RUN_ID,Number(e.GITHUB_RUN_ATTEMPT))};
 }
 function reclaim(root,layout){
+  checkpoint=3;
   const owned=(p,kind,mode)=>{const s=lstatSync(p);if(s.isSymbolicLink()||realpathSync(p)!==p||s.uid!==0
     ||(s.mode&0o777)!==mode||!(kind==='file'?s.isFile():s.isDirectory()))refuse();return s;};
   if(!lstatSync(layout.task,{throwIfNoEntry:false}))return {schemaVersion:'permission-ci1-reclaim-v1',status:'NOT_CREATED',imageUnlinked:false};
@@ -47,13 +58,16 @@ function reclaim(root,layout){
   owned(layout.task,'directory',0o700);const controlPath=layout.task+'/run-control.json';
   if(owned(controlPath,'file',0o400).size>4096)refuse();const control=JSON.parse(readFileSync(controlPath));
   const expected={...layout.identity,sourceSHA:process.env.GITHUB_SHA,workerSHA:ci1BytesHash(readFileSync(root+'/scripts/permission-ci1-worker.mjs'))};
+  checkpoint=4;
   const unitResult=spawnSync('systemctl',['show',layout.identity.unit,'--property=LoadState','--property=ActiveState'],
     {encoding:'utf8',timeout:5000,maxBuffer:4096,stdio:['ignore','pipe','pipe']});
   let unitPopulated;
   try{const match=/^populated ([01])$/m.exec(readFileSync('/sys/fs/cgroup/system.slice/'+layout.identity.unit+'/cgroup.events','utf8'));
     if(!match)refuse();unitPopulated=Number(match[1]);}catch(error){if(error.code!=='ENOENT')throw error;unitPopulated=null;}
   const unitActiveState=reclaimUnitState(unitResult,unitPopulated);
-  const mounts=run('findmnt',['--kernel','--list','--noheadings','--raw','--output','TARGET']).trim().split('\n');
+  checkpoint=5;
+  // util-linux rejects --list with --raw. Raw output already disables the tree.
+  const mounts=run('findmnt',reclaimMountArguments()).trim().split('\n');
   const ownedMounts=mounts.filter(p=>p===layout.volume||p.startsWith(layout.volume+'/')).length;
   const image=lstatSync(layout.image,{throwIfNoEntry:false});
   if(!image){
@@ -63,13 +77,16 @@ function reclaim(root,layout){
     return {schemaVersion:'permission-ci1-reclaim-v1',status:'NO_IMAGE',imageUnlinked:false};
   }
   owned(layout.image,'file',0o600);
+  checkpoint=6;
   const attachedLoops=run('losetup',['--noheadings','--associated',layout.image]).trim()?1:0;
   assertReclaimFacts({rootOwned:true,controlOwned:true,imageOwned:true,imageLinks:image.nlink,imageBytes:image.size,
     unitActiveState,unitPopulated,attachedLoops,ownedMounts},control,expected);
   const before=statfsSync(layout.task),beforeBytes=before.bavail*before.bsize;
+  checkpoint=7;
   const current=owned(layout.image,'file',0o600);
   if(current.dev!==image.dev||current.ino!==image.ino||current.size!==image.size||current.nlink!==1)refuse();
   unlinkSync(layout.image);
+  checkpoint=8;
   const mountPoint=lstatSync(layout.volume,{throwIfNoEntry:false});
   if(mountPoint){owned(layout.volume,'directory',0o700);if(readdirSync(layout.volume).length===0)rmdirSync(layout.volume);}
   const after=statfsSync(layout.task);
@@ -86,12 +103,22 @@ function main(){
   const args=['--','env','-i','PATH=/usr/sbin:/usr/bin:/sbin:/bin',...keys.map(k=>`${k}=${process.env[k]}`),
     process.execPath,resolve(root,'scripts/permission-ci1-reclaim.mjs')];
   if(args.some(a=>/[\r\n\0]/.test(a)))refuse();
+  checkpoint=2;
   const child=spawnSync('sudo',args,{cwd:root,encoding:'utf8',timeout:30000,maxBuffer:32768});
-  if(child.status!==0||child.signal||child.error)refuse();
+  if(child.status!==0||child.signal||child.error){
+    // Forward only the finite child failure projection, never sudo/raw stderr.
+    try{const rows=child.stdout.trim().split('\n');if(rows.length===1){
+      const facts=reclaimFailureFacts(JSON.parse(rows[0]));console.log(JSON.stringify(facts));checkpoint=facts.checkpoint;
+    }}catch{}refuse();
+  }
   const receipt=JSON.parse(child.stdout);
   if(receipt.schemaVersion!=='permission-ci1-reclaim-v1'||!['NOT_CREATED','NO_IMAGE','RECLAIMED'].includes(receipt.status))refuse();
   console.log(JSON.stringify(receipt));
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
-  try{main();}catch{console.log('CI1_RECLAIM_REFUSED');process.exitCode=1;}
+  try{main();}catch(error){
+    if(process.getuid?.()===0)console.log(JSON.stringify(reclaimFailureFacts({schemaVersion:'permission-ci1-reclaim-failure-v1',checkpoint,
+      commandExit:Number.isInteger(error?.status)&&error.status>=0&&error.status<=255?error.status:0})));
+    else console.log('CI1_RECLAIM_REFUSED');process.exitCode=1;
+  }
 }

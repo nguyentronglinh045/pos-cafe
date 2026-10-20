@@ -1,8 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {assertReclaimFacts,reclaimUnitState} from './permission-ci1-reclaim.mjs';
+import {assertReclaimFacts,reclaimUnitState,reclaimMountArguments,reclaimFailureFacts} from './permission-ci1-reclaim.mjs';
 const expected={runId:'123',attempt:1,sourceSHA:'a'.repeat(40),unit:'pos-cafe-ci1-r123-a1.service',workerSHA:'b'.repeat(64)};
 const facts={rootOwned:true,controlOwned:true,imageOwned:true,imageLinks:1,imageBytes:18*1024**3,unitActiveState:'inactive',unitPopulated:0,attachedLoops:0,ownedMounts:0};
+test('mount discovery selects one util-linux flat output mode and retains kernel scope',()=>{
+  assert.deepEqual(reclaimMountArguments(),['--kernel','--noheadings','--raw','--output','TARGET']);
+  assert(!reclaimMountArguments().includes('--list'));
+});
+test('reclaim diagnostic exports only bounded ordinal and command exit',()=>{
+  const f={schemaVersion:'permission-ci1-reclaim-failure-v1',checkpoint:5,commandExit:1};
+  assert.deepEqual(reclaimFailureFacts(f),f);
+  for(const delta of[{stderr:'private'},{checkpoint:13},{checkpoint:-1},{commandExit:256},{commandExit:'raw'}])
+    assert.throws(()=>reclaimFailureFacts({...f,...delta}));
+});
 test('reclaim admits only released, exact owned image and immutable run control',()=>assert.equal(assertReclaimFacts(facts,expected,expected),true));
 test('reclaim refuses active runtime, mount/loop, shared inode, wrong owner or oversize',()=>{
   for(const change of [{unitActiveState:'active'},{unitActiveState:'deactivating'},{attachedLoops:1},{ownedMounts:1},
