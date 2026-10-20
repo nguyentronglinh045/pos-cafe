@@ -186,6 +186,8 @@ export async function main() {
   admissionStep = 9;
   const fingerprints = { source: trackedFingerprint(root, paths), lock: hash(readFileSync(join(root, 'package-lock.json'))) };
   const task = mkdtempSync(join(process.env.RUNNER_TEMP, `pos-light-${binding.runId}-${binding.attempt}-`));
+  const {pg16Layout} = await import('./permission-runtime-pg16-cleanup.mjs');
+  const nativeRoot = pg16Layout(binding.runId,binding.attempt).root;
   const env = lightEnvironment(task, process.env);
   let peak = 0;
   const guardFacts = {};
@@ -204,27 +206,27 @@ export async function main() {
         const [key, value] = line.split(/\s+/); if (keys[key]) guardFacts[keys[key]] = Number(value);
       }
     let freeNow = Number.MAX_SAFE_INTEGER;
-    for (const path of [root, task]) {
+    for (const path of [root, task, '/var/tmp']) {
       const disk = statfsSync(path), free = disk.bavail * disk.bsize;
       guardFacts.minimumObservedFreeBytes = Math.min(guardFacts.minimumObservedFreeBytes ?? Number.MAX_SAFE_INTEGER, free);
       freeNow = Math.min(freeNow, free);
     }
     guardFacts.initialFreeBytes ??= freeNow;
     guardFacts.freeSpaceDecreaseBytes = Math.max(0, guardFacts.initialFreeBytes - freeNow);
-    peak = Math.max(peak, allocatedBytes([root, task], guardFacts));
+    peak = Math.max(peak, allocatedBytes([root, join(root,'.git'), task, nativeRoot], guardFacts));
     if (freeNow < 30 * GiB) guardRefuse('RESOURCE_FREE_SPACE');
     if (guardFacts.freeSpaceDecreaseBytes > 5 * GiB) guardRefuse('RESOURCE_HOST_GROWTH');
     if (peak > 5 * GiB) guardRefuse('RESOURCE_OWNED_CAP');
     for (const [name, value] of Object.entries(limits)) if (readFileSync(join(cgroup, name), 'utf8').trim() !== value) guardRefuse('RESOURCE_CGROUP_DRIFT');
   };
   const rows = [];
-  const phase = async (id, command, args, readCounts, diagnosticReport) => {
+  const phase = async (id, command, args, readCounts, diagnosticReport, timeoutMs = 480000) => {
     const started = Date.now(), output = join(task, `${id}.log`);
     const invocationSHA = hash(JSON.stringify({ runId: binding.runId, attempt: binding.attempt, id, command, args,
       sourceFingerprint: fingerprints.source, lockSHA: fingerprints.lock }));
     let result = { exitCode: null, blocked: true }, counts = null, valid = false, failureCode = null;
     try {
-      result = await capturedCommand(command, args, { cwd: root, env, output, guard });
+      result = await capturedCommand(command, args, { cwd: root, env, output, guard, timeoutMs });
       if (!result.blocked && readCounts) counts = readCounts(readFileSync(output, 'utf8'));
       if (trackedFingerprint(root, paths) !== fingerprints.source) guardRefuse('SOURCE_DRIFT');
       valid = !result.blocked && result.exitCode === 0;
@@ -306,7 +308,8 @@ export async function main() {
     const staticOutput=join(root,'artifacts',`permission-static-${binding.runId}-${binding.attempt}`);
     const staticEnv={GITHUB_ACTIONS:'true',RUNNER_ENVIRONMENT:'github-hosted',GITHUB_REPOSITORY:binding.repository,
       GITHUB_REPOSITORY_ID:binding.repositoryID,GITHUB_SHA:binding.sourceSHA,GITHUB_RUN_ID:binding.runId,
-      GITHUB_RUN_ATTEMPT:String(binding.attempt),RUNNER_TEMP:task};
+      GITHUB_RUN_ATTEMPT:String(binding.attempt),GITHUB_EVENT_NAME:process.env.GITHUB_EVENT_NAME,
+      GITHUB_EVENT_PATH:process.env.GITHUB_EVENT_PATH,GITHUB_WORKFLOW_SHA:process.env.GITHUB_WORKFLOW_SHA,RUNNER_TEMP:task};
     const previous=Object.fromEntries(Object.keys(staticEnv).map(key=>[key,env[key]]));
     Object.assign(env,staticEnv);
     try{await phase('permission-static',process.execPath,['scripts/permission-runtime-static.mjs',staticOutput],output=>{
@@ -314,7 +317,14 @@ export async function main() {
       if(lines.length!==1)refuse();
       return staticProfileCounts(JSON.parse(lines[0].slice('PERMISSION_STATIC_PROFILE '.length)),{
         sourceSHA:binding.sourceSHA,sourceFingerprint:fingerprints.source,lockSHA:fingerprints.lock,runId:binding.runId});
-    });}finally{for(const [key,value]of Object.entries(previous)){if(value===undefined)delete env[key];else env[key]=value;}}
+    });
+    const {pg16ProfileCounts,renderPg16Evidence}=await import('./permission-runtime-pg16.mjs');
+    await phase('permission-pg16',process.execPath,['scripts/permission-runtime-pg16.mjs',join(root,'artifacts',`permission-pg16-${binding.runId}-${binding.attempt}`)],output=>{
+      const lines=output.split('\n').filter(line=>line.startsWith('PERMISSION_PG16_PROFILE '));
+      if(lines.length!==1)refuse();const receipt=JSON.parse(lines[0].slice('PERMISSION_PG16_PROFILE '.length));
+      const bound={sourceSHA:binding.sourceSHA,sourceFingerprint:fingerprints.source,lockSHA:fingerprints.lock,runId:binding.runId};
+      const counts=pg16ProfileCounts(receipt,bound);console.log(renderPg16Evidence(receipt,bound).json);return counts;
+    },undefined,330000);}finally{for(const [key,value]of Object.entries(previous)){if(value===undefined)delete env[key];else env[key]=value;}}
     await phase('ui-tools', process.execPath, ['--test', '--test-concurrency=1', '--test-reporter=tap', ...uiTests], nodeCounts);
     // The controls deliberately include detected defects. Only these synthetic
     // calibration phases accept seeded measurement failures; app gates do not.
@@ -362,7 +372,7 @@ export async function main() {
   if (Buffer.byteLength(rendered) > 65536) refuse();
   console.log(rendered);
   if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY,
-    `# POS light CI\n\nScope: LIGHT_MOCK_ONLY\n\n\`\`\`json\n${rendered}\n\`\`\`\n`);
+    `# POS light CI\n\nScope: LIGHT_AND_NATIVE_PG16_ONLY\n\n\`\`\`json\n${rendered}\n\`\`\`\n`);
   if (summary.overallStatus !== 'PASS') process.exitCode = 1;
 }
 

@@ -8,7 +8,7 @@ export const PROJECT_REPOSITORY = 'nguyentronglinh045/pos-cafe';
 export const PROJECT_REPOSITORY_ID = 1263057386;
 // Current-main lane; UI tools are calibrated, app UI acceptance remains separate.
 export const PROJECT_PHASES = Object.freeze(['install', 'build', 'unit', 'tooling', 'node-tools', 'browser',
-  'runtime-reporters', 'permission-static', 'ui-tools', 'ui-remake-selftest', 'ui-audit-selftest', 'smoke-discovery', 'smoke-preflight', 'smoke', 'ui-selftest', 'ui-audit']);
+  'runtime-reporters', 'permission-static', 'permission-pg16', 'ui-tools', 'ui-remake-selftest', 'ui-audit-selftest', 'smoke-discovery', 'smoke-preflight', 'smoke', 'ui-selftest', 'ui-audit']);
 export const PROJECTS = Object.freeze(['desktop', 'tablet-landscape', 'phone-landscape', 'small-landscape', 'portrait', 'demo-runbook']);
 export const hash = value => createHash('sha256').update(value).digest('hex');
 const reject = () => { throw new Error('PROJECT_CI_RESULT_INVALID'); };
@@ -670,7 +670,7 @@ export function publicSummary(binding, rows, fingerprints) {
           'smokeExpected', 'smokeUnexpected', 'smokeSkipped', 'smokeFlaky', 'smokeProgressIndex', 'smokeProgressTotal',
           'memoryCurrentBytes', 'peakMemoryBytes', 'pidsCurrent', 'peakPids', 'oomEvents', 'oomKills', 'pidsLimitEvents'].includes(key) && integer(value))),
       failedFiles: diagnostic.failedFiles.filter(path => /^(?:src|tests)\/[A-Za-z0-9_./-]+\.(?:ts|tsx|mjs)$/.test(path)).slice(0, 32) } : null }));
-  return { schemaVersion: 'pos-cafe-light-ci-v1', verificationScope: 'LIGHT_MOCK_ONLY', repository: PROJECT_REPOSITORY, repositoryID: PROJECT_REPOSITORY_ID,
+  return { schemaVersion: 'pos-cafe-light-ci-v1', verificationScope: 'LIGHT_AND_NATIVE_PG16_ONLY', repository: PROJECT_REPOSITORY, repositoryID: PROJECT_REPOSITORY_ID,
     event: binding.event, sourceSHA: binding.sourceSHA, prHeadSHA: binding.prHeadSHA, workflowSHA: binding.workflowSHA,
     runId: binding.runId, attempt: binding.attempt,
     sourceFingerprint: fingerprints.source, lockSHA: fingerprints.lock,
