@@ -5,6 +5,7 @@ import { spawn, execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { hash, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, smokeTraceDiagnostics, guardFailureCode } from './project-ci-results.mjs';
 import { lightOwnerMatches } from './project-ci-launch.mjs';
+import {edgeResolutionCounts} from './permission-edge-resolution.mjs';
 import { pinUiActionRoot } from './permission-pin-ui-policy.mjs';
 import { uiTestInventory, readUIFile, readUIJSON, uiEvidenceContext, remakeSelftestCounts, auditSelftestCounts, requireFreshUIOutput } from './project-ui-results.mjs';
 
@@ -309,6 +310,8 @@ export async function main() {
         ||JSON.stringify(d.states)!==JSON.stringify(['failed','timedOut','interrupted','runner-error','metadata-absent','wrapper-failure','transport-refusal']))refuse();
       return c;
     });
+    await phase('edge-resolution',process.execPath,['scripts/permission-edge-probe.mjs',root,join(env.TMPDIR,'edge-resolution'),binding.sourceSHA],
+      output=>edgeResolutionCounts(output,binding.sourceSHA),null,360000);
     const {staticProfileCounts}=await import('./permission-runtime-static.mjs');
     const staticOutput=join(root,'artifacts',`permission-static-${binding.runId}-${binding.attempt}`);
     const staticEnv={GITHUB_ACTIONS:'true',RUNNER_ENVIRONMENT:'github-hosted',GITHUB_REPOSITORY:binding.repository,
@@ -379,7 +382,7 @@ export async function main() {
   if (Buffer.byteLength(rendered) > 65536) refuse();
   console.log(rendered);
   if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY,
-    `# POS light CI\n\nScope: LIGHT_AND_NATIVE_PG16_ONLY\n\n\`\`\`json\n${rendered}\n\`\`\`\n`);
+    `# POS light CI\n\nScope: LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY\n\n\`\`\`json\n${rendered}\n\`\`\`\n`);
   if (summary.overallStatus !== 'PASS') process.exitCode = 1;
 }
 

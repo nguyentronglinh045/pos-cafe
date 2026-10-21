@@ -9,6 +9,7 @@ import { execFileSync, spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { cpus, totalmem } from 'node:os';
 import { coreDumpDisabled } from './project-ci-launch.mjs';
+import {installEdgeResolution,assertEdgeResolution} from './permission-edge-resolution.mjs';
 import { CI1_LIMITS, CI1_PROJECT, CI1_RUNTIME, ci1ProcessEnvironment, assertCi1Envelope, ci1TrustedRepository } from './permission-runtime-service-policy.mjs';
 import { ci1LinuxRecipe, readCi1LinuxEnvelope, ci1SystemdProperty, ci1HarnessFailureFacts } from './permission-runtime-service-linux.mjs';
 import { renderCi1Evidence } from './permission-ci1-evidence.mjs';
@@ -55,7 +56,7 @@ const failureCodes = ['GUARD_REFUSED', 'INTAKE_REFUSED', 'COMMAND_FAILED', 'COMM
   'DOCKER_REGISTRY_NOT_FOUND', 'DOCKER_REGISTRY_RATE_LIMIT', 'DOCKER_NETWORK', 'DOCKER_API_VERSION', 'DOCKER_UNPACK',
   'EDGE_CACHE_ENTRY', 'EDGE_CACHE_TYPE', 'EDGE_CACHE_PACKAGE', 'EDGE_CACHE_VERSION', 'EDGE_CACHE_PIN',
   'EDGE_CACHE_METADATA', 'EDGE_CACHE_NAME', 'EDGE_CACHE_SRI', 'EDGE_CACHE_TARBALL', 'EDGE_CACHE_DEPENDENCIES',
-  'EDGE_CACHE_BOUND', 'EDGE_CACHE_INCOMPLETE', 'UNMOUNT_BUSY', 'UNMOUNT_PERMISSION', 'UNMOUNT_NOT_MOUNTED', 'UNKNOWN'];
+  'EDGE_CACHE_BOUND', 'EDGE_CACHE_INCOMPLETE', 'EDGE_RESOLUTION_INPUT', 'UNMOUNT_BUSY', 'UNMOUNT_PERMISSION', 'UNMOUNT_NOT_MOUNTED', 'UNKNOWN'];
 const failureMetrics = [...Object.keys(DOCKER_DIAGNOSTIC_BOUNDS),'hostFreeBytes', 'memoryBytes', 'oom', 'pidsEvents', 'memoryCurrentBytes', 'pidsCurrent',
   'cpuMatches', 'memoryLimitMatches', 'swapLimitMatches', 'pidsLimitMatches', 'cgroupMatches', 'runtimeMatches', 'loggingMatches',
   'loopImageBytes', 'loopAllocatedBytes', 'loopFilesystemBytes', 'loopFreeBytes', 'loopOffset', 'loopSizeLimit', 'mountMatches', 'ownerMatches', 'imageOrdinal', 'edgePackageOrdinal',
@@ -571,11 +572,15 @@ export function ci1EdgeBundleArguments(layout, image, network, index, name, numb
       '--mount', `type=bind,source=${functions},target=${functions},readonly`,
       '--mount', `type=bind,source=${root}/private,target=/output`,
       '--env', 'DENO_DIR=/root/.cache/deno', '--env', 'DENO_NO_PACKAGE_JSON=1', image,
-      'bundle', '--entrypoint', `${functions}/${name}/index.ts`, '--output', `/output/${index}-${name}.eszip`];
+      'bundle', '--import-map', `${functions}/deno.json`, '--entrypoint', `${functions}/${name}/index.ts`, '--output', `/output/${index}-${name}.eszip`];
 }
-function edgeBundle(layout, run, image, network, index) {
-  for (const [number, name] of ['menu-image-public', 'menu-image-gateway'].entries())
+function edgeBundle(layout, run, image, network, index, expected) {
+  const functions=`${layout.volume}/runtime/stack/supabase/functions`;
+  assertEdgeResolution(functions,expected);
+  for (const [number, name] of ['menu-image-public', 'menu-image-gateway'].entries()) {
     run('docker', ci1EdgeBundleArguments(layout, image, network, index, name, number));
+    assertEdgeResolution(functions,expected);
+  }
 }
 function ownedDaemonReady(layout, pair, run) {
   const root = layout.volume, cgroup = `/system.slice/${layout.identity.unit}`;
@@ -618,8 +623,8 @@ async function offlinePhase(layout, source, env) {
     const cacheRoot = JSON.parse(run('docker', ['volume', 'inspect', layout.edgeVolume]))[0].Mountpoint;
     if (statSync(cacheRoot).dev !== statSync(root).dev) refused();
     const before = ci1EdgeCacheProof(cacheRoot, expected);
-    operation = 'OFFLINE_BUNDLE1'; edgeBundle(layout, run, image, 'none', 'offline1');
-    operation = 'OFFLINE_BUNDLE2'; edgeBundle(layout, run, image, 'none', 'offline2');
+    operation = 'OFFLINE_BUNDLE1'; edgeBundle(layout, run, image, 'none', 'offline1',expected);
+    operation = 'OFFLINE_BUNDLE2'; edgeBundle(layout, run, image, 'none', 'offline2',expected);
     operation = 'OFFLINE_CACHE_AFTER';
     if (ci1EdgeCacheProof(cacheRoot, expected).sha256 !== before.sha256) refused();
     operation = 'OFFLINE_PROOF_WRITE';
@@ -758,12 +763,14 @@ async function setup(layout, input, parentEnv) {
           for(const name of migrations)writeFileSync(root+'/runtime/stack/supabase/migrations/'+name,readFileSync(source+'/supabase/migrations/'+name),{flag:'wx',mode:0o600});
         }
         run('cp', ['-R', '--no-preserve=ownership', `${source}/supabase/functions`, `${root}/runtime/stack/supabase/functions`]);
+        installEdgeResolution(source,`${root}/runtime/stack/supabase/functions`,parse(pinPath('ci1-edge.json')));
         if(ACTIVE_PROFILE.id==='PIN_EXPIRY'){
           operation='PEER_TEMPLATE';const peer=servicePeerLayout(root);
           mkdirSync(peer.root+'/stack/supabase/migrations',{recursive:true,mode:0o700});
           writeFileSync(peer.root+'/stack/supabase/config.toml',serviceConfig('PIN_RACE',readFileSync(source+'/tests/permissions/runtime/identity.toml')),{flag:'wx',mode:0o600});
           writeFileSync(peer.root+'/stack/supabase/seed.sql','',{flag:'wx',mode:0o600});
           run('cp',['-R','--no-preserve=ownership',source+'/supabase/functions',peer.root+'/stack/supabase/functions']);
+          installEdgeResolution(source,peer.root+'/stack/supabase/functions',parse(pinPath('ci1-edge.json')));
         }
       } else if (stage === 'npm-images') {
         let total = 0;
@@ -821,7 +828,7 @@ async function setup(layout, input, parentEnv) {
         operation = 'EDGE_VOLUME_EMPTY';
         if (statSync(cacheRoot).dev !== statSync(root).dev || readdirSync(cacheRoot).length) refused();
         operation = 'EDGE_BUNDLE';
-        edgeBundle(layout, run, image, 'host', 'warm');
+        edgeBundle(layout, run, image, 'host', 'warm',parse(pinPath('ci1-edge.json')));
         operation = 'EDGE_CACHE_PROOF';
         const proof = ci1EdgeCacheProof(cacheRoot, parse(pinPath('ci1-edge.json')));
         operation = 'EDGE_PROOF_WRITE';

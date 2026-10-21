@@ -3,12 +3,13 @@ import { stripVTControlCharacters } from 'node:util';
 import { lstatSync, realpathSync } from 'node:fs';
 import { resolve, sep } from 'node:path';
 import { execFileSync } from 'node:child_process';
+import {publicEdgeResolution,edgeProbeFailureMetrics,EDGE_PROBE_PUBLIC_LIMITS} from './permission-edge-resolution.mjs';
 
 export const PROJECT_REPOSITORY = 'nguyentronglinh045/pos-cafe';
 export const PROJECT_REPOSITORY_ID = 1263057386;
 // Current-main lane; UI tools are calibrated, app UI acceptance remains separate.
 export const PROJECT_PHASES = Object.freeze(['install', 'build', 'unit', 'tooling', 'node-tools', 'browser',
-  'runtime-reporters', 'permission-static', 'permission-pg16', 'ui-tools', 'ui-remake-selftest', 'ui-audit-selftest', 'smoke-discovery', 'smoke-preflight', 'smoke', 'ui-selftest', 'ui-audit']);
+  'runtime-reporters', 'edge-resolution', 'permission-static', 'permission-pg16', 'ui-tools', 'ui-remake-selftest', 'ui-audit-selftest', 'smoke-discovery', 'smoke-preflight', 'smoke', 'ui-selftest', 'ui-audit']);
 export const PROJECTS = Object.freeze(['desktop', 'tablet-landscape', 'phone-landscape', 'small-landscape', 'portrait', 'demo-runbook']);
 export const hash = value => createHash('sha256').update(value).digest('hex');
 const reject = () => { throw new Error('PROJECT_CI_RESULT_INVALID'); };
@@ -308,6 +309,7 @@ export function privateDiagnostics(output, report, expectedFiles = [], root = ''
   const codes = ['COMMAND_FAILED'];
   const metrics = {};
   Object.assign(metrics,pg16FailureMetrics(output));
+  Object.assign(metrics,edgeProbeFailureMetrics(output));
   for (const [key, value] of Object.entries(report ?? {})) if (['numTotalTests', 'numPassedTests', 'numFailedTests', 'numPendingTests', 'numRuntimeErrorTestSuites'].includes(key) && integer(value)) metrics[key] = value;
   if (!report) codes.push('REPORT_MISSING');
   if (metrics.numFailedTests > 0) codes.push('VITEST_ASSERTION');
@@ -665,10 +667,11 @@ export function publicSummary(binding, rows, fingerprints) {
   const phases = rows.map(({ id, status, elapsedMs, exitCode, counts, invocationSHA, reportSHA, diagnostic }) => ({ id, status, elapsedMs, exitCode, invocationSHA, reportSHA,
     counts: counts ? {...Object.fromEntries(Object.entries(counts).filter(([key, value]) =>
       ['discovered', 'run', 'pass', 'fail', 'skip', 'manualDeferred', 'acceptedFindings', 'detectedFindings', 'positiveControls', 'negativeControls', 'targetControls'].includes(key) && integer(value))),
-      ...(id==='runtime-reporters'&&Object.hasOwn(counts,'diagnosticControls')?{diagnosticControls:publicDiagnosticControls(counts.diagnosticControls,binding,fingerprints)}:{})} : null,
+   ...(id==='runtime-reporters'&&Object.hasOwn(counts,'diagnosticControls')?{diagnosticControls:publicDiagnosticControls(counts.diagnosticControls,binding,fingerprints)}:{}),
+   ...(id==='edge-resolution'?{edgeResolution:publicEdgeResolution(counts.edgeResolution,binding.sourceSHA)}:{})} : null,
     diagnostic: diagnostic ? { codes: diagnostic.codes.filter(code => DIAGNOSTIC_CODES.includes(code)),
       metrics: Object.fromEntries(Object.entries(diagnostic.metrics).filter(([key, value]) =>
-        ['numTotalTests', 'numPassedTests', 'numFailedTests', 'numPendingTests', 'numRuntimeErrorTestSuites', 'architectureAssertion',
+        ['numTotalTests', 'numPassedTests', 'numFailedTests', 'numPendingTests', 'numRuntimeErrorTestSuites', 'architectureAssertion', ...Object.keys(EDGE_PROBE_PUBLIC_LIMITS),
           'pg16Operation','pg16Step','pg16ErrorCodeOrdinal','pg16ErrorNameOrdinal','pg16ErrorMatcherOrdinal',
           'pg16RunnerErrors','pg16HookErrors','pg16FailedTests','pg16RootRemoved','pg16ProcessReleased',
           'minimumObservedFreeBytes', 'initialFreeBytes', 'freeSpaceDecreaseBytes', 'ownedBytesAtCheckpoint', 'coreFileCount', 'coreAllocatedBytes', 'largestOwnedFileBytes', 'kernelCorePipe',
@@ -693,9 +696,9 @@ export function publicSummary(binding, rows, fingerprints) {
           'browserProbeNativeFatalObserved', 'browserProbeNativeFatalSourceOrdinal', 'browserProbeNativeFatalLine', 'browserProbeNativeFatalReasonMask',
           'smokeExpected', 'smokeUnexpected', 'smokeSkipped', 'smokeFlaky', 'smokeProgressIndex', 'smokeProgressTotal',
           'memoryCurrentBytes', 'peakMemoryBytes', 'pidsCurrent', 'peakPids', 'oomEvents', 'oomKills', 'pidsLimitEvents'].includes(key) && integer(value)
-          &&(!Object.hasOwn(PG16_PUBLIC_LIMITS,key)||value<=PG16_PUBLIC_LIMITS[key]))),
+          &&(!Object.hasOwn(PG16_PUBLIC_LIMITS,key)||value<=PG16_PUBLIC_LIMITS[key])&&(!Object.hasOwn(EDGE_PROBE_PUBLIC_LIMITS,key)||value<=EDGE_PROBE_PUBLIC_LIMITS[key]))),
       failedFiles: diagnostic.failedFiles.filter(path => /^(?:src|tests)\/[A-Za-z0-9_./-]+\.(?:ts|tsx|mjs)$/.test(path)).slice(0, 32) } : null }));
-  return { schemaVersion: 'pos-cafe-light-ci-v1', verificationScope: 'LIGHT_AND_NATIVE_PG16_ONLY', repository: PROJECT_REPOSITORY, repositoryID: PROJECT_REPOSITORY_ID,
+  return { schemaVersion: 'pos-cafe-light-ci-v1', verificationScope: 'LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY', repository: PROJECT_REPOSITORY, repositoryID: PROJECT_REPOSITORY_ID,
     event: binding.event, sourceSHA: binding.sourceSHA, prHeadSHA: binding.prHeadSHA, workflowSHA: binding.workflowSHA,
     runId: binding.runId, attempt: binding.attempt,
     sourceFingerprint: fingerprints.source, lockSHA: fingerprints.lock,

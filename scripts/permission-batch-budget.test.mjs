@@ -51,6 +51,38 @@ function successor(file,p,extra={}){
   predecessor:{path:file,policySHA256:hashFile(file),anchorSHA256:hashFile(file+'.anchor.json'),journalSHA256:hashFile(file+'.journal.jsonl')},...extra};
  writeFileSync(next,JSON.stringify(value));return{next,value};
 }
+
+function executionGrant(file,p,change=x=>x,beforeClose=()=>{}){
+ closeBatch(file);const first=successor(file,p);initializeBatch(first.next);
+ reserveBatchAction(first.next,{kind:'publication',sourceSHA:sha,identity:'published',now});
+ reserveBatchAction(first.next,{kind:'ci',sourceSHA:sha,identity:'ci',now});
+ reserveBatchAction(first.next,{kind:'heavy',sourceSHA:sha,identity:'old-pin',now});beforeClose(first.next);closeBatch(first.next);
+ const path=first.next+'.grant.json',authorizedAtUtc=new Date(Math.max(Date.now()+1000,now+1000)).toISOString();
+ const value={...first.value,schemaVersion:'permission-batch-budget-v3',allowance:{publication:2,ci:2,heavy:3,reviewRounds:4},ownerAuthorization:{reference:'codex://threads/test explicit owner approves one additional publication/CI/heavy and two reviews',authorizedAtUtc,authorizedDeadlineUtc:first.value.deadlineUtc,additionalActions:{publication:1,ci:1,heavy:1,reviewRounds:2},actionGrantReference:'Owner explicitly grants exactly these four increments without resetting spent or changing deadline'},predecessor:{path:first.next,policySHA256:hashFile(first.next),anchorSHA256:hashFile(first.next+'.anchor.json'),journalSHA256:hashFile(first.next+'.journal.jsonl')}};
+ change(value);writeFileSync(path,JSON.stringify(value));return{path,value};
+}
+test('explicit execution grant carries spent and adds exactly approved actions with unchanged deadline',()=>fixture(({file,p})=>{
+ const{path}=executionGrant(file,p);initializeBatch(path);const status=inspectBatch(path,{now:now+2000});
+ assert.deepEqual(status.counts,{publication:1,ci:1,heavy:1,reviewRounds:0});
+ reserveBatchAction(path,{kind:'publication',sourceSHA:sha,identity:'new-publish',now:now+2000});
+ assert.throws(()=>reserveBatchAction(path,{kind:'publication',sourceSHA:sha,identity:'third-publish',now:now+2000}),e=>e.reason==='ALLOWANCE_EXHAUSTED');
+ assert.equal(inspectBatch(path,{now:Date.parse(status.deadlineUtc)}).admitted,false);
+}));
+test('execution grant rejects missing authorization, wrong increments, changed deadline and old authorization',async()=>{
+ for(const mutate of [v=>delete v.ownerAuthorization.additionalActions,v=>v.ownerAuthorization.additionalActions.heavy=2,v=>v.allowance.ci=1,v=>v.deadlineUtc=new Date(now+150*60000).toISOString(),v=>v.ownerAuthorization.authorizedAtUtc=new Date(now-1000).toISOString(),v=>v.ownerAuthorization.additionalReviewRounds=2])await fixture(({file,p})=>{
+  const{path}=executionGrant(file,p,mutate);assert.throws(()=>initializeBatch(path));
+ });
+});
+test('execution grant cannot be replayed through a sibling policy',()=>fixture(({file,p})=>{
+ const{path}=executionGrant(file,p);initializeBatch(path);const sibling=path+'.sibling';writeFileSync(sibling,readFileSync(path));assert.throws(()=>initializeBatch(sibling),e=>e.reason==='SUCCESSOR_CONFLICT');
+}));
+test('grant must follow every cumulative reservation even when API timestamps are appended out of order',()=>fixture(({file,p})=>{
+ const{path}=executionGrant(file,p,value=>{value.ownerAuthorization.authorizedAtUtc=new Date(now+10*60000+1000).toISOString();},prior=>{
+  reserveBatchAction(prior,{kind:'heavy',sourceSHA:sha,identity:'later-time',now:now+20*60000});
+  reserveBatchAction(prior,{kind:'reviewRounds',sourceSHA:sha,identity:'backdated-last-event',now:now+10*60000});
+ });
+ assert.throws(()=>initializeBatch(path),error=>error.reason==='REVIEW_GRANT_REPLAY');
+}));
 test('valid journal suffix truncation and truncation to empty fail against independently pinned head',()=>fixture(({file})=>{
  reserveBatchAction(file,{kind:'publication',sourceSHA:sha,identity:'publish',now});
  const path=file+'.journal.jsonl',raw=readFileSync(path,'utf8'),rows=raw.trim().split('\n');

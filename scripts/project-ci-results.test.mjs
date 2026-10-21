@@ -16,6 +16,7 @@ const sha = '1'.repeat(40), other = '2'.repeat(40), digest = '3'.repeat(64);
 const env = { GITHUB_REPOSITORY: 'nguyentronglinh045/pos-cafe', GITHUB_REPOSITORY_ID: '1263057386', GITHUB_ACTIONS: 'true', RUNNER_ENVIRONMENT: 'github-hosted',
   GITHUB_EVENT_NAME: 'push', GITHUB_SHA: sha, GITHUB_WORKFLOW_SHA: sha, GITHUB_RUN_ID: '123', GITHUB_RUN_ATTEMPT: '1' };
 const binding = sourceBinding(env, { after: sha, repository: { full_name: env.GITHUB_REPOSITORY, id: 1263057386 } }, sha);
+const edgeReceipt={schemaVersion:'permission-edge-resolution-v1',sourceSHA:sha,scope:'NATIVE_RESOLVER_ONLY',configSHA256:'a'.repeat(64),lockSHA256:'b'.repeat(64),cacheSHA256:'c'.repeat(64),packages:20,observed:17,metadataOnly:3,warmBundles:2,runtimeBadSRIControls:1,rootRemoved:true,processReleased:true};
 
 const traceLines = events => [{type:'context-options',version:8,playwrightVersion:'1.60.0',browserName:'chromium'},
   ...events].map(event => JSON.stringify(event)).join('\n') + '\n';
@@ -531,7 +532,7 @@ test('failed Playwright diagnostics expose known source locations and counts wit
 
 test('permission light profile requires all seventeen phases, including UI calibration, without app acceptance substitutions', () => {
   assert.deepEqual(PROJECT_PHASES, ['install','build','unit','tooling','node-tools','browser',
-    'runtime-reporters','permission-static','permission-pg16','ui-tools','ui-remake-selftest','ui-audit-selftest','smoke-discovery','smoke-preflight','smoke','ui-selftest','ui-audit']);
+    'runtime-reporters','edge-resolution','permission-static','permission-pg16','ui-tools','ui-remake-selftest','ui-audit-selftest','smoke-discovery','smoke-preflight','smoke','ui-selftest','ui-audit']);
   const rows=PROJECT_PHASES.map(id=>({id,status:'PASS',elapsedMs:1,exitCode:0,invocationSHA:digest,reportSHA:digest,counts:null}));
   assert.equal(publicSummary(binding,rows,{source:digest,lock:digest}).overallStatus,'PASS');
   for(const id of ['ui-selftest','ui-audit','ui-tools']) {
@@ -552,7 +553,7 @@ test('permission light profile requires all seventeen phases, including UI calib
 
 test('public evidence excludes arbitrary binding/count/raw fields and incomplete phase sets fail', () => {
   const rows = PROJECT_PHASES.map(id => ({ id, status: 'PASS', elapsedMs: 1, exitCode: 0, invocationSHA: digest, reportSHA: digest,
-    counts: { pass: 1, raw: 'FAKE_PRIVATE_TOKEN' } }));
+    counts: { pass: 1, raw: 'FAKE_PRIVATE_TOKEN',...(id==='edge-resolution'?{edgeResolution:edgeReceipt}:{}) } }));
   const result = publicSummary({ ...binding, raw: 'FAKE_PRIVATE_TOKEN' }, rows, { source: digest, lock: digest });
   assert.equal(result.overallStatus, 'PASS');
   assert.equal(JSON.stringify(result).includes('FAKE_PRIVATE_TOKEN'), false);
@@ -571,7 +572,7 @@ test('public native diagnostics independently reject out-of-domain numbers even 
 test('public UI calibration counts stay finite, numeric and separate from product acceptance', () => {
   const rows=PROJECT_PHASES.map(id=>({id,status:'PASS',elapsedMs:1,exitCode:0,invocationSHA:digest,reportSHA:digest,
     counts:{run:11,pass:11,positiveControls:5,negativeControls:6,targetControls:16,detectedFindings:23,
-      productAcceptance:'FAKE_PRIVATE_TOKEN',raw:'FAKE_PRIVATE_TOKEN'}}));
+      productAcceptance:'FAKE_PRIVATE_TOKEN',raw:'FAKE_PRIVATE_TOKEN',...(id==='edge-resolution'?{edgeResolution:edgeReceipt}:{})}}));
   const result=publicSummary(binding,rows,{source:digest,lock:digest});
   assert.equal(result.overallStatus,'PASS');assert.equal(result.phases[7].counts.negativeControls,6);
   assert.equal(result.phases[8].counts.targetControls,16);assert.equal(JSON.stringify(result).includes('FAKE_PRIVATE_TOKEN'),false);

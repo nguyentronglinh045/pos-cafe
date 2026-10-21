@@ -10,8 +10,9 @@ const check=(ok,reason)=>{if(!ok)fail(reason);};
 const exists=path=>!!lstatSync(path,{throwIfNoEntry:false});
 function owned(path,cap=128*1024){const s=lstatSync(path);check(s.isFile()&&!s.isSymbolicLink()&&s.nlink===1&&s.size<=cap&&realpathSync(path)===resolve(path),'FILE');return readFileSync(path,'utf8');}
 function policy(path){const raw=owned(path),p=JSON.parse(raw),start=Date.parse(p.originalStartedAtUtc),end=Date.parse(p.deadlineUtc);
- check(['permission-batch-budget-v1','permission-batch-budget-v2'].includes(p.schemaVersion)&&/^[a-z0-9-]{1,100}$/.test(p.workstreamId)&&['A','B'].includes(p.batch),'POLICY');
- const max=p.batch==='A'?{publication:1,ci:1,heavy:2,reviewRounds:p.schemaVersion==='permission-batch-budget-v2'?4:2}:{publication:0,ci:0,heavy:6,reviewRounds:2};
+ check(['permission-batch-budget-v1','permission-batch-budget-v2','permission-batch-budget-v3'].includes(p.schemaVersion)&&/^[a-z0-9-]{1,100}$/.test(p.workstreamId)&&['A','B'].includes(p.batch),'POLICY');
+ const grant=p.schemaVersion==='permission-batch-budget-v3';
+ const max=p.batch==='A'?(grant?{publication:2,ci:2,heavy:3,reviewRounds:6}:{publication:1,ci:1,heavy:2,reviewRounds:p.schemaVersion==='permission-batch-budget-v2'?4:2}):{publication:0,ci:0,heavy:6,reviewRounds:2};
  check(Number.isFinite(start)&&Number.isFinite(end)&&end>start,'DEADLINE');
  check(p.allowance&&Object.keys(p.allowance).sort().join(',')===Object.keys(max).sort().join(',')&&Object.entries(max).every(([k,v])=>Number.isSafeInteger(p.allowance[k])&&p.allowance[k]>=0&&p.allowance[k]<=v),'ALLOWANCE');
  if(p.schemaVersion==='permission-batch-budget-v1'){
@@ -24,6 +25,10 @@ function policy(path){const raw=owned(path),p=JSON.parse(raw),start=Date.parse(p
    &&a.authorizedDeadlineUtc===p.deadlineUtc&&p.predecessor,'CONTINUATION_AUTHORIZATION');
   check(a.additionalReviewRounds===undefined||(p.batch==='A'&&a.additionalReviewRounds===2
    &&typeof a.reviewGrantReference==='string'&&a.reviewGrantReference.trim().length>=10&&a.reviewGrantReference.length<=2000),'REVIEW_GRANT');
+  if(grant)check(p.batch==='A'&&a.additionalReviewRounds===undefined
+   &&JSON.stringify(a.additionalActions)===JSON.stringify({publication:1,ci:1,heavy:1,reviewRounds:2})
+   &&typeof a.actionGrantReference==='string'&&a.actionGrantReference.trim().length>=10&&a.actionGrantReference.length<=2000,'ACTION_GRANT');
+  else check(a.additionalActions===undefined&&a.actionGrantReference===undefined,'ACTION_GRANT');
  }
  return{p,digest:hash(raw)};
 }
@@ -40,12 +45,14 @@ function predecessorState(p,depth=0,childPath,allowMissingClaim=false){
  check(typeof ref.path==='string'&&['policySHA256','anchorSHA256','journalSHA256'].every(k=>/^[a-f0-9]{64}$/.test(ref[k]??'')),'PREDECESSOR_REF');
  const path=resolve(ref.path);check(hash(owned(path))===ref.policySHA256&&hash(owned(path+'.anchor.json'))===ref.anchorSHA256&&hash(owned(path+'.journal.jsonl',1024**2))===ref.journalSHA256,'PREDECESSOR_DRIFT');
  const prior=readState(path,{allowLegacyWithoutHead:ref.legacyWithoutHead===true,depth:depth+1});
+ const actionGrant=p.schemaVersion==='permission-batch-budget-v3'?p.ownerAuthorization.additionalActions:null;
  const reviewGrant=p.ownerAuthorization.additionalReviewRounds??0;
  check(prior.closed&&prior.p.workstreamId===p.workstreamId&&prior.p.batch===p.batch&&prior.p.originalStartedAtUtc===p.originalStartedAtUtc
-  &&Object.keys(p.allowance).every(k=>p.allowance[k]===prior.p.allowance[k]+(k==='reviewRounds'?reviewGrant:0))
+  &&Object.keys(p.allowance).every(k=>p.allowance[k]===prior.p.allowance[k]+(actionGrant?.[k]??(k==='reviewRounds'?reviewGrant:0)))
   &&Date.parse(p.ownerAuthorization.authorizedAtUtc)>=Date.parse(prior.p.originalStartedAtUtc),'PREDECESSOR_STATE');
- if(reviewGrant)check(Date.parse(p.ownerAuthorization.authorizedAtUtc)>Date.parse(prior.p.ownerAuthorization?.authorizedAtUtc??prior.p.originalStartedAtUtc)
-  &&Date.parse(p.ownerAuthorization.authorizedAtUtc)>=Date.parse(prior.events.at(-1)?.atUtc)
+ if(actionGrant)check(prior.p.schemaVersion==='permission-batch-budget-v2'&&p.deadlineUtc===prior.p.deadlineUtc,'ACTION_GRANT_PREDECESSOR');
+ if(reviewGrant||actionGrant)check(Date.parse(p.ownerAuthorization.authorizedAtUtc)>Date.parse(prior.p.ownerAuthorization?.authorizedAtUtc??prior.p.originalStartedAtUtc)
+  &&Date.parse(p.ownerAuthorization.authorizedAtUtc)>=(actionGrant?Math.max(Date.parse(prior.p.originalStartedAtUtc),...prior.reservations.map(e=>Date.parse(e.atUtc))):Date.parse(prior.events.at(-1)?.atUtc))
   &&p.ownerAuthorization.reference!==prior.p.ownerAuthorization?.reference,'REVIEW_GRANT_REPLAY');
  assertSuccessorClaim(childPath,p,{allowMissing:allowMissingClaim});
  return prior;

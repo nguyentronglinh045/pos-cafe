@@ -1,9 +1,10 @@
 import{readFileSync,lstatSync,realpathSync,statfsSync,readdirSync}from'node:fs';import{resolve,join}from'node:path';import{execFileSync}from'node:child_process';import{createHash}from'node:crypto';import{pathToFileURL}from'node:url';
 import{inspectBatch,reserveBatchAction}from'./permission-batch-budget.mjs';
 import{PROJECT_PHASES,PROJECT_REPOSITORY_ID}from'./project-ci-results.mjs';
+import{publicEdgeResolution,assertEdgeResolution}from'./permission-edge-resolution.mjs';
 const sha=b=>createHash('sha256').update(b).digest('hex');const check=(v,reason)=>{if(!v)throw Object.assign(Error('PERMISSION_RUNTIME_ADMISSION_REFUSED'),{reason});};
 const read=ref=>{check(ref&&typeof ref.path==='string'&&/^[a-f0-9]{64}$/.test(ref.sha256??''),'REF');const p=resolve(ref.path),s=lstatSync(p);check(s.isFile()&&!s.isSymbolicLink()&&s.nlink===1&&s.size<=4*1024**2&&realpathSync(p)===p,'REF_FILE');const b=readFileSync(p);check(sha(b)===ref.sha256,'REF_HASH');return JSON.parse(b);};
-export function validateAdmissionEvidence({manifest:m,packet,reviews,light,native,prior,disks,retainedBytes,activeJobs,wslPresent},kind){
+export function validateAdmissionEvidence({manifest:m,packet,reviews,light,native,prior,disks,retainedBytes,activeJobs,wslPresent,edgeInputs},kind){
  check(m.schemaVersion==='permission-runtime-admission-v1'&&m.repository==='nguyentronglinh045/pos-cafe'&&m.branch==='run/permissions-20261020'
   &&/^[a-f0-9]{40}$/.test(m.sourceSHA??'')&&['publish','heavy'].includes(kind),'MANIFEST');
  check(reviews.candidateSHA256===m.packet.sha256&&Array.isArray(reviews.reviewers)
@@ -32,6 +33,8 @@ export function validateAdmissionEvidence({manifest:m,packet,reviews,light,nativ
    &&d?.sourceSHA===m.sourceSHA&&d.lockSHA===light.lockSHA&&d.run===7&&d.pass===7&&d.fullPipeline===true&&d.mutationChecks===20
    &&JSON.stringify(d.states)===JSON.stringify(['failed','timedOut','interrupted','runner-error','metadata-absent','wrapper-failure','transport-refusal']),'DIAGNOSTIC_CONTROLS');
   check(native?.sourceSHA===m.sourceSHA&&native.runId===light.runId&&native.status==='NOT_PRESENT'&&native.rootRemoved===true&&native.processReleased===true,'NATIVE_CLEANUP');
+  const e=publicEdgeResolution(light.phases.find(p=>p.id==='edge-resolution')?.counts?.edgeResolution,m.sourceSHA);
+  check(edgeInputs&&e.lockSHA256===edgeInputs.lockSHA256&&e.configSHA256===edgeInputs.configSHA256,'EDGE_RESOLUTION');
  }
  return{status:'ADMITTED',sourceSHA:m.sourceSHA,kind};
 }
@@ -46,7 +49,8 @@ export function runtimeAdmission(manifestPath,kind,{dispatch=false,identity}={})
  const retainedBytes=m.retainedRoots.reduce((n,p)=>n+measure(p),0);
  const runs=JSON.parse(execFileSync('gh',['run','list','--repo',m.repository,'--branch',m.branch,'--limit','30','--json','status'],{cwd,encoding:'utf8',timeout:30000,windowsHide:true}));
  const result=validateAdmissionEvidence({manifest:m,packet,reviews,prior,light,native,disks,retainedBytes,activeJobs:runs.filter(r=>r.status!=='completed').length,
-  wslPresent:!!execFileSync('wsl',['--list','--quiet'],{encoding:'utf16le',timeout:15000,windowsHide:true}).replaceAll('\0','').trim()},kind);
+  wslPresent:!!execFileSync('wsl',['--list','--quiet'],{encoding:'utf16le',timeout:15000,windowsHide:true}).replaceAll('\0','').trim(),
+  edgeInputs:kind==='heavy'?assertEdgeResolution(join(cwd,'tests/permissions/runtime/edge-resolution'),JSON.parse(readFileSync(join(cwd,'tests/permissions/runtime/ci1-edge.json')))):null},kind);
  check(git(['rev-parse','HEAD']).toString().trim()===m.sourceSHA&&!git(['diff','--name-only','HEAD','--']).toString().trim(),'SOURCE_DRIFT');
  for(const p of packet.effectivePins)check(sha(git(['show',m.sourceSHA+':'+p.path]))===p.sha256,'GIT_BLOB');
  const remote=git(['ls-remote','origin','refs/heads/'+m.branch]).toString().split(/\s+/)[0];

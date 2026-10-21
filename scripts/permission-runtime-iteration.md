@@ -2,7 +2,8 @@
 
 Run from the owned source checkout. This tooling does not authorize merge,
 production changes, Supabase writes, a new WSL distro or extra test coverage
-exceptions. Existing CI17 and backend acceptance gates remain required.
+exceptions. Existing17 CI gates and backend acceptance remain required;
+the Edge resolution phase adds an eighteenth gate before backend admission.
 
 ## Check before dispatch
 
@@ -47,11 +48,34 @@ Packet workstreamId and budget path/hash must also match exactly; a new ledger
 cannot be substituted behind an old review approval.
 
 Reviews contain `candidateSHA256` and distinct named APPROVE reviewers in
-`source` and `operations` scopes. Heavy requires actual own-source push CI17
+`source` and `operations` scopes. Heavy requires actual own-source push CI18
 in canonical phase order, all exits zero, four original reporter controls,
 seven diagnostic controls/20 mutations bound to source and lock. Native
 cleanup must independently bind source/run, `NOT_PRESENT`, rootRemoved and
 processReleased. Prior runtime must have measured image reclamation.
+
+Edge resolution uses reviewed runtime-only deno.json/deno.lock inputs, preserving
+all20 exact version/SRI pins and explicit duplicate Node types edges. Both workers
+copy the same inputs and check them before/after every warm/offline bundle.
+The pinned Edgev1.74.3 reads lock snapshots but does not enforce frozen npm
+updates; frozen:true is not an independently sufficient guard. Keep strict cache
+proof and two actual network-isolated backend replays.
+
+The added CI phase runs the official SHA256-pinned portable Linux native
+Edgev1.74.3 with fresh cache and both actual entrypoints. It verifies all20 cache
+entries (including explicitly permitted optional metadata) and a fresh-cache
+bad-SRI negative control in the actual resolver. Its receipt is bound to source,
+input hashes and cleanup; admission compares hashes with current reviewed input.
+Native proof does not replace the pinned OCI runtime/backend acceptance.
+The archive release identity isv1.74.3; upstream CLI's --version banner uses
+CLI crate0.1.0 and embeddedDeno2.1.4. Validate both source-derived banner versions
+and the archive SHA256, rather than requiring the release tag in CLI output.
+Archive82,997,085B, expanded files245,736,752B were independently inspected.
+Expanded listing cap256MiB, cache proof cap512MiB, probe retained cap1GiB with
+30GiB minimum free fit the existing whole-CI5GiB operating cap. Download/hash,
+archive checks, process timeout and periodic accounting fail closed; these are
+application guards, not an OS disk quota. Probe executes no package install
+scripts and installs no Windows runtime, Docker or Nix.
 
 Measure C and D >=30 GiB free and retained task scope <=768 MiB. The historical
 scope includes this task root, the shared project Git directory, and the
@@ -103,3 +127,13 @@ Cloud collectors in the current execution workspace call
 `collectRuntimeDiagnosticFacts` before writing receipts. Keep them and their
 hashes in the reviewed operations packet. Public diagnostic facts are bounded
 ordinals/counts only; never publish private reports or raw exception text.
+
+The explicit V3 owner grant is limited to batchA total publication2/CI2/heavy3/
+review6. It requires the exact approved increments1/1/1/2, an authorization newer
+than the predecessor's owner grant and every cumulative reservation, the same deadline and
+a closed V2 predecessor. Approval can precede checkpoint closure; it cannot
+precede later action reservations. Spent, identities, usage and single-successor
+claims persist. V3 cannot grant again from V3, reset counters or extend time.
+After closing this V3, a later session needs a new explicit owner deadline and
+reviewed guard/spec support for continuing its exact closed history. It cannot
+initialize a new root, reuse V2 or silently restart the counters.
