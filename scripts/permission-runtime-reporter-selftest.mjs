@@ -4,6 +4,7 @@ import {resolve,relative,join} from 'node:path';
 import {spawnSync,execFileSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
 import {runtimeHash,validateRuntimeStage} from './permission-runtime-results.mjs';
+import{diagnosticReporterSelftest}from'./permission-runtime-diagnostic-selftest.mjs';
 
 const fail=()=>{throw Error('PERMISSION_REPORTER_SELFTEST_FAILED');};
 const check=x=>{if(!x)fail();};
@@ -67,6 +68,7 @@ export function reporterSelftest(root=process.cwd()){
       }
       counts.pass++;
     }
+    counts.diagnosticControls=diagnosticReporterSelftest(root,temporary,{sourceSHA,lockSHA});
     return counts;
   }finally{
     const within=relative(parent,temporary);check(within.startsWith('permission-reporter-selftest-')&&!within.includes('..')

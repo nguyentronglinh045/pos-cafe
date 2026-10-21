@@ -12,8 +12,9 @@ import { coreDumpDisabled } from './project-ci-launch.mjs';
 import { CI1_LIMITS, CI1_PROJECT, CI1_RUNTIME, ci1ProcessEnvironment, assertCi1Envelope, ci1TrustedRepository } from './permission-ci1-policy.mjs';
 import { ci1LinuxRecipe, readCi1LinuxEnvelope, ci1SystemdProperty, ci1HarnessFailureFacts } from './permission-ci1-harness.mjs';
 import { renderCi1Evidence } from './permission-ci1-evidence.mjs';
-import {renderT04Evidence,t04FailureFacts,t04TimeBudget,t04SafeFailureMetric} from './permission-runtime-t04.mjs';
+import {renderT04Evidence,t04FailureFacts,t04TimeBudget,t04SafeFailureMetric,T04_FAILURE_BOUNDS} from './permission-runtime-t04.mjs';
 import {T04_DIAGNOSTIC_BOUNDS} from './permission-runtime-t04-restore-diagnostic.mjs';
+import {finiteDiagnosticFacts} from './permission-runtime-diagnostic-transport.mjs';
 import { CI1_SETUP, ci1BytesHash, ci1NpmIntake, ci1ToolsIntake, ci1CheckTarListing, ci1EdgeIntake,
   assertCi1Supervisor, ci1WorkerLayout, ci1ImagesIntake } from './permission-ci1-intake.mjs';
 
@@ -63,7 +64,7 @@ const failureMetrics = [...Object.keys(DOCKER_DIAGNOSTIC_BOUNDS),'hostFreeBytes'
     't04StageOrdinal','t04FailureOrdinal','t04RunnerErrors','t04HookErrors','t04MissingRequired','t04FirstFailedRequired','t04BoundaryOrdinal','t04BoundaryExit',
     't04RestoreErrorOrdinal','t04RestoreCommandOrdinal',
     ...Object.keys(T04_DIAGNOSTIC_BOUNDS),
-    't04RealtimeFailureMask','t04RealtimeFirstFailureOrdinal','t04FailedTests','t04FirstFailedLine','t04TestErrorCodeOrdinal','t04TestErrorNameOrdinal','t04TestErrorMatcherOrdinal'];
+    't04RealtimeFailureMask','t04RealtimeFirstFailureOrdinal','t04FailedTests','t04FirstFailedLine','t04TestErrorCodeOrdinal','t04TestErrorNameOrdinal','t04TestErrorMatcherOrdinal',...Object.keys(T04_FAILURE_BOUNDS)];
 
 export{ci1PullImage};
 export function ci1UnmountFailureCode(stderr) {
@@ -112,10 +113,10 @@ export function ci1FailureExport(value) {
     command: failureCommands.includes(value.command) ? value.command : null,
     exitCode: Number.isSafeInteger(value.exitCode) && value.exitCode >= 0 && value.exitCode <= 255 ? value.exitCode : null,
   };
-  const facts = Object.fromEntries(Object.entries(value.facts ?? {}).filter(([key, number]) =>
+  const facts = finiteDiagnosticFacts(value.facts ?? {},(key, number) =>
     failureMetrics.includes(key) && Number.isSafeInteger(number) && number >= 0
     &&(!key.startsWith('docker')||dockerSafeFailureMetric(key,number))
-    && (!key.startsWith('t04') || t04SafeFailureMetric(key,number))));
+    && (!key.startsWith('t04') || t04SafeFailureMetric(key,number)));
   if (Object.keys(facts).length) output.facts = facts;
   return output;
 }

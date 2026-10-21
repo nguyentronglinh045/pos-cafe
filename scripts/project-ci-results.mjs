@@ -646,6 +646,12 @@ export function uiCounts(output, findings, config) {
     fail: 0, skip: 0, acceptedFindings: findings.length };
 }
 
+function publicDiagnosticControls(value,binding,fingerprints){
+  const states=['failed','timedOut','interrupted','runner-error','metadata-absent','wrapper-failure','transport-refusal'];
+  if(!value||value.sourceSHA!==binding.sourceSHA||value.lockSHA!==fingerprints.lock||value.run!==7||value.pass!==7
+    ||value.fullPipeline!==true||value.mutationChecks!==20||JSON.stringify(value.states)!==JSON.stringify(states))reject();
+  return{sourceSHA:value.sourceSHA,lockSHA:value.lockSHA,run:7,pass:7,fullPipeline:true,mutationChecks:20,states};
+}
 export function publicSummary(binding, rows, fingerprints) {
   if (binding.repository !== PROJECT_REPOSITORY || binding.repositoryID !== PROJECT_REPOSITORY_ID || !['push', 'pull_request'].includes(binding.event)
     || !/^[a-f0-9]{40}$/.test(binding.sourceSHA) || !/^[a-f0-9]{40}$/.test(binding.workflowSHA)
@@ -657,8 +663,9 @@ export function publicSummary(binding, rows, fingerprints) {
     || !(row.reportSHA === null || /^[a-f0-9]{64}$/.test(row.reportSHA)))) reject();
   if (!/^[a-f0-9]{64}$/.test(fingerprints.source) || !/^[a-f0-9]{64}$/.test(fingerprints.lock)) reject();
   const phases = rows.map(({ id, status, elapsedMs, exitCode, counts, invocationSHA, reportSHA, diagnostic }) => ({ id, status, elapsedMs, exitCode, invocationSHA, reportSHA,
-    counts: counts ? Object.fromEntries(Object.entries(counts).filter(([key, value]) =>
-      ['discovered', 'run', 'pass', 'fail', 'skip', 'manualDeferred', 'acceptedFindings', 'detectedFindings', 'positiveControls', 'negativeControls', 'targetControls'].includes(key) && integer(value))) : null,
+    counts: counts ? {...Object.fromEntries(Object.entries(counts).filter(([key, value]) =>
+      ['discovered', 'run', 'pass', 'fail', 'skip', 'manualDeferred', 'acceptedFindings', 'detectedFindings', 'positiveControls', 'negativeControls', 'targetControls'].includes(key) && integer(value))),
+      ...(id==='runtime-reporters'&&Object.hasOwn(counts,'diagnosticControls')?{diagnosticControls:publicDiagnosticControls(counts.diagnosticControls,binding,fingerprints)}:{})} : null,
     diagnostic: diagnostic ? { codes: diagnostic.codes.filter(code => DIAGNOSTIC_CODES.includes(code)),
       metrics: Object.fromEntries(Object.entries(diagnostic.metrics).filter(([key, value]) =>
         ['numTotalTests', 'numPassedTests', 'numFailedTests', 'numPendingTests', 'numRuntimeErrorTestSuites', 'architectureAssertion',

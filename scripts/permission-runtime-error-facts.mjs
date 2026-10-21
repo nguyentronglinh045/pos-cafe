@@ -38,6 +38,19 @@ export function runtimeErrorLocation(error,sourceRoot){
  }
  return{fileOrdinal:0,line:0};
 }
+export const RUNTIME_FAILURE_BOUNDS=Object.freeze({missingRequired:10000,firstFailedRequired:10000,failedTests:10000,
+ nonPassedTests:10000,firstNonPassedRequired:10000,diagnosticRequired:10000,outcomeOrdinal:4,failureOriginOrdinal:2,
+ firstFailedLine:100000,testErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,testErrorNameOrdinal:5,testErrorMatcherOrdinal:8,
+ runnerFirstErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,runnerFirstErrorNameOrdinal:5,runnerFirstErrorMatcherOrdinal:8,
+ runnerFirstErrorLine:100000,runnerErrors:10000,hookErrors:10000});
+export function assertRuntimeDiagnosticBinding(expected,report,context){
+ if(!report||report.schemaVersion!=='permission-runtime-stage-v1'||report.stage!==expected.stage||report.runner!==expected.runner
+  ||!context||!['sourceSHA','sourceFingerprint','lockSHA','configSHA','runId','invocationSHA'].every(k=>typeof context[k]==='string'&&report[k]===context[k])
+  ||!Array.isArray(context.argv)||JSON.stringify(report.argv)!==JSON.stringify(context.argv)
+  ||!Array.isArray(report.discovery)||!Array.isArray(report.results)||report.discovery.length>10000||report.results.length>10000)
+  throw Error('RUNTIME_DIAGNOSTIC_BINDING_REFUSED');
+ return report;
+}
 export function runtimeRunnerFailureFacts(expected,r){
  if(!Array.isArray(expected?.required)||!Array.isArray(r?.discovery)||!Array.isArray(r.results)
   ||[expected.required,r.discovery,r.results].some(a=>a.length>10000))throw Error('RUNTIME_FAILURE_REPORT_REFUSED');
@@ -45,10 +58,22 @@ export function runtimeRunnerFailureFacts(expected,r){
  const facts={missingRequired:expected.required.filter(x=>!found.has(key(x))).length,
   firstFailedRequired:expected.required.findIndex(x=>r.results.some(y=>key(y)===key(x)&&y.state==='failed'))+1,
   failedTests:r.results.filter(x=>x.state==='failed').length};
- const first=expected.required[facts.firstFailedRequired-1],result=first&&r.results.find(y=>key(y)===key(first));
+ const nonpassed=expected.required.findIndex(x=>r.results.some(y=>key(y)===key(x)&&y.state!=='passed'));
+ const fatal=expected.required.findIndex(x=>r.results.some(y=>key(y)===key(x)&&['failed','timedOut','interrupted'].includes(y.state)));
+ const index=fatal>=0?fatal:nonpassed;
+ facts.nonPassedTests=r.results.filter(x=>x.state!=='passed').length;facts.firstNonPassedRequired=nonpassed+1;
+ facts.diagnosticRequired=index+1;
+ const first=expected.required[index],result=first&&r.results.find(y=>key(y)===key(first)&&y.state!=='passed');
+ facts.outcomeOrdinal=['failed','timedOut','interrupted','skipped'].indexOf(result?.state)+1;
+ facts.failureOriginOrdinal=result?1:(r.errorCount>0||r.hookErrorCount>0?2:0);
  const finite=safeRuntimeErrorFacts(result?.failureFacts);
  if(finite)for(const[k,v]of Object.entries(finite))facts['test'+k[0].toUpperCase()+k.slice(1)]=v;
  if(Number.isSafeInteger(result?.failureLine)&&result.failureLine>=0&&result.failureLine<=100000)facts.firstFailedLine=result.failureLine;
+ if(facts.failureOriginOrdinal===2){
+  const runner=safeRuntimeErrorFacts(r.failureFacts);
+  if(runner)for(const[k,v]of Object.entries(runner))facts['runnerFirst'+k[0].toUpperCase()+k.slice(1)]=v;
+  if(Number.isSafeInteger(r.failureLine)&&r.failureLine>=0&&r.failureLine<=100000)facts.runnerFirstErrorLine=r.failureLine;
+ }
  if(expected.stage==='realtime-e2e')for(const[key,max]of[['realtimeFailureMask',1023],['realtimeFirstFailureOrdinal',480]])if(Object.hasOwn(result??{},key)){
   const value=result[key];if(!Number.isSafeInteger(value)||value<0||value>max)throw Error('RUNTIME_FAILURE_REPORT_REFUSED');facts[key]=value;
  }

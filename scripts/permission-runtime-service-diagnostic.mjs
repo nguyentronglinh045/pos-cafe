@@ -1,8 +1,8 @@
 // Shared finite bounds apply independently at the child parser and final export.
-import{runtimeRunnerFailureFacts,safeRuntimeErrorFacts,runtimeErrorFacts,RUNTIME_ERROR_CODES,RUNTIME_ERROR_FILES}from'./permission-runtime-error-facts.mjs';
+import{runtimeRunnerFailureFacts,safeRuntimeErrorFacts,runtimeErrorFacts,RUNTIME_ERROR_CODES,RUNTIME_ERROR_FILES,RUNTIME_FAILURE_BOUNDS}from'./permission-runtime-error-facts.mjs';
 import{FIXTURE_DRIFT_CODES}from'./permission-fixture-diagnostics.mjs';
 import{TC18_WRAPPER_CODES}from'./permission-runtime-tc18-diagnostic.mjs';
-export const SERVICE_DIAGNOSTIC_BOUNDS=Object.freeze({serviceStageOrdinal:3,serviceSetupOrdinal:3,
+export const SERVICE_DIAGNOSTIC_BOUNDS=Object.freeze({...Object.fromEntries(Object.entries(RUNTIME_FAILURE_BOUNDS).map(([k,v])=>['service'+k[0].toUpperCase()+k.slice(1),v])),serviceStageOrdinal:3,serviceSetupOrdinal:3,
  serviceChildExitObserved:1,serviceChildExitCode:255,serviceResultFailureOrdinal:16,
  serviceTc18ReceiptObserved:3,serviceTc18WrapperStatus:2,serviceTc18WrapperCodeOrdinal:TC18_WRAPPER_CODES.length,serviceTc18ControlDeleted:2,
  serviceTc18ResultCount:10000,serviceTc18PassedOnceCount:10000,serviceTc18NonPassedCount:10000,serviceTc18AttemptAnomalies:10000,

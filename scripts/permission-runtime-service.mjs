@@ -15,6 +15,8 @@ import{serviceProfile,serviceConfig,serviceEventProfile}from'./permission-runtim
 import{readStoppedServicePeer}from'./permission-runtime-service-peer.mjs';
 import{serviceSafeFailureMetric,serviceStageErrorFacts,serviceRunnerFailureFacts}from'./permission-runtime-service-diagnostic.mjs';
 import{readTc18WrapperReceipt}from'./permission-runtime-tc18-diagnostic.mjs';
+import{parseDiagnosticMarker}from'./permission-runtime-diagnostic-transport.mjs';
+import{assertRuntimeDiagnosticBinding}from'./permission-runtime-error-facts.mjs';
 
 const check=x=>{if(!x)throw Error('PERMISSION_SERVICE_RUNTIME_REFUSED');};
 export function servicePreparedEnvironment(id,privateRoot){
@@ -24,12 +26,8 @@ export function servicePreparedEnvironment(id,privateRoot){
  return{PIN_ONBOARD_ENV_FILE:privateRoot+'/pin-onboard.env'};
 }
 export function serviceFailureFacts(stderr){
- if(typeof stderr!=='string'||Buffer.byteLength(stderr)>1024**2)return{};
- const lines=stderr.split(/\r?\n/).filter(l=>l.startsWith('SERVICE_FAILURE_FACTS '));if(lines.length!==1)return{};
- try{const p=JSON.parse(lines[0].slice('SERVICE_FAILURE_FACTS '.length));
-  check(p&&Object.hasOwn(p,'serviceStageOrdinal')&&Object.hasOwn(p,'serviceSetupOrdinal')
-   &&Object.entries(p).every(([k,v])=>serviceSafeFailureMetric(k,v)));return p;
- }catch{return{};}
+ const p=parseDiagnosticMarker('SERVICE_FAILURE_FACTS',stderr,serviceSafeFailureMetric);
+ return Object.hasOwn(p,'serviceStageOrdinal')&&Object.hasOwn(p,'serviceSetupOrdinal')?p:{};
 }
 export async function runServiceProfile(profile,adapter){
  const ids=serviceProfile(profile).stages,rows=[];let failure=null,physical=null,fixtureConnectionClosed=false;
@@ -163,8 +161,8 @@ async function main(){
      check(s.isFile()&&!s.isSymbolicLink()&&s.nlink===1&&s.uid===0&&(s.mode&0o077)===0&&s.size<=1024**2
       &&s.dev===statSync(root).dev&&realpathSync(path)===path);
      const r=JSON.parse(readFileSync(path));
-     check(r.stage===stage&&r.sourceSHA===sourceSHA&&r.sourceFingerprint===sourceFingerprint&&r.lockSHA===lockSHA
-      &&r.configSHA===expected.configSHA&&r.runId===identity.runId&&r.invocationSHA===runtimeHash(command.runnerArgv));
+     assertRuntimeDiagnosticBinding(expected,r,{sourceSHA,sourceFingerprint,lockSHA,configSHA:expected.configSHA,
+      runId:identity.runId,invocationSHA:runtimeHash(command.runnerArgv),argv:command.runnerArgv});
      Object.assign(facts,serviceRunnerFailureFacts(expected,r));facts.serviceReportObserved=1;
     }
    }catch{/* Invalid/missing reports never become PASS or invented counts. */}

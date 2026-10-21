@@ -2,9 +2,10 @@ import{readFileSync,writeFileSync,statSync,realpathSync,lstatSync}from'node:fs';
 import{join,resolve,dirname}from'node:path';
 import{execFileSync}from'node:child_process';
 import{pathToFileURL}from'node:url';
-import{runtimeStageCatalog}from'./permission-runtime-catalog.mjs';
+import{runtimeStageCatalog,runtimeStageCommand}from'./permission-runtime-catalog.mjs';
+import{parseDiagnosticMarker}from'./permission-runtime-diagnostic-transport.mjs';
 import{runtimeHash}from'./permission-runtime-results.mjs';
-import{runtimeRunnerFailureFacts,RUNTIME_ERROR_CODES}from'./permission-runtime-error-facts.mjs';
+import{runtimeRunnerFailureFacts,RUNTIME_ERROR_CODES,RUNTIME_FAILURE_BOUNDS,assertRuntimeDiagnosticBinding}from'./permission-runtime-error-facts.mjs';
 import{executeRuntimeStage,prepareRuntimeDirectory}from'./permission-runtime-stage.mjs';
 import{trackedFingerprint}from'./project-ci.mjs';
 import{realAdapter,readCi1LinuxEnvelope,ci1HarnessFailureMarker}from'./permission-runtime-t04-adapter.mjs';
@@ -23,22 +24,19 @@ export function t04TimeBudget(startedAtEpochMs,now){
   if(!Number.isSafeInteger(outerEnd)||deadline-now<60000||harnessTimeoutMs<=deadline-now)refuse();
   return{deadline,harnessTimeoutMs};
 }
-const factBounds={t04StageOrdinal:[0,19],t04FailureOrdinal:[0,4],t04RunnerErrors:[0,10000],t04HookErrors:[0,10000],
+export const T04_FAILURE_BOUNDS=Object.freeze({...Object.fromEntries(Object.entries(RUNTIME_FAILURE_BOUNDS).map(([k,v])=>['t04'+k[0].toUpperCase()+k.slice(1),[0,v]])),t04ReportObserved:[0,3],t04StageOrdinal:[0,19],t04FailureOrdinal:[0,4],t04RunnerErrors:[0,10000],t04HookErrors:[0,10000],
  t04MissingRequired:[0,10000],t04FirstFailedRequired:[0,10000],t04BoundaryOrdinal:[1,19],t04BoundaryExit:[0,255],
  t04RestoreErrorOrdinal:[0,15],t04RestoreCommandOrdinal:[0,24],
  ...T04_DIAGNOSTIC_BOUNDS,
  t04RealtimeFailureMask:[0,1023],t04RealtimeFirstFailureOrdinal:[0,480],t04FailedTests:[0,10000],t04FirstFailedLine:[0,100000],t04TestErrorCodeOrdinal:[0,RUNTIME_ERROR_CODES.length],
- t04TestErrorNameOrdinal:[0,5],t04TestErrorMatcherOrdinal:[0,8]};
-export function t04SafeFailureMetric(key,value){const bounds=factBounds[key];return!!bounds&&Number.isSafeInteger(value)&&value>=bounds[0]&&value<=bounds[1];}
+ t04TestErrorNameOrdinal:[0,5],t04TestErrorMatcherOrdinal:[0,8]});
+export function t04SafeFailureMetric(key,value){const bounds=T04_FAILURE_BOUNDS[key];return!!bounds&&Number.isSafeInteger(value)&&value>=bounds[0]&&value<=bounds[1];}
 export function t04RunnerFailureFacts(expected,r){
  return Object.fromEntries(Object.entries(runtimeRunnerFailureFacts(expected,r)).map(([k,v])=>['t04'+k[0].toUpperCase()+k.slice(1),v]));
 }
 export function t04FailureFacts(stderr){
-  if(typeof stderr!=='string'||Buffer.byteLength(stderr)>1024**2)return{};
-  const rows=stderr.split(/\r?\n/).filter(l=>l.startsWith('T04_FAILURE_FACTS '));if(rows.length!==1)return{};
-  try{const p=JSON.parse(rows[0].slice('T04_FAILURE_FACTS '.length));
-    if(!p||!Object.hasOwn(p,'t04StageOrdinal')||!Object.entries(p).every(([k,v])=>t04SafeFailureMetric(k,v)))return{};return p;
-  }catch{return{};}
+  const p=parseDiagnosticMarker('T04_FAILURE_FACTS',stderr,t04SafeFailureMetric);
+  return Object.hasOwn(p,'t04StageOrdinal')?p:{};
 }
 export async function runT04Profile(adapter){
   const rows=[],resets=[];let failure=null,physical=null,baseline=null,cleanup=false,checkpoint=null,runnerPreflight='NOT_RUN';
@@ -170,7 +168,7 @@ async function main(){
       mountDevice:s.dev,mountInode:s.ino,api:status.API_URL});
   };
   const diagnostic=(stage,error)=>{
-    const facts={t04StageOrdinal:ids.indexOf(stage)+1,t04FailureOrdinal:({42501:1,42883:2,ECONNREFUSED:3,ETIMEDOUT:4})[error?.code]??0};
+    const facts={t04StageOrdinal:ids.indexOf(stage)+1,t04FailureOrdinal:({42501:1,42883:2,ECONNREFUSED:3,ETIMEDOUT:4})[error?.code]??0,t04ReportObserved:0};
     if(Number.isInteger(error?.t04BoundaryOrdinal)&&error.t04BoundaryOrdinal>=1&&error.t04BoundaryOrdinal<=19){
       facts.t04BoundaryOrdinal=error.t04BoundaryOrdinal;
       if(Number.isInteger(error?.status)&&error.status>=0&&error.status<=255)facts.t04BoundaryExit=error.status;
@@ -178,12 +176,14 @@ async function main(){
       if(error.t04RestoreFacts)for(const key of['t04RestoreErrorOrdinal','t04RestoreCommandOrdinal',...Object.keys(T04_DIAGNOSTIC_BOUNDS)])
         if(t04SafeFailureMetric(key,error.t04RestoreFacts[key]))facts[key]=error.t04RestoreFacts[key];
     }
-    try{const path=join(outputRoot,stage+'-runner.json'),s=lstatSync(path);
-      if(!s.isFile()||s.isSymbolicLink()||s.size>1024**2||realpathSync(path)!==path)refuse();
-      const r=JSON.parse(readFileSync(path)),expected=catalog.find(c=>c.stage===stage);
-      if(!expected||r.stage!==stage||r.sourceSHA!==sourceSHA||r.sourceFingerprint!==sourceFingerprint||r.lockSHA!==lockSHA
-        ||!Array.isArray(r.discovery)||!Array.isArray(r.results)||r.discovery.length>10000||r.results.length>10000)refuse();
-      Object.assign(facts,t04RunnerFailureFacts(expected,r));
+    try{const expected=catalog.find(c=>c.stage===stage);if(!expected)throw Error('NO_STAGE');
+      const command=runtimeStageCommand(stage,{sourceRoot:source,outputRoot}),path=join(command.reportRoot,stage+'-runner.json'),s=lstatSync(path,{throwIfNoEntry:false});
+      facts.t04ReportObserved=s?2:3;if(!s)throw Error('NO_REPORT');
+      if(!s.isFile()||s.isSymbolicLink()||s.nlink!==1||s.uid!==0||(s.mode&0o077)!==0||s.dev!==statSync(root).dev||s.size>1024**2||realpathSync(path)!==path)refuse();
+      const r=JSON.parse(readFileSync(path));
+      assertRuntimeDiagnosticBinding(expected,r,{sourceSHA,sourceFingerprint,lockSHA,configSHA:expected.configSHA,
+        runId:identity.runId,invocationSHA:runtimeHash(command.runnerArgv),argv:command.runnerArgv});
+      Object.assign(facts,t04RunnerFailureFacts(expected,r));facts.t04ReportObserved=1;
     }catch{/* Missing or malformed private runner report adds no invented counts. */}
     console.error('T04_FAILURE_FACTS '+JSON.stringify(facts));
   };

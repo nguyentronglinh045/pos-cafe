@@ -304,6 +304,9 @@ export async function main() {
       const line=output.split('\n').find(value=>value.startsWith('PERMISSION_REPORTER_SELFTEST '));
       const c=JSON.parse(line?.slice('PERMISSION_REPORTER_SELFTEST '.length)??'null');
       if(!c||c.run!==4||c.pass!==4||c.fail!==0||c.skip!==0||c.positiveControls!==2||c.negativeControls!==2)refuse();
+      const d=c.diagnosticControls;
+      if(!d||d.run!==7||d.pass!==7||d.fullPipeline!==true||d.mutationChecks!==20||d.sourceSHA!==binding.sourceSHA
+        ||JSON.stringify(d.states)!==JSON.stringify(['failed','timedOut','interrupted','runner-error','metadata-absent','wrapper-failure','transport-refusal']))refuse();
       return c;
     });
     const {staticProfileCounts}=await import('./permission-runtime-static.mjs');
