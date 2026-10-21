@@ -11,7 +11,7 @@ const exists=path=>!!lstatSync(path,{throwIfNoEntry:false});
 function owned(path,cap=128*1024){const s=lstatSync(path);check(s.isFile()&&!s.isSymbolicLink()&&s.nlink===1&&s.size<=cap&&realpathSync(path)===resolve(path),'FILE');return readFileSync(path,'utf8');}
 function policy(path){const raw=owned(path),p=JSON.parse(raw),start=Date.parse(p.originalStartedAtUtc),end=Date.parse(p.deadlineUtc);
  check(['permission-batch-budget-v1','permission-batch-budget-v2'].includes(p.schemaVersion)&&/^[a-z0-9-]{1,100}$/.test(p.workstreamId)&&['A','B'].includes(p.batch),'POLICY');
- const max=p.batch==='A'?{publication:1,ci:1,heavy:2,reviewRounds:2}:{publication:0,ci:0,heavy:6,reviewRounds:2};
+ const max=p.batch==='A'?{publication:1,ci:1,heavy:2,reviewRounds:p.schemaVersion==='permission-batch-budget-v2'?4:2}:{publication:0,ci:0,heavy:6,reviewRounds:2};
  check(Number.isFinite(start)&&Number.isFinite(end)&&end>start,'DEADLINE');
  check(p.allowance&&Object.keys(p.allowance).sort().join(',')===Object.keys(max).sort().join(',')&&Object.entries(max).every(([k,v])=>Number.isSafeInteger(p.allowance[k])&&p.allowance[k]>=0&&p.allowance[k]<=v),'ALLOWANCE');
  if(p.schemaVersion==='permission-batch-budget-v1'){
@@ -22,24 +22,43 @@ function policy(path){const raw=owned(path),p=JSON.parse(raw),start=Date.parse(p
   check(p.budgetMode==='owner-time-only-continuation'&&p.usageLimits===null&&a&&typeof a.reference==='string'&&a.reference.trim().length>=10&&a.reference.length<=2000
    &&Number.isFinite(Date.parse(a.authorizedAtUtc))&&Date.parse(a.authorizedAtUtc)>=start&&Date.parse(a.authorizedAtUtc)<end
    &&a.authorizedDeadlineUtc===p.deadlineUtc&&p.predecessor,'CONTINUATION_AUTHORIZATION');
+  check(a.additionalReviewRounds===undefined||(p.batch==='A'&&a.additionalReviewRounds===2
+   &&typeof a.reviewGrantReference==='string'&&a.reviewGrantReference.trim().length>=10&&a.reviewGrantReference.length<=2000),'REVIEW_GRANT');
  }
  return{p,digest:hash(raw)};
 }
-function predecessorState(p,depth=0){
+function successorClaim(childPath,p){return{schemaVersion:'permission-batch-successor-v1',parentPolicySHA256:p.predecessor.policySHA256,
+ childPath:resolve(childPath),childPolicySHA256:hash(owned(childPath))};}
+function assertSuccessorClaim(childPath,p,{allowMissing=false}={}){
+ const file=resolve(p.predecessor.path)+'.successor.json';if(!exists(file)){check(allowMissing,'SUCCESSOR_CLAIM_MISSING');return;}
+ const actual=JSON.parse(owned(file)),expected=successorClaim(childPath,p);
+ check(Object.keys(expected).every(k=>actual[k]===expected[k]),'SUCCESSOR_CONFLICT');
+}
+function predecessorState(p,depth=0,childPath,allowMissingClaim=false){
  if(p.schemaVersion==='permission-batch-budget-v1')return null;
  check(depth<20,'PREDECESSOR_DEPTH');const ref=p.predecessor;
  check(typeof ref.path==='string'&&['policySHA256','anchorSHA256','journalSHA256'].every(k=>/^[a-f0-9]{64}$/.test(ref[k]??'')),'PREDECESSOR_REF');
  const path=resolve(ref.path);check(hash(owned(path))===ref.policySHA256&&hash(owned(path+'.anchor.json'))===ref.anchorSHA256&&hash(owned(path+'.journal.jsonl',1024**2))===ref.journalSHA256,'PREDECESSOR_DRIFT');
  const prior=readState(path,{allowLegacyWithoutHead:ref.legacyWithoutHead===true,depth:depth+1});
+ const reviewGrant=p.ownerAuthorization.additionalReviewRounds??0;
  check(prior.closed&&prior.p.workstreamId===p.workstreamId&&prior.p.batch===p.batch&&prior.p.originalStartedAtUtc===p.originalStartedAtUtc
-  &&Object.keys(p.allowance).every(k=>p.allowance[k]===prior.p.allowance[k])&&Date.parse(p.ownerAuthorization.authorizedAtUtc)>=Date.parse(prior.p.originalStartedAtUtc),'PREDECESSOR_STATE');
+  &&Object.keys(p.allowance).every(k=>p.allowance[k]===prior.p.allowance[k]+(k==='reviewRounds'?reviewGrant:0))
+  &&Date.parse(p.ownerAuthorization.authorizedAtUtc)>=Date.parse(prior.p.originalStartedAtUtc),'PREDECESSOR_STATE');
+ if(reviewGrant)check(Date.parse(p.ownerAuthorization.authorizedAtUtc)>Date.parse(prior.p.ownerAuthorization?.authorizedAtUtc??prior.p.originalStartedAtUtc)
+  &&Date.parse(p.ownerAuthorization.authorizedAtUtc)>=Date.parse(prior.events.at(-1)?.atUtc)
+  &&p.ownerAuthorization.reference!==prior.p.ownerAuthorization?.reference,'REVIEW_GRANT_REPLAY');
+ assertSuccessorClaim(childPath,p,{allowMissing:allowMissingClaim});
  return prior;
 }
 function headValue(digest,events,previous,raw){return{schemaVersion:'permission-batch-head-v1',policySHA256:digest,eventCount:events.length,lastDigest:previous,journalSHA256:hash(raw)};}
 function durableWrite(path,value,flag='wx'){const fd=openSync(path,flag,0o600);try{writeSync(fd,value);fsyncSync(fd);}finally{closeSync(fd);}}
 export function initializeBatch(path){path=resolve(path);const{p,digest}=policy(path),anchor=path+'.anchor.json',journal=path+'.journal.jsonl';
- predecessorState(p);
  check([anchor,journal,path+'.head.json',path+'.head.tmp',path+'.lock'].every(p=>!exists(p)),'EXISTS');
+ predecessorState(p,0,path,true);
+ if(p.predecessor){const claim=resolve(p.predecessor.path)+'.successor.json';
+  if(!exists(claim)){try{durableWrite(claim,JSON.stringify(successorClaim(path,p))+'\n');}catch(error){if(error.code!=='EEXIST')throw error;}}
+  assertSuccessorClaim(path,p);
+ }
  durableWrite(anchor,JSON.stringify({schemaVersion:'permission-batch-anchor-v1',workstreamId:p.workstreamId,batch:p.batch,policySHA256:digest})+'\n');
  durableWrite(journal,'');durableWrite(path+'.head.json',JSON.stringify(headValue(digest,[],digest,''))+'\n');return digest;
 }
@@ -54,7 +73,7 @@ function readState(path,{allowLegacyWithoutHead=false,depth=0}={}){const{p,diges
  if(exists(path+'.head.json')){const h=JSON.parse(owned(path+'.head.json')),want=headValue(digest,events,previous,raw);
   check(Object.keys(want).every(k=>h[k]===want[k]),'HEAD_DRIFT');
  }else check(allowLegacyWithoutHead&&p.schemaVersion==='permission-batch-budget-v1','HEAD_MISSING');
- const prior=predecessorState(p,depth),counts={...(prior?.counts??{publication:0,ci:0,heavy:0,reviewRounds:0})};
+ const prior=predecessorState(p,depth,path),counts={...(prior?.counts??{publication:0,ci:0,heavy:0,reviewRounds:0})};
  let usage=prior?.usage??null,closed=false;const reservations=[...(prior?.reservations??[])];
  for(const e of events){check(!closed,'EVENT_AFTER_CLOSE');if(e.type==='reserve'){check(Object.hasOwn(counts,e.kind),'KIND');counts[e.kind]++;reservations.push(e);}
   else if(e.type==='usage')usage=e.usage;else if(e.type==='close')closed=true;else fail('EVENT');}

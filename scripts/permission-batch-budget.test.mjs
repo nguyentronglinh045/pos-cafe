@@ -1,5 +1,6 @@
 import test from'node:test';import assert from'node:assert/strict';
 import{mkdtempSync,writeFileSync,readFileSync,rmSync,unlinkSync}from'node:fs';import{join}from'node:path';import{createHash}from'node:crypto';import{tmpdir}from'node:os';
+import{lstatSync}from'node:fs';
 import{initializeBatch,recordBatchUsage,reserveBatchAction,inspectBatch,measureBatchUsage,closeBatch}from'./permission-batch-budget.mjs';
 const sha='a'.repeat(40),now=Date.now();
 function fixture(fn){const dir=mkdtempSync(join(process.env.TEMP??tmpdir(),'permission-budget-')),file=join(dir,'budget.json');
@@ -104,4 +105,49 @@ test('usage conflicting duplicate or malformed timestamp is UNKNOWN rather than 
   writeFileSync(file,[...rows,bad].map(r=>JSON.stringify(r)).join('\n'));
   assert.equal((await measureBatchUsage([file],{rootThreadId:'root',startedAtUtc:new Date(now-500).toISOString()})).status,'UNKNOWN');
  }
+}));
+
+test('explicit owner grant adds exactly two review rounds while carrying spent and all execution allowances',()=>fixture(({file,p})=>{
+ reserveBatchAction(file,{kind:'reviewRounds',sourceSHA:sha,identity:'round-1',now});reserveBatchAction(file,{kind:'reviewRounds',sourceSHA:sha,identity:'round-2',now});
+ reserveBatchAction(file,{kind:'heavy',sourceSHA:sha,identity:'old-heavy',now});closeBatch(file);
+ const{next,value}=successor(file,p);value.allowance.reviewRounds=4;value.ownerAuthorization.additionalReviewRounds=2;
+ value.ownerAuthorization.reviewGrantReference='Owner explicitly adds maximum two independent review rounds, no execution reset';value.ownerAuthorization.authorizedAtUtc=new Date(Date.now()+1000).toISOString();
+ writeFileSync(next,JSON.stringify(value));initializeBatch(next);assert.deepEqual(inspectBatch(next,{now:now+2000}).counts,{publication:0,ci:0,heavy:1,reviewRounds:2});
+ reserveBatchAction(next,{kind:'reviewRounds',sourceSHA:sha,identity:'round-3',now:now+2000});reserveBatchAction(next,{kind:'reviewRounds',sourceSHA:sha,identity:'round-4',now:now+2000});
+ assert.throws(()=>reserveBatchAction(next,{kind:'reviewRounds',sourceSHA:sha,identity:'round-5',now:now+2000}),e=>e.reason==='ALLOWANCE_EXHAUSTED');
+ assert.equal(inspectBatch(next,{now:now+2000}).counts.heavy,1);
+}));
+
+test('review allowance cannot increase without an explicit grant or increase execution allowances',()=>fixture(({file,p})=>{
+ closeBatch(file);const{next,value}=successor(file,p);value.ownerAuthorization.authorizedAtUtc=new Date(Date.now()+1000).toISOString();
+ for(const changed of[
+  {...value,allowance:{...p.allowance,reviewRounds:4}},
+  {...value,allowance:{...p.allowance,reviewRounds:4},ownerAuthorization:{...value.ownerAuthorization,additionalReviewRounds:1,reviewGrantReference:'Wrong size grant'}},
+  {...value,allowance:{...p.allowance,reviewRounds:4},ownerAuthorization:{...value.ownerAuthorization,additionalReviewRounds:2}},
+  {...value,allowance:{...p.allowance,reviewRounds:4,heavy:3},ownerAuthorization:{...value.ownerAuthorization,additionalReviewRounds:2,reviewGrantReference:'Two review rounds only'}},
+ ]){writeFileSync(next,JSON.stringify(changed));assert.throws(()=>initializeBatch(next),/REFUSED/);}
+}));
+
+test('a review grant cannot be replayed across successors to multiply the allowance',()=>fixture(({file,p})=>{
+ closeBatch(file);const{next,value}=successor(file,p);value.allowance.reviewRounds=4;value.ownerAuthorization.additionalReviewRounds=2;
+ value.ownerAuthorization.reviewGrantReference='Owner grants only two more reviews';value.ownerAuthorization.authorizedAtUtc=new Date(Date.now()+1000).toISOString();writeFileSync(next,JSON.stringify(value));initializeBatch(next);closeBatch(next);
+ const again=successor(next,value);again.value.allowance.reviewRounds=6;writeFileSync(again.next,JSON.stringify(again.value));assert.throws(()=>initializeBatch(again.next),/REFUSED/);
+}));
+
+test('identical owner grant cannot initialize sibling successors and split cumulative spent',()=>fixture(({file,p})=>{
+ reserveBatchAction(file,{kind:'reviewRounds',sourceSHA:sha,identity:'original-1',now});reserveBatchAction(file,{kind:'reviewRounds',sourceSHA:sha,identity:'original-2',now});closeBatch(file);
+ const{next,value}=successor(file,p);value.allowance.reviewRounds=4;value.ownerAuthorization.additionalReviewRounds=2;
+ value.ownerAuthorization.reviewGrantReference='Owner grants two reviews once, not per successor path';value.ownerAuthorization.authorizedAtUtc=new Date(Date.now()+1000).toISOString();writeFileSync(next,JSON.stringify(value));initializeBatch(next);
+ const sibling=next+'.sibling.json';writeFileSync(sibling,JSON.stringify(value));assert.throws(()=>initializeBatch(sibling),e=>e.reason==='SUCCESSOR_CONFLICT');
+ reserveBatchAction(next,{kind:'reviewRounds',sourceSHA:sha,identity:'new-3',now:now+2000});reserveBatchAction(next,{kind:'reviewRounds',sourceSHA:sha,identity:'new-4',now:now+2000});
+ assert.equal(inspectBatch(next,{now:now+2000}).counts.reviewRounds,4);
+ assert.equal(lstatSync(sibling+'.anchor.json',{throwIfNoEntry:false}),undefined);
+}));
+
+test('single successor also prevents time-only execution budget forks; missing or changed claim fails closed',()=>fixture(({file,p})=>{
+ reserveBatchAction(file,{kind:'heavy',sourceSHA:sha,identity:'old-heavy',now});closeBatch(file);const{next,value}=successor(file,p);initializeBatch(next);
+ const sibling=next+'.sibling.json';writeFileSync(sibling,JSON.stringify(value));assert.throws(()=>initializeBatch(sibling),e=>e.reason==='SUCCESSOR_CONFLICT');
+ const claim=file+'.successor.json',saved=readFileSync(claim);unlinkSync(claim);assert.throws(()=>inspectBatch(next,{now}),e=>e.reason==='SUCCESSOR_CLAIM_MISSING');
+ writeFileSync(claim,JSON.stringify({...JSON.parse(saved),childPath:sibling}));assert.throws(()=>inspectBatch(next,{now}),e=>e.reason==='SUCCESSOR_CONFLICT');
+ writeFileSync(claim,saved);assert.equal(inspectBatch(next,{now}).counts.heavy,1);
 }));

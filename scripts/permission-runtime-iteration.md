@@ -63,10 +63,24 @@ outside1 GiB and Windows768 MiB total19.75 GiB stay below20 GiB task cap.
 V1 retains original fixed token/time budgets. A closed V1 never reopens.
 V2 `owner-time-only-continuation` requires explicit owner authorization and a
 new absolute deadline, `usageLimits:null`, and a pinned CLOSED predecessor.
-Keep original start, workstream, batch and allowance exactly. Predecessor refs
+Keep original start, workstream, batch and execution allowance exactly. Predecessor refs
 pin policy/anchor/journal exact SHA-256. Legacy no-head import additionally
 requires explicit `legacyWithoutHead:true`; ordinary inspection fails closed.
 Spent, usage and reservation identities are inherited rather than copied/reset.
+
+An explicit separate owner grant may add exactly two review rounds to batch A,
+up to four total. Set ownerAuthorization.additionalReviewRounds:2 and a
+reviewGrantReference identifying that approval; allowance.reviewRounds must
+equal the predecessor allowance plus2. The authorization must follow the
+predecessor close and its earlier authorization. Publication, CI and backend
+allowances cannot change. No grant means every allowance stays unchanged.
+
+Each CLOSED predecessor additionally owns one durable `.successor.json` receipt
+binding the exact child policy hash and absolute path. A sibling policy cannot
+reuse a grant or fork remaining execution allowance. Missing or changed claim
+fails closed. Historical lineage was sealed once from exact already reviewed
+policy/journal hashes; those policies, journals and action counters were not
+rewritten. Keep successor receipts with the ledger bundle when handing off.
 
 Anchor pins immutable policy. Journal and independent durable head must agree
 on hash, sequence and final digest. Missing/stale/pending head, drift or crash
