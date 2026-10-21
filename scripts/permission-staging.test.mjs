@@ -1,13 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runStagingCli } from './permission-staging-cli.mjs';
 import { buildStagingInventory, canonical, inventoryHash, validateStagingManifest,
   validateStagingPrivateConfig, stagingPreflight, STAGING_BASELINE, STAGING_DEADLINE,
   STAGING_TEST_CUTOFF, PRODUCTION_PROJECT_REF } from './permission-staging.mjs';
-import { stagingSourceFingerprint, createStagingAttemptStore } from './permission-staging.mjs';
+import { stagingSourceFingerprint, createStagingAttemptStore, createStagingRemediationAttemptStore,
+  STAGING_REMEDIATION_GRANT, STAGING_REST_PROBE_PATH, sha256 } from './permission-staging.mjs';
 
 const ref = 'abcdefghijklmnopqrst';
 const inventory = buildStagingInventory();
@@ -17,6 +18,9 @@ const jwt = claims => Buffer.from('{"alg":"HS256"}').toString('base64url') + '.'
   + Buffer.from(JSON.stringify(claims)).toString('base64url') + '.CANARY_SIGNATURE_DO_NOT_LOG';
 const key = jwt({ role: 'anon', ref });
 const config = () => ({ projectRef: ref, anonKey: key });
+const missingResource = (body = { code: 'PGRST205', message: 'CANARY_BODY_DO_NOT_LOG', hint: key }) =>
+  new Response(JSON.stringify(body), { status: 404, headers: { 'content-type': 'application/json; charset=utf-8' } });
+const successResponse = url => url.endsWith('/auth/v1/settings') ? new Response(null, { status: 200 }) : missingResource();
 const manifest = () => ({ version: 'permission-staging-v1', projectRef: ref,
   apiOrigin: `https://${ref}.supabase.co`, baselineSource: STAGING_BASELINE,
   coverageSha256: inventoryHash(inventory), deadlineUtc: STAGING_DEADLINE,
@@ -27,7 +31,7 @@ async function preflight(overrides = {}) {
   return stagingPreflight({ manifest: value, inventory, privateConfig: config(),
     expectedManifestSha256: inventoryHash(value), clock: now,
     attemptStore: { claim() {} },
-    fetchImpl: async () => ({ status: 200 }), ...overrides });
+    fetchImpl: async url => successResponse(url), ...overrides });
 }
 
 test('complete inventory retains 35 stages, 760 identities, original counting meanings and all source hashes', () => {
@@ -62,21 +66,102 @@ test('full source binding includes SQL, fixtures, app and lock, and detects a me
   assert.equal(calls, 0);
 });
 
-test('valid target sends exactly two bounded GETs, explicit anon key, no redirects and no mutation proof', async () => {
+test('valid target proves Auth reachability and typed REST routing with no data or mutation proof', async () => {
   const calls = [];
   const receipt = await preflight({ fetchImpl: async (url, options) => {
-    calls.push({ url, options }); return { status: 200 };
+    calls.push({ url, options }); return successResponse(url);
   } });
   assert.equal(receipt.status, 'PASS');
   assert.equal(receipt.assurance, 'SYNTHETIC_TRANSPORT');
   assert.equal(receipt.mutationReady, false);
   assert.equal(receipt.businessTestsRun, false);
-  assert.deepEqual(calls.map(x => x.url), [`https://${ref}.supabase.co/auth/v1/settings`, `https://${ref}.supabase.co/rest/v1/`]);
+  assert.equal(receipt.restDataAccessVerified, false);
+  assert.equal(receipt.requests[1].postgrestCode, 'PGRST205');
+  assert.equal(receipt.requests[1].classification, 'REST_ROUTER_MISSING_RESOURCE');
+  assert.deepEqual(calls.map(x => x.url), [`https://${ref}.supabase.co/auth/v1/settings`, `https://${ref}.supabase.co${STAGING_REST_PROBE_PATH}`]);
   for (const { options } of calls) {
     assert.equal(options.method, 'GET'); assert.equal(options.redirect, 'error');
     assert.equal(options.headers.apikey, key); assert(options.signal.aborted);
   }
   assert(!canonical(receipt).includes(key));
+  assert(!canonical(receipt).includes('CANARY_BODY_DO_NOT_LOG'));
+});
+
+for (const [name, response] of [
+  ['401 with expected-looking JSON', () => new Response('{"code":"PGRST205"}', { status: 401, headers: {'content-type':'application/json'} })],
+  ['generic404', () => new Response('{}', { status: 404, headers: {'content-type':'application/json'} })],
+  ['wrong PostgREST code', () => missingResource({code:'PGRST301'})],
+  ['HTML404', () => new Response('{"code":"PGRST205"}', { status: 404, headers: {'content-type':'text/html'} })],
+  ['malformed JSON', () => new Response('{bad', { status: 404, headers: {'content-type':'application/json'} })],
+  ['oversized body', () => missingResource({code:'PGRST205', hint:'x'.repeat(4096)})],
+  ['unexpected success/resource collision', () => new Response('[]', {status:200})],
+]) test(`REST ${name} is refused; an HTTP error alone is never routing proof`, async () => {
+  let calls=0;
+  const receipt = await preflight({fetchImpl: async url => { calls++; return url.endsWith('/auth/v1/settings')
+    ? new Response(null,{status:200}) : response(); }});
+  assert.equal(calls,2); assert.equal(receipt.status,'FAIL');
+  assert.equal(receipt.errorCode,'STAGING_REMOTE_REFUSED');
+  assert.equal(receipt.restDataAccessVerified,false); assert.equal(receipt.mutationReady,false);
+  assert(!canonical(receipt).includes(key));
+});
+
+test('REST body read is covered by request timeout and is not retried', async () => {
+  let calls=0;
+  const receipt = await preflight({timeoutMs:1000, fetchImpl: async (url, options) => {
+    calls++;
+    if(url.endsWith('/auth/v1/settings')) return new Response(null,{status:200});
+    const body = new ReadableStream({start(controller) {
+      options.signal.addEventListener('abort',()=>controller.error(new Error('CANARY_PRIVATE_ERROR')), {once:true});
+    } });
+    return new Response(body,{status:404,headers:{'content-type':'application/json'}});
+  }});
+  assert.equal(calls,2); assert.equal(receipt.status,'FAIL');
+  assert.equal(receipt.errorCode,'STAGING_NETWORK_FAILED');
+  assert(!canonical(receipt).includes('CANARY_PRIVATE_ERROR'));
+});
+
+test('chunked JSON at exactly4096bytes is accepted without preserving body fields', async () => {
+  const base=JSON.stringify({code:'PGRST205',padding:''});
+  const text=JSON.stringify({code:'PGRST205',padding:'x'.repeat(4096-Buffer.byteLength(base))});
+  assert.equal(Buffer.byteLength(text),4096);
+  const bytes=Buffer.from(text);
+  const receipt=await preflight({fetchImpl:async url=>url.endsWith('/auth/v1/settings')
+    ? new Response(null,{status:200}) : new Response(new ReadableStream({start(controller){
+      controller.enqueue(bytes.subarray(0,2000)); controller.enqueue(bytes.subarray(2000)); controller.close();
+    }}),{status:404,headers:{'content-type':'application/json'}})});
+  assert.equal(receipt.status,'PASS');
+  assert.equal(receipt.requests[1].postgrestCode,'PGRST205');
+  assert(!canonical(receipt).includes('padding'));
+});
+
+test('additional grant is bound to the consumed prior claim, fixed target and a single new slot', () => {
+  const root=resolve(dirname(fileURLToPath(import.meta.url)),'..','..','evidence','staging-grant-fixtures-'+Date.now());
+  mkdirSync(root,{recursive:true});
+  const prior={version:'permission-staging-attempt-v1',workstream:'permission-staging-20261021',projectRef:'ineckiashpwloncxnbqx',
+    manifestSha256:'a58a52d7855bf071827350b78619b86a3a56ad030b1721511655ab4346397e1b',
+    sourceFingerprintSha256:'35ef7b6781bcfc5ed1b91875f5b129f5c0ee07ef7955509ed98e73231ee8807c',
+    startedUtc:'2026-10-21T15:13:32.182Z',allowance:{attempts:1,requests:2},status:'CONSUMED_BEFORE_NETWORK'};
+  const bytes=Buffer.from(JSON.stringify(prior,null,2)+'\n');
+  assert.equal(sha256(bytes),STAGING_REMEDIATION_GRANT.predecessorClaimSha256);
+  const priorPath=join(root,'remote-preflight.claim.json'), grantPath=join(root,'rest-probe-remediation01.grant.json');
+  const newPath=join(root,'remote-preflight-remediation01.claim.json');
+  writeFileSync(priorPath,bytes);
+  const store=createStagingRemediationAttemptStore(root);
+  const details={projectRef:STAGING_REMEDIATION_GRANT.projectRef,manifestSha256:'a'.repeat(64),
+    sourceFingerprintSha256:'b'.repeat(64),startedUtc:now().toISOString()};
+  assert.throws(()=>store.claim(details),/STAGING_GRANT_REFUSED/);
+  writeFileSync(grantPath,JSON.stringify({...STAGING_REMEDIATION_GRANT,additionalAttempts:2}));
+  assert.throws(()=>store.claim(details),/STAGING_GRANT_REFUSED/);
+  writeFileSync(grantPath,JSON.stringify(STAGING_REMEDIATION_GRANT));
+  assert.throws(()=>store.claim({...details,projectRef:ref}),/STAGING_GRANT_REFUSED/);
+  writeFileSync(priorPath,Buffer.concat([bytes,Buffer.from(' ')]));
+  assert.throws(()=>store.claim(details),/STAGING_GRANT_REFUSED/);
+  assert.equal(existsSync(newPath),false);
+  writeFileSync(priorPath,bytes);
+  store.claim(details);
+  assert.equal(readFileSync(priorPath,'utf8'),bytes.toString('utf8'));
+  assert.equal(JSON.parse(readFileSync(newPath)).grantSha256,inventoryHash(STAGING_REMEDIATION_GRANT));
+  assert.throws(()=>store.claim({...details,manifestSha256:'c'.repeat(64)}),/STAGING_ATTEMPT_USED/);
 });
 
 for (const [name, change] of [
@@ -181,9 +266,9 @@ test('CLI reserves parseable evidence before network, refuses repeat path and in
   writeFileSync(manifestPath, JSON.stringify(value)); writeFileSync(privatePath, JSON.stringify(config()));
   let calls = 0;
   const attemptStore = createStagingAttemptStore(join(fixture, 'attempt-store'));
-  const adapter = { clock: now, attemptStore, fetchImpl: async () => {
+  const adapter = { clock: now, attemptStore, fetchImpl: async url => {
     assert.equal(JSON.parse(readFileSync(outputPath)).status, 'STARTED');
-    calls++; return { status: 200 };
+    calls++; return successResponse(url);
   } };
   const args = ['preflight', manifestPath, privatePath, inventoryHash(value), outputPath];
   const result = await runStagingCli(args, adapter);

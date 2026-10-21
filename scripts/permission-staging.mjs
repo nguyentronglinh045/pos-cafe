@@ -10,11 +10,21 @@ export const PRODUCTION_PROJECT_REF = 'kfqjdfwxhkdwihjobpny';
 export const STAGING_DEADLINE = '2026-10-21T16:00:00.000Z';
 export const STAGING_TEST_CUTOFF = '2026-10-21T15:45:00.000Z';
 export const STAGING_WORKSTREAM = 'permission-staging-20261021';
+export const STAGING_REST_PROBE_PATH = '/rest/v1/__permission_staging_probe_20261021__?select=*&limit=0';
+export const STAGING_REMEDIATION_GRANT = Object.freeze({
+  version: 'permission-staging-grant-v1', grantId: 'REST_PROBE_REMEDIATION_01',
+  workstream: STAGING_WORKSTREAM, projectRef: 'ineckiashpwloncxnbqx',
+  predecessorClaimSha256: '3cd550a64bf676090ea3be7d277287173dbd4063f545a46577a5b3068957f766',
+  additionalAttempts: 1, maxRequests: 2, deadlineUtc: STAGING_DEADLINE,
+  testCutoffUtc: STAGING_TEST_CUTOFF, scope: 'READ_ONLY_ROUTING_PREFLIGHT',
+  authorization: 'USER_REPLY_call_273da3df6f9f4595b0eb472cb27063ba_APPROVED',
+});
 const CLAIM_DIRECTORY = 'D:/Workspace/pos-cafe-permission-run-20261020/evidence/staging-20261021';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const HEX = /^[a-f0-9]{64}$/;
 const ERROR_CODES = new Set(['STAGING_TARGET_REFUSED', 'STAGING_INPUT_REFUSED',
   'STAGING_COVERAGE_DRIFT', 'STAGING_SOURCE_DRIFT', 'STAGING_ATTEMPT_USED',
+  'STAGING_GRANT_REFUSED',
   'STAGING_DEADLINE', 'STAGING_REMOTE_REFUSED', 'STAGING_NETWORK_FAILED']);
 
 const refuse = code => { throw new Error(code); };
@@ -70,6 +80,61 @@ export function createStagingAttemptStore(directory) {
       throw error;
     }
   } };
+}
+
+// One explicitly granted additional slot; the consumed original claim is never
+// modified. Actual transport always uses CLAIM_DIRECTORY, never a caller path.
+export function createStagingRemediationAttemptStore(directory) {
+  return { claim(details) {
+    const path = resolve(directory);
+    const same = (a, b) => process.platform === 'win32' ? a.toLowerCase() === b.toLowerCase() : a === b;
+    check(isAbsolute(directory) && same(realpathSync(path), path)
+      && lstatSync(path).isDirectory(), 'STAGING_GRANT_REFUSED');
+    let grant, predecessor;
+    try {
+      const grantPath = join(path, 'rest-probe-remediation01.grant.json');
+      const priorPath = join(path, 'remote-preflight.claim.json');
+      check(lstatSync(grantPath).isFile() && lstatSync(grantPath).size <= 4096
+        && lstatSync(priorPath).isFile() && lstatSync(priorPath).size <= 4096, 'STAGING_GRANT_REFUSED');
+      const grantBytes = readFileSync(grantPath);
+      check(grantBytes.length <= 4096, 'STAGING_GRANT_REFUSED');
+      grant = JSON.parse(grantBytes.toString('utf8'));
+      predecessor = readFileSync(priorPath);
+      check(predecessor.length <= 4096 && inventoryHash(grant) === inventoryHash(STAGING_REMEDIATION_GRANT)
+        && sha256(predecessor) === grant.predecessorClaimSha256
+        && details.projectRef === grant.projectRef, 'STAGING_GRANT_REFUSED');
+    } catch { refuse('STAGING_GRANT_REFUSED'); }
+    try {
+      writeFileSync(join(path, 'remote-preflight-remediation01.claim.json'), JSON.stringify({
+        version: 'permission-staging-attempt-v2', workstream: STAGING_WORKSTREAM,
+        grantId: grant.grantId, grantSha256: inventoryHash(grant),
+        predecessorClaimSha256: sha256(predecessor), ...details,
+        allowance: { additionalAttempts: 1, requests: 2 }, status: 'CONSUMED_BEFORE_NETWORK',
+      }, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
+    } catch (error) {
+      if (error.code === 'EEXIST') refuse('STAGING_ATTEMPT_USED');
+      throw error;
+    }
+  } };
+}
+
+async function requireMissingResourceCode(response) {
+  check(/^application\/json(?:\s*;|$)/i.test(response.headers?.get('content-type') ?? ''), 'STAGING_REMOTE_REFUSED');
+  check(typeof response.body?.getReader === 'function', 'STAGING_REMOTE_REFUSED');
+  const reader = response.body.getReader();
+  const chunks = []; let size = 0;
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      check(value instanceof Uint8Array && size + value.byteLength <= 4096, 'STAGING_REMOTE_REFUSED');
+      size += value.byteLength; chunks.push(value);
+    }
+    const parsed = JSON.parse(Buffer.concat(chunks, size).toString('utf8'));
+    check(parsed && !Array.isArray(parsed) && parsed.code === 'PGRST205', 'STAGING_REMOTE_REFUSED');
+  } catch { refuse('STAGING_REMOTE_REFUSED'); }
+  finally { reader.cancel().catch(() => {}); }
+  return 'PGRST205';
 }
 
 // Importing this module neither contacts a backend nor reads ambient env files.
@@ -171,13 +236,13 @@ export async function stagingPreflight({ manifest, inventory, privateConfig,
   assertWindow();
   validateStagingManifest(manifest, inventory, clock(), sourceFingerprint);
   const startedUtc = clock().toISOString();
-  (actual ? createStagingAttemptStore(CLAIM_DIRECTORY) : attemptStore).claim({
+  (actual ? createStagingRemediationAttemptStore(CLAIM_DIRECTORY) : attemptStore).claim({
     projectRef: target.projectRef, manifestSha256: expectedManifestSha256,
     sourceFingerprintSha256: manifest.sourceFingerprintSha256, startedUtc,
   });
   const requests = [];
   let status = 'PASS', errorCode = null;
-  for (const path of ['/auth/v1/settings', '/rest/v1/']) {
+  for (const path of ['/auth/v1/settings', STAGING_REST_PROBE_PATH]) {
     let controller, timer;
     try {
       // A slow first request cannot admit a second after the cutoff.
@@ -187,7 +252,7 @@ export async function stagingPreflight({ manifest, inventory, privateConfig,
       assertWindow();
       controller = new AbortController();
       const timeout = new Promise((_, reject) => { timer = setTimeout(() => {
-        controller.abort(); reject(new Error('STAGING_NETWORK_FAILED'));
+        reject(new Error('STAGING_NETWORK_FAILED')); controller.abort();
       }, Math.min(timeoutMs, Math.max(1, Math.floor(expiresAt - performance.now())))); });
       requests.push({ path, status: 'ATTEMPTED', httpStatus: null });
       let response;
@@ -196,7 +261,14 @@ export async function stagingPreflight({ manifest, inventory, privateConfig,
           headers: { apikey: key }, signal: controller.signal }), timeout]);
       } catch { refuse('STAGING_NETWORK_FAILED'); }
       requests.at(-1).httpStatus = Number.isInteger(response?.status) ? response.status : null;
-      check(response?.status >= 200 && response.status < 300, 'STAGING_REMOTE_REFUSED');
+      if (path === STAGING_REST_PROBE_PATH) {
+        check(response?.status === 404, 'STAGING_REMOTE_REFUSED');
+        requests.at(-1).postgrestCode = await Promise.race([requireMissingResourceCode(response), timeout]);
+        requests.at(-1).classification = 'REST_ROUTER_MISSING_RESOURCE';
+      } else {
+        check(response?.status >= 200 && response.status < 300, 'STAGING_REMOTE_REFUSED');
+        requests.at(-1).classification = 'AUTH_SETTINGS_REACHABLE';
+      }
       requests.at(-1).status = 'PASS';
       validateStagingManifest(manifest, inventory, clock(), sourceFingerprint);
       assertSource();
@@ -211,14 +283,15 @@ export async function stagingPreflight({ manifest, inventory, privateConfig,
       controller?.abort(); // Do not retain or log response bodies.
     }
   }
-  return { version: 'permission-staging-preflight-v1', assurance: actual ? 'ACTUAL_HTTP' : 'SYNTHETIC_TRANSPORT',
+  return { version: 'permission-staging-preflight-v2', assurance: actual ? 'ACTUAL_HTTP' : 'SYNTHETIC_TRANSPORT',
     operation: 'READ_ONLY_PREFLIGHT', baselineSource: STAGING_BASELINE,
     manifestSha256: expectedManifestSha256, coverageSha256: inventoryHash(inventory),
     sourceFingerprintSha256: manifest.sourceFingerprintSha256, gitHead: sourceFingerprint.gitHead,
     sourceScope: sourceFingerprint.scope, sourceFileCount: sourceFingerprint.files.length,
-    workstream: STAGING_WORKSTREAM, attemptConsumed: true, runtimeNode: process.version,
+    workstream: STAGING_WORKSTREAM, attemptConsumed: true,
+    grantId: actual ? STAGING_REMEDIATION_GRANT.grantId : null, runtimeNode: process.version,
     privateConfigSha256: inventoryHash(privateConfig), tools,
     projectRef: target.projectRef, apiOrigin: target.apiOrigin, startedUtc, endedUtc: clock().toISOString(),
     elapsedMs: Math.round(performance.now() - startedMonotonic),
-    status, errorCode, requests, mutationReady: false, businessTestsRun: false };
+    status, errorCode, requests, restDataAccessVerified: false, mutationReady: false, businessTestsRun: false };
 }

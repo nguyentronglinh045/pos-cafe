@@ -67,7 +67,8 @@ export async function runStagingCli(argv, { clock, fetchImpl, attemptStore } = {
         receipt = await stagingPreflight({ manifest, inventory, privateConfig, expectedManifestSha256, clock, fetchImpl, attemptStore });
       } catch (error) {
         receipt = { status: 'REFUSED', errorCode: stagingErrorCode(error), manifestSha256: expectedManifestSha256,
-          endedUtc: new Date().toISOString(), businessTestsRun: false, mutationReady: false };
+          endedUtc: new Date().toISOString(), restDataAccessVerified: false,
+          businessTestsRun: false, mutationReady: false };
       }
       writeReceipt(receiptFd, receipt);
     } finally { closeSync(receiptFd); }
