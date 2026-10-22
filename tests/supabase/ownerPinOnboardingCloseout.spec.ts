@@ -174,6 +174,111 @@ function assertCapturedReceiptProjection(groups: { admin: any[]; bootstrap: any[
   }
 }
 
+export async function readTc18BrowserStorage(page: Page) {
+  return page.evaluate(async () => {
+    const databases: Array<[string, Array<[string, unknown[]]>]> = [];
+    let entries: IDBDatabaseInfo[];
+    try { entries = await indexedDB.databases(); }
+    catch { throw new Error("TC18_BROWSER_STORAGE_ENUMERATION_FAILED"); }
+    for (const entry of entries) {
+      if (typeof entry.name !== "string") throw new Error("TC18_BROWSER_STORAGE_ENUM_ENTRY_INVALID");
+      const database = await new Promise<IDBDatabase>((resolve, reject) => {
+        const request = indexedDB.open(entry.name!);
+        let settled = false;
+        const fail = (code: string) => { if (!settled) { settled = true; reject(new Error(code)); } };
+        request.onsuccess = () => {
+          if (settled) { request.result.close(); return; }
+          settled = true; resolve(request.result);
+        };
+        request.onerror = () => fail("TC18_BROWSER_STORAGE_OPEN_FAILED");
+        request.onblocked = () => fail("TC18_BROWSER_STORAGE_OPEN_BLOCKED");
+      });
+      try {
+        const stores: Array<[string, unknown[]]> = [];
+        for (const name of database.objectStoreNames) {
+          const values = await new Promise<unknown[]>((resolve, reject) => {
+            const rows: unknown[] = [];
+            const transaction = database.transaction(name, "readonly");
+            const request = transaction.objectStore(name).openCursor();
+            request.onsuccess = () => {
+              const cursor = request.result;
+              if (!cursor) { resolve(rows); return; }
+              rows.push([cursor.key, cursor.value]); cursor.continue();
+            };
+            request.onerror = () => reject(new Error("TC18_BROWSER_STORAGE_READ_FAILED"));
+            transaction.onabort = () => reject(new Error("TC18_BROWSER_STORAGE_READ_ABORTED"));
+          });
+          stores.push([name, values]);
+        }
+        databases.push([entry.name, stores]);
+      } finally { database.close(); }
+    }
+    return { local: { ...localStorage }, session: { ...sessionStorage }, cookie: document.cookie, databases };
+  });
+}
+
+export async function verifyOperatorIndexedDbCapture(page: Page, canary: string) {
+  if (typeof canary !== "string" || canary.length < 6) throw new Error("TC18_OPERATOR_IDB_CONTROL_INVALID");
+  const before = await readTc18BrowserStorage(page);
+  assertNoCanaryLeaks({ canaries: [canary], requiredSinks: ["browserStorage"],
+    observations: { browserStorage: { captured: true, data: before } } });
+  const beforeNames = before.databases.map(([name]) => name).sort();
+  const controlName = "tc18-operator-idb-" + await page.evaluate(() => crypto.randomUUID());
+  if (beforeNames.includes(controlName) || [controlName, "entries", "probe"].some(value => value.includes(canary)))
+    throw new Error("TC18_OPERATOR_IDB_CONTROL_IDENTITY_REFUSED");
+  try {
+    await page.evaluate(async ({ name, value }) => {
+      const database = await new Promise<IDBDatabase>((resolve, reject) => {
+        const request = indexedDB.open(name, 1);
+        let settled = false;
+        const fail = (code: string) => { if (!settled) { settled = true; reject(new Error(code)); } };
+        request.onupgradeneeded = () => { request.result.createObjectStore("entries"); };
+        request.onsuccess = () => {
+          if (settled) { request.result.close(); return; }
+          settled = true; resolve(request.result);
+        };
+        request.onerror = () => fail("TC18_OPERATOR_IDB_CONTROL_OPEN_FAILED");
+        request.onblocked = () => fail("TC18_OPERATOR_IDB_CONTROL_OPEN_BLOCKED");
+      });
+      try {
+        await new Promise<void>((resolve, reject) => {
+          const transaction = database.transaction("entries", "readwrite");
+          transaction.objectStore("entries").put({ nested: { values: [{ value }] } }, "probe");
+          transaction.oncomplete = () => resolve();
+          transaction.onerror = () => reject(new Error("TC18_OPERATOR_IDB_CONTROL_WRITE_FAILED"));
+          transaction.onabort = () => reject(new Error("TC18_OPERATOR_IDB_CONTROL_WRITE_ABORTED"));
+        });
+      } finally { database.close(); }
+    }, { name: controlName, value: canary });
+    const observed = await readTc18BrowserStorage(page);
+    let refused = false;
+    try {
+      assertNoCanaryLeaks({ canaries: [canary], requiredSinks: ["browserStorage"],
+        observations: { browserStorage: { captured: true, data: observed } } });
+    } catch (error) {
+      if (!(error instanceof Error) || error.message !== "CANARY_LEAK_browserStorage")
+        throw new Error("TC18_OPERATOR_IDB_UNEXPECTED_ORACLE_FAILURE");
+      refused = true;
+    }
+    if (!refused) throw new Error("TC18_OPERATOR_IDB_NEGATIVE_CONTROL_NOT_REFUSED");
+  } finally {
+    await page.evaluate(async name => {
+      await new Promise<void>((resolve, reject) => {
+        const request = indexedDB.deleteDatabase(name);
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(new Error("TC18_OPERATOR_IDB_CONTROL_DELETE_FAILED"));
+        request.onblocked = () => reject(new Error("TC18_OPERATOR_IDB_CONTROL_DELETE_BLOCKED"));
+      });
+    }, controlName);
+  }
+  const clean = await readTc18BrowserStorage(page);
+  if (JSON.stringify(clean.databases.map(([name]) => name).sort()) !== JSON.stringify(beforeNames))
+    throw new Error("TC18_OPERATOR_IDB_DATABASE_SET_CHANGED");
+  assertNoCanaryLeaks({ canaries: [canary], requiredSinks: ["browserStorage"],
+    observations: { browserStorage: { captured: true, data: clean } } });
+  return clean;
+}
+
 async function captureTc18Scenario(page: Page, scenario: CanaryScenario, canaries: string[], input: {
   realtime: string[]; console: string[]; telemetry: string[]; urls: string[]; messages?: unknown[];
   macBinding?: { kind: "complete_required_pin_change" | "owner_recovery"; actorKey: string; targetId: string; request: Record<string, any> };
@@ -192,33 +297,7 @@ async function captureTc18Scenario(page: Page, scenario: CanaryScenario, canarie
   const registry = [...groups.admin,...groups.bootstrap,...groups.workflows,...groups.stages];
   const signals = (await db.query("select to_jsonb(s) row from public.store_change_signals s order by topic")).rows;
   assertCapturedReceiptProjection(groups, audit, signals);
-  const browserStorage = await page.evaluate(async () => {
-    const databases: unknown[] = [];
-    for (const entry of await indexedDB.databases()) {
-      if (!entry.name) continue;
-      const database = await new Promise<IDBDatabase>((resolve, reject) => {
-        const request = indexedDB.open(entry.name!);
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      });
-      try {
-        const stores: unknown[] = [];
-        for (const name of database.objectStoreNames) {
-          const values = await new Promise<unknown[]>((resolve, reject) => {
-            const rows: unknown[] = [];
-            const request = database.transaction(name, "readonly").objectStore(name).openCursor();
-            request.onsuccess = () => { const cursor = request.result;
-              if (!cursor) { resolve(rows); return; }
-              rows.push([cursor.key, cursor.value]); cursor.continue(); };
-            request.onerror = () => reject(request.error);
-          });
-          stores.push([name, values]);
-        }
-        databases.push([entry.name, stores]);
-      } finally { database.close(); }
-    }
-    return { local: { ...localStorage }, session: { ...sessionStorage }, cookie: document.cookie, databases };
-  });
+  const browserStorage = await readTc18BrowserStorage(page);
   const screenshot = await page.screenshot({ mask: [page.locator('input[type="password"]')], maskColor: '#000000' });
   const text = await page.locator("body").innerText();
   mkdirSync(tc18ArtifactDirectory, { recursive: true });
@@ -4645,8 +4724,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       expect(changed.passcode_hash).not.toBe(owner.passcode_hash);
       const screenshot = await operatorPage.screenshot({ mask: [operatorPage.locator('input[type="password"]')], maskColor: '#000000' });
       const visibleText = await operatorPage.locator("body").innerText();
-      const browserStorage = await operatorPage.evaluate(() => ({ local: { ...localStorage }, session: { ...sessionStorage },
-        cookie: document.cookie, databases: [] }));
+      const browserStorage = await verifyOperatorIndexedDbCapture(operatorPage, pin);
       const audit = (await state.db.query("select to_jsonb(a) row from public.employee_admin_audit a where store_id=$1", [state.storeId])).rows;
       const registry = (await state.db.query("select to_jsonb(r) row from private.employee_admin_requests r where store_id=$1", [state.storeId])).rows;
       const signal = (await state.db.query("select to_jsonb(s) row from public.store_change_signals s where store_id=$1", [state.storeId])).rows;
