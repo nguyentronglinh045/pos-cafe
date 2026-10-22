@@ -78,7 +78,7 @@ export function assertT04ResourceFacts(p,identity){
 export function t04Lifecycle(stage){
   check(catalog.some(s=>s.stage===stage));
   const pre=['candidate-seed-recovery-database','candidate-roles-e2e','realtime-e2e'].includes(stage)?'activated':
-    stage==='transition-compatibility-database'?'bridge':'legacy';
+    stage==='transition-compatibility-database'?'candidate-pass-through':'legacy';
   const post=stage==='rollback-recovery-database'?'candidate-pass-through':
     ['candidate-e2e','candidate-roles-e2e','realtime-e2e','transition-database','transition-e2e'].includes(stage)?'activated':pre;
   return {pre,post,reset:resets.has(stage)};
@@ -292,11 +292,22 @@ export async function createT04FixtureBoundary({root,identity,guard,resourceGuar
     const value=await inventory.collectInventory(db);return runtimeHash({phase:expected,catalog:value.catalogHash,financial:await financial(),storage:originalStorage});};
   const prepare=async stage=>{
     guard();check(await preserved(baseline)&&await physical()===originalPhysical);const lifecycle=t04Lifecycle(stage);
-    if(lifecycle.pre==='activated'){
+    if(lifecycle.pre==='activated'||lifecycle.pre==='candidate-pass-through'){
       step=8;
       const old=process.env.IDEM_ENV_FILE;process.env.IDEM_ENV_FILE=files[0].path;
       try{await(await import('../tests/supabase/permissionCandidateGlobalSetup.ts')).default();}
       finally{if(old===undefined)delete process.env.IDEM_ENV_FILE;else process.env.IDEM_ENV_FILE=old;}
+      if(lifecycle.pre==='candidate-pass-through'){
+        // Compatibility checks target the real candidate RPC surface. A bridge
+        // alone has no permission_get_pos_menu route for PostgREST to resolve.
+        // Verify full activation first, then relax only this owned fixture's
+        // contract marker gate; candidate functions and ACLs stay installed.
+        await phase('activated');
+        const gates=await rows('select strict,contract_version from private.permission_contract_gate where singleton');
+        check(gates.length===1&&gates[0].strict===true&&gates[0].contract_version===2);
+        const changed=await rows('update private.permission_contract_gate set strict=false where singleton and strict=true and contract_version=2 returning strict,contract_version');
+        check(changed.length===1&&changed[0].strict===false&&changed[0].contract_version===2);
+      }
       check(await financial()===originalFinancial);
     }else if(lifecycle.pre==='bridge'){
       step=9;

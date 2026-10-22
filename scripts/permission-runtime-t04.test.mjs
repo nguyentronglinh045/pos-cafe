@@ -75,6 +75,18 @@ test('T04 actual failed-test selector cannot confuse earlier skipped or pending 
  assert.equal(facts.t04MissingRequired,2);assert.equal(facts.t04FirstFailedRequired,0);assert(!('t04FirstFailedLine'in facts));
 });
 
+test('compatibility route seven survives both T04 diagnostic boundaries while route eight and private fields are refused',()=>{
+ const facts={t04StageOrdinal:19,t04FirstFailedRequired:2,t04FirstFailedLine:91,t04TestErrorCodeOrdinal:40,t04TestErrorNameOrdinal:4};
+ const failure={stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:1,facts};
+ assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(facts)),facts);
+ assert.deepEqual(ci1FailureExport(failure),failure);
+ for(const delta of[{t04TestErrorCodeOrdinal:41},{raw:'PRIVATE'}]){
+  const invalid={...failure,facts:{...facts,...delta}};
+  assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(invalid.facts)),{});
+  assert.notDeepEqual(ci1FailureExport(invalid),invalid);
+ }
+});
+
 test('private pg_restore failures project finite categories through both public boundaries without SQL or identifiers',()=>{
  const privateText='pg_restore: error: could not execute query: ERROR: cannot drop extension FAKE_PRIVATE_KEY because other objects depend on it\nDETAIL: FAKE_PRIVATE_KEY\nCommand was: DROP EXTENSION IF EXISTS FAKE_PRIVATE_KEY;';
  const facts=t04RestoreFailureFacts(Buffer.from(privateText));assert.deepEqual(facts,{t04RestoreErrorOrdinal:1,t04RestoreCommandOrdinal:2});
@@ -160,7 +172,7 @@ test('canonical rollback variants cannot inherit caller choice; realtime output 
  assert.throws(()=>t04StageEnvironment('realtime-e2e',{},'/tmp/public'));
  assert.equal(t04StageEnvironment('realtime-e2e',{},'/volume/private/t04-realtime').PERM_REALTIME_PRIVATE_ARTIFACT_DIR,'/volume/private/t04-realtime');
  assert.equal(t04Lifecycle('candidate-roles-e2e').pre,'activated');assert.equal(t04Lifecycle('realtime-e2e').pre,'activated');
- assert.equal(t04Lifecycle('transition-compatibility-database').pre,'bridge');
+ assert.deepEqual(t04Lifecycle('transition-compatibility-database'),{pre:'candidate-pass-through',post:'candidate-pass-through',reset:true});
  assert.deepEqual(t04Lifecycle('candidate-seed-recovery-database'),{pre:'activated',post:'activated',reset:true});
  assert.equal(t04Lifecycle('rollback-recovery-database').post,'candidate-pass-through');
 });

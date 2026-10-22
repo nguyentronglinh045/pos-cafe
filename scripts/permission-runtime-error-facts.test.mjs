@@ -105,10 +105,10 @@ test('Realtime first failure ordinal binds only fixed scenario/device/oracle lab
  for(const value of[-1,481,1.5,'1'])assert.throws(()=>runtimeRunnerFailureFacts({stage:'realtime-e2e',required:[item]},{...r,results:[{...r.results[0],realtimeFirstFailureOrdinal:value}]}));
 });
 
-import{LEGACY_BROWSER_GUARD_CODES}from'./permission-runtime-error-facts.mjs';
+import{LEGACY_BROWSER_GUARD_CODES,COMPATIBILITY_ROUTE_GUARD_CODES}from'./permission-runtime-error-facts.mjs';
 test('legacy guard ordinals append 28..33 without changing the original 27 structured codes',()=>{
  const old=["ERR_MODULE_NOT_FOUND","ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX","ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING","ENOENT","EACCES","ECONNREFUSED","ETIMEDOUT","23502","23503","23505","23514","42501","42601","42703","42883","42P01","42P07","3F000","57P03","57014","53300","PIN_CHANGE_REQUIRED","EMPLOYEE_SESSION_REQUIRED","INVALID_EMPLOYEE_REQUEST","AUTH_REQUIRED","WRITE_PROTOCOL_UNSUPPORTED","FORBIDDEN"];
- assert.deepEqual(RUNTIME_ERROR_CODES.slice(0,27),old);assert.equal(RUNTIME_ERROR_CODES.length,33);
+ assert.deepEqual(RUNTIME_ERROR_CODES.slice(0,27),old);assert.equal(RUNTIME_ERROR_CODES.length,40);
  for(const[ordinal,code]of old.entries())assert.equal(runtimeErrorFacts({code}).errorCodeOrdinal,ordinal+1);
  for(const[i,code]of LEGACY_BROWSER_GUARD_CODES.entries()){
   assert.equal(runtimeErrorFacts(new Error(code)).errorCodeOrdinal,28+i);
@@ -131,4 +131,43 @@ test('structured known codes keep precedence over exact legacy helper messages',
   assert.equal(runtimeErrorFacts({code:'23505',message:code}).errorCodeOrdinal,10);
   assert.equal(runtimePlaywrightFailureFacts({code:'23505',message:'Error: '+code}).failureFacts.errorCodeOrdinal,10);
  }
+});
+
+test('compatibility route ordinals append 34..40 and require exact structured provenance',()=>{
+ assert.deepEqual(RUNTIME_ERROR_CODES.slice(27,33),LEGACY_BROWSER_GUARD_CODES);
+ assert.deepEqual(RUNTIME_ERROR_CODES.slice(33),COMPATIBILITY_ROUTE_GUARD_CODES);
+ for(const[i,code]of COMPATIBILITY_ROUTE_GUARD_CODES.entries()){
+  const error=Object.assign(new Error('PRIVATE https://private.invalid/?token=SECRET'),{name:'AssertionError',code});
+  const facts=runtimeErrorFacts(error);
+  assert.deepEqual(facts,{errorCodeOrdinal:34+i,errorNameOrdinal:4,errorMatcherOrdinal:0});
+  assert.deepEqual(safeRuntimeErrorFacts(facts),facts);assert(!JSON.stringify(facts).includes('PRIVATE'));
+  for(const message of[code,'Error: '+code,'expect(received).toBe(expected)\nReceived: "'+code+'"']){
+   assert.equal(runtimeErrorFacts({message}).errorCodeOrdinal,0);
+   assert.equal(runtimePlaywrightFailureFacts({message}).failureFacts.errorCodeOrdinal,0);
+  }
+ }
+ assert.equal(runtimeErrorFacts({code:'COMPATIBILITY_ROUTE_8'}).errorCodeOrdinal,0);
+ assert.equal(safeRuntimeErrorFacts({errorCodeOrdinal:41,errorNameOrdinal:4,errorMatcherOrdinal:0}),null);
+ const item={file:'tests/contracts/permissionCompatibility.contract.test.ts',name:'required',project:null};
+ const report={discovery:[item],results:[{...item,state:'failed',failureFacts:{errorCodeOrdinal:40,errorNameOrdinal:4,errorMatcherOrdinal:0}}]};
+ assert.equal(runtimeRunnerFailureFacts({stage:'transition-compatibility-database',required:[item]},report).testErrorCodeOrdinal,40);
+ assert(!Object.hasOwn(runtimeRunnerFailureFacts({stage:'transition-compatibility-database',required:[item]},{...report,results:[{...report.results[0],failureFacts:{errorCodeOrdinal:41,errorNameOrdinal:4,errorMatcherOrdinal:0}}]}),'testErrorCodeOrdinal'));
+});
+
+test('actual Vitest reporter carries a structured compatibility route ordinal without private assertion material',()=>{
+ let report;
+ const source=readFileSync(new URL('./permission-runtime-vitest-reporter.mjs',import.meta.url),'utf8')
+  .replace(/^import[^;]+;[\r\n]*/gm,'').replace('export default class','class');
+ const context={runtimeReporterContext:()=>({sourceRoot:'/source'}),reporterFile:(_root,p)=>p.slice('/source/'.length),
+  runtimeErrorFacts,runtimeErrorLine,runtimeErrorLocation,fixtureDriftCode:()=>'',FIXTURE_DRIFT_CODES:[],writeRuntimeReport:(_ctx,value)=>{report=value;}};
+ runInNewContext(source+'\nthis.Reporter=RuntimeVitestReporter;',context);
+ const reporter=new context.Reporter();reporter.onInit();
+ const error={name:'AssertionError',code:'COMPATIBILITY_ROUTE_7',message:'PRIVATE',stack:'PRIVATE\n    at test (/source/tests/contracts/permissionCompatibility.contract.test.ts:91:3)'};
+ const module={moduleId:'/source/tests/contracts/permissionCompatibility.contract.test.ts',project:{name:''},children:{allTests:()=>[item],allSuites:()=>[]}};
+ const item={module,fullName:'required',options:{retry:0,repeats:0},diagnostic:()=>({retryCount:0,repeatCount:0}),result:()=>({state:'failed',errors:[error]})};
+ reporter.onTestModuleCollected(module);reporter.onTestRunEnd([module],[],'failed');
+ const data=JSON.parse(JSON.stringify(report));
+ assert.equal(data.results[0].failureFacts.errorCodeOrdinal,40);assert.equal(data.results[0].failureLine,91);
+ assert.equal(data.results[0].attempts,1);assert.equal(data.failureFacts.errorCodeOrdinal,40);
+ assert(!JSON.stringify(data).includes('PRIVATE'));
 });

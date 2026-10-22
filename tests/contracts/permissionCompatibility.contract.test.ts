@@ -4,6 +4,7 @@ import pg from 'pg';
 import { afterAll,beforeAll,expect,test } from 'vitest';
 import { assertBridgeFixture,parseBridgeEnvironment } from '../../scripts/permission-identity-runtime.mjs';
 import { prepareCompatibilityHook,restoreCompatibilityPreparation,verifyCompatibilityRestRouting } from '../../scripts/permission-compatibility-prepare.mjs';
+import { COMPATIBILITY_ROUTE_GUARD_CODES } from '../../scripts/permission-runtime-error-facts.mjs';
 
 const env=parseBridgeEnvironment();
 const db=new pg.Client({connectionString:env.dsn,connectionTimeoutMillis:5_000,statement_timeout:60_000});
@@ -40,8 +41,24 @@ beforeAll(async()=>{
  await db.connect();await assertBridgeFixture(db,env,'bridge');fixtureVerified=true;
  const hooks=(await db.query(`select split_part(setting,'=',2) value from pg_db_role_setting s join pg_roles r on r.oid=s.setrole,
   lateral unnest(s.setconfig) setting where r.rolname='authenticator' and setting like 'pgrst.db_pre_request=%'`)).rows;
- expect(hooks).toEqual([]);
+ expect(hooks).toEqual([{value:'public.permission_contract_pre_request'}]);
+ expect((await db.query('select strict,contract_version from private.permission_contract_gate where singleton')).rows)
+  .toEqual([{strict:false,contract_version:2}]);
+ expect((await db.query("select to_regclass('public.permission_catalog') is not null catalog,to_regprocedure('public.permission_get_pos_menu()') is not null menu")).rows)
+  .toEqual([{catalog:true,menu:true}]);
  receipt=await prepareCompatibilityHook(db);serviceKey=isolatedServiceKey();
+ expect(receipt).toEqual({status:'PREPARED',installedByCaller:false,requiresRestProbe:true});
+ // A real SQL signature alone does not prove that PostgREST has reloaded its
+ // schema cache. Wait only for that finite readiness condition, never accept a
+ // missing route or another business/error result as a compatibility PASS.
+ let menuReady=false;
+ for(let attempt=0;attempt<20;attempt++){
+  const result=await protectedRequest('rpc/permission_get_pos_menu',{},'2');
+  if(result.status===200&&result.body?.ok===false&&result.body?.error?.code==='EMPLOYEE_SESSION_REQUIRED'){menuReady=true;break;}
+  expect(result).toMatchObject({status:404,body:{code:'PGRST202'}});
+  await new Promise(resolve=>setTimeout(resolve,100));
+ }
+ expect(menuReady).toBe(true);
 });
 afterAll(async()=>{
  try{
@@ -85,10 +102,16 @@ test('TC-PERM-51 pass-through routing, atomic strict rollback and role matrix',a
  const cases:[string,unknown][]=[['stores?select=id',{}],['rpc/register_write_operation',{p_operation_id:id,p_payload:{}}],
   ['rpc/execute_write_operation',{p_operation_id:id,p_payload:{}}],['rpc/get_write_operation',{p_operation_id:id}],
   ['rpc/cancel_write_operation',{p_operation_id:id}],['rpc/list_write_operations',{}],['rpc/permission_get_pos_menu',{}]];
- for(const [path,body] of cases){const result=path.startsWith('stores?')
+ expect(cases).toHaveLength(COMPATIBILITY_ROUTE_GUARD_CODES.length);
+ for(const [index,[path,body]] of cases.entries()){const result=path.startsWith('stores?')
    ? await (async()=>{const r=await fetch(env.api+'/rest/v1/'+path,{headers:{apikey:env.anonKey,authorization:'Bearer '+env.storeJwt}});return{status:r.status,body:await r.json()};})()
    : await protectedRequest(path,body);
-  expect(result).toMatchObject({status:426,body:{code:'WRITE_PROTOCOL_UNSUPPORTED'}});
+  try{expect(result).toMatchObject({status:426,body:{code:'WRITE_PROTOCOL_UNSUPPORTED'}});}
+  catch(error){
+   if(error&&typeof error==='object'&&(error as {name?:string}).name==='AssertionError')
+    Object.assign(error,{code:COMPATIBILITY_ROUTE_GUARD_CODES[index]});
+   throw error;
+  }
  }
  expect(await protectedRequest('rpc/get_write_operation',{p_operation_id:id},'0')).toMatchObject({status:426,body:{code:'WRITE_PROTOCOL_UNSUPPORTED'}});
  expect(await protectedRequest('rpc/get_write_operation',{p_operation_id:id},'1')).toMatchObject({status:426,body:{code:'WRITE_PROTOCOL_UNSUPPORTED'}});
