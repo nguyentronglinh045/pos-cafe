@@ -13,6 +13,7 @@ import {
   fixtureEvidence,
   readFingerprint,
   readRelations,
+  readRelationAcl,
   resetReadFixture,
   rpc,
   setupReadFixture,
@@ -408,11 +409,17 @@ test("TC-PERM-26/27 T07 all sensitive public relations lose table and inherited 
   const existing = (await db.query(`select c.relname,c.relkind from pg_class c join pg_namespace n on n.oid=c.relnamespace
     where n.nspname='public' and c.relname=any($1::text[])`, [readRelations])).rows;
   expect(existing.map(row => row.relname).sort()).toEqual([...readRelations].sort());
+  // Inspect every privilege represented by this server, rather than a fixed
+  // pre-PG17 list that would miss MAINTAIN or retained column UPDATE/REFERENCES.
+  expect((await readRelationAcl()).filter(a => ["PUBLIC", "anon", "authenticated", "service_role"].includes(a.grantee))).toEqual([]);
   for (const role of ["anon", "authenticated", "service_role"]) {
     for (const relation of readRelations) {
       const privileges = (await db.query(`select has_table_privilege($1,$2,'SELECT') table_select,
-        has_any_column_privilege($1,$2,'SELECT') column_select`, [role, `public.${relation}`])).rows[0];
-      expect(privileges, `${role} ${relation}`).toEqual({ table_select: false, column_select: false });
+        has_any_column_privilege($1,$2,'SELECT') column_select,
+        exists(select 1 from pg_class c cross join lateral aclexplode(acldefault('r',c.relowner)) a
+          where c.oid=$2::regclass and has_table_privilege($1,c.oid,a.privilege_type)) table_any,
+        has_any_column_privilege($1,$2,'INSERT,UPDATE,REFERENCES') column_write`, [role, `public.${relation}`])).rows[0];
+      expect(privileges, `${role} ${relation}`).toEqual({ table_select: false, column_select: false, table_any: false, column_write: false });
     }
   }
   expect(fixtureEvidence.readAclNegativeControl).toBe(true);
@@ -434,6 +441,9 @@ test("TC-PERM-26 T07 real authenticated SQL cannot read raw tables through owner
     "select before_snapshot from public.employee_admin_audit", "select id from public.history_entries",
   ];
   for (const token of [owner.token, cashier.token]) for (const probe of probes) await sqlRejected(probe, token);
+  // A constant assignment and false predicate require UPDATE without depending
+  // on raw SELECT denial, and cannot change or delete any business row.
+  for (const token of [owner.token, cashier.token]) await sqlRejected("update public.stores set name='ACL denial control' where false", token);
   controls.rawSelectProbeCount = probes.length * 2;
 });
 

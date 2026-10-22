@@ -355,8 +355,11 @@ begin
 exception when sqlstate 'P0401' then return private.permission_failure(sqlerrm);
 end $$;
 
--- RPC projections are the only employee read path. Table-level REVOKE alone
--- does not remove old column grants. Include the legacy history view explicitly.
+-- These application relations are RPC-only. Close every inherited table and
+-- column privilege, including provider-default TRUNCATE/REFERENCES/TRIGGER and
+-- version-specific privileges such as PG17 MAINTAIN. Do not change unrelated
+-- relations/default ACLs; T10 grants its separate signal SELECT explicitly.
+-- Include the legacy history view retained by some installations.
 do $$
 declare t record; a record; f record;
 begin
@@ -364,9 +367,9 @@ begin
   'stores','store_settings','employees','categories','menu_items','option_groups','option_values','menu_item_option_groups',
   'floor_areas','tables','floor_decor_items','orders','order_items','order_item_options','payments','write_operations','order_events',
   'employee_admin_audit','permission_catalog','permission_catalog_state','permission_roles','role_permission_defaults','history_entries']) loop
-  execute format('revoke select on public.%I from public,anon,authenticated,service_role',t.relname);
+  execute format('revoke all privileges on public.%I from public,anon,authenticated,service_role',t.relname);
   for a in select attname from pg_attribute where attrelid=t.oid and attnum>0 and not attisdropped loop
-   execute format('revoke select(%I) on public.%I from public,anon,authenticated,service_role',a.attname,t.relname);
+   execute format('revoke all privileges(%I) on public.%I from public,anon,authenticated,service_role',a.attname,t.relname);
   end loop;
  end loop;
  for f in select p.oid::regprocedure signature,n.nspname from pg_proc p join pg_namespace n on n.oid=p.pronamespace

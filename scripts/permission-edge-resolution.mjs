@@ -55,7 +55,8 @@ export function edgeResolutionCounts(output,sourceSHA){
  const lines=output.split('\n').filter(line=>line.startsWith('PERMISSION_EDGE_RESOLUTION '));check(lines.length===1);
  return{run:3,pass:3,fail:0,skip:0,positiveControls:2,negativeControls:1,edgeResolution:publicEdgeResolution(JSON.parse(lines[0].slice('PERMISSION_EDGE_RESOLUTION '.length)),sourceSHA)};
 }
-export const EDGE_PROBE_PUBLIC_LIMITS=Object.freeze({edgeProbeReason:30,edgeProbePackage:100,edgeProbeVersionMajor:1000000,edgeProbeVersionMinor:1000000,edgeProbeVersionPatch:1000000});
+export const EDGE_PROBE_PUBLIC_LIMITS=Object.freeze({edgeProbeReason:36,edgeProbePackage:100,edgeProbeVersionMajor:1000000,edgeProbeVersionMinor:1000000,edgeProbeVersionPatch:1000000,
+ edgeProbeStage:10,edgeProbePrimaryReason:36,edgeProbePrimaryIO:3,edgeProbeCleanupReason:36,edgeProbeCleanupIO:3,edgeProbeRootRemoved:1,edgeProbeProcessReleased:1});
 export function edgeProbeFailureMetrics(output){
  if(typeof output!=='string'||Buffer.byteLength(output)>1024**2)return{};
  const lines=output.split(/\r?\n/).filter(line=>line.startsWith('PERMISSION_EDGE_PROBE_FAILURE '));if(lines.length!==1)return{};
