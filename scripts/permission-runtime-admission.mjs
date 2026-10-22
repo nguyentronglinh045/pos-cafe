@@ -79,6 +79,34 @@ export function collectActiveBackendRuns(repository,run=execFileSync,cwd){
  return active;
 }
 
+// Read the complete reviewed pin set in one binary batch. The previous per-file
+// git-show buffer was 1MiB, below valid tracked reference images. The aggregate
+// 64MiB bound includes headers and payloads; unexpected or incomplete framing
+// fails closed without dropping any pin from the manifest.
+export function verifyGitBlobPins(cwd,sourceSHA,pins,run=execFileSync){
+ check(/^[a-f0-9]{40}$/.test(sourceSHA??'')&&Array.isArray(pins)&&pins.length>0&&pins.length<=2000
+  &&new Set(pins.map(pin=>pin.path)).size===pins.length
+  &&pins.every(pin=>typeof pin.path==='string'&&!pin.path.includes('..')&&!/[\\:\r\n\0]/.test(pin.path)&&!pin.path.startsWith('/')&&/^[a-f0-9]{64}$/.test(pin.sha256??'')),'PINS');
+ const cap=64*1024**2;
+ let bytes;
+ try{bytes=run('git',['cat-file','--batch'],{cwd,input:pins.map(pin=>sourceSHA+':'+pin.path).join('\n')+'\n',timeout:30000,maxBuffer:cap,windowsHide:true});}
+ catch{check(false,'GIT_BLOB_TRANSPORT');}
+ check(Buffer.isBuffer(bytes)&&bytes.length<=cap,'GIT_BLOB_BATCH');
+ let offset=0;
+ for(const pin of pins){
+  const end=bytes.indexOf(10,offset);
+  check(end>=offset&&end-offset<=100,'GIT_BLOB_BATCH');
+  const header=/^([a-f0-9]{40}) blob (0|[1-9][0-9]*)$/.exec(bytes.subarray(offset,end).toString('utf8'));
+  check(header,'GIT_BLOB_BATCH');
+  const size=Number(header[2]),start=end+1;
+  check(Number.isSafeInteger(size)&&size>=0&&size<=cap&&start+size<bytes.length&&bytes[start+size]===10,'GIT_BLOB_BATCH');
+  check(sha(bytes.subarray(start,start+size))===pin.sha256,'GIT_BLOB');
+  offset=start+size+1;
+ }
+ check(offset===bytes.length,'GIT_BLOB_BATCH');
+ return {verified:pins.length,bytes:bytes.length};
+}
+
 // The same sequence is used by production and negative controls. A refusal after
 // reservation never returns the spent action or frees its pending intent.
 export function guardAdmissionAction({collect,reserve,act,clock=Date.now,reserveMs,dispatch=false}){
@@ -116,7 +144,7 @@ export function runtimeAdmission(manifestPath,kind,{dispatch=false,identity,cloc
    wslPresent:!!run('wsl',['--list','--quiet'],{encoding:'utf16le',timeout:15000,windowsHide:true}).replaceAll('\0','').trim(),
    edgeInputs:kind==='heavy'?assertEdgeResolution(join(cwd,'tests/permissions/runtime/edge-resolution'),JSON.parse(readFileSync(join(cwd,'tests/permissions/runtime/ci1-edge.json')))):null},kind);
   check(git(['rev-parse','HEAD']).toString().trim()===m.sourceSHA&&!git(['diff','--name-only','HEAD','--']).toString().trim(),'SOURCE_DRIFT');
-  for(const pin of packet.effectivePins)check(sha(git(['show',m.sourceSHA+':'+pin.path]))===pin.sha256,'GIT_BLOB');
+  verifyGitBlobPins(cwd,m.sourceSHA,packet.effectivePins,run);
   const remote=git(['ls-remote','origin','refs/heads/'+m.branch]).toString().split(/\s+/)[0];
   check(remote===(kind==='publish'?m.expectedRemoteSHA:m.sourceSHA),'REMOTE_DRIFT');
   const options={now:clock(),reserveMs,reservationId};

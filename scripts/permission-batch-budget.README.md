@@ -6,6 +6,14 @@ source, review, CI, clock, disk and GitHub checks before external actions. Use
 the admission entry point for publication and backend dispatch; a budget
 reservation by itself does not authorize an external action.
 
+Reviewed Git blob pins are read as one binary `git cat-file --batch` response,
+bounded to 64 MiB including framing. Every requested blob must have the exact
+type, size, SHA256, separator and position, with no missing or trailing data.
+This preserves large tracked reference images that exceed the old 1 MiB
+per-command buffer. Exceeding the aggregate bound refuses admission; never
+remove pins merely to make a candidate fit. The bound is an I/O memory limit,
+not a disk quota. Other live checks and the post-reservation recheck remain.
+
 V1–V3 remain readable under their original contracts. V4 supports a new owner
 grant through data without editing dates, source hashes or checkout paths in
 the executable. Policy, evidence and claims must stay at their original paths.

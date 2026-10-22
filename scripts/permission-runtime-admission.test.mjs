@@ -1,4 +1,5 @@
-import test from'node:test';import assert from'node:assert/strict';import{validateAdmissionEvidence,collectActiveBackendRuns,guardAdmissionAction}from'./permission-runtime-admission.mjs';
+import test from'node:test';import assert from'node:assert/strict';import{validateAdmissionEvidence,collectActiveBackendRuns,guardAdmissionAction,verifyGitBlobPins}from'./permission-runtime-admission.mjs';
+import{execFileSync}from'node:child_process';import{createHash}from'node:crypto';
 import{PROJECT_PHASES,PROJECT_REPOSITORY_ID,publicSummary}from'./project-ci-results.mjs';
 import{assertEdgeResolution}from'./permission-edge-resolution.mjs';
 import{readFileSync}from'node:fs';
@@ -27,6 +28,31 @@ function v2(){
  p.local={schemaVersion:'permission-node-local-v1',sourceSHA:p.manifest.sourceSHA,wholeTrackedSuite:true,tests:904,pass:904,fail:0,skip:0,exitCode:0};
  return p;
 }
+
+test('actual Git batch verifies the tracked PNG above the old 1MiB limit without dropping its pin',()=>{
+ const path='UI-Design-Google-Stitch-Week01/Tran Thi Lam/B02_goi_mon_tai_ban.png',bytes=readFileSync(path);
+ assert.ok(bytes.length>1024**2);const head=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8',windowsHide:true}).trim();
+ const pin={path,sha256:createHash('sha256').update(bytes).digest('hex')};
+ assert.equal(verifyGitBlobPins(process.cwd(),head,[pin]).verified,1);
+ assert.throws(()=>verifyGitBlobPins(process.cwd(),head,[{...pin,sha256:'0'.repeat(64)}]),error=>error.reason==='GIT_BLOB');
+});
+
+test('bounded binary Git batch refuses malformed headers, sizes, payload hashes, missing frames and trailing data',()=>{
+ const head='b'.repeat(40),path='folder/Unicode á file.bin',payload=Buffer.from([0,255,10]),pin={path,sha256:createHash('sha256').update(payload).digest('hex')};
+ const frame=(header='a'.repeat(40)+' blob 3',body=payload,end=Buffer.from('\n'))=>Buffer.concat([Buffer.from(header+'\n'),body,end]);
+ const good=frame(),run=(exe,args,options)=>{assert.equal(exe,'git');assert.deepEqual(args,['cat-file','--batch']);assert.equal(options.input,head+':'+path+'\n');assert.equal(options.maxBuffer,64*1024**2);return good;};
+ assert.deepEqual(verifyGitBlobPins('fixture',head,[pin],run),{verified:1,bytes:good.length});
+ const highBit=Buffer.from(good);highBit[0]=0xe1;
+ for(const bad of[
+  Buffer.from(head+':'+path+' missing\n'),frame('a'.repeat(40)+' commit 3'),frame('a'.repeat(39)+' blob 3'),highBit,
+  frame('a'.repeat(40)+' blob -1'),frame('a'.repeat(40)+' blob 1.5'),frame('a'.repeat(40)+' blob 03'),frame('a'.repeat(40)+' blob 67108865'),
+  frame('a'.repeat(40)+' blob 2'),frame('a'.repeat(40)+' blob 4'),frame(undefined,Buffer.from([0,254,10])),frame(undefined,payload,Buffer.from('x')),
+  good.subarray(0,good.length-1),Buffer.concat([good,Buffer.from('trailing')]),Buffer.concat([good,good]),'not a Buffer',
+ ])assert.throws(()=>verifyGitBlobPins('fixture',head,[pin],()=>bad),/REFUSED/);
+ assert.throws(()=>verifyGitBlobPins('fixture',head,[pin],()=>{throw Object.assign(Error('buffer'),{code:'ENOBUFS'});}),error=>error.reason==='GIT_BLOB_TRANSPORT');
+ assert.throws(()=>verifyGitBlobPins('fixture',head,[{...pin,path:'bad\npath'}],()=>{throw Error('must not execute');}),error=>error.reason==='PINS');
+ assert.throws(()=>verifyGitBlobPins('fixture',head,[pin,pin],()=>good),error=>error.reason==='PINS');
+});
 
 test('V4 publication requires whole local checks and independent reviews, CI is required only before heavy',()=>{
  const p=v2();delete p.light;delete p.native;delete p.edgeInputs;
