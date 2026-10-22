@@ -1,4 +1,4 @@
-import test from'node:test';import assert from'node:assert/strict';import{validateAdmissionEvidence}from'./permission-runtime-admission.mjs';
+import test from'node:test';import assert from'node:assert/strict';import{validateAdmissionEvidence,collectActiveBackendRuns,guardAdmissionAction}from'./permission-runtime-admission.mjs';
 import{PROJECT_PHASES,PROJECT_REPOSITORY_ID,publicSummary}from'./project-ci-results.mjs';
 import{assertEdgeResolution}from'./permission-edge-resolution.mjs';
 import{readFileSync}from'node:fs';
@@ -18,6 +18,92 @@ function base(){
 }
 test('same source CI receipt supports two data manifests and each profile while retaining source controls',()=>{
  const p=base();assert.equal(validateAdmissionEvidence(p,'heavy').status,'ADMITTED');p.manifest.profile='SUPABASE_T04';assert.equal(validateAdmissionEvidence(p,'heavy').status,'ADMITTED');
+});
+
+function v2(){
+ const p=base();p.manifest.schemaVersion='permission-runtime-admission-v2';
+ p.packet.sourceSHA=p.manifest.sourceSHA;p.packet.authors=['author-one','author-two'];
+ p.manifest.local={path:'D:/test/local.json',sha256:'d'.repeat(64)};p.packet.localSHA256=p.manifest.local.sha256;
+ p.local={schemaVersion:'permission-node-local-v1',sourceSHA:p.manifest.sourceSHA,wholeTrackedSuite:true,tests:904,pass:904,fail:0,skip:0,exitCode:0};
+ return p;
+}
+
+test('V4 publication requires whole local checks and independent reviews, CI is required only before heavy',()=>{
+ const p=v2();delete p.light;delete p.native;delete p.edgeInputs;
+ assert.equal(validateAdmissionEvidence(p,'publish').status,'ADMITTED');
+ assert.throws(()=>validateAdmissionEvidence(p,'heavy'),/REFUSED/);
+ const h=v2();assert.equal(validateAdmissionEvidence(h,'heavy').status,'ADMITTED');
+ h.light.sourceSHA='e'.repeat(40);assert.throws(()=>validateAdmissionEvidence(h,'heavy'),/REFUSED/);
+});
+
+test('publication refuses author reviews and stale, partial, skipped or unpinned local checks',()=>{
+ for(const mutate of[
+  p=>p.packet.sourceSHA='e'.repeat(40),p=>p.packet.authors=[],p=>p.packet.authors=['author-one','author-one'],
+  p=>p.packet.authors.push('one'),p=>p.packet.authors.push('two'),p=>p.local.sourceSHA='e'.repeat(40),
+  p=>p.local.wholeTrackedSuite=false,p=>p.local.tests=903,p=>p.local.pass=903,p=>p.local.fail=1,p=>p.local.skip=1,p=>p.local.exitCode=1,
+  p=>p.packet.localSHA256='e'.repeat(64),p=>delete p.local,p=>p.reviews.reviewers[1].name='one',
+ ]){const p=v2();mutate(p);assert.throws(()=>validateAdmissionEvidence(p,'publish'),/REFUSED/);}
+});
+
+test('backend query covers every active status without restricting branch or recent-run count',()=>{
+ const seen=[];
+ const fake=(exe,args)=>{assert.equal(exe,'gh');assert.deepEqual(args.slice(0,3),['api','--paginate','--slurp']);
+  const endpoint=args[3];assert.match(endpoint,/actions\/workflows\/backend\.yml\/runs\?status=/);
+  assert.equal(endpoint.includes('branch='),false);seen.push(new URL('https://api.github.com/'+endpoint).searchParams.get('status'));
+  return JSON.stringify([{total_count:0,workflow_runs:[]}]);};
+ assert.equal(collectActiveBackendRuns('nguyentronglinh045/pos-cafe',fake),0);
+ assert.deepEqual(seen,['queued','in_progress','waiting','requested','pending']);
+ let index=0;
+ const elsewhere=()=>JSON.stringify([{total_count:++index===5?1:0,workflow_runs:index===5?[{id:123,path:'.github/workflows/backend.yml',status:'pending',head_branch:'other-branch'}]:[]}]);
+ assert.equal(collectActiveBackendRuns('nguyentronglinh045/pos-cafe',elsewhere),1);
+ // A positive count with an empty/truncated page must never look idle.
+ assert.equal(collectActiveBackendRuns('nguyentronglinh045/pos-cafe',()=>JSON.stringify([{total_count:1001,workflow_runs:[]}])),5005);
+});
+
+test('malformed or contradictory workflow metadata cannot prove no active backend',()=>{
+ for(const result of['not-json','null','[]',JSON.stringify([{}]),JSON.stringify([{total_count:-1,workflow_runs:[]}]),
+  JSON.stringify([{total_count:0,workflow_runs:[{id:1,path:'.github/workflows/backend.yml',status:'queued'}]}]),
+  JSON.stringify([{total_count:1,workflow_runs:[{id:1,path:'.github/workflows/other.yml',status:'queued'}]}]),
+  JSON.stringify([{total_count:1,workflow_runs:[{id:1,path:'.github/workflows/backend.yml',status:'completed'}]}])]){
+  assert.throws(()=>collectActiveBackendRuns('nguyentronglinh045/pos-cafe',()=>result));
+ }
+});
+
+function dispatchHarness(){
+ const state={spent:0,acted:0,collections:[],now:1000},deadline=10000;
+ const config={dispatch:true,reserveMs:1000,clock:()=>state.now,
+  collect:id=>{state.collections.push(id??null);return{status:'ADMITTED',budget:{deadlineUtc:new Date(deadline).toISOString()}};},
+  reserve:()=>{state.spent++;return{reservationId:'intent-1'};},act:()=>state.acted++};
+ return{state,config,deadline};
+}
+
+test('dispatch makes fresh postclaim checks, then acts once; dry-run never spends',()=>{
+ const {state,config}=dispatchHarness(),result=guardAdmissionAction(config);
+ assert.equal(result.reservationId,'intent-1');assert.equal(state.spent,1);assert.equal(state.acted,1);
+ assert.deepEqual(state.collections,[null,'intent-1']);
+ const d=dispatchHarness();d.config.dispatch=false;guardAdmissionAction(d.config);
+ assert.equal(d.state.spent,0);assert.equal(d.state.acted,0);assert.deepEqual(d.state.collections,[null]);
+});
+
+test('crossing reserve cutoff during fresh checks retains spent intent and refuses external action',()=>{
+ for(const delta of[0,1,1000]){
+  const {state,config,deadline}=dispatchHarness(),original=config.collect;
+  config.collect=id=>{const value=original(id);if(id)state.now=deadline-config.reserveMs+delta;return value;};
+  assert.throws(()=>guardAdmissionAction(config),error=>error.reason==='DEADLINE'&&error.reservationId==='intent-1');
+  assert.equal(state.spent,1);assert.equal(state.acted,0);assert.deepEqual(state.collections,[null,'intent-1']);
+ }
+});
+
+test('changed facts or uncertain transport after reservation never return budget or replay',()=>{
+ const fresh=dispatchHarness(),original=fresh.config.collect;
+ fresh.config.collect=id=>{if(id)throw Object.assign(Error('changed source or remote'),{reason:'SOURCE_DRIFT'});return original(id);};
+ assert.throws(()=>guardAdmissionAction(fresh.config),e=>e.reason==='SOURCE_DRIFT'&&e.reservationId==='intent-1');
+ assert.equal(fresh.state.spent,1);assert.equal(fresh.state.acted,0);
+ const unknown=dispatchHarness();unknown.config.act=()=>{unknown.state.acted++;throw Error('transport unknown');};
+ assert.throws(()=>guardAdmissionAction(unknown.config),e=>e.reservationId==='intent-1');
+ assert.equal(unknown.state.spent,1);assert.equal(unknown.state.acted,1);
+ const before=dispatchHarness();before.config.collect=()=>{throw Error('initial refusal');};
+ assert.throws(()=>guardAdmissionAction(before.config));assert.equal(before.state.spent,0);assert.equal(before.state.acted,0);
 });
 test('actual CI public exporter preserves only bounded diagnostic controls usable by admission',()=>{
  const p=base(),binding={...p.light,prHeadSHA:null},fingerprints={source:'b'.repeat(64),lock:p.light.lockSHA};
