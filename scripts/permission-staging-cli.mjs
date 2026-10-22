@@ -1,5 +1,5 @@
-import { readFileSync, writeFileSync, realpathSync, statSync, openSync, closeSync, ftruncateSync, writeSync } from 'node:fs';
-import { isAbsolute, resolve, relative, dirname } from 'node:path';
+import { readFileSync, writeFileSync, realpathSync, statSync, lstatSync, openSync, closeSync, ftruncateSync, writeSync } from 'node:fs';
+import { isAbsolute, resolve, relative, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildStagingInventory, canonical, inventoryHash, stagingPreflight,
   stagingErrorCode, validateStagingManifest, validateStagingPrivateConfig,
@@ -19,6 +19,37 @@ function readJson(path, maxBytes) {
 function outside(root, path) {
   const part = relative(root, path);
   return part !== '' && (part === '..' || part.startsWith('..\\') || part.startsWith('../') || isAbsolute(part));
+}
+// A code-only checkout may have no docs worktree. Canonicalize its nearest
+// existing directory and append only genuinely absent components. Resolving an
+// existing symlink is deliberately outside the ENOENT catch: dangling links,
+// permission errors and non-directory ancestors must never become fallbacks.
+export function protectedDirectoryBoundary(path, { lstat = lstatSync, realpath = realpathSync, stat = statSync } = {}) {
+  requireInput(typeof path === 'string' && isAbsolute(path));
+  let ancestor = resolve(path);
+  const missing = [];
+  while (true) {
+    let item;
+    try { item = lstat(ancestor); }
+    catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+      const parent = dirname(ancestor);
+      requireInput(parent !== ancestor);
+      missing.unshift(basename(ancestor)); ancestor = parent;
+      continue;
+    }
+    requireInput(item.isDirectory() || item.isSymbolicLink());
+    const actual = realpath(ancestor);
+    requireInput(stat(actual).isDirectory());
+    return resolve(actual, ...missing);
+  }
+}
+export function privateConfigLocation(path, { codeRoot = ROOT, docsRoot = DOCS } = {}) {
+  const actual = absoluteExisting(path);
+  const code = absoluteExisting(codeRoot);
+  requireInput(statSync(code).isDirectory()
+    && outside(code, actual) && outside(protectedDirectoryBoundary(docsRoot), actual));
+  return actual;
 }
 function writeNew(path, value) {
   requireInput(typeof path === 'string' && isAbsolute(path));
@@ -50,8 +81,7 @@ export async function runStagingCli(argv, { clock, fetchImpl, attemptStore } = {
     const [manifestPath, configPath, expectedManifestSha256, receiptPath] = args;
     const manifest = readJson(manifestPath, 16384);
     validateStagingManifest(manifest, inventory, clock?.());
-    const configRealPath = absoluteExisting(configPath);
-    requireInput(outside(realpathSync(ROOT), configRealPath) && outside(realpathSync(DOCS), configRealPath));
+    const configRealPath = privateConfigLocation(configPath);
     const privateConfig = readJson(configRealPath, 16384);
     validateStagingPrivateConfig(privateConfig, manifest.projectRef);
     requireInput(expectedManifestSha256 === inventoryHash(manifest));

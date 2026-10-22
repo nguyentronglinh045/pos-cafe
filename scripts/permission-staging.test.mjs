@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, writeFileSync, readFileSync, existsSync, realpathSync, symlinkSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { runStagingCli } from './permission-staging-cli.mjs';
+import { tmpdir } from 'node:os';
+import { runStagingCli, privateConfigLocation, protectedDirectoryBoundary } from './permission-staging-cli.mjs';
 import { buildStagingInventory, canonical, inventoryHash, validateStagingManifest,
   validateStagingPrivateConfig, stagingPreflight, STAGING_BASELINE, STAGING_DEADLINE,
   STAGING_TEST_CUTOFF, PRODUCTION_PROJECT_REF } from './permission-staging.mjs';
@@ -18,6 +19,16 @@ const jwt = claims => Buffer.from('{"alg":"HS256"}').toString('base64url') + '.'
   + Buffer.from(JSON.stringify(claims)).toString('base64url') + '.CANARY_SIGNATURE_DO_NOT_LOG';
 const key = jwt({ role: 'anon', ref });
 const config = () => ({ projectRef: ref, anonKey: key });
+// All synthetic files remain below one task-owned temp root, included in CI's
+// TMPDIR accounting. No real claim/evidence/config path is used or removed.
+const temporaryParent = resolve(process.env.PERMISSION_STATIC_TEST_TMP ?? process.env.TMPDIR ?? tmpdir());
+mkdirSync(temporaryParent, { recursive: true });
+const fixtureRoot = mkdtempSync(join(realpathSync(temporaryParent), 'permission-staging-ci-portability-20261022-'));
+function ownedFixture(name) {
+  const path = join(fixtureRoot, name);
+  mkdirSync(path, { mode: 0o700 });
+  return path;
+}
 const missingResource = (body = { code: 'PGRST205', message: 'CANARY_BODY_DO_NOT_LOG', hint: key }) =>
   new Response(JSON.stringify(body), { status: 404, headers: { 'content-type': 'application/json; charset=utf-8' } });
 const successResponse = url => url.endsWith('/auth/v1/settings') ? new Response(null, { status: 200 }) : missingResource();
@@ -135,8 +146,7 @@ test('chunked JSON at exactly4096bytes is accepted without preserving body field
 });
 
 test('additional grant is bound to the consumed prior claim, fixed target and a single new slot', () => {
-  const root=resolve(dirname(fileURLToPath(import.meta.url)),'..','..','evidence','staging-grant-fixtures-'+Date.now());
-  mkdirSync(root,{recursive:true});
+  const root=ownedFixture('staging-grant');
   const prior={version:'permission-staging-attempt-v1',workstream:'permission-staging-20261021',projectRef:'ineckiashpwloncxnbqx',
     manifestSha256:'a58a52d7855bf071827350b78619b86a3a56ad030b1721511655ab4346397e1b',
     sourceFingerprintSha256:'35ef7b6781bcfc5ed1b91875f5b129f5c0ee07ef7955509ed98e73231ee8807c',
@@ -258,8 +268,7 @@ test('actual HTTP cannot use an injected attempt store and synthetic HTTP must d
 
 test('CLI reserves parseable evidence before network, refuses repeat path and invalid output without network', async () => {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-  const fixture = resolve(root, '..', 'evidence', 'staging-node-fixtures-' + Date.now());
-  mkdirSync(fixture, { recursive: true });
+  const fixture = ownedFixture('staging-cli');
   const manifestPath = join(fixture, 'manifest.json'), privatePath = join(fixture, 'synthetic-private.json');
   const outputPath = join(fixture, 'receipt.json');
   const value = manifest();
@@ -288,4 +297,52 @@ test('CLI reserves parseable evidence before network, refuses repeat path and in
   const insideCode = await runStagingCli(['preflight', manifestPath, join(root, '.env.example'), inventoryHash(value),
     join(fixture, 'forbidden-private-receipt.json')], adapter);
   assert.equal(insideCode.exitCode, 1); assert.equal(calls, 0);
+});
+
+test('private config is accepted outside a code-only checkout with a genuinely absent docs boundary', () => {
+  const root = ownedFixture('absent-docs'), codeRoot = join(root, 'code');
+  mkdirSync(codeRoot);
+  const docsRoot = join(root, 'missing-parent', 'docs');
+  const configPath = join(root, 'synthetic-private.json');
+  writeFileSync(configPath, JSON.stringify(config()));
+  assert.equal(protectedDirectoryBoundary(docsRoot), docsRoot);
+  assert.equal(privateConfigLocation(configPath, { codeRoot, docsRoot }), realpathSync(configPath));
+  assert.equal(existsSync(join(root, 'missing-parent')), false);
+});
+
+test('existing canonical code/docs boundaries reject inside and symlink-aliased private configs', () => {
+  const root = ownedFixture('present-docs'), codeRoot = join(root, 'code'), docsRoot = join(root, 'docs');
+  mkdirSync(codeRoot); mkdirSync(docsRoot);
+  const outsidePath = join(root, 'synthetic-private.json');
+  const codePath = join(codeRoot, 'synthetic-private.json'), docsPath = join(docsRoot, 'synthetic-private.json');
+  for (const path of [outsidePath, codePath, docsPath]) writeFileSync(path, JSON.stringify(config()));
+  assert.equal(privateConfigLocation(outsidePath, { codeRoot, docsRoot }), realpathSync(outsidePath));
+  for (const path of [codePath, docsPath]) assert.throws(() => privateConfigLocation(path, { codeRoot, docsRoot }), /STAGING_INPUT_REFUSED/);
+  const alias = join(root, 'docs-alias');
+  symlinkSync(docsRoot, alias, process.platform === 'win32' ? 'junction' : 'dir');
+  assert.throws(() => privateConfigLocation(docsPath, { codeRoot, docsRoot: alias }), /STAGING_INPUT_REFUSED/);
+  assert.throws(() => privateConfigLocation(join(alias, 'synthetic-private.json'), { codeRoot, docsRoot }), /STAGING_INPUT_REFUSED/);
+});
+
+test('dangling docs links or ancestors never become an absent-directory fallback', () => {
+  const root = ownedFixture('dangling-docs'), target = join(root, 'missing-target'), link = join(root, 'docs-link');
+  symlinkSync(target, link, process.platform === 'win32' ? 'junction' : 'dir');
+  for (const path of [link, join(link, 'missing-child')]) {
+    assert.throws(() => protectedDirectoryBoundary(path), error => error.code === 'ENOENT');
+  }
+});
+
+test('permission and non-directory errors are propagated without canonical-boundary fallback', () => {
+  const root = ownedFixture('boundary-errors');
+  for (const code of ['EACCES', 'ENOTDIR']) {
+    let realpathCalls = 0;
+    assert.throws(() => protectedDirectoryBoundary(join(root, 'docs'), {
+      lstat() { throw Object.assign(new Error('synthetic boundary error'), { code }); },
+      realpath() { realpathCalls++; return root; },
+    }), error => error.code === code);
+    assert.equal(realpathCalls, 0);
+  }
+  const file = join(root, 'file'); writeFileSync(file, 'synthetic regular file');
+  assert.throws(() => protectedDirectoryBoundary(file), /STAGING_INPUT_REFUSED/);
+  assert.throws(() => protectedDirectoryBoundary(join(file, 'docs')), error => error.code === 'ENOTDIR' || error.message === 'STAGING_INPUT_REFUSED');
 });

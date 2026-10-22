@@ -111,3 +111,61 @@ checks run after claim-parent metadata immediately before exclusive creation,
 and after claim-hash verification immediately before the actual push. Cached
 preflight timestamps cannot authorize crossing10:15. Crossing during later
 revalidation refuses push while retaining the already spent claim.
+
+## Explicit remediation continuation v2
+
+Preparation of v2 grants no publication authority. The original v1 policy and
+`publication-autoci.claim.json` remain immutable and spent; v1 still refuses that
+claim. The21Oct CLOSED budget and its counts2/2/1/6 are unchanged.
+
+V2 uses `schemaVersion=permission-release-phase-admission-v2`, the same phaseId,
+repository, target `branch=run/permissions-20261020`, deadline/cutoff and storage
+caps. Its `sourceRoot` is exactly
+`D:/Workspace/pos-cafe-permission-ci-fix-20261022/code`; its additional
+`sourceBranch` is exactly `fix/permissions-ci-portability-20261022`. Local branch
+facts must match sourceBranch. The target remote expected SHA is fixed to
+`38a55aab775e1d70dba4b62d6658f41e28f8aef1`. The new checkout must have zero
+untracked files; do not copy or stage the15 historical recovery helpers.
+
+Add exactly this `continuation` object to the policy:
+
+```json
+{
+  "kind": "OWNER_GRANTED_REMEDIATION_01",
+  "parentPolicy": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022/publication-policy01.json",
+    "sha256": "aaf7d7a943927218c1773eb93ba69f308b0e09ec82f9ecff30c87cd4358d6658"
+  },
+  "parentClaim": {
+    "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/permission-release-20261022/publication-autoci.claim.json",
+    "sha256": "74fd7017a497ddc2da4658798f68756edca3ac637e04ecf0b9009f7282e5a598"
+  },
+  "additionalActions": {"publication": 1, "ci": 1},
+  "ownerAuthorization": {
+    "reference": "USER_REPLY_call_ACTUAL_32_LOWERCASE_HEX:item0",
+    "authorizedAtUtc": "ACTUAL_OWNER_REPLY_CANONICAL_ISO_Z"
+  }
+}
+```
+
+The example placeholders are deliberately invalid. Missing, PENDING, malformed,
+non-item0, pre-claim or future authorization is refused. Use the actual owner's
+reply reference and timestamp, after the original claim's02:01:46.917Z timestamp;
+do not fabricate these fields from preparation, silence or an agent's message.
+The guard validates shape/chronology and pinned records; the two non-author
+reviewers must verify that the referenced user reply actually granted this scope.
+It does not independently authenticate a conversation reply.
+
+Both parent files are read-only and raw-hash pinned. Their payloads must bind the
+same phase, source38, predecessor and exactly1publication/1CI. The storage object,
+including baselineFreeBytes, must remain identical to the parent policy: no
+growth-budget reset. Packet schema remains-v1; its admission copies the entire
+v2 scope, and its authors list includes every code author. Two distinct
+non-author source/operations APPROVE records remain required.
+
+Only v2's fixed `publication-autoci-remediation01.claim.json` can be created for
+this continuation, in the original phase evidence directory. It reserves exactly
+one additional publication plus automatic CI before push. The original claim is
+never rewritten. A spent remediation claim is refused independently of policy,
+SHA or output changes. The same fresh-clock barriers, no-open-PR/no-active-job
+checks, reserves and no-retry/no-main/no-DB/no-heavy rules apply.

@@ -1,6 +1,6 @@
 import test from'node:test';import assert from'node:assert/strict';
 import{mkdtempSync,readFileSync,readdirSync,rmSync,lstatSync}from'node:fs';import{join,resolve}from'node:path';import{tmpdir}from'node:os';
-import{RELEASE_PHASE as P,RELEASE_PHASE_TOOLS,RECOVERY_EXCLUSIONS,releasePhaseScope,validateReleasePhase,claimReleasePublication,requireReleaseMoment,collectReleaseFacts,runAtReleaseMoment,RELEASE_OPEN_PR_PATH,candidatePullRequestCount}from'./permission-release-phase-admission.mjs';
+import{RELEASE_PHASE as P,RELEASE_REMEDIATION as R,RELEASE_PHASE_TOOLS,RECOVERY_EXCLUSIONS,releasePhaseScope,validateReleasePhase,claimReleasePublication,requireReleaseMoment,collectReleaseFacts,runAtReleaseMoment,RELEASE_OPEN_PR_PATH,candidatePullRequestCount,validateContinuationParents,parsePinnedReleaseJSON,releasePhaseHash}from'./permission-release-phase-admission.mjs';
 const GiB=1024**3;
 function fixture(){
  const p={schemaVersion:'permission-release-phase-admission-v1',phaseId:P.id,repository:P.repository,branch:P.branch,sourceRoot:P.sourceRoot,sourceSHA:'a'.repeat(40),expectedRemoteSHA:'b'.repeat(40),deadlineUtc:P.deadlineUtc,publicationCutoffUtc:P.publicationCutoffUtc,
@@ -13,6 +13,49 @@ function fixture(){
  return{p,packet,reviews,facts};
 }
 const verify=x=>validateReleasePhase(x.p,x.packet,x.reviews,x.facts);
+// Synthetic record shapes only; these fixtures never substitute for the pinned
+// raw parent files or an actual owner reply in execution.
+function continuationFixture(){
+ const x=fixture(),parentPolicy=structuredClone(x.p);parentPolicy.sourceSHA=R.expectedRemoteSHA;
+ const parentClaim={schemaVersion:'permission-release-phase-publication-claim-v1',phaseId:P.id,atUtc:'2026-10-22T02:01:46.917Z',sourceSHA:parentPolicy.sourceSHA,
+  expectedRemoteSHA:parentPolicy.expectedRemoteSHA,policySHA256:R.parentPolicy.sha256,packetSHA256:parentPolicy.packet.sha256,reviewsSHA256:parentPolicy.reviews.sha256,
+  predecessor:structuredClone(parentPolicy.predecessor),actions:{publication:1,ci:1}};
+ Object.assign(x.p,{schemaVersion:'permission-release-phase-admission-v2',sourceRoot:R.sourceRoot,sourceBranch:R.sourceBranch,expectedRemoteSHA:R.expectedRemoteSHA,
+  continuation:{kind:'OWNER_GRANTED_REMEDIATION_01',parentPolicy:{...R.parentPolicy},parentClaim:{...R.parentClaim},additionalActions:{publication:1,ci:1},
+   ownerAuthorization:{reference:'USER_REPLY_call_11111111111111111111111111111111:item0',authorizedAtUtc:'2026-10-22T02:10:00.000Z'}}});
+ x.packet.admission=releasePhaseScope(x.p);Object.assign(x.facts,{nowMs:Date.parse('2026-10-22T02:11:00.000Z'),sourceRoot:R.sourceRoot,branch:R.sourceBranch,
+  remoteSHA:R.expectedRemoteSHA,untracked:[],continuationParents:{policy:parentPolicy,claim:parentClaim}});return x;
+}
+test('v2 is a separately owner-granted single continuation; v1 spent claim remains refused',()=>{
+ const x=continuationFixture(),parents=structuredClone(x.facts.continuationParents),result=verify(x);
+ assert.equal(result.continuation,'OWNER_GRANTED_REMEDIATION_01');assert.deepEqual(result.priorPhaseActions,{publication:1,ci:1});assert.deepEqual(result.newActions,{publication:1,ci:1});
+ assert.deepEqual(result.predecessorCounts,{publication:2,ci:2,heavy:1,reviewRounds:6});assert.deepEqual(x.facts.continuationParents,parents);
+ assert.notEqual(R.claim,P.claim);assert.equal(R.parentClaim.path,P.claim);assert.match(R.claim,/publication-autoci-remediation01\.claim\.json$/);
+ const spent=fixture();spent.facts.claimPresent=true;assert.throws(()=>verify(spent),error=>error.reason==='REMOTE_OR_CLAIM');
+});
+test('v2 refuses absent or PENDING owner grant, wrong reply form, stale/future authorization and expanded allowance',()=>{
+ for(const change of[x=>delete x.p.continuation,x=>x.p.continuation.ownerAuthorization.reference='PENDING',x=>x.p.continuation.ownerAuthorization.reference='USER_REPLY_call_PENDING:item0',
+  x=>x.p.continuation.ownerAuthorization.reference='USER_REPLY_call_11111111111111111111111111111111:item1',x=>x.p.continuation.ownerAuthorization.authorizedAtUtc='PENDING',
+  x=>x.p.continuation.ownerAuthorization.authorizedAtUtc='2026-10-22T02:01:46.917Z',x=>x.p.continuation.ownerAuthorization.authorizedAtUtc='2026-10-22T02:12:00.000Z',
+  x=>x.p.continuation.additionalActions.publication=2,x=>x.p.continuation.additionalActions.ci=2,x=>x.p.continuation.additionalActions.heavy=1]){
+  const x=continuationFixture();change(x);x.packet.admission=releasePhaseScope(x.p);assert.throws(()=>verify(x),/REFUSED/);
+ }
+});
+test('v2 binds exact new local branch/root, old target38, immutable parent references and original disk baseline',()=>{
+ for(const change of[x=>x.p.sourceRoot=P.sourceRoot,x=>x.p.sourceBranch=P.branch,x=>x.facts.branch=P.branch,x=>x.p.expectedRemoteSHA='b'.repeat(40),
+  x=>x.p.continuation.parentPolicy.path='D:/other/policy.json',x=>x.p.continuation.parentPolicy.sha256='f'.repeat(64),x=>x.p.continuation.parentClaim.path=R.claim,
+  x=>x.p.continuation.parentClaim.sha256='f'.repeat(64),x=>x.p.storage.baselineFreeBytes.C++,x=>x.facts.untracked.push(RECOVERY_EXCLUSIONS[0]),
+  x=>x.facts.continuationParents.claim.sourceSHA='f'.repeat(40),x=>x.facts.continuationParents.claim.actions.ci=0,x=>x.facts.continuationParents.claim.policySHA256='f'.repeat(64),
+  x=>x.facts.continuationParents.policy.sourceSHA='f'.repeat(40),x=>x.facts.continuationParents.policy.deadlineUtc='2026-10-23T04:00:00.000Z',x=>x.facts.claimPresent=true]){
+  const x=continuationFixture();change(x);x.packet.admission=releasePhaseScope(x.p);assert.throws(()=>verify(x),/REFUSED/);
+ }
+});
+test('pinned JSON reader rejects a raw-byte change before parent payload validation',()=>{
+ const x=continuationFixture(),bytes=Buffer.from(JSON.stringify(x.facts.continuationParents)),sha=releasePhaseHash(bytes);
+ const parents=parsePinnedReleaseJSON(bytes,sha);assert.equal(validateContinuationParents(x.p,parents,x.facts.nowMs),true);
+ assert.throws(()=>parsePinnedReleaseJSON(Buffer.concat([bytes,Buffer.from(' ')]),sha),error=>error.reason==='REFERENCE_CHANGED');
+ assert.throws(()=>parsePinnedReleaseJSON(bytes,'f'.repeat(64)),error=>error.reason==='REFERENCE_CHANGED');
+});
 test('transparent new phase preserves old CLOSED counts and reserves only one candidate publication plus automatic CI',()=>{
  const x=fixture(),before=structuredClone(x);const result=verify(x);assert.equal(result.status,'ADMITTED');assert.equal(result.predecessorStatus,'CLOSED');
  assert.deepEqual(result.predecessorCounts,{publication:2,ci:2,heavy:1,reviewRounds:6});assert.deepEqual(result.newActions,{publication:1,ci:1});assert.equal(result.reservedCIBytes,5*GiB);assert.deepEqual(x,before);

@@ -7,6 +7,10 @@ export const RELEASE_PHASE=Object.freeze({id:'permission-release-20261022',repos
  predecessorPolicy:ROOT+'/evidence/loop-prevention-20261021/budget-edge-resolution-2300.json',predecessorJournal:ROOT+'/evidence/loop-prevention-20261021/budget-edge-resolution-2300.json.journal.jsonl',
  policySHA256:'3c222cb3a5b66a37107522ddce08c2fc8f68e99777f4a921aeb0eba2c936797c',journalSHA256:'583f336dafa025e3088e0afc1dad23be68b2324c6e5f37facc11ca230d372880',
  claim:ROOT+'/evidence/permission-release-20261022/publication-autoci.claim.json'});
+export const RELEASE_REMEDIATION=Object.freeze({sourceRoot:'D:/Workspace/pos-cafe-permission-ci-fix-20261022/code',sourceBranch:'fix/permissions-ci-portability-20261022',
+ expectedRemoteSHA:'38a55aab775e1d70dba4b62d6658f41e28f8aef1',claim:ROOT+'/evidence/permission-release-20261022/publication-autoci-remediation01.claim.json',
+ parentPolicy:Object.freeze({path:'D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022/publication-policy01.json',sha256:'aaf7d7a943927218c1773eb93ba69f308b0e09ec82f9ecff30c87cd4358d6658'}),
+ parentClaim:Object.freeze({path:RELEASE_PHASE.claim,sha256:'74fd7017a497ddc2da4658798f68756edca3ac637e04ecf0b9009f7282e5a598'})});
 export const RELEASE_PHASE_TOOLS=Object.freeze(['scripts/permission-release-phase-admission.mjs','scripts/permission-release-phase-admission.test.mjs','scripts/permission-release-phase-admission.README.md']);
 export const RECOVERY_EXCLUSIONS=Object.freeze(['permission-recovery-capture-controller.mjs','permission-recovery-capture.mjs','permission-recovery-capture.ps1','permission-recovery-cleanup.mjs','permission-recovery-output.mjs','permission-recovery-output.test.mjs','permission-recovery-owner-acl.mjs','permission-recovery-owner-acl.test.mjs','permission-recovery-restore.mjs','permission-recovery-schema.mjs','permission-recovery-schema.test.mjs','permission-recovery-storage.mjs','permission-recovery-toc.mjs','permission-recovery-toc.test.mjs','permission-recovery-tools.mjs'].map(p=>'scripts/'+p));
 const COUNTS=Object.freeze({publication:2,ci:2,heavy:1,reviewRounds:6}),AUTHORS=['/root','/root/release_gate_feasibility_20261022'];
@@ -24,10 +28,38 @@ export function candidatePullRequestCount(value){
 const keys=(v,names)=>check(v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).sort().join(',')===names.slice().sort().join(','),'SCHEMA');
 export const releasePhaseScope=p=>Object.fromEntries(Object.entries(p).filter(([key])=>!['packet','reviews'].includes(key)));
 const reference=r=>{keys(r,['path','sha256']);check(typeof r.path==='string'&&/^[A-Z]:[\\/]/i.test(r.path)&&hex(r.sha256,64),'REFERENCE');};
+const remediation=p=>p.schemaVersion==='permission-release-phase-admission-v2';
+const sourceBranch=p=>remediation(p)?p.sourceBranch:p.branch;
+const claimPath=p=>remediation(p)?RELEASE_REMEDIATION.claim:RELEASE_PHASE.claim;
+const iso=value=>typeof value==='string'&&Number.isFinite(Date.parse(value))&&new Date(value).toISOString()===value;
+function validateContinuationGrant(p){
+ const c=p.continuation;check(c&&typeof c==='object','OWNER_GRANT_REQUIRED');keys(c,['kind','parentPolicy','parentClaim','additionalActions','ownerAuthorization']);
+ check(c.kind==='OWNER_GRANTED_REMEDIATION_01'&&canonical(c.parentPolicy)===canonical(RELEASE_REMEDIATION.parentPolicy)
+  &&canonical(c.parentClaim)===canonical(RELEASE_REMEDIATION.parentClaim),'CONTINUATION_BINDING');
+ keys(c.additionalActions,['publication','ci']);check(c.additionalActions.publication===1&&c.additionalActions.ci===1,'ADDITIONAL_ACTIONS');
+ keys(c.ownerAuthorization,['reference','authorizedAtUtc']);check(/^USER_REPLY_call_[a-f0-9]{32}:item0$/.test(c.ownerAuthorization.reference??'')
+  &&iso(c.ownerAuthorization.authorizedAtUtc),'OWNER_GRANT_REQUIRED');
+}
+export function validateContinuationParents(p,parents,nowMs){
+ validateContinuationGrant(p);check(parents&&parents.policy&&parents.claim,'PARENT_RECORDS');const {policy,claim}=parents;
+ check(policy.schemaVersion==='permission-release-phase-admission-v1'&&policy.phaseId===RELEASE_PHASE.id&&policy.repository===RELEASE_PHASE.repository
+  &&policy.branch===RELEASE_PHASE.branch&&policy.sourceRoot===RELEASE_PHASE.sourceRoot&&policy.sourceSHA===RELEASE_REMEDIATION.expectedRemoteSHA
+  &&policy.deadlineUtc===RELEASE_PHASE.deadlineUtc&&policy.publicationCutoffUtc===RELEASE_PHASE.publicationCutoffUtc
+  &&canonical(policy.predecessor)===canonical(p.predecessor),'PARENT_POLICY');
+ check(claim.schemaVersion==='permission-release-phase-publication-claim-v1'&&claim.phaseId===RELEASE_PHASE.id&&claim.sourceSHA===policy.sourceSHA
+  &&claim.policySHA256===RELEASE_REMEDIATION.parentPolicy.sha256&&claim.packetSHA256===policy.packet?.sha256&&claim.reviewsSHA256===policy.reviews?.sha256
+  &&claim.expectedRemoteSHA===policy.expectedRemoteSHA&&canonical(claim.predecessor)===canonical(policy.predecessor)
+  &&canonical(claim.actions)===canonical({publication:1,ci:1})&&iso(claim.atUtc),'PARENT_CLAIM');
+ check(canonical(p.storage)===canonical(policy.storage),'STORAGE_BASELINE_RESET');
+ const authorized=Date.parse(p.continuation.ownerAuthorization.authorizedAtUtc);
+ check(integer(nowMs)&&authorized>Date.parse(claim.atUtc)&&authorized<=nowMs,'OWNER_GRANT_CHRONOLOGY');
+ return true;
+}
 function validateReleaseScope(p,packet,reviews){
- keys(p,['schemaVersion','phaseId','repository','branch','sourceRoot','sourceSHA','expectedRemoteSHA','deadlineUtc','publicationCutoffUtc','predecessor','storage','packet','reviews']);
- check(p.schemaVersion==='permission-release-phase-admission-v1'&&p.phaseId===RELEASE_PHASE.id&&p.repository===RELEASE_PHASE.repository&&p.branch===RELEASE_PHASE.branch
-  &&p.sourceRoot===RELEASE_PHASE.sourceRoot&&hex(p.sourceSHA,40)&&hex(p.expectedRemoteSHA,40)&&p.sourceSHA!==p.expectedRemoteSHA,'SCOPE');
+ const v2=remediation(p);keys(p,['schemaVersion','phaseId','repository','branch','sourceRoot','sourceSHA','expectedRemoteSHA','deadlineUtc','publicationCutoffUtc','predecessor','storage','packet','reviews',...(v2?['sourceBranch','continuation']:[])]);
+ check((v2||p.schemaVersion==='permission-release-phase-admission-v1')&&p.phaseId===RELEASE_PHASE.id&&p.repository===RELEASE_PHASE.repository&&p.branch===RELEASE_PHASE.branch
+  &&p.sourceRoot===(v2?RELEASE_REMEDIATION.sourceRoot:RELEASE_PHASE.sourceRoot)&&hex(p.sourceSHA,40)&&hex(p.expectedRemoteSHA,40)&&p.sourceSHA!==p.expectedRemoteSHA,'SCOPE');
+ if(v2){check(p.sourceBranch===RELEASE_REMEDIATION.sourceBranch&&p.expectedRemoteSHA===RELEASE_REMEDIATION.expectedRemoteSHA,'CONTINUATION_SOURCE');validateContinuationGrant(p);}
  check(p.deadlineUtc===RELEASE_PHASE.deadlineUtc&&p.publicationCutoffUtc===RELEASE_PHASE.publicationCutoffUtc,'DEADLINE_POLICY');
  keys(p.predecessor,['policySHA256','journalSHA256','counts']);check(p.predecessor.policySHA256===RELEASE_PHASE.policySHA256&&p.predecessor.journalSHA256===RELEASE_PHASE.journalSHA256
   &&canonical(p.predecessor.counts)===canonical(COUNTS),'PREDECESSOR');
@@ -56,9 +88,10 @@ export function collectReleaseFacts(readFacts,clock=Date.now){const facts=readFa
 export function runAtReleaseMoment(p,action,clock=Date.now){requireReleaseMoment(p,clock());return action();}
 export function validateReleasePhase(p,packet,reviews,f){
  validateReleaseScope(p,packet,reviews);requireReleaseMoment(p,f.nowMs);
+ if(remediation(p))validateContinuationParents(p,f.continuationParents,f.nowMs);
  check(f.predecessorPolicySHA256===RELEASE_PHASE.policySHA256&&f.predecessorJournalSHA256===RELEASE_PHASE.journalSHA256&&f.predecessorClosed===true,'PREDECESSOR_CHANGED');
- check(f.head===p.sourceSHA&&f.branch===p.branch&&f.sourceRoot===p.sourceRoot&&f.trackedClean===true&&f.remoteSHA===p.expectedRemoteSHA&&f.fastForward===true,'SOURCE_OR_REMOTE');
- check(Array.isArray(f.untracked)&&f.untracked.length===RECOVERY_EXCLUSIONS.length&&new Set(f.untracked).size===RECOVERY_EXCLUSIONS.length&&f.untracked.every(x=>RECOVERY_EXCLUSIONS.includes(x)),'UNTRACKED');
+ check(f.head===p.sourceSHA&&f.branch===sourceBranch(p)&&f.sourceRoot===p.sourceRoot&&f.trackedClean===true&&f.remoteSHA===p.expectedRemoteSHA&&f.fastForward===true,'SOURCE_OR_REMOTE');
+ check(Array.isArray(f.untracked)&&(remediation(p)?f.untracked.length===0:f.untracked.length===RECOVERY_EXCLUSIONS.length&&new Set(f.untracked).size===RECOVERY_EXCLUSIONS.length&&f.untracked.every(x=>RECOVERY_EXCLUSIONS.includes(x))),'UNTRACKED');
  check(Array.isArray(f.tracked)&&Array.isArray(f.pinMatches)&&f.pinMatches.length===packet.sourcePins.length&&f.pinMatches.every(v=>v===true)
   &&packet.sourcePins.every(pin=>f.tracked.includes(pin.path))&&!RECOVERY_EXCLUSIONS.some(path=>f.tracked.includes(path)),'SOURCE_OR_TOOL_PINS');
  check(f.originMatches===true&&f.activeJobs===0&&f.claimPresent===false,'REMOTE_OR_CLAIM');
@@ -66,10 +99,12 @@ export function validateReleasePhase(p,packet,reviews,f){
  keys(f.freeBytes,['C','D']);check(Object.values(f.freeBytes).every(v=>integer(v)&&v>=30*GiB),'DISK_RESERVE');
  const windowsGrowthBytes=['C','D'].reduce((n,d)=>n+Math.max(0,p.storage.baselineFreeBytes[d]-f.freeBytes[d]),0);
  check(Number.isSafeInteger(windowsGrowthBytes)&&windowsGrowthBytes+5*GiB<=20*GiB,'TASK_GROWTH');
- return{status:'ADMITTED',phaseId:p.phaseId,sourceSHA:p.sourceSHA,predecessorStatus:'CLOSED',predecessorCounts:{...COUNTS},newActions:{publication:1,ci:1},windowsGrowthBytes,reservedCIBytes:5*GiB};
+ return{status:'ADMITTED',phaseId:p.phaseId,sourceSHA:p.sourceSHA,predecessorStatus:'CLOSED',predecessorCounts:{...COUNTS},
+  ...(remediation(p)?{continuation:'OWNER_GRANTED_REMEDIATION_01',priorPhaseActions:{publication:1,ci:1}}:{}),newActions:{publication:1,ci:1},windowsGrowthBytes,reservedCIBytes:5*GiB};
 }
 function readRegular(path,max=4*1024**2){check(isAbsolute(path),'PATH');const s=lstatSync(path);check(s.isFile()&&!s.isSymbolicLink()&&s.nlink===1&&s.size<=max&&realpathSync(path)===resolve(path),'FILE');return readFileSync(path);}
-function readReference(ref){reference(ref);const bytes=readRegular(ref.path);check(releasePhaseHash(bytes)===ref.sha256,'REFERENCE_CHANGED');return JSON.parse(bytes);}
+export function parsePinnedReleaseJSON(bytes,expectedSHA256){check(hex(expectedSHA256,64)&&releasePhaseHash(bytes)===expectedSHA256,'REFERENCE_CHANGED');return JSON.parse(bytes);}
+function readReference(ref){reference(ref);return parsePinnedReleaseJSON(readRegular(ref.path),ref.sha256);}
 // One combined exclusive reservation precedes the callback. Failure, crash or
 // uncertain push keeps it spent. No reset/delete/alternate claim path in the CLI.
 export function claimReleasePublication(path,payload,publish,beforeConsume=()=>{}){
@@ -79,7 +114,8 @@ export function claimReleasePublication(path,payload,publish,beforeConsume=()=>{
 }
 export function releasePhaseAdmission(policyPath,{dispatch=false}={}){
  check(process.platform==='win32'&&typeof dispatch==='boolean','PLATFORM');const policyBytes=readRegular(resolve(policyPath),128*1024),p=JSON.parse(policyBytes);
- check(p.sourceRoot===RELEASE_PHASE.sourceRoot&&p.repository===RELEASE_PHASE.repository&&p.branch===RELEASE_PHASE.branch,'SCOPE');
+ check((p.schemaVersion==='permission-release-phase-admission-v1'||remediation(p))&&p.sourceRoot===(remediation(p)?RELEASE_REMEDIATION.sourceRoot:RELEASE_PHASE.sourceRoot)
+  &&p.repository===RELEASE_PHASE.repository&&p.branch===RELEASE_PHASE.branch,'SCOPE');
  const packet=readReference(p.packet),reviews=readReference(p.reviews);validateReleaseScope(p,packet,reviews);const cwd=realpathSync(p.sourceRoot);
  const command=(name,args,max=4*1024**2)=>execFileSync(name,args,{cwd,encoding:'utf8',windowsHide:true,timeout:30000,maxBuffer:max,stdio:['ignore','pipe','pipe']});
  const git=args=>command('git',args),normal=path=>path.replaceAll('\\','/');
@@ -88,6 +124,8 @@ export function releasePhaseAdmission(policyPath,{dispatch=false}={}){
   check(releasePhaseHash(readRegular(resolve(policyPath),128*1024))===releasePhaseHash(policyBytes),'POLICY_CHANGED');readReference(p.packet);readReference(p.reviews);
   const oldPolicy=readRegular(RELEASE_PHASE.predecessorPolicy),oldJournal=readRegular(RELEASE_PHASE.predecessorJournal);
   const journal=oldJournal.toString('utf8').trim().split('\n').map(line=>JSON.parse(line));
+  const continuationParents=remediation(p)?{policy:readReference(p.continuation.parentPolicy),claim:readReference(p.continuation.parentClaim)}:null;
+  if(remediation(p))validateContinuationParents(p,continuationParents,Date.now());
   const urls=[git(['remote','get-url','origin']).trim(),git(['remote','get-url','--all','--push','origin']).trim()];
   const allowed=['https://github.com/'+p.repository+'.git','git@github.com:'+p.repository+'.git'];
   const repository=JSON.parse(command('gh',['api','repos/'+p.repository]));check(repository.id===1263057386&&repository.full_name===p.repository&&repository.private===false,'REPOSITORY_IDENTITY');
@@ -96,20 +134,21 @@ export function releasePhaseAdmission(policyPath,{dispatch=false}={}){
   const tracked=git(['ls-files','-z']).split('\0').filter(Boolean),untracked=git(['ls-files','--others','--exclude-standard','-z']).split('\0').filter(Boolean);
   const output=git(['ls-remote','origin','refs/heads/'+p.branch]).trim();check(new RegExp('^[a-f0-9]{40}\\s+refs/heads/'+p.branch+'$').test(output),'REMOTE_RESPONSE');
   let fastForward=false;try{git(['merge-base','--is-ancestor',p.expectedRemoteSHA,p.sourceSHA]);fastForward=true;}catch{}
-  return{predecessorPolicySHA256:releasePhaseHash(oldPolicy),predecessorJournalSHA256:releasePhaseHash(oldJournal),predecessorClosed:journal.at(-1)?.type==='close',
+  return{continuationParents,predecessorPolicySHA256:releasePhaseHash(oldPolicy),predecessorJournalSHA256:releasePhaseHash(oldJournal),predecessorClosed:journal.at(-1)?.type==='close',
    head:git(['rev-parse','HEAD']).trim(),branch:git(['branch','--show-current']).trim(),sourceRoot:normal(cwd),
    trackedClean:git(['diff','--no-ext-diff','--no-textconv','--name-only','HEAD','--']).trim()===''&&git(['ls-files','-v','-z']).split('\0').filter(Boolean).every(line=>line.startsWith('H ')),
    remoteSHA:output.split(/\s/)[0],fastForward,tracked,untracked,pinMatches:packet.sourcePins.map(pin=>{const path=resolve(cwd,pin.path),s=lstatSync(path);return tracked.includes(pin.path)&&s.isFile()&&!s.isSymbolicLink()&&s.nlink===1&&realpathSync(path)===path
     &&releasePhaseHash(execFileSync('git',['show',p.sourceSHA+':'+pin.path],{cwd,windowsHide:true,timeout:30000,maxBuffer:4*1024**2,stdio:['ignore','pipe','pipe']}))===pin.sha256;}),
-   originMatches:urls.every(url=>allowed.includes(url)),activeJobs,openPullRequests,claimPresent:!!lstatSync(RELEASE_PHASE.claim,{throwIfNoEntry:false}),
+   originMatches:urls.every(url=>allowed.includes(url)),activeJobs,openPullRequests,claimPresent:!!lstatSync(claimPath(p),{throwIfNoEntry:false}),
    freeBytes:Object.fromEntries(['C','D'].map(d=>{const s=statfsSync(d+':/');return[d,s.bavail*s.bsize];}))};
  });
  const facts=collect(),decision=validateReleasePhase(p,packet,reviews,facts);if(!dispatch)return{...decision,dispatch:false};
- const claim={schemaVersion:'permission-release-phase-publication-claim-v1',phaseId:p.phaseId,atUtc:new Date().toISOString(),policySHA256:releasePhaseHash(policyBytes),packetSHA256:p.packet.sha256,reviewsSHA256:p.reviews.sha256,
+ const claim={schemaVersion:remediation(p)?'permission-release-phase-publication-claim-v2':'permission-release-phase-publication-claim-v1',phaseId:p.phaseId,atUtc:new Date().toISOString(),policySHA256:releasePhaseHash(policyBytes),packetSHA256:p.packet.sha256,reviewsSHA256:p.reviews.sha256,
+  ...(remediation(p)?{continuation:p.continuation}:{}),
   sourceSHA:p.sourceSHA,expectedRemoteSHA:p.expectedRemoteSHA,predecessor:p.predecessor,actions:{publication:1,ci:1}};
- return claimReleasePublication(RELEASE_PHASE.claim,claim,()=>{
+ return claimReleasePublication(claimPath(p),claim,()=>{
   const fresh=collect();check(fresh.claimPresent,'CLAIM_LOST');fresh.claimPresent=false;validateReleasePhase(p,packet,reviews,fresh);
-  check(releasePhaseHash(readRegular(RELEASE_PHASE.claim))===releasePhaseHash(Buffer.from(JSON.stringify(claim)+'\n')),'CLAIM_CHANGED');
+  check(releasePhaseHash(readRegular(claimPath(p)))===releasePhaseHash(Buffer.from(JSON.stringify(claim)+'\n')),'CLAIM_CHANGED');
   runAtReleaseMoment(p,()=>command('git',['-c','remote.origin.mirror=false','-c','push.followTags=false','push','--porcelain','--no-verify','--recurse-submodules=no','origin',p.sourceSHA+':refs/heads/'+p.branch]));
   return{...decision,dispatch:true,publicationAttempted:true,automaticCI:'EXPECTED_NOT_YET_VERIFIED'};
  },()=>requireReleaseMoment(p,Date.now()));

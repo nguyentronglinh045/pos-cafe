@@ -3,6 +3,7 @@ import { stripVTControlCharacters } from 'node:util';
 import { lstatSync, realpathSync } from 'node:fs';
 import { resolve, sep } from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import {publicEdgeResolution,edgeProbeFailureMetrics,EDGE_PROBE_PUBLIC_LIMITS} from './permission-edge-resolution.mjs';
 
 export const PROJECT_REPOSITORY = 'nguyentronglinh045/pos-cafe';
@@ -14,6 +15,77 @@ export const PROJECTS = Object.freeze(['desktop', 'tablet-landscape', 'phone-lan
 export const hash = value => createHash('sha256').update(value).digest('hex');
 const reject = () => { throw new Error('PROJECT_CI_RESULT_INVALID'); };
 const integer = n => Number.isSafeInteger(n) && n >= 0;
+export const NODE_FAILURE_ERRNOS = Object.freeze(['ENOENT', 'ENOTDIR', 'EACCES', 'EPERM', 'EEXIST', 'EISDIR',
+  'ENOSPC', 'EMFILE', 'ENFILE', 'ENOTEMPTY', 'EXDEV']);
+const NODE_FAILURE_PUBLIC_LIMITS = Object.freeze({nodeFailureCount:10000, nodeFailureLine:1000000,
+  nodeFailureColumn:1000000, nodeFailureErrnoOrdinal:NODE_FAILURE_ERRNOS.length});
+// Keep source membership private and attached to the parser's actual object.
+// A cloned/forged diagnostic cannot extend the public script-path allowlist.
+const nodeFailureFiles = new WeakMap();
+const scriptTestPath = value => typeof value === 'string' && /^scripts\/[A-Za-z0-9_./-]+\.test\.mjs$/.test(value)
+  && value.split('/').every(part => part !== '' && part !== '.' && part !== '..');
+
+// This is a deliberately narrow reader of Node's TAP reporter, not a YAML
+// parser. Never inspect error/expected/actual/stack text or a test's title.
+export function nodeTapFailureDiagnostics(output, expectedFiles = [], root = '') {
+  if (typeof output !== 'string' || !/^TAP version 13(?:\r?\n|$)/.test(output)) return null;
+  const result = {codes:['COMMAND_FAILED', 'REPORT_MISSING'], metrics:{}, failedFiles:[]};
+  if (output.length > 8 * 1024 ** 2) return result;
+  const lines = output.replaceAll('\r\n', '\n').split('\n');
+  if (lines.length > 200000) return result;
+  const expected = new Set(expectedFiles.filter(scriptTestPath));
+  const prefix = root.replaceAll('\\', '/').replace(/\/$/, '') + '/';
+  const scalar = value => {
+    if (/^'(?:[^']|'')*'$/.test(value)) return value.slice(1, -1).replaceAll("''", "'");
+    if (/^"[^\r\n]*"$/.test(value)) { try { const v = JSON.parse(value); return typeof v === 'string' ? v : null; } catch { return null; } }
+    return null;
+  };
+  for (let i = 1; i < lines.length; i++) {
+    const record = /^( {0,128})(not ok|ok) [1-9][0-9]{0,5}(?: -[^\r\n]*)?$/.exec(lines[i]);
+    if (!record || lines[i].length > 8192 || lines[i + 1] !== record[1] + '  ---') continue;
+    const indent = record[1] + '  ', values = {}, seen = new Set();
+    let end = i + 2, size = 0, valid = true;
+    for (; end < lines.length && lines[end] !== indent + '...'; end++) {
+      size += lines[end].length + 1;
+      if (size > 65536 || end - i > 4096 || lines[end].length > 8192) valid = false;
+      if (!lines[end].startsWith(indent)) valid = false;
+      const field = /^(location|code): (.*)$/.exec(lines[end].slice(indent.length));
+      if (!field || !lines[end].startsWith(indent)) continue;
+      if (seen.has(field[1])) valid = false;
+      seen.add(field[1]); values[field[1]] = scalar(field[2]);
+      if (values[field[1]] === null) valid = false;
+    }
+    if (end === lines.length) break; // A truncated block proves no new fact.
+    i = end; // Includes passing blocks: fake records inside their bodies are data.
+    if (!valid || record[2] !== 'not ok' || /\s#\s*(?:TODO|SKIP)\b/i.test(record[0])) continue;
+    const location = typeof values.location === 'string' && /^(.*):([1-9][0-9]{0,6}):([1-9][0-9]{0,6})$/.exec(values.location);
+    if (!location || Number(location[2]) > 1000000 || Number(location[3]) > 1000000) continue;
+    let path = location[1];
+    // Node's single-quoted TAP location escapes Windows backslashes twice.
+    if (/^[A-Za-z]:\\\\/.test(path)) path = path.replaceAll('\\\\', '\\');
+    path = path.replaceAll('\\', '/');
+    if (path.split('/').some(part => part === '.' || part === '..') || /%(?:2e|2f|5c)/i.test(path)) continue;
+    if (path.startsWith('file:')) {
+      try { const url = new URL(path); if (url.hostname || url.search || url.hash) continue; path = fileURLToPath(url).replaceAll('\\', '/'); }
+      catch { continue; }
+    }
+    const file = root && path.startsWith(prefix) ? path.slice(prefix.length) : path;
+    if (!scriptTestPath(file) || !expected.has(file)) continue;
+    result.metrics.nodeFailureCount = (result.metrics.nodeFailureCount ?? 0) + 1;
+    if (!result.failedFiles.length) {
+      result.metrics.nodeFailureLine = Number(location[2]); result.metrics.nodeFailureColumn = Number(location[3]);
+      const ordinal = NODE_FAILURE_ERRNOS.indexOf(values.code) + 1;
+      if (ordinal) result.metrics.nodeFailureErrnoOrdinal = ordinal;
+    }
+    if (!result.failedFiles.includes(file) && result.failedFiles.length < 32) result.failedFiles.push(file);
+    if (result.metrics.nodeFailureCount === NODE_FAILURE_PUBLIC_LIMITS.nodeFailureCount) break;
+  }
+  if (result.failedFiles.length) {
+    result.codes = ['COMMAND_FAILED', 'NODE_TEST_FAILURE'];
+    nodeFailureFiles.set(result, new Set(result.failedFiles));
+  }
+  return result;
+}
 const SMOKE_STEP_FILES = Object.freeze(['tests/smoke/pos-cafe.spec.ts', 'tests/smoke/helpers.ts',
   'tests/smoke/permission-ui-closeout.spec.ts', 'tests/smoke/demo-runbook.spec.ts']);
 const SMOKE_STEP_LOCATORS = Object.freeze(['landing-screen', 'store-pairing-screen', 'passcode-screen',
@@ -275,7 +347,7 @@ export function smokeTraceSnapshotFacts(events) {
   }
   return facts;
 }
-const DIAGNOSTIC_CODES = Object.freeze(['COMMAND_FAILED', 'VITEST_ASSERTION', 'VITEST_RUNTIME', 'REPORT_MISSING',
+const DIAGNOSTIC_CODES = Object.freeze(['COMMAND_FAILED', 'VITEST_ASSERTION', 'VITEST_RUNTIME', 'REPORT_MISSING', 'NODE_TEST_FAILURE',
   'TEST_TIMEOUT', 'ASSERTION_ERROR', 'TYPE_ERROR', 'REFERENCE_ERROR', 'MODULE_NOT_FOUND', 'OUT_OF_MEMORY', 'COVERAGE_LINES',
   'RESOURCE_FREE_SPACE', 'RESOURCE_OWNED_CAP', 'RESOURCE_CGROUP_DRIFT', 'RESOURCE_CORE_LIMIT', 'GUARD_IO_ENOENT', 'GUARD_IO_ENOTDIR',
   'GUARD_IO_EACCES', 'GUARD_REFUSED', 'COMMAND_TIMEOUT', 'OUTPUT_LIMIT', 'COMMAND_SPAWN_FAILED', 'RESULT_INVALID',
@@ -306,6 +378,10 @@ export function pg16FailureMetrics(output){
   }catch{return{};}
 }
 export function privateDiagnostics(output, report, expectedFiles = [], root = '') {
+  // TAP comments and YAML bodies can contain passing negative-control fixtures.
+  // Never run the generic error-signature scanner over a Node TAP report.
+  const node = !report && nodeTapFailureDiagnostics(output, expectedFiles, root);
+  if (node) return node;
   const codes = ['COMMAND_FAILED'];
   const metrics = {};
   Object.assign(metrics,pg16FailureMetrics(output));
@@ -669,9 +745,10 @@ export function publicSummary(binding, rows, fingerprints) {
       ['discovered', 'run', 'pass', 'fail', 'skip', 'manualDeferred', 'acceptedFindings', 'detectedFindings', 'positiveControls', 'negativeControls', 'targetControls'].includes(key) && integer(value))),
    ...(id==='runtime-reporters'&&Object.hasOwn(counts,'diagnosticControls')?{diagnosticControls:publicDiagnosticControls(counts.diagnosticControls,binding,fingerprints)}:{}),
    ...(id==='edge-resolution'?{edgeResolution:publicEdgeResolution(counts.edgeResolution,binding.sourceSHA)}:{})} : null,
-    diagnostic: diagnostic ? { codes: diagnostic.codes.filter(code => DIAGNOSTIC_CODES.includes(code)),
+    diagnostic: diagnostic ? { codes: diagnostic.codes.filter(code => DIAGNOSTIC_CODES.includes(code)
+      && (code !== 'NODE_TEST_FAILURE' || id === 'node-tools' && nodeFailureFiles.has(diagnostic))),
       metrics: Object.fromEntries(Object.entries(diagnostic.metrics).filter(([key, value]) =>
-        ['numTotalTests', 'numPassedTests', 'numFailedTests', 'numPendingTests', 'numRuntimeErrorTestSuites', 'architectureAssertion', ...Object.keys(EDGE_PROBE_PUBLIC_LIMITS),
+        ['numTotalTests', 'numPassedTests', 'numFailedTests', 'numPendingTests', 'numRuntimeErrorTestSuites', 'architectureAssertion', ...Object.keys(EDGE_PROBE_PUBLIC_LIMITS), ...Object.keys(NODE_FAILURE_PUBLIC_LIMITS),
           'pg16Operation','pg16Step','pg16ErrorCodeOrdinal','pg16ErrorNameOrdinal','pg16ErrorMatcherOrdinal',
           'pg16RunnerErrors','pg16HookErrors','pg16FailedTests','pg16RootRemoved','pg16ProcessReleased',
           'minimumObservedFreeBytes', 'initialFreeBytes', 'freeSpaceDecreaseBytes', 'ownedBytesAtCheckpoint', 'coreFileCount', 'coreAllocatedBytes', 'largestOwnedFileBytes', 'kernelCorePipe',
@@ -696,8 +773,10 @@ export function publicSummary(binding, rows, fingerprints) {
           'browserProbeNativeFatalObserved', 'browserProbeNativeFatalSourceOrdinal', 'browserProbeNativeFatalLine', 'browserProbeNativeFatalReasonMask',
           'smokeExpected', 'smokeUnexpected', 'smokeSkipped', 'smokeFlaky', 'smokeProgressIndex', 'smokeProgressTotal',
           'memoryCurrentBytes', 'peakMemoryBytes', 'pidsCurrent', 'peakPids', 'oomEvents', 'oomKills', 'pidsLimitEvents'].includes(key) && integer(value)
-          &&(!Object.hasOwn(PG16_PUBLIC_LIMITS,key)||value<=PG16_PUBLIC_LIMITS[key])&&(!Object.hasOwn(EDGE_PROBE_PUBLIC_LIMITS,key)||value<=EDGE_PROBE_PUBLIC_LIMITS[key]))),
-      failedFiles: diagnostic.failedFiles.filter(path => /^(?:src|tests)\/[A-Za-z0-9_./-]+\.(?:ts|tsx|mjs)$/.test(path)).slice(0, 32) } : null }));
+          &&(!Object.hasOwn(PG16_PUBLIC_LIMITS,key)||value<=PG16_PUBLIC_LIMITS[key])&&(!Object.hasOwn(EDGE_PROBE_PUBLIC_LIMITS,key)||value<=EDGE_PROBE_PUBLIC_LIMITS[key])
+          &&(!Object.hasOwn(NODE_FAILURE_PUBLIC_LIMITS,key)||id==='node-tools'&&nodeFailureFiles.has(diagnostic)&&value>0&&value<=NODE_FAILURE_PUBLIC_LIMITS[key]))),
+      failedFiles: diagnostic.failedFiles.filter(path => /^(?:src|tests)\/[A-Za-z0-9_./-]+\.(?:ts|tsx|mjs)$/.test(path)
+        || id==='node-tools'&&scriptTestPath(path)&&nodeFailureFiles.get(diagnostic)?.has(path)).slice(0, 32) } : null }));
   return { schemaVersion: 'pos-cafe-light-ci-v1', verificationScope: 'LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY', repository: PROJECT_REPOSITORY, repositoryID: PROJECT_REPOSITORY_ID,
     event: binding.event, sourceSHA: binding.sourceSHA, prHeadSHA: binding.prHeadSHA, workflowSHA: binding.workflowSHA,
     runId: binding.runId, attempt: binding.attempt,
