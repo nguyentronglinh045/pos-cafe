@@ -4,10 +4,36 @@ import {resolve,relative,join} from 'node:path';
 import {spawnSync,execFileSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
 import {runtimeHash,validateRuntimeStage} from './permission-runtime-results.mjs';
-import{diagnosticReporterSelftest}from'./permission-runtime-diagnostic-selftest.mjs';
+import{diagnosticReporterSelftest,verifyDiagnosticPipeline}from'./permission-runtime-diagnostic-selftest.mjs';
 
 const fail=()=>{throw Error('PERMISSION_REPORTER_SELFTEST_FAILED');};
 const check=x=>{if(!x)fail();};
+// Extra subscenario of the existing Vitest negative control. The original
+// four control groups and seven diagnostic groups/20 mutations remain intact.
+function beforeAllHookControl(root,parent,{sourceSHA,lockSHA}){
+  const dir=join(parent,'vitest-beforeall-skipped');mkdirSync(dir);
+  const testFile=join(dir,'example.test.mjs'),configFile=join(dir,'config.mjs');
+  const fixture=resolve(root,'tests/contracts/permissionImagesFixture.ts');
+  const line=readFileSync(fixture,'utf8').split(/\r?\n/).findIndex(x=>x.includes('throw Object.assign(new Error("IMAGE_EXPIRED_JWT_FIXTURE_UNAVAILABLE")'))+1;
+  check(line>0);
+  const stack='Error: PRIVATE_DIAGNOSTIC_SENTINEL\n    at expiredImageStoreJwt ('+fixture.replaceAll('\\','/')+':'+line+':7)';
+  writeFileSync(testFile,`import{test,beforeAll}from'vitest';import{annotateImageHookFailure}from${JSON.stringify(pathToFileURL(resolve(root,'scripts/permission-runtime-error-facts.mjs')).href)};
+    beforeAll(()=>{const error=Object.assign(new Error('IMAGE_EXPIRED_JWT_FIXTURE_UNAVAILABLE'),{privatePayload:'PRIVATE_DIAGNOSTIC_SENTINEL',permissionImageJwtSubreasonOrdinal:8,permissionImageJwtAlgorithmOrdinal:2,permissionImageJwtAuthStatus:401});error.stack=${JSON.stringify(stack)};throw annotateImageHookFailure(error,7);});test('required',()=>{throw Error('BODY_MUST_NOT_RUN');});\n`);
+  const file=relative(root,testFile).replaceAll('\\','/');
+  writeFileSync(configFile,`export default {test:{include:[${JSON.stringify(file)}],environment:'node',allowOnly:false,retry:0,maxWorkers:1,fileParallelism:false,passWithNoTests:false}};\n`);
+  const argv=[resolve(root,'node_modules/vitest/vitest.mjs'),'run','--config',configFile,'--reporter','./scripts/permission-runtime-vitest-reporter.mjs'];
+  const context={stage:'candidate-images-service',runner:'vitest',sourceSHA,sourceFingerprint:runtimeHash('beforeall-hook-control:'+sourceSHA),lockSHA,
+    configSHA:runtimeHash(readFileSync(configFile)),runId:process.env.GITHUB_RUN_ID??'1',invocationSHA:runtimeHash(argv),sourceRoot:root,outputRoot:dir};
+  const cp=join(dir,'context.json');writeFileSync(cp,JSON.stringify(context));
+  const child=spawnSync(process.execPath,argv,{cwd:root,env:{...process.env,PERMISSION_RUNTIME_CONTEXT:cp},encoding:'utf8',timeout:45000,maxBuffer:128*1024,windowsHide:true});
+  check(!child.error&&!child.signal&&child.status!==0);
+  const raw=readFileSync(join(dir,context.stage+'-runner.json'),'utf8');check(!raw.includes('PRIVATE_DIAGNOSTIC_SENTINEL')&&!raw.includes('BODY_MUST_NOT_RUN'));
+  const report=JSON.parse(raw),expected={stage:context.stage,runner:'vitest',required:[{file,name:'required',project:null}],files:[file],configSHA:context.configSHA,exactDiscovery:true,argv};
+  check(report.discovery.length===1&&report.results.length===1&&report.results[0].state==='skipped'&&report.hookErrorCount===1&&report.errorCount===0);
+  check(report.failureLocation.fileOrdinal===10&&report.failureLocation.line===line);
+  let refused=false;try{validateRuntimeStage(expected,report,context,child.status);}catch{refused=true;}check(refused);
+  verifyDiagnosticPipeline(expected,report,{...context,argv},'hook-error');
+}
 export function reporterSelftest(root=process.cwd()){
   root=realpathSync(root);const parent=resolve(root,'artifacts');mkdirSync(parent,{recursive:true});
   check(!lstatSync(parent).isSymbolicLink()&&realpathSync(parent)===parent);
@@ -61,7 +87,8 @@ export function reporterSelftest(root=process.cwd()){
       }
       else{
         let rejected=false;try{validateRuntimeStage(expected,report,context,child.status);}catch{rejected=true;}check(rejected);
-        if(vitest)check(child.status!==0&&report.hookErrorCount>0&&report.results.every(r=>r.state==='passed'));
+        if(vitest){check(child.status!==0&&report.hookErrorCount>0&&report.results.every(r=>r.state==='passed'));
+          beforeAllHookControl(root,temporary,{sourceSHA,lockSHA});counts.beforeAllHookDiagnostics='PASS';}
         else{check(child.status===0&&report.results[0].state==='passed'&&report.results[0].attempts===2&&report.discovery[0].retry===1);
           check(Number.isSafeInteger(report.failureLine)&&report.failureLine>=1&&report.failureLine<=100000&&report.realtimeFailureMask===1&&report.realtimeFirstFailureOrdinal===1);
           check(Object.keys(report.failureFacts).sort().join(',')==='errorCodeOrdinal,errorMatcherOrdinal,errorNameOrdinal');check(report.failureFacts.errorCodeOrdinal===RUNTIME_ERROR_CODES.indexOf('EMPLOYEE_SESSION_REQUIRED')+1&&report.failureFacts.errorMatcherOrdinal===1);}

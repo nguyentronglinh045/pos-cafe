@@ -2,6 +2,7 @@ import { afterAll, beforeAll, expect, test } from "vitest";
 import { observeCandidateStage } from "./permissionStageObservation";
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { annotateImageHookFailure } from "../../scripts/permission-runtime-error-facts.mjs";
 import { db, EMPLOYEE_IDS as E, env, rpc, STORE_IDS as S } from "./permissionReadFixture";
 import { emptyMenuChanges } from "./permissionChangesFixture";
 import { cleanupImagesRuntimeFixture, expiredImageStoreJwt, setupImagesRuntimeFixture, snapshotOwnedImageObject,
@@ -75,22 +76,37 @@ const markedRpc = async (name: string, body: object = {}, employeeToken = token)
   return response.json();
 };
 beforeAll(async () => {
+  let step = 0;
   try {
+    step = 1;
     await setupImagesRuntimeFixture();
+    step = 2;
     await db.query(readFileSync("supabase/candidate/permission-changes.sql", "utf8"));
+    step = 3;
     await db.query(readFileSync("supabase/candidate/permission-images.sql", "utf8"));
+    step = 4;
     await db.query("notify pgrst,'reload schema'");
+    step = 5;
     await new Promise(resolve => setTimeout(resolve, 1200));
+    step = 6;
     token = (await rpc("permission_start_session", { p_employee_id: E[0], p_pin: "384729" })).token;
+    step = 7;
     ({ expiredJwt, validJwt: signedValidJwt } = await expiredImageStoreJwt());
+    step = 8;
     itemId = (await db.query("select id from public.menu_items where store_id=$1 order by id limit 1", [S[0]])).rows[0].id;
+    step = 9;
     compatibilityReceipt = await prepareCompatibilityHook(db);
+    step = 10;
     await verifyCompatibilityRestRouting({ restUrl: `${env.api}/rest/v1`, anonKey: env.anonKey });
+    step = 11;
     await db.query(readFileSync("supabase/candidate/permission-compatibility-activate.sql", "utf8"));
+    step = 12;
     await observeCandidateStage(db);
   } catch (error) {
-    await cleanupImagesRuntimeFixture(compatibilityReceipt);
-    throw error;
+    const primary = annotateImageHookFailure(error, step);
+    try { await cleanupImagesRuntimeFixture(compatibilityReceipt); }
+    catch (cleanupError) { throw annotateImageHookFailure(cleanupError, step, primary, true); }
+    throw primary;
   }
 });
 afterAll(async () => {

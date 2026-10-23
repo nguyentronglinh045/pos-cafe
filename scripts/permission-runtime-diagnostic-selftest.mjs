@@ -20,12 +20,17 @@ export function verifyDiagnosticPipeline(expected,report,context,mode,adapters={
   const out=(adapters.collect??collectRuntimeDiagnosticFacts)([{failure}],prefix,safe)[0];
   check(out&&!JSON.stringify(out).includes('PRIVATE_DIAGNOSTIC_SENTINEL'));
   check(Object.entries(facts).every(([k,v])=>out[k]===v));
-  if(mode==='runner-error')check(out[prefix+'FailureOriginOrdinal']===2&&out[prefix+'RunnerErrors']>0&&out[prefix+'DiagnosticRequired']===0);
+  if(mode==='hook-error')check(out[prefix+'FailureOriginOrdinal']===2&&out[prefix+'HookErrors']>0
+   &&out[prefix+'OutcomeOrdinal']===4&&out[prefix+'DiagnosticRequired']===1
+   &&out[prefix+'RunnerFirstErrorFileOrdinal']===10&&out[prefix+'RunnerFirstErrorLine']>0
+   &&out[prefix+'ImageHookStepOrdinal']===7&&out[prefix+'ImageJwtSubreasonOrdinal']===8&&out[prefix+'ImageJwtAlgorithmOrdinal']===2
+   &&out[prefix+'ImageJwtAuthStatus']===401);
+  else if(mode==='runner-error')check(out[prefix+'FailureOriginOrdinal']===2&&out[prefix+'RunnerErrors']>0&&out[prefix+'DiagnosticRequired']===0);
   else check(out[prefix+'OutcomeOrdinal']===expectedOutcome&&out[prefix+'DiagnosticRequired']===1
    &&out[prefix+'FailedTests']===(mode==='failed'||mode==='metadata-absent'?1:0));
   if(mode==='failed')check(out[prefix+'TestErrorCodeOrdinal']===31&&out[prefix+'FirstFailedLine']>0);
   if(mode==='metadata-absent')check(out[prefix+'TestErrorCodeOrdinal']===0);
-  check(out[prefix+'FailureOriginOrdinal']===(mode==='runner-error'?2:1));
+  check(out[prefix+'FailureOriginOrdinal']===(['runner-error','hook-error'].includes(mode)?2:1));
  }
 }
 // Execute the same verifier with a mutation at each real transport boundary.

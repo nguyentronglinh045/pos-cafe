@@ -4,6 +4,7 @@ import { digest, permissionFingerprint } from "../../scripts/permission-prefligh
 import { inspectCompatibilityPreparation, restoreCompatibilityPreparation } from "../../scripts/permission-compatibility-prepare.mjs";
 import { PROJECT, runtimeProof } from "../../scripts/permission-identity-runtime.mjs";
 import { FIXTURE_DRIFT_CODES, fixtureCleanupErrors, fixtureDriftCode } from "../../scripts/permission-fixture-diagnostics.mjs";
+import { runtimeErrorFacts } from "../../scripts/permission-runtime-error-facts.mjs";
 import { cleanupReadFixture, db, env, fixtureEvidence, setupReadFixture, STORE_IDS } from "./permissionReadFixture";
 
 type CompatibilityReceipt = { installedByCaller: boolean } | undefined;
@@ -230,23 +231,44 @@ export async function expiredImageStoreJwt() {
   if (!baselineReady) throw new Error("IMAGE_FIXTURE_MARKER_REFUSED");
   await verifyMarker();
   const args = ["docker", "exec", `supabase_auth_${PROJECT}`, "printenv", "GOTRUE_JWT_SECRET"];
-  let signingKey = "";
+  let signingKey = "", subreason = 1, algorithm = 0, authStatus = 0;
   try {
     signingKey = (process.platform === "win32"
       ? execFileSync("wsl", ["-d", "Ubuntu-24.04", "--", ...args], { encoding: "utf8", timeout: 5000, maxBuffer: 512, stdio: ["ignore", "pipe", "ignore"] })
       : execFileSync(args[0], args.slice(1), { encoding: "utf8", timeout: 5000, maxBuffer: 512, stdio: ["ignore", "pipe", "ignore"] })).trim();
     const [header, payload, signature] = env.storeJwt.split(".");
-    if (signingKey.length < 32 || signingKey.length > 256 || JSON.parse(Buffer.from(header, "base64url").toString()).alg !== "HS256"
-      || createHmac("sha256", signingKey).update(`${header}.${payload}`).digest("base64url") !== signature) throw new Error();
+    subreason = 2;
+    if (signingKey.length < 32 || signingKey.length > 256) throw new Error();
+    subreason = 3;
+    const alg = JSON.parse(Buffer.from(header, "base64url").toString()).alg;
+    algorithm = typeof alg === "string" ? (["HS256", "ES256", "RS256"].indexOf(alg) + 1 || 4) : 0;
+    subreason = 4;
+    if (!["HS256", "ES256", "RS256"].includes(alg)) throw new Error();
+    subreason = 5;
+    if (alg === "HS256" && createHmac("sha256", signingKey).update(`${header}.${payload}`).digest("base64url") !== signature) throw new Error();
+    subreason = 6;
     const claims = JSON.parse(Buffer.from(payload, "base64url").toString());
+    subreason = 7;
+    if (claims.sub !== STORE_IDS[0] || claims.role !== "authenticated" || claims.aud !== "authenticated") throw new Error();
+    subreason = 8;
+    const user = await fetch(`${env.api}/auth/v1/user`, { method: "GET", headers: {
+      apikey: env.anonKey, Authorization: `Bearer ${env.storeJwt}`,
+    }, signal: AbortSignal.timeout(5000), redirect: "error" });
+    authStatus = user.status;
+    if (!user.ok || (await user.json()).id !== STORE_IDS[0]) throw new Error();
+    subreason = 9;
     const now = Math.floor(Date.now() / 1000);
+    const pairHeader = Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })).toString("base64url");
     const sign = (exp: number) => {
       const payload = Buffer.from(JSON.stringify({ ...claims, iat: now - 7200, exp })).toString("base64url");
-      const input = `${header}.${payload}`;
+      const input = `${pairHeader}.${payload}`;
       return `${input}.${createHmac("sha256", signingKey).update(input).digest("base64url")}`;
     };
     return { validJwt: sign(now + 3600), expiredJwt: sign(now - 3600) };
-  } catch { throw new Error("IMAGE_EXPIRED_JWT_FIXTURE_UNAVAILABLE"); }
+  } catch (error) { throw Object.assign(new Error("IMAGE_EXPIRED_JWT_FIXTURE_UNAVAILABLE"), {
+    permissionImageJwtSubreasonOrdinal: subreason, permissionImageJwtAlgorithmOrdinal: algorithm,
+    permissionImageJwtAuthStatus: authStatus, permissionImageJwtCauseErrorCodeOrdinal: runtimeErrorFacts(error).errorCodeOrdinal,
+  }); }
   finally { signingKey = ""; }
 }
 

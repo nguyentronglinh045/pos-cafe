@@ -1,5 +1,29 @@
 # Bounded permission runtime iterations
 
+## Image hook failure and JWT fixture compatibility
+
+When `candidate-images-service` fails in `beforeAll`, its required test may be
+reported as skipped. Preserve the failed hook as the primary diagnostic origin;
+the skipped row does not identify the setup failure. Public receipts expose only
+bounded hook-step, JWT-subreason, algorithm, HTTP-status and source-location
+numbers defined in `permission-runtime-error-facts.mjs`. Zero means unknown.
+Never export the private exception, stack, JWT, signing key or SQL.
+
+The image expiry fixture accepts the owned Auth token's HS256, ES256 or RS256
+header and binds its subject, role and audience to the fixture. It verifies the
+original token with the owned Auth `/auth/v1/user` endpoint (five-second timeout,
+no redirects, exact fixture identity); HS256 also retains its local HMAC check.
+It then signs a new HS256 pair with the owned GoTrue secret and an explicit
+header without the original asymmetric `kid`. Claims and `iat` are equal; only
+`exp` differs. The actual positive 200/bytes and expired 401/no-effects checks
+remain required. This changes no Auth configuration or application acceptance.
+
+CLI v2.117.0 defaults to ES256 signing keys, so requiring its original Auth token
+to be HS256 is incompatible. That source finding does not retroactively reveal
+the header or hook substep of a reclaimed failed run. Keep its FAIL and consumed
+action, review the repair, then run fresh CI and the whole T04 on the new source.
+Do not reuse a prior source's PASS or retry the old source without new evidence.
+
 Run from the owned source checkout. This tooling does not authorize merge,
 production changes, Supabase writes, a new WSL distro or extra test coverage
 exceptions. Existing17 CI gates and backend acceptance remain required;

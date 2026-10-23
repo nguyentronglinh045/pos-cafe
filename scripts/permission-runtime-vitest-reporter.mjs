@@ -1,5 +1,5 @@
 import {runtimeReporterContext,reporterFile,writeRuntimeReport} from './permission-runtime-results.mjs';
-import {runtimeErrorFacts,runtimeErrorLine,runtimeErrorLocation} from './permission-runtime-error-facts.mjs';
+import {runtimeErrorFacts,runtimeErrorLine,runtimeErrorLocation,runtimeImageHookFailureFacts} from './permission-runtime-error-facts.mjs';
 import {fixtureDriftCode,FIXTURE_DRIFT_CODES} from './permission-fixture-diagnostics.mjs';
 
 export default class RuntimeVitestReporter {
@@ -25,6 +25,7 @@ export default class RuntimeVitestReporter {
     writeRuntimeReport(this.context,{complete:true,runnerExit:reason,errorCount:errors.length,hookErrorCount:hookErrors.length,
       failureFacts:runtimeErrorFacts(firstError),
       failureLocation:runtimeErrorLocation(firstError,this.context.sourceRoot),
+      ...(this.context.stage==='candidate-images-service'?{imageHookFacts:runtimeImageHookFailureFacts(firstError)}:{}),
       fixtureDriftOrdinal:FIXTURE_DRIFT_CODES.indexOf(fixtureDriftCode(firstError))+1,
       discovery:this.discovery,results,selectedFiles:[...new Set(modules.map(m=>reporterFile(this.context.sourceRoot,m.moduleId)))]});
   }
