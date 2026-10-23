@@ -10,13 +10,21 @@ import{CI1_LIMITS,CI1_PROJECT,ci1Identity}from'./permission-ci1-policy.mjs';
 import{ci1FailureExport,ci1IsolatedFailure,t04CommandOptions}from'./permission-runtime-t04-worker.mjs';
 import{t04CorrelateRestoreLog,T04_RESTORE_SQLSTATES,t04CorrelateServerLog,
  t04RestoreConstraintTarget,t04ConstraintCatalogFacts,T04_DIAGNOSTIC_BOUNDS,t04LogCapabilityMask}from'./permission-runtime-t04-restore-diagnostic.mjs';
+import{IMAGE_OBSERVATION_KEYS,IMAGE_RESTORATION_KEYS}from'./permission-t04-image-measurement.mjs';
 const catalog=runtimeStageCatalog().filter(s=>s.runtimeProfile==='SUPABASE_T04'),ids=catalog.map(s=>s.stage);
 const sha='a'.repeat(40),digest='b'.repeat(64);
+// Parser/orchestration fixture only; this object is never backend evidence.
+const imageReceipt=()=>({schemaVersion:'permission-t04-image-measurement-v1',scope:'SYNTHETIC_T04_IMAGE_ONLY',status:'PASS',execution:'RUNTIME',
+ binding:{sourceSHA:sha,sourceFingerprint:digest,lockSHA:digest,runId:'123',attempt:1,physicalBackendSHA:digest},
+ observations:Object.fromEntries(IMAGE_OBSERVATION_KEYS.map(key=>[key,true])),
+ timing:{target59Ms:59000,target60Ms:60000,target61Ms:61000,observed59Ms:59010,observed60Ms:60010,observed61Ms:61010},
+ restoration:Object.fromEntries(IMAGE_RESTORATION_KEYS.map(key=>[key,true])),uploadOrphanStatus:'QUEUE_CLEANUP_UNCERTAIN'});
 const row=id=>{const n=catalog.find(s=>s.stage===id).required.length;return{stage:id,status:'PASS',required:n,run:n,discovered:n,
  pass:n,fail:0,skip:0,retry:0,sourceSHA:sha,reportSHA:digest,invocationSHA:digest,supplementalOracles:'NOT_PROVEN_BY_STAGE_COUNTS'};};
 function fixture(change={}){const seen=[],closed=[],prepared=[],reset=[];return{seen,closed,prepared,reset,adapter:{guard(){},async bootstrap(){},async physical(){return digest;},
  async baseline(){return digest;},async preserved(){return true;},async checkpoint(){return{archiveSHA:digest,storageSHA:digest};},
  async preflight(){return{status:'PASS',archiveSHA:digest,storageSHA:digest,baselineSHA:digest,physicalSHA:digest};},
+  async imageMeasurement(){return imageReceipt();},
  async prepare(id){prepared.push(id);},async afterStage(){return digest;},async restore(stage,beforeResetSHA){reset.push(stage);
    return{stage,status:'RESTORED_ORIGINAL',beforeResetSHA,archiveSHA:digest,baselineSHA:digest,physicalSHA:digest};},async stage(id){seen.push(id);return row(id);},
  async close(){closed.push(true);return true;},...change}};}
@@ -164,6 +172,39 @@ test('T04 orchestrator runs exactly nineteen canonical stages, preserves physica
  assert.equal(r.remainingBusinessStages,16);assert.equal(r.full35BusinessRuntime,'NOT_RUN');
  const rendered=renderT04Evidence({...r,...metadata});assert.equal(JSON.parse(rendered.json).stages.length,19);
  assert.deepEqual(f.prepared,ids);assert.deepEqual(f.reset,ids.filter(s=>t04Lifecycle(s).reset));assert.equal(f.reset.length,10);
+});
+
+test('image measurement runs once after candidate browser success and before storage observation or reset',async()=>{
+ const order=[],f=fixture({async stage(id){order.push('stage:'+id);return row(id);},
+  async imageMeasurement(){order.push('image');return imageReceipt();},
+  async afterStage(id){order.push('observe:'+id);return digest;}});
+ const r=await runT04Profile(f.adapter);assert.equal(r.status,'PASS');assert.equal(order.filter(x=>x==='image').length,1);
+ const index=order.indexOf('image');assert.equal(order[index-1],'stage:candidate-e2e');assert.equal(order[index+1],'observe:candidate-e2e');
+ assert.deepEqual(r.imageMeasurement,imageReceipt());assert.equal(f.closed.length,1);
+});
+
+test('missing, simulated, unbound or incomplete image measurement fails candidate stage and blocks every later stage',async()=>{
+ const wrong=change=>({...imageReceipt(),...change});
+ for(const measure of[undefined,async()=>{throw Error('controlled measurement failure');},
+  async()=>wrong({execution:'UNIT_SIMULATION'}),async()=>wrong({binding:{...imageReceipt().binding,physicalBackendSHA:'c'.repeat(64)}}),
+  async()=>wrong({restoration:{...imageReceipt().restoration,browserClosed:false}})]){
+  const f=fixture({imageMeasurement:measure}),r=await runT04Profile(f.adapter),index=ids.indexOf('candidate-e2e');
+  assert.equal(r.status,'FAIL');assert.equal(r.failure,'candidate-e2e');assert.equal(r.stages[index].status,'FAIL');
+  assert(r.stages.slice(index+1).every(s=>s.status==='NOT_RUN'));assert.equal(r.imageMeasurement,null);assert.equal(f.closed.length,1);
+  assert.equal(JSON.parse(renderT04Evidence({...r,...metadata}).json).status,'FAIL');
+ }
+});
+
+test('public T04 renderer binds image measurement to current source and rejects missing, private or incomplete proof',async()=>{
+ const f=fixture(),r={...await runT04Profile(f.adapter),...metadata};
+ for(const value of[null,undefined,{...imageReceipt(),raw:'PRIVATE'},
+  {...imageReceipt(),binding:{...imageReceipt().binding,sourceSHA:'c'.repeat(40)}},
+  {...imageReceipt(),binding:{...imageReceipt().binding,runId:'124'}},
+  {...imageReceipt(),observations:{...imageReceipt().observations,warmCache:false}},
+  {...imageReceipt(),execution:'UNIT_SIMULATION'}])assert.throws(()=>renderT04Evidence({...r,imageMeasurement:value}));
+ const early=fixture({async bootstrap(){throw Error('controlled');}}),failed={...await runT04Profile(early.adapter),...metadata};
+ assert.throws(()=>renderT04Evidence({...failed,imageMeasurement:imageReceipt()}));
+ assert.equal(JSON.parse(renderT04Evidence(failed).json).imageMeasurement,null);
 });
 test('canonical rollback variants cannot inherit caller choice; realtime output requires its own private path',()=>{
  for(const [stage,variant]of[['rollback-additive-database','Additive'],['rollback-preflight-database','Preflight'],['rollback-recovery-database','Recovery']])

@@ -12,6 +12,7 @@ import{realAdapter,readCi1LinuxEnvelope,ci1HarnessFailureMarker}from'./permissio
 import{assertCi1Envelope,ci1Identity,ci1ProcessEnvironment,CI1_PROJECT,CI1_RUNTIME}from'./permission-ci1-policy.mjs';
 import{t04Lifecycle,t04StageEnvironment,createT04FixtureBoundary,assertT04ResourceFacts}from'./permission-runtime-t04-fixture.mjs';
 import{T04_DIAGNOSTIC_BOUNDS}from'./permission-runtime-t04-restore-diagnostic.mjs';
+import{runT04ImageMeasurement,validateT04ImageMeasurement}from'./permission-t04-image-measurement.mjs';
 
 const catalog=runtimeStageCatalog().filter(s=>s.runtimeProfile==='SUPABASE_T04');
 const ids=catalog.map(s=>s.stage),refuse=()=>{throw Error('PERMISSION_T04_RUNTIME_REFUSED');};
@@ -39,7 +40,7 @@ export function t04FailureFacts(stderr){
   return Object.hasOwn(p,'t04StageOrdinal')?p:{};
 }
 export async function runT04Profile(adapter){
-  const rows=[],resets=[];let failure=null,physical=null,baseline=null,cleanup=false,checkpoint=null,runnerPreflight='NOT_RUN';
+  const rows=[],resets=[];let failure=null,physical=null,baseline=null,cleanup=false,checkpoint=null,runnerPreflight='NOT_RUN',imageMeasurement=null;
   try{
     adapter.guard();await adapter.bootstrap();physical=await adapter.physical();baseline=await adapter.baseline();
     if(![physical,baseline].every(h=>typeof h==='string'&&/^[a-f0-9]{64}$/.test(h)))refuse();
@@ -61,6 +62,12 @@ export async function runT04Profile(adapter){
         if(r?.stage!==stage||r.status!=='PASS'||r.required!==expected.required.length||!Number.isSafeInteger(r.run)
           ||r.run<r.required||r.pass!==r.run||r.fail!==0||r.skip!==0||r.retry!==0)refuse();
         adapter.guard();if(await adapter.physical()!==physical)refuse();
+        if(stage==='candidate-e2e'){
+          const measured=await adapter.imageMeasurement();
+          validateT04ImageMeasurement(measured,{physicalBackendSHA:physical});
+          imageMeasurement=measured;
+          adapter.guard();if(await adapter.physical()!==physical)refuse();
+        }
         const beforeResetSHA=await adapter.afterStage(stage);
         if(!/^[a-f0-9]{64}$/.test(beforeResetSHA))refuse();
         if(t04Lifecycle(stage).reset){
@@ -77,7 +84,7 @@ export async function runT04Profile(adapter){
     for(const stage of ids)if(!rows.some(r=>r.stage===stage))rows.push({stage,status:'NOT_RUN'});}
   finally{try{cleanup=await adapter.close()===true;}catch{}if(!cleanup)failure??='cleanup';}
   return{schemaVersion:'permission-t04-runtime-v1',scope:'T04_NINETEEN_STAGES_ONLY',status:failure?'FAIL':'PASS',failure,
-    stages:rows,physicalBackendSHA:physical,logicalBaselineSHA:baseline,fixtureCheckpoint:checkpoint,resets,cleanup,runnerPreflight,
+    stages:rows,physicalBackendSHA:physical,logicalBaselineSHA:baseline,fixtureCheckpoint:checkpoint,resets,cleanup,runnerPreflight,imageMeasurement,
     full35BusinessRuntime:'NOT_RUN',remainingBusinessStages:16,supplementalOracles:'NOT_PROVEN_BY_STAGE_COUNTS'};
 }
 export function renderT04Evidence(receipt){
@@ -107,6 +114,13 @@ export function renderT04Evidence(receipt){
       ||row.fail!==0||row.skip!==0||row.retry!==0||row.supplementalOracles!=='NOT_PROVEN_BY_STAGE_COUNTS'
       ||!['reportSHA','invocationSHA'].every(k=>/^[a-f0-9]{64}$/.test(row[k]??''))))refuse();
   }
+  const imageStage=receipt.stages.find(row=>row.stage==='candidate-e2e');
+  if(receipt.imageMeasurement===null){if(imageStage.status==='PASS')refuse();}
+  else{
+    if(imageStage.status==='NOT_RUN')refuse();
+    validateT04ImageMeasurement(receipt.imageMeasurement,{sourceSHA:receipt.sourceSHA,sourceFingerprint:receipt.sourceFingerprint,
+      lockSHA:receipt.lockSHA,runId:receipt.runId,attempt:receipt.attempt,physicalBackendSHA:receipt.physicalBackendSHA});
+  }
   if(receipt.runnerPreflight!=='PASS'&&(receipt.stages.some(r=>r.status!=='NOT_RUN')||receipt.resets.length!==0))refuse();
   if(receipt.status==='PASS'&&(receipt.runnerPreflight!=='PASS'||receipt.failure!==null||!receipt.cleanup||receipt.stages.some(r=>r.status!=='PASS')
     ||cp===null||receipt.resets.length!==resetStages.length
@@ -118,7 +132,7 @@ export function renderT04Evidence(receipt){
       ||failed>=0&&receipt.stages.some((r,i)=>r.status!==(i<failed?'PASS':i===failed?'FAIL':'NOT_RUN')))refuse();
   }
   const keys=['schemaVersion','scope','status','failure','stages','physicalBackendSHA','logicalBaselineSHA','cleanup',
-    'fixtureCheckpoint','resets','runnerPreflight',
+    'fixtureCheckpoint','resets','runnerPreflight','imageMeasurement',
     'full35BusinessRuntime','remainingBusinessStages','supplementalOracles','repository','runId','attempt','sourceSHA','workflowSHA',
     'sourceFingerprint','lockSHA'];
   if(Object.keys(receipt).some(k=>!keys.includes(k))||Object.keys(receipt).length!==keys.length)refuse();
@@ -196,6 +210,19 @@ async function main(){
     stage:stage=>executeRuntimeStage(stage,{sourceRoot:source,outputRoot,
       baseEnv:t04StageEnvironment(stage,env,stage==='realtime-e2e'?boundary.privateDirectory(stage):undefined),sourceSHA,sourceFingerprint,lockSHA,
       runId:identity.runId,guard,deadline}),
+    imageMeasurement:async()=>{
+      guard();
+      const runtime=await import('./permission-identity-runtime.mjs');
+      const target=runtime.parseBridgeEnvironment({IDEM_ENV_FILE:env.IDEM_ENV_FILE});
+      const physicalBackendSHA=await physical();
+      const status=JSON.parse(execFileSync(CI1_RUNTIME+'/bin/supabase',['status','--workdir',CI1_RUNTIME+'/stack','-o','json'],
+        {encoding:'utf8',timeout:10000,maxBuffer:65536}));
+      if(target.api!=='http://127.0.0.1:62421'||status.API_URL!==target.api||typeof status.SERVICE_ROLE_KEY!=='string'
+        ||!status.SERVICE_ROLE_KEY||new URL(target.dsn).port!=='62422')refuse();
+      return runT04ImageMeasurement({root,guard,deadline,api:target.api,storeIds:runtime.STORE_IDS,employeeId:runtime.EMPLOYEE_IDS[0],db,
+        anonKey:target.anonKey,storeJwt:target.storeJwt,serviceKey:status.SERVICE_ROLE_KEY,physical,
+        binding:{sourceSHA,sourceFingerprint,lockSHA,runId:identity.runId,attempt:identity.attempt,physicalBackendSHA}});
+    },
     close:async()=>{let okay=true;try{if(boundary)await boundary.close();}catch{okay=false;}
       try{if(db)await db.end();}catch{okay=false;}finally{await adapter.close();}return okay;}});
   Object.assign(receipt,{repository:process.env.GITHUB_REPOSITORY,runId:identity.runId,attempt:identity.attempt,

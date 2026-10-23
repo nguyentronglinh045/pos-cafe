@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { createHash } from "node:crypto";
+import { createHash, createHmac } from "node:crypto";
 import { digest, permissionFingerprint } from "../../scripts/permission-preflight-core.mjs";
 import { inspectCompatibilityPreparation, restoreCompatibilityPreparation } from "../../scripts/permission-compatibility-prepare.mjs";
 import { PROJECT, runtimeProof } from "../../scripts/permission-identity-runtime.mjs";
@@ -155,6 +155,99 @@ export async function trackImageUpload(uploadHandle: string) {
   if (!row || row.store_id !== STORE_IDS[0] || !row.object_key.startsWith(`${STORE_IDS[0]}/menu-items/`)
     || !row.object_key.includes(`/${uploadHandle}.`)) throw new Error("IMAGE_UPLOAD_OWNERSHIP_UNVERIFIED");
   trackedObjects.set(uploadHandle, row.object_key);
+}
+
+// Register the exact proposed destination before a denied copy is attempted.
+// Even a regression that creates it must remain inside fixture-owned cleanup.
+export async function trackImageCopyTarget(itemId: string) {
+  if (!baselineReady || !/^[0-9a-f-]{36}$/.test(itemId)
+    || !(await db.query("select 1 from public.menu_items where store_id=$1 and id=$2", [STORE_IDS[0], itemId])).rowCount)
+    throw new Error("IMAGE_UPLOAD_OWNERSHIP_UNVERIFIED");
+  const handle = crypto.randomUUID(), objectKey = `${STORE_IDS[0]}/menu-items/${itemId}/${handle}.png`;
+  if ((await db.query("select 1 from storage.objects where bucket_id='menu-item-image-staging' and name=$1", [objectKey])).rowCount
+    || (await db.query("select 1 from pg_temp.t09_storage_objects where bucket_id='menu-item-image-staging' and name=$1", [objectKey])).rowCount)
+    throw new Error("IMAGE_STORAGE_PREEXISTING_OBJECT_REFUSED");
+  trackedObjects.set(handle, objectKey);
+  return objectKey;
+}
+
+export async function snapshotOwnedImageObject(objectKey: string) {
+  if (!baselineReady || ![...trackedObjects.values()].includes(objectKey)) throw new Error("IMAGE_STORAGE_SCOPE_REFUSED");
+  const metadata = (await db.query("select md5(to_jsonb(o)::text) hash from storage.objects o where bucket_id='menu-item-image-staging' and name=$1", [objectKey])).rows[0]?.hash ?? null;
+  const encoded = objectKey.split("/").map(part => encodeURIComponent(part)).join("/");
+  const response = await fetch(`${env.api}/storage/v1/object/menu-item-image-staging/${encoded}`, { headers: {
+    apikey: serviceKey, Authorization: `Bearer ${serviceKey}`,
+  }, signal: AbortSignal.timeout(10_000) });
+  if (!response.ok) {
+    if (![400, 404].includes(response.status)) throw new Error("IMAGE_STORAGE_BASELINE_UNREADABLE");
+    return { metadata, bytes: null, size: null };
+  }
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  return { metadata, bytes: createHash("sha256").update(bytes).digest("hex"), size: bytes.length };
+}
+
+// Positive controls use separate, registered keys. They prove the same HTTP
+// route/body shapes actually mutate Storage before a caller denial is trusted.
+export async function verifyDirectImageMutationRoutes(itemId: string, initial: Uint8Array<ArrayBuffer>, changed: Uint8Array<ArrayBuffer>) {
+  await verifyMarker();
+  const initialHash = createHash("sha256").update(initial).digest("hex"), changedHash = createHash("sha256").update(changed).digest("hex");
+  if (!initial.length || !changed.length || initialHash === changedHash) throw new Error("IMAGE_STORAGE_ROUTE_CONTROL_FAILED");
+  const sourceKey = await trackImageCopyTarget(itemId), destinationKey = await trackImageCopyTarget(itemId);
+  const absent = async (key: string) => {
+    const snapshot = await snapshotOwnedImageObject(key);
+    if (snapshot.metadata !== null || snapshot.bytes !== null || snapshot.size !== null) throw new Error("IMAGE_STORAGE_ROUTE_CONTROL_FAILED");
+  };
+  const present = async (key: string, bytes: Uint8Array<ArrayBuffer>, hash: string) => {
+    const snapshot = await snapshotOwnedImageObject(key);
+    if (!snapshot.metadata || snapshot.bytes !== hash || snapshot.size !== bytes.length) throw new Error("IMAGE_STORAGE_ROUTE_CONTROL_FAILED");
+  };
+  const request = async (route: string, method: string, headers: Record<string, string>, body: Uint8Array<ArrayBuffer> | string) => {
+    const response = await fetch(`${env.api}/storage/v1/${route}`, { method, headers: {
+      apikey: serviceKey, Authorization: `Bearer ${serviceKey}`, ...headers,
+    }, body, signal: AbortSignal.timeout(5000) });
+    if (!response.ok) { await response.arrayBuffer(); throw new Error("IMAGE_STORAGE_ROUTE_CONTROL_FAILED"); }
+    await response.arrayBuffer();
+  };
+  const sourceRoute = `object/menu-item-image-staging/${sourceKey.split("/").map(encodeURIComponent).join("/")}`;
+  await absent(sourceKey); await absent(destinationKey);
+  await request(sourceRoute, "POST", { "Content-Type": "image/png", "x-upsert": "false" }, initial);
+  await present(sourceKey, initial, initialHash);
+  await request(sourceRoute, "POST", { "Content-Type": "image/png", "x-upsert": "true" }, changed);
+  await present(sourceKey, changed, changedHash);
+  await request(sourceRoute, "PUT", { "Content-Type": "image/png" }, initial);
+  await present(sourceKey, initial, initialHash);
+  await request("object/copy", "POST", { "Content-Type": "application/json" }, JSON.stringify({
+    bucketId: "menu-item-image-staging", sourceKey, destinationKey,
+  }));
+  await present(destinationKey, initial, initialHash);
+  for (const key of [sourceKey, destinationKey]) {
+    await request("object/menu-item-image-staging", "DELETE", { "Content-Type": "application/json" }, JSON.stringify({ prefixes: [key] }));
+    await absent(key);
+  }
+}
+
+export async function expiredImageStoreJwt() {
+  if (!baselineReady) throw new Error("IMAGE_FIXTURE_MARKER_REFUSED");
+  await verifyMarker();
+  const args = ["docker", "exec", `supabase_auth_${PROJECT}`, "printenv", "GOTRUE_JWT_SECRET"];
+  let signingKey = "";
+  try {
+    signingKey = (process.platform === "win32"
+      ? execFileSync("wsl", ["-d", "Ubuntu-24.04", "--", ...args], { encoding: "utf8", timeout: 5000, maxBuffer: 512, stdio: ["ignore", "pipe", "ignore"] })
+      : execFileSync(args[0], args.slice(1), { encoding: "utf8", timeout: 5000, maxBuffer: 512, stdio: ["ignore", "pipe", "ignore"] })).trim();
+    const [header, payload, signature] = env.storeJwt.split(".");
+    if (signingKey.length < 32 || signingKey.length > 256 || JSON.parse(Buffer.from(header, "base64url").toString()).alg !== "HS256"
+      || createHmac("sha256", signingKey).update(`${header}.${payload}`).digest("base64url") !== signature) throw new Error();
+    const claims = JSON.parse(Buffer.from(payload, "base64url").toString());
+    const now = Math.floor(Date.now() / 1000);
+    const sign = (exp: number) => {
+      const payload = Buffer.from(JSON.stringify({ ...claims, iat: now - 7200, exp })).toString("base64url");
+      const input = `${header}.${payload}`;
+      return `${input}.${createHmac("sha256", signingKey).update(input).digest("base64url")}`;
+    };
+    return { validJwt: sign(now + 3600), expiredJwt: sign(now - 3600) };
+  } catch { throw new Error("IMAGE_EXPIRED_JWT_FIXTURE_UNAVAILABLE"); }
+  finally { signingKey = ""; }
 }
 
 async function restoreCompatibility(receipt: CompatibilityReceipt) {

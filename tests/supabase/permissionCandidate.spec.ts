@@ -1,10 +1,14 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page, type Response, type Route } from "@playwright/test";
 import { randomUUID } from "node:crypto";
+import { readFileSync } from "node:fs";
 import pg from "pg";
 import { EMPLOYEE_IDS, STORE_IDS, runtimeProof } from "../../scripts/permission-identity-runtime.mjs";
 import { candidateEnvironment, installStoreSession } from "./permissionCandidateEnvironment.ts";
 
 const PIN = "384729";
+// A complete PNG, including compressed pixel data and IEND, rather than the
+// eight-byte signature used by the separate HTTP boundary fixture.
+const MENU_IMAGE_PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=", "base64");
 
 /** Explicit synthetic setup: this existing fixture requested initial demo data.
  * The application then claims/runs it through the real owner login lifecycle. */
@@ -131,21 +135,75 @@ test("owner creates waiter and real UI hides protected administration and report
   } finally { await context.close(); }
 });
 
-test("owner persists menu, floor and store settings changes through real candidate RPCs", async ({ page }) => {
+test("owner persists menu, floor and store settings changes through real candidate RPCs", async ({ page }, testInfo) => {
   await login(page, EMPLOYEE_IDS[0]);
 
   await page.getByTestId("nav-menu-editor").click();
   const menuCard = page.locator('[data-testid^="menu-edit-card-"]').first();
+  const itemId = (await menuCard.getAttribute("data-testid"))!.slice("menu-edit-card-".length);
   await menuCard.click();
   const nameInput = page.getByTestId("menu-item-name-input");
   const originalName = await nameInput.inputValue();
   const changedName = `${originalName} E2E`;
+  const price = Number(await page.getByLabel("Giá (VND)", { exact: true }).inputValue());
+  const priceText = new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 }).format(price);
   await nameInput.fill(changedName);
-  await expectSavedRpc(page, "apply_menu_changes", () => page.getByTestId("save-menu-button").click());
+  await page.getByLabel("Chọn ảnh món", { exact: true }).setInputFiles({ name: "candidate-menu.png", mimeType: "image/png", buffer: MENU_IMAGE_PNG });
+  const { api } = candidateEnvironment();
+  const gatewayUrl = `${api}/functions/v1/menu-image-gateway`;
+  const preflights: Response[] = [];
+  const observePreflight = (response: Response) => {
+    if (response.url() === gatewayUrl && response.request().method() === "OPTIONS") preflights.push(response);
+  };
+  page.on("response", observePreflight);
+  const uploadResponse = page.waitForResponse(response => response.url() === gatewayUrl && response.request().method() === "POST");
+  const menuRequest = page.waitForRequest(request => request.url() === `${api}/rest/v1/rpc/apply_menu_changes` && request.method() === "POST");
+  let uploadHandle: string;
+  try {
+    const [, uploaded, savedRequest] = await Promise.all([
+      expectSavedRpc(page, "apply_menu_changes", () => page.getByTestId("save-menu-button").click()),
+      uploadResponse, menuRequest,
+    ]);
+    expect(uploaded.status()).toBe(201);
+    const clientInfo = uploaded.request().headers()["x-client-info"] ?? "";
+    const lockedVersion: string = JSON.parse(readFileSync("package-lock.json", "utf8")).packages["node_modules/@supabase/supabase-js"].version;
+    expect(clientInfo.split(/[\/; ]/)).toContain(lockedVersion);
+    expect(clientInfo).toMatch(/(?:supabase-js-web\/|(?:^|[; ])runtime=web(?:;|$))/);
+    expect(uploaded.request().headers()["x-pos-permission-contract"]).toBeUndefined();
+    const body = await uploaded.json();
+    expect(body).toMatchObject({ ok: true, data: { uploadHandle: expect.stringMatching(/^[0-9a-f-]{36}$/) } });
+    uploadHandle = body.data.uploadHandle;
+    expect(savedRequest.postDataJSON().p_changes.imageChanges).toEqual([{ itemId, uploadHandle }]);
+    const options = await Promise.all(preflights.map(async response => {
+      const headers = await response.allHeaders();
+      expect(response.status()).toBe(204);
+      expect(headers["access-control-allow-origin"]).toBe("*");
+      const allowed = (headers["access-control-allow-headers"] ?? "").toLowerCase().split(",").map(value => value.trim());
+      const methods = (headers["access-control-allow-methods"] ?? "").toUpperCase().split(",").map(value => value.trim());
+      expect(methods).toContain("POST");
+      for (const header of ["authorization", "apikey", "x-client-info", "x-pos-employee-token"]) expect(allowed).toContain(header);
+      return { status: response.status(), allowOrigin: headers["access-control-allow-origin"], allowHeaders: allowed, allowMethods: methods };
+    }));
+    await testInfo.attach("menu-image-browser-transport.json", { body: JSON.stringify({ functionPath: "/functions/v1/menu-image-gateway", clientInfo, postStatus: uploaded.status(),
+      // Some browser engines hide automatic preflight from Playwright events.
+      // A missing event is explicitly unobserved, never an OPTIONS PASS.
+      preflight: options.length ? "OBSERVED" : "NOT_OBSERVABLE", options }), contentType: "application/json" });
+  } finally { page.off("response", observePreflight); }
+  // This committed upload is owned by the isolated candidate-e2e stage. Its
+  // post-stage measurement/cleanup must discover exact private registry keys
+  // for the two guarded STORE_IDS and remove their bytes before parent observe.
+  // On browser-stage failure, T04 must fail and close/reclaim its owned runtime;
+  // the success-only stage helper is not per-test or standalone-case cleanup.
+  const publicUrl = `${api}/functions/v1/menu-image-public/${uploadHandle}`;
+  const savedImage = page.getByTestId("menu-editor-detail-pane").getByRole("img", { name: `Ảnh ${changedName}`, exact: true });
+  await expect(savedImage).toHaveAttribute("src", publicUrl);
+  await expect.poll(() => savedImage.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
   await closeDrawerFromNav(page);
   await page.getByTestId("nav-menu-editor").click();
   await page.locator('[data-testid^="menu-edit-card-"]').filter({ hasText: changedName }).click();
   await expect(page.getByTestId("menu-item-name-input")).toHaveValue(changedName);
+  await expect(savedImage).toHaveAttribute("src", publicUrl);
+  await expect.poll(() => savedImage.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
   await closeDrawerFromNav(page);
 
   await page.getByTestId("nav-floor-editor").click();
@@ -169,6 +227,75 @@ test("owner persists menu, floor and store settings changes through real candida
   await closeDrawerFromNav(page);
   await page.getByTestId("nav-settings").click();
   await expect(page.getByTestId("settings-name-input")).toHaveValue(changedStoreName);
+  await closeDrawerFromNav(page);
+
+  // TC47 consumer-only variant: real upload/save/render above; this one exact
+  // image response is injected at the browser boundary. It does not prove a
+  // Storage/DB fault, cache TTL, or the separate real-origin failure variants.
+  const orderTable = page.locator('[data-testid^="table-"]').first();
+  await orderTable.click();
+  await page.getByPlaceholder("Tìm món...").fill(changedName);
+  const orderCard = page.getByTestId(`menu-item-${itemId}`);
+  await expect(orderCard.getByRole("img")).toHaveAttribute("src", publicUrl);
+  await expect.poll(() => orderCard.getByRole("img").evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+  const imageBox = orderCard.locator(":scope > div").first();
+  const imageBoxBefore = await imageBox.boundingBox(), cardBefore = await orderCard.boundingBox();
+  expect(imageBoxBefore).not.toBeNull(); expect(cardBefore).not.toBeNull();
+  expect(imageBoxBefore!.width).toBeGreaterThan(0); expect(imageBoxBefore!.height).toBeGreaterThan(0);
+  await page.getByTestId("order-close-button").click();
+  await expect(page.getByTestId("order-drawer")).toBeHidden();
+  const failImage = async (route: Route) => {
+    expect(route.request().method()).toBe("GET");
+    await route.fulfill({ status: 503, headers: { "Content-Type": "application/json", "Cache-Control": "no-store", "Access-Control-Allow-Origin": "*" },
+      body: JSON.stringify({ ok: false, error: { code: "PERMISSION_UPDATE_UNAVAILABLE" } }) });
+  };
+  await page.route(publicUrl, failImage);
+  try {
+    const failedImage = page.waitForResponse(response => response.url() === publicUrl && response.request().method() === "GET");
+    // Keep the existing occupied dine-in order: the later clear-demo case
+    // relies on it to prove OPEN_ORDERS_BLOCK_CLEAR_DEMO. Pay only this new order.
+    await page.getByTestId("nav-takeaway").click();
+    await page.getByTestId("takeaway-drawer").locator("header").getByRole("button", { name: "Tạo đơn mang đi", exact: true }).click();
+    await page.getByPlaceholder("Tìm món...").fill(changedName);
+    const failed = await failedImage;
+    expect(failed.status()).toBe(503);
+    expect((await failed.allHeaders())["cache-control"]).toBe("no-store");
+    await expect(orderCard.getByTestId("menu-image-placeholder")).toBeVisible();
+    await expect(orderCard.getByRole("img")).toHaveCount(0);
+    const imageBoxAfter = await imageBox.boundingBox(), cardAfter = await orderCard.boundingBox();
+    expect(imageBoxAfter).not.toBeNull(); expect(cardAfter).not.toBeNull();
+    for (const dimension of ["width", "height"] as const) {
+      expect(imageBoxAfter![dimension]).toBeCloseTo(imageBoxBefore![dimension], 1);
+      expect(cardAfter![dimension]).toBeCloseTo(cardBefore![dimension], 1);
+    }
+    await expect(orderCard.locator("strong")).toHaveText(changedName);
+    await expect(orderCard).toContainText(priceText);
+    await expect(orderCard).toBeEnabled();
+    await orderCard.click();
+    const modifier = page.getByTestId("modifier-confirm"); if (await modifier.isVisible()) await modifier.click();
+    await expect(page.getByTestId("order-cart-line").filter({ hasText: changedName })).toBeVisible();
+    await page.getByTestId("submit-order-button-footer").click();
+    await expect(page.getByTestId("receipt-preview")).toBeVisible();
+    await expect(page.getByTestId("receipt-preview")).toContainText(changedName);
+    await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-variant", "kitchen");
+    const orderNo = (await page.getByTestId("receipt-document").getAttribute("data-order-no"))!;
+    expect(orderNo).toMatch(/^\d+$/);
+    await page.getByTestId("receipt-close-footer").click();
+    await expect(page.getByTestId("floor-view")).toBeVisible();
+    const takeawayOrder = page.getByRole("button").filter({ has: page.getByText(`#${orderNo}`, { exact: true }) });
+    await expect(takeawayOrder).toHaveCount(1);
+    await takeawayOrder.click();
+    await page.getByTestId("submit-order-button-footer").click();
+    await expect(page.getByTestId("payment-drawer")).toBeVisible();
+    await page.getByTestId("payment-received-amount").fill("1000000");
+    await page.getByTestId("print-receipt-checkbox").check();
+    await page.getByTestId("pay-button-footer").click();
+    await expect(page.getByTestId("receipt-preview")).toBeVisible();
+    await expect(page.getByTestId("receipt-preview")).toContainText(changedName);
+    await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-variant", "receipt");
+    await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-order-no", orderNo);
+    await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-total", String(price));
+  } finally { await page.unroute(publicUrl, failImage); }
 });
 
 test("four active roles have protected navigation parity with server authorization", async ({ browser }) => {
