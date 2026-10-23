@@ -3102,6 +3102,21 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       const inserted = await state.db.query(`insert into public.${relation}(id,store_id,name,sort_order,seed_key)
         values($1,$2,'TC15 collision',99,null) returning id`, [collisionId, state.storeId]);
       expect(inserted.rowCount).toBe(1);
+      // Capture every column before login can claim or run any seed stage. Only
+      // the digest leaves PostgreSQL, including for the rollback-only control.
+      const collisionSnapshot = async () => (await state.db.query(`select
+        encode(extensions.digest(to_jsonb(t)::text,'sha256'),'hex') digest
+        from public.${relation} t where t.id=$1 and t.store_id=$2`, [collisionId, state.storeId])).rows[0]?.digest;
+      const collisionBeforeSeed = await collisionSnapshot();
+      expect(collisionBeforeSeed).toMatch(/^[a-f0-9]{64}$/);
+      await state.db.query("begin");
+      try {
+        const changed = await state.db.query(`update public.${relation} set sort_order=sort_order+1
+          where id=$1 and store_id=$2`, [collisionId, state.storeId]);
+        expect(changed.rowCount).toBe(1);
+        expect(await collisionSnapshot() === collisionBeforeSeed).toBe(false);
+      } finally { await state.db.query("rollback"); }
+      expect(await collisionSnapshot() === collisionBeforeSeed).toBe(true);
       const calls: Stage[] = [];
       let begins = 0;
       let normalHeaders: Record<string, string> | undefined;
@@ -3141,6 +3156,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
         expect(pendingStage).toMatchObject({ status: "pending", receipt: null, committed_at: null });
         expect((await state.db.query(`select name,seed_key from public.${relation} where id=$1`, [collisionId])).rows[0])
           .toEqual({ name: "TC15 collision", seed_key: null });
+        expect(await collisionSnapshot() === collisionBeforeSeed).toBe(true);
         const graph = (await stageSnapshot()).counts;
         if (collisionStage === "menu") expect(graph).toMatchObject({ employees: 1, categories: 0, menu_items: 0,
           option_groups: 0, option_values: 0, menu_links: 0, areas: 0, tables: 0, decor: 0 });
@@ -3156,6 +3172,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
         expect(await seedReadOnlySnapshot() === snapshotBeforeReload).toBe(true);
         expect(calls).toEqual(callsBeforeReload);
         expect(begins).toBe(beginsBeforeReload);
+        expect(await collisionSnapshot() === collisionBeforeSeed).toBe(true);
         const deleted = await state.db.query(`delete from public.${relation}
           where id=$1 and store_id=$2 and name='TC15 collision' and seed_key is null returning id`,
           [collisionId, state.storeId]);

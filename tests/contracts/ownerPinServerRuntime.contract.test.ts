@@ -65,6 +65,38 @@ async function pinDenialSnapshot() {
     from public.employees e cross join pg_temp.pin_denial_baseline b where e.id=$1`, [E[0]])).rows[0];
 }
 
+async function assertPinFaultSnapshotControls() {
+  const unchanged = await pinDenialSnapshot();
+  // TTL drift is invisible to count checks; rehashing the same PIN is invisible
+  // to crypt checks. Prove each exact snapshot dimension rejects its mutation.
+  for (const mutation of ["session-time", "same-pin-hash"] as const) {
+    await db.query("savepoint pin_fault_snapshot_control");
+    try {
+      if (mutation === "session-time") {
+        const shifted = await db.query(`update private.employee_sessions
+          set issued_at=issued_at+interval '1 second',expires_at=expires_at+interval '1 second'
+          where employee_id=$1`, [E[0]]);
+        expect(shifted.rowCount).toBe(1);
+      } else {
+        await db.query("update public.employees set passcode_hash=extensions.crypt('384729',extensions.gen_salt('bf')) where id=$1", [E[0]]);
+        expect((await db.query("select passcode_hash=extensions.crypt('384729',passcode_hash) same_pin from public.employees where id=$1", [E[0]])).rows[0].same_pin).toBe(true);
+      }
+      const mutated = await pinDenialSnapshot();
+      if (mutation === "session-time") {
+        expect(mutated).toEqual({ ...unchanged, sessions_unchanged: false });
+      } else {
+        // The legacy credential trigger may also revoke sessions on a rehash.
+        // This control proves hash sensitivity without assuming those effects.
+        expect(mutated.hash_unchanged).toBe(false);
+      }
+    } finally {
+      await db.query("rollback to savepoint pin_fault_snapshot_control");
+      await db.query("release savepoint pin_fault_snapshot_control");
+    }
+    expect(await pinDenialSnapshot()).toEqual(unchanged);
+  }
+}
+
 async function configureSeedWorkflow(storeId: string, status: "pending" | "in_progress" = "pending", generation = 0, revision = 0) {
   const workflowId = (await db.query("select workflow_id from private.initial_seed_workflows where store_id=$1", [storeId])).rows[0].workflow_id;
   await db.query("update private.initial_seed_workflows set requested=true,status=$2,auto_claimed_at=null,run_generation=$3,workflow_revision=$4,last_error_code=null where workflow_id=$1", [workflowId, status, generation, revision]);
@@ -326,6 +358,11 @@ test.each(["public.employee_admin_audit", "public.store_change_signals", "privat
       await actor(db);
       const restricted = await call("permission_start_session", [E[0], "384729"]);
       await actor(db, restricted.token);
+      await capturePinDenialBaseline();
+      const beforeFault = await pinDenialSnapshot();
+      expect(beforeFault).toEqual({ hash_unchanged: true, flag_unchanged: true, revision_unchanged: true,
+        sessions_unchanged: true, signals_unchanged: true, audit: 0, registry: 0 });
+      await assertPinFaultSnapshotControls();
       await db.query(`create function private.owner_pin_test_fault() returns trigger language plpgsql as $$ begin raise exception 'synthetic fault'; end $$;
         create trigger owner_pin_test_fault before insert on ${table} for each row execute function private.owner_pin_test_fault()`);
       await expect(call("permission_complete_required_pin_change", [{ requestId: randomUUID(), expectedRevision: 0, newPin: "927416" }]))
@@ -338,6 +375,7 @@ test.each(["public.employee_admin_audit", "public.store_change_signals", "privat
         (select count(*)::int from public.store_change_signals) signal,
         (select count(*)::int from private.employee_admin_requests) registry from public.employees where id=$1`, [E[0]])).rows[0];
       expect(state).toEqual({ pin_change_required: true, revision: 0, pin_preserved: true, live: 1, audit: 0, signal: 0, registry: 0 });
+      expect(await pinDenialSnapshot()).toEqual(beforeFault);
       await db.query(`drop trigger owner_pin_test_fault on ${table}`);
       await db.query("drop function private.owner_pin_test_fault()");
       const retry = await call("permission_complete_required_pin_change", [{ requestId: randomUUID(), expectedRevision: 0, newPin: "927416" }]);
@@ -355,6 +393,11 @@ test.each(["public.employee_admin_audit", "public.store_change_signals", "privat
     try {
       await actor(db);
       const normal = await call("permission_start_session", [E[0], "384729"]);
+      await capturePinDenialBaseline();
+      const beforeFault = await pinDenialSnapshot();
+      expect(beforeFault).toEqual({ hash_unchanged: true, flag_unchanged: true, revision_unchanged: true,
+        sessions_unchanged: true, signals_unchanged: true, audit: 0, registry: 0 });
+      await assertPinFaultSnapshotControls();
       await db.query(`create function private.owner_recovery_test_fault() returns trigger language plpgsql as $$ begin raise exception 'synthetic fault'; end $$;
         create trigger owner_recovery_test_fault before insert on ${table} for each row execute function private.owner_recovery_test_fault()`);
       const request = { requestId: randomUUID(), storeId: S[0], targetId: E[0], operatorRef: "op-test", caseRef: "case-test-001", proofRef: "proof-test-001", newPin: "927416" };
@@ -370,6 +413,7 @@ test.each(["public.employee_admin_audit", "public.store_change_signals", "privat
         (select count(*)::int from public.store_change_signals) signal,
         (select count(*)::int from private.employee_admin_requests) registry from public.employees where id=$1`, [E[0]])).rows[0];
       expect(state).toEqual({ pin_change_required: false, revision: 0, pin_preserved: true, live: 1, audit: 0, signal: 0, registry: 0 });
+      expect(await pinDenialSnapshot()).toEqual(beforeFault);
       await actor(db, normal.token);
       await expect(call("permission_get_authority")).resolves.toMatchObject({ ok: true });
       await db.query(`drop trigger owner_recovery_test_fault on ${table}`);
@@ -408,6 +452,29 @@ test.each([
     expect((await db.query("select count(*)::int count from public.employees where store_id=$1 and seed_key='demo.employee.demo-emp-cashier'", [S[0]])).rows[0].count).toBe(0);
     expect((await db.query("select (select count(*)::int from public.employee_admin_audit) audit,(select count(*)::int from public.store_change_signals) signal")).rows[0])
       .toEqual({ audit: 0, signal: 0 });
+    await db.query(`drop trigger owner_seed_test_fault on ${table}`);
+    await db.query("drop function private.owner_seed_test_fault()");
+    const failedStatus = await call("permission_get_initial_seed_status");
+    const retried = await call("permission_begin_initial_seed", [{ mode: "retry", expectedWorkflowRevision: failedStatus.data.workflowRevision }]);
+    expect(retried.data).toMatchObject({ acquired: true, runGeneration: 2 });
+    const committed = await call("permission_run_initial_seed_stage", [{ runGeneration: 2, stage: "employee" }]);
+    expect(committed.ok).toBe(true);
+    expect(committed.data.stages.find((item: { stage: string }) => item.stage === "employee"))
+      .toMatchObject({ status: "committed" });
+    expect((await db.query("select count(*)::int count from public.employees where store_id=$1 and seed_key='demo.employee.demo-emp-cashier'", [S[0]])).rows[0].count).toBe(1);
+    const evidence = (await db.query("select (select count(*)::int from public.employee_admin_audit) audit,(select count(*)::int from public.store_change_signals) signal")).rows[0];
+    expect(evidence).toEqual({ audit: 1, signal: 1 });
+    const employeeStageSnapshot = async () => (await db.query(`select encode(extensions.digest(jsonb_build_object(
+      'employees',(select jsonb_agg(to_jsonb(e) order by e.id) from public.employees e where store_id=$1),
+      'audit',(select jsonb_agg(to_jsonb(a) order by a.request_id) from public.employee_admin_audit a where store_id=$1),
+      'signals',(select jsonb_agg(to_jsonb(s) order by s.topic) from public.store_change_signals s where store_id=$1)
+    )::text,'sha256'),'hex') digest`, [S[0]])).rows[0].digest;
+    const beforeReplay = await employeeStageSnapshot();
+    // Employee is the first stage; replay its committed receipt without applying
+    // creation or evidence again before the remaining stages could proceed.
+    await expect(call("permission_run_initial_seed_stage", [{ runGeneration: 2, stage: "employee" }])).resolves.toEqual(committed);
+    expect(await employeeStageSnapshot() === beforeReplay).toBe(true);
+    expect((await db.query("select (select count(*)::int from public.employee_admin_audit) audit,(select count(*)::int from public.store_change_signals) signal")).rows[0]).toEqual(evidence);
   } finally {
     await db.query("rollback");
   }
@@ -854,9 +921,17 @@ test("TC-PIN-10/13/14 bootstrap creates a forced owner and receipt-driven insert
       .resolves.toMatchObject({ ok: true, data: { acquired: false, status: "in_progress", runGeneration: 1, workflowRevision: 1 } });
     const deterministicCashierId = (await db.query("select private.permission_seed_uuid($1,'demo.employee.demo-emp-cashier') id", [sid])).rows[0].id;
     await db.query("insert into public.employees(id,store_id,name,role,passcode_hash) values($1,$2,'Collision','cashier',extensions.crypt('111111',extensions.gen_salt('bf')))", [deterministicCashierId, sid]);
+    await db.query(`create temporary table pin_seed_collision_baseline on commit drop as
+      select to_jsonb(e) collision_row from public.employees e where e.id=$1 and e.store_id=$2`, [deterministicCashierId, sid]);
+    const collisionUnchanged = async () => (await db.query(`select to_jsonb(e)=b.collision_row unchanged
+      from public.employees e cross join pg_temp.pin_seed_collision_baseline b
+      where e.id=$1 and e.store_id=$2`, [deterministicCashierId, sid])).rows[0]?.unchanged;
+    expect(await collisionUnchanged()).toBe(true);
     await expect(call("permission_run_initial_seed_stage", [{ runGeneration: 1, stage: "employee" }]))
       .resolves.toMatchObject({ error: { code: "ENTITY_ID_CONFLICT" } });
+    expect(await collisionUnchanged()).toBe(true);
     expect((await call("permission_get_initial_seed_status")).data).toMatchObject({ status: "needs_retry", workflowRevision: 2, runGeneration: 1 });
+    expect(await collisionUnchanged()).toBe(true);
     await db.query("delete from public.employees where id=$1", [deterministicCashierId]);
     const retried = await call("permission_begin_initial_seed", [{ mode: "retry", expectedWorkflowRevision: 2 }]);
     expect(retried.data).toMatchObject({ acquired: true, status: "in_progress", runGeneration: 2, workflowRevision: 3 });

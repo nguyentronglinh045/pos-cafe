@@ -5,7 +5,7 @@ export const PERMISSION_CONTRACT_VERSION = "2";
 export const IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 export const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 export const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-export const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "GET,POST,DELETE,OPTIONS", "Access-Control-Allow-Headers": "authorization,apikey,content-type,x-pos-employee-token,if-none-match" };
+export const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "GET,POST,DELETE,OPTIONS", "Access-Control-Allow-Headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match" };
 
 export const json = (status: number, body: unknown, extra: Record<string, string> = {}): Response =>
   new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json", ...cors, ...NO_STORE, ...extra } });
