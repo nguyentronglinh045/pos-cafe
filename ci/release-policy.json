@@ -23,8 +23,8 @@
     "ci/backend-only-tests.json": "758a2a7b5475753e037925e307fe0b513b0f2ae9af4cfd08427e82d47fa7fa8f",
     "tests/contracts/gates.tool.test.ts": "9deced5b290e611845255d27cb50f04a572d9a5146538e65fb66259e2a064070",
     "playwright.project-ci.config.ts": "34f2073b1c3aa0967b583b282dfdaa71c7d87dd25a3721fb12bb135fd2b702d9",
-    ".github/workflows/frontend-preview.yml": "e8dcbcba82bda664c1ff2265b241c13111df3c9f2a8d893b3fd21539df0000b4",
-    "scripts/project-preview.mjs": "035cb6f2aa4efc6f9022b45fcb61a3e7f94d97bed5c93085e7603c145633f802",
+    ".github/workflows/frontend-preview.yml": "4095d745a74769f6fdeb08511cd98ee7eb4f527f9d1712eb0e560d1c65e6f7c3",
+    "scripts/project-preview.mjs": "97cb6635e17143116ddb45880a0c8a25a6e169e9340905c681035810ad688101",
     "scripts/project-release.mjs": "43f3e6b0bf8739a66113ab669bb44279e20e0272d57122b579f907ebcdf79b54",
     "scripts/project-ui-results.mjs": "bf4aee4b2fbd0ab03976afa156db346ec2f762aecf77e67c6a91db8e6b667372",
     "ui-audit/run.mjs": "489f6b5eea4153af814e2a560e615cddd372bc45706a5e2d49264aa5530badfd",
@@ -50,7 +50,8 @@
     "tests/permissions/runtime/ci1-edge.json": "523111f7b3134e5f29a6bbf600302140db58530d3998a1ffbd565f7152493d51",
     "tests/permissions/runtime/edge-resolution/deno.json": "eca3984001a907fb17773aa60e4ce77efb2033c255e3f5462963f3b87b894113",
     "tests/permissions/runtime/edge-resolution/deno.lock": "6f9fc5dd3b6e81d9468c712bfbf3fc423e6ea28d49e8fe44915abca50740ab41",
-    "scripts/permission-full-target-policy.test.mjs": "a41194753179f25315eb0639609302a3cc652673fea3276a833f2af19101f917"
+    "scripts/permission-full-target-policy.test.mjs": "a41194753179f25315eb0639609302a3cc652673fea3276a833f2af19101f917",
+    "scripts/project-preview.README.md": "8ef8984c2d4cbe40204ea6c6b62af63902ebe937b9ba8e0cc6d0427df2177b5c"
   },
   "preview": {
     "projectId": "prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en",

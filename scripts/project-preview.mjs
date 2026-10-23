@@ -10,7 +10,11 @@ const MAX=2*1024*1024, POLL_MS=600000;
 const SHA=/^[a-f0-9]{40}(?![\s\S])/, DIGEST=/^[a-f0-9]{64}(?![\s\S])/;
 const ID=/^dpl_[A-Za-z0-9]{1,128}(?![\s\S])/;
 const PROTECTION=['ssoProtection','passwordProtection','trustedIps','trustedSources','protectionBypass','optionsAllowlist'];
-const CODES=['CONTEXT','POLICY','AUTH','SOURCE','CI','FILES','PRODUCTION_GUARD','PREVIEW_GUARD','PROJECT','API','DEPLOYMENT','TIMEOUT','ROUTING','PROTECTION','BUILD','MODE','FAILED'];
+const PROJECT_REF='ineckiashpwloncxnbqx', SUPABASE_URL=`https://${PROJECT_REF}.supabase.co`;
+const CONFIG_KEYS=['POS_PREVIEW_DATA_MODE','POS_PREVIEW_SUPABASE_URL','POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY'];
+const ENV_ROW_KEYS=['key','value','type','target','visibility','id','createdAt','createdBy','updatedAt','updatedBy','comment',
+  'securityIssues','decrypted','system','gitBranch','customEnvironmentIds','configurationId','contentHint','edgeConfigId','edgeConfigTokenId','sunsetSecretId'];
+const CODES=['CONTEXT','POLICY','AUTH','SOURCE','CI','FILES','PRODUCTION_GUARD','PREVIEW_GUARD','PROJECT','CONFIG','READINESS','API','DEPLOYMENT','TIMEOUT','ROUTING','PROTECTION','BUILD','MODE','FAILED'];
 const fail=code=>{throw Object.assign(new Error('FRONTEND_PREVIEW_'+code),{code:'FRONTEND_PREVIEW_'+code});};
 const check=(ok,code)=>{if(!ok)fail(code);};
 const matches=(value,pattern)=>typeof value==='string'&&pattern.test(value);
@@ -54,10 +58,50 @@ export function verifyPreviewEnvironment(environment,branches,policy) {
 }
 
 export const ignorePreview=env=>env.VERCEL_ENV==='preview'?1:0;
+function previewConfiguration(group) {
+  const keys=Object.keys(group);
+  if(keys.length===0)return {dataMode:'mock',projectRef:null,url:'',publishableKey:''};
+  check(exact(group,CONFIG_KEYS)&&group.POS_PREVIEW_DATA_MODE==='supabase'&&group.POS_PREVIEW_SUPABASE_URL===SUPABASE_URL&&
+    matches(group.POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY,/^sb_publishable_[A-Za-z0-9_-]{16,256}(?![\s\S])/),'CONFIG');
+  return {dataMode:'supabase',projectRef:PROJECT_REF,url:SUPABASE_URL,publishableKey:group.POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY};
+}
+export function previewProjectConfiguration(payload,expectedMode) {
+  check(['mock','supabase'].includes(expectedMode),'CONFIG');
+  let rows;
+  if(Array.isArray(payload))rows=payload;
+  else if(exact(payload,['envs']))rows=payload.envs;
+  else if(exact(payload,['envs','hiddenProductionEnvCount'])){
+    check(payload.hiddenProductionEnvCount===0,'CONFIG');rows=payload.envs;
+  }else if(exact(payload,['envs','pagination'])){
+    // Vercel SDK FilterProjectEnvsResponseBody2 / Pagination: a complete list
+    // has neither a next nor a previous page, and count describes this page.
+    const page=payload.pagination;rows=payload.envs;
+    check(exact(page,['count','next','prev'])&&Number.isSafeInteger(page.count)&&page.count>=0&&page.count<=256&&
+      page.count===rows?.length&&page.next===null&&page.prev===null,'CONFIG');
+  }else fail('CONFIG');
+  check(Array.isArray(rows)&&rows.length<=256,'CONFIG');
+  const group={},selected=[];
+  for(const row of rows){
+    check(row&&typeof row==='object'&&!Array.isArray(row)&&text(row.key,256),'CONFIG');
+    if(!/^POS_PREVIEW_/i.test(row.key))continue; // Never inspect unrelated or legacy VITE values.
+    check(CONFIG_KEYS.includes(row.key)&&!Object.hasOwn(group,row.key)&&Object.keys(row).every(key=>ENV_ROW_KEYS.includes(key))&&
+      row.type==='plain'&&(!Object.hasOwn(row,'visibility')||row.visibility==='config')&&
+      Array.isArray(row.target)&&row.target.length===1&&row.target[0]==='preview'&&
+      (!Object.hasOwn(row,'gitBranch')||row.gitBranch===null)&&(!Object.hasOwn(row,'system')||row.system===false)&&
+      (!Object.hasOwn(row,'decrypted')||row.decrypted===false)&&
+      (!Object.hasOwn(row,'customEnvironmentIds')||Array.isArray(row.customEnvironmentIds)&&row.customEnvironmentIds.length===0)&&
+      (!Object.hasOwn(row,'securityIssues')||Array.isArray(row.securityIssues)&&row.securityIssues.length===0)&&
+      ['configurationId','contentHint','edgeConfigId','edgeConfigTokenId','sunsetSecretId'].every(key=>!Object.hasOwn(row,key)||row[key]===null),'CONFIG');
+    group[row.key]=row.value;selected.push(row);
+  }
+  const config=previewConfiguration(group);check(config.dataMode===expectedMode,'CONFIG');
+  return {...config,configurationSha256:hash(canonical(selected.sort((a,b)=>a.key<b.key?-1:a.key>b.key?1:0)))};
+}
 export function previewBuildEnvironment(env) {
   check(env.VERCEL_ENV==='preview','BUILD');
+  const config=previewConfiguration(Object.fromEntries(Object.keys(env).filter(key=>/^POS_PREVIEW_/i.test(key)).map(key=>[key,env[key]])));
   return {...Object.fromEntries(['PATH','HOME','TMPDIR','TMP','TEMP','LANG','LC_ALL','TZ','SystemRoot'].filter(key=>typeof env[key]==='string').map(key=>[key,env[key]])),
-    VITE_DATA_MODE:'mock',VITE_SUPABASE_URL:'',VITE_SUPABASE_ANON_KEY:''};
+    VITE_DATA_MODE:config.dataMode,VITE_SUPABASE_URL:config.url,VITE_SUPABASE_ANON_KEY:config.publishableKey};
 }
 export function buildPreview(env,run=spawnSync) {
   try {
@@ -128,8 +172,10 @@ function verifyDeployment(record,id,p,sourceSHA) {
 export async function deployPreview({env,event,policy},dependencies={}) {
   try {
     const p=validatePreviewPolicy(policy),input=event?.inputs;
-    check(exact(input,['source_sha','ci_run_id','ci_attempt'])&&matches(input.source_sha,SHA)&&
+    check((exact(input,['source_sha','ci_run_id','ci_attempt'])||exact(input,['source_sha','ci_run_id','ci_attempt','data_mode'])&&
+      ['mock','supabase'].includes(input.data_mode))&&matches(input.source_sha,SHA)&&
       matches(input.ci_run_id,/^[1-9][0-9]{0,19}(?![\s\S])/)&&matches(input.ci_attempt,/^[1-9][0-9]{0,3}(?![\s\S])/),'CONTEXT');
+    const expectedMode=input.data_mode??'mock';
     check(env.GITHUB_ACTIONS==='true'&&env.RUNNER_ENVIRONMENT==='github-hosted'&&env.GITHUB_REPOSITORY===PROJECT_REPOSITORY&&
       env.GITHUB_REPOSITORY_ID===String(PROJECT_REPOSITORY_ID)&&env.GITHUB_EVENT_NAME==='workflow_dispatch'&&env.GITHUB_REF==='refs/heads/main'&&
       env.GITHUB_SHA===input.source_sha&&env.GITHUB_WORKFLOW_SHA===input.source_sha&&event.repository?.full_name===PROJECT_REPOSITORY&&
@@ -138,12 +184,12 @@ export async function deployPreview({env,event,policy},dependencies={}) {
     const request=dependencies.fetch??globalThis.fetch,now=dependencies.now??(()=>performance.now()),sleep=dependencies.sleep??(ms=>new Promise(done=>setTimeout(done,ms)));
     const stage=name=>{dependencies.onStage?.(name);};
     const ghBase=`https://api.github.com/repos/${PROJECT_REPOSITORY}/`,vercelBase='https://api.vercel.com';
-    async function json(url,token,method='GET',body,deadline=Infinity) {
+    async function json(url,token,method='GET',body,deadline=Infinity,publicHeaders) {
       const remaining=deadline-now();check(remaining>0,'TIMEOUT');const controller=new AbortController();
       const timer=setTimeout(()=>controller.abort(),Math.min(15000,remaining));
       try {
         const response=await request(url,{method,redirect:'error',signal:controller.signal,
-          headers:{Authorization:`Bearer ${token}`,Accept:'application/json','Content-Type':'application/json',
+          headers:publicHeaders??{Authorization:`Bearer ${token}`,Accept:'application/json','Content-Type':'application/json',
             ...(url.startsWith(ghBase)?{'X-GitHub-Api-Version':'2022-11-28'}:{})},
           ...(body===undefined?{}:{body:JSON.stringify(body)})});
         check(response.ok&&response.body,'API');const length=response.headers.get('content-length');
@@ -172,6 +218,20 @@ export async function deployPreview({env,event,policy},dependencies={}) {
     stage('PREVIEW_GUARD');
     try{verifyPreviewEnvironment(await gh('environments/Preview'),(await gh('environments/Preview/deployment-branch-policies')).branch_policies,policy);}catch{fail('PREVIEW_GUARD');}
     stage('PROJECT');const before=snapshotProject(await vercel(`/v9/projects/${p.projectId}`),p);
+    stage('CONFIG');const config=previewProjectConfiguration(await vercel(`/v10/projects/${p.projectId}/env?decrypt=false`),expectedMode);
+    let authReadiness='NOT_RUN',permissionContractReadiness='NOT_RUN';
+    if(config.dataMode==='supabase'){
+      stage('READINESS');
+      try{
+        const readinessDeadline=now()+30000;
+        const settings=await json(config.url+'/auth/v1/settings',null,'GET',undefined,readinessDeadline,{apikey:config.publishableKey});
+        check(settings?.mailer_autoconfirm===true&&settings.disable_signup===false&&settings.external?.email===true,'READINESS');
+        authReadiness='PASS';
+        const contract=await json(config.url+'/rest/v1/rpc/permission_get_contract',null,'POST',{},readinessDeadline,
+          {apikey:config.publishableKey,'Content-Type':'application/json','x-pos-permission-contract':'2'});
+        check(contract?.permissionContractVersion===2&&contract.writeProtocolVersion===1,'READINESS');permissionContractReadiness='PASS';
+      }catch{fail('READINESS');}
+    }
     await liveMain();stage('CREATE');
     const created=await vercel('/v13/deployments','POST',{name:p.projectName,project:p.projectId,
       gitSource:{type:'github',repoId:p.repoId,ref:'main',sha:input.source_sha}});
@@ -183,10 +243,13 @@ export async function deployPreview({env,event,policy},dependencies={}) {
     }
     stage('RECHECK');const after=snapshotProject(await vercel(`/v9/projects/${p.projectId}`),p);await liveMain();
     check(before.routing===after.routing,'ROUTING');check(before.protection===after.protection,'PROTECTION');
+    const afterConfig=previewProjectConfiguration(await vercel(`/v10/projects/${p.projectId}/env?decrypt=false`),expectedMode);
+    check(config.configurationSha256===afterConfig.configurationSha256,'CONFIG');
     const url=previewUrl(deployment.url);stage('COMPLETE');
     return {schemaVersion:'pos-frontend-preview-v1',status:'READY',sourceSHA:input.source_sha,ciRunId:input.ci_run_id,ciAttempt:Number(input.ci_attempt),
       projectId:p.projectId,deploymentId:created.id,url,productionRoutingUnchanged:true,declaredProtectionUnchanged:true,protectionFieldsChecked:PROTECTION.length,
-      productionRoutingSha256:hash(before.routing),protectionSha256:hash(before.protection),httpStatus:null,applicationSmoke:'NOT_RUN'};
+      productionRoutingSha256:hash(before.routing),protectionSha256:hash(before.protection),dataMode:config.dataMode,supabaseProjectRef:config.projectRef,
+      configurationSha256:config.configurationSha256,authReadiness,permissionContractReadiness,httpStatus:null,applicationSmoke:'NOT_RUN'};
   }catch(error){throw finite(error);}
 }
 
