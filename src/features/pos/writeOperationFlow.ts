@@ -41,6 +41,11 @@ export class WriteOperationCoordinator {
   private check(generation: number) {
     if (generation !== this.generation || !this.online() || this.attempt?.status === "unknown") throw unknownWrite();
   }
+  /** Bind pre-registration awaits to the drawer/session that initiated them. */
+  captureContinuationGuard(): () => void {
+    const generation = this.generation;
+    return () => this.check(generation);
+  }
   /** Closing/locking makes late replies inert. It does not cancel the server operation. */
   leave() { this.generation += 1; this.update(null); }
   /** A compatibility failure is process-lifetime: no later async continuation may start another write. */

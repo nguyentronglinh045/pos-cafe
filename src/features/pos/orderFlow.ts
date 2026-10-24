@@ -250,7 +250,9 @@ export const receiptToPrint = (snapshot: ReceiptSnapshot, orderType: OrderType):
 export const submitOrderAndPrint = async (
   ports: AppPorts, input: SubmitOrderFlowInput,
 ): Promise<SubmitOrderChangesResult & { initialSuccess: boolean }> => {
+  const assertCurrent = getWriteCoordinator(ports.write).captureContinuationGuard();
   await requireCurrentPermission(ports, input.actor, getSubmitOrderPermission(input.context, input.items));
+  assertCurrent();
   const orderId = input.context.orderId ?? createClientId();
   const base = { schemaVersion: 1 as const, kind: "submit_order_changes" as const, orderId };
   let payload: WritePayloadV1;
@@ -272,7 +274,9 @@ export const submitOrderAndPrint = async (
 export const payOrderAndPrint = async (
   ports: AppPorts, input: PayOrderFlowInput,
 ): Promise<PayOrderResult & { initialSuccess: boolean; initialReceiptPrintGrant?: import("@/ports/permissionPrint").InitialReceiptPrintGrant }> => {
+  const assertCurrent = getWriteCoordinator(ports.write).captureContinuationGuard();
   await requireCurrentPermission(ports, input.actor, "payment.take");
+  assertCurrent();
   if (input.order.total <= 0) throw new AppError("INVALID_ORDER_ITEMS", "Các món được chọn không hợp lệ. Vui lòng kiểm tra lại đơn.");
   if (input.receivedAmount < input.order.total) throw new AppError("PAYMENT_AMOUNT_TOO_LOW", "Tiền nhận chưa đủ để thanh toán phần đã chọn.");
   const { operation, initial, initialReceiptPrintGrant } = await getWriteCoordinator(ports.write).begin({ schemaVersion: 1, kind: "pay_order", orderId: input.order.id,
@@ -355,7 +359,9 @@ export const payOrderItemsAndPrint = async (
   ports: AppPorts,
   input: PayOrderItemsFlowInput,
 ): Promise<PayOrderItemsFlowResult> => {
+  const assertCurrent = getWriteCoordinator(ports.write).captureContinuationGuard();
   await requireCurrentPermission(ports, input.actor, "payment.take");
+  assertCurrent();
 
   const lines = buildPayableLines(input.order);
   const selection = input.selection;
@@ -417,7 +423,9 @@ export const voidPaidOrder = async (
   ports: AppPorts,
   input: VoidPaidOrderFlowInput,
 ): Promise<VoidOrderResult> => {
+  const assertCurrent = getWriteCoordinator(ports.write).captureContinuationGuard();
   await requireCurrentPermission(ports, input.actor, "order.voidPaid");
+  assertCurrent();
 
   if (input.reasonNote != null && typeof input.reasonNote !== "string") throw writeError("INVALID_WRITE_REQUEST");
   const note = (input.reasonNote ?? "").trim();
