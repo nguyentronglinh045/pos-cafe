@@ -7,6 +7,7 @@ import { formatVnd } from "@/core/money";
 import { validateModifierSelection, type ModifierSelection } from "@/core/orderDraft";
 import type { ItemModifierGroup } from "@/features/pos";
 import { PortalPopup } from "../../components/PortalPopup";
+import { useOrderDialogFocus } from "./useOrderDialogFocus";
 
 interface ModifierPickerPopupProps {
   menuItem: MenuItem;
@@ -19,6 +20,7 @@ interface ModifierPickerPopupProps {
 // - Nhóm chọn-1: chọn tối đa 1 giá trị (số lượng luôn 1).
 // - Nhóm chọn-nhiều: tick nhiều giá trị, mỗi giá trị có số lượng riêng (mặc định 1).
 export function ModifierPickerPopup({ menuItem, groups, onConfirm, onClose }: ModifierPickerPopupProps) {
+  useOrderDialogFocus('[data-testid="b02-modifier-dialog"]', onClose);
   // optionValueId -> số lượng (>=1 nghĩa là đang chọn).
   const [selected, setSelected] = useState<Record<string, number>>({});
 
@@ -86,9 +88,10 @@ export function ModifierPickerPopup({ menuItem, groups, onConfirm, onClose }: Mo
   };
 
   return (
-    <PortalPopup placement="Centered" viewport="workspace" overlayClassName="bg-slate-900/50" onOutsideClick={onClose}>
+    <PortalPopup placement="Centered" viewport="workspace" overlayClassName="b02-popup-overlay" onOutsideClick={onClose}>
       <div
-        className="grid max-h-[86vh] w-[min(460px,92vw)] grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden rounded-pos bg-pos-surface shadow-[0_20px_60px_rgb(0_0_0_/_25%)]"
+        data-testid="b02-modifier-dialog"
+        className="b02-popup grid max-h-[86dvh] w-[min(460px,88vw)] grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden rounded-pos bg-pos-surface"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-center justify-between gap-2 border-b border-pos-line px-4 py-3">

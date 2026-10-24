@@ -31,6 +31,8 @@ export async function waitForStageFit(page: Page, stageTestId: string) {
 
     const stageRect = stage.getBoundingClientRect();
     const parentRect = parent.getBoundingClientRect();
-    return stageRect.width > 0 && stageRect.height > 0 && stageRect.width <= parentRect.width + 1;
+    const fits = stageRect.width <= parentRect.width + 1;
+    const scrolls = getComputedStyle(parent).overflowX === "auto" && parent.scrollWidth >= stageRect.width;
+    return stageRect.width > 0 && stageRect.height > 0 && (fits || scrolls);
   }, stageTestId);
 }

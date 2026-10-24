@@ -27,11 +27,11 @@ describe("LeftNav", () => {
     render(<LeftNav />);
 
     expect(screen.getByRole("navigation", { name: "POS modules" })).toBeInTheDocument();
-    expect(screen.getByText("Vận hành")).toBeInTheDocument();
-    expect(screen.getByText("Quản trị")).toBeInTheDocument();
+    expect(screen.getByTestId("nav-floor")).toHaveAccessibleName("Sơ đồ bàn");
+    expect(screen.getByTestId("nav-settings")).toBeEnabled();
     expect(screen.queryByTestId("nav-kitchen")).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Mang đi" }));
+    fireEvent.click(screen.getByRole("button", { name: "Bán mang đi" }));
 
     expect(useAppStore.getState().drawer).toBe("takeaway");
   });
@@ -42,7 +42,7 @@ describe("LeftNav", () => {
     render(<LeftNav />);
 
     expect(screen.getByTestId("left-nav-session")).toHaveAttribute("aria-label", "Đang đăng nhập: Quản lý · Quản lý");
-    expect(screen.getByText("Đang đăng nhập")).toBeInTheDocument();
+    expect(screen.getByTestId("left-nav-session")).toHaveAttribute("data-employee-id", admin.id);
   });
 
   it("keeps the left nav focused on the signed-in employee instead of app copy", () => {

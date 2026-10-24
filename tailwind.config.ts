@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import { posCafeStyles } from "./tailwind.posCafeStyles";
+import { remakeStyles } from "./tailwind.remakeStyles";
 
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
@@ -7,8 +8,8 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#0F766E",
-          soft: "#F0FDFA",
+          DEFAULT: "var(--primary)",
+          soft: "var(--primary-soft)",
         },
         pos: {
           bg: "var(--bg)",
@@ -31,5 +32,5 @@ export default {
       },
     },
   },
-  plugins: [posCafeStyles],
+  plugins: [posCafeStyles, remakeStyles],
 } satisfies Config;

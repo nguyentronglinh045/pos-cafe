@@ -214,6 +214,20 @@ test('stabilize waits for readiness/images and disables motion/caret without cha
   });
 });
 
+test('stabilize uses the same neutral pointer without changing focus, content or geometry', async () => {
+  await fixture('<style>#primary:hover{background:orange}</style><button id="primary">Xong</button>', async page => {
+    await page.locator('#primary').hover();
+    await page.locator('#primary').focus();
+    const before = await page.locator('#primary').boundingBox();
+    assert.equal(await page.locator('#primary:hover').count(), 1);
+    await stabilizePage(page, { readySelector: '#primary' });
+    assert.equal(await page.locator('#primary:hover').count(), 0);
+    assert.equal(await page.locator('#primary:focus').count(), 1);
+    assert.equal(await page.locator('#primary').textContent(), 'Xong');
+    assert.deepEqual(await page.locator('#primary').boundingBox(), before);
+  });
+});
+
 test('stabilize fails on a broken sourced image', { timeout: 15_000 }, async () => {
   await fixture('<button id="primary">Xong</button><img src="data:image/png;base64,not-an-image">', async (page) => {
     await assert.rejects(stabilizePage(page, { readySelector: '#primary' }), /Image 1 failed to decode/);
@@ -223,11 +237,21 @@ test('stabilize fails on a broken sourced image', { timeout: 15_000 }, async () 
   });
 });
 
-test('stabilize requires exactly one visible ready selector', { timeout: 20_000 }, async () => {
+test('stabilize requires exactly one visible ready selector', { timeout: 40_000 }, async () => {
   await fixture('<button id="primary">Xong</button><span class="many">A</span><span class="many">B</span><div id="hidden" style="display:none">Ẩn</div>', async (page) => {
     await assert.rejects(stabilizePage(page, { readySelector: '.many' }), /exactly one DOM element; found 2/);
     await assert.rejects(stabilizePage(page, { readySelector: '#missing' }), /exactly one visible DOM element/);
     await assert.rejects(stabilizePage(page, { readySelector: '#hidden' }), /exactly one visible DOM element/);
     await assert.rejects(stabilizePage(page, { readySelector: '' }), /nonempty selector/);
+  });
+});
+
+test('stabilize waits for a clean state after queued transient overlays without changing thresholds', { timeout: 15_000 }, async () => {
+  await fixture('<button id="primary">Xong</button><div id="transient">Đang thông báo</div>', async (page) => {
+    const before = await page.locator('#primary').boundingBox();
+    await page.evaluate(() => setTimeout(() => document.getElementById('transient').remove(), 5_200));
+    await stabilizePage(page, { readySelector: 'body:not(:has(#transient)) #primary' });
+    assert.equal(await page.locator('#transient').count(), 0);
+    assert.deepEqual(await page.locator('#primary').boundingBox(), before);
   });
 });

@@ -9,11 +9,15 @@
  *
  * Capture policy: wait for the named ready element, declared fonts and images;
  * disable CSS animations/transitions/caret; then wait two animation frames.
+ * Park the pointer outside the viewport for both sides (neutral hover state).
  * No font, app state, clock, viewport, or layout override is injected here.
  * The runner additionally checks repeated screenshots for pixel stability.
  */
 
 const TIMEOUT_MS = 5_000;
+// A real login may queue pairing + welcome toasts before the declared clean
+// state appears. Waiting longer changes no comparison threshold or app state.
+const READY_TIMEOUT_MS = 15_000;
 const SAFE_ID = /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/;
 
 function validateSelectors(entries, name) {
@@ -206,11 +210,15 @@ export async function stabilizePage(page, { readySelector } = {}) {
     throw new TypeError('readySelector must be a nonempty selector');
   }
   const ready = page.locator(readySelector);
+  // Login/resize can leave the pointer over a toast, pausing its timer forever.
+  // Neutralize hover before waiting as well as before decoding/capture.
+  await page.mouse.move(-1, -1);
   const initialCount = await ready.count();
   if (initialCount > 1) throw new Error(`Ready selector must match exactly one DOM element; found ${initialCount}: ${readySelector}`);
-  try { await ready.waitFor({ state: 'visible', timeout: TIMEOUT_MS }); }
+  try { await ready.waitFor({ state: 'visible', timeout: READY_TIMEOUT_MS }); }
   catch { throw new Error(`Ready selector must match exactly one visible DOM element: ${readySelector}`); }
   await exactlyOne(page, { id: 'ready', selector: readySelector }, 'Ready selector');
+  await page.mouse.move(-1, -1);
 
   const decodedImages = await page.evaluate(async ({ timeoutMs }) => {
     let timer;
