@@ -1,0 +1,295 @@
+{
+  "version": "permission-closeout-registrations-v1",
+  "origin": "SOURCE_ANALYZER_RAW_BYTES_FILE_SYNTAX_ONLY_NOT_RUNTIME_DISCOVERY",
+  "source": {
+    "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+    "sha256": "6fb95090b849df0a90b50b81c764ee68164fe09c8cb7f54f6deef8d7667d6fa0"
+  },
+  "configs": [
+    {
+      "path": "playwright.pin-onboard-closeout.config.ts",
+      "sha256": "799933d5d609fc2c8754d51a1124c69134fb106553ef05ae59096e80237650c2"
+    },
+    {
+      "path": "playwright.pin-tc18.config.ts",
+      "sha256": "9675df8e040c115d2b650737cb8945c81c61f320e19115de3508081b716f4ee6"
+    }
+  ],
+  "tests": [
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > PERM29 app invalidation receives metadata topics; join-only edit needs manual menu refresh",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-01 blank bootstrap yields only restricted Auth/REST session and safe denials",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-02 cached normal floor cannot render after owner recovery and restricted relogin",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-02 late S1 proof cannot change the S2 restricted generation",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-02 restricted proof, network failure, reload and revoked gate",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-03 activated protected RPC inventory denies restricted and absent tokens without effects",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-03 every protected RPC denies a live token from another store",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-06 completion revokes two restricted tokens and starts a 12h normal session",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-08 late S1 completion ACK cannot clear S2 restricted gate",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-09 forced completion ACK loss after execute requires login verification",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-09 forced completion ACK loss before execute requires login verification",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 Store Key number 1 pairs through Auth/REST to the same store",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 Store Key number 100000000 pairs through Auth/REST to the same store",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 Store Key number 2147483647 pairs through Auth/REST to the same store",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 Store Key number 99999999 pairs through Auth/REST to the same store",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 UI rejects invalid Unicode name and address before network",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 authenticated bootstrap accepts 120/500 Unicode code points with demo",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 authenticated bootstrap accepts one code point and empty address without demo",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 direct authenticated RPC rejects malformed DTO atomically and replays canonical bootstrap",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 malformed Store Key is rejected before Auth and REST",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 bootstrap ownerId response mismatch never displays Store Key",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 bootstrap storeNo response mismatch never displays Store Key",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 bootstrap transport failure before execute retries one canonical create",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 lost bootstrap ACK waits for explicit retry and reuses one canonical create",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 lost reserve ACK waits for explicit retry and reuses one canonical create",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 lost signup ACK reconciles by sign-in and never submits signup twice",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 pending browser submit coalesces repeated clicks before reservation executes",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 reserve transport failure before execute retries one canonical create",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 signup transport failure before execute retries one canonical create",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-12 compatibility unmount keeps Key until ACK, then reloads compatible and clears it",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-12 hard reload loses the in-memory Key, does not recreate, and accepts the externally saved Key",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-12 reload after explicit Key ACK keeps store pairing without credential persistence",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-12 warning acknowledgement prevents all create network before consent",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-13 blank store skips demo stages after normal owner login",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-13 create to Key ACK stays restricted until changed PIN login, then seeds once (TC02/12)",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-13 in_progress requires explicit retry across login, focus and reconnect",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-13 needs_retry requires explicit retry across login, focus and reconnect",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-14 lost employee ACK preserves allowed-route edit through second-device retry and direct replay",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-14 lost floor ACK preserves allowed-route edit through second-device retry and direct replay",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-14 lost menu ACK preserves allowed-route edit through second-device retry and direct replay",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-15 floor deterministic collision preserves row and rejects stale stage before retry",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-15 menu deterministic collision preserves row and rejects stale stage before retry",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-15 menu fault keeps cashier edit and two owners race explicit retry",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-15 retry reclaim waits behind locked menu stage and returns stale",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-15 two browser owners race initial claim behind store mutex",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-16 all-override nonowners and foreign owner cannot mutate seed; legacy routes stay closed",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-16 owner recovery between stages revokes runner and waits for explicit retry",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-17 normal owner PIN and cashier administration preserve sessions and role ceiling",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 matrix requires all runtime scenario captures and all eleven sinks",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 operator-only recovery UI applies through the dedicated PostgreSQL role without leaking PIN",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: bootstrap denial, fault, lost ACK and replay keep Key out of sinks",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: completion audit fault rolls back, then lost ACK requires new PIN login",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: completion denial, commit and revoked replay do not leak",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: recovery role denial, fault, commit and replay keep secret projections clean",
+      "project": "pin-onboard-closeout-isolated"
+    },
+    {
+      "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "fullName": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: seed fault, denial, lost ACK and committed replay keep receipts clean",
+      "project": "pin-onboard-closeout-isolated"
+    }
+  ]
+}

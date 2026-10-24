@@ -56,7 +56,7 @@
       "extends": "passcode",
       "steps": [
         {
-          "click": "@employee-6b7bd350-7db2-4160-8471-cca2668c070d"
+          "click": "@employee-30000000-0000-4000-8000-000000000011"
         },
         {
           "clickAll": [
@@ -142,7 +142,7 @@
     },
     {
       "name": "employees",
-      "describe": "drawer quan ly nhan vien tren main",
+      "describe": "drawer quan ly nhan vien va quyen candidate",
       "extends": "floor",
       "steps": [
         {
@@ -208,6 +208,39 @@
         },
         {
           "waitFor": "@receipt-preview"
+        }
+      ]
+    },
+    {
+      "name": "compatibility-update-gate",
+      "describe": "man hinh yeu cau cap nhat, component ung dung that trong fixture mock",
+      "route": "/ui-audit/compatibility-gate.html",
+      "steps": [
+        {
+          "waitFor": "@compatibility-update-gate"
+        }
+      ]
+    },
+    {
+      "name": "compatibility-created-store",
+      "describe": "ma quan synthetic chua xac nhan luu khi yeu cau cap nhat",
+      "route": "/ui-audit/compatibility-gate.html?created=1",
+      "steps": [
+        {
+          "waitFor": "@compatibility-created-store-result"
+        }
+      ]
+    },
+    {
+      "name": "required-pin-change",
+      "describe": "form owner doi PIN tam, proof check hop le",
+      "route": "/ui-audit/required-pin-change.html",
+      "steps": [
+        {
+          "waitFor": "@required-pin-change-screen"
+        },
+        {
+          "waitFor": "@complete-required-pin"
         }
       ]
     }

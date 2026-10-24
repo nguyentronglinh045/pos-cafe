@@ -5,6 +5,8 @@ import { spawn, execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { hash, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, smokeTraceDiagnostics, guardFailureCode } from './project-ci-results.mjs';
 import { lightOwnerMatches } from './project-ci-launch.mjs';
+import {edgeResolutionCounts} from './permission-edge-resolution.mjs';
+import { pinUiActionRoot } from './permission-pin-ui-policy.mjs';
 import { uiTestInventory, readUIFile, readUIJSON, uiEvidenceContext, remakeSelftestCounts, auditSelftestCounts, requireFreshUIOutput } from './project-ui-results.mjs';
 
 const GiB = 1024 ** 3;
@@ -186,6 +188,8 @@ export async function main() {
   admissionStep = 9;
   const fingerprints = { source: trackedFingerprint(root, paths), lock: hash(readFileSync(join(root, 'package-lock.json'))) };
   const task = mkdtempSync(join(process.env.RUNNER_TEMP, `pos-light-${binding.runId}-${binding.attempt}-`));
+  const {pg16Layout} = await import('./permission-runtime-pg16-cleanup.mjs');
+  const nativeRoot = pg16Layout(binding.runId,binding.attempt).root;
   const env = lightEnvironment(task, process.env);
   let peak = 0;
   const guardFacts = {};
@@ -204,27 +208,28 @@ export async function main() {
         const [key, value] = line.split(/\s+/); if (keys[key]) guardFacts[keys[key]] = Number(value);
       }
     let freeNow = Number.MAX_SAFE_INTEGER;
-    for (const path of [root, task]) {
+    for (const path of [root, task, '/var/tmp']) {
       const disk = statfsSync(path), free = disk.bavail * disk.bsize;
       guardFacts.minimumObservedFreeBytes = Math.min(guardFacts.minimumObservedFreeBytes ?? Number.MAX_SAFE_INTEGER, free);
       freeNow = Math.min(freeNow, free);
     }
     guardFacts.initialFreeBytes ??= freeNow;
     guardFacts.freeSpaceDecreaseBytes = Math.max(0, guardFacts.initialFreeBytes - freeNow);
-    peak = Math.max(peak, allocatedBytes([root, task], guardFacts));
+    peak = Math.max(peak, allocatedBytes([root, join(root,'.git'), task, nativeRoot, pinUiActionRoot(root)], guardFacts));
+    if (allocatedBytes([pinUiActionRoot(root)]) > 64 * 1024 ** 2) guardRefuse('RESOURCE_OWNED_CAP');
     if (freeNow < 30 * GiB) guardRefuse('RESOURCE_FREE_SPACE');
     if (guardFacts.freeSpaceDecreaseBytes > 5 * GiB) guardRefuse('RESOURCE_HOST_GROWTH');
     if (peak > 5 * GiB) guardRefuse('RESOURCE_OWNED_CAP');
     for (const [name, value] of Object.entries(limits)) if (readFileSync(join(cgroup, name), 'utf8').trim() !== value) guardRefuse('RESOURCE_CGROUP_DRIFT');
   };
   const rows = [];
-  const phase = async (id, command, args, readCounts, diagnosticReport) => {
+  const phase = async (id, command, args, readCounts, diagnosticReport, timeoutMs = 480000) => {
     const started = Date.now(), output = join(task, `${id}.log`);
     const invocationSHA = hash(JSON.stringify({ runId: binding.runId, attempt: binding.attempt, id, command, args,
       sourceFingerprint: fingerprints.source, lockSHA: fingerprints.lock }));
     let result = { exitCode: null, blocked: true }, counts = null, valid = false, failureCode = null;
     try {
-      result = await capturedCommand(command, args, { cwd: root, env, output, guard });
+      result = await capturedCommand(command, args, { cwd: root, env, output, guard, timeoutMs });
       if (!result.blocked && readCounts) counts = readCounts(readFileSync(output, 'utf8'));
       if (trackedFingerprint(root, paths) !== fingerprints.source) guardRefuse('SOURCE_DRIFT');
       valid = !result.blocked && result.exitCode === 0;
@@ -293,7 +298,41 @@ export async function main() {
     await phase('tooling', process.execPath, ['node_modules/vitest/vitest.mjs', 'run', '--config=vitest.project-tooling.config.ts',
       '--reporter=json', `--outputFile=${join(task, 'tooling.json')}`], () => vitestCounts(json('tooling'), paths.filter(path => /^tests\/.*\.tool\.test\.(?:ts|mjs)$/.test(path)), root, backendOnly), 'tooling');
     await phase('node-tools', process.execPath, ['--test', '--test-concurrency=2', '--test-reporter=tap', ...paths.filter(path => /^scripts\/.*\.test\.mjs$/.test(path))], nodeCounts);
-    await phase('browser', process.execPath, ['node_modules/playwright/cli.js', 'install', 'chromium', '--no-shell']);
+    // The pinned operator config uses the default Chromium headless shell.
+    // Install it alongside full Chromium within the same existing 5GiB budget.
+    await phase('browser', process.execPath, ['node_modules/playwright/cli.js', 'install', 'chromium']);
+    await phase('runtime-reporters', process.execPath, ['scripts/permission-runtime-reporter-selftest.mjs'], output => {
+      const line=output.split('\n').find(value=>value.startsWith('PERMISSION_REPORTER_SELFTEST '));
+      const c=JSON.parse(line?.slice('PERMISSION_REPORTER_SELFTEST '.length)??'null');
+      if(!c||c.run!==4||c.pass!==4||c.fail!==0||c.skip!==0||c.positiveControls!==2||c.negativeControls!==2)refuse();
+      const d=c.diagnosticControls;
+      if(!d||d.run!==7||d.pass!==7||d.fullPipeline!==true||d.mutationChecks!==20||d.sourceSHA!==binding.sourceSHA
+        ||JSON.stringify(d.states)!==JSON.stringify(['failed','timedOut','interrupted','runner-error','metadata-absent','wrapper-failure','transport-refusal']))refuse();
+      return c;
+    });
+    await phase('edge-resolution',process.execPath,['scripts/permission-edge-probe.mjs',root,join(env.TMPDIR,'edge-resolution'),binding.sourceSHA],
+      output=>edgeResolutionCounts(output,binding.sourceSHA),null,360000);
+    const {staticProfileCounts}=await import('./permission-runtime-static.mjs');
+    const staticOutput=join(root,'artifacts',`permission-static-${binding.runId}-${binding.attempt}`);
+    const staticEnv={GITHUB_ACTIONS:'true',RUNNER_ENVIRONMENT:'github-hosted',GITHUB_REPOSITORY:binding.repository,
+      GITHUB_REPOSITORY_ID:binding.repositoryID,GITHUB_SHA:binding.sourceSHA,GITHUB_RUN_ID:binding.runId,
+      GITHUB_RUN_ATTEMPT:String(binding.attempt),GITHUB_EVENT_NAME:process.env.GITHUB_EVENT_NAME,
+      GITHUB_EVENT_PATH:process.env.GITHUB_EVENT_PATH,GITHUB_WORKFLOW_SHA:process.env.GITHUB_WORKFLOW_SHA,RUNNER_TEMP:task};
+    const previous=Object.fromEntries(Object.keys(staticEnv).map(key=>[key,env[key]]));
+    Object.assign(env,staticEnv);
+    try{await phase('permission-static',process.execPath,['scripts/permission-runtime-static.mjs',staticOutput],output=>{
+      const lines=output.split('\n').filter(line=>line.startsWith('PERMISSION_STATIC_PROFILE '));
+      if(lines.length!==1)refuse();
+      return staticProfileCounts(JSON.parse(lines[0].slice('PERMISSION_STATIC_PROFILE '.length)),{
+        sourceSHA:binding.sourceSHA,sourceFingerprint:fingerprints.source,lockSHA:fingerprints.lock,runId:binding.runId});
+    });
+    const {pg16ProfileCounts,renderPg16Evidence}=await import('./permission-runtime-pg16.mjs');
+    await phase('permission-pg16',process.execPath,['scripts/permission-runtime-pg16.mjs',join(root,'artifacts',`permission-pg16-${binding.runId}-${binding.attempt}`)],output=>{
+      const lines=output.split('\n').filter(line=>line.startsWith('PERMISSION_PG16_PROFILE '));
+      if(lines.length!==1)refuse();const receipt=JSON.parse(lines[0].slice('PERMISSION_PG16_PROFILE '.length));
+      const bound={sourceSHA:binding.sourceSHA,sourceFingerprint:fingerprints.source,lockSHA:fingerprints.lock,runId:binding.runId};
+      const counts=pg16ProfileCounts(receipt,bound);console.log(renderPg16Evidence(receipt,bound).json);return counts;
+    },undefined,330000);}finally{for(const [key,value]of Object.entries(previous)){if(value===undefined)delete env[key];else env[key]=value;}}
     await phase('ui-tools', process.execPath, ['--test', '--test-concurrency=1', '--test-reporter=tap', ...uiTests], nodeCounts);
     // The controls deliberately include detected defects. Only these synthetic
     // calibration phases accept seeded measurement failures; app gates do not.
@@ -325,16 +364,25 @@ export async function main() {
       () => smokeCounts(json('smoke'), json('smoke-discovery'), JSON.parse(readFileSync(join(root, 'ci/smoke-applicability.json'), 'utf8'))), 'smoke');
     delete env.PLAYWRIGHT_JSON_OUTPUT_NAME;
     delete env.DEBUG;
+    await phase('ui-selftest', process.execPath, ['ui-audit/run.mjs', '--selftest'], output => {
+      if (!output.includes('selftest OK') || !/^selftest: 23 finding\(s\)/m.test(output)) refuse();
+      return { detectedFindings: 23 };
+    });
+    Object.assign(env,staticEnv);
+    try { await phase('ui-audit', process.execPath, ['scripts/permission-runtime-pin-ui.mjs'], output => uiCounts(output,
+      JSON.parse(readFileSync(join(root, 'ui-audit/report.json'), 'utf8')),
+      JSON.parse(readFileSync(join(root, 'ui-audit/config.json'), 'utf8'))));
+    } finally { for(const [key,value]of Object.entries(previous)){if(value===undefined)delete env[key];else env[key]=value;} }
   } catch { /* Fixed phase status only; never echo raw errors. */ }
-  const summary = { ...publicSummary(binding, rows, fingerprints), sourceProfile: 'MAIN_CURRENT_APP',
-    deferredFeatureGates: ['PERMISSION_FULL', 'UI_AUDIT_APP_ACCEPTANCE'], sourcePreserved: trackedFingerprint(root, paths) === fingerprints.source,
+  const summary = { ...publicSummary(binding, rows, fingerprints), sourceProfile: 'PERMISSION_APP_LIGHT',
+    deferredFeatureGates: ['PERMISSION_FULL'], hp1Execution: 'RETIRED', sourcePreserved: trackedFingerprint(root, paths) === fingerprints.source,
     peakOwnedBytes: peak, operatingCapBytes: 5 * GiB, minimumFreeBytes: 30 * GiB };
   if (!summary.sourcePreserved) summary.overallStatus = 'FAIL';
   const rendered = JSON.stringify(summary, null, 2);
   if (Buffer.byteLength(rendered) > 65536) refuse();
   console.log(rendered);
   if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY,
-    `# POS light CI\n\nScope: LIGHT_MOCK_ONLY\n\n\`\`\`json\n${rendered}\n\`\`\`\n`);
+    `# POS light CI\n\nScope: LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY\n\n\`\`\`json\n${rendered}\n\`\`\`\n`);
   if (summary.overallStatus !== 'PASS') process.exitCode = 1;
 }
 

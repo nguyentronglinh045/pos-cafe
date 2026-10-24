@@ -94,7 +94,15 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
     if (!lightOwnerMatches(uid, statSync(process.cwd()).uid)) throw new Error();
     const args = lightService(process.env, process.execPath, process.cwd(), uid);
     const unit = `pos-cafe-light-r${process.env.GITHUB_RUN_ID}-a${process.env.GITHUB_RUN_ATTEMPT}.service`;
-    const result = withLightCorePattern(linuxCorePatternAdapter(unit), () => spawnSync('sudo', ['--', ...args], { stdio: 'inherit', timeout: 1560000 }));
+    let result;
+    try {
+      result = withLightCorePattern(linuxCorePatternAdapter(unit), () => spawnSync('sudo', ['--', ...args], { stdio: 'inherit', timeout: 1560000 }));
+    } finally {
+      // Re-check the released unit independently, including timeout/SIGKILL.
+      // This module imports no launcher and cannot create a TLA import cycle.
+      const {reclaimPg16AfterUnit} = await import('./permission-runtime-pg16-cleanup.mjs');
+      console.log(JSON.stringify(reclaimPg16AfterUnit(process.cwd(), process.env)));
+    }
     console.log('PROJECT_CI_CORE_PATTERN_RESTORED');
     process.exitCode = result.status === 0 ? 0 : 1;
   } catch { console.log('PROJECT_CI_LAUNCH_BLOCKED'); process.exitCode = 1; }

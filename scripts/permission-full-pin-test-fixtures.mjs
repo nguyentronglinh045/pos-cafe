@@ -1,0 +1,20 @@
+// Synthetic P03 exact schema fixture. No I/O or app evaluation.
+import{TC18_SCENARIOS,TC18_SINKS,TC18_REQUIRED_FILES,TC19_RELATIONS}from'./permission-full-pin-collect.mjs';import{PIN19_PINS as P,PIN19_INTERFACE as S,sha256,contentHash}from'./permission-full-pin-plan.mjs';
+export function createPinFixture(manifestJson){const parsed=JSON.parse(manifestJson),secret='12'+'3456',uid=n=>'10000000-0000-4000-8000-'+String(n).padStart(12,'0'),fixed='a'.repeat(64),sinkSet=()=>Object.fromEntries(TC18_SINKS.map(k=>[k,{captured:true,data:{redacted:true}}]));
+function fixture(){
+  const groups=new Map();for(const t of parsed.mappings.filter(t=>t.identityState==='STATIC_INFERRED')){if(!groups.has(t.stage))groups.set(t.stage,[]);groups.get(t.stage).push(t);}
+  let n=0;const stages=[...groups].map(([stage,rows])=>{
+    const t=rows[0],tests=rows.map(t=>({file:t.file,fullName:t.fullName,project:t.project}));
+    const documents={discovery:JSON.stringify({tests}),results:JSON.stringify({tests:tests.map(t=>({...t,expectedStatus:'passed',actualStatus:'passed',attempts:1,retries:0,repeatIndex:0,skip:false,only:false,todo:false}))}),options:JSON.stringify({config:t.config,forbidOnly:true,retries:0,repeatEach:1,workers:1,noFilter:true})};
+    const artifacts=Object.fromEntries(Object.entries(documents).map(([k,v])=>[k,{rawSha256:sha256(v),contentSha256:contentHash(JSON.parse(v)),bytes:Buffer.byteLength(v)}]));
+    const s={stage,runtimeProfile:t.runtimeProfile,executionKind:t.executionKind,runId:uid(++n),attempt:1,nonce:uid(++n),backendIdentity:t.executionKind==='static'?null:sha256('simulation backend '+t.runtimeProfile),startedAt:'2026-10-19T00:00:00.000Z',finishedAt:'2026-10-19T00:00:01.000Z',sourceFingerprint:P.sourceFingerprint,manifestSha256:P.manifestSha256,configSha256:t.config.sha256,lockSha256:P.lockSha256,recipeSha256:fixed,documents,artifacts};
+    const definition=s.executionKind==='static'?['STATIC_NO_BACKEND',[]]:stage==='pin-identity-server'?['SQL_OBSERVER',['SQL']]:stage==='pin-canary-empty'?['EMPTY_TARGET_OBSERVER',['SQL','AUTH','REST','STORAGE']]:stage==='pin-tc18-wrapper'?['TC18_WRAPPER',['SQL','AUTH','REST','STORAGE','REALTIME','CHROMIUM']]:['BROWSER_AUTH_REST',['SQL','AUTH','REST','CHROMIUM']];
+    s.observer={kind:definition[0],declaredOnly:true,backendIdentity:s.backendIdentity,...Object.fromEntries(['fixtureSha256','schemaSha256','catalogSha256','appliedArtifactSha256'].map(k=>[k,s.executionKind==='static'?null:fixed])),apiBindingSha256:s.executionKind==='static'||definition[0]==='SQL_OBSERVER'?null:fixed,services:definition[1]};s.observerSha256=contentHash(s.observer);
+    s.attestation=Object.fromEntries(S.attestation.map(k=>[k,structuredClone(s[k])]));return s;
+  });
+  const tc18={phase:'POST_CHILD_EXIT',childExit:0,browser:{total:7,passed:7,failed:0,retried:0,missing:0,fatalCount:0},scenarios:TC18_SCENARIOS.map(scenario=>({scenario,canaries:[secret],sinks:sinkSet()})),controls:[...TC18_SCENARIOS,'operator'].map(scenario=>({scenario,canaries:[secret]})),operator:{canaries:[secret],sinks:sinkSet()},files:TC18_REQUIRED_FILES.map(path=>{const b=Buffer.from(path.endsWith('.json')?'{}':'opaque simulation bytes');return {path,readable:true,type:'REGULAR',postExit:true,rawBase64:b.toString('base64'),sha256:sha256(b),bytes:b.length};}),maskedFormAsserted:true};
+  const before=Object.fromEntries(S.preservation.map(k=>[k,fixed]));
+  const tc19={expectedEmptyStoreSet:true,relations:TC19_RELATIONS.map(relation=>({relation,lockedCount:0})),checks:Object.fromEntries(S.tc19Checks.map(k=>[k,true])),before,after:{...before},authCount:66,storageObjectCount:1,cliMigrations:16,exclusiveSeedBytes:0};
+  return {schemaVersion:'permission-full-pin19-evidence-v1',evidenceMode:'SIMULATION',manifestSha256:P.manifestSha256,baseCommit:P.baseCommit,baseTree:P.baseTree,sourceFingerprint:P.sourceFingerprint,lockSha256:P.lockSha256,recipeSha256:fixed,stages,tc18,tc19,dependencies:parsed.dependencies.map(d=>({id:d.id,state:'NOT_RUN',sha256:null}))};
+}
+return fixture();}

@@ -1,5 +1,11 @@
 node_modules/
 artifacts/
+ui-audit/out/
+ui-audit/report.json
+ui-audit/report.md
+.tmp-full-test.log
+.tmp-full-test-ui.log
+supabase/.temp/
 dist/
 coverage/
 playwright-report/
@@ -17,6 +23,3 @@ vite.config.d.ts
 vite.config.js
 vitest.config.d.ts
 vitest.config.js
-ui-audit/out/
-ui-audit/report.json
-ui-audit/report.md
