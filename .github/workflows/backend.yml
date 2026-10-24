@@ -12,6 +12,7 @@ on:
           - DO_NOT_RUN
           - RUN_SYNTHETIC_PILOT
           - RUN_T04_PROFILE
+          - RUN_T04_IMAGE_DIAGNOSTIC
           - RUN_SERVICE_PROFILE
           - RUN_NAMESPACE_PROBE
           - RUN_CAPACITY_PROBE
@@ -124,6 +125,30 @@ jobs:
           CI1_EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
         run: node scripts/project-backend-t04.mjs
       - name: Reclaim the owned T04 loop after process release
+        if: always()
+        env:
+          CI1_RECLAIM_AUTHORIZED: 'yes'
+        run: node scripts/permission-runtime-t04-reclaim.mjs
+
+  t04-image-diagnostic:
+    if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386' && inputs.confirmation == 'RUN_T04_IMAGE_DIAGNOSTIC'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.16.0'
+          package-manager-cache: false
+      - name: Diagnose the full Candidate stage and image measurement on one bounded synthetic backend
+        env:
+          CI1_CONFIRMATION: RUN_T04_IMAGE_DIAGNOSTIC
+          CI1_EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
+        run: node scripts/project-backend-t04.mjs
+      - name: Reclaim the owned diagnostic loop after process release
         if: always()
         env:
           CI1_RECLAIM_AUTHORIZED: 'yes'

@@ -9,8 +9,8 @@ import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { writeIsolatedReceipt, ISOLATED_RECEIPT_MAX_BYTES, ISOLATED_RECEIPT_READ } from './permission-runtime-isolated-receipt.mjs';
 import { ci1IsolatedFailure, ci1ReadIsolatedError, ci1FailureExport, ci1WorkerPlan } from './permission-runtime-t04-worker.mjs';
-import { backendFailureEvidence, backendEvidence } from './project-backend-t04.mjs';
-import { runT04Profile } from './permission-runtime-t04.mjs';
+import { backendFailureEvidence, backendEvidence,backendImageDiagnosticFailureEvidence,backendImageDiagnosticEvidence } from './project-backend-t04.mjs';
+import { runT04Profile,runT04ImageDiagnostic } from './permission-runtime-t04.mjs';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const originalError = () => Object.assign(Error('PRIVATE_RECEIPT_SENTINEL'), { status: 78, ci1Command: 'unshare' });
 
@@ -68,7 +68,8 @@ export function returnReceiptControlFixtures(parent, owner, created) {
   }
 }
 
-export async function receiptFileRoundtrip(parent, record) {
+export async function receiptFileRoundtrip(parent, record,mode='full') {
+  assert(['full','image-diagnostic'].includes(mode));
   const identity = { runId: record.runId, attempt: record.attempt }, sourceSHA = record.sourceSHA;
   ci1IsolatedFailure(record, identity, sourceSHA);
   const oldUmask = process.platform === 'linux' ? process.umask(0o022) : null;
@@ -94,17 +95,28 @@ export async function receiptFileRoundtrip(parent, record) {
     command: inner.error.ci1Command, exitCode: inner.error.status, facts: inner.error.ci1Facts });
   for (const [key, value] of Object.entries(record.failure.facts)) assert.equal(failure.facts[key], value);
   // Synthetic counts receipt exercises the unchanged outer failure gate only.
-  const evidence = { ...await runT04Profile({ guard() {}, async bootstrap() { throw Error('CONTROL'); }, async close() { return true; } }),
+  const digest='b'.repeat(64);
+  const diagnosticAdapter={guard(){},async bootstrap(){},async physical(){return digest;},async baseline(){return digest;},async preserved(){return true;},
+    async checkpoint(){return{archiveSHA:digest,storageSHA:digest};},
+    async preflight(){return{status:'PASS',archiveSHA:digest,storageSHA:digest,baselineSHA:digest,physicalSHA:digest};},async prepare(){},
+    async stage(){return{stage:'candidate-e2e',status:'PASS',required:2,run:6,pass:6,fail:0,skip:0,retry:0};},
+    async imageMeasurement(){throw Object.assign(Error('PRIVATE_RECEIPT_SENTINEL'),record.failure.facts);},async close(){return true;}};
+  const evidence = { ...await (mode==='full'?runT04Profile({ guard() {}, async bootstrap() { throw Error('CONTROL'); }, async close() { return true; } })
+      :runT04ImageDiagnostic(diagnosticAdapter)),
     repository: 'nguyentronglinh045/pos-cafe', ...identity, sourceSHA, workflowSHA: sourceSHA,
     sourceFingerprint: 'b'.repeat(64), lockSHA: 'c'.repeat(64) };
   const env = { GITHUB_REPOSITORY: evidence.repository, GITHUB_RUN_ID: identity.runId, GITHUB_RUN_ATTEMPT: String(identity.attempt),
-    GITHUB_SHA: sourceSHA, GITHUB_WORKFLOW_SHA: sourceSHA };
+    GITHUB_SHA: sourceSHA, GITHUB_WORKFLOW_SHA: sourceSHA,
+    CI1_CONFIRMATION:mode==='full'?'RUN_T04_PROFILE':'RUN_T04_IMAGE_DIAGNOSTIC',CI1_EXPECTED_SOURCE_SHA:sourceSHA };
   const worker = { schemaVersion: 'permission-ci1-worker-status-v1', status: 'ERROR', businessCounts: null, cleanup: true,
     cleanupFailure: null, completed: ci1WorkerPlan(identity.runId, identity.attempt).stages.slice(1, 7), failure };
-  assert.equal(JSON.parse(backendFailureEvidence(worker, evidence, env).json).status, 'FAIL');
+  const failureGate=mode==='full'?backendFailureEvidence:backendImageDiagnosticFailureEvidence;
+  assert.equal(JSON.parse(failureGate(worker, evidence, env).json).status,mode==='full'?'FAIL':'DIAGNOSTIC_FAIL');
   assert.throws(() => backendEvidence(worker, evidence, env));
+  assert.throws(() => backendImageDiagnosticEvidence(worker,evidence,env));
+  if(mode==='image-diagnostic')assert.throws(()=>backendFailureEvidence(worker,evidence,{...env,CI1_CONFIRMATION:'RUN_T04_PROFILE'}));
   for (const change of [{ operation: null }, { command: 'unshare' }, { exitCode: 78 }])
-    assert.throws(() => backendFailureEvidence({ ...worker, failure: { ...failure, ...change } }, evidence, env));
+    assert.throws(() => failureGate({ ...worker, failure: { ...failure, ...change } }, evidence, env));
   assert(!JSON.stringify(failure).includes('PRIVATE_RECEIPT_SENTINEL'));
   return { coverage: 'LINUX_ROOT_FILE_ROUNDTRIP', bytes: bytes.length, receiptSHA: hash(bytes), cap: ISOLATED_RECEIPT_MAX_BYTES,
     runId: record.runId, attempt: record.attempt, sourceSHA, originalPreserved: false, callerAccountedBytes, failure };
@@ -114,8 +126,9 @@ export async function receiptFileRoundtrip(parent, record) {
   }
 }
 
-export function reporterReceiptFileControl(root, parent, record) {
-  const tool = fileURLToPath(import.meta.url), args = [tool, 'roundtrip', parent];
+export function reporterReceiptFileControl(root, parent, record,mode='full') {
+  assert(['full','image-diagnostic'].includes(mode));
+  const tool = fileURLToPath(import.meta.url), args = [tool, 'roundtrip', parent,mode];
   const elevated = process.platform === 'linux' && process.getuid() !== 0;
   const child = spawnSync(elevated ? '/usr/bin/sudo' : process.execPath,
     elevated ? ['-n', '--', process.execPath, ...args] : args,
@@ -142,6 +155,6 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
     assert.equal(process.argv[2], 'roundtrip');
     assert(scope && !scope.startsWith('..') && !scope.includes(':') && realpathSync(parent) === parent && lstatSync(parent).isDirectory());
     const input = readFileSync(0); assert(input.length <= ISOLATED_RECEIPT_MAX_BYTES);
-    console.log(JSON.stringify(await receiptFileRoundtrip(parent, JSON.parse(input))));
+    console.log(JSON.stringify(await receiptFileRoundtrip(parent, JSON.parse(input),process.argv[4]??'full')));
   } catch { console.error('ISOLATED_RECEIPT_FILESYSTEM_CONTROL_FAILED'); process.exitCode = 1; }
 }

@@ -15,7 +15,7 @@ import {installEdgeResolution,assertEdgeResolution} from './permission-edge-reso
 import { CI1_LIMITS, CI1_PROJECT, CI1_RUNTIME, ci1ProcessEnvironment, assertCi1Envelope, ci1TrustedRepository } from './permission-ci1-policy.mjs';
 import { ci1LinuxRecipe, readCi1LinuxEnvelope, ci1SystemdProperty, ci1HarnessFailureFacts } from './permission-ci1-harness.mjs';
 import { renderCi1Evidence } from './permission-ci1-evidence.mjs';
-import {renderT04Evidence,t04FailureFacts,t04TimeBudget,t04SafeFailureMetric,T04_FAILURE_BOUNDS} from './permission-runtime-t04.mjs';
+import {renderT04Evidence,renderT04ImageDiagnostic,t04EventMode,t04FailureFacts,t04TimeBudget,t04SafeFailureMetric,T04_FAILURE_BOUNDS} from './permission-runtime-t04.mjs';
 import {T04_DIAGNOSTIC_BOUNDS} from './permission-runtime-t04-restore-diagnostic.mjs';
 import {finiteDiagnosticFacts} from './permission-runtime-diagnostic-transport.mjs';
 import { CI1_SETUP, ci1BytesHash, ci1NpmIntake, ci1ToolsIntake, ci1CheckTarListing, ci1EdgeIntake,
@@ -234,7 +234,7 @@ function runnerGuard(env) {
     || typeof env.GITHUB_SHA !== 'string' || env.GITHUB_SHA.length !== 40
     || !/^[a-f0-9]{40}$/.test(env.GITHUB_SHA) || env.GITHUB_SHA !== env.GITHUB_WORKFLOW_SHA) refused();
   const event=parse(env.GITHUB_EVENT_PATH);
-  if(event.inputs?.confirmation!=='RUN_T04_PROFILE'||event.inputs?.expected_source_sha!==env.GITHUB_SHA)refused();
+  t04EventMode(event,env.GITHUB_SHA);
 }
 
 export function t04CommandOptions(options,now){
@@ -552,12 +552,16 @@ export function ci1EdgeCacheProof(cacheRoot, expected, read = { list: readdirSyn
     sha256: ci1BytesHash(JSON.stringify(files.sort((a, b) => a.path.localeCompare(b.path)))) };
 }
 
-export function ci1PublicExport(evidence) {return renderT04Evidence(evidence);}
+export function ci1PublicExport(evidence,mode='full') {
+  if(mode==='full')return renderT04Evidence(evidence);
+  if(mode==='image-diagnostic')return renderT04ImageDiagnostic(evidence);
+  refused();
+}
 
 function exportProof(layout, env) {
   const root = layout.volume, file = `${root}/private/public-evidence.json`;
   if (!existsSync(file)) return false; // No invented counts when setup/kernel failed early.
-  const evidence = parse(file), output = ci1PublicExport(evidence);
+  const evidence = parse(file), output = ci1PublicExport(evidence,t04EventMode(parse(env.GITHUB_EVENT_PATH),env.GITHUB_SHA));
   if (evidence.runId !== layout.identity.runId || evidence.attempt !== layout.identity.attempt || evidence.sourceSHA !== env.GITHUB_SHA
     || evidence.workflowSHA !== env.GITHUB_WORKFLOW_SHA || Buffer.byteLength(output.json) + Buffer.byteLength(output.markdown) > CI1_SETUP.exportBytes) refused();
   mkdirSync(`${layout.task}/export`, { mode: 0o700, recursive: true });
@@ -840,7 +844,8 @@ async function setup(layout, input, parentEnv) {
         const done = parse(`${root}/private/isolated-completion.json`);
         if (done.runId !== layout.identity.runId || done.attempt !== layout.identity.attempt || done.sourceSHA !== baseEnv.GITHUB_SHA || done.complete !== true) refused();
       } else if (stage === 'export') {
-        if (!exportProof(layout, baseEnv) || parse(`${layout.task}/export/public-evidence.json`).status !== 'PASS') refused();
+        const mode=t04EventMode(parse(baseEnv.GITHUB_EVENT_PATH),baseEnv.GITHUB_SHA);
+        if (!exportProof(layout, baseEnv) || parse(`${layout.task}/export/public-evidence.json`).status !== (mode==='full'?'PASS':'DIAGNOSTIC_PASS')) refused();
       } else refused();
       return true;
     },

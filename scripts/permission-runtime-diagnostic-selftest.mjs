@@ -139,10 +139,44 @@ export function compatibilityExtraReporterControl(root,parent,{sourceSHA,lockSHA
  const out=collectRuntimeDiagnosticFacts([{failure:control.failure??failure}],'t04',t04SafeFailureMetric)[0];
  check(JSON.stringify(out)===JSON.stringify(facts));return{required:3,extraFailed:1,fullFileRefused:1};
 }
+// Real six-test Playwright PASS precedes a local injected failure through the
+// real measurement sanitizer. Linux then crosses the production file reader
+// and the separate diagnostic failure gate; Windows proves refusal only.
+export function imageMeasurementReporterControl(root,parent,{sourceSHA,lockSHA}){
+ const dir=join(parent,'image-measurement'),tests=join(dir,'tests','supabase');mkdirSync(tests,{recursive:true});
+ const file=join(tests,'permissionCandidate.spec.ts'),config=join(dir,'config.mjs');
+ writeFileSync(file,"import{test,expect}from'@playwright/test';\n"+CANDIDATE_TEST_NAMES.map(name=>`test(${JSON.stringify(name)},()=>expect(true).toBe(true));`).join('\n'));
+ writeFileSync(config,`export default ${JSON.stringify({testDir:tests,testMatch:'permissionCandidate.spec.ts',outputDir:join(dir,'browser'),workers:1,retries:0,repeatEach:1,
+  forbidOnly:true,timeout:3000,globalTimeout:20000,projects:[{name:CANDIDATE_TEST_PROJECT}]})};\n`);
+ const argv=[resolve(root,'node_modules/@playwright/test/cli.js'),'test','--config',config,'--reporter',resolve(root,'scripts/permission-runtime-playwright-reporter.mjs')];
+ const context={stage:'candidate-e2e',runner:'playwright',sourceSHA,sourceFingerprint:runtimeHash('image-measurement-control:'+sourceSHA),lockSHA,
+  configSHA:runtimeHash(readFileSync(config)),runId:process.env.GITHUB_RUN_ID??'1',invocationSHA:runtimeHash(argv),sourceRoot:dir,outputRoot:dir};
+ const cp=join(dir,'context.json');writeFileSync(cp,JSON.stringify(context));
+ const child=spawnSync(process.execPath,argv,{cwd:root,env:{...process.env,PERMISSION_RUNTIME_CONTEXT:cp},encoding:'utf8',timeout:25000,maxBuffer:128*1024,windowsHide:true});
+ check(!child.error&&!child.signal&&child.status===0);
+ const report=JSON.parse(readFileSync(join(dir,'candidate-e2e-runner.json'))),expected={...runtimeStage('candidate-e2e'),configSHA:context.configSHA,argv};
+ const passed=validateRuntimeStage(expected,report,context,child.status);check(passed.run===6&&passed.pass===6);
+ const controlSource=`import{imageMeasurementFailureControl}from${JSON.stringify(pathToFileURL(resolve(root,'scripts/permission-t04-image-diagnostic-control.mjs')).href)};try{console.log(JSON.stringify(await imageMeasurementFailureControl()));}catch{process.exitCode=1;}`;
+ const probe=spawnSync(process.execPath,['--input-type=module','-e',controlSource],{cwd:root,encoding:'utf8',timeout:10000,maxBuffer:8192,windowsHide:true});
+ check(!probe.error&&!probe.signal&&probe.status===0&&!probe.stdout.includes('PRIVATE'));
+ const errorFacts=JSON.parse(probe.stdout);
+ check(errorFacts.t04ImageMeasureStepOrdinal===31&&errorFacts.t04ImageMeasurePredicateOrdinal===67
+  &&errorFacts.t04ImageMeasureObservationMask===16777215-2**11-2**12&&errorFacts.t04ImageMeasurementCleanupFailed===1);
+ const facts={t04StageOrdinal:10,...t04ParentFailureFacts(errorFacts,{phaseOrdinal:5}),...t04RunnerFailureFacts(expected,report)};
+ check(facts.t04CandidateInventoryStatus===1&&facts.t04FailedTests===0&&facts.t04NonPassedTests===0);
+ for(let ordinal=1;ordinal<=6;ordinal++)check(facts['t04CandidateTest'+ordinal+'State']===1&&facts['t04CandidateTest'+ordinal+'Attempts']===1);
+ const marker=diagnosticMarker('T04_FAILURE_FACTS',facts,t04SafeFailureMetric);
+ const failure=t04FailureExport({stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:1,facts:t04FailureFacts(marker)});
+ const control=reporterReceiptFileControl(root,dir,{schemaVersion:'permission-ci1-isolated-failure-v1',runId:context.runId,
+  attempt:Number(process.env.GITHUB_RUN_ATTEMPT??1),sourceSHA,failure,cleanupFailure:null},'image-diagnostic');
+ writeFileSync(join(dir,'isolated-receipt-control.json'),JSON.stringify({...control,failure:undefined}));
+ const out=collectRuntimeDiagnosticFacts([{failure:control.failure??failure}],'t04',t04SafeFailureMetric)[0];
+ check(JSON.stringify(out)===JSON.stringify(facts));return{candidatePassed:6,imageFailureObserved:1,coverage:control.coverage};
+}
 export function diagnosticReporterSelftest(root,parent,{sourceSHA,lockSHA}){
  const summary={run:7,pass:0,states:[...DIAGNOSTIC_CONTROL_STATES],sourceSHA,lockSHA,fullPipeline:true,mutationChecks:0};
  for(const mode of DIAGNOSTIC_CONTROL_STATES.slice(0,5)){
-  if(mode==='failed'){candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA});compatibilityExtraReporterControl(root,parent,{sourceSHA,lockSHA});}
+  if(mode==='failed'){candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA});compatibilityExtraReporterControl(root,parent,{sourceSHA,lockSHA});imageMeasurementReporterControl(root,parent,{sourceSHA,lockSHA});}
   const dir=join(parent,'diagnostic-'+mode);mkdirSync(dir);const file=join(dir,'case.spec.mjs'),config=join(dir,'config.mjs');
   const ready=join(dir,'ready');
   const body=mode==='failed'?"throw new Error('UNEXPECTED_LEGACY_FINANCIAL_GRANT');":mode==='metadata-absent'?"throw new Error('PRIVATE_DIAGNOSTIC_SENTINEL');":mode==='interrupted'?`(await import('node:fs')).writeFileSync(${JSON.stringify(ready)},'ready');await new Promise(()=>{});`:mode==='timedOut'?"await new Promise(()=>{});":"";

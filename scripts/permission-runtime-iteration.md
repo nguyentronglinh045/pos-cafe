@@ -254,7 +254,7 @@ T04 and service workers use the same 128KiB UTF-8 serialized receipt limit at
 both writer and reader. The source-derived conservative maxima include both a
 primary and a cleanup failure, every allowlisted numeric fact at MAX_SAFE_INTEGER,
 the longest fixed enums, a20-digit run ID, attempt1000 and source SHA40. Current
-bounds are102,713 bytes for T04 and107,891 for service; changing the allowlists
+bounds are103,509 bytes for T04 and107,891 for service; changing the allowlists
 beyond the shared cap refuses at module load. Actual per-field bounds remain
 independently enforced. This diagnostic limit does not alter stage acceptance,
 retries, timeouts, the32KiB D12 counts receipt or the1MiB report/marker limits.
@@ -365,3 +365,69 @@ collector alongside the existing failed diagnostic group. Candidate controls
 also use the production fallback helper and consumer probe before that same
 transport. Windows explicitly proves refusal only at Unix ownership boundaries;
 Linux CI must execute accepted file/accounting/handback proof.
+
+## Fixed candidate image diagnostic segment
+
+The separate manual confirmation RUN_T04_IMAGE_DIAGNOSTIC selects exactly the
+complete candidate-e2e stage (all six discovered tests, two catalog-required
+identities, one attempt each), followed by the unchanged real image measurement.
+It uses the same fresh synthetic bootstrap, immutable original checkpoint,
+runner preflight, prepare, physical/resource guards, after-stage observation,
+original-baseline restore and final verification. It has no stage-list or resume
+input. The existing fourteen-minute inner / twenty-seven-minute outer deadlines,
+thirty-minute unit, disk bounds, private namespace and owned reclaim remain.
+
+Its receipt is permission-t04-image-diagnostic-v1, scope
+CANDIDATE_IMAGE_DIAGNOSTIC_ONLY, status DIAGNOSTIC_PASS or DIAGNOSTIC_FAIL;
+wholeT04 and full35BusinessRuntime remain NOT_RUN and remainingBusinessStages
+is34. The one successful stage must contain six passed results. Both whole-T04
+success and failure gates reject this schema, even if status is relabeled.
+The diagnostic uses its own renderer and success/failure gates with exact
+confirmation/source/run/attempt binding. Reclaim admits only the two fixed
+T04 confirmations. The SUPABASE_T04 runtime-admission manifest command remains
+the whole nineteen-stage command; it is not the diagnostic dispatch recipe.
+A fresh diagnostic does not establish interactions with the nine preceding
+stages or provide acceptance-preserving continuation on their old backend.
+
+Image measurement failures additionally project these finite fields through the
+existing t04 failure marker, isolated receipt and public failure facts:
+
+- t04ImageMeasureStepOrdinal0 UNKNOWN;1 marker/store admission,2 bucket/registry,
+  3 lookup catalog/sentinels,4 employee session,5 browser launch,6 page/CDP setup,
+  7 initial upload,8 publication,9 published registry,10 origin200,11 origin304,
+  12 Storage fault paths,13 lookup ACL fault paths,14 binding baseline,
+  15 install upload fault,16 upload failure response,17 upload fault proof,
+  18 prior binding preservation/drop fault,19 cleanup uploads,20 cleanup baseline,
+  21 install cleanup fault,22 cleanup failure response,23 metadata/bytes,
+  24 control delete,25 sentinel preservation/drop fault,26 cold browser fetch,
+  27 PNG decode,28 warm cache,29 unlink/fresh client,30 cache59,31 cache60,
+  32 cache61,33 complete-observation validation.
+- t04ImageMeasurePredicateOrdinal0 means no classified predicate. Values1..70
+  identify the explicit numeric diagnostic.check call sites in the source-bound
+  helper, including shared SQL/HTTP/registry checks; the step identifies their
+  current operation. No exception message is parsed to invent a predicate.
+- t04ImageMeasureObservationMask is a24-bit mask in IMAGE_OBSERVATION_KEYS order.
+  A set bit is a completed existing oracle. An unset bit is unproved, not false.
+- t04ImageMeasureExceptionClassOrdinal0 UNKNOWN,1 Error,2 TypeError,3 RangeError,
+  4 SyntaxError,5 AbortError,6 TimeoutError. Only exact exception names classify;
+  messages, causes, SQL, headers, bodies, tokens and asset identifiers never leave.
+- t04ImageMeasureCacheTargetOrdinal0 none,1 target59,2 target60,3 target61.
+  ElapsedObserved0 means no dispatch-to-cold-completion timing was available.
+  ElapsedMs is bounded0..180000 and ElapsedCapped1 marks saturation outside that
+  range. These fields reset on each step, so a failing next fetch cannot inherit
+  the preceding fetch's elapsed value. The original750ms windows do not change.
+
+The helper freezes its first measurement failure facts before close starts,
+including the nested fresh-client context. CleanupAttempted/CleanupFailed also
+cover that owned context; a failed context close stays failed even if the later
+containing-browser close succeeds. The body error remains primary if both fail;
+successful cleanup cannot erase the cause, and secondary cleanup failure only
+sets the existing sticky CleanupFailed field. Local controls inject both a
+predicate refusal and an external TypeError through the real sanitizer. The
+existing post-browser diagnostic group also runs an actual six-test Playwright
+PASS, injects the helper failure, then checks marker/file/diagnostic-gate/collector
+transport. Linux must prove root-file acceptance/accounting/handback; Windows
+reports refusal-only coverage. These controls are not business runtime evidence.
+Retain the compact collected record and safe log per source/run/attempt; private
+runtime files are reclaimed normally. No temporary raw debug output is added,
+and successful measurement does not emit these failure trace fields.

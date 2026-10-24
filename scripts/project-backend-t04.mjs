@@ -6,6 +6,7 @@ import { withLightCorePattern, linuxCorePatternAdapter } from './project-ci-laun
 import { ci1WorkerLayout } from './permission-ci1-intake.mjs';
 import { ci1WorkerPlan, ci1PublicExport, ci1FailureExport } from './permission-runtime-t04-worker.mjs';
 import { allocatedOutsideBytes } from './permission-ci1-outside.mjs';
+import {t04ExecutionMode,t04EventMode} from './permission-runtime-t04.mjs';
 
 export function backendOutsideAdmission(measuredBytes) {
   const budgetBytes=1024**3,reservedFutureBytes=16*1024**2;
@@ -15,8 +16,9 @@ export function backendOutsideAdmission(measuredBytes) {
 }
 
 export function backendInvocation(env, node, root) {
+  const mode=t04ExecutionMode(env.CI1_CONFIRMATION);
   if (env.GITHUB_REPOSITORY !== 'nguyentronglinh045/pos-cafe' || env.GITHUB_REPOSITORY_ID !== '1263057386' || env.GITHUB_EVENT_NAME !== 'workflow_dispatch'
-    || env.CI1_CONFIRMATION !== 'RUN_T04_PROFILE' || env.CI1_EXPECTED_SOURCE_SHA!==env.GITHUB_SHA
+    || env.CI1_EXPECTED_SOURCE_SHA!==env.GITHUB_SHA
     || !/^[a-f0-9]{40}$/.test(env.GITHUB_SHA ?? '')
     || env.GITHUB_WORKFLOW_SHA !== env.GITHUB_SHA || !node.startsWith('/') || !root.startsWith('/')) throw new Error('BACKEND_DISPATCH_REFUSED');
   const layout = ci1WorkerLayout(env.GITHUB_RUN_ID, Number(env.GITHUB_RUN_ATTEMPT));
@@ -25,17 +27,29 @@ export function backendInvocation(env, node, root) {
   const argv = ['--', 'env', ...keys.filter(key => env[key]).map(key => `${key}=${env[key]}`),
     'CI1_EXECUTION_AUTHORIZED=yes', node, resolve(root, 'scripts/permission-runtime-t04-worker.mjs'), 'launch', root];
   if (argv.some(arg => /[\r\n\0]/.test(arg))) throw new Error('BACKEND_DISPATCH_REFUSED');
-  return { argv, layout };
+  return { argv, layout, mode };
+}
+export function assertBackendDispatchMode(env,event){
+  const mode=t04ExecutionMode(env.CI1_CONFIRMATION);
+  if(t04EventMode(event,env.GITHUB_SHA)!==mode||env.CI1_EXPECTED_SOURCE_SHA!==env.GITHUB_SHA)throw Error('BACKEND_DISPATCH_REFUSED');
+  return mode;
 }
 
-export function backendEvidence(worker, evidence, env) {
+export const backendEvidence=(worker,evidence,env)=>checkedBackendEvidence(worker,evidence,env,'full');
+export const backendImageDiagnosticEvidence=(worker,evidence,env)=>checkedBackendEvidence(worker,evidence,env,'image-diagnostic');
+function assertEvidenceMode(env,mode){
+  if(t04ExecutionMode(env.CI1_CONFIRMATION??(mode==='full'?'RUN_T04_PROFILE':undefined))!==mode
+    ||env.CI1_CONFIRMATION!==undefined&&env.CI1_EXPECTED_SOURCE_SHA!==env.GITHUB_SHA)throw Error('BACKEND_PROOF_REFUSED');
+}
+function checkedBackendEvidence(worker, evidence, env,mode) {
+  assertEvidenceMode(env,mode);
   const stages = ci1WorkerPlan(env.GITHUB_RUN_ID, Number(env.GITHUB_RUN_ATTEMPT)).stages.slice(1);
-  const rendered = ci1PublicExport(evidence);
+  const rendered = ci1PublicExport(evidence,mode);
   const safe = JSON.parse(rendered.json);
   if (worker.schemaVersion !== 'permission-ci1-worker-status-v1' || worker.status !== 'COMPLETE'
     || worker.cleanup !== true || worker.cleanupFailure !== null
     || JSON.stringify(worker.completed) !== JSON.stringify(stages) || worker.businessCounts !== null
-    || safe.status !== 'PASS' || safe.repository !== env.GITHUB_REPOSITORY || safe.runId !== env.GITHUB_RUN_ID
+    || safe.status !== (mode==='full'?'PASS':'DIAGNOSTIC_PASS') || safe.repository !== env.GITHUB_REPOSITORY || safe.runId !== env.GITHUB_RUN_ID
     || safe.attempt !== Number(env.GITHUB_RUN_ATTEMPT) || safe.sourceSHA !== env.GITHUB_SHA
     || safe.workflowSHA !== env.GITHUB_WORKFLOW_SHA) throw new Error('BACKEND_PROOF_REFUSED');
   return rendered;
@@ -43,15 +57,18 @@ export function backendEvidence(worker, evidence, env) {
 
 // Diagnostics only: a failed harness may have written valid finite D12 counts.
 // This path never satisfies backendEvidence or changes the failed job's exit.
-export function backendFailureEvidence(worker, evidence, env) {
-  const rendered = ci1PublicExport(evidence), safe = JSON.parse(rendered.json);
+export const backendFailureEvidence=(worker,evidence,env)=>checkedBackendFailureEvidence(worker,evidence,env,'full');
+export const backendImageDiagnosticFailureEvidence=(worker,evidence,env)=>checkedBackendFailureEvidence(worker,evidence,env,'image-diagnostic');
+function checkedBackendFailureEvidence(worker, evidence, env,mode) {
+  assertEvidenceMode(env,mode);
+  const rendered = ci1PublicExport(evidence,mode), safe = JSON.parse(rendered.json);
   const completed = ci1WorkerPlan(env.GITHUB_RUN_ID, Number(env.GITHUB_RUN_ATTEMPT)).stages.slice(1, 7);
   if (worker.schemaVersion !== 'permission-ci1-worker-status-v1' || worker.status !== 'ERROR'
     || worker.businessCounts !== null || worker.cleanup !== true || worker.cleanupFailure !== null
     || JSON.stringify(worker.completed) !== JSON.stringify(completed)
     || worker.failure?.stage !== 'offline-edge' || worker.failure?.operation !== 'PILOT_HARNESS'
     || worker.failure?.code !== 'COMMAND_FAILED' || worker.failure?.command !== 'node' || worker.failure?.exitCode !== 1
-    || !['FAIL', 'ERROR', 'NOT_RUN'].includes(safe.status)
+    || !(mode==='full'?['FAIL','ERROR','NOT_RUN']:['DIAGNOSTIC_FAIL']).includes(safe.status)
     || safe.repository !== env.GITHUB_REPOSITORY || safe.runId !== env.GITHUB_RUN_ID
     || safe.attempt !== Number(env.GITHUB_RUN_ATTEMPT) || safe.sourceSHA !== env.GITHUB_SHA
     || safe.workflowSHA !== env.GITHUB_WORKFLOW_SHA) throw new Error('BACKEND_FAILURE_PROOF_REFUSED');
@@ -60,7 +77,8 @@ export function backendFailureEvidence(worker, evidence, env) {
 
 function main() {
   if (process.platform !== 'linux' || process.env.GITHUB_ACTIONS !== 'true' || process.env.RUNNER_ENVIRONMENT !== 'github-hosted') throw new Error();
-  const { argv, layout } = backendInvocation(process.env, process.execPath, process.cwd());
+  const { argv, layout, mode } = backendInvocation(process.env, process.execPath, process.cwd());
+  assertBackendDispatchMode(process.env,JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH)));
   const nodeRoot=dirname(dirname(process.execPath));
   const nodeAccountingRoot=['x64','arm64'].includes(basename(nodeRoot))?dirname(nodeRoot):nodeRoot;
   const outside=backendOutsideAdmission(allocatedOutsideBytes([process.cwd(),process.env.RUNNER_TEMP,
@@ -77,18 +95,18 @@ function main() {
   const worker = read(`${layout.task}/worker-status.json`);
   if (child.status !== 0) {
     const permitted = ci1WorkerPlan(process.env.GITHUB_RUN_ID, Number(process.env.GITHUB_RUN_ATTEMPT)).stages;
-    console.log(JSON.stringify({ schemaVersion: 'pos-backend-failure-v1', verificationScope: 'T04_NINETEEN_STAGES_ONLY',
+    console.log(JSON.stringify({ schemaVersion: 'pos-backend-failure-v1', verificationScope: mode==='full'?'T04_NINETEEN_STAGES_ONLY':'CANDIDATE_IMAGE_DIAGNOSTIC_ONLY',
       status: 'FAIL', completed: Array.isArray(worker.completed) ? worker.completed.filter(value => permitted.includes(value)) : [],
       failure: ci1FailureExport(worker.failure), cleanup: worker.cleanup === true,
       cleanupFailure: ci1FailureExport(worker.cleanupFailure) }));
     try {
-      const diagnostic = backendFailureEvidence(worker, read(`${layout.task}/export/public-evidence.json`), process.env);
+      const diagnostic = (mode==='full'?backendFailureEvidence:backendImageDiagnosticFailureEvidence)(worker, read(`${layout.task}/export/public-evidence.json`), process.env);
       console.log(diagnostic.json);
       if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, diagnostic.markdown);
     } catch { console.log('BACKEND_FAILURE_EVIDENCE_UNAVAILABLE'); }
     throw new Error();
   }
-  const evidence = backendEvidence(worker, read(`${layout.task}/export/public-evidence.json`), process.env);
+  const evidence = (mode==='full'?backendEvidence:backendImageDiagnosticEvidence)(worker, read(`${layout.task}/export/public-evidence.json`), process.env);
   console.log(evidence.json);
   if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, evidence.markdown);
 }

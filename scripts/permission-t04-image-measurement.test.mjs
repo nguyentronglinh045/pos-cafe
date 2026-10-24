@@ -2,7 +2,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {runT04ImageMeasurement,validateT04ImageMeasurement,IMAGE_OBSERVATION_KEYS,
- IMAGE_RESTORATION_KEYS,T04_IMAGE_MEASUREMENT_FIELDS} from './permission-t04-image-measurement.mjs';
+ IMAGE_RESTORATION_KEYS,T04_IMAGE_MEASUREMENT_FIELDS,createImageMeasurementDiagnostics,IMAGE_FAILURE_BOUNDS,imageFailureFacts,withImageMeasurementContext} from './permission-t04-image-measurement.mjs';
+import {imageMeasurementFailureControl} from './permission-t04-image-diagnostic-control.mjs';
+import {t04ParentFailureFacts,t04FailureFacts,t04SafeFailureMetric} from './permission-runtime-t04.mjs';
+import {diagnosticMarker,collectRuntimeDiagnosticFacts} from './permission-runtime-diagnostic-transport.mjs';
+import {ci1FailureExport,ci1IsolatedFailure} from './permission-runtime-t04-worker.mjs';
 
 const epoch=1792717200000;
 const binding={sourceSHA:'a'.repeat(40),sourceFingerprint:'b'.repeat(64),lockSHA:'c'.repeat(64),
@@ -142,4 +146,69 @@ test('measurement phase and sticky cleanup facts preserve the first failure with
   });
   assert.equal(closes,phase<3?0:kind==='close-recovered'?2:1);
  }
+});
+
+test('real helper failure captures first predicate or external class before secondary cleanup changes state',async()=>{
+ for(const kind of['predicate','predicate-cleanup','external']){
+  const facts=await imageMeasurementFailureControl(kind);
+  assert.equal(facts.t04ImageMeasurementPhaseOrdinal,3);assert.equal(facts.t04ImageMeasurementCleanupAttempted,1);
+  assert.equal(facts.t04ImageMeasurementCleanupFailed,kind==='predicate-cleanup'?1:0);
+  assert.equal(facts.t04ImageMeasureStepOrdinal,kind==='external'?7:31);
+  assert.equal(facts.t04ImageMeasurePredicateOrdinal,kind==='external'?0:67);
+  assert.equal(facts.t04ImageMeasureExceptionClassOrdinal,kind==='external'?2:1);
+  assert.equal(facts.t04ImageMeasureObservationMask,16777215-2**11-2**12);
+  assert.equal(facts.t04ImageMeasureElapsedObserved,kind==='external'?0:1);
+  assert.equal(facts.t04ImageMeasureElapsedMs,kind==='external'?0:59999);
+  assert(!JSON.stringify(facts).includes('PRIVATE'));
+ }
+});
+test('image diagnostic snapshot is immutable and timing resets between cache targets with honest saturation',()=>{
+ const observations={},progress=createImageMeasurementDiagnostics(observations);
+ progress.step(30);progress.timing(59,59000);progress.step(31);
+ const snapshot=imageFailureFacts(progress.capture({name:'PRIVATE_SECRET_NAME',message:'PRIVATE'}));
+ assert.equal(snapshot.t04ImageMeasureCacheTargetOrdinal,2);assert.equal(snapshot.t04ImageMeasureElapsedObserved,0);
+ assert.equal(snapshot.t04ImageMeasureElapsedMs,0);assert.equal(snapshot.t04ImageMeasureExceptionClassOrdinal,0);
+ progress.step(33);observations.publication=true;assert.deepEqual(imageFailureFacts(progress.capture(TypeError('PRIVATE'))),snapshot);
+ for(const [value,observed,ms,capped] of [[NaN,0,0,0],[Infinity,0,0,0],[-1,1,0,1],[999999,1,180000,1],[0,1,0,0],[60750,1,60750,0]]){
+  const p=createImageMeasurementDiagnostics({});p.step(31);p.timing(60,value);const f=imageFailureFacts(p.capture(Error()));
+  assert.deepEqual([f.t04ImageMeasureElapsedObserved,f.t04ImageMeasureElapsedMs,f.t04ImageMeasureElapsedCapped],[observed,ms,capped]);
+ }
+ for(const value of[0,34,NaN,'1'])assert.throws(()=>createImageMeasurementDiagnostics({}).step(value));
+ for(const value of[0,71,NaN,'1'])assert.throws(()=>createImageMeasurementDiagnostics({}).check(false,value));
+});
+test('every image failure field survives bounded parent-marker-worker-collector projection and rejects poisoned values',async()=>{
+ const facts={t04StageOrdinal:10,...t04ParentFailureFacts(await imageMeasurementFailureControl(),{phaseOrdinal:5})};
+ const base={stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:1};
+ const parsed=t04FailureFacts(diagnosticMarker('T04_FAILURE_FACTS',facts,t04SafeFailureMetric));
+ const failure=ci1FailureExport({...base,facts:parsed});
+ assert.deepEqual(collectRuntimeDiagnosticFacts([{failure}],'t04',t04SafeFailureMetric)[0],facts);
+ const envelope=f=>({schemaVersion:'permission-ci1-isolated-failure-v1',runId:'123',attempt:1,sourceSHA:binding.sourceSHA,failure:f,cleanupFailure:null});
+ assert(ci1IsolatedFailure(envelope(failure),{runId:'123',attempt:1},binding.sourceSHA));
+ for(const [key,[min,max]] of Object.entries(IMAGE_FAILURE_BOUNDS))for(const bad of[min-1,max+1,0.5,'PRIVATE_IMAGE',null]){
+  const invalid={...base,facts:{...facts,[key]:bad}};
+  assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(invalid.facts)),{});
+  assert.notDeepEqual(ci1FailureExport(invalid),invalid);
+  assert.throws(()=>ci1IsolatedFailure(envelope(invalid),{runId:'123',attempt:1},binding.sourceSHA));
+ }
+});
+test('fresh-context closure preserves body predicate or external failure and sticky cleanup through successful outer close',async()=>{
+ for(const kind of['predicate-both','external-both','body-only','close-only']){
+  const f=fixture(),p=createImageMeasurementDiagnostics({publication:true});let bodyCalls=0,innerCloses=0,outerCloses=0;
+  f.overrides.effects=async()=>({measure:async()=>{
+   try{p.step(29);await withImageMeasurementContext(async()=>{bodyCalls++;
+    if(kind==='predicate-both'||kind==='body-only')p.check(false,66);
+    if(kind==='external-both')throw TypeError('PRIVATE_FRESH_REQUEST');return true;
+   },async()=>{innerCloses++;if(kind!=='body-only')throw RangeError('PRIVATE_FRESH_CLOSE');},e=>p.capture(e));
+   }catch(error){throw p.capture(error);}
+  },close:async()=>{outerCloses++;return yes(IMAGE_RESTORATION_KEYS);}});
+  await assert.rejects(runT04ImageMeasurement(f.options,f.overrides),error=>{
+   assert.equal(error.t04ImageMeasurementPhaseOrdinal,3);assert.equal(error.t04ImageMeasureStepOrdinal,29);
+   assert.equal(error.t04ImageMeasurePredicateOrdinal,['predicate-both','body-only'].includes(kind)?66:0);
+   assert.equal(error.t04ImageMeasureExceptionClassOrdinal,kind==='external-both'?2:kind==='close-only'?3:1);
+   assert.equal(error.t04ImageMeasurementCleanupAttempted,1);assert.equal(error.t04ImageMeasurementCleanupFailed,kind==='body-only'?0:1);
+   assert(!JSON.stringify(error).includes('PRIVATE'));return true;
+  });
+  assert.deepEqual([bodyCalls,innerCloses,outerCloses],[1,1,1]);
+ }
+ let closes=0;assert.equal(await withImageMeasurementContext(async()=>42,async()=>{closes++;},()=>{throw Error('MUST_NOT_CAPTURE');}),42);assert.equal(closes,1);
 });

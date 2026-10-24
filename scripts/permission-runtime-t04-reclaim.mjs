@@ -4,6 +4,7 @@ import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {ci1WorkerLayout,ci1BytesHash} from './permission-ci1-intake.mjs';
 import {CI1_LIMITS} from './permission-ci1-policy.mjs';
+import {t04EventMode} from './permission-runtime-t04.mjs';
 
 const refuse=()=>{throw Error('CI1_RECLAIM_REFUSED');};
 let checkpoint=0;
@@ -35,6 +36,12 @@ export function assertReclaimFacts(f,control,expected){
   return true;
 }
 const run=(name,args)=>execFileSync(name,args,{encoding:'utf8',timeout:5000,maxBuffer:32768,stdio:['ignore','pipe','pipe']});
+export function assertT04ReclaimEvent(event,env){
+  if(event?.repository?.id!==1263057386||event.repository.full_name!==env.GITHUB_REPOSITORY
+    ||event.repository.private!==false||env.GITHUB_REPOSITORY!=='nguyentronglinh045/pos-cafe'
+    ||env.GITHUB_SHA!==env.GITHUB_WORKFLOW_SHA)refuse();
+  return t04EventMode(event,env.GITHUB_SHA);
+}
 function admission(){
   checkpoint=1;
   const e=process.env;
@@ -43,8 +50,7 @@ function admission(){
     ||e.GITHUB_EVENT_NAME!=='workflow_dispatch'||e.CI1_RECLAIM_AUTHORIZED!=='yes'
     ||!/^[a-f0-9]{40}$/.test(e.GITHUB_SHA??'')||e.GITHUB_SHA!==e.GITHUB_WORKFLOW_SHA)refuse();
   const event=JSON.parse(readFileSync(e.GITHUB_EVENT_PATH));
-  if(event.repository?.id!==1263057386||event.repository.full_name!==e.GITHUB_REPOSITORY||event.repository.private!==false
-    ||event.inputs?.confirmation!=='RUN_T04_PROFILE'||event.inputs?.expected_source_sha!==e.GITHUB_SHA)refuse();
+  assertT04ReclaimEvent(event,e);
   const root=realpathSync(process.cwd());
   if(run('git',['-c',`safe.directory=${root}`,'-C',root,'rev-parse','HEAD']).trim()!==e.GITHUB_SHA)refuse();
   return {root,layout:ci1WorkerLayout(e.GITHUB_RUN_ID,Number(e.GITHUB_RUN_ATTEMPT))};

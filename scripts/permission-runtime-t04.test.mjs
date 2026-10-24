@@ -10,7 +10,7 @@ import{CI1_LIMITS,CI1_PROJECT,ci1Identity}from'./permission-ci1-policy.mjs';
 import{ci1FailureExport,ci1IsolatedFailure,t04CommandOptions}from'./permission-runtime-t04-worker.mjs';
 import{t04CorrelateRestoreLog,T04_RESTORE_SQLSTATES,t04CorrelateServerLog,
  t04RestoreConstraintTarget,t04ConstraintCatalogFacts,T04_DIAGNOSTIC_BOUNDS,t04LogCapabilityMask}from'./permission-runtime-t04-restore-diagnostic.mjs';
-import{IMAGE_OBSERVATION_KEYS,IMAGE_RESTORATION_KEYS}from'./permission-t04-image-measurement.mjs';
+import{IMAGE_OBSERVATION_KEYS,IMAGE_RESTORATION_KEYS,imageFailureFacts}from'./permission-t04-image-measurement.mjs';
 const catalog=runtimeStageCatalog().filter(s=>s.runtimeProfile==='SUPABASE_T04'),ids=catalog.map(s=>s.stage);
 const sha='a'.repeat(40),digest='b'.repeat(64);
 // Parser/orchestration fixture only; this object is never backend evidence.
@@ -185,14 +185,14 @@ test('image measurement runs once after candidate browser success and before sto
 
 test('parent failure facts distinguish an observed zero exit from UNKNOWN and project only finite categories',()=>{
  const unknown={t04PhaseOrdinal:0,t04RuntimeStageBoundaryOrdinal:0,t04RuntimeResultFailureOrdinal:0,t04RuntimeStageChildExitOrdinal:0,
-  t04ImageMeasurementPhaseOrdinal:0,t04ImageMeasurementCleanupAttempted:0,t04ImageMeasurementCleanupFailed:0};
+  t04ImageMeasurementPhaseOrdinal:0,t04ImageMeasurementCleanupAttempted:0,t04ImageMeasurementCleanupFailed:0,...imageFailureFacts()};
  assert.deepEqual(t04ParentFailureFacts(undefined),unknown);assert.deepEqual(t04ParentFailureFacts(null),unknown);
  const error={runtimeStageBoundaryOrdinal:7,runtimeResultFailureOrdinal:16,runtimeStageChildExitCode:255,
   t04ImageMeasurementPhaseOrdinal:5,t04ImageMeasurementCleanupAttempted:1,t04ImageMeasurementCleanupFailed:1,
   message:'PRIVATE_PARENT_ERROR',stderr:'PRIVATE_PARENT_ERROR',url:'https://PRIVATE_PARENT_ERROR'};
  const projected=t04ParentFailureFacts(error,{phaseOrdinal:8});
  assert.deepEqual(projected,{t04PhaseOrdinal:8,t04RuntimeStageBoundaryOrdinal:7,t04RuntimeResultFailureOrdinal:16,
-  t04RuntimeStageChildExitOrdinal:256,t04ImageMeasurementPhaseOrdinal:5,t04ImageMeasurementCleanupAttempted:1,t04ImageMeasurementCleanupFailed:1});
+  t04RuntimeStageChildExitOrdinal:256,t04ImageMeasurementPhaseOrdinal:5,t04ImageMeasurementCleanupAttempted:1,t04ImageMeasurementCleanupFailed:1,...imageFailureFacts()});
  assert(!JSON.stringify(projected).includes('PRIVATE_PARENT_ERROR'));
  assert.equal(t04ParentFailureFacts({runtimeStageChildExitCode:0}).t04RuntimeStageChildExitOrdinal,1);
  for(const value of[undefined,null,-1,256,1.5,NaN,Infinity,'0'])

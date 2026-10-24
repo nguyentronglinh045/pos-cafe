@@ -19,6 +19,49 @@ const RESTORATION=Object.freeze(['faultsRemoved','lookupAclRestored','catalogRes
  'sentinelsPreserved','employeeSessionRevoked','browserClosed','physicalUnchanged']);
 export const IMAGE_OBSERVATION_KEYS=OBSERVATIONS;
 export const IMAGE_RESTORATION_KEYS=RESTORATION;
+export const IMAGE_FAILURE_BOUNDS=Object.freeze({
+ t04ImageMeasureStepOrdinal:[0,33],t04ImageMeasurePredicateOrdinal:[0,70],
+ t04ImageMeasureObservationMask:[0,16777215],t04ImageMeasureExceptionClassOrdinal:[0,6],
+ t04ImageMeasureCacheTargetOrdinal:[0,3],t04ImageMeasureElapsedObserved:[0,1],
+ t04ImageMeasureElapsedMs:[0,180000],t04ImageMeasureElapsedCapped:[0,1]});
+export function imageFailureFacts(error){
+ return Object.fromEntries(Object.entries(IMAGE_FAILURE_BOUNDS).map(([key,[min,max]])=>[key,
+  Number.isSafeInteger(error?.[key])&&error[key]>=min&&error[key]<=max?error[key]:0]));
+}
+// This state contains only fixed ordinals and completed-oracle bits. A zero bit
+// is unproved, not a negative business observation. Freeze before close runs.
+export function createImageMeasurementDiagnostics(observations){
+ let step=0,target=0,elapsedObserved=0,elapsedMs=0,elapsedCapped=0,frozen;
+ return{
+  step(value){check(Number.isInteger(value)&&value>=1&&value<=33);step=value;
+   target=value>=30&&value<=32?value-29:0;elapsedObserved=0;elapsedMs=0;elapsedCapped=0;},
+  timing(second,value){target=[59,60,61].indexOf(second)+1;elapsedObserved=Number.isSafeInteger(value)?1:0;
+   elapsedMs=elapsedObserved?Math.max(0,Math.min(180000,value)):0;elapsedCapped=elapsedObserved&&elapsedMs!==value?1:0;},
+  check(value,predicate){if(!value){check(Number.isInteger(predicate)&&predicate>=1&&predicate<=70);
+   throw Object.assign(Error('PERMISSION_T04_IMAGE_PREDICATE_FAILED'),{t04ImageMeasurePredicateOrdinal:predicate});}},
+  capture(error){
+   frozen??=Object.freeze({t04ImageMeasureStepOrdinal:step,
+    t04ImageMeasurePredicateOrdinal:imageFailureFacts(error).t04ImageMeasurePredicateOrdinal,
+    t04ImageMeasureObservationMask:OBSERVATIONS.reduce((mask,key,index)=>mask+(observations[key]===true?2**index:0),0),
+    t04ImageMeasureExceptionClassOrdinal:['Error','TypeError','RangeError','SyntaxError','AbortError','TimeoutError'].indexOf(error?.name)+1,
+    t04ImageMeasureCacheTargetOrdinal:target,t04ImageMeasureElapsedObserved:elapsedObserved,
+    t04ImageMeasureElapsedMs:elapsedMs,t04ImageMeasureElapsedCapped:elapsedCapped});
+   return Object.assign(Error('PERMISSION_T04_IMAGE_MEASURE_FAILED'),frozen,
+    {t04ImageMeasurementCleanupAttempted:error?.t04ImageMeasurementCleanupAttempted===1?1:0,
+     t04ImageMeasurementCleanupFailed:error?.t04ImageMeasurementCleanupFailed===1?1:0});
+  }
+ };
+}
+// Only the fresh cache-control context uses this boundary. Freeze body failure
+// before closing it; a failed close must neither replace that cause nor vanish
+// when the containing browser later closes successfully.
+export async function withImageMeasurementContext(body,close,capture){
+ let primary,result,cleanupFailed=0;
+ try{result=await body();}catch(error){primary=capture(error);}
+ try{await close();}catch(error){cleanupFailed=1;primary??=capture(error);}
+ if(primary)throw Object.assign(primary,{t04ImageMeasurementCleanupAttempted:1,t04ImageMeasurementCleanupFailed:cleanupFailed});
+ return result;
+}
 const TIMING=Object.freeze(['target59Ms','target60Ms','target61Ms','observed59Ms','observed60Ms','observed61Ms']);
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
@@ -111,8 +154,10 @@ export async function runT04ImageMeasurement(options,overrides){
   // The public validator always rejects simulated receipts.
   if(!overrides)validateT04ImageMeasurement(receipt,options.binding);
   return receipt;
- }catch{failure=Object.assign(Error(admitted?'PERMISSION_T04_IMAGE_MEASUREMENT_FAILED':'PERMISSION_T04_IMAGE_MEASUREMENT_REFUSED'),
-  {t04ImageMeasurementPhaseOrdinal:phase});throw failure;}
+ }catch(error){if(error?.t04ImageMeasurementCleanupAttempted===1)cleanupAttempted=1;
+  if(error?.t04ImageMeasurementCleanupFailed===1)cleanupFailed=1;
+  failure=Object.assign(Error(admitted?'PERMISSION_T04_IMAGE_MEASUREMENT_FAILED':'PERMISSION_T04_IMAGE_MEASUREMENT_REFUSED'),
+  {t04ImageMeasurementPhaseOrdinal:phase},imageFailureFacts(phase===3?error:null));throw failure;}
  finally{if(cleanup){cleanupAttempted=1;try{await cleanup();}catch{cleanupFailed=1;}}
   if(failure)Object.assign(failure,{t04ImageMeasurementCleanupAttempted:cleanupAttempted,t04ImageMeasurementCleanupFailed:cleanupFailed});}
 }
@@ -120,54 +165,55 @@ export async function runT04ImageMeasurement(options,overrides){
 async function createRuntimeEffects(o,{now,mono,gate,measurementEnd}){
  let cleaning=false,browser,context,sessionToken='',closed=false,lookupRevoked=false,lookupOriginal,storageMissing;
  const uploads=[],entry=[],createdItems=[],faults=new Set(),observations=Object.fromEntries(OBSERVATIONS.map(k=>[k,false]));
+ const diagnostic=createImageMeasurementDiagnostics(observations);
  const restoration=Object.fromEntries(RESTORATION.map(k=>[k,false]));
  let baselineObjects,baselineCatalog,baselineSentinels;
  const q=async(sql,args=[])=>{await gate(cleaning);
   // The parent lends its existing <=10s statement-timeout client. Never start a
   // query that can consume the following phase's reserved time.
-  check(now()+10000<(cleaning?o.deadline:measurementEnd));return o.db.query(sql,args);};
+  diagnostic.check(now()+10000<(cleaning?o.deadline:measurementEnd), 1);return o.db.query(sql,args);};
  const rows=async(sql,args)=>(await q(sql,args)).rows;
- const req=async(path,init={})=>{await gate(cleaning);check(path.startsWith('/')&&!path.includes('..')&&!/[\r\n\0]/.test(path));
+ const req=async(path,init={})=>{await gate(cleaning);diagnostic.check(path.startsWith('/')&&!path.includes('..')&&!/[\r\n\0]/.test(path), 2);
   return fetch(API+path,{...init,redirect:'error',signal:AbortSignal.timeout(Math.max(1,Math.min(10000,(cleaning?o.deadline:measurementEnd)-now())))});};
  const auth=()=>({apikey:o.anonKey,Authorization:'Bearer '+o.storeJwt,'x-pos-employee-token':sessionToken,'x-pos-permission-contract':'2'});
  const service=()=>({apikey:o.serviceKey,Authorization:'Bearer '+o.serviceKey});
- const rpc=async(name,body)=>{check(['permission_start_session','permission_revoke_session','apply_menu_changes'].includes(name));
+ const rpc=async(name,body)=>{diagnostic.check(['permission_start_session','permission_revoke_session','apply_menu_changes'].includes(name), 3);
   const r=await req('/rest/v1/rpc/'+name,{method:'POST',headers:{...auth(),'Content-Type':'application/json'},body:JSON.stringify(body)});
-  check(r.ok);const result=await r.json();check(result?.ok===true);return result;};
+  diagnostic.check(r.ok, 4);const result=await r.json();diagnostic.check(result?.ok===true, 5);return result;};
  const storagePath=row=>'/storage/v1/object/authenticated/'+encodeURIComponent(row.bucket_id??BUCKET)+'/'+(row.name??row.object_key).split('/').map(encodeURIComponent).join('/');
- const bytesHash=async row=>{const r=await req(storagePath(row),{headers:service()});check(r.ok);
-  const declared=Number(r.headers.get('content-length'));check(!Number.isFinite(declared)||declared<=5242880);
+ const bytesHash=async row=>{const r=await req(storagePath(row),{headers:service()});diagnostic.check(r.ok, 6);
+  const declared=Number(r.headers.get('content-length'));diagnostic.check(!Number.isFinite(declared)||declared<=5242880, 7);
   const reader=r.body.getReader(),chunks=[];let count=0;for(;;){const part=await reader.read();if(part.done)break;
    count+=part.value.length;if(count>5242880){await reader.cancel();refuse();}chunks.push(part.value);}return hash(Buffer.concat(chunks));};
  const catalog=async()=>rows(`select p.oid::text,p.proacl::text,pg_get_functiondef(p.oid) definition from pg_proc p
   where p.oid='public.permission_menu_image_public_lookup(uuid)'::regprocedure`);
  const sentinel=async()=>{
   const metadata=await rows('select to_jsonb(o) row from storage.objects o where bucket_id<>$1 order by id',[BUCKET]);
-  check(metadata.length===6);const result=[];for(const {row} of metadata){check(typeof row.bucket_id==='string'&&typeof row.name==='string'
-   &&row.name.length<=500&&!row.name.split('/').some(p=>p==='..'||p==='.')&&!/[\r\n\0\\]/.test(row.name));
+  diagnostic.check(metadata.length===6, 8);const result=[];for(const {row} of metadata){diagnostic.check(typeof row.bucket_id==='string'&&typeof row.name==='string'
+   &&row.name.length<=500&&!row.name.split('/').some(p=>p==='..'||p==='.')&&!/[\r\n\0\\]/.test(row.name), 9);
    result.push({row,sha:await bytesHash(row)});}return result;
  };
  const registry=async()=>{const result=await rows('select upload_handle,store_id,item_id,object_key,mime_type,state from private.menu_image_uploads order by upload_handle');
-  check(result.length<=68);return result.map(owned);};
+  diagnostic.check(result.length<=68, 10);return result.map(owned);};
  const captureNew=async()=>{const current=await registry();for(const row of current)if(!entry.some(x=>x.upload_handle===row.upload_handle)
-  &&!uploads.some(x=>x.upload_handle===row.upload_handle)){check(createdItems.includes(row.item_id));uploads.push(row);}check(uploads.length<=4);return current;};
+  &&!uploads.some(x=>x.upload_handle===row.upload_handle)){diagnostic.check(createdItems.includes(row.item_id), 11);uploads.push(row);}diagnostic.check(uploads.length<=4, 12);return current;};
  const upload=async item=>{const form=new FormData();form.set('itemId',item);form.set('file',new File([imageBytes()],'measurement.png',{type:'image/png'}));
   const response=await req('/functions/v1/menu-image-gateway',{method:'POST',headers:auth(),body:form});
   await captureNew();return response;};
  const publish=async(item,handle,create=false)=>{const changes=emptyMenu();changes.imageChanges=[{itemId:item,uploadHandle:handle}];
-  if(create){const category=(await rows('select id from public.categories where store_id=$1 and deleted_at is null order by id limit 1',[STORES[0]]))[0];check(UUID.test(category?.id));
+  if(create){const category=(await rows('select id from public.categories where store_id=$1 and deleted_at is null order by id limit 1',[STORES[0]]))[0];diagnostic.check(UUID.test(category?.id), 13);
    changes.menuItems.created=[{id:item,categoryId:category.id,name:'Synthetic image measurement',price:1000,sortOrder:999,isAvailable:true}];}
   return rpc('apply_menu_changes',{p_changes:changes});};
- const errorResponse=async(response,status,code)=>{check(response.status===status&&response.headers.get('cache-control')==='no-store');
-  check((await response.json())?.error?.code===code);};
+ const errorResponse=async(response,status,code)=>{diagnostic.check(response.status===status&&response.headers.get('cache-control')==='no-store', 14);
+  diagnostic.check((await response.json())?.error?.code===code, 15);};
  const publicGet=async(asset,conditional=false)=>req('/functions/v1/menu-image-public/'+asset,
   {headers:conditional?{'If-None-Match':'"'+asset+'"'}:{}});
  const suffix=hash(o.binding.runId+':'+o.binding.attempt).slice(0,12),names={upload:'t04_image_up_'+suffix,cleanup:'t04_image_del_'+suffix};
  const installFault=async(kind,predicate)=>{
-  const name=names[kind];check(['upload','cleanup'].includes(kind)&&/^[a-z0-9_]{1,63}$/.test(name));
-  check((await rows('select 1 from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname=\'private\' and p.proname=$1',[name])).length===0);
-  check((await rows('select 1 from pg_trigger where tgname=$1',[name])).length===0);
-  check((await rows("select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='private' and c.relname=any($1::text[])",[ [name+'_probe',name+'_fault'] ])).length===0);
+  const name=names[kind];diagnostic.check(['upload','cleanup'].includes(kind)&&/^[a-z0-9_]{1,63}$/.test(name), 16);
+  diagnostic.check((await rows('select 1 from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname=\'private\' and p.proname=$1',[name])).length===0, 17);
+  diagnostic.check((await rows('select 1 from pg_trigger where tgname=$1',[name])).length===0, 18);
+  diagnostic.check((await rows("select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='private' and c.relname=any($1::text[])",[ [name+'_probe',name+'_fault'] ])).length===0, 19);
   faults.add(kind);
   await q(`create sequence private.${name}_probe as integer maxvalue 1024 no cycle`);
   await q(`create sequence private.${name}_fault as integer maxvalue 1024 no cycle`);
@@ -189,8 +235,8 @@ async function createRuntimeEffects(o,{now,mono,gate,measurementEnd}){
   await q(`drop trigger if exists ${name} on storage.objects`);await q(`drop function if exists private.${name}()`);
   await q(`drop sequence if exists private.${name}_probe,private.${name}_fault`);faults.delete(kind);};
  const faultObserved=async(kind,probe=false)=>{const name=names[kind]+'_'+(probe?'probe':'fault');
-  const value=(await rows(`select last_value,is_called from private.${name}`))[0];check(value?.is_called===true&&Number(value.last_value)>=1&&Number(value.last_value)<=1024);};
- const removeOwned=async row=>{owned(row);const r=await req('/storage/v1/object/'+BUCKET,{method:'DELETE',headers:{...service(),'Content-Type':'application/json'},body:JSON.stringify({prefixes:[row.object_key]})});check(r.ok);};
+  const value=(await rows(`select last_value,is_called from private.${name}`))[0];diagnostic.check(value?.is_called===true&&Number(value.last_value)>=1&&Number(value.last_value)<=1024, 20);};
+ const removeOwned=async row=>{owned(row);const r=await req('/storage/v1/object/'+BUCKET,{method:'DELETE',headers:{...service(),'Content-Type':'application/json'},body:JSON.stringify({prefixes:[row.object_key]})});diagnostic.check(r.ok, 21);};
  const close=async()=>{
   if(closed)return restoration;cleaning=true;let failed=false;
   const attempt=async fn=>{try{await fn();}catch{failed=true;}};
@@ -198,44 +244,50 @@ async function createRuntimeEffects(o,{now,mono,gate,measurementEnd}){
   await attempt(async()=>{restoration.faultsRemoved=(await rows('select 1 from pg_trigger where tgname=any($1::text[])',[Object.values(names)])).length===0
    &&(await rows('select 1 from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname=\'private\' and p.proname=any($1::text[])',[Object.values(names)])).length===0
    &&(await rows("select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='private' and c.relname=any($1::text[])",
-    [Object.values(names).flatMap(name=>[name+'_probe',name+'_fault'])])).length===0;check(restoration.faultsRemoved);});
+    [Object.values(names).flatMap(name=>[name+'_probe',name+'_fault'])])).length===0;diagnostic.check(restoration.faultsRemoved, 22);});
   await attempt(async()=>{if(lookupRevoked){await q('grant execute on function public.permission_menu_image_public_lookup(uuid) to service_role');lookupRevoked=false;}
-   restoration.lookupAclRestored=equal(await catalog(),lookupOriginal);check(restoration.lookupAclRestored);});
-  if(storageMissing)await attempt(async()=>{const value=storageMissing;check((await q('update private.menu_image_assets set object_key=$1 where asset_key=$2 and object_key=$3',[value.original,value.asset,value.missing])).rowCount===1);storageMissing=undefined;});
+   restoration.lookupAclRestored=equal(await catalog(),lookupOriginal);diagnostic.check(restoration.lookupAclRestored, 23);});
+  if(storageMissing)await attempt(async()=>{const value=storageMissing;diagnostic.check((await q('update private.menu_image_assets set object_key=$1 where asset_key=$2 and object_key=$3',[value.original,value.asset,value.missing])).rowCount===1, 24);storageMissing=undefined;});
   await attempt(async()=>{await captureNew();for(const row of [...entry,...uploads])await removeOwned(row);
-   const count=(await rows('select count(*)::int n from storage.objects where bucket_id=$1',[BUCKET]))[0].n;check(count===0);restoration.ownedStorageRemoved=true;});
-  await attempt(async()=>{restoration.sentinelsPreserved=equal(await sentinel(),baselineSentinels);check(restoration.sentinelsPreserved);});
+   const count=(await rows('select count(*)::int n from storage.objects where bucket_id=$1',[BUCKET]))[0].n;diagnostic.check(count===0, 25);restoration.ownedStorageRemoved=true;});
+  await attempt(async()=>{restoration.sentinelsPreserved=equal(await sentinel(),baselineSentinels);diagnostic.check(restoration.sentinelsPreserved, 26);});
   if(sessionToken)await attempt(async()=>{await rpc('permission_revoke_session',{});
    const token=hash(sessionToken),r=await rows('select revoked_at is not null revoked from private.employee_sessions where store_id=$1 and token_hash=decode($2,\'hex\')',[STORES[0],token]);
-   check(r.length===1&&r[0].revoked===true);restoration.employeeSessionRevoked=true;});
-  await attempt(async()=>{restoration.catalogRestored=equal(await catalog(),baselineCatalog);check(restoration.catalogRestored);});
+   diagnostic.check(r.length===1&&r[0].revoked===true, 27);restoration.employeeSessionRevoked=true;});
+  await attempt(async()=>{restoration.catalogRestored=equal(await catalog(),baselineCatalog);diagnostic.check(restoration.catalogRestored, 28);});
   await attempt(async()=>{if(browser)await browser.close();restoration.browserClosed=true;});
   await attempt(async()=>{await gate(true);restoration.physicalUnchanged=true;});
-  closed=true;check(!failed&&RESTORATION.every(k=>restoration[k]));return restoration;
+  closed=true;diagnostic.check(!failed&&RESTORATION.every(k=>restoration[k]), 29);return restoration;
  };
- return {close,measure:async()=>{
+ return {close,measure:async()=>{try{
   // Every setup effect lives inside measure so close is registered before it can fail.
+  diagnostic.step(1);
   const marker=await rows(`select current_database() db,current_user actor,engine,store_ids,
    (select setting::int from pg_settings where name='statement_timeout') statement_timeout_ms
    from private.idempotency_test_environment where singleton`);
-  check(marker.length===1&&marker[0].db==='postgres'&&marker[0].actor==='postgres'&&marker[0].engine==='supabase-identity-v1'
+  diagnostic.check(marker.length===1&&marker[0].db==='postgres'&&marker[0].actor==='postgres'&&marker[0].engine==='supabase-identity-v1'
    &&equal(marker[0].store_ids,STORES)&&Number.isSafeInteger(marker[0].statement_timeout_ms)
-   &&marker[0].statement_timeout_ms>0&&marker[0].statement_timeout_ms<=10000);
-  check(equal((await rows('select id from public.stores order by id')).map(r=>r.id),STORES));
+   &&marker[0].statement_timeout_ms>0&&marker[0].statement_timeout_ms<=10000, 30);
+  diagnostic.check(equal((await rows('select id from public.stores order by id')).map(r=>r.id),STORES), 31);
+  diagnostic.step(2);
   const buckets=await rows('select public,file_size_limit,allowed_mime_types from storage.buckets where id=$1',[BUCKET]);
-  check(buckets.length===1&&buckets[0].public===false&&Number(buckets[0].file_size_limit)===5242880
-   &&equal([...(buckets[0].allowed_mime_types??[])].sort(),['image/jpeg','image/png','image/webp']));
-  const initial=await registry();check(initial.length<=64);entry.push(...initial);
+  diagnostic.check(buckets.length===1&&buckets[0].public===false&&Number(buckets[0].file_size_limit)===5242880
+   &&equal([...(buckets[0].allowed_mime_types??[])].sort(),['image/jpeg','image/png','image/webp']), 32);
+  const initial=await registry();diagnostic.check(initial.length<=64, 33);entry.push(...initial);
   baselineObjects=await rows('select to_jsonb(o) row from storage.objects o where bucket_id=$1 order by id',[BUCKET]);
-  check(baselineObjects.length<=64&&baselineObjects.every(({row})=>entry.some(e=>e.object_key===row.name)));
-  baselineCatalog=await catalog();lookupOriginal=baselineCatalog;check(baselineCatalog.length===1);
+  diagnostic.check(baselineObjects.length<=64&&baselineObjects.every(({row})=>entry.some(e=>e.object_key===row.name)), 34);
+  diagnostic.step(3);
+  baselineCatalog=await catalog();lookupOriginal=baselineCatalog;diagnostic.check(baselineCatalog.length===1, 35);
   baselineSentinels=await sentinel();
-  check(STORES.every(id=>baselineSentinels.some(({row})=>row.name.startsWith(id+'/menu-items/'))));
+  diagnostic.check(STORES.every(id=>baselineSentinels.some(({row})=>row.name.startsWith(id+'/menu-items/'))), 36);
+  diagnostic.step(4);
   const session=await rpc('permission_start_session',{p_employee_id:EMPLOYEE,p_pin:'384729'});
-  check(session.kind==='normal'&&typeof session.token==='string'&&/^[A-Za-z0-9_-]{43}$/.test(session.token));sessionToken=session.token;
+  diagnostic.check(session.kind==='normal'&&typeof session.token==='string'&&/^[A-Za-z0-9_-]{43}$/.test(session.token), 37);sessionToken=session.token;
   // Load only the admitted checkout's already-installed, lock-bound Playwright.
+  diagnostic.step(5);
   const {chromium}=await import('@playwright/test');await gate();
   browser=await chromium.launch({channel:'chromium',headless:true,timeout:10000});
+  diagnostic.step(6);
   context=await browser.newContext();const page=await context.newPage();await page.setContent('<!doctype html><title>T04 image cache measurement</title>');
   const cdp=await context.newCDPSession(page),events=[];
   cdp.on('Network.requestServedFromCache',e=>events.push({type:'cache',id:e.requestId}));
@@ -248,78 +300,99 @@ async function createRuntimeEffects(o,{now,mono,gate,measurementEnd}){
     return {status:r.status,cache:r.headers.get('cache-control'),bytes,requestAt,completedAt:performance.now()};},
     {url:API+'/functions/v1/menu-image-public/'+asset,timeoutMs});
    const observed=events.slice(offset),responses=observed.filter(e=>e.type==='response'&&e.url===API+'/functions/v1/menu-image-public/'+asset);
-   check(responses.length===1&&!responses[0].worker);return {...value,cached:responses[0].disk||observed.some(e=>e.type==='cache'&&e.id===responses[0].id)};};
+   diagnostic.check(responses.length===1&&!responses[0].worker, 38);return {...value,cached:responses[0].disk||observed.some(e=>e.type==='cache'&&e.id===responses[0].id)};};
   const main=randomUUID(),failedUpload=randomUUID();createdItems.push(main,failedUpload);
-  const uploaded=await upload(main);check(uploaded.status===201);const handle=(await uploaded.json())?.data?.uploadHandle;check(UUID.test(handle));
-  await publish(main,handle,true);observations.publication=true;
-  const stored=(await registry()).find(r=>r.upload_handle===handle);check(stored?.state==='published');
-  const origin=await publicGet(handle);check(origin.status===200&&origin.headers.get('cache-control')==='private, max-age=60, must-revalidate'
-   &&origin.headers.get('etag')==='"'+handle+'"'&&hash(Buffer.from(await origin.arrayBuffer()))===hash(imageBytes()));observations.origin200=true;
-  const unchanged=await publicGet(handle,true);check(unchanged.status===304&&unchanged.headers.get('cache-control')==='private, max-age=60, must-revalidate');observations.origin304=true;
+  diagnostic.step(7);
+  const uploaded=await upload(main);diagnostic.check(uploaded.status===201, 39);const handle=(await uploaded.json())?.data?.uploadHandle;diagnostic.check(UUID.test(handle), 40);
+  diagnostic.step(8);await publish(main,handle,true);observations.publication=true;
+  diagnostic.step(9);
+  const stored=(await registry()).find(r=>r.upload_handle===handle);diagnostic.check(stored?.state==='published', 41);
+  diagnostic.step(10);
+  const origin=await publicGet(handle);diagnostic.check(origin.status===200&&origin.headers.get('cache-control')==='private, max-age=60, must-revalidate'
+   &&origin.headers.get('etag')==='"'+handle+'"'&&hash(Buffer.from(await origin.arrayBuffer()))===hash(imageBytes()), 42);observations.origin200=true;
+  diagnostic.step(11);
+  const unchanged=await publicGet(handle,true);diagnostic.check(unchanged.status===304&&unchanged.headers.get('cache-control')==='private, max-age=60, must-revalidate', 43);observations.origin304=true;
   // Both ordinary and conditional paths must fail while Storage cannot serve the exact owned asset.
+  diagnostic.step(12);
   const missing=`${STORES[0]}/menu-items/${main}/${randomUUID()}.png`;storageMissing={asset:handle,original:stored.object_key,missing};
-  check((await q('update private.menu_image_assets set object_key=$1 where asset_key=$2 and object_key=$3',[missing,handle,stored.object_key])).rowCount===1);
+  diagnostic.check((await q('update private.menu_image_assets set object_key=$1 where asset_key=$2 and object_key=$3',[missing,handle,stored.object_key])).rowCount===1, 44);
   for(const conditional of [false,true]){await errorResponse(await publicGet(handle,conditional),503,'IMAGE_STORAGE_UNAVAILABLE');observations[conditional?'storageConditional503':'storageOrdinary503']=true;}
-  check((await q('update private.menu_image_assets set object_key=$1 where asset_key=$2 and object_key=$3',[stored.object_key,handle,missing])).rowCount===1);storageMissing=undefined;
+  diagnostic.check((await q('update private.menu_image_assets set object_key=$1 where asset_key=$2 and object_key=$3',[stored.object_key,handle,missing])).rowCount===1, 45);storageMissing=undefined;
+  diagnostic.step(13);
   const privileges=(await rows(`select has_function_privilege('service_role','public.permission_menu_image_public_lookup(uuid)','execute') service,
    has_function_privilege('anon','public.permission_menu_image_public_lookup(uuid)','execute') anon,
    has_function_privilege('authenticated','public.permission_menu_image_public_lookup(uuid)','execute') authenticated`))[0];
-  check(privileges.service&&!privileges.anon&&!privileges.authenticated);
+  diagnostic.check(privileges.service&&!privileges.anon&&!privileges.authenticated, 46);
   await q('revoke execute on function public.permission_menu_image_public_lookup(uuid) from service_role');lookupRevoked=true;
-  check(!(await rows("select has_function_privilege('service_role','public.permission_menu_image_public_lookup(uuid)','execute') value"))[0].value);
+  diagnostic.check(!(await rows("select has_function_privilege('service_role','public.permission_menu_image_public_lookup(uuid)','execute') value"))[0].value, 47);
   for(const conditional of [false,true]){await errorResponse(await publicGet(handle,conditional),503,'IMAGE_GATEWAY_UNAVAILABLE');observations[conditional?'lookupConditional503':'lookupOrdinary503']=true;}
-  await q('grant execute on function public.permission_menu_image_public_lookup(uuid) to service_role');lookupRevoked=false;check(equal(await catalog(),lookupOriginal));
+  await q('grant execute on function public.permission_menu_image_public_lookup(uuid) to service_role');lookupRevoked=false;diagnostic.check(equal(await catalog(),lookupOriginal), 48);
+  diagnostic.step(14);
   const boundBefore=await rows('select to_jsonb(m) row from public.menu_items m where store_id=$1 and id=$2',[STORES[0],main]);
   const assetBefore=await rows('select to_jsonb(a) row from private.menu_image_assets a where store_id=$1 and item_id=$2 order by asset_key',[STORES[0],main]);
-  check(assetBefore.length===1&&assetBefore[0].row.published===true);
-  await installFault('upload',`new.bucket_id='${BUCKET}' and new.name like '${STORES[0]}/menu-items/${failedUpload}/%'`);
+  diagnostic.check(assetBefore.length===1&&assetBefore[0].row.published===true, 49);
+  diagnostic.step(15);await installFault('upload',`new.bucket_id='${BUCKET}' and new.name like '${STORES[0]}/menu-items/${failedUpload}/%'`);
+  diagnostic.step(16);
   const fault=await upload(failedUpload);await errorResponse(fault,503,'IMAGE_STORAGE_UNAVAILABLE');observations.uploadMetadata503=true;
-  const failed=(await registry()).filter(r=>r.item_id===failedUpload);check(failed.length===1&&failed[0].state==='uploading');observations.uploadStillUploading=true;
+  diagnostic.step(17);
+  const failed=(await registry()).filter(r=>r.item_id===failedUpload);diagnostic.check(failed.length===1&&failed[0].state==='uploading', 50);observations.uploadStillUploading=true;
   await faultObserved('upload',true);await faultObserved('upload');
   observations.uploadProbeBypassed=true;
-  check((await rows('select 1 from private.menu_image_assets where upload_handle=$1',[failed[0].upload_handle])).length===0);observations.uploadNotPublished=true;
-  check(equal(boundBefore,await rows('select to_jsonb(m) row from public.menu_items m where store_id=$1 and id=$2',[STORES[0],main]))
-   &&equal(assetBefore,await rows('select to_jsonb(a) row from private.menu_image_assets a where store_id=$1 and item_id=$2 order by asset_key',[STORES[0],main])));
+  diagnostic.check((await rows('select 1 from private.menu_image_assets where upload_handle=$1',[failed[0].upload_handle])).length===0, 51);observations.uploadNotPublished=true;
+  diagnostic.step(18);
+  diagnostic.check(equal(boundBefore,await rows('select to_jsonb(m) row from public.menu_items m where store_id=$1 and id=$2',[STORES[0],main]))
+   &&equal(assetBefore,await rows('select to_jsonb(a) row from private.menu_image_assets a where store_id=$1 and item_id=$2 order by asset_key',[STORES[0],main])), 52);
   observations.uploadPreviousBindingPreserved=true;
   await dropFault('upload');
-  const uResponse=await upload(main),cResponse=await upload(main);check(uResponse.status===201&&cResponse.status===201);
+  diagnostic.step(19);
+  const uResponse=await upload(main),cResponse=await upload(main);diagnostic.check(uResponse.status===201&&cResponse.status===201, 53);
   const uHandle=(await uResponse.json()).data.uploadHandle,cHandle=(await cResponse.json()).data.uploadHandle;
-  const all=await registry(),u=all.find(r=>r.upload_handle===uHandle),control=all.find(r=>r.upload_handle===cHandle);check(u&&control);
-  const uMetadata=await rows('select to_jsonb(o) row from storage.objects o where bucket_id=$1 and name=$2',[BUCKET,u.object_key]);check(uMetadata.length===1);
+  const all=await registry(),u=all.find(r=>r.upload_handle===uHandle),control=all.find(r=>r.upload_handle===cHandle);diagnostic.check(u&&control, 54);
+  diagnostic.step(20);
+  const uMetadata=await rows('select to_jsonb(o) row from storage.objects o where bucket_id=$1 and name=$2',[BUCKET,u.object_key]);diagnostic.check(uMetadata.length===1, 55);
   const uHash=await bytesHash(u),publishedHash=await bytesHash(stored),s2=await rows('select to_jsonb(a) row from private.menu_image_assets a where store_id=$1 order by asset_key',[STORES[1]]);
-  await installFault('cleanup',`old.bucket_id='${BUCKET}' and old.name='${u.object_key}'`);
+  diagnostic.step(21);await installFault('cleanup',`old.bucket_id='${BUCKET}' and old.name='${u.object_key}'`);
+  diagnostic.step(22);
   await errorResponse(await req('/functions/v1/menu-image-gateway/staging/'+uHandle,{method:'DELETE',headers:auth()}),503,'IMAGE_STORAGE_UNAVAILABLE');observations.cleanupGateway503=true;
   await faultObserved('cleanup');
-  check((await registry()).find(r=>r.upload_handle===uHandle)?.state==='discarded');observations.cleanupDiscarded=true;
-  check(equal(uMetadata,await rows('select to_jsonb(o) row from storage.objects o where bucket_id=$1 and name=$2',[BUCKET,u.object_key])));observations.cleanupMetadataPreserved=true;
-  check(uHash===await bytesHash(u));observations.cleanupBytesPreserved=true;
-  const removed=await req('/functions/v1/menu-image-gateway/staging/'+cHandle,{method:'DELETE',headers:auth()});check(removed.status===200);
-  check((await rows('select 1 from storage.objects where bucket_id=$1 and name=$2',[BUCKET,control.object_key])).length===0);observations.cleanupControlDeleted=true;
-  const stillPublished=await publicGet(handle);check(stillPublished.status===200&&hash(Buffer.from(await stillPublished.arrayBuffer()))===publishedHash);
-  check(publishedHash===await bytesHash(stored)&&equal(s2,await rows('select to_jsonb(a) row from private.menu_image_assets a where store_id=$1 order by asset_key',[STORES[1]]))
+  diagnostic.step(23);
+  diagnostic.check((await registry()).find(r=>r.upload_handle===uHandle)?.state==='discarded', 56);observations.cleanupDiscarded=true;
+  diagnostic.check(equal(uMetadata,await rows('select to_jsonb(o) row from storage.objects o where bucket_id=$1 and name=$2',[BUCKET,u.object_key])), 57);observations.cleanupMetadataPreserved=true;
+  diagnostic.check(uHash===await bytesHash(u), 58);observations.cleanupBytesPreserved=true;
+  diagnostic.step(24);
+  const removed=await req('/functions/v1/menu-image-gateway/staging/'+cHandle,{method:'DELETE',headers:auth()});diagnostic.check(removed.status===200, 59);
+  diagnostic.check((await rows('select 1 from storage.objects where bucket_id=$1 and name=$2',[BUCKET,control.object_key])).length===0, 60);observations.cleanupControlDeleted=true;
+  diagnostic.step(25);
+  const stillPublished=await publicGet(handle);diagnostic.check(stillPublished.status===200&&hash(Buffer.from(await stillPublished.arrayBuffer()))===publishedHash, 61);
+  diagnostic.check(publishedHash===await bytesHash(stored)&&equal(s2,await rows('select to_jsonb(a) row from private.menu_image_assets a where store_id=$1 order by asset_key',[STORES[1]]))
    &&equal(assetBefore,await rows('select to_jsonb(a) row from private.menu_image_assets a where store_id=$1 and item_id=$2 order by asset_key',[STORES[0],main]))
    &&equal(boundBefore,await rows('select to_jsonb(m) row from public.menu_items m where store_id=$1 and id=$2',[STORES[0],main]))
-   &&equal(await sentinel(),baselineSentinels));observations.faultSentinelsPreserved=true;await dropFault('cleanup');
-  const cold=await browserGet(handle);check(cold.status===200&&!cold.cached&&hash(Buffer.from(cold.bytes))===hash(imageBytes()));
+   &&equal(await sentinel(),baselineSentinels), 62);observations.faultSentinelsPreserved=true;await dropFault('cleanup');
+  diagnostic.step(26);
+  const cold=await browserGet(handle);diagnostic.check(cold.status===200&&!cold.cached&&hash(Buffer.from(cold.bytes))===hash(imageBytes()), 63);
   const coldAt=mono();
+  diagnostic.step(27);
   const decoded=await page.evaluate(async bytes=>{const b=new Blob([new Uint8Array(bytes)],{type:'image/png'}),img=await createImageBitmap(b);
-   const result=img.width===1&&img.height===1;img.close();return result;},cold.bytes);check(decoded);observations.pngDecoded=true;
-  const warm=await browserGet(handle);check(warm.status===200&&warm.cached&&hash(Buffer.from(warm.bytes))===hash(imageBytes()));observations.warmCache=true;
-  await publish(main,null);
-  const fresh=await browser.newContext();try{const p=await fresh.newPage();await p.setContent('<!doctype html><title>Fresh client</title>');
+   const result=img.width===1&&img.height===1;img.close();return result;},cold.bytes);diagnostic.check(decoded, 64);observations.pngDecoded=true;
+  diagnostic.step(28);
+  const warm=await browserGet(handle);diagnostic.check(warm.status===200&&warm.cached&&hash(Buffer.from(warm.bytes))===hash(imageBytes()), 65);observations.warmCache=true;
+  diagnostic.step(29);await publish(main,null);
+  const fresh=await browser.newContext();await withImageMeasurementContext(async()=>{const p=await fresh.newPage();await p.setContent('<!doctype html><title>Fresh client</title>');
    const status=await p.evaluate(async url=>{const r=await fetch(url,{signal:AbortSignal.timeout(10000)});return {status:r.status,cache:r.headers.get('cache-control')};},API+'/functions/v1/menu-image-public/'+handle);
-   check(status.status===404&&status.cache==='no-store');observations.freshAfterUnlink404=true;
-  }finally{await fresh.close();}
+   diagnostic.check(status.status===404&&status.cache==='no-store', 66);observations.freshAfterUnlink404=true;
+  },()=>fresh.close(),error=>diagnostic.capture(error));
   const timing={target59Ms:59000,target60Ms:60000,target61Ms:61000};
   for(const second of [59,60,61]){
+   diagnostic.step(second-29);
    for(;;){await gate();const remaining=coldAt+second*1000-mono();if(remaining<=0)break;await new Promise(resolve=>setTimeout(resolve,Math.min(remaining,1000)));}
    const value=await browserGet(handle);
    // Report the browser's actual fetch dispatch against that same page's cold
    // response completion, including time spent in guards and the CDP round trip.
-   const elapsed=Math.floor(value.requestAt-cold.completedAt);check(elapsed>=second*1000&&elapsed<second*1000+750);timing['observed'+second+'Ms']=elapsed;
-   if(second===59){check(value.status===404&&value.cache==='no-store'||value.status===200&&value.cached&&hash(Buffer.from(value.bytes))===hash(imageBytes()));observations.cache59Observed=true;}
-   else {check(value.status===404&&value.cache==='no-store'&&!value.cached);observations['cache'+second+'Denied']=true;}
+   const elapsed=Math.floor(value.requestAt-cold.completedAt);diagnostic.timing(second,elapsed);
+   diagnostic.check(elapsed>=second*1000&&elapsed<second*1000+750, 67);timing['observed'+second+'Ms']=elapsed;
+   if(second===59){diagnostic.check(value.status===404&&value.cache==='no-store'||value.status===200&&value.cached&&hash(Buffer.from(value.bytes))===hash(imageBytes()), 68);observations.cache59Observed=true;}
+   else {diagnostic.check(value.status===404&&value.cache==='no-store'&&!value.cached, 69);observations['cache'+second+'Denied']=true;}
   }
-  check(OBSERVATIONS.every(k=>observations[k]));return {observations,timing};
- }};
+  diagnostic.step(33);diagnostic.check(OBSERVATIONS.every(k=>observations[k]), 70);return {observations,timing};
+  }catch(error){throw diagnostic.capture(error);}}};
 }
