@@ -156,11 +156,12 @@ export function imageMeasurementReporterControl(root,parent,{sourceSHA,lockSHA})
  check(!child.error&&!child.signal&&child.status===0);
  const report=JSON.parse(readFileSync(join(dir,'candidate-e2e-runner.json'))),expected={...runtimeStage('candidate-e2e'),configSHA:context.configSHA,argv};
  const passed=validateRuntimeStage(expected,report,context,child.status);check(passed.run===6&&passed.pass===6);
- const controlSource=`import{imageMeasurementFailureControl}from${JSON.stringify(pathToFileURL(resolve(root,'scripts/permission-t04-image-diagnostic-control.mjs')).href)};try{console.log(JSON.stringify(await imageMeasurementFailureControl()));}catch{process.exitCode=1;}`;
+ const controlSource=`import{imageMeasurementFailureControl}from${JSON.stringify(pathToFileURL(resolve(root,'scripts/permission-t04-image-diagnostic-control.mjs')).href)};try{console.log(JSON.stringify(await imageMeasurementFailureControl('warm-cleanup')));}catch{process.exitCode=1;}`;
  const probe=spawnSync(process.execPath,['--input-type=module','-e',controlSource],{cwd:root,encoding:'utf8',timeout:10000,maxBuffer:8192,windowsHide:true});
  check(!probe.error&&!probe.signal&&probe.status===0&&!probe.stdout.includes('PRIVATE'));
  const errorFacts=JSON.parse(probe.stdout);
- check(errorFacts.t04ImageMeasureStepOrdinal===31&&errorFacts.t04ImageMeasurePredicateOrdinal===67
+ check(errorFacts.t04ImageMeasureStepOrdinal===28&&errorFacts.t04ImageMeasurePredicateOrdinal===65
+  &&errorFacts.t04ImageWarmStatus200Ordinal===2&&errorFacts.t04ImageWarmCachedOrdinal===1&&errorFacts.t04ImageWarmBytesMatchOrdinal===2
   &&errorFacts.t04ImageMeasureObservationMask===16777215-2**11-2**12&&errorFacts.t04ImageMeasurementCleanupFailed===1);
  const facts={t04StageOrdinal:10,...t04ParentFailureFacts(errorFacts,{phaseOrdinal:5}),...t04RunnerFailureFacts(expected,report)};
  check(facts.t04CandidateInventoryStatus===1&&facts.t04FailedTests===0&&facts.t04NonPassedTests===0);

@@ -1,3 +1,4 @@
+import {closeImageMeasurementResource} from './permission-t04-image-browser.mjs';
 // Pure controls only. Constructed observations are never backend evidence.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -211,4 +212,12 @@ test('fresh-context closure preserves body predicate or external failure and sti
   assert.deepEqual([bodyCalls,innerCloses,outerCloses],[1,1,1]);
  }
  let closes=0;assert.equal(await withImageMeasurementContext(async()=>42,async()=>{closes++;},()=>{throw Error('MUST_NOT_CAPTURE');}),42);assert.equal(closes,1);
+});
+
+test('owned browser cleanup never settling cannot hide primary measurement facts from outer receipt',async()=>{
+ const f=fixture(),progress=createImageMeasurementDiagnostics({});progress.step(28);progress.warm(200,false,true);
+ f.overrides.effects=async()=>({measure:async()=>{try{progress.check(false,65);}catch(error){throw progress.capture(error);}},
+  close:()=>closeImageMeasurementResource({close:()=>new Promise(()=>{})},{deadline:Date.now()+20})});
+ await assert.rejects(runT04ImageMeasurement(f.options,f.overrides),error=>error.t04ImageMeasurePredicateOrdinal===65
+  &&error.t04ImageWarmCachedOrdinal===1&&error.t04ImageMeasurementCleanupAttempted===1&&error.t04ImageMeasurementCleanupFailed===1);
 });

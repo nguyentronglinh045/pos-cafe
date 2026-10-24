@@ -137,7 +137,7 @@ if (process.argv[2] === '--native-filesystem') {
   catch { console.error('ISOLATED_RECEIPT_NATIVE_CONTROL_FAILED'); process.exitCode = 1; }
 } else {
   test('complete fixed-schema maxima include both branches and remain inside the shared 128KiB bound', () => {
-    assert.equal(t04Maximum, 103509); assert.equal(serviceMaximum, 107891);
+    assert.equal(t04Maximum, 103793); assert.equal(serviceMaximum, 107891);
     assert(t04Maximum < CAP && serviceMaximum < CAP);
     assert.equal(Object.keys(facts).length, 780);
     const largeMetrics = Array.from({ length: 3000 }, (_, n) => 'metric' + n.toString().padStart(4, '0') + 'X'.repeat(60));

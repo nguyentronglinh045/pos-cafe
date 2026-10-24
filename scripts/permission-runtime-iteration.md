@@ -254,7 +254,7 @@ T04 and service workers use the same 128KiB UTF-8 serialized receipt limit at
 both writer and reader. The source-derived conservative maxima include both a
 primary and a cleanup failure, every allowlisted numeric fact at MAX_SAFE_INTEGER,
 the longest fixed enums, a20-digit run ID, attempt1000 and source SHA40. Current
-bounds are103,509 bytes for T04 and107,891 for service; changing the allowlists
+bounds are103,793 bytes for T04 and107,891 for service; changing the allowlists
 beyond the shared cap refuses at module load. Actual per-field bounds remain
 independently enforced. This diagnostic limit does not alter stage acceptance,
 retries, timeouts, the32KiB D12 counts receipt or the1MiB report/marker limits.
@@ -431,3 +431,11 @@ reports refusal-only coverage. These controls are not business runtime evidence.
 Retain the compact collected record and safe log per source/run/attempt; private
 runtime files are reclaimed normally. No temporary raw debug output is added,
 and successful measurement does not emit these failure trace fields.
+
+### T04 image origin and warm-cache failure operands
+
+The synthetic image helper bootstraps both browser contexts through its owned invalid-UUID404/no-store endpoint before setContent. This establishes a stable HTTP origin without fetching the measured asset. URL, redirect chain, status, cache policy and origin are checked; browser operations share the existing absolute measurement deadline and bounded cancellation. No production API or cache policy changes.
+
+On step28 failure, t04ImageWarmStatus200Ordinal, t04ImageWarmCachedOrdinal and t04ImageWarmBytesMatchOrdinal each use0UNKNOWN/1false/2true. They are recorded from the existing response, reset at the next step and frozen before cleanup. There is no raw URL/header/body export. The existing receipt cap128KiB and attachment16KiB do not change.
+
+The reader, full physical/envelope guards and actual59/60/61s target windows remain unchanged. Local browser cache controls use a lightweight guard and do not establish that the real backend guard fits the750ms window. If a source-bound diagnostic reaches predicate67, retain actual elapsed values and stop automatic retries. The reviewed alternative is an internal browser-measurement worker with a separately running guard, a typed receipt bound to the same source/run/physical backend and unchanged absolute deadline; it must still satisfy every existing oracle and restore gate. An independent-backend subset never becomes whole T04 evidence.

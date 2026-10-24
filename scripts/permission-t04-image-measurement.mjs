@@ -3,6 +3,7 @@ import {createHash,randomUUID} from 'node:crypto';
 import {readFileSync,realpathSync,lstatSync} from 'node:fs';
 import {join} from 'node:path';
 import {execFileSync} from 'node:child_process';
+import {bootstrapImageMeasurementPage,closeImageMeasurementResource} from './permission-t04-image-browser.mjs';
 
 const API='http://127.0.0.1:62421',BUCKET='menu-item-image-staging';
 const STORES=Object.freeze(['10000000-0000-4000-8000-000000000001','10000000-0000-4000-8000-000000000002']);
@@ -23,7 +24,8 @@ export const IMAGE_FAILURE_BOUNDS=Object.freeze({
  t04ImageMeasureStepOrdinal:[0,33],t04ImageMeasurePredicateOrdinal:[0,70],
  t04ImageMeasureObservationMask:[0,16777215],t04ImageMeasureExceptionClassOrdinal:[0,6],
  t04ImageMeasureCacheTargetOrdinal:[0,3],t04ImageMeasureElapsedObserved:[0,1],
- t04ImageMeasureElapsedMs:[0,180000],t04ImageMeasureElapsedCapped:[0,1]});
+ t04ImageMeasureElapsedMs:[0,180000],t04ImageMeasureElapsedCapped:[0,1],
+ t04ImageWarmStatus200Ordinal:[0,2],t04ImageWarmCachedOrdinal:[0,2],t04ImageWarmBytesMatchOrdinal:[0,2]});
 export function imageFailureFacts(error){
  return Object.fromEntries(Object.entries(IMAGE_FAILURE_BOUNDS).map(([key,[min,max]])=>[key,
   Number.isSafeInteger(error?.[key])&&error[key]>=min&&error[key]<=max?error[key]:0]));
@@ -31,10 +33,11 @@ export function imageFailureFacts(error){
 // This state contains only fixed ordinals and completed-oracle bits. A zero bit
 // is unproved, not a negative business observation. Freeze before close runs.
 export function createImageMeasurementDiagnostics(observations){
- let step=0,target=0,elapsedObserved=0,elapsedMs=0,elapsedCapped=0,frozen;
+ let step=0,target=0,elapsedObserved=0,elapsedMs=0,elapsedCapped=0,warm=[0,0,0],frozen;
  return{
   step(value){check(Number.isInteger(value)&&value>=1&&value<=33);step=value;
-   target=value>=30&&value<=32?value-29:0;elapsedObserved=0;elapsedMs=0;elapsedCapped=0;},
+   target=value>=30&&value<=32?value-29:0;elapsedObserved=0;elapsedMs=0;elapsedCapped=0;warm=[0,0,0];},
+  warm(status,cached,bytesMatch){warm=[status===200,cached===true,bytesMatch===true].map(value=>value?2:1);},
   timing(second,value){target=[59,60,61].indexOf(second)+1;elapsedObserved=Number.isSafeInteger(value)?1:0;
    elapsedMs=elapsedObserved?Math.max(0,Math.min(180000,value)):0;elapsedCapped=elapsedObserved&&elapsedMs!==value?1:0;},
   check(value,predicate){if(!value){check(Number.isInteger(predicate)&&predicate>=1&&predicate<=70);
@@ -45,7 +48,8 @@ export function createImageMeasurementDiagnostics(observations){
     t04ImageMeasureObservationMask:OBSERVATIONS.reduce((mask,key,index)=>mask+(observations[key]===true?2**index:0),0),
     t04ImageMeasureExceptionClassOrdinal:['Error','TypeError','RangeError','SyntaxError','AbortError','TimeoutError'].indexOf(error?.name)+1,
     t04ImageMeasureCacheTargetOrdinal:target,t04ImageMeasureElapsedObserved:elapsedObserved,
-    t04ImageMeasureElapsedMs:elapsedMs,t04ImageMeasureElapsedCapped:elapsedCapped});
+    t04ImageMeasureElapsedMs:elapsedMs,t04ImageMeasureElapsedCapped:elapsedCapped,
+    t04ImageWarmStatus200Ordinal:warm[0],t04ImageWarmCachedOrdinal:warm[1],t04ImageWarmBytesMatchOrdinal:warm[2]});
    return Object.assign(Error('PERMISSION_T04_IMAGE_MEASURE_FAILED'),frozen,
     {t04ImageMeasurementCleanupAttempted:error?.t04ImageMeasurementCleanupAttempted===1?1:0,
      t04ImageMeasurementCleanupFailed:error?.t04ImageMeasurementCleanupFailed===1?1:0});
@@ -59,7 +63,7 @@ export async function withImageMeasurementContext(body,close,capture){
  let primary,result,cleanupFailed=0;
  try{result=await body();}catch(error){primary=capture(error);}
  try{await close();}catch(error){cleanupFailed=1;primary??=capture(error);}
- if(primary)throw Object.assign(primary,{t04ImageMeasurementCleanupAttempted:1,t04ImageMeasurementCleanupFailed:cleanupFailed});
+ if(primary)throw Object.assign(primary,{t04ImageMeasurementCleanupAttempted:1,t04ImageMeasurementCleanupFailed:Math.max(cleanupFailed,primary.t04ImageMeasurementCleanupFailed===1?1:0)});
  return result;
 }
 const TIMING=Object.freeze(['target59Ms','target60Ms','target61Ms','observed59Ms','observed60Ms','observed61Ms']);
@@ -255,7 +259,7 @@ async function createRuntimeEffects(o,{now,mono,gate,measurementEnd}){
    const token=hash(sessionToken),r=await rows('select revoked_at is not null revoked from private.employee_sessions where store_id=$1 and token_hash=decode($2,\'hex\')',[STORES[0],token]);
    diagnostic.check(r.length===1&&r[0].revoked===true, 27);restoration.employeeSessionRevoked=true;});
   await attempt(async()=>{restoration.catalogRestored=equal(await catalog(),baselineCatalog);diagnostic.check(restoration.catalogRestored, 28);});
-  await attempt(async()=>{if(browser)await browser.close();restoration.browserClosed=true;});
+  await attempt(async()=>{if(browser)await closeImageMeasurementResource(browser,{deadline:o.deadline,now});restoration.browserClosed=true;});
   await attempt(async()=>{await gate(true);restoration.physicalUnchanged=true;});
   closed=true;diagnostic.check(!failed&&RESTORATION.every(k=>restoration[k]), 29);return restoration;
  };
@@ -288,7 +292,7 @@ async function createRuntimeEffects(o,{now,mono,gate,measurementEnd}){
   const {chromium}=await import('@playwright/test');await gate();
   browser=await chromium.launch({channel:'chromium',headless:true,timeout:10000});
   diagnostic.step(6);
-  context=await browser.newContext();const page=await context.newPage();await page.setContent('<!doctype html><title>T04 image cache measurement</title>');
+  context=await browser.newContext();const page=await context.newPage();await bootstrapImageMeasurementPage(page,{api:API,gate,deadline:measurementEnd,now});
   const cdp=await context.newCDPSession(page),events=[];
   cdp.on('Network.requestServedFromCache',e=>events.push({type:'cache',id:e.requestId}));
   cdp.on('Network.responseReceived',e=>events.push({type:'response',id:e.requestId,status:e.response.status,url:e.response.url,
@@ -375,12 +379,12 @@ async function createRuntimeEffects(o,{now,mono,gate,measurementEnd}){
   const decoded=await page.evaluate(async bytes=>{const b=new Blob([new Uint8Array(bytes)],{type:'image/png'}),img=await createImageBitmap(b);
    const result=img.width===1&&img.height===1;img.close();return result;},cold.bytes);diagnostic.check(decoded, 64);observations.pngDecoded=true;
   diagnostic.step(28);
-  const warm=await browserGet(handle);diagnostic.check(warm.status===200&&warm.cached&&hash(Buffer.from(warm.bytes))===hash(imageBytes()), 65);observations.warmCache=true;
+  const warm=await browserGet(handle);diagnostic.warm(warm.status,warm.cached,hash(Buffer.from(warm.bytes))===hash(imageBytes()));diagnostic.check(warm.status===200&&warm.cached&&hash(Buffer.from(warm.bytes))===hash(imageBytes()), 65);observations.warmCache=true;
   diagnostic.step(29);await publish(main,null);
-  const fresh=await browser.newContext();await withImageMeasurementContext(async()=>{const p=await fresh.newPage();await p.setContent('<!doctype html><title>Fresh client</title>');
+  const fresh=await browser.newContext();await withImageMeasurementContext(async()=>{const p=await fresh.newPage();await bootstrapImageMeasurementPage(p,{api:API,gate,deadline:measurementEnd,now});
    const status=await p.evaluate(async url=>{const r=await fetch(url,{signal:AbortSignal.timeout(10000)});return {status:r.status,cache:r.headers.get('cache-control')};},API+'/functions/v1/menu-image-public/'+handle);
    diagnostic.check(status.status===404&&status.cache==='no-store', 66);observations.freshAfterUnlink404=true;
-  },()=>fresh.close(),error=>diagnostic.capture(error));
+  },()=>closeImageMeasurementResource(fresh,{deadline:o.deadline,now}),error=>diagnostic.capture(error));
   const timing={target59Ms:59000,target60Ms:60000,target61Ms:61000};
   for(const second of [59,60,61]){
    diagnostic.step(second-29);

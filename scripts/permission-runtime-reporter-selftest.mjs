@@ -42,6 +42,15 @@ export function reporterSelftest(root=process.cwd()){
   try{
     const sourceSHA=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8',timeout:10000}).trim();
     const lockSHA=runtimeHash(readFileSync(join(root,'package-lock.json')));
+    const imageCache=spawnSync(process.execPath,[join(root,'scripts/permission-t04-image-browser-control.mjs')],{cwd:root,encoding:'utf8',windowsHide:true,timeout:120000,maxBuffer:16384});
+    check(!imageCache.error&&!imageCache.signal&&imageCache.status===0);
+    const imageCacheRows=imageCache.stdout.split('\n').filter(line=>line.startsWith('T04_IMAGE_BROWSER_CONTROL '));check(imageCacheRows.length===1);
+    const imageProof=JSON.parse(imageCacheRows[0].slice('T04_IMAGE_BROWSER_CONTROL '.length));
+    check(imageProof.opaqueOriginRefused===1&&imageProof.stableOriginCache===1&&imageProof.crossOriginCache===1&&imageProof.noStoreRefused===1
+      &&imageProof.bootstrapRefusals===3&&imageProof.freshAfterUnlink===1&&imageProof.guardFailureRefused===1&&imageProof.timedSamples===3
+      &&Array.isArray(imageProof.observedMs)&&imageProof.observedMs.length===3
+      &&imageProof.observedMs.every((ms,i)=>Number.isSafeInteger(ms)&&ms>=(59+i)*1000&&ms<(59+i)*1000+750)&&imageProof.guardCalls>=3);
+
     for(const kind of ['vitest-pass','vitest-hook-failure','playwright-pass','playwright-retry']){
       const dir=join(temporary,kind);mkdirSync(dir);
       const vitest=kind.startsWith('vitest'),negative=kind==='vitest-hook-failure'||kind==='playwright-retry';
