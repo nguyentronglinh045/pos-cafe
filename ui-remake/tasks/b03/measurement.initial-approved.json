@@ -1,0 +1,1861 @@
+{
+  "version": 1,
+  "kind": "screen-remake",
+  "title": "B03 — owner-approved normalized v3",
+  "designUrl": "https://stitch.withgoogle.com/projects/15598521297295649761?node-id=9ea864f874bc4789834b6eec7670225f",
+  "actualSourceRoot": ".",
+  "dataMode": "mock",
+  "serverRecipe": "B03 worktree based main2da0d7e only: VITE_DATA_MODE=mock, VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY empty; node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5183 --strictPort. Reference: node ui-remake/serve-reference.mjs --root artifacts/stitch/B03 --port 4177. Reuse locked node_modules and full Chromium channel; no B01/B02 screen imports. Opaque backdrop is explicit proposal DEV-04.",
+  "clock": "2026-10-22T03:00:00.000Z",
+  "browser": "chromium",
+  "referenceFiles": [
+    "artifacts/stitch/B03/v3/fixture.json",
+    "artifacts/stitch/B03/v3/fonts/BeVietnamPro-Bold.ttf",
+    "artifacts/stitch/B03/v3/fonts/BeVietnamPro-Medium.ttf",
+    "artifacts/stitch/B03/v3/fonts/BeVietnamPro-Regular.ttf",
+    "artifacts/stitch/B03/v3/fonts/BeVietnamPro-SemiBold.ttf",
+    "artifacts/stitch/B03/v3/fonts/OFL.txt",
+    "artifacts/stitch/B03/v3/fonts/provenance.json",
+    "artifacts/stitch/B03/v3/normalized.css",
+    "artifacts/stitch/B03/v3/normalized.html",
+    "artifacts/stitch/B03/v3/normalized.mjs",
+    "artifacts/stitch/B03/v3/palette.css",
+    "artifacts/stitch/B03/v3/palette.json",
+    "artifacts/stitch/B03/v3/raw-manifest.json",
+    "artifacts/stitch/B03/v3/raw.png",
+    "artifacts/stitch/B03/v3/responsive-contract.proposed.json"
+  ],
+  "referenceApproval": {
+    "by": "Owner — user message \"Duyệt ạ\" following B03 v3 proposal",
+    "at": "2026-10-22T07:48:18.000Z",
+    "sourceSha256": "a93da9b3d6ef11aee464ac5b7b0b6ae6982fd0daeb1d0c956ab178e8b29cc9e8",
+    "contractSha256": "aa0226344d736a948ffe28656d75d92ae35a78ee3171d99d932e5a6448c3f92a"
+  },
+  "defaults": {
+    "anchors": [
+      {
+        "id": "panel",
+        "actual": "@payment-drawer",
+        "reference": "[data-ref=\"panel\"]"
+      },
+      {
+        "id": "header",
+        "actual": "@b03-header",
+        "reference": "[data-ref=\"header\"]"
+      },
+      {
+        "id": "title",
+        "actual": "@b03-title",
+        "reference": "[data-ref=\"title\"]"
+      },
+      {
+        "id": "meta",
+        "actual": "@b03-meta",
+        "reference": "[data-ref=\"meta\"]"
+      },
+      {
+        "id": "invoice",
+        "actual": "@b03-invoice",
+        "reference": "[data-ref=\"invoice\"]"
+      },
+      {
+        "id": "cashier",
+        "actual": "@payment-cashier-console",
+        "reference": "[data-ref=\"cashier\"]"
+      },
+      {
+        "id": "body",
+        "actual": "@b03-body",
+        "reference": "[data-ref=\"body\"]"
+      },
+      {
+        "id": "footer",
+        "actual": "@b03-footer",
+        "reference": "[data-ref=\"footer\"]"
+      },
+      {
+        "id": "items",
+        "actual": "@payment-order-items",
+        "reference": "[data-ref=\"items\"]"
+      },
+      {
+        "id": "summary",
+        "actual": "@payment-order-summary",
+        "reference": "[data-ref=\"summary\"]"
+      },
+      {
+        "id": "methods",
+        "actual": "@payment-method-list",
+        "reference": "[data-ref=\"methods\"]"
+      },
+      {
+        "id": "amount-box",
+        "actual": "@b03-amount-box",
+        "reference": "[data-ref=\"amount-box\"]"
+      },
+      {
+        "id": "received",
+        "actual": "@payment-received-amount",
+        "reference": "[data-ref=\"received\"]"
+      },
+      {
+        "id": "due",
+        "actual": "@payment-amount-due-value",
+        "reference": "[data-ref=\"due\"]"
+      },
+      {
+        "id": "order-total",
+        "actual": "@payment-order-total-value",
+        "reference": "[data-ref=\"order-total\"]"
+      },
+      {
+        "id": "change",
+        "actual": "@b03-change",
+        "reference": "[data-ref=\"change\"]"
+      },
+      {
+        "id": "change-value",
+        "actual": "@payment-change-summary-value",
+        "reference": "[data-ref=\"change-value\"]"
+      },
+      {
+        "id": "pay-header",
+        "actual": "@pay-button",
+        "reference": "[data-ref=\"pay-header\"]"
+      },
+      {
+        "id": "pay-footer",
+        "actual": "@pay-button-footer",
+        "reference": "[data-ref=\"pay-footer\"]"
+      },
+      {
+        "id": "pay-label",
+        "actual": "@b03-pay-label",
+        "reference": "[data-ref=\"pay-label\"]"
+      },
+      {
+        "id": "select-all",
+        "actual": "@pay-select-all",
+        "reference": "[data-ref=\"select-all\"]"
+      },
+      {
+        "id": "print",
+        "actual": "@print-receipt-checkbox",
+        "reference": "[data-ref=\"print\"]"
+      },
+      {
+        "id": "provisional",
+        "actual": "@print-provisional-button",
+        "reference": "[data-ref=\"provisional\"]"
+      },
+      {
+        "id": "name-0",
+        "actual": "[data-testid=\"pay-item-line\"]:nth-of-type(1) [data-testid=\"b03-name\"]",
+        "reference": "[data-ref=\"name-0\"]"
+      },
+      {
+        "id": "line-money-0",
+        "actual": "[data-testid=\"pay-item-line\"]:nth-of-type(1) [data-testid=\"b03-line-money\"]",
+        "reference": "[data-ref=\"line-money-0\"]"
+      },
+      {
+        "id": "quantity-0",
+        "actual": "[data-testid=\"pay-item-line\"]:nth-of-type(1) [data-testid=\"b03-quantity\"]",
+        "reference": "[data-ref=\"quantity-0\"]"
+      },
+      {
+        "id": "unit-0",
+        "actual": "[data-testid=\"pay-item-line\"]:nth-of-type(1) [data-testid=\"b03-unit\"]",
+        "reference": "[data-ref=\"unit-0\"]"
+      },
+      {
+        "id": "name-1",
+        "actual": "[data-testid=\"pay-item-line\"]:nth-of-type(2) [data-testid=\"b03-name\"]",
+        "reference": "[data-ref=\"name-1\"]"
+      },
+      {
+        "id": "line-money-1",
+        "actual": "[data-testid=\"pay-item-line\"]:nth-of-type(2) [data-testid=\"b03-line-money\"]",
+        "reference": "[data-ref=\"line-money-1\"]"
+      },
+      {
+        "id": "quantity-1",
+        "actual": "[data-testid=\"pay-item-line\"]:nth-of-type(2) [data-testid=\"b03-quantity\"]",
+        "reference": "[data-ref=\"quantity-1\"]"
+      },
+      {
+        "id": "unit-1",
+        "actual": "[data-testid=\"pay-item-line\"]:nth-of-type(2) [data-testid=\"b03-unit\"]",
+        "reference": "[data-ref=\"unit-1\"]"
+      },
+      {
+        "id": "name-2",
+        "actual": "[data-testid=\"pay-item-line\"]:nth-of-type(3) [data-testid=\"b03-name\"]",
+        "reference": "[data-ref=\"name-2\"]"
+      },
+      {
+        "id": "line-money-2",
+        "actual": "[data-testid=\"pay-item-line\"]:nth-of-type(3) [data-testid=\"b03-line-money\"]",
+        "reference": "[data-ref=\"line-money-2\"]"
+      },
+      {
+        "id": "quantity-2",
+        "actual": "[data-testid=\"pay-item-line\"]:nth-of-type(3) [data-testid=\"b03-quantity\"]",
+        "reference": "[data-ref=\"quantity-2\"]"
+      },
+      {
+        "id": "unit-2",
+        "actual": "[data-testid=\"pay-item-line\"]:nth-of-type(3) [data-testid=\"b03-unit\"]",
+        "reference": "[data-ref=\"unit-2\"]"
+      },
+      {
+        "id": "pay-header-label",
+        "actual": "@b03-pay-header-label",
+        "reference": "[data-ref=\"pay-header-label\"]"
+      },
+      {
+        "id": "equation",
+        "actual": "@b03-change-equation",
+        "reference": "[data-ref=\"equation\"]"
+      },
+      {
+        "id": "selected-count",
+        "actual": "@b03-selected-count",
+        "reference": "[data-ref=\"selected-count\"]"
+      }
+    ],
+    "criticalSelectors": [
+      {
+        "id": "back",
+        "selector": "@payment-close-button",
+        "reference": "[data-ref=\"back\"]"
+      },
+      {
+        "id": "close",
+        "selector": "@b03-close",
+        "reference": "[data-ref=\"close\"]"
+      },
+      {
+        "id": "back-footer",
+        "selector": "@b03-back-footer",
+        "reference": "[data-ref=\"back-footer\"]"
+      },
+      {
+        "id": "pay-header",
+        "selector": "@pay-button",
+        "reference": "[data-ref=\"pay-header\"]"
+      },
+      {
+        "id": "pay-footer",
+        "selector": "@pay-button-footer",
+        "reference": "[data-ref=\"pay-footer\"]"
+      },
+      {
+        "id": "provisional",
+        "selector": "@print-provisional-button",
+        "reference": "[data-ref=\"provisional\"]"
+      },
+      {
+        "id": "select-all",
+        "selector": "@pay-select-all",
+        "reference": "[data-ref=\"select-all\"]"
+      },
+      {
+        "id": "received",
+        "selector": "@payment-received-amount",
+        "reference": "[data-ref=\"received\"]"
+      },
+      {
+        "id": "print",
+        "selector": "@print-receipt-checkbox",
+        "reference": "[data-ref=\"print\"]"
+      },
+      {
+        "id": "method-0",
+        "selector": "@b03-method-cash",
+        "reference": "[data-ref=\"method-0\"]"
+      },
+      {
+        "id": "line-check-0",
+        "selector": "[data-testid=\"pay-item-line\"]:nth-of-type(1) [data-testid=\"pay-item-checkbox\"]",
+        "reference": "[data-ref=\"line-check-0\"]"
+      },
+      {
+        "id": "plus-0",
+        "selector": "[data-testid=\"pay-item-line\"]:nth-of-type(1) [data-testid=\"pay-item-plus\"]",
+        "reference": "[data-ref=\"plus-0\"]"
+      },
+      {
+        "id": "line-check-1",
+        "selector": "[data-testid=\"pay-item-line\"]:nth-of-type(2) [data-testid=\"pay-item-checkbox\"]",
+        "reference": "[data-ref=\"line-check-1\"]"
+      },
+      {
+        "id": "plus-1",
+        "selector": "[data-testid=\"pay-item-line\"]:nth-of-type(2) [data-testid=\"pay-item-plus\"]",
+        "reference": "[data-ref=\"plus-1\"]"
+      },
+      {
+        "id": "line-check-2",
+        "selector": "[data-testid=\"pay-item-line\"]:nth-of-type(3) [data-testid=\"pay-item-checkbox\"]",
+        "reference": "[data-ref=\"line-check-2\"]"
+      },
+      {
+        "id": "plus-2",
+        "selector": "[data-testid=\"pay-item-line\"]:nth-of-type(3) [data-testid=\"pay-item-plus\"]",
+        "reference": "[data-ref=\"plus-2\"]"
+      },
+      {
+        "id": "quick-0",
+        "selector": "@b03-quick-0",
+        "reference": "[data-ref=\"quick-0\"]"
+      },
+      {
+        "id": "quick-1",
+        "selector": "@b03-quick-1",
+        "reference": "[data-ref=\"quick-1\"]"
+      },
+      {
+        "id": "quick-2",
+        "selector": "@b03-quick-2",
+        "reference": "[data-ref=\"quick-2\"]"
+      },
+      {
+        "id": "quick-3",
+        "selector": "@b03-quick-3",
+        "reference": "[data-ref=\"quick-3\"]"
+      },
+      {
+        "id": "quick-4",
+        "selector": "@b03-quick-4",
+        "reference": "[data-ref=\"quick-4\"]"
+      },
+      {
+        "id": "key-7",
+        "selector": "@payment-key-7",
+        "reference": "[data-ref=\"key-7\"]"
+      },
+      {
+        "id": "key-8",
+        "selector": "@payment-key-8",
+        "reference": "[data-ref=\"key-8\"]"
+      },
+      {
+        "id": "key-9",
+        "selector": "@payment-key-9",
+        "reference": "[data-ref=\"key-9\"]"
+      },
+      {
+        "id": "key-4",
+        "selector": "@payment-key-4",
+        "reference": "[data-ref=\"key-4\"]"
+      },
+      {
+        "id": "key-5",
+        "selector": "@payment-key-5",
+        "reference": "[data-ref=\"key-5\"]"
+      },
+      {
+        "id": "key-6",
+        "selector": "@payment-key-6",
+        "reference": "[data-ref=\"key-6\"]"
+      },
+      {
+        "id": "key-1",
+        "selector": "@payment-key-1",
+        "reference": "[data-ref=\"key-1\"]"
+      },
+      {
+        "id": "key-2",
+        "selector": "@payment-key-2",
+        "reference": "[data-ref=\"key-2\"]"
+      },
+      {
+        "id": "key-3",
+        "selector": "@payment-key-3",
+        "reference": "[data-ref=\"key-3\"]"
+      },
+      {
+        "id": "key-00",
+        "selector": "@payment-key-00",
+        "reference": "[data-ref=\"key-00\"]"
+      },
+      {
+        "id": "key-0",
+        "selector": "@payment-key-0",
+        "reference": "[data-ref=\"key-0\"]"
+      },
+      {
+        "id": "key-delete",
+        "selector": "@payment-key-delete",
+        "reference": "[data-ref=\"key-delete\"]"
+      }
+    ],
+    "thresholds": {
+      "channelThreshold": 16,
+      "maxDiffRatio": 0.015,
+      "geometryTolerancePx": 2,
+      "minTargetPx": 44
+    }
+  },
+  "cases": [
+    {
+      "id": "desktop-full",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "actual": {
+        "url": "http://127.0.0.1:5183",
+        "ready": ":root:not(:has([data-rht-toaster] > div)) [data-testid=\"payment-drawer\"]",
+        "steps": [
+          {
+            "action": "click",
+            "selector": "@go-store-pairing"
+          },
+          {
+            "action": "fill",
+            "selector": "@store-key-input",
+            "value": "0001-X8F3QA"
+          },
+          {
+            "action": "click",
+            "selector": "@go-passcode"
+          },
+          {
+            "action": "click",
+            "selector": "@employee-6b7bd350-7db2-4160-8471-cca2668c070d"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-1"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-2"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-3"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-4"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-5"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-6"
+          },
+          {
+            "action": "click",
+            "selector": "@unlock-button"
+          },
+          {
+            "action": "waitFor",
+            "selector": "@floor-view"
+          },
+          {
+            "action": "click",
+            "selector": "@nav-floor"
+          },
+          {
+            "action": "click",
+            "selector": "@table-a254abd0-b883-4d5c-85c1-89f660409e02"
+          },
+          {
+            "action": "waitFor",
+            "selector": "@order-total-amount"
+          },
+          {
+            "action": "click",
+            "selector": "@submit-order-button-footer"
+          },
+          {
+            "action": "waitFor",
+            "selector": "@payment-amount-due-value"
+          }
+        ]
+      },
+      "reference": {
+        "url": "http://127.0.0.1:4177/v3/normalized.html?state=full",
+        "ready": "html[data-ready=\"true\"] [data-reference-state=\"full\"]"
+      },
+      "regions": [
+        {
+          "id": "due",
+          "x": 830,
+          "y": 736,
+          "width": 133,
+          "height": 39,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "order-total",
+          "x": 892,
+          "y": 692,
+          "width": 71,
+          "height": 21,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "change-value",
+          "x": 1369,
+          "y": 570,
+          "width": 45,
+          "height": 36,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "received",
+          "x": 1034,
+          "y": 455,
+          "width": 346,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "pay-label",
+          "x": 858,
+          "y": 897,
+          "width": 227,
+          "height": 19,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "pay-header-label",
+          "x": 1405,
+          "y": 109,
+          "width": 141,
+          "height": 18,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "equation",
+          "x": 1044,
+          "y": 588,
+          "width": 130,
+          "height": 19,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "selected-count",
+          "x": 867,
+          "y": 268,
+          "width": 96,
+          "height": 21,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "back",
+          "x": 301,
+          "y": 96,
+          "width": 116,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "close",
+          "x": 1575,
+          "y": 96,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "back-footer",
+          "x": 600,
+          "y": 939,
+          "width": 720,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "pay-header",
+          "x": 1390,
+          "y": 96,
+          "width": 171,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "pay-footer",
+          "x": 600,
+          "y": 883,
+          "width": 720,
+          "height": 48,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "provisional",
+          "x": 318,
+          "y": 785,
+          "width": 645,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "select-all",
+          "x": 318,
+          "y": 256,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "print",
+          "x": 1020,
+          "y": 642,
+          "width": 45,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "method-0",
+          "x": 1020,
+          "y": 263,
+          "width": 288,
+          "height": 65,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-check-0",
+          "x": 318,
+          "y": 323,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "plus-0",
+          "x": 918,
+          "y": 352,
+          "width": 45,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-check-1",
+          "x": 318,
+          "y": 429,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "plus-1",
+          "x": 918,
+          "y": 458,
+          "width": 45,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-check-2",
+          "x": 318,
+          "y": 535,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "plus-2",
+          "x": 918,
+          "y": 564,
+          "width": 45,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-0",
+          "x": 1033,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-1",
+          "x": 1112,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-2",
+          "x": 1191,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-3",
+          "x": 1270,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-4",
+          "x": 1349,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-7",
+          "x": 1448,
+          "y": 413,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-8",
+          "x": 1501,
+          "y": 413,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-9",
+          "x": 1554,
+          "y": 413,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-4",
+          "x": 1448,
+          "y": 463,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-5",
+          "x": 1501,
+          "y": 463,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-6",
+          "x": 1554,
+          "y": 463,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-1",
+          "x": 1448,
+          "y": 513,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-2",
+          "x": 1501,
+          "y": 513,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-3",
+          "x": 1554,
+          "y": 513,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-00",
+          "x": 1448,
+          "y": 563,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-0",
+          "x": 1501,
+          "y": 563,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-delete",
+          "x": 1554,
+          "y": 563,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-money-0",
+          "x": 870,
+          "y": 323,
+          "width": 93,
+          "height": 22,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "unit-0",
+          "x": 372,
+          "y": 370,
+          "width": 489,
+          "height": 18,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quantity-0",
+          "x": 870,
+          "y": 358,
+          "width": 43,
+          "height": 33,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-money-1",
+          "x": 876,
+          "y": 429,
+          "width": 87,
+          "height": 22,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "unit-1",
+          "x": 372,
+          "y": 476,
+          "width": 495,
+          "height": 18,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quantity-1",
+          "x": 876,
+          "y": 464,
+          "width": 37,
+          "height": 33,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-money-2",
+          "x": 876,
+          "y": 535,
+          "width": 87,
+          "height": 22,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "unit-2",
+          "x": 372,
+          "y": 582,
+          "width": 495,
+          "height": 18,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quantity-2",
+          "x": 876,
+          "y": 570,
+          "width": 37,
+          "height": 33,
+          "maxDiffRatio": 0
+        }
+      ]
+    },
+    {
+      "id": "desktop-change",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "actual": {
+        "url": "http://127.0.0.1:5183",
+        "ready": ":root:not(:has([data-rht-toaster] > div)) [data-testid=\"payment-drawer\"]",
+        "steps": [
+          {
+            "action": "click",
+            "selector": "@go-store-pairing"
+          },
+          {
+            "action": "fill",
+            "selector": "@store-key-input",
+            "value": "0001-X8F3QA"
+          },
+          {
+            "action": "click",
+            "selector": "@go-passcode"
+          },
+          {
+            "action": "click",
+            "selector": "@employee-6b7bd350-7db2-4160-8471-cca2668c070d"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-1"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-2"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-3"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-4"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-5"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-6"
+          },
+          {
+            "action": "click",
+            "selector": "@unlock-button"
+          },
+          {
+            "action": "waitFor",
+            "selector": "@floor-view"
+          },
+          {
+            "action": "click",
+            "selector": "@nav-floor"
+          },
+          {
+            "action": "click",
+            "selector": "@table-a254abd0-b883-4d5c-85c1-89f660409e02"
+          },
+          {
+            "action": "waitFor",
+            "selector": "@order-total-amount"
+          },
+          {
+            "action": "click",
+            "selector": "@submit-order-button-footer"
+          },
+          {
+            "action": "waitFor",
+            "selector": "@payment-amount-due-value"
+          },
+          {
+            "action": "fill",
+            "selector": "@payment-received-amount",
+            "value": "200000"
+          }
+        ]
+      },
+      "reference": {
+        "url": "http://127.0.0.1:4177/v3/normalized.html?state=change",
+        "ready": "html[data-ready=\"true\"] [data-reference-state=\"change\"]"
+      },
+      "regions": [
+        {
+          "id": "due",
+          "x": 830,
+          "y": 736,
+          "width": 133,
+          "height": 39,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "order-total",
+          "x": 892,
+          "y": 692,
+          "width": 71,
+          "height": 21,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "change-value",
+          "x": 1315,
+          "y": 570,
+          "width": 99,
+          "height": 36,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "received",
+          "x": 1034,
+          "y": 455,
+          "width": 346,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "pay-label",
+          "x": 858,
+          "y": 897,
+          "width": 227,
+          "height": 19,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "pay-header-label",
+          "x": 1405,
+          "y": 109,
+          "width": 141,
+          "height": 18,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "equation",
+          "x": 1044,
+          "y": 588,
+          "width": 133,
+          "height": 19,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "selected-count",
+          "x": 867,
+          "y": 268,
+          "width": 96,
+          "height": 21,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "back",
+          "x": 301,
+          "y": 96,
+          "width": 116,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "close",
+          "x": 1575,
+          "y": 96,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "back-footer",
+          "x": 600,
+          "y": 939,
+          "width": 720,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "pay-header",
+          "x": 1390,
+          "y": 96,
+          "width": 171,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "pay-footer",
+          "x": 600,
+          "y": 883,
+          "width": 720,
+          "height": 48,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "provisional",
+          "x": 318,
+          "y": 785,
+          "width": 645,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "select-all",
+          "x": 318,
+          "y": 256,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "print",
+          "x": 1020,
+          "y": 642,
+          "width": 45,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "method-0",
+          "x": 1020,
+          "y": 263,
+          "width": 288,
+          "height": 65,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-check-0",
+          "x": 318,
+          "y": 323,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "plus-0",
+          "x": 918,
+          "y": 352,
+          "width": 45,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-check-1",
+          "x": 318,
+          "y": 429,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "plus-1",
+          "x": 918,
+          "y": 458,
+          "width": 45,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-check-2",
+          "x": 318,
+          "y": 535,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "plus-2",
+          "x": 918,
+          "y": 564,
+          "width": 45,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-0",
+          "x": 1033,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-1",
+          "x": 1112,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-2",
+          "x": 1191,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-3",
+          "x": 1270,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-4",
+          "x": 1349,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-7",
+          "x": 1448,
+          "y": 413,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-8",
+          "x": 1501,
+          "y": 413,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-9",
+          "x": 1554,
+          "y": 413,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-4",
+          "x": 1448,
+          "y": 463,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-5",
+          "x": 1501,
+          "y": 463,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-6",
+          "x": 1554,
+          "y": 463,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-1",
+          "x": 1448,
+          "y": 513,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-2",
+          "x": 1501,
+          "y": 513,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-3",
+          "x": 1554,
+          "y": 513,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-00",
+          "x": 1448,
+          "y": 563,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-0",
+          "x": 1501,
+          "y": 563,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-delete",
+          "x": 1554,
+          "y": 563,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-money-0",
+          "x": 870,
+          "y": 323,
+          "width": 93,
+          "height": 22,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "unit-0",
+          "x": 372,
+          "y": 370,
+          "width": 489,
+          "height": 18,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quantity-0",
+          "x": 870,
+          "y": 358,
+          "width": 43,
+          "height": 33,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-money-1",
+          "x": 876,
+          "y": 429,
+          "width": 87,
+          "height": 22,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "unit-1",
+          "x": 372,
+          "y": 476,
+          "width": 495,
+          "height": 18,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quantity-1",
+          "x": 876,
+          "y": 464,
+          "width": 37,
+          "height": 33,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-money-2",
+          "x": 876,
+          "y": 535,
+          "width": 87,
+          "height": 22,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "unit-2",
+          "x": 372,
+          "y": 582,
+          "width": 495,
+          "height": 18,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quantity-2",
+          "x": 876,
+          "y": 570,
+          "width": 37,
+          "height": 33,
+          "maxDiffRatio": 0
+        }
+      ]
+    },
+    {
+      "id": "desktop-partial",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "actual": {
+        "url": "http://127.0.0.1:5183",
+        "ready": ":root:not(:has([data-rht-toaster] > div)) [data-testid=\"payment-drawer\"]",
+        "steps": [
+          {
+            "action": "click",
+            "selector": "@go-store-pairing"
+          },
+          {
+            "action": "fill",
+            "selector": "@store-key-input",
+            "value": "0001-X8F3QA"
+          },
+          {
+            "action": "click",
+            "selector": "@go-passcode"
+          },
+          {
+            "action": "click",
+            "selector": "@employee-6b7bd350-7db2-4160-8471-cca2668c070d"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-1"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-2"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-3"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-4"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-5"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-6"
+          },
+          {
+            "action": "click",
+            "selector": "@unlock-button"
+          },
+          {
+            "action": "waitFor",
+            "selector": "@floor-view"
+          },
+          {
+            "action": "click",
+            "selector": "@nav-floor"
+          },
+          {
+            "action": "click",
+            "selector": "@table-a254abd0-b883-4d5c-85c1-89f660409e02"
+          },
+          {
+            "action": "waitFor",
+            "selector": "@order-total-amount"
+          },
+          {
+            "action": "click",
+            "selector": "@submit-order-button-footer"
+          },
+          {
+            "action": "waitFor",
+            "selector": "@payment-amount-due-value"
+          },
+          {
+            "action": "click",
+            "selector": "@pay-select-all"
+          },
+          {
+            "action": "click",
+            "selector": "[data-testid=\"pay-item-line\"]:nth-of-type(1) [data-testid=\"pay-item-checkbox\"]"
+          },
+          {
+            "action": "fill",
+            "selector": "@payment-received-amount",
+            "value": "50000"
+          }
+        ]
+      },
+      "reference": {
+        "url": "http://127.0.0.1:4177/v3/normalized.html?state=partial",
+        "ready": "html[data-ready=\"true\"] [data-reference-state=\"partial\"]"
+      },
+      "regions": [
+        {
+          "id": "due",
+          "x": 840,
+          "y": 736,
+          "width": 123,
+          "height": 39,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "order-total",
+          "x": 892,
+          "y": 692,
+          "width": 71,
+          "height": 21,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "change-value",
+          "x": 1318,
+          "y": 570,
+          "width": 96,
+          "height": 36,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "received",
+          "x": 1034,
+          "y": 455,
+          "width": 346,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "pay-label",
+          "x": 845,
+          "y": 897,
+          "width": 253,
+          "height": 19,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "pay-header-label",
+          "x": 1373,
+          "y": 109,
+          "width": 173,
+          "height": 18,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "equation",
+          "x": 1044,
+          "y": 588,
+          "width": 121,
+          "height": 19,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "selected-count",
+          "x": 871,
+          "y": 268,
+          "width": 92,
+          "height": 21,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "back",
+          "x": 301,
+          "y": 96,
+          "width": 116,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "close",
+          "x": 1575,
+          "y": 96,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "back-footer",
+          "x": 600,
+          "y": 939,
+          "width": 720,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "pay-header",
+          "x": 1358,
+          "y": 96,
+          "width": 203,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "pay-footer",
+          "x": 600,
+          "y": 883,
+          "width": 720,
+          "height": 48,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "provisional",
+          "x": 318,
+          "y": 785,
+          "width": 645,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "select-all",
+          "x": 318,
+          "y": 256,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "print",
+          "x": 1020,
+          "y": 642,
+          "width": 45,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "method-0",
+          "x": 1020,
+          "y": 263,
+          "width": 288,
+          "height": 65,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-check-0",
+          "x": 318,
+          "y": 323,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "plus-0",
+          "x": 918,
+          "y": 352,
+          "width": 45,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-check-1",
+          "x": 318,
+          "y": 429,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "plus-1",
+          "x": 918,
+          "y": 458,
+          "width": 45,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-check-2",
+          "x": 318,
+          "y": 535,
+          "width": 44,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "plus-2",
+          "x": 918,
+          "y": 564,
+          "width": 45,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-0",
+          "x": 1033,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-1",
+          "x": 1112,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-2",
+          "x": 1191,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-3",
+          "x": 1270,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quick-4",
+          "x": 1349,
+          "y": 508,
+          "width": 76,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-7",
+          "x": 1448,
+          "y": 413,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-8",
+          "x": 1501,
+          "y": 413,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-9",
+          "x": 1554,
+          "y": 413,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-4",
+          "x": 1448,
+          "y": 463,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-5",
+          "x": 1501,
+          "y": 463,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-6",
+          "x": 1554,
+          "y": 463,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-1",
+          "x": 1448,
+          "y": 513,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-2",
+          "x": 1501,
+          "y": 513,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-3",
+          "x": 1554,
+          "y": 513,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-00",
+          "x": 1448,
+          "y": 563,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-0",
+          "x": 1501,
+          "y": 563,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "key-delete",
+          "x": 1554,
+          "y": 563,
+          "width": 48,
+          "height": 45,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-money-0",
+          "x": 873,
+          "y": 323,
+          "width": 90,
+          "height": 22,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "unit-0",
+          "x": 372,
+          "y": 370,
+          "width": 492,
+          "height": 18,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quantity-0",
+          "x": 873,
+          "y": 358,
+          "width": 40,
+          "height": 33,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-money-1",
+          "x": 872,
+          "y": 429,
+          "width": 91,
+          "height": 22,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "unit-1",
+          "x": 372,
+          "y": 476,
+          "width": 491,
+          "height": 18,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quantity-1",
+          "x": 872,
+          "y": 464,
+          "width": 41,
+          "height": 33,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "line-money-2",
+          "x": 872,
+          "y": 535,
+          "width": 91,
+          "height": 22,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "unit-2",
+          "x": 372,
+          "y": 582,
+          "width": 491,
+          "height": 18,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "quantity-2",
+          "x": 872,
+          "y": 570,
+          "width": 41,
+          "height": 33,
+          "maxDiffRatio": 0
+        }
+      ]
+    }
+  ]
+}

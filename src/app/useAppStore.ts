@@ -2,10 +2,11 @@ import { create } from "zustand";
 import type { Employee, OrderType, PrintReceipt, PrintTicket, SubmitOrderDraftItem } from "@/domain";
 import { clearDrawerExitGuard, requestDrawerExit } from "./drawerNavigation";
 
-export type ReceiptPreview =
+export type ReceiptPreview = (
   | { variant: "ticket"; doc: PrintTicket }
   | { variant: "kitchen"; doc: PrintTicket }
-  | { variant: "receipt"; doc: PrintReceipt; orderId?: string; legacyMetadata?: boolean };
+  | { variant: "receipt"; doc: PrintReceipt; orderId?: string; legacyMetadata?: boolean }
+) & { presentation?: "remake" };
 
 export type DrawerModule = "order" | "payment" | "takeaway" | "writeRecovery" | "menuEditor" | "floorEditor" | "report" | "orderHistory" | "employees" | "settings" | "paymentSettings" | null;
 export type AppScreen = "landing" | "storePairing" | "createStore" | "passcode";

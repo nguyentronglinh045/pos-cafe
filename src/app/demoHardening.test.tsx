@@ -134,7 +134,7 @@ describe("Demo hardening", () => {
       new AppError("ORDER_VERSION_CONFLICT", "Dữ liệu đã thay đổi, vui lòng tải lại."),
     );
 
-    await screen.findByText("Thanh toán · Đơn #24");
+    await screen.findByTestId("b03-meta");
     await waitFor(() => expect(screen.getByTestId("pay-button")).toBeEnabled());
     const callsBeforePayment = getOrderSpy.mock.calls.length;
     await user.click(screen.getByTestId("pay-button"));
@@ -170,13 +170,11 @@ describe("Demo hardening", () => {
     const printCheckbox = within(drawer).getByTestId("print-receipt-checkbox");
     expect(printCheckbox).toBeChecked();
 
-    const receivedValue = within(drawer).getByTestId("payment-received-summary-value");
-    const changeValue = within(drawer).getByTestId("payment-change-summary-value");
-    expect(receivedValue.className).toBe(changeValue.className);
+    await waitFor(() => expect(within(drawer).getByTestId("payment-received-amount")).toHaveAttribute("data-amount", "125000"));
+    expect(within(drawer).getByTestId("payment-change-summary-value")).toHaveTextContent("0");
+    expect(within(drawer).getByTestId("payment-amount-due-value")).toHaveAttribute("data-amount", "125000");
+    expect(within(drawer).getByTestId("pay-button-footer")).toBeEnabled();
+    expect(within(drawer).getByTestId("payment-cashier-console").contains(printCheckbox)).toBe(true);
 
-    const summary = within(drawer).getByTestId("payment-order-summary");
-    const completeButton = within(summary).getByTestId("pay-button-footer");
-    expect(summary.contains(printCheckbox)).toBe(true);
-    expect(summary.contains(completeButton)).toBe(true);
   });
 });
