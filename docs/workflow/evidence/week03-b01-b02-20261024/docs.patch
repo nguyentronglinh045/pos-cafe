@@ -1,0 +1,36 @@
+diff --git a/docs/README.md b/docs/README.md
+index d269a46..83af923 100644
+--- a/docs/README.md
++++ b/docs/README.md
+@@ -65,3 +65,7 @@ Phase log cũ có thể chứa test/gap đúng tại thời điểm đó nhưng
+ - Khi baseline kiểm thử hoặc giới hạn thay đổi, cập nhật `testing.md`/`limitations.md` và ghi rõ ngày, môi trường.
+ - Khi một scaffold bị chốt future-only, root docs phải nói rõ entry point nào đã ẩn và không liệt kê nó như màn hình hiện hành.
+ - Không đưa tài liệu làm việc tạm vào root docs; đưa vào `archive/` nếu cần giữ lại lịch sử.
++
++## Tuần3 — B01/B02 candidate
++
++[Biên bản và giới hạn](workflow/tasks/week03-b01-b02-final.md),[spec](../openspec/changes/week03-b01-b02/proposal.md). Chỉ B01/B02,chưa merge/deploy; manualmáythậtNOT_RUN,draftPR.
+diff --git a/docs/screens.md b/docs/screens.md
+index 9b8d286..3b2b7b7 100644
+--- a/docs/screens.md
++++ b/docs/screens.md
+@@ -166,3 +166,7 @@ Danh sách này mô tả các màn/drawer hiện có theo contract: màn làm g
+ - Confirm popup dùng overlay full-screen; click overlay vẫn theo callback được truyền vào.
+ - Overlay click đóng drawer theo callback của từng drawer.
+ - Drawer có slide-in khi mở; exit animation hiện là polish optional/backlog.
++
++## Tuần3 candidate B01/B02
++
++B01dãylầucuộnngang và B02menu/giỏhàng theo approvedreferences; [nguồn/kiểm chứng/giới hạn](workflow/tasks/week03-b01-b02-final.md). B03remakekhôngnằmtrongPRnày.
+diff --git a/docs/testing.md b/docs/testing.md
+index 01e74bb..e1822de 100644
+--- a/docs/testing.md
++++ b/docs/testing.md
+@@ -188,3 +188,7 @@ Bốn lệnh đầu là cổng chất lượng, chạy được cục bộ và k
+ - Kết quả phase cũ là evidence lịch sử, không thay cho baseline hiện tại.
+ - Failure lịch sử đã được phase sau sửa phải ghi là “tại checkpoint”, không mô tả như lỗi hiện hành.
+ - Phân biệt rõ automated test, manual verification và cấu hình/deployment readiness.
++
++## Tuần3 B01/B02
++
++[Gate sourcehai màn](workflow/tasks/week03-b01-b02-final.md):642unit/149browser/35smokePASS31scope-skip; auditwholeappFAIL,baselinegiữ. Kiểm thủcôngWindowsNOT_RUN,capturehelpertimeout.

@@ -1,0 +1,118 @@
+{
+  "status": "PLAN_ONLY",
+  "kind": "screen-remake",
+  "referenceSourceSha256": "dcfbc71eaeccdf7b791100ab4014fa85817a61a27040ef4cbe407771771a3c12",
+  "contractSha256": "b7903eebc3e8a68e9ab1434c615c304414af0bac196d500a27f4c941c6e26b4b",
+  "referenceFiles": [
+    {
+      "path": "artifacts/stitch/B02/v3/fixture.json",
+      "bytes": 13954,
+      "sha256": "44bc8c12943a0927199d8ad4605a0ac0829f1d953e9cd2070cbeb7b49ceb256c"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/fonts/BeVietnamPro-Bold.ttf",
+      "bytes": 140300,
+      "sha256": "7f738fe5c43c8872807b20e2d30d42163618de8a4daf7f48a939adac32c16847"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/fonts/BeVietnamPro-Medium.ttf",
+      "bytes": 135980,
+      "sha256": "b60832bfa0fcd015158112c64d7e3fdad3b0c6287d1823f85a3103636e845268"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/fonts/BeVietnamPro-Regular.ttf",
+      "bytes": 132948,
+      "sha256": "cd1ef6e9d7db28ad5cdb88a65ccbe693870e60d340b791f349d248342b4fe4c3"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/fonts/BeVietnamPro-SemiBold.ttf",
+      "bytes": 136736,
+      "sha256": "bd8e27eb02720b9d91e59e4f10a90878643219f25ce6a8d9a4f06a8a88d3bb71"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/fonts/OFL.txt",
+      "bytes": 4397,
+      "sha256": "6b7f8f73609a25ea78c891e34cf37b06f8a676b7ea986e941e43b009110f2a85"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/fonts/provenance.json",
+      "bytes": 1922,
+      "sha256": "2408b02a9b18880a8a5e9cde0ede60fd91c2baf8a494250631a5543325fc02f5"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/normalized.css",
+      "bytes": 10022,
+      "sha256": "d834c3f0cd576bad25a35fc6e9267cc47f78bfcc9045ba3a8fabfed5bd6c9ecf"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/normalized.html",
+      "bytes": 378,
+      "sha256": "666bdfb59efbc843e5735d930abef21992860491f546ace81b4a921afc237230"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/normalized.mjs",
+      "bytes": 5170,
+      "sha256": "0f3be1ccd49de4f48526c8f53e4bf8c210baa679f39da62576fe6a2230ca9c2e"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/palette.css",
+      "bytes": 436,
+      "sha256": "48f7c568cf69fc19db16b51206d36befda3ca4cd15a6f0c852c40d477a0a870b"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/palette.json",
+      "bytes": 820,
+      "sha256": "e3a029371594b2cb25ca10916acd47b121b2744c23145ef0c09afb4c722dbc3b"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/raw-manifest.json",
+      "bytes": 2764,
+      "sha256": "370c30b2e735a3358fb941d48c601b5c8a5794db5ed7442e4553176d6670e2c3"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/raw.png",
+      "bytes": 1743309,
+      "sha256": "8713be6d35e3353707125f08416036b42247a44cd8238109ce049d729520d898"
+    },
+    {
+      "path": "artifacts/stitch/B02/v3/responsive-contract.proposed.json",
+      "bytes": 1828,
+      "sha256": "326ab98fa7dc554d99f49fba35404f4deb48a9708472444608452dfef10da511"
+    },
+    {
+      "path": "ui-remake/fonts/BeVietnamPro-Bold.ttf",
+      "bytes": 140300,
+      "sha256": "7f738fe5c43c8872807b20e2d30d42163618de8a4daf7f48a939adac32c16847"
+    },
+    {
+      "path": "ui-remake/fonts/BeVietnamPro-Medium.ttf",
+      "bytes": 135980,
+      "sha256": "b60832bfa0fcd015158112c64d7e3fdad3b0c6287d1823f85a3103636e845268"
+    },
+    {
+      "path": "ui-remake/fonts/BeVietnamPro-Regular.ttf",
+      "bytes": 132948,
+      "sha256": "cd1ef6e9d7db28ad5cdb88a65ccbe693870e60d340b791f349d248342b4fe4c3"
+    },
+    {
+      "path": "ui-remake/fonts/BeVietnamPro-SemiBold.ttf",
+      "bytes": 136736,
+      "sha256": "bd8e27eb02720b9d91e59e4f10a90878643219f25ce6a8d9a4f06a8a88d3bb71"
+    },
+    {
+      "path": "ui-remake/fonts/provenance.json",
+      "bytes": 1922,
+      "sha256": "2408b02a9b18880a8a5e9cde0ede60fd91c2baf8a494250631a5543325fc02f5"
+    },
+    {
+      "path": "ui-remake/palette-a-v1.json",
+      "bytes": 820,
+      "sha256": "e3a029371594b2cb25ca10916acd47b121b2744c23145ef0c09afb4c722dbc3b"
+    }
+  ],
+  "budget": {
+    "estimatedBytes": 99532800,
+    "caseCount": 2
+  },
+  "sourceSha256": "9b6790ca85ca91338087239138c5dc389e45b86b8fb2ece0779703816b4a5209"
+}

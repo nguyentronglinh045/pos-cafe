@@ -1,0 +1,11 @@
+
+ RUN  v4.1.11 C:/Users/ngoc.vv/Music/KLTN/pos-cafe-main/.worktrees/week03-b01-b02-main
+
+
+ Test Files  66 passed (66)
+      Tests  642 passed (642)
+   Start at  15:50:48
+   Duration  155.00s (transform 5.85s, setup 14.72s, import 134.74s, tests 50.87s, environment 85.61s)
+
+
+--- STDERR ---

@@ -1,0 +1,532 @@
+{
+  "width": 981,
+  "height": 481,
+  "fixtures": [
+    {
+      "count": 1,
+      "long": false,
+      "initial": {
+        "count": 1,
+        "activeName": "Tầng trệt",
+        "activeText": "Tầng trệt8",
+        "activeCount": "8",
+        "selected": "floor-area-045eee43-5266-442f-8e87-978c1cc30d0c",
+        "activeVisible": true,
+        "rows": 1,
+        "minWidth": 107.828125,
+        "scrollLeft": 0,
+        "scrollMax": 0,
+        "names": [
+          "Tầng trệt"
+        ],
+        "titles": [
+          "Tầng trệt"
+        ],
+        "minHeight": 44,
+        "canvasHeight": 233,
+        "toolbarHeight": 77,
+        "overflow": 0,
+        "filters": [
+          {
+            "x": 622.71875,
+            "y": 81,
+            "width": 64.03125,
+            "height": 44,
+            "right": 686.75,
+            "text": "Tất cả",
+            "clipped": false
+          },
+          {
+            "x": 690.75,
+            "y": 81,
+            "width": 74.171875,
+            "height": 44,
+            "right": 764.921875,
+            "text": "Trống",
+            "clipped": false
+          },
+          {
+            "x": 768.921875,
+            "y": 81,
+            "width": 121.078125,
+            "height": 44,
+            "right": 890,
+            "text": "Đang phục vụ",
+            "clipped": false
+          }
+        ],
+        "arrows": []
+      }
+    },
+    {
+      "count": 1,
+      "long": true,
+      "initial": {
+        "count": 1,
+        "activeName": "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+        "activeText": "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. 8",
+        "activeCount": "8",
+        "selected": "floor-area-045eee43-5266-442f-8e87-978c1cc30d0c",
+        "activeVisible": true,
+        "rows": 1,
+        "minWidth": 200,
+        "scrollLeft": 0,
+        "scrollMax": 0,
+        "names": [
+          "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. "
+        ],
+        "titles": [
+          "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. "
+        ],
+        "minHeight": 44,
+        "canvasHeight": 233,
+        "toolbarHeight": 77,
+        "overflow": 0,
+        "filters": [
+          {
+            "x": 622.71875,
+            "y": 81,
+            "width": 64.03125,
+            "height": 44,
+            "right": 686.75,
+            "text": "Tất cả",
+            "clipped": false
+          },
+          {
+            "x": 690.75,
+            "y": 81,
+            "width": 74.171875,
+            "height": 44,
+            "right": 764.921875,
+            "text": "Trống",
+            "clipped": false
+          },
+          {
+            "x": 768.921875,
+            "y": 81,
+            "width": 121.078125,
+            "height": 44,
+            "right": 890,
+            "text": "Đang phục vụ",
+            "clipped": false
+          }
+        ],
+        "arrows": []
+      }
+    },
+    {
+      "count": 2,
+      "long": false,
+      "initial": {
+        "count": 2,
+        "activeName": "Tầng trệt",
+        "activeText": "Tầng trệt8",
+        "activeCount": "8",
+        "selected": "floor-area-045eee43-5266-442f-8e87-978c1cc30d0c",
+        "activeVisible": true,
+        "rows": 1,
+        "minWidth": 82.46875,
+        "scrollLeft": 0,
+        "scrollMax": 0,
+        "names": [
+          "Tầng trệt",
+          "Lầu 1"
+        ],
+        "titles": [
+          "Tầng trệt",
+          "Lầu 1"
+        ],
+        "minHeight": 44,
+        "canvasHeight": 233,
+        "toolbarHeight": 77,
+        "overflow": 0,
+        "filters": [
+          {
+            "x": 622.71875,
+            "y": 81,
+            "width": 64.03125,
+            "height": 44,
+            "right": 686.75,
+            "text": "Tất cả",
+            "clipped": false
+          },
+          {
+            "x": 690.75,
+            "y": 81,
+            "width": 74.171875,
+            "height": 44,
+            "right": 764.921875,
+            "text": "Trống",
+            "clipped": false
+          },
+          {
+            "x": 768.921875,
+            "y": 81,
+            "width": 121.078125,
+            "height": 44,
+            "right": 890,
+            "text": "Đang phục vụ",
+            "clipped": false
+          }
+        ],
+        "arrows": []
+      }
+    },
+    {
+      "count": 2,
+      "long": true,
+      "initial": {
+        "count": 2,
+        "activeName": "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+        "activeText": "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. 8",
+        "activeCount": "8",
+        "selected": "floor-area-045eee43-5266-442f-8e87-978c1cc30d0c",
+        "activeVisible": true,
+        "rows": 1,
+        "minWidth": 200,
+        "scrollLeft": 0,
+        "scrollMax": 0,
+        "names": [
+          "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 1 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. "
+        ],
+        "titles": [
+          "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 1 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. "
+        ],
+        "minHeight": 44,
+        "canvasHeight": 233,
+        "toolbarHeight": 77,
+        "overflow": 0,
+        "filters": [
+          {
+            "x": 622.71875,
+            "y": 81,
+            "width": 64.03125,
+            "height": 44,
+            "right": 686.75,
+            "text": "Tất cả",
+            "clipped": false
+          },
+          {
+            "x": 690.75,
+            "y": 81,
+            "width": 74.171875,
+            "height": 44,
+            "right": 764.921875,
+            "text": "Trống",
+            "clipped": false
+          },
+          {
+            "x": 768.921875,
+            "y": 81,
+            "width": 121.078125,
+            "height": 44,
+            "right": 890,
+            "text": "Đang phục vụ",
+            "clipped": false
+          }
+        ],
+        "arrows": []
+      }
+    },
+    {
+      "count": 5,
+      "long": false,
+      "initial": {
+        "count": 5,
+        "activeName": "Tầng trệt",
+        "activeText": "Tầng trệt8",
+        "activeCount": "8",
+        "selected": "floor-area-045eee43-5266-442f-8e87-978c1cc30d0c",
+        "activeVisible": true,
+        "rows": 1,
+        "minWidth": 82.46875,
+        "scrollLeft": 0,
+        "scrollMax": 0,
+        "names": [
+          "Tầng trệt",
+          "Lầu 1",
+          "Lầu 2",
+          "Lầu 3",
+          "Lầu 4"
+        ],
+        "titles": [
+          "Tầng trệt",
+          "Lầu 1",
+          "Lầu 2",
+          "Lầu 3",
+          "Lầu 4"
+        ],
+        "minHeight": 44,
+        "canvasHeight": 233,
+        "toolbarHeight": 77,
+        "overflow": 0,
+        "filters": [
+          {
+            "x": 622.71875,
+            "y": 81,
+            "width": 64.03125,
+            "height": 44,
+            "right": 686.75,
+            "text": "Tất cả",
+            "clipped": false
+          },
+          {
+            "x": 690.75,
+            "y": 81,
+            "width": 74.171875,
+            "height": 44,
+            "right": 764.921875,
+            "text": "Trống",
+            "clipped": false
+          },
+          {
+            "x": 768.921875,
+            "y": 81,
+            "width": 121.078125,
+            "height": 44,
+            "right": 890,
+            "text": "Đang phục vụ",
+            "clipped": false
+          }
+        ],
+        "arrows": []
+      }
+    },
+    {
+      "count": 5,
+      "long": true,
+      "initial": {
+        "count": 5,
+        "activeName": "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+        "activeText": "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. 8",
+        "activeCount": "8",
+        "selected": "floor-area-045eee43-5266-442f-8e87-978c1cc30d0c",
+        "activeVisible": true,
+        "rows": 1,
+        "minWidth": 200,
+        "scrollLeft": 0,
+        "scrollMax": 553,
+        "names": [
+          "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 1 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 2 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 3 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 4 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. "
+        ],
+        "titles": [
+          "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 1 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 2 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 3 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 4 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. "
+        ],
+        "minHeight": 44,
+        "canvasHeight": 233,
+        "toolbarHeight": 77,
+        "overflow": 0,
+        "filters": [
+          {
+            "x": 622.71875,
+            "y": 81,
+            "width": 64.03125,
+            "height": 44,
+            "right": 686.75,
+            "text": "Tất cả",
+            "clipped": false
+          },
+          {
+            "x": 690.75,
+            "y": 81,
+            "width": 74.171875,
+            "height": 44,
+            "right": 764.921875,
+            "text": "Trống",
+            "clipped": false
+          },
+          {
+            "x": 768.921875,
+            "y": 81,
+            "width": 121.078125,
+            "height": 44,
+            "right": 890,
+            "text": "Đang phục vụ",
+            "clipped": false
+          }
+        ],
+        "arrows": [
+          {
+            "x": 291,
+            "y": 147.5,
+            "width": 44,
+            "height": 44,
+            "right": 335,
+            "disabled": true,
+            "hit": true
+          },
+          {
+            "x": 806,
+            "y": 147.5,
+            "width": 44,
+            "height": 44,
+            "right": 850,
+            "disabled": false,
+            "hit": true
+          }
+        ]
+      }
+    },
+    {
+      "count": 6,
+      "long": false,
+      "initial": {
+        "count": 6,
+        "activeName": "Tầng trệt",
+        "activeText": "Tầng trệt8",
+        "activeCount": "8",
+        "selected": "floor-area-045eee43-5266-442f-8e87-978c1cc30d0c",
+        "activeVisible": true,
+        "rows": 1,
+        "minWidth": 82.46875,
+        "scrollLeft": 0,
+        "scrollMax": 0,
+        "names": [
+          "Tầng trệt",
+          "Lầu 1",
+          "Lầu 2",
+          "Lầu 3",
+          "Lầu 4",
+          "Lầu 5"
+        ],
+        "titles": [
+          "Tầng trệt",
+          "Lầu 1",
+          "Lầu 2",
+          "Lầu 3",
+          "Lầu 4",
+          "Lầu 5"
+        ],
+        "minHeight": 44,
+        "canvasHeight": 233,
+        "toolbarHeight": 77,
+        "overflow": 0,
+        "filters": [
+          {
+            "x": 622.71875,
+            "y": 81,
+            "width": 64.03125,
+            "height": 44,
+            "right": 686.75,
+            "text": "Tất cả",
+            "clipped": false
+          },
+          {
+            "x": 690.75,
+            "y": 81,
+            "width": 74.171875,
+            "height": 44,
+            "right": 764.921875,
+            "text": "Trống",
+            "clipped": false
+          },
+          {
+            "x": 768.921875,
+            "y": 81,
+            "width": 121.078125,
+            "height": 44,
+            "right": 890,
+            "text": "Đang phục vụ",
+            "clipped": false
+          }
+        ],
+        "arrows": []
+      }
+    },
+    {
+      "count": 6,
+      "long": true,
+      "initial": {
+        "count": 6,
+        "activeName": "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+        "activeText": "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. 8",
+        "activeCount": "8",
+        "selected": "floor-area-045eee43-5266-442f-8e87-978c1cc30d0c",
+        "activeVisible": true,
+        "rows": 1,
+        "minWidth": 200,
+        "scrollLeft": 0,
+        "scrollMax": 757,
+        "names": [
+          "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 1 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 2 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 3 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 4 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 5 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. "
+        ],
+        "titles": [
+          "Khu vực tầng 0 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 1 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 2 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 3 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 4 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. ",
+          "Khu vực tầng 5 — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê.  — Không gian yên tĩnh dành cho nhóm khách làm việc và họp dự án tại quán cà phê. "
+        ],
+        "minHeight": 44,
+        "canvasHeight": 233,
+        "toolbarHeight": 77,
+        "overflow": 0,
+        "filters": [
+          {
+            "x": 622.71875,
+            "y": 81,
+            "width": 64.03125,
+            "height": 44,
+            "right": 686.75,
+            "text": "Tất cả",
+            "clipped": false
+          },
+          {
+            "x": 690.75,
+            "y": 81,
+            "width": 74.171875,
+            "height": 44,
+            "right": 764.921875,
+            "text": "Trống",
+            "clipped": false
+          },
+          {
+            "x": 768.921875,
+            "y": 81,
+            "width": 121.078125,
+            "height": 44,
+            "right": 890,
+            "text": "Đang phục vụ",
+            "clipped": false
+          }
+        ],
+        "arrows": [
+          {
+            "x": 291,
+            "y": 147.5,
+            "width": 44,
+            "height": 44,
+            "right": 335,
+            "disabled": true,
+            "hit": true
+          },
+          {
+            "x": 806,
+            "y": 147.5,
+            "width": 44,
+            "height": 44,
+            "right": 850,
+            "disabled": false,
+            "hit": true
+          }
+        ]
+      }
+    }
+  ]
+}

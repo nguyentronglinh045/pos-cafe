@@ -1,0 +1,1586 @@
+diff --git a/playwright.config.ts b/playwright.config.ts
+index e1a9881..71d9c17 100644
+--- a/playwright.config.ts
++++ b/playwright.config.ts
+@@ -11,6 +11,7 @@ export default defineConfig({
+   use: {
+     baseURL: "http://127.0.0.1:5175",
+     trace: "on-first-retry",
++    channel: "chromium",
+   },
+   webServer: {
+     command: "npm run dev -- --host 127.0.0.1 --port 5175 --strictPort",
+diff --git a/src/app/components/PortalDrawer.test.tsx b/src/app/components/PortalDrawer.test.tsx
+index 9d7141a..2af81e2 100644
+--- a/src/app/components/PortalDrawer.test.tsx
++++ b/src/app/components/PortalDrawer.test.tsx
+@@ -23,8 +23,8 @@ describe("PortalDrawer", () => {
+     expect(root).toContainElement(panel);
+     expect(panel).toHaveTextContent("Drawer body");
+     expect(overlay?.className).toContain("inset-0");
+-    expect(overlay?.className).not.toContain("left-[176px]");
+-    expect(overlay?.className).not.toContain("max-[980px]:left-[68px]");
++    expect(overlay?.className).not.toContain("left-[var(--workspace-rail-width,176px)]");
++    expect(overlay?.className).not.toContain("max-[980px]:left-[var(--workspace-rail-width,68px)]");
+   });
+ 
+   it("can still target only the workspace viewport", () => {
+@@ -36,8 +36,8 @@ describe("PortalDrawer", () => {
+ 
+     const overlay = screen.getByTestId("kitchen-drawer").parentElement;
+ 
+-    expect(overlay?.className).toContain("left-[176px]");
+-    expect(overlay?.className).toContain("max-[980px]:left-[68px]");
++    expect(overlay?.className).toContain("left-[var(--workspace-rail-width,176px)]");
++    expect(overlay?.className).toContain("max-[980px]:left-[var(--workspace-rail-width,68px)]");
+   });
+ 
+   it("fills the available drawer viewport on every breakpoint", () => {
+@@ -64,7 +64,7 @@ describe("PortalDrawer", () => {
+     );
+ 
+     const overlay = screen.getByTestId("kitchen-drawer").parentElement;
+-    expect(overlay).toHaveStyle({ backgroundColor: "rgba(0, 0, 0, 0.2)" });
++    expect(overlay).toHaveStyle({ backgroundColor: "var(--drawer-overlay)" });
+   });
+ 
+   it("animates the default right drawer into view", () => {
+diff --git a/src/app/components/PortalDrawer.tsx b/src/app/components/PortalDrawer.tsx
+index a3888d6..078c470 100644
+--- a/src/app/components/PortalDrawer.tsx
++++ b/src/app/components/PortalDrawer.tsx
+@@ -27,7 +27,7 @@ const getPortalRoot = (containerId: string): HTMLElement => {
+   return root;
+ };
+ 
+-const workspaceOverlayClass = "fixed inset-y-0 right-0 left-[176px] max-[980px]:left-[68px]";
++const workspaceOverlayClass = "fixed inset-y-0 right-0 left-[var(--workspace-rail-width,176px)] max-[980px]:left-[var(--workspace-rail-width,68px)]";
+ const screenOverlayClass = "fixed inset-0";
+ 
+ const defaultPanelClass =
+@@ -50,7 +50,7 @@ const slideAnimationClass: Record<DrawerPlacement, string> = {
+ export function PortalDrawer({
+   children,
+   placement = "Right",
+-  overlayColor = "rgba(0, 0, 0, 0.2)",
++  overlayColor = "var(--drawer-overlay)",
+   onOutsideClick,
+   zIndex = 10,
+   containerId = "portals",
+diff --git a/src/app/components/ScaledFloorStage.tsx b/src/app/components/ScaledFloorStage.tsx
+index 4a1d310..7c8ff41 100644
+--- a/src/app/components/ScaledFloorStage.tsx
++++ b/src/app/components/ScaledFloorStage.tsx
+@@ -24,6 +24,9 @@ type ScaledFloorStageContext = {
+ 
+ interface ScaledFloorStageProps {
+   children: ReactNode | ((context: ScaledFloorStageContext) => ReactNode);
++  /** Opt-in display scrolling; editor keeps legacy fit behaviour. */
++  minScale?: number;
++  viewportTestId?: string;
+   className?: string;
+   contentClassName?: string;
+   testId?: string;
+@@ -45,6 +48,8 @@ const setForwardedRef = (ref: Ref<HTMLDivElement>, value: HTMLDivElement | null)
+ export const ScaledFloorStage = forwardRef<HTMLDivElement, ScaledFloorStageProps>(function ScaledFloorStage(
+   {
+     children,
++    minScale = 0,
++    viewportTestId,
+     className,
+     contentClassName,
+     testId,
+@@ -71,7 +76,8 @@ export const ScaledFloorStage = forwardRef<HTMLDivElement, ScaledFloorStageProps
+ 
+     const updateSize = () => {
+       const rect = container.getBoundingClientRect();
+-      setSize({ width: rect.width, height: rect.height });
++      const style = getComputedStyle(container);
++      setSize({ width: rect.width - parseFloat(style.paddingLeft || "0") - parseFloat(style.paddingRight || "0"), height: rect.height - parseFloat(style.paddingTop || "0") - parseFloat(style.paddingBottom || "0") });
+     };
+ 
+     updateSize();
+@@ -92,7 +98,7 @@ export const ScaledFloorStage = forwardRef<HTMLDivElement, ScaledFloorStageProps
+ 
+   const hasMeasuredSize = size.width > 0 && size.height > 0;
+   const scale = hasMeasuredSize
+-    ? Math.min(1, size.width / logicalStage.width, size.height / logicalStage.height)
++    ? Math.max(minScale, Math.min(1, size.width / logicalStage.width, size.height / logicalStage.height))
+     : 1;
+   const scaledWidth = logicalStage.width * scale;
+   const scaledHeight = logicalStage.height * scale;
+@@ -111,17 +117,17 @@ export const ScaledFloorStage = forwardRef<HTMLDivElement, ScaledFloorStageProps
+   const renderedChildren = typeof children === "function" ? children({ scale }) : children;
+ 
+   return (
+-    <div ref={containerRef} className={clsx("grid h-full min-h-0 w-full place-items-center overflow-hidden", className)}>
++    <div ref={containerRef} data-testid={viewportTestId} tabIndex={minScale > 0 ? 0 : undefined} aria-label={minScale > 0 ? "Sơ đồ bàn có thể cuộn" : undefined} className={clsx(minScale > 0 ? "canvas-viewport" : "grid h-full min-h-0 w-full place-items-center overflow-hidden", className)}>
+       <div
+         ref={setStageRef}
+-        className="relative overflow-hidden"
++        className={minScale > 0 ? "canvas-size" : "relative overflow-hidden"}
+         data-testid={testId}
+         onPointerDown={onPointerDown}
+         style={stageStyle}
+       >
+         <div
+           className={clsx(
+-            "absolute left-0 top-0 touch-none overflow-hidden rounded-pos border border-pos-line bg-[#eef3f7] bg-[linear-gradient(90deg,rgb(215_222_232_/_42%)_1px,transparent_1px),linear-gradient(rgb(215_222_232_/_42%)_1px,transparent_1px),#eef3f7] bg-[length:60px_60px]",
++            minScale > 0 ? "logical-floor" : "absolute left-0 top-0 touch-none overflow-hidden rounded-pos border border-pos-line bg-[#eef3f7] bg-[linear-gradient(90deg,rgb(215_222_232_/_42%)_1px,transparent_1px),linear-gradient(rgb(215_222_232_/_42%)_1px,transparent_1px),#eef3f7] bg-[length:60px_60px]",
+             contentClassName,
+           )}
+           data-testid={layerTestId}
+diff --git a/src/app/drawers/pos/DiscardDraftDialog.tsx b/src/app/drawers/pos/DiscardDraftDialog.tsx
+index 9c86c9d..cc7a6c8 100644
+--- a/src/app/drawers/pos/DiscardDraftDialog.tsx
++++ b/src/app/drawers/pos/DiscardDraftDialog.tsx
+@@ -1,9 +1,11 @@
+ import { Button } from "@mui/material";
+ import { PortalPopup } from "../../components/PortalPopup";
++import { useOrderDialogFocus } from "./useOrderDialogFocus";
+ 
+ export function DiscardDraftDialog({ onKeep, onDiscard }: { onKeep(): void; onDiscard(): void }) {
+-  return <PortalPopup placement="Centered" viewport="workspace" overlayClassName="bg-slate-900/50">
+-    <div className="grid w-[min(360px,90vw)] gap-3 rounded-pos bg-pos-surface p-6 shadow-[0_20px_60px_rgb(0_0_0_/_25%)] [&_h3]:m-0 [&_p]:m-0 [&_p]:text-sm [&_p]:text-pos-muted">
++  useOrderDialogFocus('[data-testid="b02-discard-dialog"]', onKeep);
++  return <PortalPopup placement="Centered" viewport="workspace" overlayClassName="b02-popup-overlay">
++    <div data-testid="b02-discard-dialog" className="b02-popup grid max-h-[86dvh] w-[min(360px,88vw)] gap-3 overflow-auto rounded-pos bg-pos-surface p-6 [&_h3]:m-0 [&_p]:m-0 [&_p]:text-sm [&_p]:text-pos-muted">
+       <h3>Bỏ đơn chưa gửi?</h3><p>Các món vừa chọn sẽ không được lưu.</p>
+       <div className="flex flex-wrap justify-end gap-2.5 [&_.MuiButton-root]:min-w-24">
+         <Button variant="outlined" onClick={onKeep}>Tiếp tục chỉnh sửa</Button>
+diff --git a/src/app/drawers/pos/ModifierPickerPopup.tsx b/src/app/drawers/pos/ModifierPickerPopup.tsx
+index 93276d5..d8165ce 100644
+--- a/src/app/drawers/pos/ModifierPickerPopup.tsx
++++ b/src/app/drawers/pos/ModifierPickerPopup.tsx
+@@ -7,6 +7,7 @@ import { formatVnd } from "@/core/money";
+ import { validateModifierSelection, type ModifierSelection } from "@/core/orderDraft";
+ import type { ItemModifierGroup } from "@/features/pos";
+ import { PortalPopup } from "../../components/PortalPopup";
++import { useOrderDialogFocus } from "./useOrderDialogFocus";
+ 
+ interface ModifierPickerPopupProps {
+   menuItem: MenuItem;
+@@ -19,6 +20,7 @@ interface ModifierPickerPopupProps {
+ // - Nhóm chọn-1: chọn tối đa 1 giá trị (số lượng luôn 1).
+ // - Nhóm chọn-nhiều: tick nhiều giá trị, mỗi giá trị có số lượng riêng (mặc định 1).
+ export function ModifierPickerPopup({ menuItem, groups, onConfirm, onClose }: ModifierPickerPopupProps) {
++  useOrderDialogFocus('[data-testid="b02-modifier-dialog"]', onClose);
+   // optionValueId -> số lượng (>=1 nghĩa là đang chọn).
+   const [selected, setSelected] = useState<Record<string, number>>({});
+ 
+@@ -86,9 +88,10 @@ export function ModifierPickerPopup({ menuItem, groups, onConfirm, onClose }: Mo
+   };
+ 
+   return (
+-    <PortalPopup placement="Centered" viewport="workspace" overlayClassName="bg-slate-900/50" onOutsideClick={onClose}>
++    <PortalPopup placement="Centered" viewport="workspace" overlayClassName="b02-popup-overlay" onOutsideClick={onClose}>
+       <div
+-        className="grid max-h-[86vh] w-[min(460px,92vw)] grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden rounded-pos bg-pos-surface shadow-[0_20px_60px_rgb(0_0_0_/_25%)]"
++        data-testid="b02-modifier-dialog"
++        className="b02-popup grid max-h-[86dvh] w-[min(460px,88vw)] grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden rounded-pos bg-pos-surface"
+         onClick={(event) => event.stopPropagation()}
+       >
+         <div className="flex items-center justify-between gap-2 border-b border-pos-line px-4 py-3">
+diff --git a/src/app/drawers/pos/OrderCartPane.tsx b/src/app/drawers/pos/OrderCartPane.tsx
+index 6d86fcf..bd247c6 100644
+--- a/src/app/drawers/pos/OrderCartPane.tsx
++++ b/src/app/drawers/pos/OrderCartPane.tsx
+@@ -1,142 +1,23 @@
+-import { Minus, Plus } from "lucide-react";
+-import clsx from "clsx";
+-import { Button, TextField } from "@mui/material";
+ import type { SubmitOrderDraftItem } from "@/domain";
+ import type { CartLine } from "@/features/pos";
+-import { formatCompactVnd, formatVnd } from "@/core/money";
++import { formatVnd } from "@/core/money";
+ 
+ type OrderCartPaneProps = {
+-  cartLines: CartLine[];
+-  draftItems: SubmitOrderDraftItem[];
+-  noteOpenId: string | null;
+-  total: number;
+-  showPaymentHint: boolean;
+-  primaryDisabled: boolean;
+-  primaryActionLabel: string;
+-  primaryActionTitle?: string;
+-  onAdjustQuantity: (lineId: string, delta: number) => void;
+-  onToggleNote: (lineId: string) => void;
+-  onUpdateNote: (lineId: string, note: string) => void;
+-  onPrimaryAction: () => void;
++  cartLines: CartLine[]; draftItems: SubmitOrderDraftItem[]; noteOpenId: string | null; total: number;
++  showPaymentHint: boolean; primaryDisabled: boolean; primaryActionLabel: string; primaryActionTitle?: string;
++  onAdjustQuantity: (lineId: string, delta: number) => void; onToggleNote: (lineId: string) => void;
++  onUpdateNote: (lineId: string, note: string) => void; onPrimaryAction: () => void;
+ };
+-
+-export function OrderCartPane({
+-  cartLines,
+-  draftItems,
+-  noteOpenId,
+-  total,
+-  showPaymentHint,
+-  primaryDisabled,
+-  primaryActionLabel,
+-  primaryActionTitle,
+-  onAdjustQuantity,
+-  onToggleNote,
+-  onUpdateNote,
+-  onPrimaryAction,
+-}: OrderCartPaneProps) {
+-  const noteFor = (lineId: string) => draftItems.find((draft) => draft.id === lineId)?.note ?? "";
+-
+-  return (
+-    <aside className="grid min-h-0 grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-pos border border-pos-line bg-pos-surface grid-rows-[auto_minmax(0,1fr)_auto]">
+-      <div className="flex min-h-11 items-center justify-between gap-2.5 border-b border-pos-line bg-[#fbfcfd] px-3 py-2.5 font-black max-[980px]:min-h-9 max-[980px]:px-2 max-[980px]:py-[7px] max-[980px]:text-xs">
+-        <span>Giỏ hàng</span>
+-        <span className="text-pos-muted">{cartLines.length} món</span>
+-      </div>
+-      <div className="grid min-h-0 content-start gap-2 overflow-auto p-2.5">
+-        {cartLines.length ? (
+-          cartLines.map((line) => (
+-            <div
+-              className="grid gap-1.5 rounded-pos border border-pos-line bg-white p-2.5"
+-              data-testid="order-cart-line"
+-              data-quantity={line.quantity}
+-              data-unit-price={line.quantity > 0 ? line.total / line.quantity : 0}
+-              data-line-total={line.total}
+-              key={line.id}
+-            >
+-              <div className="flex items-center justify-between gap-2">
+-                <strong className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-[13px]">{line.name}</strong>
+-                <strong className="font-black text-pos-primary">{formatCompactVnd(line.total)}</strong>
+-              </div>
+-              <div className="text-xs text-pos-muted">{draftItems.find((draft) => draft.id === line.id)?.sourceItemId ? "Phần đã lưu" : "Phần gọi thêm"} · {formatVnd(line.total / line.quantity)} / món</div>
+-              {line.optionText && (
+-                <div className="flex items-center justify-between gap-2 text-xs text-pos-muted">
+-                  <span>{line.optionText}</span>
+-                </div>
+-              )}
+-              <div className="flex items-center justify-between gap-2">
+-                <span className="flex items-center gap-1.5">
+-                  <button
+-                    className="grid h-7 w-7 place-items-center rounded-[7px] border border-pos-line bg-pos-surface"
+-                    data-testid="order-cart-decrease"
+-                    onClick={() => onAdjustQuantity(line.id, -1)}
+-                  >
+-                    <Minus size={14} />
+-                  </button>
+-                  <span className="min-w-[22px] text-center text-sm font-extrabold" data-testid="order-cart-quantity">
+-                    {line.quantity}
+-                  </span>
+-                  <button
+-                    className="grid h-7 w-7 place-items-center rounded-[7px] border border-pos-line bg-pos-surface"
+-                    data-testid="order-cart-increase"
+-                    onClick={() => onAdjustQuantity(line.id, 1)}
+-                  >
+-                    <Plus size={14} />
+-                  </button>
+-                </span>
+-                <button
+-                  className={clsx(
+-                    "cursor-pointer rounded-[6px] border bg-transparent px-2 py-0.5 text-[11px] font-semibold",
+-                    noteOpenId === line.id
+-                      ? "border-pos-primary text-pos-primary"
+-                      : "border-pos-line text-pos-muted",
+-                  )}
+-                  onClick={() => onToggleNote(line.id)}
+-                >
+-                  Ghi chú
+-                </button>
+-              </div>
+-              {noteOpenId === line.id && (
+-                <TextField
+-                  size="small"
+-                  placeholder="VD: ít đá, không đường..."
+-                  value={noteFor(line.id)}
+-                  onChange={(event) => onUpdateNote(line.id, event.target.value)}
+-                  fullWidth
+-                  autoFocus
+-                />
+-              )}
+-              {noteFor(line.id) && noteOpenId !== line.id && (
+-                <div className="py-0.5 text-[11px] italic text-pos-muted">📝 {noteFor(line.id)}</div>
+-              )}
+-            </div>
+-          ))
+-        ) : (
+-          <p className="m-0 p-2 text-center text-[13px] text-pos-muted">Chọn món từ menu để tạo đơn.</p>
+-        )}
+-      </div>
+-      <footer className="sticky bottom-0 z-[2] grid gap-2 border-t border-pos-line bg-white p-2.5">
+-        {showPaymentHint && (
+-          <p className="m-0 rounded-[6px] border border-[#fde68a] bg-[#fffbeb] px-2.5 py-1.5 text-xs font-semibold text-pos-warning">Gửi đơn để lưu thay đổi trước khi thanh toán.</p>
+-        )}
+-        <div className="flex justify-between gap-2">
+-          <span>Tạm tính</span>
+-          <strong data-testid="order-total-amount" data-amount={total}>{formatVnd(total)}</strong>
+-        </div>
+-        <div className="flex justify-between gap-2 text-xl font-black">
+-          <span>Tổng</span>
+-          <strong>{formatVnd(total)}</strong>
+-        </div>
+-        <Button
+-          variant="contained"
+-          fullWidth
+-          data-testid="submit-order-button-footer"
+-          disabled={primaryDisabled}
+-          title={primaryActionTitle}
+-          onClick={onPrimaryAction}
+-        >
+-          {primaryActionLabel}
+-        </Button>
+-      </footer>
+-    </aside>
+-  );
++export function OrderCartPane({ cartLines, draftItems, noteOpenId, total, showPaymentHint, primaryDisabled, primaryActionLabel, primaryActionTitle, onAdjustQuantity, onToggleNote, onUpdateNote, onPrimaryAction }: OrderCartPaneProps) {
++  const noteFor = (id: string) => draftItems.find(d => d.id === id)?.note ?? "";
++  return <aside className="cart" data-testid="b02-cart"><header className="cart-header"><h2 style={{ font: "inherit" }}>Giỏ hàng</h2><span>{cartLines.length} món</span></header><div className="cart-lines" data-testid="b02-cart-scroll">{cartLines.length ? cartLines.map(line => {
++    const draft = draftItems.find(d => d.id === line.id), saved = !!draft?.sourceItemId;
++    return <section key={line.id} className={`cart-line${saved ? "" : " new-line"}`} data-testid="order-cart-line" data-source-item-id={draft?.sourceItemId} data-menu-item-id={draft?.menuItemId} data-quantity={line.quantity} data-unit-price={line.quantity > 0 ? line.total / line.quantity : 0} data-line-total={line.total}>
++      <div className="line-top"><span className="line-name"><strong title={line.name}>{line.name}</strong></span><strong className="line-price" data-testid="b02-line-total">{formatVnd(line.total)}</strong></div>
++      <div className="line-meta"><span className="line-state">{saved ? "Phần đã lưu" : "Phần gọi thêm"}</span><span data-testid="b02-unit-price">{formatVnd(line.total / line.quantity)} / món</span></div>
++      {line.optionText && <p className="line-options">{line.optionText}</p>}{noteFor(line.id) && noteOpenId !== line.id && <p className="line-note">{noteFor(line.id)}</p>}
++      <div className="line-controls"><span className="stepper"><button data-testid="order-cart-decrease" aria-label={`Giảm ${line.name}`} onClick={() => onAdjustQuantity(line.id, -1)}>−</button><span data-testid="order-cart-quantity">{line.quantity}</span><button data-testid="order-cart-increase" aria-label={`Tăng ${line.name}`} onClick={() => onAdjustQuantity(line.id, 1)}>+</button></span><button className="note-button" data-testid="b02-note" onClick={() => onToggleNote(line.id)}>Ghi chú</button></div>
++      {noteOpenId === line.id && <input className="line-note-input" data-testid="b02-line-note" aria-label={`Ghi chú ${line.name}`} placeholder="VD: ít đá, không đường..." value={noteFor(line.id)} onChange={event => onUpdateNote(line.id, event.target.value)} autoFocus/>}
++    </section>;
++  }) : <p className="empty-message">Chọn món từ menu để tạo đơn.</p>}</div><footer className="cart-footer" data-testid="b02-footer">{showPaymentHint && <p className="payment-hint">Gửi đơn để lưu thay đổi trước khi thanh toán.</p>}<div className="summary-row"><span>Tạm tính</span><strong data-testid="b02-subtotal">{formatVnd(total)}</strong></div><div className="summary-row grand-total"><span>Tổng</span><strong data-testid="order-total-amount" data-amount={total}>{formatVnd(total)}</strong></div><button className="primary" data-testid="submit-order-button-footer" disabled={primaryDisabled} title={primaryActionTitle} onClick={onPrimaryAction}><span>{primaryActionLabel}</span></button></footer></aside>;
+ }
+diff --git a/src/app/drawers/pos/OrderDrawer.tsx b/src/app/drawers/pos/OrderDrawer.tsx
+index 1025c5d..99be27c 100644
+--- a/src/app/drawers/pos/OrderDrawer.tsx
++++ b/src/app/drawers/pos/OrderDrawer.tsx
+@@ -1,5 +1,7 @@
+-import { AlertTriangle, CreditCard } from "lucide-react";
+-import clsx from "clsx";
++import { RemakeThemeProvider } from "@/theme/RemakeThemeProvider";
++import "./orderRemake.css";
++import { useOrderDialogFocus } from "./useOrderDialogFocus";
++import { AlertTriangle } from "lucide-react";
+ import { Button } from "@mui/material";
+ import { useEffect, useMemo, useState } from "react";
+ import toast from "react-hot-toast";
+@@ -38,6 +40,7 @@ import { clearDrawerExitGuard, registerDrawerExitGuard } from "../../drawerNavig
+ 
+ export function OrderDrawer() {
+   const closeDrawer = useAppStore((state) => state.closeDrawer);
++  useOrderDialogFocus('[data-testid="order-drawer"]', closeDrawer);
+   const openPayment = useAppStore((state) => state.openPayment);
+   const context = useAppStore((state) => state.orderContext);
+   const captureView = useViewLifetime(context);
+@@ -195,123 +198,32 @@ export function OrderDrawer() {
+ 
+   const orderTypeLabel = context?.orderType === "takeaway" ? "Mang đi" : `Bàn ${table?.name ?? "?"}`;
+   const titleLabel = orderDetail ? `${orderTypeLabel} · Đơn #${orderDetail.orderNo}` : `${orderTypeLabel} · Đơn mới`;
+-
+-  return (
+-    <PortalDrawer testId="order-drawer" onOutsideClick={handleClose}>
+-      <WriteAttemptNotice onApplied={() => {
+-        // Retry confirms the frozen submission. Consume its draft without replaying
+-        // the initial-success kitchen preview or using historical R1 as current data.
+-        clearDrawerExitGuard();
+-        setDraftItems([]);
+-        closeDrawer();
+-      }} />
+-      {remoteConflict && <div role="alert" className="m-3 rounded border border-amber-400 p-3"><p>Đơn đã thay đổi trên server. Phần đang chỉnh sửa vẫn được giữ để bạn kiểm tra.</p><Button onClick={() => {
+-        acceptCurrent();
+-        coordinator.leave();
+-      }}>Bỏ bản đang sửa và dùng đơn trên server</Button></div>}
+-      {priceChanged && <PriceChangedNotice priceChanged={priceChanged} draftItems={draftItems} menu={menu} setDraftItems={setDraftItems} onReviewed={() => { submitMutation.reset(); coordinator.leave(); }} />}
+-      {pendingNavigation && <DiscardDraftDialog onKeep={() => setPendingNavigation(null)} onDiscard={() => { const navigate = pendingNavigation; setPendingNavigation(null); navigate(); }} />}
+-
+-      <header className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-pos-line bg-white/95 px-[18px] py-3 max-[980px]:min-h-[50px] max-[980px]:gap-x-2.5 max-[980px]:gap-y-2 max-[980px]:px-2.5 max-[980px]:py-2">
+-        <div className="min-w-0 flex-[1_1_240px] grid gap-1 [&_h1]:m-0 [&_h1]:leading-[1.15] [&_h1]:tracking-normal [&_h2]:m-0 [&_h2]:leading-[1.15] [&_h2]:tracking-normal [&_h3]:m-0 [&_h3]:leading-[1.15] [&_h3]:tracking-normal [&_p]:mb-0 [&_p]:mt-1 [&_p]:overflow-hidden [&_p]:text-ellipsis [&_p]:whitespace-nowrap [&_p]:text-xs [&_p]:text-pos-muted max-sm:[&_h1]:text-[17px] max-sm:[&_h2]:text-[15px] max-sm:[&_h3]:text-[15px] [&_h2]:overflow-hidden [&_h2]:text-ellipsis [&_h2]:whitespace-nowrap [&_h3]:overflow-hidden [&_h3]:text-ellipsis [&_h3]:whitespace-nowrap">
+-          <h2>{titleLabel}</h2>
+-          <p>
+-            <span className={clsx("inline-block rounded px-1.5 py-px text-[11px] font-bold", context?.orderType === "takeaway" ? "bg-[#ede9fe] text-[#7c3aed]" : "bg-pos-primarySoft text-pos-primary")}>
+-              {context?.orderType === "takeaway" ? "Mang đi" : "Tại bàn"}
+-            </span>
+-            {" · "}
+-            {orderDetail?.status === "paid" ? "Đã thanh toán" : orderDetail ? "Đã gửi" : "Chưa gửi"}
+-            {" · "}
+-            <span className="mr-1 inline-block h-[7px] w-[7px] align-middle rounded-full bg-[#22c55e]" />
+-            online
+-          </p>
+-        </div>
+-        <div className="flex min-w-0 flex-[0_1_auto] flex-wrap items-center justify-end gap-2.5 [&>*]:shrink-0 [&_.MuiButton-root]:min-h-9 [&_.MuiButton-root]:whitespace-nowrap max-sm:w-full max-sm:justify-start max-sm:[&_.MuiButton-root]:flex-[1_1_128px] max-[980px]:gap-2 max-[980px]:[&_.MuiButton-root]:min-h-[34px]">
+-          <Button variant="outlined" data-testid="order-close-button" onClick={handleClose}>
+-            Đóng
+-          </Button>
+-          {orderDetail && draftChanged && primaryAction !== "closed" && (
+-            <Button variant="outlined" startIcon={<CreditCard size={16} />} disabled>
+-              Thanh toán
+-            </Button>
+-          )}
+-          <Button
+-            variant="contained"
+-            data-testid="submit-order-button"
+-            disabled={primaryDisabledWithPermission}
+-            title={permissionTitle}
+-            onClick={runPrimaryAction}
+-          >
+-            {primaryActionLabel}
+-          </Button>
+-        </div>
++  const orderStatusLabel = orderDetail?.status === "paid" ? "Đã thanh toán"
++    : orderDetail?.status === "void" ? "Đã hủy" : orderDetail ? "Đã gửi" : "Chưa gửi";
++
++  return <RemakeThemeProvider>
++    <PortalDrawer testId="order-drawer" onOutsideClick={handleClose} panelClassName="b02-remake" overlayColor="var(--drawer-overlay)">
++      <header className="order-header" data-testid="b02-header" aria-label={titleLabel}>
++        <div className="heading"><h1>{`Gọi món — ${orderTypeLabel}`}</h1><p><span className="badge"><span className="dot"/>{context?.orderType === "takeaway" ? "Mang đi" : `${floorPlanQuery.data?.areas.find(area => area.id === table?.areaId)?.name ? floorPlanQuery.data.areas.find(area => area.id === table?.areaId)!.name + " · " : ""}Tại bàn`}</span><span>{orderDetail ? `Đơn #${orderDetail.orderNo}` : "Đơn mới"} · {orderStatusLabel}</span></p></div>
++        <div className="header-actions"><button className="close" data-testid="order-close-button" onClick={handleClose}>Đóng</button>{orderDetail && draftChanged && primaryAction !== "closed" && <button className="payment-locked" disabled>Thanh toán</button>}<button className="primary" data-testid="submit-order-button" disabled={primaryDisabledWithPermission} title={permissionTitle} onClick={runPrimaryAction}><span>{primaryActionLabel}</span></button></div>
+       </header>
+-
+-      <div className="min-h-0 overflow-auto bg-pos-bg p-3 max-[980px]:p-2">
+-        {orderQuery.isError && (
+-          <div className="mx-3.5 mt-2.5 flex items-center gap-2.5 rounded-pos border border-[#fbbf24] bg-[#fffbeb] px-3 py-2.5 text-[#92400e] [&_.MuiButton-root]:ml-auto [&_.MuiButton-root]:shrink-0 [&_p]:mb-0 [&_p]:mt-0.5 [&_p]:text-[13px] [&_p]:text-[#92400e]" data-testid="order-error-state">
+-            <AlertTriangle size={18} />
+-            <div>
+-              <strong>Không tải được đơn hiện tại</strong>
+-              <p>{toToastError(orderQuery.error)}</p>
+-            </div>
+-            <Button size="small" variant="outlined" onClick={() => void orderQuery.refetch()}>
+-              Thử lại
+-            </Button>
+-          </div>
+-        )}
+-        {primaryAction === "closed" && (
+-          <div className="mx-3.5 mt-2.5 flex items-center gap-2.5 rounded-pos border border-[#fbbf24] bg-[#fffbeb] px-3 py-2.5 text-[#92400e] [&_.MuiButton-root]:ml-auto [&_.MuiButton-root]:shrink-0 [&_p]:mb-0 [&_p]:mt-0.5 [&_p]:text-[13px] [&_p]:text-[#92400e]" data-testid="order-closed-state">
+-            <AlertTriangle size={18} />
+-            <div>
+-              <strong>Đơn đã được cập nhật</strong>
+-              <p>Thiết bị khác đã thanh toán hoặc đóng đơn này. Quay lại sơ đồ để xem trạng thái mới nhất.</p>
+-            </div>
+-          </div>
+-        )}
+-        <fieldset disabled={blocked} className="m-0 grid h-full min-h-0 min-w-[620px] grid-cols-[minmax(300px,1fr)_minmax(280px,360px)] gap-2.5 border-0 p-0">
+-          <OrderMenuPane
+-            categories={menu?.categories}
+-            items={items}
+-            categoryId={categoryId}
+-            search={search}
+-            isLoading={menuQuery.isLoading}
+-            isError={menuQuery.isError}
+-            error={menuQuery.error}
+-            getMenuImageUrl={(assetKey) => ports.menuImages.getImageUrl(assetKey)}
+-            onSelectCategory={(selectedCategoryId) => {
+-              setActiveCategoryId(selectedCategoryId);
+-              setSearch("");
+-            }}
+-            onSearchChange={setSearch}
+-            onRetry={() => void menuQuery.refetch()}
+-            onAddItem={picker.requestAdd}
+-          />
+-          <OrderCartPane
+-            cartLines={cartLines}
+-            draftItems={draftItems}
+-            noteOpenId={noteOpenId}
+-            total={total}
+-            showPaymentHint={!!orderDetail && draftChanged && primaryAction !== "closed"}
+-            primaryDisabled={primaryDisabledWithPermission}
+-            primaryActionLabel={primaryActionLabel}
+-            primaryActionTitle={permissionTitle}
+-            onAdjustQuantity={adjustQuantity}
+-            onToggleNote={(lineId) => setNoteOpenId(noteOpenId === lineId ? null : lineId)}
+-            onUpdateNote={updateNote}
+-            onPrimaryAction={runPrimaryAction}
+-          />
+-        </fieldset>
++      <div className="b02-notices" data-testid="b02-notices">
++        <WriteAttemptNotice onApplied={() => {
++          clearDrawerExitGuard();
++          setDraftItems([]);
++          closeDrawer();
++        }}/>
++        {remoteConflict && <div role="alert"><p>Đơn đã thay đổi trên server. Phần đang chỉnh sửa vẫn được giữ để bạn kiểm tra.</p><Button onClick={() => { acceptCurrent(); coordinator.leave(); }}>Bỏ bản đang sửa và dùng đơn trên server</Button></div>}
++        {priceChanged && <PriceChangedNotice priceChanged={priceChanged} draftItems={draftItems} menu={menu} setDraftItems={setDraftItems} onReviewed={() => { submitMutation.reset(); coordinator.leave(); }}/>}
++        {orderQuery.isError && <div className="b02-warning" data-testid="order-error-state"><AlertTriangle size={18}/><strong>Không tải được đơn hiện tại</strong><p>{toToastError(orderQuery.error)}</p><button onClick={() => void orderQuery.refetch()}>Thử lại</button></div>}
++        {primaryAction === "closed" && <div className="b02-warning" data-testid="order-closed-state"><AlertTriangle size={18}/><strong>Đơn đã được cập nhật</strong><p>Thiết bị khác đã thanh toán hoặc đóng đơn này. Quay lại sơ đồ để xem trạng thái mới nhất.</p></div>}
+       </div>
+-
+-      {picker.modifierItem && menu && (
+-        <ModifierPickerPopup
+-          menuItem={picker.modifierItem}
+-          groups={getItemModifierGroups(menu, picker.modifierItem.id)}
+-          onConfirm={picker.confirm}
+-          onClose={picker.cancel}
+-        />
+-      )}
++      <fieldset disabled={blocked} className="drawer-body">
++        <OrderMenuPane categories={menu?.categories} items={items} allItems={menu?.menuItems} categoryId={categoryId} search={search} isLoading={menuQuery.isLoading} isError={menuQuery.isError} error={menuQuery.error} getMenuImageUrl={assetKey => ports.menuImages.getImageUrl(assetKey)} hasModifiers={itemId => !!menu && getItemModifierGroups(menu,itemId).length > 0} onSelectCategory={selectedCategoryId => { setActiveCategoryId(selectedCategoryId); setSearch(""); }} onSearchChange={setSearch} onRetry={() => void menuQuery.refetch()} onAddItem={picker.requestAdd}/>
++        <OrderCartPane cartLines={cartLines} draftItems={draftItems} noteOpenId={noteOpenId} total={total} showPaymentHint={!!orderDetail && draftChanged && primaryAction !== "closed"} primaryDisabled={primaryDisabledWithPermission} primaryActionLabel={primaryActionLabel} primaryActionTitle={permissionTitle} onAdjustQuantity={adjustQuantity} onToggleNote={lineId => setNoteOpenId(noteOpenId === lineId ? null : lineId)} onUpdateNote={updateNote} onPrimaryAction={runPrimaryAction}/>
++      </fieldset>
++      {pendingNavigation && <DiscardDraftDialog onKeep={() => setPendingNavigation(null)} onDiscard={() => { const navigate = pendingNavigation; setPendingNavigation(null); navigate(); }}/>}
++      {picker.modifierItem && menu && <ModifierPickerPopup menuItem={picker.modifierItem} groups={getItemModifierGroups(menu,picker.modifierItem.id)} onConfirm={picker.confirm} onClose={picker.cancel}/>}
+     </PortalDrawer>
+-  );
++  </RemakeThemeProvider>;
+ }
+diff --git a/src/app/drawers/pos/OrderMenuPane.test.tsx b/src/app/drawers/pos/OrderMenuPane.test.tsx
+index 6352070..a998f14 100644
+--- a/src/app/drawers/pos/OrderMenuPane.test.tsx
++++ b/src/app/drawers/pos/OrderMenuPane.test.tsx
+@@ -1,4 +1,4 @@
+-import { render, screen, within } from "@testing-library/react";
++import { fireEvent, render, screen, within } from "@testing-library/react";
+ import { describe, expect, it, vi } from "vitest";
+ import { OrderMenuPane } from "./OrderMenuPane";
+ import type { Category, MenuItem } from "@/domain";
+@@ -52,9 +52,13 @@ describe("OrderMenuPane", () => {
+       "src",
+       "https://assets.local/menu-item-images/e572ea5f-9adf-493c-8d84-dca3cd86e1eb/menu-items/d50ff72b-d0bc-4832-8888-183c19f5a158/photo.webp",
+     );
+-    expect(image).toHaveClass("object-cover");
++    expect(image.closest(".product-image")).toBeInTheDocument();
++    fireEvent.error(image);
++    expect(screen.queryByAltText("Ảnh Latte")).not.toBeInTheDocument();
++    expect(screen.getByTestId(`menu-item-${items[0].id}`).querySelector("svg")).toBeInTheDocument();
+ 
+     const soldOutCard = screen.getByTestId("menu-item-9491e262-856d-4408-82b7-c9d7f7ac3f27");
++    expect(soldOutCard).toBeDisabled();
+     expect(within(soldOutCard).getByText("Đã bán hết")).toBeInTheDocument();
+     expect(within(soldOutCard).queryByText("Tạm hết")).not.toBeInTheDocument();
+   });
+diff --git a/src/app/drawers/pos/OrderMenuPane.tsx b/src/app/drawers/pos/OrderMenuPane.tsx
+index e9ee67e..a3a4db9 100644
+--- a/src/app/drawers/pos/OrderMenuPane.tsx
++++ b/src/app/drawers/pos/OrderMenuPane.tsx
+@@ -1,132 +1,29 @@
+-import { AlertTriangle, Coffee } from "lucide-react";
+-import clsx from "clsx";
+-import { Button, TextField } from "@mui/material";
++import { useState } from "react";
+ import type { Category, MenuItem } from "@/domain";
+ import { formatVnd } from "@/core/money";
+ import { toToastError } from "../../appErrors";
+ 
+ type OrderMenuPaneProps = {
+-  categories: Category[] | undefined;
+-  items: MenuItem[];
+-  categoryId: string;
+-  search: string;
+-  isLoading: boolean;
+-  isError: boolean;
+-  error: unknown;
++  categories: Category[] | undefined; items: MenuItem[]; allItems?: MenuItem[]; categoryId: string; search: string;
++  isLoading: boolean; isError: boolean; error: unknown;
+   getMenuImageUrl: (assetKey: string | null | undefined) => string | null;
+-  onSelectCategory: (categoryId: string) => void;
+-  onSearchChange: (search: string) => void;
+-  onRetry: () => void;
+-  onAddItem: (item: MenuItem) => void;
++  hasModifiers?: (itemId: string) => boolean;
++  onSelectCategory: (categoryId: string) => void; onSearchChange: (search: string) => void; onRetry: () => void; onAddItem: (item: MenuItem) => void;
+ };
+ 
+-export function OrderMenuPane({
+-  categories,
+-  items,
+-  categoryId,
+-  search,
+-  isLoading,
+-  isError,
+-  error,
+-  getMenuImageUrl,
+-  onSelectCategory,
+-  onSearchChange,
+-  onRetry,
+-  onAddItem,
+-}: OrderMenuPaneProps) {
+-  return (
+-    <section className="grid min-h-0 grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-pos border border-pos-line bg-pos-surface">
+-      <div className="flex min-h-11 items-center gap-2.5 border-b border-pos-line bg-[#fbfcfd] px-3 py-2">
+-        <div className="flex min-w-0 flex-[1_1_auto] flex-nowrap items-center gap-1.5 overflow-x-auto [scrollbar-width:thin]">
+-          {categories?.map((cat) => (
+-            <button
+-              key={cat.id}
+-              className={clsx(
+-                "flex min-h-[34px] items-center whitespace-nowrap rounded-[7px] border px-3 font-extrabold",
+-                cat.id === categoryId && !search
+-                  ? "border-[rgb(15_118_110_/_45%)] bg-pos-primarySoft text-pos-primary"
+-                  : "border-pos-line bg-pos-surface text-pos-muted",
+-              )}
+-              onClick={() => onSelectCategory(cat.id)}
+-            >
+-              <span className={clsx("mr-1 inline-block h-2 w-2 shrink-0 rounded-full align-middle", cat.id === "c68d7fbd-c06a-42a4-8140-476da8ebbf74" && "bg-[#7c3aed]", cat.id === "1ebf92aa-cf30-4e0d-8279-2b6fe3f8fb54" && "bg-[#0891b2]", cat.id === "0e2b2b01-1e52-436b-8130-428e82585276" && "bg-[#0d9488]", cat.id === "d8e03f30-1979-44b1-8fae-dc3cf6756680" && "bg-[#d97706]", cat.id !== "c68d7fbd-c06a-42a4-8140-476da8ebbf74" && cat.id !== "1ebf92aa-cf30-4e0d-8279-2b6fe3f8fb54" && cat.id !== "0e2b2b01-1e52-436b-8130-428e82585276" && cat.id !== "d8e03f30-1979-44b1-8fae-dc3cf6756680" && "bg-[#64748b]")} />
+-              {cat.name}
+-            </button>
+-          ))}
+-        </div>
+-        <TextField
+-          size="small"
+-          placeholder="Tìm món..."
+-          value={search}
+-          onChange={(event) => onSearchChange(event.target.value)}
+-          className="max-w-[180px]"
+-        />
+-      </div>
+-      <div className="min-h-0 overflow-auto p-2.5 max-[980px]:p-2">
+-        {isLoading ? (
+-          <p className="text-pos-muted p-3">Đang tải menu...</p>
+-        ) : isError ? (
+-          <div className="flex flex-col items-center justify-center gap-3 px-5 py-10 text-center text-pos-muted" data-testid="order-menu-error-state">
+-            <AlertTriangle size={30} color="#b45309" />
+-            <strong>Không tải được menu</strong>
+-            <p>{toToastError(error)}</p>
+-            <Button variant="contained" size="small" onClick={onRetry}>
+-              Thử tải lại
+-            </Button>
+-          </div>
+-        ) : items.length === 0 ? (
+-          <p className="text-pos-muted p-3">Không có món.</p>
+-        ) : (
+-          <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-2.5">
+-            {items.map((item) => {
+-              const imageUrl = getMenuImageUrl(item.imageAssetKey);
+-              return (
+-                <button
+-                  key={item.id}
+-                  className={clsx(
+-                    "grid min-h-[96px] cursor-pointer grid-cols-[82px_minmax(0,1fr)] overflow-hidden rounded-pos border p-2 text-left transition-[border-color,box-shadow] disabled:cursor-not-allowed",
+-                    item.isAvailable
+-                      ? "border-pos-line bg-white hover:border-pos-primary hover:shadow-[0_0_0_2px_rgb(15_118_110_/_12%)]"
+-                      : "border-[#fecaca] bg-[#fff7f7] hover:border-[#fecaca] hover:shadow-none",
+-                  )}
+-                  data-testid={`menu-item-${item.id}`}
+-                  onClick={() => onAddItem(item)}
+-                  disabled={!item.isAvailable}
+-                >
+-                  <div
+-                    className={clsx(
+-                      "relative grid h-20 w-20 place-items-center overflow-hidden rounded-[7px] border",
+-                      item.isAvailable
+-                        ? "border-pos-line bg-pos-primarySoft text-pos-primary"
+-                        : "border-[#fecaca] bg-[#fff7f7] text-pos-danger",
+-                    )}
+-                  >
+-                    {imageUrl ? (
+-                      <img src={imageUrl} alt={`Ảnh ${item.name}`} className="h-full w-full object-cover" />
+-                    ) : (
+-                      <Coffee size={22} />
+-                    )}
+-                    {!item.isAvailable && (
+-                      <>
+-                        <span className="absolute inset-0 bg-white/70" />
+-                        <span className="absolute left-1/2 top-1/2 w-[calc(100%-10px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#fecaca] bg-white/95 px-1.5 py-1 text-center text-[10px] font-black leading-tight text-pos-danger shadow-sm">
+-                          Đã bán hết
+-                        </span>
+-                      </>
+-                    )}
+-                  </div>
+-                  <div className="grid min-w-0 content-between gap-1 px-2">
+-                    <div className="grid min-w-0 gap-1">
+-                      <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-bold leading-[1.3]">{item.name}</strong>
+-                    </div>
+-                    <span className="font-black text-pos-primary">{formatVnd(item.price)}</span>
+-                  </div>
+-                </button>
+-              );
+-            })}
+-          </div>
+-        )}
+-      </div>
++export function OrderMenuPane({ categories, items, allItems = items, categoryId, search, isLoading, isError, error, getMenuImageUrl, hasModifiers, onSelectCategory, onSearchChange, onRetry, onAddItem }: OrderMenuPaneProps) {
++  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
++  return <>
++    <aside className="categories" data-testid="b02-categories"><h2>DANH MỤC MÓN</h2><nav className="category-list" aria-label="Danh mục món">{categories?.map(cat => <button key={cat.id} className={cat.id === categoryId && !search ? "selected" : undefined} data-testid={`b02-category-${cat.id}`} title={cat.name} aria-label={cat.name} aria-pressed={cat.id === categoryId && !search} onClick={() => onSelectCategory(cat.id)}><span className="category-name">{cat.name}</span><span className="category-count">{allItems.filter(item => item.categoryId === cat.id).length}</span></button>)}</nav></aside>
++    <section className="menu-zone" data-testid="b02-menu">
++      <div className="search-bar" data-testid="b02-search-bar"><label className="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg><input value={search} onChange={event => onSearchChange(event.target.value)} data-testid="b02-search" placeholder="Tìm món..." aria-label="Tìm món"/></label><span className="menu-count">{items.length} món</span></div>
++      <div className="menu-scroll" data-testid="b02-menu-scroll">{isLoading ? <p className="empty-message">Đang tải menu...</p> : isError ? <div className="b02-menu-error" data-testid="order-menu-error-state"><strong>Không tải được menu</strong><p>{toToastError(error)}</p><button onClick={onRetry}>Thử tải lại</button></div> : !items.length ? <p className="empty-message">Không có món.</p> : <div className="product-grid">{items.map(item => {
++        const image = getMenuImageUrl(item.imageAssetKey);
++        return <button key={item.id} className={`product${item.isAvailable ? "" : " unavailable"}`} data-testid={`menu-item-${item.id}`} disabled={!item.isAvailable} title={item.name} onClick={() => onAddItem(item)}>
++          <span className="product-image">{image && !failedImages[image] ? <img src={image} alt={`Ảnh ${item.name}`} onError={() => setFailedImages(old => ({ ...old, [image]: true }))}/> : <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h12v8a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4Z M17 9h2a3 3 0 0 1 0 6h-2 M3 22h17 M8 2v3 M12 1v4"/></svg>}</span>
++          <span className="product-name">{item.name}</span><span className="product-subtitle">{!item.isAvailable ? "Đã bán hết" : hasModifiers?.(item.id) ? "Có tùy chọn" : "Chọn để thêm vào đơn"}</span><span className="product-bottom"><span className="menu-price" data-testid={`b02-menu-price-${item.id}`}>{formatVnd(item.price)}</span><span className="add-label">+ Thêm</span></span>
++        </button>;
++      })}</div>}</div>
+     </section>
+-  );
++  </>;
+ }
+diff --git a/src/app/shell/AppShell.tsx b/src/app/shell/AppShell.tsx
+index faa8755..93fd12f 100644
+--- a/src/app/shell/AppShell.tsx
++++ b/src/app/shell/AppShell.tsx
+@@ -1,4 +1,6 @@
+ import type { ComponentType } from "react";
++import { useStoreSettingsQuery } from "@/features/admin/useAdminData";
++import { RemakeThemeProvider } from "@/theme/RemakeThemeProvider";
+ import { useAppStore, type DrawerModule } from "../useAppStore";
+ import { EmployeesStubDrawer } from "../drawers/admin/EmployeesDrawer";
+ import { FloorEditorDrawer } from "../drawers/admin/FloorEditorDrawer";
+@@ -30,21 +32,22 @@ const DRAWER_REGISTRY: Record<NonNullable<DrawerModule>, ComponentType> = {
+ };
+ 
+ export function AppShell() {
++  const settings = useStoreSettingsQuery();
+   const drawer = useAppStore((state) => state.drawer);
+   const ActiveDrawer = drawer ? DRAWER_REGISTRY[drawer] : null;
+ 
+   return (
+-    <main
+-      className="grid h-[100dvh] w-full grid-cols-[176px_minmax(0,1fr)] overflow-hidden [@media(orientation:portrait)]:hidden max-[980px]:grid-cols-[68px_minmax(0,1fr)]"
++    <RemakeThemeProvider><main
++      className="app-frame [@media(orientation:portrait)]:hidden"
+       data-testid="app-shell"
+     >
+-      <LeftNav />
++      <LeftNav storeName={settings.data?.displayName} />
+ 
+-      <section className="relative min-h-0 min-w-0 overflow-hidden bg-pos-bg">
++      <>
+         <FloorWorkspace />
+         {ActiveDrawer ? <ActiveDrawer /> : null}
+         <ReceiptPreviewPopup />
+-      </section>
+-    </main>
++      </>
++    </main></RemakeThemeProvider>
+   );
+ }
+diff --git a/src/app/shell/FloorWorkspace.test.tsx b/src/app/shell/FloorWorkspace.test.tsx
+index 9ff550b..39b635d 100644
+--- a/src/app/shell/FloorWorkspace.test.tsx
++++ b/src/app/shell/FloorWorkspace.test.tsx
+@@ -1,6 +1,6 @@
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+-import { cleanup, render, screen, within } from "@testing-library/react";
+-import { afterEach, describe, expect, it } from "vitest";
++import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
++import { afterEach, describe, expect, it, vi } from "vitest";
+ import { createMockPorts, createSeededMockState } from "@/adapters/mock";
+ import type { Employee } from "@/domain";
+ import { PortsContext } from "@/features/shared/portsContext";
+@@ -31,13 +31,14 @@ const renderWorkspace = (configureState?: (state: ReturnType<typeof createSeeded
+     draftItems: [],
+   });
+ 
+-  return render(
++  const view = render(
+     <PortsContext.Provider value={ports}>
+       <QueryClientProvider client={queryClient}>
+         <FloorWorkspace />
+       </QueryClientProvider>
+     </PortsContext.Provider>,
+   );
++  return { ...view, ports };
+ };
+ 
+ afterEach(() => {
+@@ -55,6 +56,32 @@ afterEach(() => {
+ });
+ 
+ describe("FloorWorkspace", () => {
++  it("uses cached context, then refetches before opening a table without a cached order", async () => {
++    const { ports } = renderWorkspace();
++    await screen.findByTestId("floor-order-7e2f462b-e6ff-491a-85f8-9f4eb53d9c4c");
++    const read = vi.spyOn(ports.order, "listOpenOrders");
++    fireEvent.click(screen.getByTestId("table-a254abd0-b883-4d5c-85c1-89f660409e02"));
++    expect(read).not.toHaveBeenCalled();
++    expect(useAppStore.getState().orderContext).toMatchObject({ orderId: "7e2f462b-e6ff-491a-85f8-9f4eb53d9c4c", tableId: "a254abd0-b883-4d5c-85c1-89f660409e02", orderType: "dine_in" });
++    useAppStore.getState().closeDrawer();
++    const initial = await ports.order.listOpenOrders();
++    read.mockResolvedValue([{ ...initial[0], tableId: "7b035353-73d6-44bc-8ec4-1ab9951f7a58" }]);
++    fireEvent.click(screen.getByTestId("table-7b035353-73d6-44bc-8ec4-1ab9951f7a58"));
++    await waitFor(() => expect(useAppStore.getState().orderContext).toMatchObject({ orderId: initial[0].id, tableId: "7b035353-73d6-44bc-8ec4-1ab9951f7a58", orderType: "dine_in" }));
++    expect(read).toHaveBeenCalledTimes(2);
++  });
++
++  it("filters status and live orders without changing floor data", async () => {
++    const { ports } = renderWorkspace();
++    await screen.findByTestId("floor-order-7e2f462b-e6ff-491a-85f8-9f4eb53d9c4c");
++    const before = await ports.floorPlan.getFloorPlan();
++    fireEvent.click(screen.getByTestId("floor-filter-empty"));
++    expect(screen.queryByTestId("table-a254abd0-b883-4d5c-85c1-89f660409e02")).not.toBeInTheDocument();
++    fireEvent.click(screen.getByTestId("floor-filter-occupied"));
++    expect(screen.queryByTestId("table-7b035353-73d6-44bc-8ec4-1ab9951f7a58")).not.toBeInTheDocument();
++    expect(await ports.floorPlan.getFloorPlan()).toEqual(before);
++  });
++
+   it("renders the selected table background while keeping the status border", async () => {
+     renderWorkspace((state) => {
+       state.floorPlan.tables[0].backgroundAssetKey = "/floor-assets/tables/table-bg-11.png";
+@@ -62,7 +89,7 @@ describe("FloorWorkspace", () => {
+ 
+     const table = await screen.findByTestId("table-7b035353-73d6-44bc-8ec4-1ab9951f7a58");
+     expect(table.getAttribute("style")).toContain('/floor-assets/tables/table-bg-11.png');
+-    expect(table).toHaveClass("border-[#86efac]");
++    expect(table).toHaveAttribute("data-table-status", "empty");
+   });
+ 
+   it("renders catalog decoration images on the POS floor", async () => {
+@@ -90,12 +117,12 @@ describe("FloorWorkspace", () => {
+     );
+   });
+ 
+-  it("keeps refresh near the floor controls without rendering the old top chrome", async () => {
++  it("renders the approved floor heading and accessible refresh control", async () => {
+     renderWorkspace();
+ 
+     expect(await screen.findByTestId("floor-view")).toBeInTheDocument();
+-    expect(screen.queryByRole("heading", { name: "Sơ đồ bàn" })).not.toBeInTheDocument();
++    expect(screen.getByRole("heading", { name: "Sơ đồ bàn" })).toBeInTheDocument();
+     expect(screen.queryByRole("button", { name: "Tạo đơn nhanh" })).not.toBeInTheDocument();
+-    expect(screen.getByTestId("floor-refresh-button")).toHaveTextContent("Làm mới");
++    expect(screen.getByTestId("floor-refresh-button")).toHaveAccessibleName("Làm mới");
+   });
+ });
+diff --git a/src/app/shell/FloorWorkspace.tsx b/src/app/shell/FloorWorkspace.tsx
+index 2fc5ea4..cc7f34a 100644
+--- a/src/app/shell/FloorWorkspace.tsx
++++ b/src/app/shell/FloorWorkspace.tsx
+@@ -1,304 +1,130 @@
+-import { AlertTriangle, LayoutGrid, RefreshCw } from "lucide-react";
+-import { Button } from "@mui/material";
+-import { useEffect, useState } from "react";
++import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
++import { useMediaQuery } from "@mui/material";
+ import toast from "react-hot-toast";
+ import type { FloorTable, OrderSummary } from "@/domain";
+-import { formatCompactVnd } from "@/core/money";
++import { formatCompactVnd, formatVndShort } from "@/core/money";
+ import { useFloorPlanQuery, useOpenOrdersQuery } from "@/features/pos";
++import { useStoreSettingsQuery } from "@/features/admin/useAdminData";
+ import { useAppStore } from "../useAppStore";
+ import { toToastError } from "../appErrors";
+ import { getLabelBoost, getObjectBoost, stageStyle } from "../floorStage";
+ import { ScaledFloorStage } from "../components/ScaledFloorStage";
+-import clsx from "clsx";
+ import { FloorDecorVisual } from "../components/FloorDecorVisual";
+-import { getFloorDecorAsset } from "../floorDecorAssets";
+ import { getFloorTableBackgroundAsset } from "../floorTableBackgroundAssets";
++import { RemakeIcon } from "../components/RemakeIcon";
++import { FloorAreaChooser } from "./FloorAreaChooser";
++import "./floorAreaSelector.css";
+ 
+ type TableFilter = "all" | "empty" | "occupied";
+-
+-const decorToneClass = (kind: string) => {
+-  switch (kind) {
+-    case "counter":
+-      return "border-[#94a3b8] bg-[#e2e8f0] text-[#475569]";
+-    case "decor":
+-    case "image":
+-      return "border-[#c4b5fd] bg-[#ede9fe] text-[#6d28d9]";
+-    case "door":
+-      return "border-[#fde047] bg-[#fef9c3] text-[#713f12]";
+-    case "plant":
+-      return "border-[#86efac] bg-[#dcfce7] text-[#166534]";
+-    case "wall":
+-      return "border-[#cbd5e1] bg-[#f1f5f9] text-[#64748b]";
+-    default:
+-      return "border-[#cbd5e1] bg-[#e2e8f0] text-[#475569]";
+-  }
+-};
+-
+-const nodeTransform = (rotation = 0, boost = 1) => ({
+-  transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${boost})`,
+-  transformOrigin: "center",
+-});
++const nodeTransform = (rotation = 0, boost = 1) => ({ transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${boost})`, transformOrigin: "center" });
+ 
+ export function FloorWorkspace() {
+-  const activeAreaId = useAppStore((state) => state.activeAreaId);
+-  const setActiveAreaId = useAppStore((state) => state.setActiveAreaId);
+-  const openOrder = useAppStore((state) => state.openOrder);
+-
++  const activeAreaId = useAppStore((s) => s.activeAreaId);
++  const setActiveAreaId = useAppStore((s) => s.setActiveAreaId);
++  const openOrder = useAppStore((s) => s.openOrder);
++  const drawer = useAppStore((s) => s.drawer);
+   const floorPlanQuery = useFloorPlanQuery();
+   const openOrdersQuery = useOpenOrdersQuery();
+-
++  const settings = useStoreSettingsQuery();
+   const [tableFilter, setTableFilter] = useState<TableFilter>("all");
++  const [ordersOpen, setOrdersOpen] = useState(false);
++  const compactOrders = useMediaQuery("(max-width: 1279px)");
++  const panelRef = useRef<HTMLElement>(null);
++  const toggleRef = useRef<HTMLButtonElement>(null);
+ 
+   useEffect(() => {
+     const firstArea = floorPlanQuery.data?.areas[0]?.id;
+     if (!activeAreaId && firstArea) setActiveAreaId(firstArea);
+   }, [activeAreaId, floorPlanQuery.data, setActiveAreaId]);
++  useEffect(() => { if (!compactOrders || drawer) setOrdersOpen(false); }, [compactOrders, drawer]);
++  useLayoutEffect(() => {
++    if (!ordersOpen || !compactOrders) return;
++    const background = [...document.querySelectorAll<HTMLElement>(".sidebar,.workspace-header,.workspace")];
++    const previous = background.map((element) => element.inert);
++    panelRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
++    background.forEach((element) => { element.inert = true; });
++    return () => {
++      background.forEach((element, index) => { element.inert = previous[index]; });
++      if (!useAppStore.getState().drawer) toggleRef.current?.focus();
++    };
++  }, [ordersOpen, compactOrders]);
+ 
+   const floorPlan = floorPlanQuery.data;
+   const orders = openOrdersQuery.data ?? [];
+   const areaId = activeAreaId ?? floorPlan?.areas[0]?.id ?? null;
+   const allTables = floorPlan?.tables.filter((t) => t.areaId === areaId) ?? [];
+   const decorItems = floorPlan?.decorItems.filter((d) => d.areaId === areaId) ?? [];
+-
+-  const isOccupied = (tableId: string) =>
+-    allTables.find((t) => t.id === tableId)?.status === "occupied" ||
+-    orders.some((o) => o.tableId === tableId);
+-
++  const isOccupied = (tableId: string) => allTables.find((t) => t.id === tableId)?.status === "occupied" || orders.some((o) => o.tableId === tableId);
+   const openTableOrder = async (table: FloorTable, cachedOrder?: OrderSummary) => {
+-    if (cachedOrder) {
+-      openOrder({
+-        orderId: cachedOrder.id,
+-        tableId: table.id,
+-        orderType: "dine_in",
+-      });
+-      return;
+-    }
+-
++    if (cachedOrder) { openOrder({ orderId: cachedOrder.id, tableId: table.id, orderType: "dine_in" }); return; }
+     const refreshed = await openOrdersQuery.refetch();
+     const freshOrder = refreshed.data?.find((order) => order.tableId === table.id);
+-    openOrder({
+-      orderId: freshOrder?.id ?? null,
+-      tableId: table.id,
+-      orderType: "dine_in",
+-    });
++    openOrder({ orderId: freshOrder?.id ?? null, tableId: table.id, orderType: "dine_in" });
+   };
+-
+-  const filteredTables = allTables.filter((t) => {
+-    if (tableFilter === "empty") return !isOccupied(t.id);
+-    if (tableFilter === "occupied") return isOccupied(t.id);
+-    return true;
+-  });
+-
+-  const takeawayOrders = orders.filter((o) => o.orderType === "takeaway");
++  const filteredTables = allTables.filter((t) => tableFilter === "empty" ? !isOccupied(t.id) : tableFilter === "occupied" ? isOccupied(t.id) : true);
+   const dineInOrders = orders.filter((o) => o.orderType === "dine_in");
++  const takeawayOrders = orders.filter((o) => o.orderType === "takeaway");
++  const area = floorPlan?.areas.find((a) => a.id === areaId);
++  const messageState = floorPlanQuery.isLoading || floorPlanQuery.isError || allTables.length === 0 || filteredTables.length === 0;
++  const onPanelKeyDown = (event: KeyboardEvent<HTMLElement>) => {
++    if (!compactOrders || !ordersOpen) return;
++    if (event.key === "Escape") { event.preventDefault(); setOrdersOpen(false); }
++    if (event.key === "Tab") {
++      const controls = [...panelRef.current!.querySelectorAll<HTMLElement>('button:not(:disabled),[tabindex="0"]')];
++      const first = controls[0], last = controls[controls.length - 1];
++      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
++      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
++    }
++  };
++  const orderCard = (order: OrderSummary) => {
++    const table = floorPlan?.tables.find((t) => t.id === order.tableId);
++    const name = order.orderType === "takeaway" ? "Mang đi" : table?.name ?? order.tableId ?? "";
++    return <button key={order.id} className="order-card" data-testid={`floor-order-${order.id}`} onClick={() => { setOrdersOpen(false); openOrder({ orderId: order.id, tableId: order.orderType === "takeaway" ? null : order.tableId, orderType: order.orderType }); }}>
++      <span className="order-card-top"><strong title={name}>{name}</strong><span className="order-number">#{order.orderNo}</span></span>
++      <span className="order-card-bottom"><span className="order-status"><span className="status-dot"/>Đang phục vụ</span><strong className="order-total" title={formatVndShort(order.total)}>{formatVndShort(order.total)}</strong></span>
++      <span className="order-card-hint">Mở đơn hàng <span aria-hidden="true">→</span></span>
++    </button>;
++  };
+ 
+-  return (
+-    <div className="grid h-full min-h-0 grid-cols-[minmax(0,1fr)_200px] gap-2.5 overflow-hidden p-3.5 max-[1024px]:grid-cols-[minmax(0,1fr)_160px] max-[980px]:p-2 max-[740px]:grid-cols-1">
+-        {/* Main region: floor canvas */}
+-        <section className="grid h-full min-h-0 grid-cols-[minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-pos border border-pos-line bg-pos-surface" data-testid="floor-view">
+-          <div className="flex min-h-12 min-w-0 items-center overflow-x-auto border-b border-pos-line">
+-            <div className="flex min-h-12 min-w-0 flex-1 items-center gap-2 overflow-x-auto px-3 py-1.5">
+-              {floorPlan?.areas.map((area) => (
+-                <button
+-                  className={clsx(
+-                    "min-h-[34px] whitespace-nowrap rounded-[7px] border px-3 font-extrabold",
+-                    area.id === areaId
+-                      ? "border-[rgb(15_118_110_/_45%)] bg-pos-primarySoft text-pos-primary"
+-                      : "border-pos-line bg-pos-surface text-pos-muted",
+-                  )}
+-                  key={area.id}
+-                  onClick={() => setActiveAreaId(area.id)}
+-                >
+-                  {area.name}
+-                </button>
+-              ))}
+-            </div>
+-            <button
+-              className="inline-flex min-h-[34px] shrink-0 items-center gap-1.5 rounded-[7px] border border-pos-line bg-pos-surface px-3 text-xs font-extrabold text-pos-primary transition-colors hover:border-pos-primary hover:bg-pos-primarySoft"
+-              data-testid="floor-refresh-button"
+-              onClick={() => {
+-                void floorPlanQuery.refetch();
+-                void openOrdersQuery.refetch();
+-                toast.success("Đã làm mới dữ liệu");
+-              }}
+-            >
+-              <RefreshCw size={14} />
+-              Làm mới
+-            </button>
+-            <div className="flex shrink-0 gap-1.5 border-l border-pos-line px-3 py-1.5">
+-              {(["all", "empty", "occupied"] as TableFilter[]).map((f) => (
+-                <button
+-                  key={f}
+-                  className={clsx(
+-                    "cursor-pointer whitespace-nowrap rounded-full border px-3 py-[3px] text-xs font-bold",
+-                    tableFilter === f
+-                      ? "border-pos-primary bg-pos-primary text-white"
+-                      : "border-pos-line bg-pos-surface text-pos-muted",
+-                  )}
+-                  onClick={() => setTableFilter(f)}
+-                >
+-                  {f === "all" ? "Tất cả" : f === "empty" ? "Trống" : "Đang phục vụ"}
+-                </button>
+-              ))}
+-            </div>
+-          </div>
+-          {floorPlanQuery.isLoading ? (
+-            <div className="grid flex-1 place-items-center gap-2.5 p-10 text-center text-sm text-pos-muted">Đang tải sơ đồ...</div>
+-          ) : floorPlanQuery.isError ? (
+-            <div className="grid flex-1 place-items-center gap-2.5 p-10 text-center text-sm text-pos-muted" data-testid="floor-error-state">
+-              <AlertTriangle size={32} color="#b45309" />
+-              <p>Không tải được sơ đồ bàn.</p>
+-              <p className="text-pos-muted">{toToastError(floorPlanQuery.error)}</p>
+-              <Button variant="contained" size="small" onClick={() => void floorPlanQuery.refetch()}>
+-                Thử tải lại
+-              </Button>
+-            </div>
+-          ) : allTables.length === 0 ? (
+-            <div className="grid flex-1 place-items-center gap-2.5 p-10 text-center text-sm text-pos-muted">
+-              <LayoutGrid size={32} color="#94a3b8" />
+-              <p>Chưa có bàn. Vào Sơ đồ để tạo bàn.</p>
+-            </div>
+-          ) : (
+-            <div className="min-h-0 p-3.5 max-[980px]:p-2">
+-              <ScaledFloorStage testId="floor-stage">
+-                {({ scale }) => {
+-                  const tableBoost = getObjectBoost(scale);
+-                  const tableLabelBoost = getLabelBoost(scale * tableBoost);
+-                  const decorLabelBoost = getLabelBoost(scale);
+-
+-                  return (
+-                    <>
+-                {decorItems.map((decor) => {
+-                  const visualAsset = getFloorDecorAsset(decor.assetKey);
+-                  return (
+-                    <div
+-                      className={clsx(
+-                        "absolute grid place-items-center text-center text-xs font-black",
+-                        visualAsset
+-                          ? "overflow-hidden rounded-pos border border-transparent bg-transparent"
+-                          : clsx("rounded-pos border border-dashed", decorToneClass(decor.kind)),
+-                      )}
+-                      data-testid={`decor-${decor.id}`}
+-                      key={decor.id}
+-                      style={{ ...stageStyle(decor.posX, decor.posY, decor.width, decor.height), ...nodeTransform(decor.rotation) }}
+-                    >
+-                      <FloorDecorVisual
+-                        assetKey={decor.assetKey}
+-                        kind={decor.kind}
+-                        label={decor.label}
+-                        fallbackLabel={decor.assetKey}
+-                        labelBoost={decorLabelBoost}
+-                      />
+-                    </div>
+-                  );
+-                })}
+-                {filteredTables.map((table) => {
+-                  const openOrderSummary = orders.find((o) => o.tableId === table.id);
+-                  const occupied = isOccupied(table.id);
+-                  const isRound = table.shape === "round";
+-                  const tableBackground = getFloorTableBackgroundAsset(table.backgroundAssetKey);
+-                  return (
+-                    <button
+-                      className={clsx(
+-                        "absolute grid place-items-center overflow-hidden border-2 bg-white bg-cover bg-center text-center font-black shadow-[0_8px_18px_rgb(15_23_42_/_10%)]",
+-                        occupied ? "border-[#f97316]" : "border-[#86efac]",
+-                        isRound ? "rounded-full" : "rounded-pos",
+-                      )}
+-                      data-testid={`table-${table.id}`}
+-                      data-table-status={occupied ? "occupied" : "empty"}
+-                      data-order-total={openOrderSummary?.total ?? 0}
+-                      key={table.id}
+-                      style={{
+-                        ...stageStyle(table.posX, table.posY, table.width, table.height),
+-                        ...nodeTransform(table.rotation, tableBoost),
+-                        backgroundImage: tableBackground ? `url("${tableBackground.assetKey}")` : undefined,
+-                      }}
+-                      onClick={() => void openTableOrder(table, openOrderSummary)}
+-                    >
+-                      <span
+-                        className="grid place-items-center gap-0.5 rounded-[6px] bg-white/85 px-2 py-1 leading-none shadow-sm"
+-                        style={{ transform: `scale(${tableLabelBoost})`, transformOrigin: "center" }}
+-                      >
+-                        <strong data-floor-label="name" className="block text-[13px] font-extrabold leading-none">
+-                          {table.name}
+-                        </strong>
+-                        {openOrderSummary && (
+-                          <small data-floor-label="price" className="block text-[11px] font-bold leading-none text-[#ea580c]">
+-                            {formatCompactVnd(openOrderSummary.total)}
+-                          </small>
+-                        )}
+-                      </span>
+-                    </button>
+-                  );
+-                })}
+-                    </>
+-                  );
+-                }}
+-              </ScaledFloorStage>
+-            </div>
+-          )}
+-        </section>
+-
+-        {/* Right open orders panel */}
+-        <aside className="grid content-start grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-pos border border-pos-line bg-pos-surface max-[740px]:hidden">
+-          <div className="px-3.5 pb-2 pt-3 text-[10px] font-extrabold uppercase tracking-[0.07em] text-pos-muted">Đơn đang mở · {dineInOrders.length}</div>
+-          <div className="grid content-start gap-1.5 overflow-y-auto px-2.5 pb-2.5 pt-1.5">
+-            {openOrdersQuery.isLoading ? (
+-              <p className="m-0 py-3 text-center text-[13px] text-pos-muted">Đang tải đơn đang mở...</p>
+-            ) : openOrdersQuery.isError ? (
+-              <div className="m-0 py-3 text-center text-[13px] text-pos-muted" data-testid="floor-orders-error-state">
+-                <p>Không tải được đơn đang mở.</p>
+-                <Button variant="outlined" size="small" onClick={() => void openOrdersQuery.refetch()}>
+-                  Thử lại
+-                </Button>
+-              </div>
+-            ) : dineInOrders.length === 0 ? (
+-              <p className="m-0 py-3 text-center text-[13px] text-pos-muted">Chưa có đơn tại bàn.</p>
+-            ) : (
+-              dineInOrders.map((ord) => {
+-                const table = floorPlan?.tables.find((t) => t.id === ord.tableId);
+-                return (
+-                  <button
+-                    key={ord.id}
+-                    className="grid cursor-pointer gap-[3px] rounded-[7px] border border-pos-line bg-pos-bg px-2.5 py-2 text-left transition-colors hover:border-pos-primary"
+-                    onClick={() => openOrder({ orderId: ord.id, tableId: ord.tableId, orderType: "dine_in" })}
+-                  >
+-                    <div className="flex justify-between text-[13px]">
+-                      <strong>{table?.name ?? ord.tableId}</strong>
+-                      <span className="text-[11px] font-bold text-pos-muted">#{ord.orderNo}</span>
+-                    </div>
+-                    <div className="flex items-center justify-between gap-2">
+-                      <span className="text-[11px] font-bold text-[#ea580c]">Đang phục vụ</span>
+-                      <span className="text-sm font-extrabold text-pos-primary">{formatCompactVnd(ord.total)}</span>
+-                    </div>
+-                  </button>
+-                );
+-              })
+-            )}
+-          </div>
+-          {takeawayOrders.length > 0 && (
+-            <>
+-              <div className="border-t border-pos-line px-3.5 pb-2 pt-2.5 text-[10px] font-extrabold uppercase tracking-[0.07em] text-pos-muted">
+-                Mang đi · {takeawayOrders.length}
+-              </div>
+-              <div className="grid content-start gap-1.5 overflow-y-auto px-2.5 pb-2.5 pt-1.5">
+-                {takeawayOrders.map((ord) => (
+-                  <button
+-                    key={ord.id}
+-                    className="grid cursor-pointer gap-[3px] rounded-[7px] border border-pos-line bg-pos-bg px-2.5 py-2 text-left transition-colors hover:border-pos-primary border-l-[3px] border-l-[#6366f1]"
+-                    onClick={() => openOrder({ orderId: ord.id, tableId: null, orderType: "takeaway" })}
+-                  >
+-                    <div className="flex justify-between text-[13px]">
+-                      <strong>Mang đi</strong>
+-                      <span className="text-[11px] font-bold text-pos-muted">#{ord.orderNo}</span>
+-                    </div>
+-                    <div className="text-sm font-extrabold text-pos-primary">{formatCompactVnd(ord.total)}</div>
+-                  </button>
+-                ))}
+-              </div>
+-            </>
+-          )}
+-        </aside>
++  return <>
++    <header className="workspace-header" data-testid="floor-header"><div className="breadcrumb"><span><RemakeIcon name="store"/></span><strong title={settings.data?.displayName}>{settings.data?.displayName ?? ""}</strong><span className="breadcrumb-divider">›</span><span className="header-context">Vận hành bán hàng</span></div><div className="header-actions"><span className="sync-label">Tự động cập nhật</span><button ref={toggleRef} className="secondary-button orders-toggle" data-testid="floor-orders-toggle" aria-controls="floor-order-panel" aria-expanded={ordersOpen} onClick={() => setOrdersOpen(true)}>Đơn đang mở <span>({orders.length})</span></button></div></header>
++    <div className="workspace">
++      <section className="floor-card" data-testid="floor-view">
++        <div className="floor-toolbar" data-testid="floor-toolbar">
++          <div className="floor-title"><h1>Sơ đồ bàn</h1><p>Chọn bàn để xem và quản lý đơn hàng.</p></div>
++          <div className="status-filters" aria-label="Trạng thái bàn">{(["all", "empty", "occupied"] as TableFilter[]).map((f) => <button key={f} data-testid={`floor-filter-${f}`} aria-pressed={tableFilter === f} onClick={() => setTableFilter(f)}>{f !== "all" && <span className={`status-dot ${f}-dot`} aria-hidden="true"/>}{f === "all" ? "Tất cả" : f === "empty" ? "Trống" : "Đang phục vụ"}</button>)}</div>
++          <button className="icon-button refresh-button" data-testid="floor-refresh-button" aria-label="Làm mới" title="Làm mới dữ liệu" onClick={() => { void floorPlanQuery.refetch(); void openOrdersQuery.refetch(); toast.success("Đã làm mới dữ liệu"); }}><RemakeIcon name="refresh"/></button>
++        </div>
++        <div className="area-navigation" data-testid="floor-area-summary"><FloorAreaChooser areas={floorPlan?.areas ?? []} tables={floorPlan?.tables ?? []} activeAreaId={areaId} onSelect={setActiveAreaId}/><div className="area-metrics"><strong className="b01-area-only" title={area?.name}>{area?.name ?? ""}</strong><span>{`${allTables.reduce((sum, t) => sum + t.seats, 0)} chỗ ngồi`}</span><strong className="occupancy">{`${allTables.length ? Math.round(allTables.filter((t) => isOccupied(t.id)).length / allTables.length * 100) : 0}% sử dụng`}</strong></div></div>
++        {messageState ? <div className="state-message" data-testid={floorPlanQuery.isError ? "floor-error-state" : "floor-message"}>
++          {floorPlanQuery.isLoading ? <p>Đang tải sơ đồ...</p> : floorPlanQuery.isError ? <><span className="error-icon" aria-hidden="true">!</span><p>Không tải được sơ đồ bàn.</p><p>{toToastError(floorPlanQuery.error)}</p><button className="secondary-button" onClick={() => void floorPlanQuery.refetch()}>Thử tải lại</button></> : <p>{allTables.length === 0 ? "Chưa có bàn. Vào Sơ đồ để tạo bàn." : "Không có bàn phù hợp với bộ lọc."}</p>}
++        </div> : <ScaledFloorStage testId="floor-stage" viewportTestId="floor-canvas-viewport" minScale={0.6}>
++          {({ scale }) => {
++            const boost = getObjectBoost(scale), labelBoost = getLabelBoost(scale * boost);
++            return <>
++              {decorItems.map((d) => <div key={d.id} className="b01-decoration" data-testid={`decor-${d.id}`} style={{ ...stageStyle(d.posX, d.posY, d.width, d.height), ...nodeTransform(d.rotation) }}><FloorDecorVisual assetKey={d.assetKey} kind={d.kind} label={d.label} fallbackLabel={d.assetKey} labelBoost={getLabelBoost(scale)}/></div>)}
++              {filteredTables.map((t) => {
++                const order = orders.find((o) => o.tableId === t.id), occupied = isOccupied(t.id), bg = getFloorTableBackgroundAsset(t.backgroundAssetKey);
++                const hitBoost = Math.max(boost, 44.1 / (Math.min(t.width, t.height) * scale));
++                return <button key={t.id} className={`b01-table${t.shape === "round" ? " round" : ""}`} aria-label={`${t.name}${order ? " " + formatCompactVnd(order.total) : ""}`} title={t.name} data-testid={`table-${t.id}`} data-table-status={occupied ? "occupied" : "empty"} data-status={occupied ? "occupied" : "empty"} data-order-total={order?.total ?? 0} style={{ ...stageStyle(t.posX, t.posY, t.width, t.height), ...nodeTransform(t.rotation, hitBoost), backgroundImage: bg ? `url("${bg.assetKey}")` : undefined }} onClick={() => void openTableOrder(t, order)}>
++                  <span className="table-label" style={{ transform: `scale(${labelBoost})`, maxWidth: `${100 / labelBoost}%` }}><strong data-floor-label="name">{t.name}</strong>{order && <small data-floor-label="price">{formatCompactVnd(order.total)}</small>}</span>
++                </button>;
++              })}
++            </>;
++          }}
++        </ScaledFloorStage>}
++        <footer className="floor-footer"><span>Chọn bàn để mở giao diện gọi món</span><span>{filteredTables.length}/{allTables.length} bàn</span></footer>
++      </section>
+     </div>
+-  );
++    <aside ref={panelRef} id="floor-order-panel" className={`order-panel${ordersOpen ? " open" : ""}`} data-testid="floor-open-orders" aria-label="Đơn đang mở" role={ordersOpen && compactOrders ? "dialog" : undefined} aria-modal={ordersOpen && compactOrders ? true : undefined} onKeyDown={onPanelKeyDown}>
++      <header className="order-panel-header"><h2>Đơn đang mở <span className="count-badge">{orders.length}</span></h2><button className="icon-button close-orders" aria-label="Đóng danh sách đơn" onClick={() => setOrdersOpen(false)}>×</button></header>
++      <div className="order-list">
++        {openOrdersQuery.isLoading ? <p>Đang tải đơn đang mở...</p> : openOrdersQuery.isError ? <div className="state-message" data-testid="floor-orders-error-state"><p>Không tải được đơn đang mở.</p><button className="secondary-button" onClick={() => void openOrdersQuery.refetch()}>Thử lại</button></div> : <>
++          {dineInOrders.length === 0 ? <p className="order-group-label">Chưa có đơn tại bàn.</p> : <><p className="order-group-label">Tại bàn · {dineInOrders.length}</p>{dineInOrders.map(orderCard)}</>}
++          {takeawayOrders.length > 0 && <><p className="order-group-label">Mang đi · {takeawayOrders.length}</p>{takeawayOrders.map(orderCard)}</>}
++        </>}
++      </div>
++      <footer className="order-panel-footer">Chọn một đơn để tiếp tục phục vụ.</footer>
++    </aside>
++  </>;
+ }
+diff --git a/src/app/shell/LeftNav.test.tsx b/src/app/shell/LeftNav.test.tsx
+index d0d919e..c0e4e57 100644
+--- a/src/app/shell/LeftNav.test.tsx
++++ b/src/app/shell/LeftNav.test.tsx
+@@ -27,11 +27,11 @@ describe("LeftNav", () => {
+     render(<LeftNav />);
+ 
+     expect(screen.getByRole("navigation", { name: "POS modules" })).toBeInTheDocument();
+-    expect(screen.getByText("Vận hành")).toBeInTheDocument();
+-    expect(screen.getByText("Quản trị")).toBeInTheDocument();
++    expect(screen.getByTestId("nav-floor")).toHaveAccessibleName("Sơ đồ bàn");
++    expect(screen.getByTestId("nav-settings")).toBeEnabled();
+     expect(screen.queryByTestId("nav-kitchen")).not.toBeInTheDocument();
+ 
+-    fireEvent.click(screen.getByRole("button", { name: "Mang đi" }));
++    fireEvent.click(screen.getByRole("button", { name: "Bán mang đi" }));
+ 
+     expect(useAppStore.getState().drawer).toBe("takeaway");
+   });
+@@ -42,7 +42,7 @@ describe("LeftNav", () => {
+     render(<LeftNav />);
+ 
+     expect(screen.getByTestId("left-nav-session")).toHaveAttribute("aria-label", "Đang đăng nhập: Quản lý · Quản lý");
+-    expect(screen.getByText("Đang đăng nhập")).toBeInTheDocument();
++    expect(screen.getByTestId("left-nav-session")).toHaveAttribute("data-employee-id", admin.id);
+   });
+ 
+   it("keeps the left nav focused on the signed-in employee instead of app copy", () => {
+diff --git a/src/app/shell/LeftNav.tsx b/src/app/shell/LeftNav.tsx
+index bec55f8..448fa16 100644
+--- a/src/app/shell/LeftNav.tsx
++++ b/src/app/shell/LeftNav.tsx
+@@ -1,143 +1,46 @@
+-import { BarChart3, ClipboardList, Coffee, LayoutDashboard, LayoutGrid, Lock, QrCode, ReceiptText, Settings, Users } from "lucide-react";
+ import toast from "react-hot-toast";
+ import { canAccessModule, type AppModule } from "@/core/guards";
+-import type { DrawerModule } from "../useAppStore";
+-import { useAppStore } from "../useAppStore";
+-import { RailButton } from "./RailButton";
+-
+-export function LeftNav() {
+-  const currentEmployee = useAppStore((state) => state.currentEmployee);
+-  const drawer = useAppStore((state) => state.drawer);
+-  const closeDrawer = useAppStore((state) => state.closeDrawer);
+-  const openDrawer = useAppStore((state) => state.openDrawer);
+-  const setCurrentEmployee = useAppStore((state) => state.setCurrentEmployee);
+-  const setScreen = useAppStore((state) => state.setScreen);
+-
+-  const canAccess = (guard: AppModule) => canAccessModule(currentEmployee, guard);
+-
+-  const guardedOpen = (module: Exclude<DrawerModule, null>, guard: AppModule) => {
+-    if (!canAccess(guard)) {
+-      toast.error("Nhân viên không có quyền dùng chức năng này.");
+-      return;
+-    }
+-    openDrawer(module);
+-  };
+-
++import { useAppStore, type DrawerModule } from "../useAppStore";
++import { RemakeIcon } from "../components/RemakeIcon";
++
++export function LeftNav({ storeName = "" }: { storeName?: string }) {
++  const currentEmployee = useAppStore((s) => s.currentEmployee);
++  const drawer = useAppStore((s) => s.drawer);
++  const closeDrawer = useAppStore((s) => s.closeDrawer);
++  const openDrawer = useAppStore((s) => s.openDrawer);
++  const setCurrentEmployee = useAppStore((s) => s.setCurrentEmployee);
++  const setScreen = useAppStore((s) => s.setScreen);
+   const roleLabel: Record<string, string> = { admin: "Quản lý", cashier: "Thu ngân", kitchen: "Bếp" };
+   const currentRoleLabel = currentEmployee ? roleLabel[currentEmployee.role] ?? currentEmployee.role : "";
+   const signedInLabel = currentEmployee ? `Đang đăng nhập: ${currentEmployee.name} · ${currentRoleLabel}` : "";
+-  const employeeInitial = currentEmployee?.name.trim().charAt(0).toUpperCase() || "?";
+-
+-  return (
+-    <aside className="grid min-h-0 grid-rows-[auto_minmax(0,1fr)_auto] gap-3 border-r border-pos-line bg-pos-rail px-3 py-3 text-pos-ink max-[980px]:gap-2 max-[980px]:px-2 max-[980px]:py-2">
+-      <div className="grid gap-2 border-b border-[#dbe4ef] pb-3">
+-        {currentEmployee && (
+-          <div
+-            aria-label={signedInLabel}
+-            className="flex min-w-0 items-center gap-2 rounded-[10px] border border-[#dbe4ef] bg-white px-2.5 py-2 shadow-[0_8px_18px_rgb(15_23_42_/_5%)] max-[980px]:justify-center max-[980px]:px-0 max-[980px]:py-1.5"
+-            data-testid="left-nav-session"
+-            data-employee-id={currentEmployee.id}
+-            data-role={currentEmployee.role}
+-            title={signedInLabel}
+-          >
+-            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-[8px] bg-pos-primarySoft text-xs font-black text-pos-primary">{employeeInitial}</span>
+-            <div className="grid min-w-0 gap-0.5 max-[980px]:sr-only">
+-              <span className="text-[9px] font-black uppercase tracking-[0.05em] text-[#64748b]">Đang đăng nhập</span>
+-              <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-[1.15] text-[#172033]">{currentEmployee.name}</strong>
+-              <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[10px] font-black uppercase tracking-[0.04em] text-pos-primary">{currentRoleLabel}</span>
+-            </div>
+-          </div>
+-        )}
+-      </div>
+-
+-      <nav className="grid min-h-0 content-start gap-3 overflow-auto py-1 [scrollbar-width:none]" aria-label="POS modules">
+-        <div className="grid gap-1.5">
+-          <span className="px-3 text-[10px] font-black uppercase tracking-[0.05em] text-[#64748b] max-[980px]:sr-only">Vận hành</span>
+-          <RailButton active={!drawer} icon={<LayoutDashboard size={18} />} label="Bàn" onClick={closeDrawer} testId="nav-floor" />
+-          <RailButton active={drawer === "writeRecovery"} icon={<ClipboardList size={18} />} label="Tra cứu thao tác" onClick={() => openDrawer("writeRecovery")} testId="nav-write-recovery" />
+-          <RailButton
+-            active={drawer === "takeaway"}
+-            icon={<ClipboardList size={18} />}
+-            label="Mang đi"
+-            onClick={() => openDrawer("takeaway")}
+-            testId="nav-takeaway"
+-          />
+-          <RailButton
+-            active={drawer === "orderHistory"}
+-            icon={<ReceiptText size={18} />}
+-            label="Lịch sử"
+-            onClick={() => guardedOpen("orderHistory", "orderHistory")}
+-            disabled={!canAccess("orderHistory")}
+-            testId="nav-order-history"
+-          />
+-        </div>
+-
+-        <div className="grid gap-1.5 border-t border-[#dbe4ef] pt-3">
+-          <span className="px-3 text-[10px] font-black uppercase tracking-[0.05em] text-[#64748b] max-[980px]:sr-only">Quản trị</span>
+-          <RailButton
+-            active={drawer === "employees"}
+-            icon={<Users size={18} />}
+-            label="Nhân viên"
+-            onClick={() => guardedOpen("employees", "employees")}
+-            disabled={!canAccess("employees")}
+-            testId="nav-employees"
+-          />
+-          <RailButton
+-            active={drawer === "menuEditor"}
+-            icon={<Coffee size={18} />}
+-            label="Menu"
+-            onClick={() => guardedOpen("menuEditor", "menuEditor")}
+-            disabled={!canAccess("menuEditor")}
+-            testId="nav-menu-editor"
+-          />
+-          <RailButton
+-            active={drawer === "floorEditor"}
+-            icon={<LayoutGrid size={18} />}
+-            label="Sơ đồ"
+-            onClick={() => guardedOpen("floorEditor", "floorEditor")}
+-            disabled={!canAccess("floorEditor")}
+-            testId="nav-floor-editor"
+-          />
+-          <RailButton
+-            active={drawer === "report"}
+-            icon={<BarChart3 size={18} />}
+-            label="Báo cáo"
+-            onClick={() => guardedOpen("report", "report")}
+-            disabled={!canAccess("report")}
+-            testId="nav-report"
+-          />
+-          <RailButton
+-            active={drawer === "paymentSettings"}
+-            icon={<QrCode size={18} />}
+-            label="Thanh toán"
+-            onClick={() => guardedOpen("paymentSettings", "settings")}
+-            disabled={!canAccess("settings")}
+-            testId="nav-payment-settings"
+-          />
+-          <RailButton
+-            active={drawer === "settings"}
+-            icon={<Settings size={18} />}
+-            label="Cài đặt"
+-            onClick={() => guardedOpen("settings", "settings")}
+-            disabled={!canAccess("settings")}
+-            testId="nav-settings"
+-          />
+-        </div>
+-      </nav>
+-
+-      <div className="border-t border-[#dbe4ef] pt-2">
+-        <RailButton
+-          active={false}
+-          icon={<Lock size={18} />}
+-          label="Khoá"
+-          testId="nav-lock"
+-          onClick={() => {
+-            setCurrentEmployee(null);
+-            closeDrawer();
+-            setScreen("passcode");
+-          }}
+-        />
+-      </div>
+-    </aside>
+-  );
++  const guardedOpen = (module: Exclude<DrawerModule, null>, guard: AppModule) => {
++    if (!canAccessModule(currentEmployee, guard)) { toast.error("Nhân viên không có quyền dùng chức năng này."); return; }
++    openDrawer(module);
++  };
++  const entries: { module: Exclude<DrawerModule, null> | null; id: string; label: string; icon: string; guard?: AppModule }[] = [
++    { module: null, id: "floor", label: "Sơ đồ bàn", icon: "floor" },
++    { module: "writeRecovery", id: "write-recovery", label: "Tra cứu thao tác", icon: "order" },
++    { module: "takeaway", id: "takeaway", label: "Bán mang đi", icon: "order" },
++    { module: "orderHistory", id: "order-history", label: "Lịch sử đơn", icon: "order", guard: "orderHistory" },
++    { module: "menuEditor", id: "menu-editor", label: "Thực đơn", icon: "coffee", guard: "menuEditor" },
++    { module: "employees", id: "employees", label: "Nhân viên", icon: "users", guard: "employees" },
++    { module: "floorEditor", id: "floor-editor", label: "Sơ đồ cửa hàng", icon: "floor", guard: "floorEditor" },
++    { module: "report", id: "report", label: "Báo cáo", icon: "chart", guard: "report" },
++    { module: "paymentSettings", id: "payment-settings", label: "Cấu hình thanh toán", icon: "order", guard: "settings" },
++    { module: "settings", id: "settings", label: "Cài đặt", icon: "settings", guard: "settings" },
++  ];
++  return <aside className="sidebar" data-testid="b01-sidebar">
++    <div className="brand"><span className="brand-mark"><RemakeIcon name="coffee"/></span><div className="brand-copy"><strong>POS Café</strong><p><span className="status-dot"/><span title={storeName}>{storeName}</span></p><small>Không gian bán hàng</small></div></div>
++    <nav className="navigation" aria-label="POS modules">
++      {entries.map(({ module, id, label, icon, guard }) => <button key={id} className="nav-button" data-testid={`nav-${id}`} aria-label={label} title={label} aria-current={drawer === module ? "page" : undefined} disabled={guard ? !canAccessModule(currentEmployee, guard) : false} onClick={() => module === null ? closeDrawer() : guard ? guardedOpen(module, guard) : openDrawer(module)}>
++        <RemakeIcon name={icon}/><span className="nav-label">{label}</span>
++      </button>)}
++    </nav>
++    <footer className="sidebar-footer">
++      {currentEmployee && <div className="session" data-testid="left-nav-session" data-employee-id={currentEmployee.id} data-role={currentEmployee.role} aria-label={signedInLabel} title={signedInLabel}>
++        <span className="avatar">{currentEmployee.name.trim().charAt(0).toUpperCase() || "?"}</span><div className="session-copy"><strong>{currentEmployee.name}</strong><span>{currentRoleLabel}</span></div>
++      </div>}
++      <button className="nav-button lock-button" data-testid="nav-lock" aria-label="Khoá" title="Khoá" onClick={() => { setCurrentEmployee(null); closeDrawer(); setScreen("passcode"); }}><RemakeIcon name="lock"/><span className="nav-label">Khoá</span></button>
++    </footer>
++  </aside>;
+ }
+diff --git a/tailwind.config.ts b/tailwind.config.ts
+index cebdc1f..437e187 100644
+--- a/tailwind.config.ts
++++ b/tailwind.config.ts
+@@ -1,5 +1,6 @@
+ import type { Config } from "tailwindcss";
+ import { posCafeStyles } from "./tailwind.posCafeStyles";
++import { remakeStyles } from "./tailwind.remakeStyles";
+ 
+ export default {
+   content: ["./index.html", "./src/**/*.{ts,tsx}"],
+@@ -7,8 +8,8 @@ export default {
+     extend: {
+       colors: {
+         primary: {
+-          DEFAULT: "#0F766E",
+-          soft: "#F0FDFA",
++          DEFAULT: "var(--primary)",
++          soft: "var(--primary-soft)",
+         },
+         pos: {
+           bg: "var(--bg)",
+@@ -31,5 +32,5 @@ export default {
+       },
+     },
+   },
+-  plugins: [posCafeStyles],
++  plugins: [posCafeStyles, remakeStyles],
+ } satisfies Config;
+diff --git a/tailwind.posCafeStyles.ts b/tailwind.posCafeStyles.ts
+index dced4fa..3d93448 100644
+--- a/tailwind.posCafeStyles.ts
++++ b/tailwind.posCafeStyles.ts
+@@ -14,6 +14,7 @@ const posBaseStyles = {
+     "--success": "#15803d",
+     "--warning": "#b45309",
+     "--danger": "#b91c1c",
++    "--drawer-overlay": "rgba(0, 0, 0, 0.2)",
+     "--rail": "#f8fbfb",
+     "color": "var(--ink)",
+     "background": "var(--bg)",
+diff --git a/tests/smoke/helpers.ts b/tests/smoke/helpers.ts
+index f87f956..1f19aa1 100644
+--- a/tests/smoke/helpers.ts
++++ b/tests/smoke/helpers.ts
+@@ -31,6 +31,8 @@ export async function waitForStageFit(page: Page, stageTestId: string) {
+ 
+     const stageRect = stage.getBoundingClientRect();
+     const parentRect = parent.getBoundingClientRect();
+-    return stageRect.width > 0 && stageRect.height > 0 && stageRect.width <= parentRect.width + 1;
++    const fits = stageRect.width <= parentRect.width + 1;
++    const scrolls = getComputedStyle(parent).overflowX === "auto" && parent.scrollWidth >= stageRect.width;
++    return stageRect.width > 0 && stageRect.height > 0 && (fits || scrolls);
+   }, stageTestId);
+ }
+diff --git a/ui-remake/capture.mjs b/ui-remake/capture.mjs
+index 089b093..ed8efb3 100644
+--- a/ui-remake/capture.mjs
++++ b/ui-remake/capture.mjs
+@@ -9,11 +9,15 @@
+  *
+  * Capture policy: wait for the named ready element, declared fonts and images;
+  * disable CSS animations/transitions/caret; then wait two animation frames.
++ * Park the pointer outside the viewport for both sides (neutral hover state).
+  * No font, app state, clock, viewport, or layout override is injected here.
+  * The runner additionally checks repeated screenshots for pixel stability.
+  */
+ 
+ const TIMEOUT_MS = 5_000;
++// A real login may queue pairing + welcome toasts before the declared clean
++// state appears. Waiting longer changes no comparison threshold or app state.
++const READY_TIMEOUT_MS = 15_000;
+ const SAFE_ID = /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/;
+ 
+ function validateSelectors(entries, name) {
+@@ -206,11 +210,15 @@ export async function stabilizePage(page, { readySelector } = {}) {
+     throw new TypeError('readySelector must be a nonempty selector');
+   }
+   const ready = page.locator(readySelector);
++  // Login/resize can leave the pointer over a toast, pausing its timer forever.
++  // Neutralize hover before waiting as well as before decoding/capture.
++  await page.mouse.move(-1, -1);
+   const initialCount = await ready.count();
+   if (initialCount > 1) throw new Error(`Ready selector must match exactly one DOM element; found ${initialCount}: ${readySelector}`);
+-  try { await ready.waitFor({ state: 'visible', timeout: TIMEOUT_MS }); }
++  try { await ready.waitFor({ state: 'visible', timeout: READY_TIMEOUT_MS }); }
+   catch { throw new Error(`Ready selector must match exactly one visible DOM element: ${readySelector}`); }
+   await exactlyOne(page, { id: 'ready', selector: readySelector }, 'Ready selector');
++  await page.mouse.move(-1, -1);
+ 
+   const decodedImages = await page.evaluate(async ({ timeoutMs }) => {
+     let timer;
+diff --git a/ui-remake/capture.test.mjs b/ui-remake/capture.test.mjs
+index 685bb44..b64ae1b 100644
+--- a/ui-remake/capture.test.mjs
++++ b/ui-remake/capture.test.mjs
+@@ -214,6 +214,20 @@ test('stabilize waits for readiness/images and disables motion/caret without cha
+   });
+ });
+ 
++test('stabilize uses the same neutral pointer without changing focus, content or geometry', async () => {
++  await fixture('<style>#primary:hover{background:orange}</style><button id="primary">Xong</button>', async page => {
++    await page.locator('#primary').hover();
++    await page.locator('#primary').focus();
++    const before = await page.locator('#primary').boundingBox();
++    assert.equal(await page.locator('#primary:hover').count(), 1);
++    await stabilizePage(page, { readySelector: '#primary' });
++    assert.equal(await page.locator('#primary:hover').count(), 0);
++    assert.equal(await page.locator('#primary:focus').count(), 1);
++    assert.equal(await page.locator('#primary').textContent(), 'Xong');
++    assert.deepEqual(await page.locator('#primary').boundingBox(), before);
++  });
++});
++
+ test('stabilize fails on a broken sourced image', { timeout: 15_000 }, async () => {
+   await fixture('<button id="primary">Xong</button><img src="data:image/png;base64,not-an-image">', async (page) => {
+     await assert.rejects(stabilizePage(page, { readySelector: '#primary' }), /Image 1 failed to decode/);
+@@ -223,7 +237,7 @@ test('stabilize fails on a broken sourced image', { timeout: 15_000 }, async ()
+   });
+ });
+ 
+-test('stabilize requires exactly one visible ready selector', { timeout: 20_000 }, async () => {
++test('stabilize requires exactly one visible ready selector', { timeout: 40_000 }, async () => {
+   await fixture('<button id="primary">Xong</button><span class="many">A</span><span class="many">B</span><div id="hidden" style="display:none">Ẩn</div>', async (page) => {
+     await assert.rejects(stabilizePage(page, { readySelector: '.many' }), /exactly one DOM element; found 2/);
+     await assert.rejects(stabilizePage(page, { readySelector: '#missing' }), /exactly one visible DOM element/);
+@@ -231,3 +245,13 @@ test('stabilize requires exactly one visible ready selector', { timeout: 20_000
+     await assert.rejects(stabilizePage(page, { readySelector: '' }), /nonempty selector/);
+   });
+ });
++
++test('stabilize waits for a clean state after queued transient overlays without changing thresholds', { timeout: 15_000 }, async () => {
++  await fixture('<button id="primary">Xong</button><div id="transient">Đang thông báo</div>', async (page) => {
++    const before = await page.locator('#primary').boundingBox();
++    await page.evaluate(() => setTimeout(() => document.getElementById('transient').remove(), 5_200));
++    await stabilizePage(page, { readySelector: 'body:not(:has(#transient)) #primary' });
++    assert.equal(await page.locator('#transient').count(), 0);
++    assert.deepEqual(await page.locator('#primary').boundingBox(), before);
++  });
++});
