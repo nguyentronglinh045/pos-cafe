@@ -1,4 +1,6 @@
 import{pullPinnedImage as ci1PullImage,imagePullRegistryOrdinal,dockerFailureFacts,DOCKER_DIAGNOSTIC_BOUNDS,dockerSafeFailureMetric}from'./permission-runtime-image-pull.mjs';
+import { ISOLATED_RECEIPT_FACT_BOUNDS, isolatedReceiptSafeFact, isolatedReceiptMaximumBytes,
+  assertIsolatedReceiptIdentity, writeIsolatedReceipt, recoverIsolatedError } from './permission-runtime-isolated-receipt.mjs';
 // Local preparation source. Every effectful entry point requires future explicit
 // execution authorization on a public standard GitHub Linux runner.
 import { readFileSync, writeFileSync, mkdirSync, existsSync, realpathSync, lstatSync, statSync, statfsSync,
@@ -52,7 +54,7 @@ const failureCodes = ['GUARD_REFUSED', 'INTAKE_REFUSED', 'COMMAND_FAILED', 'COMM
   'EDGE_CACHE_ENTRY', 'EDGE_CACHE_TYPE', 'EDGE_CACHE_PACKAGE', 'EDGE_CACHE_VERSION', 'EDGE_CACHE_PIN',
   'EDGE_CACHE_METADATA', 'EDGE_CACHE_NAME', 'EDGE_CACHE_SRI', 'EDGE_CACHE_TARBALL', 'EDGE_CACHE_DEPENDENCIES',
   'EDGE_CACHE_BOUND', 'EDGE_CACHE_INCOMPLETE', 'EDGE_RESOLUTION_INPUT', 'UNMOUNT_BUSY', 'UNMOUNT_PERMISSION', 'UNMOUNT_NOT_MOUNTED', 'UNKNOWN'];
-const failureMetrics = [...Object.keys(DOCKER_DIAGNOSTIC_BOUNDS),'hostFreeBytes', 'memoryBytes', 'oom', 'pidsEvents', 'memoryCurrentBytes', 'pidsCurrent',
+const failureMetrics = [...Object.keys(ISOLATED_RECEIPT_FACT_BOUNDS),...Object.keys(DOCKER_DIAGNOSTIC_BOUNDS),'hostFreeBytes', 'memoryBytes', 'oom', 'pidsEvents', 'memoryCurrentBytes', 'pidsCurrent',
   'cpuMatches', 'memoryLimitMatches', 'swapLimitMatches', 'pidsLimitMatches', 'cgroupMatches', 'runtimeMatches', 'loggingMatches',
   'loopImageBytes', 'loopAllocatedBytes', 'loopFilesystemBytes', 'loopFreeBytes', 'loopOffset', 'loopSizeLimit', 'mountMatches', 'ownerMatches', 'imageOrdinal', 'edgePackageOrdinal',
   'edgeVersionMajor', 'edgeVersionMinor', 'edgeVersionPatch', 'edgeVersionCopy', 'edgeCacheEntryCount', 'edgeRegistryMetadataPresent', 'loopNestedMounts',
@@ -67,6 +69,9 @@ const failureMetrics = [...Object.keys(DOCKER_DIAGNOSTIC_BOUNDS),'hostFreeBytes'
     ...Object.keys(T04_DIAGNOSTIC_BOUNDS),
     't04RealtimeFailureMask','t04RealtimeFirstFailureOrdinal','t04FailedTests','t04FirstFailedLine','t04TestErrorCodeOrdinal','t04TestErrorNameOrdinal','t04TestErrorMatcherOrdinal',...Object.keys(T04_FAILURE_BOUNDS)];
 
+// Fail closed if a future allowlist can exceed the common serialized-file cap.
+export const CI1_ISOLATED_RECEIPT_MAXIMUM_BYTES = isolatedReceiptMaximumBytes({
+  metrics: failureMetrics, operations: failureOperations, codes: failureCodes, commands: failureCommands });
 export{ci1PullImage};
 export function ci1UnmountFailureCode(stderr) {
   if (typeof stderr !== 'string' || Buffer.byteLength(stderr) > 1024 ** 2) return null;
@@ -116,12 +121,14 @@ export function ci1FailureExport(value) {
   };
   const facts = finiteDiagnosticFacts(value.facts ?? {},(key, number) =>
     failureMetrics.includes(key) && Number.isSafeInteger(number) && number >= 0
+    && (!Object.hasOwn(ISOLATED_RECEIPT_FACT_BOUNDS,key) || isolatedReceiptSafeFact(key,number))
     &&(!key.startsWith('docker')||dockerSafeFailureMetric(key,number))
     && (!key.startsWith('t04') || t04SafeFailureMetric(key,number)));
   if (Object.keys(facts).length) output.facts = facts;
   return output;
 }
 export function ci1IsolatedFailure(value, identity, sourceSHA) {
+  assertIsolatedReceiptIdentity(identity, sourceSHA);
   if (value?.schemaVersion !== 'permission-ci1-isolated-failure-v1'
     || Object.keys(value).sort().join(',') !== ['schemaVersion','runId','attempt','sourceSHA','failure','cleanupFailure'].sort().join(',')
     || value.runId !== identity.runId || value.attempt !== identity.attempt || value.sourceSHA !== sourceSHA
@@ -137,6 +144,9 @@ export function ci1IsolatedError(value, identity, sourceSHA) {
     ci1FailureCode: cause.code, ci1Command: cause.command, status: cause.exitCode,
     ci1Facts: { ...cause.facts, isolatedFailureSeen: 1, isolatedCleanupFailed: inner.cleanupFailure ? 1 : 0 },
   }) };
+}
+export function ci1ReadIsolatedError(file, identity, sourceSHA, originalError) {
+  return recoverIsolatedError(file, identity, sourceSHA, originalError, ci1IsolatedFailure, ci1IsolatedError);
 }
 const failureDetails = (error, stage, operation, facts = {}) => ci1FailureExport({stage, operation,
   code: failureCodes.includes(error?.ci1FailureCode) ? error.ci1FailureCode
@@ -653,8 +663,7 @@ async function offlinePhase(layout, source, env) {
   if (failure || cleanupFailure) {
     const record = { schemaVersion: 'permission-ci1-isolated-failure-v1', runId: layout.identity.runId,
       attempt: layout.identity.attempt, sourceSHA: env.GITHUB_SHA, failure, cleanupFailure };
-    ci1IsolatedFailure(record, layout.identity, env.GITHUB_SHA);
-    writeFileSync(`${root}/private/isolated-failure.json`, JSON.stringify(record), { flag: 'wx', mode: 0o600 });
+    writeIsolatedReceipt(`${root}/private/isolated-failure.json`, record, layout.identity, env.GITHUB_SHA, ci1IsolatedFailure);
     refused();
   }
 }
@@ -668,7 +677,8 @@ async function setup(layout, input, parentEnv) {
   const adapter = {
     supervisor: guard,
     operation: () => operation,
-    failureFacts: () => ({ imageOrdinal, ...(imagePullAttempt ? { imagePullAttempt, imageRegistryOrdinal: imagePullRegistryOrdinal(imagePullAttempt) } : {}) }),
+    failureFacts: () => ['IMAGE_PULL', 'IMAGE_TAG', 'IMAGE_INSPECT'].includes(operation)
+      ? { imageOrdinal, ...(imagePullAttempt ? { imagePullAttempt, imageRegistryOrdinal: imagePullRegistryOrdinal(imagePullAttempt) } : {}) } : {},
     cleanupFailure: () => cleanupFailure,
     stage: async stage => {
       operation = null;
@@ -820,13 +830,9 @@ async function setup(layout, input, parentEnv) {
           run('unshare', ['--mount', '--net', '--pid', '--fork', '--mount-proc', `${root}/runtime/node/bin/node`,
             `${source}/scripts/permission-runtime-t04-worker.mjs`, 'isolated'], { cwd: source, timeout: 1200000 });
         } catch (error) {
-          const file = `${root}/private/isolated-failure.json`, info = lstatSync(file, { throwIfNoEntry: false });
-          if (info?.isFile() && !info.isSymbolicLink() && info.uid === 0 && !(info.mode & 0o077)
-            && info.size <= 8192 && realpathSync(file) === file) {
-            const inner = ci1IsolatedError(parse(file), layout.identity, baseEnv.GITHUB_SHA);
-            operation = inner.operation; throw inner.error;
-          }
-          throw error;
+          const inner = ci1ReadIsolatedError(`${root}/private/isolated-failure.json`, layout.identity, baseEnv.GITHUB_SHA, error);
+          if (inner.operation !== undefined) operation = inner.operation;
+          throw inner.error;
         }
       } else if (stage === 'stack' || stage === 'harness') {
         // The child carries its namespace through stack→harness. It must publish

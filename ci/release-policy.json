@@ -46,13 +46,18 @@
     "scripts/permission-edge-resolution.mjs": "7795136a7a533e93c550cec3df09a846fee58ed5ff1eb6fb6237a2b60c4b1178",
     "scripts/permission-edge-probe.mjs": "ae736d05e728ad0d6cc0f3f4cd9d7935890c3e6f2764be319a01138275e74367",
     "scripts/permission-ci1-intake.mjs": "6b82644d0440cfaab2c2beee1572b64255f4e335b12ace5065e1f16da2750040",
-    "scripts/permission-runtime-t04-worker.mjs": "676d757c4abeda54a486f984f0f72a963dc4f6f18e016b8ac5515c8725695761",
+    "scripts/permission-runtime-t04-worker.mjs": "9d7185d16de420d37e375842e1c66a574d408f37751ddb4e403c1a1a650a7d01",
     "tests/permissions/runtime/ci1-edge.json": "523111f7b3134e5f29a6bbf600302140db58530d3998a1ffbd565f7152493d51",
     "tests/permissions/runtime/edge-resolution/deno.json": "eca3984001a907fb17773aa60e4ce77efb2033c255e3f5462963f3b87b894113",
     "tests/permissions/runtime/edge-resolution/deno.lock": "6f9fc5dd3b6e81d9468c712bfbf3fc423e6ea28d49e8fe44915abca50740ab41",
     "scripts/permission-full-target-policy.test.mjs": "a41194753179f25315eb0639609302a3cc652673fea3276a833f2af19101f917",
     "scripts/project-preview.README.md": "8ef8984c2d4cbe40204ea6c6b62af63902ebe937b9ba8e0cc6d0427df2177b5c",
-    "scripts/permission-runtime-candidate-diagnostic.mjs": "e12b37777887ee2b7e71820ffd1dbb706be0414e29debaa0f940c0cd1a278791"
+    "scripts/permission-runtime-candidate-diagnostic.mjs": "e12b37777887ee2b7e71820ffd1dbb706be0414e29debaa0f940c0cd1a278791",
+    "scripts/permission-runtime-service-worker.mjs": "e377f42893ada170fe6e4152f943c77a09e95ee431570191cb5f74bc735ac426",
+    "scripts/permission-runtime-diagnostic-selftest.mjs": "4d3e66a91069ae48996f458772aacd6c8f6e03e6da51f6d9c23ceaa9436ffb9c",
+    "scripts/permission-runtime-isolated-receipt.mjs": "3d22da9bbdd39e48ad5cc87ffb0151dfb27847e85b1de5aeecad40ff4f3a6752",
+    "scripts/permission-runtime-isolated-receipt-control.mjs": "4d957e51141181e3162f084a2077b4886716692dd7dce131265d37febb070c88",
+    "scripts/permission-runtime-isolated-receipt.test.mjs": "a4d6e2968dcbff7fcadd035fc78c100fb037388cb9624d3c6e66f2868a92dc80"
   },
   "preview": {
     "projectId": "prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en",

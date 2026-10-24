@@ -221,3 +221,69 @@ reporter groups and7 diagnostic groups/20 transport mutations remain exact;
 these nested controls must also pass. Fixed candidate facts remain below64KiB,
 within unchanged1MiB report/marker limits. Run the existing reporter selftest
 before a newly authorized whole T04; a selftest PASS is not a backend PASS.
+
+## Isolated failure receipt transport
+
+T04 and service workers use the same 128KiB UTF-8 serialized receipt limit at
+both writer and reader. The source-derived conservative maxima include both a
+primary and a cleanup failure, every allowlisted numeric fact at MAX_SAFE_INTEGER,
+the longest fixed enums, a20-digit run ID, attempt1000 and source SHA40. Current
+bounds are99,879 bytes for T04 and105,577 for service; changing the allowlists
+beyond the shared cap refuses at module load. Actual per-field bounds remain
+independently enforced. This diagnostic limit does not alter stage acceptance,
+retries, timeouts, the32KiB D12 counts receipt or the1MiB report/marker limits.
+
+The file must have a canonical path and root-owned parent with no group/world
+write permission, be regular,
+root-owned, private-mode and single-link on the parent's device. No-follow fd
+reads stop at cap+1. Pre/post inode, device, ownership, mode, link count, size,
+timestamp and path checks reject replaced or changing files. JSON, schema, run,
+attempt and source binding must pass before an inner failure is recovered.
+
+On a failed namespace invocation, public failure.facts retains only these finite
+receipt observations: isolatedReceiptReadOrdinal1 VALID,2 MISSING,3 OVERSIZED,
+4 UNSAFE,5 MALFORMED JSON,6 BINDING/SCHEMA,7 IO,8 UNSTABLE. isolatedReceiptBytes
+is the observed size saturated at131073; isolatedReceiptBytesCapped1 means the
+observed size exceeded131072, otherwise0. Zero bytes can mean no size was
+available. A refused receipt preserves the original outer command/exit/operation;
+it does not invent an inner cause. These common transport facts are in the safe
+failure envelope; diagnosticFacts[] continues to hold profile-prefixed facts.
+Missing diagnostics do not establish that business stages were NOT_RUN.
+Image ordinal/pull-attempt facts are emitted only for the current IMAGE_PULL,
+IMAGE_TAG or IMAGE_INSPECT operation; a completed prefetch counter is not a
+failing-image identity for a later namespace failure.
+
+Each real reporter control writes isolated-receipt-control.json with source SHA,
+run/attempt, complete-envelope SHA256/bytes, cap and coverage/provenance. Linux CI
+requires a real root-owned file roundtrip through the production reader and the
+unchanged outer failure-evidence gate. Native node-tools cases also cover both
+failures, cleanup-only, exact limits, binding/schema drift, malformed/missing,
+owner/mode/link/path refusals and deterministic replacement/growth. Windows
+controls report WINDOWS_REFUSAL_ONLY; Unix ownership success is not executed.
+After Linux assertions, the control helper returns only its captured fresh
+fixture trees to the original caller's UID/GID with private modes, child first
+using identity-checked no-follow descriptors and fchown/fchmod. Symlinks receive
+lchown only. The negative writable-parent fixture is resealed through its open
+directory descriptor before handback. The nonroot caller verifies it can inspect/read
+them, so the existing reporter cleanup and CI size accounting still work.
+This handback happens after the root-owned production-reader proof; it does not
+relax that reader or claim the handed-back fixture still meets its root guard.
+Synthetic control directories are root0755 during proof, allowing the existing
+nonroot CI allocation monitor to traverse them even while assertions run. Their
+receipt files remain root0600. Actual runtime setup still uses private0700
+directories; no resource monitor exception or excluded storage root is added.
+The control child sets its local umask022 before creating synthetic directories.
+Before handback, it runs the real project-ci allocatedBytes as the captured
+caller's UID/GID while root-owned fixtures remain present. Post-return traversal
+then checks caller accessibility. Neither check relies on the5s monitor timing.
+New small control directories below artifacts/isolated-receipt-control-* and
+reporter-control directories remain until scoped cleanup is authorized.
+
+For recurring failures, retain compact source/run/attempt-bound collected JSON
+and the safe workflow log by run in the task evidence directory. Compare finite
+receipt outcome, bytes and inner/original provenance before attributing a cause.
+The owned runtime's private receipt is reclaimed by the existing cleanup flow;
+the public finite outcome survives in the safe failure log. These failure-only
+guards remain; no temporary raw logging, secret export or continuous probe is
+needed after the defect is verified fixed. A successful run emits no receipt
+failure trace.

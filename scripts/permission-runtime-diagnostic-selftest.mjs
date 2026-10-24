@@ -7,6 +7,7 @@ import{diagnosticMarker,finiteDiagnosticFacts,collectRuntimeDiagnosticFacts}from
 import{projectTc18WrapperReceipt}from'./permission-runtime-tc18-diagnostic.mjs';
 import{ci1FailureExport as t04FailureExport}from'./permission-runtime-t04-worker.mjs';
 import{ci1FailureExport as serviceFailureExport}from'./permission-runtime-service-worker.mjs';
+import{reporterReceiptFileControl}from'./permission-runtime-isolated-receipt-control.mjs';
 import{runtimeStage}from'./permission-runtime-catalog.mjs';
 import{CANDIDATE_TEST_NAMES,CANDIDATE_TEST_FILE,CANDIDATE_TEST_PROJECT,CANDIDATE_CHECKPOINT_BOUNDS,
  CANDIDATE_DIAGNOSTIC_SCHEMA,CANDIDATE_DIAGNOSTIC_ATTACHMENT}from'./permission-runtime-candidate-diagnostic.mjs';
@@ -80,7 +81,12 @@ export function candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA
   const facts={t04StageOrdinal:10,...t04RunnerFailureFacts(expected,report)};
   const marker=diagnosticMarker('T04_FAILURE_FACTS',facts,t04SafeFailureMetric);check(Buffer.byteLength(marker)<65536);
   const failure=t04FailureExport({stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:child.status,facts:t04FailureFacts(marker)});
-  const out=collectRuntimeDiagnosticFacts([{failure}],'t04',t04SafeFailureMetric)[0];
+  const fileControl=reporterReceiptFileControl(root,dir,{schemaVersion:'permission-ci1-isolated-failure-v1',runId:context.runId,
+   attempt:Number(process.env.GITHUB_RUN_ATTEMPT??1),sourceSHA:context.sourceSHA,failure,cleanupFailure:null});
+  // Linux CI must recover from a real root-owned file. Windows explicitly checks
+  // refusal only; it cannot claim Unix ownership coverage or an accepted read.
+  writeFileSync(join(dir,'isolated-receipt-control.json'),JSON.stringify({...fileControl,failure:undefined}));
+  const out=collectRuntimeDiagnosticFacts([{failure:fileControl.failure??failure}],'t04',t04SafeFailureMetric)[0];
   check(JSON.stringify(out)===JSON.stringify(facts)&&out.t04CandidateInventoryStatus===1);
   if(kind==='beforeall-hook')check(out.t04HookErrors>0&&out.t04NonPassedTests===6);
   else{
