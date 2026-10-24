@@ -1,0 +1,374 @@
+{
+  "version": 1,
+  "kind": "screen-remake",
+  "title": "B01 — Week 03 B01/B02 only, proposed isolated runtime",
+  "designUrl": "https://stitch.withgoogle.com/projects/15598521297295649761?node-id=9ea864f874bc4789834b6eec7670225f",
+  "actualSourceRoot": ".",
+  "dataMode": "mock",
+  "serverRecipe": "Two-screen worktree week03-b01-b02-main, branch ui/week03-b01-b02-20261024, baseline main2da0d7e: VITE_DATA_MODE=mock, VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY empty; node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5191 --strictPort. Independent references: node ui-remake/serve-reference.mjs --root artifacts/stitch --port 4185. Remake B01/B02 only; PaymentDrawer, payment panes and ReceiptPreview remain current main. One frozen source/PID/cwd binding; no production Supabase, no reference or threshold change.",
+  "clock": "2026-10-19T03:00:00.000Z",
+  "browser": "chromium",
+  "referenceFiles": [
+    "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-fixtures-03.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-fixtures-18.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-other-01.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-other-02.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-other-10.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-other-15.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-seat-08.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-seat-21.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-tree-05.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-tree-20.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-01.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-02.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-03.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-04.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-05.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-06.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-07.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-08.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-09.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-10.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-11.png",
+    "artifacts/stitch/B01/v3/assets/floor-assets/walls/img-color-cell3.webp",
+    "artifacts/stitch/B01/v3/assets/floor-assets/walls/img-color-cell7.webp",
+    "artifacts/stitch/B01/v3/fixture.json",
+    "artifacts/stitch/B01/v3/fonts/BeVietnamPro-Bold.ttf",
+    "artifacts/stitch/B01/v3/fonts/BeVietnamPro-Medium.ttf",
+    "artifacts/stitch/B01/v3/fonts/BeVietnamPro-Regular.ttf",
+    "artifacts/stitch/B01/v3/fonts/BeVietnamPro-SemiBold.ttf",
+    "artifacts/stitch/B01/v3/fonts/OFL.txt",
+    "artifacts/stitch/B01/v3/fonts/provenance.json",
+    "artifacts/stitch/B01/v3/normalized.css",
+    "artifacts/stitch/B01/v3/normalized.html",
+    "artifacts/stitch/B01/v3/normalized.mjs",
+    "artifacts/stitch/B01/v3/palette.css",
+    "artifacts/stitch/B01/v3/palette.json",
+    "artifacts/stitch/B01/v3/raw-manifest.json",
+    "artifacts/stitch/B01/v3/raw.png"
+  ],
+  "referenceApproval": null,
+  "defaults": {
+    "actual": {
+      "url": "http://127.0.0.1:5191",
+      "ready": ":root:not(:has([data-rht-toaster] > div)) [data-testid=\"floor-view\"]",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "@go-store-pairing"
+        },
+        {
+          "action": "fill",
+          "selector": "@store-key-input",
+          "value": "0001-X8F3QA"
+        },
+        {
+          "action": "click",
+          "selector": "@go-passcode"
+        },
+        {
+          "action": "waitFor",
+          "selector": "@passcode-screen"
+        },
+        {
+          "action": "click",
+          "selector": "@employee-6b7bd350-7db2-4160-8471-cca2668c070d"
+        },
+        {
+          "action": "click",
+          "selector": "@pin-1"
+        },
+        {
+          "action": "click",
+          "selector": "@pin-2"
+        },
+        {
+          "action": "click",
+          "selector": "@pin-3"
+        },
+        {
+          "action": "click",
+          "selector": "@pin-4"
+        },
+        {
+          "action": "click",
+          "selector": "@pin-5"
+        },
+        {
+          "action": "click",
+          "selector": "@pin-6"
+        },
+        {
+          "action": "click",
+          "selector": "@unlock-button"
+        },
+        {
+          "action": "waitFor",
+          "selector": "@floor-view"
+        },
+        {
+          "action": "click",
+          "selector": "@nav-floor"
+        },
+        {
+          "action": "waitFor",
+          "selector": "@table-a254abd0-b883-4d5c-85c1-89f660409e02"
+        }
+      ]
+    },
+    "reference": {
+      "url": "http://127.0.0.1:4185/B01/v3/normalized.html?state=default",
+      "ready": "[data-reference-state=\"default\"]"
+    },
+    "anchors": [
+      {
+        "id": "sidebar",
+        "actual": "@b01-sidebar",
+        "reference": "[data-ref=\"sidebar\"]"
+      },
+      {
+        "id": "header",
+        "actual": "@floor-header",
+        "reference": "[data-ref=\"header\"]"
+      },
+      {
+        "id": "toolbar",
+        "actual": "@floor-toolbar",
+        "reference": "[data-ref=\"toolbar\"]"
+      },
+      {
+        "id": "area-summary",
+        "actual": "@floor-area-summary",
+        "reference": "[data-ref=\"area-summary\"]"
+      },
+      {
+        "id": "canvas-viewport",
+        "actual": "@floor-canvas-viewport",
+        "reference": "[data-ref=\"canvas-viewport\"]"
+      },
+      {
+        "id": "logical-floor",
+        "actual": "@floor-stage-layer",
+        "reference": "[data-ref=\"logical-floor\"]"
+      },
+      {
+        "id": "nav-floor",
+        "actual": "@nav-floor",
+        "reference": "[data-ref=\"nav-floor\"]"
+      },
+      {
+        "id": "refresh",
+        "actual": "@floor-refresh-button",
+        "reference": "[data-ref=\"refresh\"]"
+      },
+      {
+        "id": "filter-all",
+        "actual": "@floor-filter-all",
+        "reference": "[data-ref=\"filter-all\"]"
+      },
+      {
+        "id": "table-B01",
+        "actual": "@table-7b035353-73d6-44bc-8ec4-1ab9951f7a58",
+        "reference": "[data-ref=\"table-B01\"]"
+      },
+      {
+        "id": "table-B02",
+        "actual": "@table-a254abd0-b883-4d5c-85c1-89f660409e02",
+        "reference": "[data-ref=\"table-B02\"]"
+      },
+      {
+        "id": "order-panel",
+        "actual": "@floor-open-orders",
+        "reference": "[data-ref=\"order-panel\"]"
+      },
+      {
+        "id": "order-24",
+        "actual": "@floor-order-7e2f462b-e6ff-491a-85f8-9f4eb53d9c4c",
+        "reference": "[data-ref=\"order-24\"]"
+      },
+      {
+        "id": "area-chooser",
+        "actual": "@floor-area-chooser",
+        "reference": "[data-ref=\"area-chooser\"]"
+      },
+      {
+        "id": "area-scroller",
+        "actual": "@floor-area-scroller",
+        "reference": "[data-ref=\"area-scroller\"]"
+      }
+    ],
+    "criticalSelectors": [
+      {
+        "id": "nav-floor",
+        "selector": "@nav-floor",
+        "reference": "[data-ref=\"nav-floor\"]"
+      },
+      {
+        "id": "refresh",
+        "selector": "@floor-refresh-button",
+        "reference": "[data-ref=\"refresh\"]"
+      },
+      {
+        "id": "area-0",
+        "selector": "@floor-area-045eee43-5266-442f-8e87-978c1cc30d0c",
+        "reference": "[data-ref=\"area-0\"]"
+      },
+      {
+        "id": "filter-all",
+        "selector": "@floor-filter-all",
+        "reference": "[data-ref=\"filter-all\"]"
+      },
+      {
+        "id": "filter-empty",
+        "selector": "@floor-filter-empty",
+        "reference": "[data-ref=\"filter-empty\"]"
+      },
+      {
+        "id": "filter-occupied",
+        "selector": "@floor-filter-occupied",
+        "reference": "[data-ref=\"filter-occupied\"]"
+      },
+      {
+        "id": "table-B01",
+        "selector": "@table-7b035353-73d6-44bc-8ec4-1ab9951f7a58",
+        "reference": "[data-ref=\"table-B01\"]"
+      },
+      {
+        "id": "table-B02",
+        "selector": "@table-a254abd0-b883-4d5c-85c1-89f660409e02",
+        "reference": "[data-ref=\"table-B02\"]"
+      },
+      {
+        "id": "order-24",
+        "selector": "@floor-order-7e2f462b-e6ff-491a-85f8-9f4eb53d9c4c",
+        "reference": "[data-ref=\"order-24\"]"
+      },
+      {
+        "id": "lock",
+        "selector": "@nav-lock",
+        "reference": "[data-ref=\"lock\"]"
+      }
+    ],
+    "thresholds": {
+      "channelThreshold": 16,
+      "maxDiffRatio": 0.015,
+      "geometryTolerancePx": 2,
+      "minTargetPx": 44
+    }
+  },
+  "cases": [
+    {
+      "id": "desktop-default-1920",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "regions": [
+        {
+          "id": "active-navigation",
+          "x": 12,
+          "y": 117,
+          "width": 235,
+          "height": 45,
+          "maxDiffRatio": 0.005
+        },
+        {
+          "id": "refresh-action",
+          "x": 1485,
+          "y": 81,
+          "width": 44,
+          "height": 44,
+          "maxDiffRatio": 0.005
+        },
+        {
+          "id": "occupied-table",
+          "x": 633,
+          "y": 332,
+          "width": 93,
+          "height": 59,
+          "maxDiffRatio": 0.005
+        },
+        {
+          "id": "order-amount-24",
+          "x": 1810,
+          "y": 207,
+          "width": 79,
+          "height": 25,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "order-amount-25",
+          "x": 1817,
+          "y": 327,
+          "width": 72,
+          "height": 25,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "order-amount-26",
+          "x": 1816,
+          "y": 482,
+          "width": 73,
+          "height": 24,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "table-amount-B02",
+          "x": 666,
+          "y": 363,
+          "width": 27,
+          "height": 11,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "table-amount-B05",
+          "x": 514,
+          "y": 617,
+          "width": 22,
+          "height": 12,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "active-area-label",
+          "x": 304,
+          "y": 159,
+          "width": 55,
+          "height": 21,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "active-area-count",
+          "x": 365,
+          "y": 159,
+          "width": 21,
+          "height": 21,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "filter-label-all",
+          "x": 1201,
+          "y": 81,
+          "width": 65,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "filter-label-empty",
+          "x": 1269,
+          "y": 81,
+          "width": 75,
+          "height": 44,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "filter-label-occupied",
+          "x": 1347,
+          "y": 81,
+          "width": 122,
+          "height": 44,
+          "maxDiffRatio": 0
+        }
+      ]
+    }
+  ]
+}

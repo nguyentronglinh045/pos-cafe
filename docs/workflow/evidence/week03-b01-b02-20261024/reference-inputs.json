@@ -1,0 +1,307 @@
+[
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-fixtures-03.png",
+    "bytes": 22796,
+    "sha256": "c7032473e05c9514408fe0ad0b75740598d7f24d8016fb6a030cbb926f1e46e6"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-fixtures-18.png",
+    "bytes": 24808,
+    "sha256": "f0b7d5abc37171005f28b99253773c87fc423e11324d29d96517b26eaefa89ac"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-other-01.png",
+    "bytes": 18234,
+    "sha256": "8421b2fdcd3a89089d00d182572f899207afa0b6e7fff74b5ddc7c82937ce9d3"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-other-02.png",
+    "bytes": 8927,
+    "sha256": "e188c5288a0e6fbeafe0297d5b9e424ed0bee8cea5597781075663e416b01483"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-other-10.png",
+    "bytes": 2275,
+    "sha256": "8b561f01282779c3693f38a5c042b8b4271136dc1eaf6fe27e16677c043893dd"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-other-15.png",
+    "bytes": 14634,
+    "sha256": "d8b7d9dab377639c7c9dd53775dc4931486b04242335e91a86a6c01432a4b3c1"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-seat-08.png",
+    "bytes": 11751,
+    "sha256": "b2277d5c5768eecbd52c2893ca9bbbac27627bcfcdefd3a4680f9e8bbf8eabef"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-seat-21.png",
+    "bytes": 17196,
+    "sha256": "12d31df1247131c57873ff1fd4b1c15b0c5be8cd553082c4f9de8f7ba4468089"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-tree-05.png",
+    "bytes": 20937,
+    "sha256": "4aec86695fcc30d8e19f8d03cf8d7c209b017949fc75056f474b389c83c81b6f"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/decor/deco-tree-20.png",
+    "bytes": 32777,
+    "sha256": "f889fa8c98a9a2a1e4a72e5d1523504a39eaf9e10e1a08f4e128ff7ce2cb1818"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-01.png",
+    "bytes": 25559,
+    "sha256": "a3ec3094aa2410f829be6e9d5b40b6374014fc73fac9fb415bd62be98469198a"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-02.png",
+    "bytes": 79562,
+    "sha256": "01e528b58dd6bb9f8dbba7f45a7c52253497bac6c64580267aa7a06a4eca096a"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-03.png",
+    "bytes": 26713,
+    "sha256": "d9ecd34e6e5795dda83e0cc5747c5eb6b00cb9ef2afcfba6fda518c18305deb8"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-04.png",
+    "bytes": 52569,
+    "sha256": "52d0eec7e31b217124e5fc00c26393dd9d473b7afa7675219aa272c3564911f9"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-05.png",
+    "bytes": 63908,
+    "sha256": "51845413bb0a517bd4cab33c460ebb33611b36e7e056fb03bb9b192dcbebad4a"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-06.png",
+    "bytes": 59064,
+    "sha256": "234432b8b10bd9b0f8db84151ad4b243866cbe06e6efc69b8c619f80cb6724b0"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-07.png",
+    "bytes": 146494,
+    "sha256": "1c65077669a9d446b067e988ecca32834700f2c9ae9eab2b4df211c28f379a5b"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-08.png",
+    "bytes": 74743,
+    "sha256": "fd28fd00661805d96ff959a390e361a402fed8a7dc0da71bd6951389d838c2fa"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-09.png",
+    "bytes": 130065,
+    "sha256": "a4af46ecca65abc76c6917febddbc5d263ad4fd9a4e39206baa5f18847453ec8"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-10.png",
+    "bytes": 14926,
+    "sha256": "8a823f56acf5bf27cbd782fbc09b44bb13cbdad58d60ce504e1dc161f748ca73"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/tables/table-bg-11.png",
+    "bytes": 61420,
+    "sha256": "7e99c024adcb9d279cc77cb81582650e01af74f666e0e13563cf93144105e3b7"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/walls/img-color-cell3.webp",
+    "bytes": 386520,
+    "sha256": "9fb063d656aacc9286bef3384df3f76495568f78b7d8d394a09fcd78b5c866ca"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/assets/floor-assets/walls/img-color-cell7.webp",
+    "bytes": 255234,
+    "sha256": "71eb85af4929902a8be023a47df0fd7b310a002e97a9d7369443134e3c58a43f"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/fixture.json",
+    "bytes": 13088,
+    "sha256": "763b3fe2671839b02c88cc54118b927823159e95c6c9fd0e8e87ea488c449e60"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/fonts/BeVietnamPro-Bold.ttf",
+    "bytes": 140300,
+    "sha256": "7f738fe5c43c8872807b20e2d30d42163618de8a4daf7f48a939adac32c16847"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/fonts/BeVietnamPro-Medium.ttf",
+    "bytes": 135980,
+    "sha256": "b60832bfa0fcd015158112c64d7e3fdad3b0c6287d1823f85a3103636e845268"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/fonts/BeVietnamPro-Regular.ttf",
+    "bytes": 132948,
+    "sha256": "cd1ef6e9d7db28ad5cdb88a65ccbe693870e60d340b791f349d248342b4fe4c3"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/fonts/BeVietnamPro-SemiBold.ttf",
+    "bytes": 136736,
+    "sha256": "bd8e27eb02720b9d91e59e4f10a90878643219f25ce6a8d9a4f06a8a88d3bb71"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/fonts/OFL.txt",
+    "bytes": 4397,
+    "sha256": "6b7f8f73609a25ea78c891e34cf37b06f8a676b7ea986e941e43b009110f2a85"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/fonts/provenance.json",
+    "bytes": 1922,
+    "sha256": "2408b02a9b18880a8a5e9cde0ede60fd91c2baf8a494250631a5543325fc02f5"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/normalized.css",
+    "bytes": 13936,
+    "sha256": "28cd885abaea7f35937b4dd8025ef5042b9a33068cb7d988fee9abb974dc22a6"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/normalized.html",
+    "bytes": 5468,
+    "sha256": "7303e02ffabb379f52eea218c65773818370a86225e5417ef47f23f576cf3462"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/normalized.mjs",
+    "bytes": 12214,
+    "sha256": "d7a8ce6cdfa76fbe3d6622ee3026feb61be07967ed0c4802d1d598f97e3eda8b"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/palette.css",
+    "bytes": 651,
+    "sha256": "a33903aff6334ebb14e55618d6acc6891893cb27e7230acaeb9fee78aba58734"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/palette.json",
+    "bytes": 820,
+    "sha256": "e3a029371594b2cb25ca10916acd47b121b2744c23145ef0c09afb4c722dbc3b"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/raw-manifest.json",
+    "bytes": 2803,
+    "sha256": "c06e62e056832ef9fc68e2da0cea6b9400856cee2102a19ab08c09b72c01734d"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/raw.png",
+    "bytes": 517025,
+    "sha256": "d02074b4eb82a599f8eb15ebc9ed2b8615b8252e1e4ddec8a31df4f7a347472f"
+  },
+  {
+    "path": "ui-remake/fonts/BeVietnamPro-Bold.ttf",
+    "bytes": 140300,
+    "sha256": "7f738fe5c43c8872807b20e2d30d42163618de8a4daf7f48a939adac32c16847"
+  },
+  {
+    "path": "ui-remake/fonts/BeVietnamPro-Medium.ttf",
+    "bytes": 135980,
+    "sha256": "b60832bfa0fcd015158112c64d7e3fdad3b0c6287d1823f85a3103636e845268"
+  },
+  {
+    "path": "ui-remake/fonts/BeVietnamPro-Regular.ttf",
+    "bytes": 132948,
+    "sha256": "cd1ef6e9d7db28ad5cdb88a65ccbe693870e60d340b791f349d248342b4fe4c3"
+  },
+  {
+    "path": "ui-remake/fonts/BeVietnamPro-SemiBold.ttf",
+    "bytes": 136736,
+    "sha256": "bd8e27eb02720b9d91e59e4f10a90878643219f25ce6a8d9a4f06a8a88d3bb71"
+  },
+  {
+    "path": "ui-remake/fonts/provenance.json",
+    "bytes": 1922,
+    "sha256": "2408b02a9b18880a8a5e9cde0ede60fd91c2baf8a494250631a5543325fc02f5"
+  },
+  {
+    "path": "ui-remake/palette-a-v1.json",
+    "bytes": 820,
+    "sha256": "e3a029371594b2cb25ca10916acd47b121b2744c23145ef0c09afb4c722dbc3b"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/fixture.json",
+    "bytes": 13954,
+    "sha256": "44bc8c12943a0927199d8ad4605a0ac0829f1d953e9cd2070cbeb7b49ceb256c"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/fonts/BeVietnamPro-Bold.ttf",
+    "bytes": 140300,
+    "sha256": "7f738fe5c43c8872807b20e2d30d42163618de8a4daf7f48a939adac32c16847"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/fonts/BeVietnamPro-Medium.ttf",
+    "bytes": 135980,
+    "sha256": "b60832bfa0fcd015158112c64d7e3fdad3b0c6287d1823f85a3103636e845268"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/fonts/BeVietnamPro-Regular.ttf",
+    "bytes": 132948,
+    "sha256": "cd1ef6e9d7db28ad5cdb88a65ccbe693870e60d340b791f349d248342b4fe4c3"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/fonts/BeVietnamPro-SemiBold.ttf",
+    "bytes": 136736,
+    "sha256": "bd8e27eb02720b9d91e59e4f10a90878643219f25ce6a8d9a4f06a8a88d3bb71"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/fonts/OFL.txt",
+    "bytes": 4397,
+    "sha256": "6b7f8f73609a25ea78c891e34cf37b06f8a676b7ea986e941e43b009110f2a85"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/fonts/provenance.json",
+    "bytes": 1922,
+    "sha256": "2408b02a9b18880a8a5e9cde0ede60fd91c2baf8a494250631a5543325fc02f5"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/normalized.css",
+    "bytes": 10022,
+    "sha256": "d834c3f0cd576bad25a35fc6e9267cc47f78bfcc9045ba3a8fabfed5bd6c9ecf"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/normalized.html",
+    "bytes": 378,
+    "sha256": "666bdfb59efbc843e5735d930abef21992860491f546ace81b4a921afc237230"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/normalized.mjs",
+    "bytes": 5170,
+    "sha256": "0f3be1ccd49de4f48526c8f53e4bf8c210baa679f39da62576fe6a2230ca9c2e"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/palette.css",
+    "bytes": 436,
+    "sha256": "48f7c568cf69fc19db16b51206d36befda3ca4cd15a6f0c852c40d477a0a870b"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/palette.json",
+    "bytes": 820,
+    "sha256": "e3a029371594b2cb25ca10916acd47b121b2744c23145ef0c09afb4c722dbc3b"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/raw-manifest.json",
+    "bytes": 2764,
+    "sha256": "370c30b2e735a3358fb941d48c601b5c8a5794db5ed7442e4553176d6670e2c3"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/raw.png",
+    "bytes": 1743309,
+    "sha256": "8713be6d35e3353707125f08416036b42247a44cd8238109ce049d729520d898"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/responsive-contract.proposed.json",
+    "bytes": 1828,
+    "sha256": "326ab98fa7dc554d99f49fba35404f4deb48a9708472444608452dfef10da511"
+  },
+  {
+    "path": "artifacts/stitch/B01/v3/responsive-contract.proposed.json",
+    "bytes": 5269,
+    "sha256": "8ab9803945a2dea5cf160390ab692a23fc4b7c6e84c8a6b6f78a0206edb7ed95"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/normalized-clean-1920.png",
+    "bytes": 86052,
+    "sha256": "64ce0dd41cd6a1b98265120f2cff2470438409a8f72df8cba67c04818cb06be8"
+  },
+  {
+    "path": "artifacts/stitch/B02/v3/normalized-dirty-1920.png",
+    "bytes": 96895,
+    "sha256": "b68f8ffcb1ffd767fa04fd57b596ab221425e7c45b444945d5de41b9457fd563"
+  }
+]

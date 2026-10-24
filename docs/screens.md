@@ -166,3 +166,7 @@ Danh sách này mô tả các màn/drawer hiện có theo contract: màn làm g�
 - Confirm popup dùng overlay full-screen; click overlay vẫn theo callback được truyền vào.
 - Overlay click đóng drawer theo callback của từng drawer.
 - Drawer có slide-in khi mở; exit animation hiện là polish optional/backlog.
+
+## Tuần3 candidate B01/B02
+
+B01dãylầucuộnngang và B02menu/giỏhàng theo approvedreferences; [nguồn/kiểm chứng/giới hạn](workflow/tasks/week03-b01-b02-final.md). B03remakekhôngnằmtrongPRnày.

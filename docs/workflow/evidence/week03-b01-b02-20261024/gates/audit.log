@@ -1,0 +1,96 @@
+ ok   tablet   landing                  0 finding(s), 0 new
+ ok   tablet   store-pairing            1 finding(s), 0 new
+ ok   tablet   passcode                 0 finding(s), 0 new
+FAIL  tablet   floor                    5 finding(s), 5 new
+ ok   tablet   order-drawer             0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   order-cart               0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   menu-editor              0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   report                   0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   employees                0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   settings                 1 finding(s), 1 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   clear-demo-dialog        0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0:nth-of-type(2)]
+FAIL  tablet   payment                  3 finding(s), 3 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   receipt-preview          0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  landing                  0 finding(s), 0 new
+ ok   desktop  store-pairing            1 finding(s), 0 new
+ ok   desktop  passcode                 0 finding(s), 0 new
+ ok   desktop  floor                    2 finding(s), 2 new
+ ok   desktop  order-drawer             0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  order-cart               0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  menu-editor              0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  report                   0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  employees                0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  settings                 1 finding(s), 1 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  clear-demo-dialog        0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0:nth-of-type(2)]
+FAIL  desktop  payment                  3 finding(s), 3 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  receipt-preview          0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   landing                  0 finding(s), 0 new
+ ok   mobile   store-pairing            1 finding(s), 0 new
+ ok   mobile   passcode                 0 finding(s), 0 new
+FAIL  mobile   floor                    12 finding(s), 12 new
+ ok   mobile   order-drawer             0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   order-cart               0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+FAIL  mobile   menu-editor              2 finding(s), 2 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   report                   1 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   employees                0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   settings                 0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   clear-demo-dialog        0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0:nth-of-type(2)]
+FAIL  mobile   payment                  4 finding(s), 4 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   receipt-preview          0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+
+total 37 finding(s): warn=17 error=13 info=7
+  tiny-target              9
+  clipped-text-vertical    7
+  clipped-text             6
+  zero-size-interactive    4
+  no-accessible-name       3
+  clipped-interactive      3
+  empty-icon               2
+  tiny-font                2
+  hit-blocked              1
+
+report: ui-audit/report.md, ui-audit/report.json
+
+12 new error finding(s):
+
+  floor [tablet] zero-size-interactive
+    #floor-order-panel > header.order-panel-header > button.icon-button.close-orders
+    clickable element rendered 0x0  ("Đóng danh sách đơn")
+  floor [tablet] zero-size-interactive x3
+    #floor-order-panel > div.order-list > button.order-card:nth-of-type(1)
+    clickable element rendered 0x0  ("B02#24Đang phục vụ125.000đMở đơn hàng →")
+  floor [tablet] empty-icon
+    #floor-order-panel > header.order-panel-header > button.icon-button.close-orders
+    icon rendered 0x0, font or glyph missing  ("Đóng danh sách đơn")
+  payment [tablet] no-accessible-name x3
+    div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary
+    no text, aria-label, title or alt
+  payment [desktop] no-accessible-name x3
+    div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary
+    no text, aria-label, title or alt
+  floor [mobile] zero-size-interactive
+    #floor-order-panel > header.order-panel-header > button.icon-button.close-orders
+    clickable element rendered 0x0  ("Đóng danh sách đơn")
+  floor [mobile] zero-size-interactive x3
+    #floor-order-panel > div.order-list > button.order-card:nth-of-type(1)
+    clickable element rendered 0x0  ("B02#24Đang phục vụ125.000đMở đơn hàng →")
+  floor [mobile] empty-icon
+    #floor-order-panel > header.order-panel-header > button.icon-button.close-orders
+    icon rendered 0x0, font or glyph missing  ("Đóng danh sách đơn")
+  menu-editor [mobile] clipped-interactive
+    div.grid.h-full > section.grid.h-full > div.flex.min-h-11:nth-of-type(1) > div.flex.min-w-0 > button.inline-flex.min-h-8:nth-of-type(5)
+    control is outside a non-scrollable clipped ancestor  ("Danh mục")
+  menu-editor [mobile] clipped-interactive x3
+    div.grid.content-start > div.grid.min-h-[104px]:nth-of-type(2) > div.grid.min-w-0:nth-of-type(2) > div.flex.flex-wrap:nth-of-type(2) > button.inline-flex.h-7:nth-of-type(2)
+    control is outside a non-scrollable clipped ancestor  ("Xóa")
+  payment [mobile] clipped-interactive
+    aside.grid.min-h-0 > section.grid.min-h-0:nth-of-type(2) > div.flex.items-center:nth-of-type(1) > label.flex.cursor-pointer > input.size-4.accent-pos-primary
+    control is outside a non-scrollable clipped ancestor  ("Chọn tất cả")
+  payment [mobile] no-accessible-name x3
+    div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary
+    no text, aria-label, title or alt
+
+annotated screenshots: ui-audit\out
+Classify the annotated findings; baseline changes require explicit owner approval.
+
+--- STDERR ---
