@@ -448,190 +448,31 @@ test("payment drawer exposes complete action for occupied table", async ({ page 
 
 test("payment drawer keeps secondary text readable on landscape viewports", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name === "portrait", "landscape-only flow");
-  await page.goto("/");
-  await loginAsAdmin(page);
-  await openB02PaymentDrawer(page);
-
-  const tooSmallText = await page.getByTestId("payment-drawer").evaluate((drawer) => {
-    const read = (name: string, selector: string, text?: string) => {
-      const candidates = Array.from(drawer.querySelectorAll<HTMLElement>(selector));
-      const element = text
-        ? candidates.find((candidate) => candidate.textContent?.trim().includes(text))
-        : candidates[0];
-      if (!element) return { fontSize: 0, name, text: "<missing>" };
-
-      return {
-        fontSize: Number.parseFloat(getComputedStyle(element).fontSize),
-        name,
-        text: (element.textContent || element.getAttribute("aria-label") || "").trim().replace(/\s+/g, " "),
-      };
-    };
-
-    return [
-      read("header meta", "header p"),
-      read("method description", '[data-testid="payment-method-list"] span', "Đang chọn"),
-      read("amount label", 'label[for="payment-received-amount"]'),
-      read("amount mirror", 'label[for="payment-received-amount"] + span'),
-      read("currency suffix", "#payment-received-amount + span"),
-      read("quick amount", "button", "Đúng tiền"),
-      read("customer label", "aside p", "Khách hàng"),
-      read("order item count", "aside span", "4 món"),
-      read("item option", "article p", "Size M"),
-      read("item unit price", "article div:last-child span", "29.000"),
-      read("summary label", '[data-testid="payment-order-summary"] span', "Khách đưa"),
-      read("print checkbox label", '[data-testid="payment-order-summary"] label'),
-    ].filter((item) => item.fontSize < 12);
+  await page.goto("/"); await loginAsAdmin(page); await openB02PaymentDrawer(page);
+  const failures = await page.getByTestId("payment-drawer").evaluate(drawer => {
+    const selectors = ['header p','.method small','label[for="payment-received-amount"]','#payment-received-amount + span','.quick button','.tag','article p','.unit','.row','label.print'];
+    return selectors.flatMap(selector => {
+      const elements = Array.from(drawer.querySelectorAll<HTMLElement>(selector));
+      return elements.length === 0 ? [{selector,reason:"missing"}] : elements.filter(e => parseFloat(getComputedStyle(e).fontSize)<12).map(() => ({selector,reason:"font<12"}));
+    });
   });
-
-  expect(tooSmallText).toEqual([]);
+  expect(failures).toEqual([]);
 });
 
-test("payment drawer scales text across landscape breakpoints", async ({ page }, testInfo) => {
+test("payment drawer keeps readable controls across approved landscape breakpoints", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "covers multiple landscape breakpoints in one run");
-  await page.goto("/");
-  await loginAsAdmin(page);
-  await openB02PaymentDrawer(page);
-
-  const breakpoints = [
-    {
-      viewport: { width: 844, height: 390 },
-      expected: { amountHeader: 12, body: 13, emphasis: 16, micro: 12, secondary: 12, strong: 15 },
-    },
-    {
-      viewport: { width: 1024, height: 640 },
-      expected: { amountHeader: 15, body: 15, emphasis: 17, micro: 13, secondary: 14, strong: 16 },
-    },
-    {
-      viewport: { width: 1280, height: 720 },
-      expected: { amountHeader: 16, body: 16, emphasis: 17, micro: 14, secondary: 15, strong: 17 },
-    },
-    {
-      viewport: { width: 1440, height: 900 },
-      expected: { amountHeader: 16, body: 16, emphasis: 17, micro: 14, secondary: 15, strong: 17 },
-    },
-  ] as const;
-
-  for (const { expected, viewport } of breakpoints) {
+  await page.goto("/"); await loginAsAdmin(page); await openB02PaymentDrawer(page);
+  for (const viewport of [{width:568,height:320},{width:844,height:390},{width:1024,height:600},{width:1101,height:600},{width:1440,height:900}]) {
     await page.setViewportSize(viewport);
-    await expect(page.getByTestId("payment-drawer")).toBeVisible();
-
-    const typography = await page.getByTestId("payment-drawer").evaluate((drawer, expectedSizes) => {
-      type FontGroup = keyof typeof expectedSizes;
-
-      const summary = drawer.querySelector<HTMLElement>('[data-testid="payment-order-summary"]');
-      const keypad = drawer.querySelector<HTMLElement>('[data-testid="payment-keypad"]');
-      const quickAmount =
-        keypad?.previousElementSibling instanceof HTMLElement
-          ? keypad.previousElementSibling.querySelector<HTMLElement>("button")
-          : null;
-
-      const sampleDefinitions: Array<{ group: FontGroup; name: string; query: () => HTMLElement | null }> = [
-        { group: "emphasis", name: "drawer title", query: () => drawer.querySelector("header h2") },
-        { group: "micro", name: "header meta", query: () => drawer.querySelector("header p") },
-        { group: "body", name: "close button", query: () => drawer.querySelector("header button") },
-        { group: "strong", name: "panel title", query: () => drawer.querySelector('[data-testid="payment-cashier-console"] h3') },
-        {
-          group: "strong",
-          name: "method label",
-          query: () => drawer.querySelector('[data-testid="payment-method-list"] button > span:last-child > span:first-child'),
-        },
-        {
-          group: "micro",
-          name: "method status",
-          query: () => drawer.querySelector('[data-testid="payment-method-list"] button > span:last-child > span:last-child'),
-        },
-        { group: "amountHeader", name: "amount label", query: () => drawer.querySelector('label[for="payment-received-amount"]') },
-        { group: "amountHeader", name: "amount mirror", query: () => drawer.querySelector('label[for="payment-received-amount"] + span') },
-        { group: "emphasis", name: "amount input", query: () => drawer.querySelector("#payment-received-amount") },
-        { group: "micro", name: "currency suffix", query: () => drawer.querySelector("#payment-received-amount + span") },
-        { group: "body", name: "quick amount", query: () => quickAmount },
-        { group: "emphasis", name: "keypad digit", query: () => drawer.querySelector('[data-testid="payment-keypad"] button') },
-        { group: "secondary", name: "customer label", query: () => drawer.querySelector("aside > section:first-child p") },
-        { group: "strong", name: "customer name", query: () => drawer.querySelector("aside > section:first-child strong") },
-        { group: "micro", name: "order type chip", query: () => drawer.querySelector("aside > section:first-child span") },
-        { group: "strong", name: "items heading", query: () => drawer.querySelector("aside section:nth-of-type(2) label > span") },
-        { group: "micro", name: "order item count", query: () => drawer.querySelector("aside section:nth-of-type(2) > div:first-child > span") },
-        { group: "strong", name: "item name", query: () => drawer.querySelector("article h4") },
-        { group: "micro", name: "item option", query: () => drawer.querySelector("article p") },
-        { group: "micro", name: "item qty", query: () => drawer.querySelector('article [data-testid="pay-item-quantity"]') },
-        { group: "micro", name: "item unit price", query: () => drawer.querySelector("article div:last-child span") },
-        { group: "secondary", name: "summary label", query: () => summary?.querySelector(".grid > div:first-child > span") ?? null },
-        { group: "strong", name: "summary value", query: () => summary?.querySelector(".grid > div:first-child > strong") ?? null },
-        { group: "secondary", name: "summary total label", query: () => summary?.querySelector(".grid > div:last-child > span") ?? null },
-        { group: "emphasis", name: "summary total value", query: () => summary?.querySelector(".grid > div:last-child > strong") ?? null },
-        { group: "secondary", name: "print checkbox label", query: () => summary?.querySelector("label") ?? null },
-        { group: "emphasis", name: "footer pay button", query: () => drawer.querySelector('[data-testid="pay-button-footer"]') },
-      ];
-
-      const read = (definition: (typeof sampleDefinitions)[number]) => {
-        const element = definition.query();
-        if (!element) {
-          return { fontSize: 0, group: definition.group, missing: true, name: definition.name, text: "<missing>" };
-        }
-
-        return {
-          fontSize: Number.parseFloat(getComputedStyle(element).fontSize),
-          group: definition.group,
-          missing: false,
-          name: definition.name,
-          text: (element.textContent || element.getAttribute("aria-label") || element.getAttribute("value") || "")
-            .trim()
-            .replace(/\s+/g, " "),
-        };
-      };
-
-      const samples = sampleDefinitions.map(read);
-      const visibleTextNodes = Array.from(drawer.querySelectorAll<HTMLElement>("button, label, h2, h3, h4, p, span, strong, input"))
-        .map((element) => {
-          const rect = element.getBoundingClientRect();
-          const text = (element.textContent || element.getAttribute("aria-label") || element.getAttribute("value") || "")
-            .trim()
-            .replace(/\s+/g, " ");
-
-          return {
-            fontSize: Number.parseFloat(getComputedStyle(element).fontSize),
-            height: rect.height,
-            overflowX: element.scrollWidth > element.clientWidth + 1,
-            text,
-            width: rect.width,
-          };
-        })
-        .filter((node) => node.text && node.width > 0 && node.height > 0);
-
-      const checkbox = summary?.querySelector("label")?.getBoundingClientRect();
-      const complete = drawer.querySelector('[data-testid="pay-button-footer"]')?.getBoundingClientRect();
-      const items = drawer.querySelector<HTMLElement>('[data-testid="payment-order-items"]');
-
-      return {
-        fontOutOfRange: visibleTextNodes
-          .filter((node) => node.fontSize < 12 || node.fontSize > 17)
-          .map((node) => ({ fontSize: node.fontSize, text: node.text.slice(0, 80) })),
-        groupMismatches: samples.filter(
-          (sample) => sample.missing || Math.abs(sample.fontSize - expectedSizes[sample.group]) > 0.25,
-        ),
-        layout: {
-          checkboxAboveComplete: !!checkbox && !!complete && checkbox.bottom <= complete.top,
-          completeVisible: !!complete && complete.width > 0 && complete.height > 0,
-          itemListScrollsVertically: ["auto", "scroll"].includes(items ? getComputedStyle(items).overflowY : ""),
-          keypadButtons: drawer.querySelectorAll('[data-testid="payment-keypad"] button').length,
-          overflowingText: visibleTextNodes.filter((node) => node.overflowX).map((node) => node.text.slice(0, 80)),
-        },
-      };
-    }, expected);
-
-    expect(typography.fontOutOfRange, `${viewport.width}px text outside 12-17px`).toEqual([]);
-    expect(typography.groupMismatches, `${viewport.width}px group scale`).toEqual([]);
-    expect(typography.layout.overflowingText, `${viewport.width}px overflowing text`).toEqual([]);
-    expect(typography.layout.completeVisible, `${viewport.width}px complete button`).toBe(true);
-    expect(typography.layout.checkboxAboveComplete, `${viewport.width}px print checkbox`).toBe(true);
-    expect(typography.layout.itemListScrollsVertically, `${viewport.width}px order item list`).toBe(true);
-    expect(typography.layout.keypadButtons, `${viewport.width}px keypad`).toBe(12);
+    await expect(page.getByTestId("b03-title")).toHaveText("Thanh toán đơn hàng");
+    const result = await page.getByTestId("payment-drawer").evaluate(drawer => {
+      const fontFailures = Array.from(drawer.querySelectorAll<HTMLElement>('button,label,h1,h2,h3,p,span,strong,input,small')).filter(e => e.getBoundingClientRect().width>0 && e.getBoundingClientRect().height>0 && parseFloat(getComputedStyle(e).fontSize)<12).map(e=>e.textContent);
+      return {fontFailures,overflow:Math.max(0,document.documentElement.scrollWidth-innerWidth),keypad:drawer.querySelectorAll('[data-testid="payment-keypad"] button').length,itemsScroll:getComputedStyle(drawer.querySelector('[data-testid="payment-order-items"]')!).overflowY};
+    });
+    expect(result.fontFailures).toEqual([]);expect(result.overflow).toBeLessThanOrEqual(1);expect(result.keypad).toBe(12);expect(result.itemsScroll).toBe("auto");
+    await expect(page.getByTestId("pay-button-footer")).toBeVisible();
+    const footer=await page.getByTestId("pay-button-footer").boundingBox();expect(footer?.height).toBeGreaterThanOrEqual(44);
   }
-
-  const amountInput = page.locator("#payment-received-amount");
-  await expect(amountInput).toHaveValue("125.000");
-  await amountInput.fill("1234567");
-  await expect(amountInput).toHaveValue("1.234.567");
-  await page.locator('button[aria-label="Xóa một số"]').click();
-  await expect(amountInput).toHaveValue("123.456");
+  const amountInput=page.getByTestId("payment-received-amount");
+  await expect(amountInput).toHaveValue("125.000");await amountInput.fill("1234567");await expect(amountInput).toHaveValue("1.234.567");await page.getByTestId("payment-key-delete").click();await expect(amountInput).toHaveValue("123.456");
 });

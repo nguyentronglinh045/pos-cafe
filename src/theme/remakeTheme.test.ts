@@ -28,8 +28,8 @@ describe("shared remake theme", () => {
     expect(theme.palette.text.primary).toBe(variables["--ink"]);
   });
 
-  it("keeps literal colors out of the remade floor and order presentation", () => {
-    for (const name of ["OrderDrawer.tsx", "OrderMenuPane.tsx", "OrderCartPane.tsx", "orderRemake.css"]) {
+  it("keeps literal colors out of the remade payment presentation", () => {
+    for (const name of ["PaymentDrawer.tsx", "PaymentCashierPane.tsx", "PaymentSummaryPane.tsx", "paymentShared.tsx", "paymentRemake.css", "OrderDrawer.tsx", "OrderMenuPane.tsx", "OrderCartPane.tsx", "orderRemake.css"]) {
       expect(readFileSync(`src/app/drawers/pos/${name}`, "utf8"), name).not.toMatch(/#[0-9a-f]{3,8}\b|rgba?\(\s*\d/i);
     }
   });

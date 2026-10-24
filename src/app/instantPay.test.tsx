@@ -15,9 +15,10 @@ const admin: Employee = { id: "6b7bd350-7db2-4160-8471-cca2668c070d", name: "Qu�
 const vnd = (amount: number) => formatVnd(amount).replace(/ /g, " ");
 
 // Mở thẳng drawer thanh toán của 7e2f462b-e6ff-491a-85f8-9f4eb53d9c4c: Cà phê sữa ×2 (29k) + Bạc xỉu (32k) + Croissant (35k) = 125k.
-const renderPaymentDrawer = async (employee: Employee = admin) => {
+const renderPaymentDrawer = async (employee: Employee = admin, configure?: (state: ReturnType<typeof createSeededMockState>) => void) => {
   const state = createSeededMockState();
   state.session = { storeId: "e572ea5f-9adf-493c-8d84-dca3cd86e1eb", storeNo: 1 };
+  configure?.(state);
   const ports = createMockPorts(state);
   await ports.employee.startSession(employee.id, state.pins[employee.id]);
   const queryClient = new QueryClient({
@@ -70,7 +71,7 @@ describe("Instant pay selection UI", () => {
     const paySpy = vi.spyOn(ports.write, "execute");
     const payItemsSpy = vi.spyOn(ports.write, "register");
 
-    await screen.findByText("Thanh toán · Đơn #24");
+    await screen.findByTestId("b03-meta");
     const selectAll = await screen.findByTestId("pay-select-all");
     await waitFor(() => expect(selectAll).toBeChecked());
     expect(screen.getByTestId("payment-amount-due-value")).toHaveTextContent(vnd(125000));
@@ -90,7 +91,7 @@ describe("Instant pay selection UI", () => {
     const paySpy = vi.spyOn(ports.write, "execute");
     const payItemsSpy = vi.spyOn(ports.write, "register");
 
-    await screen.findByText("Thanh toán · Đơn #24");
+    await screen.findByTestId("b03-meta");
     const selectAll = await screen.findByTestId("pay-select-all");
     await waitFor(() => expect(selectAll).toBeChecked());
 
@@ -115,7 +116,7 @@ describe("Instant pay selection UI", () => {
     expect(paySpy).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({ kind: "pay_order_items" }));
 
     // Món được chọn đã TÁCH thành đơn #24 paid riêng; đơn gốc còn lại trên bàn,
-    // drawer giữ nguyên và selection quay về "Chọn tất cả" phần còn lại (96k).
+    // drawer giữ nguyên và selection rỗng, không tự tạo ý định trả phần còn lại (96k).
     expect(screen.getByTestId("payment-drawer")).toBeInTheDocument();
     await waitFor(() =>
       expect(screen.getByTestId("payment-amount-due-value")).toHaveTextContent(vnd(0)),
@@ -142,11 +143,36 @@ describe("Instant pay selection UI", () => {
       permissionOverrides: { grants: [], denies: ["payment.take"] },
     });
 
-    await screen.findByText("Thanh toán · Đơn #24");
+    await screen.findByTestId("b03-meta");
     for (const testId of ["pay-button", "pay-button-footer"]) {
       const button = screen.getByTestId(testId);
       await waitFor(() => expect(button).toBeDisabled());
       expect(button).toHaveAttribute("title", "Không có quyền thanh toán");
     }
   });
+  it("preserves historical option surcharges in a split and its receipt", async () => {
+    const user = userEvent.setup();
+    const { ports, state } = await renderPaymentDrawer(admin, state => {
+      const order = state.orders[0];
+      order.items = [order.items[0]];
+      order.items[0].options[0].priceDelta = 7000;
+      order.items[0].options[0].quantity = 2;
+      order.total = 86000;
+    });
+    const execute = vi.spyOn(ports.write, "execute");
+    await waitFor(() => expect(screen.getByTestId("payment-amount-due-value")).toHaveAttribute("data-amount", "86000"));
+    await user.click(screen.getByTestId("pay-select-all"));
+    await user.click(screen.getByTestId("pay-item-checkbox"));
+    expect(screen.getByTestId("payment-amount-due-value")).toHaveAttribute("data-amount", "43000");
+    await user.clear(screen.getByTestId("payment-received-amount"));
+    await user.type(screen.getByTestId("payment-received-amount"), "50000");
+    await user.click(screen.getByTestId("pay-button-footer"));
+    await waitFor(() => expect(execute).toHaveBeenCalledTimes(1));
+    expect(execute.mock.calls[0][1]).toMatchObject({kind:"pay_order_items",receivedAmount:50000,lines:[expect.objectContaining({quantity:1})]});
+    await waitFor(() => expect(screen.getByTestId("receipt-document")).toHaveAttribute("data-total", "43000"));
+    expect(screen.getByTestId("receipt-document")).toHaveAttribute("data-change-amount", "7000");
+    expect(state.orders.find(order => order.id === "7e2f462b-e6ff-491a-85f8-9f4eb53d9c4c")?.total).toBe(43000);
+    await waitFor(() => expect(screen.getByTestId("payment-amount-due-value")).toHaveAttribute("data-amount", "0"));
+  });
+
 });

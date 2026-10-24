@@ -15,6 +15,7 @@ type PortalDrawerProps = {
   testId?: string;
   viewport?: DrawerViewport;
   panelClassName?: string;
+  overlayClassName?: string;
 };
 
 const getPortalRoot = (containerId: string): HTMLElement => {
@@ -57,6 +58,7 @@ export function PortalDrawer({
   testId,
   viewport = "screen",
   panelClassName,
+  overlayClassName,
 }: PortalDrawerProps) {
   const root = getPortalRoot(containerId);
   const overlayStyle: CSSProperties = { backgroundColor: overlayColor, zIndex };
@@ -70,7 +72,7 @@ export function PortalDrawer({
 
   return createPortal(
     <div
-      className={clsx(viewport === "workspace" ? workspaceOverlayClass : screenOverlayClass)}
+      className={clsx(viewport === "workspace" ? workspaceOverlayClass : screenOverlayClass, overlayClassName)}
       style={overlayStyle}
       onClick={handleOverlayClick}
     >

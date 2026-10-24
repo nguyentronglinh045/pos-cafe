@@ -1,3 +1,4 @@
+import { RemakeThemeProvider } from "@/theme/RemakeThemeProvider";
 import { Printer, X } from "lucide-react";
 import { forwardRef, useEffect, useRef } from "react";
 import type { CSSProperties } from "react";
@@ -8,6 +9,7 @@ import { receiptToPrint } from "@/features/pos/orderFlow";
 import { usePorts } from "@/features/shared/portsContext";
 import { notifyUiError } from "../appErrors";
 import { PortalPopup } from "./PortalPopup";
+import { useDialogFocus } from "./useDialogFocus";
 import { useAppStore } from "../useAppStore";
 import { useViewLifetime } from "../useViewLifetime";
 
@@ -256,9 +258,16 @@ ReceiptDocument.displayName = "ReceiptDocument";
 // ---- Popup wrapper (in-app print simulation) ---------------------------------
 
 export function ReceiptPreviewPopup() {
+  const preview = useAppStore(state => state.receiptPreview);
+  if (!preview) return null;
+  return preview.presentation === "remake" ? <RemakeThemeProvider><ReceiptPreviewContent /></RemakeThemeProvider> : <ReceiptPreviewContent />;
+}
+
+function ReceiptPreviewContent() {
   const ports = usePorts();
   const preview = useAppStore((state) => state.receiptPreview);
   const close = useAppStore((state) => state.closeReceiptPreview);
+  useDialogFocus('[data-testid="receipt-preview"]', close, !!preview, "Hóa đơn");
   const settings = useStoreSettingsQuery().data;
   const docRef = useRef<HTMLDivElement>(null);
   const captureCurrent = useViewLifetime(preview);
