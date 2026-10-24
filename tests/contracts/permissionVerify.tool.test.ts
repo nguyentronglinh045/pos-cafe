@@ -1,4 +1,6 @@
 import { describe, expect, test } from 'vitest';
+import { globSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import legacyConfig from '../../vitest.contract.config';
 import permissionConfig from '../../vitest.permission.config';
 import { verifySuite, verifyProfiles } from '../../scripts/permission-verify.mjs';
@@ -33,7 +35,11 @@ describe('T01 evidence verifier', () => {
   });
   test('isolates the T01 fixture suite from the phase-27 suite without conditional skipping', () => {
     const path = 'tests/contracts/permissionMigration.contract.test.ts';
-    expect(legacyConfig.test?.exclude).toContain(path); expect(permissionConfig.test?.include).toEqual([path]);
+    const legacyFiles = globSync(legacyConfig.test?.include ?? [], {
+      cwd: fileURLToPath(new URL('../../', import.meta.url)), exclude: legacyConfig.test?.exclude ?? [],
+    }).map(file => file.replaceAll('\\', '/'));
+    expect(legacyFiles).toContain('tests/contracts/writeOperations.contract.test.ts');
+    expect(legacyFiles).not.toContain(path); expect(permissionConfig.test?.include).toEqual([path]);
     expect(permissionConfig.test?.globalSetup).toBeUndefined(); expect(permissionConfig.envDir).toBe(false);
   });
   test('rejects a deleted required variant even when another passing test remains in the same file', () => {
