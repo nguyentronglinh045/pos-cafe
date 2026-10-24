@@ -5,7 +5,7 @@ import pg from "pg";
 import { EMPLOYEE_IDS, STORE_IDS, runtimeProof } from "../../scripts/permission-identity-runtime.mjs";
 import { candidateEnvironment, installStoreSession } from "./permissionCandidateEnvironment.ts";
 import { CandidateDiagnostics } from "./permissionCandidateDiagnostics.ts";
-import { closeCandidateDrawerFromPage, waitForCandidateSaveFromPage } from "./permissionCandidateUi.ts";
+import { closeCandidateDrawerFromPage, waitForCandidateSaveFromPage, establishCandidateClearSettings } from "./permissionCandidateUi.ts";
 
 const test = baseTest.extend<{ candidateDiagnostics: CandidateDiagnostics }>({
   candidateDiagnostics: [async ({ page }, use, testInfo) => {
@@ -208,6 +208,10 @@ test("owner persists menu, floor and store settings changes through real candida
   // On browser-stage failure, T04 must fail and close/reclaim its owned runtime;
   // the success-only stage helper is not per-test or standalone-case cleanup.
   const publicUrl = `${api}/functions/v1/menu-image-public/${uploadHandle}`;
+  diagnostic.expectMenuImage(1, itemId, publicUrl);
+  // Successful save/refetch deliberately clears the selected detail item.
+  await page.getByTestId(`menu-edit-card-${itemId}`).click();
+  await expect(nameInput).toHaveValue(changedName);
   const savedImage = page.getByTestId("menu-editor-detail-pane").getByRole("img", { name: `Ảnh ${changedName}`, exact: true });
   await expect(savedImage).toHaveAttribute("src", publicUrl);
   await expect.poll(() => savedImage.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
@@ -215,11 +219,13 @@ test("owner persists menu, floor and store settings changes through real candida
   await closeDrawerFromNav(page);
   await page.getByTestId("nav-menu-editor").click();
   diagnostic.mark(8);
-  await page.locator('[data-testid^="menu-edit-card-"]').filter({ hasText: changedName }).click();
+  diagnostic.expectMenuImage(2, itemId, publicUrl);
+  await page.getByTestId(`menu-edit-card-${itemId}`).click();
   await expect(page.getByTestId("menu-item-name-input")).toHaveValue(changedName);
   await expect(savedImage).toHaveAttribute("src", publicUrl);
   await expect.poll(() => savedImage.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
   diagnostic.mark(9);
+  diagnostic.clearMenuImage();
   await closeDrawerFromNav(page);
 
   await page.getByTestId("nav-floor-editor").click();
@@ -370,6 +376,19 @@ test("four active roles have protected navigation parity with server authorizati
 });
 
 test("owner clears demo data through UI and refetch preserves custom records", async ({ page, candidateDiagnostics: diagnostic }) => {
+  diagnostic.mark(30);
+  const customStoreName = await establishCandidateClearSettings({
+    login: () => login(page, EMPLOYEE_IDS[0]),
+    open: () => page.getByTestId("nav-settings").click(),
+    readName: () => page.getByTestId("settings-name-input").inputValue(),
+    fillName: name => page.getByTestId("settings-name-input").fill(name),
+    save: () => expectSavedRpc(page, "update_store_settings", () => page.getByTestId("save-settings-button").click()),
+    recordPersist: () => diagnostic.checkpoint(1),
+    close: () => closeDrawerFromNav(page),
+    expectName: async name => { await expect(page.getByTestId("settings-name-input")).toHaveValue(name); },
+    resetToPasscode: async () => { await page.goto("/"); await expect(page.getByTestId("passcode-screen")).toBeVisible(); },
+  });
+  diagnostic.mark(31);
   diagnostic.mark(18);
   await diagnostic.checkpoint(2);
   await prepareInitialDemoFixture();
@@ -384,6 +403,7 @@ test("owner clears demo data through UI and refetch preserves custom records", a
   expect(await Promise.all(seeded)).toEqual(['employee', 'menu', 'floor'].map(stage => ({ stage, ok: true })));
   diagnostic.mark(20);
   await page.getByTestId("nav-settings").click();
+  await expect(page.getByTestId("settings-name-input")).toHaveValue(customStoreName);
   await page.getByTestId("settings-section-demo").click();
   await page.getByTestId("open-clear-demo").click();
   await expect(page.getByTestId("clear-demo-dialog")).toBeVisible();
@@ -426,6 +446,7 @@ test("owner clears demo data through UI and refetch preserves custom records", a
   diagnostic.mark(26);
   await page.getByTestId("nav-settings").click();
   diagnostic.mark(27);
+  await expect(page.getByTestId("settings-name-input")).toHaveValue(customStoreName);
   await expect(page.getByTestId("settings-name-input")).toHaveValue(/E2E$/);
   diagnostic.mark(28);
   await closeDrawerFromNav(page);

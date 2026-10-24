@@ -52,12 +52,12 @@
     "tests/permissions/runtime/edge-resolution/deno.lock": "6f9fc5dd3b6e81d9468c712bfbf3fc423e6ea28d49e8fe44915abca50740ab41",
     "scripts/permission-full-target-policy.test.mjs": "a41194753179f25315eb0639609302a3cc652673fea3276a833f2af19101f917",
     "scripts/project-preview.README.md": "8ef8984c2d4cbe40204ea6c6b62af63902ebe937b9ba8e0cc6d0427df2177b5c",
-    "scripts/permission-runtime-candidate-diagnostic.mjs": "e12b37777887ee2b7e71820ffd1dbb706be0414e29debaa0f940c0cd1a278791",
+    "scripts/permission-runtime-candidate-diagnostic.mjs": "80be42e33514989bb000fb67208c9ea0e7028868d75c40da95f61e408c1dae07",
     "scripts/permission-runtime-service-worker.mjs": "e377f42893ada170fe6e4152f943c77a09e95ee431570191cb5f74bc735ac426",
-    "scripts/permission-runtime-diagnostic-selftest.mjs": "4d3e66a91069ae48996f458772aacd6c8f6e03e6da51f6d9c23ceaa9436ffb9c",
+    "scripts/permission-runtime-diagnostic-selftest.mjs": "e020f8def55ae3005a0f75f3a690db2e141e625b4571b2f2534aac41c2af01f8",
     "scripts/permission-runtime-isolated-receipt.mjs": "3d22da9bbdd39e48ad5cc87ffb0151dfb27847e85b1de5aeecad40ff4f3a6752",
     "scripts/permission-runtime-isolated-receipt-control.mjs": "4d957e51141181e3162f084a2077b4886716692dd7dce131265d37febb070c88",
-    "scripts/permission-runtime-isolated-receipt.test.mjs": "a4d6e2968dcbff7fcadd035fc78c100fb037388cb9624d3c6e66f2868a92dc80"
+    "scripts/permission-runtime-isolated-receipt.test.mjs": "5b721acd8115af5ed8f9640023b11a55f9854e6e0810ab0aee0a9954d43b13c4"
   },
   "preview": {
     "projectId": "prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en",

@@ -1,11 +1,10 @@
-import type { Page, Request, Response, TestInfo } from "@playwright/test";
+import type { Page, Request, Response, TestInfo, Frame } from "@playwright/test";
 import pg from "pg";
 import { STORE_IDS } from "../../scripts/permission-identity-runtime.mjs";
 import { assertActivatedCandidate, candidateEnvironment } from "./permissionCandidateEnvironment.ts";
 
-// Only these finite values leave the private test process. Names remain in
-// memory for equality comparisons; a worker restart deliberately loses them.
-let persistedName: string | undefined;
+// Only these finite values leave the private test process. Each test owns its
+// memory-only comparison baseline; a previous case cannot supply its precondition.
 const yes = (value: boolean) => value ? 2 : 1;
 const equal = (left: string | undefined, right: string | undefined) => left === undefined || right === undefined ? 0 : yes(left === right);
 export const diagnosticFields = ["dbReadState", "apiReadState", "dbSuffix", "apiSuffix", "apiEqualsDb", "dbEqualsPersist", "apiEqualsPersist",
@@ -13,6 +12,21 @@ export const diagnosticFields = ["dbReadState", "apiReadState", "dbSuffix", "api
   "drawerCount", "inputCount", "sectionOrdinal", "queryState", "dirty", "requestFailedCount", "settingsReadPending"] as const;
 type Observation = Record<typeof diagnosticFields[number], number> & { checkpointOrdinal: number };
 const blank = (checkpointOrdinal: number) => Object.assign(Object.fromEntries(diagnosticFields.map(key => [key, 0])), { checkpointOrdinal }) as Observation;
+type ImageTarget = { phaseOrdinal: 1 | 2; itemId: string; url: string };
+export const imageDiagnosticFields = ["phaseOrdinal", "observed", "selectionCount", "selectionMatches", "imageCount", "srcMatches", "decoded"] as const;
+const unknownImage = (phaseOrdinal: number) => ({ phaseOrdinal, observed: 0, selectionCount: 0, selectionMatches: 0, imageCount: 0, srcMatches: 0, decoded: 0 });
+
+export function readCandidateImageDom(target: ImageTarget) {
+  const cards = [...document.querySelectorAll('[data-testid^="menu-edit-card-"]')];
+  const selected = cards.filter(card => card.classList.contains("border-pos-primary"));
+  const images = [...document.querySelectorAll('[data-testid="menu-editor-detail-pane"] img')] as HTMLImageElement[];
+  const image = images.length === 1 ? images[0] : undefined;
+  const yes = (value: boolean) => value ? 2 : 1;
+  return { phaseOrdinal: target.phaseOrdinal, observed: 1, selectionCount: Math.min(selected.length, 2) + 1,
+    selectionMatches: yes(selected.length === 1 && selected[0].getAttribute("data-testid") === `menu-edit-card-${target.itemId}`),
+    imageCount: Math.min(images.length, 2) + 1, srcMatches: image ? yes(image.getAttribute("src") === target.url) : 0,
+    decoded: image ? yes(image.complete && image.naturalWidth > 0) : 0 };
+}
 
 // Read-only, exact fixture/store guard, no application mutation or new session.
 // A refused or unavailable probe remains ERROR; it never changes the test result.
@@ -70,6 +84,8 @@ export class CandidateDiagnostics {
   private apiState = 0;
   private apiName: string | undefined;
   private preclearName: string | undefined;
+  private persistedName: string | undefined;
+  private imageTarget: ImageTarget | undefined;
   private page: Page;
   private readSettings: () => Promise<string>;
   constructor(page: Page, readSettings: () => Promise<string> = readOwnedSettings) {
@@ -78,8 +94,16 @@ export class CandidateDiagnostics {
     page.on("request", this.onRequest);
     page.on("requestfailed", this.onRequestFailed);
     page.on("response", this.onResponse);
+    page.on("framenavigated", this.onFrameNavigated);
   }
   mark(ordinal: number) { if (Number.isInteger(ordinal) && ordinal >= 1 && ordinal <= 31) this.milestoneOrdinal = ordinal; }
+  expectMenuImage(phaseOrdinal: 1 | 2, itemId: string, url: string) { this.imageTarget = { phaseOrdinal, itemId, url }; }
+  clearMenuImage() { this.imageTarget = undefined; }
+  private onFrameNavigated = (frame: Frame) => {
+    if (frame !== this.page.mainFrame()) return;
+    this.generation++; this.apiState = 0; this.apiName = undefined; this.observedSettingsRead = false;
+    this.pendingReads.clear(); this.readGenerations.clear();
+  };
   private onRequest = (request: Request) => {
     const name = rpcName(request.url());
     if (["update_store_settings", "permission_run_initial_seed_stage", "clear_demo_data"].includes(name ?? "")) {
@@ -121,16 +145,16 @@ export class CandidateDiagnostics {
       try { dbName = await this.readSettings(); row.dbReadState = 1; }
       catch { row.dbReadState = 2; }
     }
-    if (checkpointOrdinal === 1 && dbName !== undefined) persistedName = dbName;
+    if (checkpointOrdinal === 1 && dbName !== undefined) this.persistedName = dbName;
     if (checkpointOrdinal === 3 && dbName !== undefined) this.preclearName = dbName;
     row.dbSuffix = dbName === undefined ? 0 : yes(/E2E$/.test(dbName));
-    row.dbEqualsPersist = equal(dbName, persistedName); row.dbEqualsPreclear = equal(dbName, this.preclearName);
+    row.dbEqualsPersist = equal(dbName, this.persistedName); row.dbEqualsPreclear = equal(dbName, this.preclearName);
     // Passive API observations only. Before seed the new page has no employee
     // session: UNKNOWN is intentional; diagnostics must not log in/mint one.
     row.apiReadState = this.pendingReads.size ? 0 : this.apiState;
     const apiName = row.apiReadState === 1 ? this.apiName : undefined;
     row.apiSuffix = apiName === undefined ? 0 : yes(/E2E$/.test(apiName));
-    row.apiEqualsDb = equal(apiName, dbName); row.apiEqualsPersist = equal(apiName, persistedName); row.apiEqualsPreclear = equal(apiName, this.preclearName);
+    row.apiEqualsDb = equal(apiName, dbName); row.apiEqualsPersist = equal(apiName, this.persistedName); row.apiEqualsPreclear = equal(apiName, this.preclearName);
     row.requestFailedCount = Math.min(this.failedRequests, 2) + 1;
     row.settingsReadPending = this.observedSettingsRead ? yes(this.pendingReads.size > 0) : 0;
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -147,17 +171,34 @@ export class CandidateDiagnostics {
   }
   async finish(testInfo: TestInfo) {
     try {
-      if (["failed", "timedOut", "interrupted"].includes(testInfo.status ?? "")) await this.checkpoint(5);
+      // Successful cases leave no diagnostic attachment. Their complete result
+      // identity/state/attempt still comes from the ordinary reporter inventory.
+      if (!["failed", "timedOut", "interrupted"].includes(testInfo.status ?? "")) return;
+      await this.checkpoint(5);
+      let image: ReturnType<typeof unknownImage> | null = null;
+      if (this.imageTarget) {
+        image = unknownImage(this.imageTarget.phaseOrdinal);
+        let timer: ReturnType<typeof setTimeout> | undefined;
+        try { image = await Promise.race([this.page.evaluate(readCandidateImageDom, this.imageTarget),
+          new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error("CANDIDATE_IMAGE_DIAGNOSTIC_UNAVAILABLE")), 1_000); })]); }
+        catch { /* Closed/unavailable DOM stays UNKNOWN, never an observed zero. */ }
+        finally { clearTimeout(timer); }
+      }
       const ordinals = ["candidate activation supports owner roster, floor, payment and first receipt preview",
         "owner permission change reaches a live cashier context within five seconds", "owner creates waiter and real UI hides protected administration and reporting",
         "owner persists menu, floor and store settings changes through real candidate RPCs", "four active roles have protected navigation parity with server authorization",
         "owner clears demo data through UI and refetch preserves custom records"];
-      await testInfo.attach("candidate-e2e-diagnostics", { body: Buffer.from(JSON.stringify({ schemaVersion: "candidate-e2e-diagnostics-v1",
-        testOrdinal: ordinals.indexOf(testInfo.title) + 1, milestoneOrdinal: this.milestoneOrdinal, observations: this.observations })), contentType: "application/json" });
+      await testInfo.attach("candidate-e2e-diagnostics", { body: Buffer.from(JSON.stringify({ schemaVersion: "candidate-e2e-diagnostics-v2",
+        testOrdinal: ordinals.indexOf(testInfo.title) + 1, milestoneOrdinal: this.milestoneOrdinal, observations: this.observations, image })), contentType: "application/json" });
     } catch { /* Probe/attachment failures must never mask the original test. */ }
     finally {
       this.page.off("request", this.onRequest); this.page.off("requestfailed", this.onRequestFailed); this.page.off("response", this.onResponse);
-      this.apiName = undefined; this.preclearName = undefined;
+      this.page.off("framenavigated", this.onFrameNavigated);
+      // A response body can still be pending after its listener is removed.
+      // Invalidate its captured generation before clearing private state.
+      this.generation++; this.apiState = 0; this.observedSettingsRead = false; this.failedRequests = 0;
+      this.apiName = undefined; this.preclearName = undefined; this.persistedName = undefined; this.imageTarget = undefined;
+      this.observations = []; this.pendingReads.clear(); this.readGenerations.clear(); this.responseTasks.clear();
     }
   }
 }

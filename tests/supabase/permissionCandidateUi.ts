@@ -53,3 +53,29 @@ export const waitForCandidateSaveFromPage = (page: Page, rpc: string) => waitFor
   noDirtyBadge: async badge => { await expect(page.getByTestId(badge)).toHaveCount(0); },
   disabled: async button => { await expect(page.getByTestId(button)).toBeDisabled(); },
 }, rpc);
+
+export interface CandidateSettingsPreconditionDriver {
+  login(): Promise<void>;
+  open(): Promise<void>;
+  readName(): Promise<string>;
+  fillName(name: string): Promise<void>;
+  save(): Promise<void>;
+  recordPersist(): Promise<void>;
+  close(): Promise<void>;
+  expectName(name: string): Promise<void>;
+  resetToPasscode(): Promise<void>;
+}
+
+// Explicit per-test custom state, established through the normal owner UI/RPC
+// before requesting initial seed. It cannot inherit an earlier case's success.
+export async function establishCandidateClearSettings(driver: CandidateSettingsPreconditionDriver) {
+  await driver.login(); await driver.open();
+  const previous = await driver.readName();
+  const name = previous === "Clear preservation A E2E" ? "Clear preservation B E2E" : "Clear preservation A E2E";
+  await driver.fillName(name); await driver.save(); await driver.recordPersist();
+  await driver.close(); await driver.open(); await driver.expectName(name); await driver.close();
+  // Reload drops the memory-only employee session before the pending workflow
+  // is requested. The existing second owner login runs the three seed stages.
+  await driver.resetToPasscode();
+  return name;
+}

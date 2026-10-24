@@ -59,11 +59,13 @@ export function candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA
   const dir=join(parent,'candidate-'+kind),tests=join(dir,'tests','supabase');mkdirSync(tests,{recursive:true});
   const file=join(tests,'permissionCandidate.spec.ts'),config=join(dir,'config.mjs');
   const snapshot={schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal:6,milestoneOrdinal:17,
-   observations:[{checkpointOrdinal:3,...Object.fromEntries(Object.keys(CANDIDATE_CHECKPOINT_BOUNDS).map(k=>[k,0])),dbReadState:1,dbSuffix:2}]};
+   observations:[{checkpointOrdinal:3,...Object.fromEntries(Object.keys(CANDIDATE_CHECKPOINT_BOUNDS).map(k=>[k,0])),dbReadState:1,dbSuffix:2}],image:null};
+  const image={phaseOrdinal:2,observed:1,selectionCount:2,selectionMatches:2,imageCount:2,srcMatches:1,decoded:1};
+  const imageSnapshot={schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal:4,milestoneOrdinal:6,observations:[],image};
   const failing=kind==='persist-clear'?[4,6]:[5,6];
   writeFileSync(file,"import{test,expect}from'@playwright/test';\n"
    +(kind==='beforeall-hook'?"test.beforeAll(()=>{throw Error('PRIVATE_DIAGNOSTIC_SENTINEL');});\n":'')
-   +CANDIDATE_TEST_NAMES.map((name,i)=>`test(${JSON.stringify(name)},async({},info)=>{${i===5?`await info.attach(${JSON.stringify(CANDIDATE_DIAGNOSTIC_ATTACHMENT)},{contentType:'application/json',body:JSON.stringify(${JSON.stringify(snapshot)})});`:''}${failing.includes(i+1)?"expect('PRIVATE_DIAGNOSTIC_SENTINEL').toBe('different');":''}});`).join('\n'));
+   +CANDIDATE_TEST_NAMES.map((name,i)=>`test(${JSON.stringify(name)},async({},info)=>{${i===5||i===3&&kind==='persist-clear'?`await info.attach(${JSON.stringify(CANDIDATE_DIAGNOSTIC_ATTACHMENT)},{contentType:'application/json',body:JSON.stringify(${JSON.stringify(i===3?imageSnapshot:snapshot)})});`:''}${failing.includes(i+1)?"expect('PRIVATE_DIAGNOSTIC_SENTINEL').toBe('different');":''}});`).join('\n'));
   writeFileSync(config,`export default ${JSON.stringify({testDir:tests,testMatch:'permissionCandidate.spec.ts',outputDir:join(dir,'browser'),workers:1,retries:0,repeatEach:1,
    forbidOnly:true,timeout:3000,globalTimeout:20000,use:{trace:'off',screenshot:'off',video:'off'},projects:[{name:CANDIDATE_TEST_PROJECT}]})};\n`);
   const argv=[resolve(root,'node_modules/@playwright/test/cli.js'),'test','--config',config,
@@ -93,6 +95,8 @@ export function candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA
    check(out.t04FailedTests===2&&out.t04CandidateTest6State===2&&out.t04CandidateTest6DiagnosticStatus===1
     &&out.t04CandidateTest6Checkpoint3Reached===1&&out.t04CandidateTest6Checkpoint3DbSuffix===2);
    check(out['t04CandidateTest'+failing[0]+'State']===2&&out['t04CandidateTest'+(failing[0]===4?5:4)+'State']===1);
+   for(const[key,value]of Object.entries(image))check(out['t04CandidateImage'+key[0].toUpperCase()+key.slice(1)]===(kind==='persist-clear'?value:0));
+   check(out.t04CandidateTest4DiagnosticStatus===(kind==='persist-clear'?1:0));
    outputs.push(out);
   }
  }

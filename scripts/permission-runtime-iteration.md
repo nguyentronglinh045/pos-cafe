@@ -182,12 +182,17 @@ explicit. All discovered tests must still pass once under the existing stage
 validator; skipped, retried, expected-failure, hook or runner errors fail closed.
 Playwright hook errors are observed from `onStepEnd` hook steps, not assumed zero.
 
-Only the body of the exact `candidate-e2e-diagnostics` JSON attachment is read,
+Only the body of the exact `candidate-e2e-diagnostics` JSON attachment, schema
+`candidate-e2e-diagnostics-v2`, is read,
 up to16KiB. A defined file path is refused (the runner may include `path:undefined`
 for an in-memory body). Duplicate attachments, wrong source identity, extra keys,
 unknown schema or out-of-range fields produce diagnosticStatus2 INVALID; absent
 attachments produce0 UNKNOWN; valid attachments produce1. No attachment file,
 message, credential, raw DB/API value or request URL is opened/exported.
+The producer attaches only on failed, timed-out or interrupted cases. Successful
+cases discard transient diagnostics; their six fixed identities/results/attempts
+remain in the ordinary reporter inventory. An absent attachment means UNKNOWN,
+not false or NOT_RUN, including when the ordinary test result is PASS.
 
 Five fixed checkpoints are projected to bounded scalar fields:
 1 after settings persist settles, 2 pre-seed, 3 post-seed/pre-clear,
@@ -199,7 +204,28 @@ describe the test's DOM and passive request evidence, not React internal state:
 0 UNKNOWN/1 loading/2 error/3 fetching/4 observed settled. Pre-seed API observations
 may be UNKNOWN before an employee session exists. Probes never log in, mint a
 token or issue an extra authenticated read to fill that gap. Equality to a persist
-snapshot lost on worker restart remains UNKNOWN; no raw names are persisted.
+snapshot not established in that same test remains UNKNOWN; no raw names are
+persisted or inherited from another case. A main-frame navigation invalidates
+passive API observations from the previous employee session.
+
+The clear test establishes its own changed custom name through the normal owner
+UI and real save RPC, closes/reopens and checks the exact value, then reloads to
+passcode before requesting initial seed. Checkpoint1 belongs to that write;
+checkpoint2 is still pre-seed. The exact custom value is checked after seed and
+after clear, alongside the existing suffix, menu and employee preservation
+oracles. All six cases still must pass; this setup cannot hide an earlier failure.
+
+One optional test4-only image record projects seven `candidateImage*` facts,
+without multiplying them across settings checkpoints: PhaseOrdinal1 saved detail
+or2 reopened detail; Observed0 unavailable/1 DOM observed; SelectionCount and
+ImageCount use the count encoding above; SelectionMatches, SrcMatches and Decoded
+use the tri-state encoding. Selection matches the exact saved item ID, src matches
+the exact persisted URL, and decoded means complete with positive natural width.
+The snapshot is taken at failure time after configuring the expected image.
+Zero/multiple images leave src/decode UNKNOWN; a refused/closed-page probe leaves
+all image observations UNKNOWN. Raw item IDs/URLs stay in test memory. The target
+is cleared after both image assertions pass, so unrelated later failures do not
+export an obsolete image snapshot. Probes make no network or auth requests.
 
 Milestone ordinals: 1 test-start, 2 owner-login, 3 image-selected,
 4 menu-upload-save-started, 5 menu-RPC/UI-settled, 6 image-transport-assertions,
@@ -210,8 +236,9 @@ Milestone ordinals: 1 test-start, 2 owner-login, 3 image-selected,
 19 seed-prepared, 20 seed-committed, 21 clear-blocked-asserted,
 22 open-orders-settled, 23 preclear, 24 clear-RPC-ok, 25 clear-dialog-hidden,
 26 settings-drawer-hidden, 27 settings-reopened, 28 name-suffix-asserted,
-29 clear-final-asserted; 0 UNKNOWN. Bounds reserve30..31 but producers currently
-emit only the listed milestones. Check the exact source before interpreting.
+29 clear-final-asserted, 30 clear-settings-setup-started,
+31 clear-settings-setup-verified; 0 UNKNOWN. These identify locations, not a
+numeric time sequence (clear setup30/31 precedes18). Check the exact source.
 
 The existing failed diagnostic selftest group includes real Playwright controls
 for persist+clear failure, roles+clear failure and beforeAll-hook failure, without
@@ -228,7 +255,7 @@ T04 and service workers use the same 128KiB UTF-8 serialized receipt limit at
 both writer and reader. The source-derived conservative maxima include both a
 primary and a cleanup failure, every allowlisted numeric fact at MAX_SAFE_INTEGER,
 the longest fixed enums, a20-digit run ID, attempt1000 and source SHA40. Current
-bounds are99,879 bytes for T04 and105,577 for service; changing the allowlists
+bounds are100,551 bytes for T04 and106,305 for service; changing the allowlists
 beyond the shared cap refuses at module load. Actual per-field bounds remain
 independently enforced. This diagnostic limit does not alter stage acceptance,
 retries, timeouts, the32KiB D12 counts receipt or the1MiB report/marker limits.

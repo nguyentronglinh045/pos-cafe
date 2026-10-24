@@ -11,7 +11,7 @@ import { ci1IsolatedFailure, ci1ReadIsolatedError, ci1FailureExport, CI1_ISOLATE
 import { ci1IsolatedFailure as serviceValidate, ci1ReadIsolatedError as serviceRead, CI1_ISOLATED_RECEIPT_MAXIMUM_BYTES as serviceMaximum } from './permission-runtime-service-worker.mjs';
 import { T04_FAILURE_BOUNDS, t04RunnerFailureFacts, t04SafeFailureMetric } from './permission-runtime-t04.mjs';
 import { SERVICE_DIAGNOSTIC_BOUNDS } from './permission-runtime-service-diagnostic.mjs';
-import { CANDIDATE_TEST_NAMES, CANDIDATE_TEST_FILE, CANDIDATE_TEST_PROJECT } from './permission-runtime-candidate-diagnostic.mjs';
+import { CANDIDATE_TEST_NAMES, CANDIDATE_TEST_FILE, CANDIDATE_TEST_PROJECT, CANDIDATE_DIAGNOSTIC_SCHEMA } from './permission-runtime-candidate-diagnostic.mjs';
 import { runtimeStage } from './permission-runtime-catalog.mjs';
 import { collectRuntimeDiagnosticFacts } from './permission-runtime-diagnostic-transport.mjs';
 import { reporterReceiptFileControl, returnReceiptControlFixtures, callerReceiptAccounting } from './permission-runtime-isolated-receipt-control.mjs';
@@ -21,6 +21,9 @@ const record = facts => ({ schemaVersion: 'permission-ci1-isolated-failure-v1', 
   failure: { stage: 'offline-edge', operation: 'PILOT_HARNESS', code: 'COMMAND_FAILED', command: 'node', exitCode: 1, facts }, cleanupFailure: null });
 const rows = CANDIDATE_TEST_NAMES.map((name, i) => ({ file: CANDIDATE_TEST_FILE, name, project: CANDIDATE_TEST_PROJECT,
   state: [3, 5].includes(i) ? 'failed' : 'passed', attempts: 1,
+  ...(i === 3 ? { candidateDiagnostic: { status: 1, value: { schemaVersion: CANDIDATE_DIAGNOSTIC_SCHEMA, testOrdinal: 4,
+    milestoneOrdinal: 6, observations: [], image: { phaseOrdinal: 1, observed: 1, selectionCount: 2, selectionMatches: 2,
+      imageCount: 2, srcMatches: 1, decoded: 1 } } } } : {}),
   ...([3, 5].includes(i) ? { failureLine: 391, failureFacts: { errorCodeOrdinal: 0, errorNameOrdinal: 4, errorMatcherOrdinal: 9 } } : {}) }));
 const facts = { t04StageOrdinal: 10, ...t04RunnerFailureFacts(runtimeStage('candidate-e2e'), {
   discovery: rows.map(({ file, name, project }) => ({ file, name, project })), results: rows, errorCount: 0, hookErrorCount: 0 }) };
@@ -134,9 +137,9 @@ if (process.argv[2] === '--native-filesystem') {
   catch { console.error('ISOLATED_RECEIPT_NATIVE_CONTROL_FAILED'); process.exitCode = 1; }
 } else {
   test('complete fixed-schema maxima include both branches and remain inside the shared 128KiB bound', () => {
-    assert.equal(t04Maximum, 99879); assert.equal(serviceMaximum, 105577);
+    assert.equal(t04Maximum, 100551); assert.equal(serviceMaximum, 106305);
     assert(t04Maximum < CAP && serviceMaximum < CAP);
-    assert.equal(Object.keys(facts).length, 766);
+    assert.equal(Object.keys(facts).length, 773);
     const largeMetrics = Array.from({ length: 3000 }, (_, n) => 'metric' + n.toString().padStart(4, '0') + 'X'.repeat(60));
     assert.throws(() => isolatedReceiptMaximumBytes({ metrics: largeMetrics, operations: ['OP'], codes: ['CODE'], commands: ['node'] }));
   });
