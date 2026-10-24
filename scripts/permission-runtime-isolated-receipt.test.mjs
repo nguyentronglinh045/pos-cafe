@@ -23,7 +23,7 @@ const rows = CANDIDATE_TEST_NAMES.map((name, i) => ({ file: CANDIDATE_TEST_FILE,
   state: [3, 5].includes(i) ? 'failed' : 'passed', attempts: 1,
   ...(i === 3 ? { candidateDiagnostic: { status: 1, value: { schemaVersion: CANDIDATE_DIAGNOSTIC_SCHEMA, testOrdinal: 4,
     milestoneOrdinal: 6, observations: [], image: { phaseOrdinal: 1, observed: 1, selectionCount: 2, selectionMatches: 2,
-      imageCount: 2, srcMatches: 1, decoded: 1 } } } } : {}),
+      imageCount: 2, srcMatches: 1, decoded: 1 }, consumer: {phaseOrdinal:2,observed:1,cardCount:2,nativeImgCount:2,roleImgCount:3,placeholderCount:2,placeholderVisible:2} } } } : {}),
   ...([3, 5].includes(i) ? { failureLine: 391, failureFacts: { errorCodeOrdinal: 0, errorNameOrdinal: 4, errorMatcherOrdinal: 9 } } : {}) }));
 const facts = { t04StageOrdinal: 10, ...t04RunnerFailureFacts(runtimeStage('candidate-e2e'), {
   discovery: rows.map(({ file, name, project }) => ({ file, name, project })), results: rows, errorCount: 0, hookErrorCount: 0 }) };
@@ -137,9 +137,9 @@ if (process.argv[2] === '--native-filesystem') {
   catch { console.error('ISOLATED_RECEIPT_NATIVE_CONTROL_FAILED'); process.exitCode = 1; }
 } else {
   test('complete fixed-schema maxima include both branches and remain inside the shared 128KiB bound', () => {
-    assert.equal(t04Maximum, 100551); assert.equal(serviceMaximum, 106305);
+    assert.equal(t04Maximum, 102713); assert.equal(serviceMaximum, 107891);
     assert(t04Maximum < CAP && serviceMaximum < CAP);
-    assert.equal(Object.keys(facts).length, 773);
+    assert.equal(Object.keys(facts).length, 780);
     const largeMetrics = Array.from({ length: 3000 }, (_, n) => 'metric' + n.toString().padStart(4, '0') + 'X'.repeat(60));
     assert.throws(() => isolatedReceiptMaximumBytes({ metrics: largeMetrics, operations: ['OP'], codes: ['CODE'], commands: ['node'] }));
   });

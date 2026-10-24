@@ -183,7 +183,7 @@ validator; skipped, retried, expected-failure, hook or runner errors fail closed
 Playwright hook errors are observed from `onStepEnd` hook steps, not assumed zero.
 
 Only the body of the exact `candidate-e2e-diagnostics` JSON attachment, schema
-`candidate-e2e-diagnostics-v2`, is read,
+`candidate-e2e-diagnostics-v3`, is read,
 up to16KiB. A defined file path is refused (the runner may include `path:undefined`
 for an in-memory body). Duplicate attachments, wrong source identity, extra keys,
 unknown schema or out-of-range fields produce diagnosticStatus2 INVALID; absent
@@ -241,8 +241,7 @@ Milestone ordinals: 1 test-start, 2 owner-login, 3 image-selected,
 numeric time sequence (clear setup30/31 precedes18). Check the exact source.
 
 The existing failed diagnostic selftest group includes real Playwright controls
-for persist+clear failure, roles+clear failure and beforeAll-hook failure, without
-a browser/backend. It verifies actual attachment transport, source binding,
+for persist+clear failure, roles+clear failure and beforeAll-hook failure, with the installed browser and no backend. It verifies actual attachment transport, source binding,
 failure-stage rejection, public projection and collector output. Original4
 reporter groups and7 diagnostic groups/20 transport mutations remain exact;
 these nested controls must also pass. Fixed candidate facts remain below64KiB,
@@ -255,7 +254,7 @@ T04 and service workers use the same 128KiB UTF-8 serialized receipt limit at
 both writer and reader. The source-derived conservative maxima include both a
 primary and a cleanup failure, every allowlisted numeric fact at MAX_SAFE_INTEGER,
 the longest fixed enums, a20-digit run ID, attempt1000 and source SHA40. Current
-bounds are100,551 bytes for T04 and106,305 for service; changing the allowlists
+bounds are102,713 bytes for T04 and107,891 for service; changing the allowlists
 beyond the shared cap refuses at module load. Actual per-field bounds remain
 independently enforced. This diagnostic limit does not alter stage acceptance,
 retries, timeouts, the32KiB D12 counts receipt or the1MiB report/marker limits.
@@ -314,3 +313,55 @@ the public finite outcome survives in the safe failure log. These failure-only
 guards remain; no temporary raw logging, secret export or continuous probe is
 needed after the defect is verified fixed. A successful run emits no receipt
 failure trace.
+
+## Candidate fallback and post-run boundary diagnostics
+
+TC47 shares its fallback assertion with a real installed-Chromium control in the
+existing post-browser playwright-pass reporter group. Actual Lucide Coffee SVG
+has Playwright img role; fallback acceptance therefore checks the visible
+placeholder and zero native HTML img elements. Negative controls require the
+expected toHaveCount or toBeVisible matcher, not merely any thrown error. All
+following geometry, name, price, action, order and receipt oracles remain intact.
+
+Candidate attachment v3 adds one optional test4 consumer observation, separate
+from settings checkpoints: t04CandidateConsumerPhaseOrdinal1 request setup,
+2 fallback assertion after503/no-store,3 geometry/name/price,4 cart/submit,
+5 kitchen receipt,6 reopen/payment,7 payment receipt. Observed0 means unavailable;
+card/native-img/role-img/placeholder counts use0 UNKNOWN,1 zero,2 one,3 many.
+PlaceholderVisible is0 UNKNOWN,1 false,2 true. Role count uses Playwright role
+semantics. Missing/nonunique cards keep dependent facts UNKNOWN. Failed tests
+probe at teardown with a bounded1s wait; success drops in-memory targets and
+emits no attachment. Failed attachment/probe cannot replace the original error,
+and late results cannot mutate serialized facts. Matcher ordinal10 is
+toHaveCount; previous ordinals stay fixed, and Received text for this matcher
+cannot become an authorization error code. No item ID, URL or DOM is exported.
+
+t04PhaseOrdinal identifies the parent operation:0 UNKNOWN/bootstrap,1 pre-stage
+guard/physical/baseline,2 prepare,3 runner,4 post-run physical guard,5 image
+measurement/validation,6 afterStage observation,7 restore/receipt validation,
+8 final physical/baseline check. It does not assert that a prior runner failed.
+Existing child error metadata is preserved as t04RuntimeStageBoundaryOrdinal
+0..7 and t04RuntimeResultFailureOrdinal0..16; consult the source-fixed maps.
+t04RuntimeStageChildExitOrdinal0 is UNKNOWN;1..256 encode actual exit0..255.
+Null or absent exit never becomes a successful zero exit.
+
+t04ImageMeasurementPhaseOrdinal1 admission/source/token/physical checks,
+2 effect-adapter creation,3 measure,4 explicit close,5 receipt construction and
+validation. CleanupAttempted and CleanupFailed suffixes are0/1; failed is sticky
+across the existing final close, while the phase retains the first failure.
+Attempted0 is unobserved cleanup, not successful cleanup. Sanitized error text
+stays fixed. No new runtime operation, cleanup retry or deadline is added.
+
+Stage19 has one diagnostic-only fixed extra identity: TC-PIN-17 preparation and
+activation reject an older permission marker without changing the gate, in
+tests/contracts/permissionCompatibility.contract.test.ts with null project.
+t04CompatibilityExtraStatus0 absent in both discovery/results,1 unique in both,
+2 missing-one or duplicate; nonunique row facts remain UNKNOWN. State uses the
+existing1..6 result states, Attempts/FailureLine and finite error ordinals retain
+their existing bounds. The three required catalog identities are unchanged;
+any full-file failure still rejects acceptance. A real Vitest extra-only failure
+control verifies this projection through T04, the shared receipt reader and
+collector alongside the existing failed diagnostic group. Candidate controls
+also use the production fallback helper and consumer probe before that same
+transport. Windows explicitly proves refusal only at Unix ownership boundaries;
+Linux CI must execute accepted file/accounting/handback proof.

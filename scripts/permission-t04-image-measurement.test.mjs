@@ -122,3 +122,24 @@ test('guard denial has zero DB/network/browser adapter effects and no raw error 
  await assert.rejects(runT04ImageMeasurement(f.options,f.overrides),error=>error.message==='PERMISSION_T04_IMAGE_MEASUREMENT_REFUSED');
  assert.deepEqual(f.effects,[]);
 });
+
+test('measurement phase and sticky cleanup facts preserve the first failure without raw causes',async()=>{
+ for(const kind of['admission','adapter','measure-cleanup','close-recovered','null-result','invalid-receipt']){
+  const f=fixture();let closes=0;
+  if(kind==='admission')f.options.guard=()=>{throw Error('PRIVATE_ADMISSION');};
+  f.overrides.effects=async()=>{
+   if(kind==='adapter')throw Error('PRIVATE_ADAPTER');
+   return{measure:async()=>{if(kind==='measure-cleanup')throw Error('PRIVATE_MEASURE');
+    if(kind==='null-result')return null;const r=parsedShape();if(kind==='invalid-receipt')r.observations.publication=false;return r;},
+    close:async()=>{closes++;if(kind==='measure-cleanup'||kind==='close-recovered'&&closes===1)throw Error('PRIVATE_CLEANUP');return yes(IMAGE_RESTORATION_KEYS);}};
+  };
+  const phase={admission:1,adapter:2,'measure-cleanup':3,'close-recovered':4,'null-result':5,'invalid-receipt':5}[kind];
+  await assert.rejects(runT04ImageMeasurement(f.options,f.overrides),error=>{
+   assert.equal(error.t04ImageMeasurementPhaseOrdinal,phase);
+   assert.equal(error.t04ImageMeasurementCleanupAttempted,phase>2?1:0);
+   assert.equal(error.t04ImageMeasurementCleanupFailed,['measure-cleanup','close-recovered'].includes(kind)?1:0);
+   assert(!error.message.includes('PRIVATE'));return true;
+  });
+  assert.equal(closes,phase<3?0:kind==='close-recovered'?2:1);
+ }
+});

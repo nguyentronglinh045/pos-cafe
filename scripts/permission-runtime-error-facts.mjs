@@ -24,7 +24,21 @@ export const RUNTIME_ERROR_CODES=Object.freeze(['ERR_MODULE_NOT_FOUND','ERR_UNSU
  'ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING','ENOENT','EACCES','ECONNREFUSED','ETIMEDOUT',
  '23502','23503','23505','23514','42501','42601','42703','42883','42P01','42P07','3F000','57P03','57014','53300','PIN_CHANGE_REQUIRED','EMPLOYEE_SESSION_REQUIRED','INVALID_EMPLOYEE_REQUEST','AUTH_REQUIRED','WRITE_PROTOCOL_UNSUPPORTED','FORBIDDEN',...LEGACY_BROWSER_GUARD_CODES,...COMPATIBILITY_ROUTE_GUARD_CODES]);
 // Append only: existing producer/receipt ordinal meanings remain unchanged.
-export const RUNTIME_ERROR_MATCHERS=Object.freeze(['toBe','toEqual','toStrictEqual','toBeTruthy','toBeFalsy','toContain','toThrow','toBeGreaterThan','toHaveValue']);
+export const RUNTIME_ERROR_MATCHERS=Object.freeze(['toBe','toEqual','toStrictEqual','toBeTruthy','toBeFalsy','toContain','toThrow','toBeGreaterThan','toHaveValue','toHaveCount']);
+// This discovered full-file case is diagnostic-only, not a new required ID.
+export const COMPATIBILITY_EXTRA_IDENTITY=Object.freeze({file:'tests/contracts/permissionCompatibility.contract.test.ts',
+ name:'TC-PIN-17 preparation and activation reject an older permission marker without changing the gate',project:null});
+export function compatibilityExtraFailureFacts(report){
+ const matches=row=>row?.file===COMPATIBILITY_EXTRA_IDENTITY.file&&row.name===COMPATIBILITY_EXTRA_IDENTITY.name&&row.project===null;
+ const discovery=report.discovery.filter(matches),results=report.results.filter(matches),unique=discovery.length===1&&results.length===1;
+ const row=unique?results[0]:undefined,finite=(value,max)=>Number.isSafeInteger(value)&&value>=0&&value<=max?value:0;
+ return{compatibilityExtraStatus:unique?1:discovery.length===0&&results.length===0?0:2,
+  compatibilityExtraState:['passed','failed','timedOut','interrupted','skipped','pending'].indexOf(row?.state)+1,
+  compatibilityExtraAttempts:finite(row?.attempts,10000),compatibilityExtraFailureLine:finite(row?.failureLine,100000),
+  compatibilityExtraErrorCodeOrdinal:finite(row?.failureFacts?.errorCodeOrdinal,RUNTIME_ERROR_CODES.length),
+  compatibilityExtraErrorNameOrdinal:finite(row?.failureFacts?.errorNameOrdinal,5),
+  compatibilityExtraErrorMatcherOrdinal:finite(row?.failureFacts?.errorMatcherOrdinal,RUNTIME_ERROR_MATCHERS.length)};
+}
 export function runtimeErrorFacts(error){
  const codeOrdinal=RUNTIME_ERROR_CODES.indexOf(error?.code)+1;
  const guardOrdinal=LEGACY_BROWSER_GUARD_CODES.indexOf(error?.message);
@@ -92,6 +106,8 @@ export const RUNTIME_FAILURE_BOUNDS=Object.freeze({missingRequired:10000,firstFa
  firstFailedLine:100000,testErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,testErrorNameOrdinal:5,testErrorMatcherOrdinal:RUNTIME_ERROR_MATCHERS.length,
  runnerFirstErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,runnerFirstErrorNameOrdinal:5,runnerFirstErrorMatcherOrdinal:RUNTIME_ERROR_MATCHERS.length,
  runnerFirstErrorFileOrdinal:RUNTIME_ERROR_FILES.length,runnerFirstErrorLine:100000,runnerErrors:10000,hookErrors:10000,
+ compatibilityExtraStatus:2,compatibilityExtraState:6,compatibilityExtraAttempts:10000,compatibilityExtraFailureLine:100000,
+ compatibilityExtraErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,compatibilityExtraErrorNameOrdinal:5,compatibilityExtraErrorMatcherOrdinal:RUNTIME_ERROR_MATCHERS.length,
  ...IMAGE_HOOK_DIAGNOSTIC_BOUNDS,...candidateDiagnosticBounds(RUNTIME_ERROR_CODES.length,RUNTIME_ERROR_MATCHERS.length)});
 export function assertRuntimeDiagnosticBinding(expected,report,context){
  if(!report||report.schemaVersion!=='permission-runtime-stage-v1'||report.stage!==expected.stage||report.runner!==expected.runner
@@ -143,6 +159,7 @@ export function runtimeRunnerFailureFacts(expected,r){
  }
  for(const[k,v]of[['runnerErrors',r.errorCount],['hookErrors',r.hookErrorCount]])if(Number.isSafeInteger(v)&&v>=0&&v<=10000)facts[k]=v;
  if(expected.stage==='candidate-e2e')Object.assign(facts,candidateRuntimeFailureFacts(r,{errorCodeMax:RUNTIME_ERROR_CODES.length,errorMatcherMax:RUNTIME_ERROR_MATCHERS.length}));
+ if(expected.stage==='transition-compatibility-database')Object.assign(facts,compatibilityExtraFailureFacts(r));
  return facts;
 }
 
@@ -171,11 +188,11 @@ export function runtimePlaywrightFailureFacts(error,file){
   // Classify exactly one complete Received scalar after a single matcher
   // header. Count every Received field before whitelisting: unknown values,
   // duplicate fields and trailing payloads must never select a header code.
-  const matchers=[...message.matchAll(/\bexpect\((?:received|locator)\)(?:\.not)?\.(toBe|toEqual|toStrictEqual|toBeTruthy|toBeFalsy|toContain|toThrow|toBeGreaterThan|toHaveValue)\(expected\)/g)];
+   const matchers=[...message.matchAll(/\bexpect\((?:received|locator)\)(?:\.not)?\.(toBe|toEqual|toStrictEqual|toBeTruthy|toBeFalsy|toContain|toThrow|toBeGreaterThan|toHaveValue|toHaveCount)\(expected\)/g)];
   const matcher=matchers.length===1?matchers[0]:null;
   const received=matcher?message.slice(matcher.index+matcher[0].length).split(/\r?\n/).filter(line=>/^[\t ]*Received:/.test(line)):[];
   const scalar=received.length===1?/^[\t ]*Received:[\t ]*"([A-Z][A-Z0-9_]{0,63})"[\t ]*$/.exec(received[0]):null;
-  if(failureFacts.errorCodeOrdinal===0&&scalar&&matcher[1]!=='toHaveValue')failureFacts.errorCodeOrdinal=RUNTIME_ERROR_CODES.slice(0,27).indexOf(scalar[1])+1;
+   if(failureFacts.errorCodeOrdinal===0&&scalar&&!['toHaveValue','toHaveCount'].includes(matcher[1]))failureFacts.errorCodeOrdinal=RUNTIME_ERROR_CODES.slice(0,27).indexOf(scalar[1])+1;
   if(failureFacts.errorMatcherOrdinal===0&&matcher)failureFacts.errorMatcherOrdinal=RUNTIME_ERROR_MATCHERS.indexOf(matcher[1])+1;
   for(const m of message.matchAll(/REALTIME_TIMING_ORACLE_FAILED:([a-z0-9-]{1,64})(?=$|[\s'"\],.])/g)){
    const ordinal=REALTIME_FAILURE_ORACLES.indexOf(m[1]);if(ordinal>=0)realtimeFailureMask|=2**ordinal;

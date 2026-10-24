@@ -15,6 +15,20 @@ const blank = (checkpointOrdinal: number) => Object.assign(Object.fromEntries(di
 type ImageTarget = { phaseOrdinal: 1 | 2; itemId: string; url: string };
 export const imageDiagnosticFields = ["phaseOrdinal", "observed", "selectionCount", "selectionMatches", "imageCount", "srcMatches", "decoded"] as const;
 const unknownImage = (phaseOrdinal: number) => ({ phaseOrdinal, observed: 0, selectionCount: 0, selectionMatches: 0, imageCount: 0, srcMatches: 0, decoded: 0 });
+export const consumerDiagnosticFields = ["phaseOrdinal", "observed", "cardCount", "nativeImgCount", "roleImgCount", "placeholderCount", "placeholderVisible"] as const;
+const unknownConsumer = (phaseOrdinal: number) => ({ phaseOrdinal, observed: 0, cardCount: 0, nativeImgCount: 0, roleImgCount: 0, placeholderCount: 0, placeholderVisible: 0 });
+export async function readCandidateConsumerDom(page: Page, itemId: string, phaseOrdinal: number) {
+  const card = page.getByTestId(`menu-item-${itemId}`), n = await card.count();
+  const row = { ...unknownConsumer(phaseOrdinal), observed: 1, cardCount: Math.min(n, 2) + 1 };
+  if (n !== 1) return row;
+  const placeholder = card.getByTestId("menu-image-placeholder");
+  const [native, role, fallback] = await Promise.all([card.locator("img").count(), card.getByRole("img").count(), placeholder.count()]);
+  row.nativeImgCount = Math.min(native, 2) + 1; row.roleImgCount = Math.min(role, 2) + 1;
+  row.placeholderCount = Math.min(fallback, 2) + 1;
+  if (fallback === 1) row.placeholderVisible = await placeholder.isVisible() ? 2 : 1;
+  if (await card.count() !== 1) throw new Error("CANDIDATE_CONSUMER_CARD_CHANGED");
+  return row;
+}
 
 export function readCandidateImageDom(target: ImageTarget) {
   const cards = [...document.querySelectorAll('[data-testid^="menu-edit-card-"]')];
@@ -86,6 +100,7 @@ export class CandidateDiagnostics {
   private preclearName: string | undefined;
   private persistedName: string | undefined;
   private imageTarget: ImageTarget | undefined;
+  private consumerTarget: { phaseOrdinal: number; itemId: string } | undefined;
   private page: Page;
   private readSettings: () => Promise<string>;
   constructor(page: Page, readSettings: () => Promise<string> = readOwnedSettings) {
@@ -99,6 +114,10 @@ export class CandidateDiagnostics {
   mark(ordinal: number) { if (Number.isInteger(ordinal) && ordinal >= 1 && ordinal <= 31) this.milestoneOrdinal = ordinal; }
   expectMenuImage(phaseOrdinal: 1 | 2, itemId: string, url: string) { this.imageTarget = { phaseOrdinal, itemId, url }; }
   clearMenuImage() { this.imageTarget = undefined; }
+  expectConsumerImage(phaseOrdinal: number, itemId: string) {
+    if (Number.isInteger(phaseOrdinal) && phaseOrdinal >= 1 && phaseOrdinal <= 7) this.consumerTarget = { phaseOrdinal, itemId };
+  }
+  clearConsumerImage() { this.consumerTarget = undefined; }
   private onFrameNavigated = (frame: Frame) => {
     if (frame !== this.page.mainFrame()) return;
     this.generation++; this.apiState = 0; this.apiName = undefined; this.observedSettingsRead = false;
@@ -184,12 +203,22 @@ export class CandidateDiagnostics {
         catch { /* Closed/unavailable DOM stays UNKNOWN, never an observed zero. */ }
         finally { clearTimeout(timer); }
       }
+      let consumer: ReturnType<typeof unknownConsumer> | null = null;
+      if (this.consumerTarget) {
+        const target = this.consumerTarget;
+        consumer = unknownConsumer(target.phaseOrdinal);
+        let timer: ReturnType<typeof setTimeout> | undefined;
+        try { consumer = await Promise.race([readCandidateConsumerDom(this.page, target.itemId, target.phaseOrdinal),
+          new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error("CANDIDATE_CONSUMER_DIAGNOSTIC_UNAVAILABLE")), 1_000); })]); }
+        catch { /* Unavailable or nonsettling probes keep UNKNOWN. */ }
+        finally { clearTimeout(timer); }
+      }
       const ordinals = ["candidate activation supports owner roster, floor, payment and first receipt preview",
         "owner permission change reaches a live cashier context within five seconds", "owner creates waiter and real UI hides protected administration and reporting",
         "owner persists menu, floor and store settings changes through real candidate RPCs", "four active roles have protected navigation parity with server authorization",
         "owner clears demo data through UI and refetch preserves custom records"];
-      await testInfo.attach("candidate-e2e-diagnostics", { body: Buffer.from(JSON.stringify({ schemaVersion: "candidate-e2e-diagnostics-v2",
-        testOrdinal: ordinals.indexOf(testInfo.title) + 1, milestoneOrdinal: this.milestoneOrdinal, observations: this.observations, image })), contentType: "application/json" });
+      await testInfo.attach("candidate-e2e-diagnostics", { body: Buffer.from(JSON.stringify({ schemaVersion: "candidate-e2e-diagnostics-v3",
+        testOrdinal: ordinals.indexOf(testInfo.title) + 1, milestoneOrdinal: this.milestoneOrdinal, observations: this.observations, image, consumer })), contentType: "application/json" });
     } catch { /* Probe/attachment failures must never mask the original test. */ }
     finally {
       this.page.off("request", this.onRequest); this.page.off("requestfailed", this.onRequestFailed); this.page.off("response", this.onResponse);
@@ -197,7 +226,7 @@ export class CandidateDiagnostics {
       // A response body can still be pending after its listener is removed.
       // Invalidate its captured generation before clearing private state.
       this.generation++; this.apiState = 0; this.observedSettingsRead = false; this.failedRequests = 0;
-      this.apiName = undefined; this.preclearName = undefined; this.persistedName = undefined; this.imageTarget = undefined;
+      this.apiName = undefined; this.preclearName = undefined; this.persistedName = undefined; this.imageTarget = undefined; this.consumerTarget = undefined;
       this.observations = []; this.pendingReads.clear(); this.readGenerations.clear(); this.responseTasks.clear();
     }
   }

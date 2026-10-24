@@ -52,12 +52,20 @@ export function reporterSelftest(root=process.cwd()){
       const expiryCases=[['expiry-minus-1ms','2026-09-22T00:04:59.999Z',true],
         ['expiry','2026-09-22T00:05:00.000Z',false],['expiry-plus-1ms','2026-09-22T00:05:00.001Z',false]];
       const canonicalTitle=offset=>'TC-PIN-08 completion rechecks '+offset+' after waiting for identity lock';
+      // Runs in the existing post-browser positive control, never node-tools.
+      // Real Lucide SVG + real Playwright semantics exercise the same helper
+      // used by TC47, including native-image-present and missing-fallback refusals.
+      const imageFallbackImports=!vitest&&!negative
+        ?`import{candidateImageFallbackBrowserControl}from${JSON.stringify(pathToFileURL(resolve(root,'scripts/permission-candidate-browser-control.mjs')).href)};`:'';
+      const imageFallbackControl=!vitest&&!negative?`
+        expect(await candidateImageFallbackBrowserControl(page)).toEqual({svgPlaceholder:1,nativeImageRefused:1,missingPlaceholderRefused:1});
+      `:'';
       const titleControls=vitest&&!negative
         ?`test.each(${JSON.stringify(expiryCases)})('TC-PIN-08 completion rechecks %s after waiting for identity lock',()=>expect(true).toBe(true));
           test.each(${JSON.stringify(expiryCases.map(([offset])=>({offset})))})('object-v4 TC-PIN-08 completion rechecks $offset after waiting for identity lock',()=>expect(true).toBe(true));`:'';
       writeFileSync(testFile,vitest
         ?`import {test,expect,afterAll,describe} from 'vitest';describe('suite',()=>{test('required',()=>expect(2+2).toBe(4));${titleControls}${negative?"afterAll(()=>{throw Error('SELFTEST_PRIVATE_ERROR_MUST_NOT_LEAK');});":''}});\n`
-        :`import {test,expect} from '@playwright/test';test.describe('suite',()=>{test('required',async(${negative?'{}':'{page}'},info)=>{${negative?"if(info.retry===0)expect('EMPLOYEE_SESSION_REQUIRED','SELFTEST_PRIVATE_ERROR_MUST_NOT_LEAK cycle-1-grant/device0: REALTIME_TIMING_ORACLE_FAILED:signal-arrival').toBe('PIN_CHANGE_REQUIRED');expect(info.retry).toBe(1);":"await page.goto('data:text/html,<button>OK</button>');await expect(page.getByRole('button',{name:'OK'})).toBeVisible();"}});});\n`);
+        :`import {test,expect} from '@playwright/test';${imageFallbackImports}test.describe('suite',()=>{test('required',async(${negative?'{}':'{page}'},info)=>{${negative?"if(info.retry===0)expect('EMPLOYEE_SESSION_REQUIRED','SELFTEST_PRIVATE_ERROR_MUST_NOT_LEAK cycle-1-grant/device0: REALTIME_TIMING_ORACLE_FAILED:signal-arrival').toBe('PIN_CHANGE_REQUIRED');expect(info.retry).toBe(1);":"await page.goto('data:text/html,<button>OK</button>');await expect(page.getByRole('button',{name:'OK'})).toBeVisible();"}${imageFallbackControl}});});\n`);
       const file=relative(root,testFile).replaceAll('\\','/');
       writeFileSync(configFile,vitest
         ?`export default {test:{include:[${JSON.stringify(file)}],environment:'node',allowOnly:false,retry:0,maxWorkers:1,fileParallelism:false,passWithNoTests:false}};\n`

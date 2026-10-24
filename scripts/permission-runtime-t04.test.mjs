@@ -1,6 +1,6 @@
 import test from'node:test';
 import assert from'node:assert/strict';
-import{runT04Profile,renderT04Evidence,t04FailureFacts,t04TimeBudget,t04RunnerFailureFacts}from'./permission-runtime-t04.mjs';
+import{runT04Profile,renderT04Evidence,t04FailureFacts,t04TimeBudget,t04RunnerFailureFacts,t04ParentFailureFacts,T04_FAILURE_BOUNDS}from'./permission-runtime-t04.mjs';
 import{runtimeStageCatalog}from'./permission-runtime-catalog.mjs';
 import{backendInvocation}from'./project-backend-t04.mjs';
 import{reclaimUnitState}from'./permission-runtime-t04-reclaim.mjs';
@@ -65,7 +65,7 @@ test('T04 assertion diagnostic parser and final exporter independently reject ou
  const receipt=f=>({schemaVersion:'permission-ci1-isolated-failure-v1',runId:'123',attempt:1,sourceSHA:sha,failure:f,cleanupFailure:null});
  assert(ci1IsolatedFailure(receipt(failure),ci1Identity('123',1),sha));
  for(const delta of[{t04FirstFailedLine:100001},{t04FirstFailedLine:-1},{t04TestErrorCodeOrdinal:999},
-   {t04TestErrorNameOrdinal:6},{t04TestErrorMatcherOrdinal:10},{t04FailedTests:10001},{t04StageOrdinal:20},{raw:'SECRET'}]){
+   {t04TestErrorNameOrdinal:6},{t04TestErrorMatcherOrdinal:11},{t04FailedTests:10001},{t04StageOrdinal:20},{raw:'SECRET'}]){
   const invalid={...failure,facts:{...facts,...delta}};assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(invalid.facts)),{});
   assert.notDeepEqual(ci1FailureExport(invalid),invalid);assert.throws(()=>ci1IsolatedFailure(receipt(invalid),ci1Identity('123',1),sha));
  }
@@ -181,6 +181,67 @@ test('image measurement runs once after candidate browser success and before sto
  const r=await runT04Profile(f.adapter);assert.equal(r.status,'PASS');assert.equal(order.filter(x=>x==='image').length,1);
  const index=order.indexOf('image');assert.equal(order[index-1],'stage:candidate-e2e');assert.equal(order[index+1],'observe:candidate-e2e');
  assert.deepEqual(r.imageMeasurement,imageReceipt());assert.equal(f.closed.length,1);
+});
+
+test('parent failure facts distinguish an observed zero exit from UNKNOWN and project only finite categories',()=>{
+ const unknown={t04PhaseOrdinal:0,t04RuntimeStageBoundaryOrdinal:0,t04RuntimeResultFailureOrdinal:0,t04RuntimeStageChildExitOrdinal:0,
+  t04ImageMeasurementPhaseOrdinal:0,t04ImageMeasurementCleanupAttempted:0,t04ImageMeasurementCleanupFailed:0};
+ assert.deepEqual(t04ParentFailureFacts(undefined),unknown);assert.deepEqual(t04ParentFailureFacts(null),unknown);
+ const error={runtimeStageBoundaryOrdinal:7,runtimeResultFailureOrdinal:16,runtimeStageChildExitCode:255,
+  t04ImageMeasurementPhaseOrdinal:5,t04ImageMeasurementCleanupAttempted:1,t04ImageMeasurementCleanupFailed:1,
+  message:'PRIVATE_PARENT_ERROR',stderr:'PRIVATE_PARENT_ERROR',url:'https://PRIVATE_PARENT_ERROR'};
+ const projected=t04ParentFailureFacts(error,{phaseOrdinal:8});
+ assert.deepEqual(projected,{t04PhaseOrdinal:8,t04RuntimeStageBoundaryOrdinal:7,t04RuntimeResultFailureOrdinal:16,
+  t04RuntimeStageChildExitOrdinal:256,t04ImageMeasurementPhaseOrdinal:5,t04ImageMeasurementCleanupAttempted:1,t04ImageMeasurementCleanupFailed:1});
+ assert(!JSON.stringify(projected).includes('PRIVATE_PARENT_ERROR'));
+ assert.equal(t04ParentFailureFacts({runtimeStageChildExitCode:0}).t04RuntimeStageChildExitOrdinal,1);
+ for(const value of[undefined,null,-1,256,1.5,NaN,Infinity,'0'])
+  assert.equal(t04ParentFailureFacts({runtimeStageChildExitCode:value}).t04RuntimeStageChildExitOrdinal,0);
+ for(const [input,output,max] of[['runtimeStageBoundaryOrdinal','t04RuntimeStageBoundaryOrdinal',7],
+  ['runtimeResultFailureOrdinal','t04RuntimeResultFailureOrdinal',16],['t04ImageMeasurementPhaseOrdinal','t04ImageMeasurementPhaseOrdinal',5],
+  ['t04ImageMeasurementCleanupAttempted','t04ImageMeasurementCleanupAttempted',1],['t04ImageMeasurementCleanupFailed','t04ImageMeasurementCleanupFailed',1]])
+  for(const value of[-1,max+1,0.5,'1',null])assert.equal(t04ParentFailureFacts({[input]:value})[output],0);
+ for(const phaseOrdinal of[-1,9,0.5,'1',null])assert.equal(t04ParentFailureFacts({}, {phaseOrdinal}).t04PhaseOrdinal,0);
+ const facts={t04StageOrdinal:10,...projected},base={stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:1};
+ const receipt=failure=>({schemaVersion:'permission-ci1-isolated-failure-v1',runId:'123',attempt:1,sourceSHA:sha,failure,cleanupFailure:null});
+ assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(facts)),facts);
+ assert.deepEqual(ci1FailureExport({...base,facts}),{...base,facts});
+ assert(ci1IsolatedFailure(receipt({...base,facts}),ci1Identity('123',1),sha));
+ for(const key of Object.keys(projected))for(const value of[-1,T04_FAILURE_BOUNDS[key][1]+1,'1']){
+  const invalid={...base,facts:{...facts,[key]:value}};
+  assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(invalid.facts)),{});
+  assert.notDeepEqual(ci1FailureExport(invalid),invalid);
+  assert.throws(()=>ci1IsolatedFailure(receipt(invalid),ci1Identity('123',1),sha));
+ }
+});
+
+test('each parent execution boundary reports its own phase and keeps later stages NOT_RUN',async()=>{
+ for(const phaseOrdinal of[1,2,3,4,5,6,7,8]){
+  let guards=0,observed=false;const diagnostics=[],primary=Object.assign(Error('PRIVATE_PHASE_FAILURE'),
+   {runtimeStageBoundaryOrdinal:6,runtimeResultFailureOrdinal:9,runtimeStageChildExitCode:0});
+  const change={diagnostic(stage,error,context){diagnostics.push({stage,error,facts:t04ParentFailureFacts(error,context)});},
+   ...(phaseOrdinal===1||phaseOrdinal===4?{guard(){if(++guards===(phaseOrdinal===1?2:3))throw primary;}}:{}),
+   ...(phaseOrdinal===2?{async prepare(){throw primary;}}:{}),
+   ...(phaseOrdinal===3?{async stage(){throw primary;}}:{}),
+   ...(phaseOrdinal===5?{async imageMeasurement(){throw primary;}}:{}),
+   ...(phaseOrdinal===6?{async afterStage(){throw primary;}}:{}),
+   ...(phaseOrdinal===7?{async restore(){throw primary;}}:{}),
+   ...(phaseOrdinal===8?{async afterStage(){observed=true;return digest;},async preserved(){return !observed;}}:{})};
+  const f=fixture(change),r=await runT04Profile(f.adapter),index=[5,7].includes(phaseOrdinal)?ids.indexOf('candidate-e2e'):0;
+  assert.equal(r.status,'FAIL');assert.equal(r.failure,ids[index]);assert.equal(r.stages[index].status,'FAIL');
+  assert(r.stages.slice(index+1).every(stage=>stage.status==='NOT_RUN'));assert.equal(f.closed.length,1);
+  assert.equal(diagnostics.length,1);assert.equal(diagnostics[0].stage,ids[index]);
+  assert.equal(diagnostics[0].facts.t04PhaseOrdinal,phaseOrdinal);
+  if(phaseOrdinal!==8){assert.equal(diagnostics[0].error,primary);assert.equal(diagnostics[0].facts.t04RuntimeStageChildExitOrdinal,1);}
+  else assert.equal(diagnostics[0].facts.t04RuntimeStageChildExitOrdinal,0);
+  // A browser PASS alone cannot certify candidate-e2e when measurement or reset fails.
+  if([5,7].includes(phaseOrdinal)){assert.deepEqual(f.seen,ids.slice(0,index+1));assert(r.stages.slice(0,index).every(stage=>stage.status==='PASS'));}
+  assert.equal(JSON.parse(renderT04Evidence({...r,...metadata}).json).status,'FAIL');
+ }
+ const diagnostics=[],f=fixture({async stage(id){return{...row(id),pass:0};},
+  diagnostic(stage,error,context){diagnostics.push(t04ParentFailureFacts(error,context));}}),r=await runT04Profile(f.adapter);
+ assert.equal(r.status,'FAIL');assert.equal(diagnostics[0].t04PhaseOrdinal,3);
+ assert.equal(diagnostics[0].t04RuntimeStageChildExitOrdinal,0);
 });
 
 test('missing, simulated, unbound or incomplete image measurement fails candidate stage and blocks every later stage',async()=>{

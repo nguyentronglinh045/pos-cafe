@@ -2,7 +2,7 @@ import test from'node:test';
 import assert from'node:assert/strict';
 import{readFileSync}from'node:fs';
 import{runInNewContext}from'node:vm';
-import{CANDIDATE_TEST_FILE,CANDIDATE_TEST_PROJECT,CANDIDATE_TEST_NAMES,CANDIDATE_CHECKPOINT_BOUNDS,CANDIDATE_IMAGE_BOUNDS,
+import{CANDIDATE_TEST_FILE,CANDIDATE_TEST_PROJECT,CANDIDATE_TEST_NAMES,CANDIDATE_CHECKPOINT_BOUNDS,CANDIDATE_IMAGE_BOUNDS,CANDIDATE_CONSUMER_BOUNDS,
  CANDIDATE_DIAGNOSTIC_SCHEMA,CANDIDATE_DIAGNOSTIC_ATTACHMENT,CANDIDATE_DIAGNOSTIC_MAX_BYTES,
  candidateTestOrdinal,candidateDiagnosticAttachment,safeCandidateDiagnostic}from'./permission-runtime-candidate-diagnostic.mjs';
 import{runtimePlaywrightFailureFacts,runtimeRunnerFailureFacts,assertRuntimeDiagnosticBinding,
@@ -19,8 +19,9 @@ const context={sourceSHA:'a'.repeat(40),sourceFingerprint:'b'.repeat(64),lockSHA
  configSHA:stage.configSHA,runId:'123',invocationSHA:runtimeHash(argv),argv};
 const observation=(checkpointOrdinal,delta={})=>({checkpointOrdinal,...Object.fromEntries(Object.keys(CANDIDATE_CHECKPOINT_BOUNDS).map(key=>[key,0])),...delta});
 const diagnostic=(testOrdinal=6,delta={})=>({schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal,milestoneOrdinal:17,
- observations:[observation(3,{dbReadState:1,dbSuffix:2,drawerCount:2,inputCount:1}),observation(4,{dbReadState:1,dbEqualsPreclear:2})],image:null,...delta});
+ observations:[observation(3,{dbReadState:1,dbSuffix:2,drawerCount:2,inputCount:1}),observation(4,{dbReadState:1,dbEqualsPreclear:2})],image:null,consumer:null,...delta});
 const imageFacts={phaseOrdinal:2,observed:1,selectionCount:2,selectionMatches:2,imageCount:2,srcMatches:1,decoded:1};
+const consumerFacts={phaseOrdinal:2,observed:1,cardCount:2,nativeImgCount:2,roleImgCount:3,placeholderCount:2,placeholderVisible:2};
 const attachment=value=>({name:CANDIDATE_DIAGNOSTIC_ATTACHMENT,contentType:'application/json',body:Buffer.from(JSON.stringify(value))});
 function reporterFixture(failures=[4,6],options={}){
  let captured;
@@ -35,7 +36,7 @@ function reporterFixture(failures=[4,6],options={}){
  reporter.onBegin({repeatEach:1},{allTests:()=>tests});
  for(let i=1;i<=6;i++){
   const fail=failures.includes(i),line=i===6?391:200;
-  reporter.onTestEnd(tests[i-1],{status:fail?'failed':'passed',attachments:options.attachments?.[i]??(fail&&i===6?[attachment(diagnostic())]:fail&&i===4?[attachment(diagnostic(4,{image:imageFacts}))]:[]),
+  reporter.onTestEnd(tests[i-1],{status:fail?'failed':'passed',attachments:options.attachments?.[i]??(fail&&i===6?[attachment(diagnostic())]:fail&&i===4?[attachment(diagnostic(4,{image:imageFacts,consumer:consumerFacts}))]:[]),
    ...(fail?{error:{message:'expect(locator).toHaveValue(expected)\nExpected: PRIVATE_DIAGNOSTIC_SENTINEL\nReceived: PRIVATE_DIAGNOSTIC_SENTINEL',
     location:{file:tests[i-1].location.file,line}}}:{})});
  }
@@ -88,6 +89,7 @@ test('actual reporter, stage rejection, T04, isolated and outer exporters and co
   assert.equal(first[metric],value);assert.equal(second[metric],0);
  }
  assert.equal(second.t04CandidateTest4DiagnosticStatus,0);
+ for(const[key,value]of Object.entries(consumerFacts)){const metric='t04CandidateConsumer'+key[0].toUpperCase()+key.slice(1);assert.equal(first[metric],value);assert.equal(second[metric],0);}
  assert.notDeepEqual(first,second);
 });
 test('missing, unknown and duplicate identities are explicit and never mislabel another failure',()=>{
@@ -159,8 +161,18 @@ test('all discovered tests, retries, hooks and source guards retain fail-closed 
   assert.throws(()=>assertRuntimeDiagnosticBinding(expected,changed,context));
  }
 });
+test('consumer snapshot refuses private fields and impossible certainty for absent or duplicate cards',()=>{
+ assert(safeCandidateDiagnostic(diagnostic(4,{consumer:consumerFacts}),4));
+ for(const consumer of[{...consumerFacts,url:'PRIVATE_DIAGNOSTIC_SENTINEL'}, {...consumerFacts,observed:0},
+  ...[0,1,3].map(cardCount=>({...consumerFacts,cardCount})), {...consumerFacts,placeholderCount:1},
+  {...consumerFacts,placeholderVisible:0},...Object.entries(CANDIDATE_CONSUMER_BOUNDS).map(([k,max])=>({...consumerFacts,[k]:max+1}))])
+  assert.equal(safeCandidateDiagnostic(diagnostic(4,{consumer}),4),null);
+ assert.equal(safeCandidateDiagnostic(diagnostic(6,{consumer:consumerFacts}),6),null);
+ for(const cardCount of[1,3])assert(safeCandidateDiagnostic(diagnostic(4,{consumer:{phaseOrdinal:3,observed:1,cardCount,nativeImgCount:0,roleImgCount:0,placeholderCount:0,placeholderVisible:0}}),4));
+ const missing=diagnostic(4);delete missing.consumer;assert.equal(safeCandidateDiagnostic(missing,4),null);
+});
 test('toHaveValue appends matcher9 without interpreting private input values as Auth error codes',()=>{
- assert.equal(RUNTIME_ERROR_MATCHERS.length,9);
+ assert.equal(RUNTIME_ERROR_MATCHERS.length,10);
  const facts=runtimePlaywrightFailureFacts({message:'expect(locator).toHaveValue(expected)\nReceived: "PIN_CHANGE_REQUIRED"'}).failureFacts;
  assert.equal(facts.errorMatcherOrdinal,9);assert.equal(facts.errorCodeOrdinal,0);
  assert.equal(RUNTIME_ERROR_CODES.length,40);

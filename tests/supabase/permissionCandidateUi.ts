@@ -1,4 +1,26 @@
-import { expect, type Page } from "@playwright/test";
+import { expect, type Page, type Locator } from "@playwright/test";
+
+// A visible SVG placeholder also has Playwright's implicit img role. The
+// unavailable published bitmap must be absent; the fallback remains visible.
+export async function expectCandidateImageFallback(card: Locator, assertion = expect) {
+  await assertion(card.getByTestId("menu-image-placeholder")).toBeVisible();
+  await assertion(card.locator("img")).toHaveCount(0);
+}
+
+// Own both promises before either can reject. A failed UI action must not leave
+// a response timeout unhandled; the original action/response error still fails.
+export async function candidateActionResponse<T>(response: Promise<T>, action: () => Promise<unknown>): Promise<T> {
+  const [value] = await Promise.all([response, Promise.resolve().then(action)]);
+  return value;
+}
+
+// Cleanup failure fails a successful body, but cannot replace its primary error.
+export async function withCandidateCleanup<T>(body: () => Promise<T>, cleanup: () => Promise<void>): Promise<T> {
+  let failed = false;
+  try { return await body(); }
+  catch (error) { failed = true; throw error; }
+  finally { try { await cleanup(); } catch (error) { if (!failed) throw error; } }
+}
 
 export interface CandidateDrawerDriver {
   visible(id: string): Promise<boolean>;

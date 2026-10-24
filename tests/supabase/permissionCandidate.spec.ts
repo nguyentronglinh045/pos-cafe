@@ -5,7 +5,7 @@ import pg from "pg";
 import { EMPLOYEE_IDS, STORE_IDS, runtimeProof } from "../../scripts/permission-identity-runtime.mjs";
 import { candidateEnvironment, installStoreSession } from "./permissionCandidateEnvironment.ts";
 import { CandidateDiagnostics } from "./permissionCandidateDiagnostics.ts";
-import { closeCandidateDrawerFromPage, waitForCandidateSaveFromPage, establishCandidateClearSettings } from "./permissionCandidateUi.ts";
+import { closeCandidateDrawerFromPage, waitForCandidateSaveFromPage, establishCandidateClearSettings, expectCandidateImageFallback, candidateActionResponse, withCandidateCleanup } from "./permissionCandidateUi.ts";
 
 const test = baseTest.extend<{ candidateDiagnostics: CandidateDiagnostics }>({
   candidateDiagnostics: [async ({ page }, use, testInfo) => {
@@ -60,9 +60,7 @@ async function closeDrawerFromNav(page: Page) {
 }
 
 async function expectSavedRpc(page: Page, name: string, action: () => Promise<void>) {
-  const response = page.waitForResponse(r => r.url().includes(`/rpc/${name}`));
-  await action();
-  const saved = await response;
+  const saved = await candidateActionResponse(page.waitForResponse(r => r.url().includes(`/rpc/${name}`)), action);
   expect(saved.ok()).toBeTruthy();
   expect(await saved.json()).toMatchObject({ ok: true });
   await waitForCandidateSaveFromPage(page, name);
@@ -101,7 +99,7 @@ test("owner permission change reaches a live cashier context within five seconds
     }), { timeout: 15_000 }).toBe(true);
     await owner.getByTestId("nav-employees").click(); await owner.getByTestId(`employee-row-${EMPLOYEE_IDS[2]}`).click();
     const payment = owner.getByTestId("permission-payment.take");
-    if (!(await payment.isChecked())) { await payment.check(); const saved = owner.waitForResponse(r => r.url().includes("/rpc/permission_admin_update")); await owner.getByTestId("save-employee-button").click(); await expect((await saved).ok()).toBeTruthy(); }
+    if (!(await payment.isChecked())) { await payment.check(); const saved = await candidateActionResponse(owner.waitForResponse(r => r.url().includes("/rpc/permission_admin_update")), () => owner.getByTestId("save-employee-button").click()); await expect(saved.ok()).toBeTruthy(); }
     const cashierTable = cashier.locator('[data-testid^="table-"]').first(), occupied = await cashierTable.locator('[data-floor-label="price"]').count() > 0; await cashierTable.click();
     if (!occupied) {
       await cashier.getByTestId("order-drawer").locator('[data-testid^="menu-item-"]').first().click();
@@ -133,7 +131,7 @@ test("owner creates waiter and real UI hides protected administration and report
   await page.getByTestId("nav-employees").click(); await page.getByTestId("add-employee-button").click();
   await page.getByTestId("employee-name-input").fill("Waiter E2E"); await page.getByTestId("employee-role-select").selectOption("waiter");
   await page.getByTestId("employee-pin-input").fill("456789"); await page.getByTestId("employee-confirm-pin-input").fill("456789");
-  const created = page.waitForResponse(r => r.url().includes("/rpc/permission_admin_create")); await page.getByTestId("save-employee-button").click(); expect((await created).ok()).toBeTruthy();
+  const created = await candidateActionResponse(page.waitForResponse(r => r.url().includes("/rpc/permission_admin_create")), () => page.getByTestId("save-employee-button").click()); expect(created.ok()).toBeTruthy();
   const row = page.locator('[data-testid^="employee-row-"]').filter({ hasText: "Waiter E2E" }); await expect(row).toBeVisible();
   const waiterId = (await row.getAttribute("data-testid"))!.slice("employee-row-".length);
   const context = await browser.newContext(); try {
@@ -279,19 +277,21 @@ test("owner persists menu, floor and store settings changes through real candida
       body: JSON.stringify({ ok: false, error: { code: "PERMISSION_UPDATE_UNAVAILABLE" } }) });
   };
   await page.route(publicUrl, failImage);
-  try {
-    const failedImage = page.waitForResponse(response => response.url() === publicUrl && response.request().method() === "GET");
+  diagnostic.expectConsumerImage(1, itemId);
+  await withCandidateCleanup(async () => {
     // Keep the existing occupied dine-in order: the later clear-demo case
     // relies on it to prove OPEN_ORDERS_BLOCK_CLEAR_DEMO. Pay only this new order.
-    await page.getByTestId("nav-takeaway").click();
-    await page.getByTestId("takeaway-drawer").locator("header").getByRole("button", { name: "Tạo đơn mang đi", exact: true }).click();
-    await page.getByPlaceholder("Tìm món...").fill(changedName);
-    const failed = await failedImage;
+    const failed = await candidateActionResponse(page.waitForResponse(response => response.url() === publicUrl && response.request().method() === "GET"), async () => {
+      await page.getByTestId("nav-takeaway").click();
+      await page.getByTestId("takeaway-drawer").locator("header").getByRole("button", { name: "Tạo đơn mang đi", exact: true }).click();
+      await page.getByPlaceholder("Tìm món...").fill(changedName);
+    });
     expect(failed.status()).toBe(503);
     expect((await failed.allHeaders())["cache-control"]).toBe("no-store");
-    await expect(orderCard.getByTestId("menu-image-placeholder")).toBeVisible();
-    await expect(orderCard.getByRole("img")).toHaveCount(0);
+    diagnostic.expectConsumerImage(2, itemId);
+    await expectCandidateImageFallback(orderCard);
     diagnostic.mark(16);
+    diagnostic.expectConsumerImage(3, itemId);
     const imageBoxAfter = await imageBox.boundingBox(), cardAfter = await orderCard.boundingBox();
     expect(imageBoxAfter).not.toBeNull(); expect(cardAfter).not.toBeNull();
     for (const dimension of ["width", "height"] as const) {
@@ -301,10 +301,12 @@ test("owner persists menu, floor and store settings changes through real candida
     await expect(orderCard.locator("strong")).toHaveText(changedName);
     await expect(orderCard).toContainText(priceText);
     await expect(orderCard).toBeEnabled();
+    diagnostic.expectConsumerImage(4, itemId);
     await orderCard.click();
     const modifier = page.getByTestId("modifier-confirm"); if (await modifier.isVisible()) await modifier.click();
     await expect(page.getByTestId("order-cart-line").filter({ hasText: changedName })).toBeVisible();
     await page.getByTestId("submit-order-button-footer").click();
+    diagnostic.expectConsumerImage(5, itemId);
     await expect(page.getByTestId("receipt-preview")).toBeVisible();
     await expect(page.getByTestId("receipt-preview")).toContainText(changedName);
     await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-variant", "kitchen");
@@ -315,28 +317,32 @@ test("owner persists menu, floor and store settings changes through real candida
     const takeawayOrder = page.getByRole("button").filter({ has: page.getByText(`#${orderNo}`, { exact: true }) });
     await expect(takeawayOrder).toHaveCount(1);
     await takeawayOrder.click();
+    diagnostic.expectConsumerImage(6, itemId);
     await page.getByTestId("submit-order-button-footer").click();
     await expect(page.getByTestId("payment-drawer")).toBeVisible();
     await page.getByTestId("payment-received-amount").fill("1000000");
     await page.getByTestId("print-receipt-checkbox").check();
     await page.getByTestId("pay-button-footer").click();
+    diagnostic.expectConsumerImage(7, itemId);
     await expect(page.getByTestId("receipt-preview")).toBeVisible();
     await expect(page.getByTestId("receipt-preview")).toContainText(changedName);
     await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-variant", "receipt");
     await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-order-no", orderNo);
     await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-total", String(price));
     diagnostic.mark(17);
-  } finally { await page.unroute(publicUrl, failImage); }
+  }, () => page.unroute(publicUrl, failImage));
+  diagnostic.clearConsumerImage();
 });
 
 test("four active roles have protected navigation parity with server authorization", async ({ browser }) => {
   const rosterContext = await browser.newContext();
-  const rosterPage = await rosterContext.newPage();
-  await installStoreSession(rosterPage); await rosterPage.goto("/");
-  const waiterButton = rosterPage.locator('[data-testid^="employee-"]').filter({ hasText: "Waiter E2E" });
-  await expect(waiterButton).toBeVisible();
-  const waiterId = (await waiterButton.getAttribute("data-testid"))!.slice("employee-".length);
-  await rosterContext.close();
+  const waiterId = await withCandidateCleanup(async () => {
+    const rosterPage = await rosterContext.newPage();
+    await installStoreSession(rosterPage); await rosterPage.goto("/");
+    const waiterButton = rosterPage.locator('[data-testid^="employee-"]').filter({ hasText: "Waiter E2E" });
+    await expect(waiterButton).toBeVisible();
+    return (await waiterButton.getAttribute("data-testid"))!.slice("employee-".length);
+  }, () => rosterContext.close());
   const cases = [
     { id: EMPLOYEE_IDS[0], allowed: ["nav-employees", "nav-menu-editor", "nav-floor-editor", "nav-report", "nav-settings"] },
     { id: EMPLOYEE_IDS[1], allowed: ["nav-employees", "nav-menu-editor", "nav-floor-editor", "nav-report"] },
@@ -349,7 +355,7 @@ test("four active roles have protected navigation parity with server authorizati
   ] as const;
   for (const role of cases) {
     const context = await browser.newContext();
-    try {
+    await withCandidateCleanup(async () => {
       const page = await context.newPage();
       let employeeToken = "";
       page.on("request", request => { const token = request.headers()["x-pos-employee-token"]; if (token) employeeToken = token; });
@@ -371,7 +377,7 @@ test("four active roles have protected navigation parity with server authorizati
         const allowed = role.allowed.includes(nav); expect(results[index].body.ok).toBe(allowed);
         if (!allowed) expect(results[index].body.error.code).toBe("FORBIDDEN");
       }
-    } finally { await context.close(); }
+    }, () => context.close());
   }
 });
 
@@ -394,13 +400,20 @@ test("owner clears demo data through UI and refetch preserves custom records", a
   await prepareInitialDemoFixture();
   diagnostic.mark(19);
   const seeded: Array<Promise<{ stage: string; ok: boolean }>> = [];
-  page.on('response', response => {
-    if (response.url().includes('/rpc/permission_run_initial_seed_stage') && response.ok())
-      seeded.push(response.json().then(body => ({ stage: response.request().postDataJSON().p_request.stage, ok: body.ok })));
-  });
-  await login(page, EMPLOYEE_IDS[0]);
-  await expect.poll(() => seeded.length).toBe(3);
-  expect(await Promise.all(seeded)).toEqual(['employee', 'menu', 'floor'].map(stage => ({ stage, ok: true })));
+  const observeSeed = (response: Response) => {
+    if (response.url().includes('/rpc/permission_run_initial_seed_stage') && response.ok()) {
+      const task = response.json().then(body => ({ stage: response.request().postDataJSON().p_request.stage, ok: body.ok }));
+      // Own a rejection immediately while preserving the original promise for
+      // the eventual exact three-result assertion, which must still fail.
+      void task.catch(() => {}); seeded.push(task);
+    }
+  };
+  page.on('response', observeSeed);
+  await withCandidateCleanup(async () => {
+    await login(page, EMPLOYEE_IDS[0]);
+    await expect.poll(() => seeded.length).toBe(3);
+    expect(await Promise.all(seeded)).toEqual(['employee', 'menu', 'floor'].map(stage => ({ stage, ok: true })));
+  }, async () => { page.off('response', observeSeed); });
   diagnostic.mark(20);
   await page.getByTestId("nav-settings").click();
   await expect(page.getByTestId("settings-name-input")).toHaveValue(customStoreName);

@@ -4,9 +4,9 @@ import {EventEmitter} from 'node:events';
 import {setImmediate as nextTurn} from 'node:timers/promises';
 import {readFileSync} from 'node:fs';
 import {JSDOM} from 'jsdom';
-import {closeCandidateDrawer,waitForCandidateSave,establishCandidateClearSettings} from '../tests/supabase/permissionCandidateUi.ts';
-import {CandidateDiagnostics,diagnosticFields,imageDiagnosticFields,readCandidateDom,readCandidateImageDom} from '../tests/supabase/permissionCandidateDiagnostics.ts';
-import {CANDIDATE_CHECKPOINT_BOUNDS,CANDIDATE_IMAGE_BOUNDS,CANDIDATE_TEST_NAMES,safeCandidateDiagnostic} from './permission-runtime-candidate-diagnostic.mjs';
+import {closeCandidateDrawer,waitForCandidateSave,establishCandidateClearSettings,candidateActionResponse,withCandidateCleanup} from '../tests/supabase/permissionCandidateUi.ts';
+import {CandidateDiagnostics,diagnosticFields,imageDiagnosticFields,consumerDiagnosticFields,readCandidateDom,readCandidateImageDom,readCandidateConsumerDom} from '../tests/supabase/permissionCandidateDiagnostics.ts';
+import {CANDIDATE_CHECKPOINT_BOUNDS,CANDIDATE_IMAGE_BOUNDS,CANDIDATE_CONSUMER_BOUNDS,CANDIDATE_TEST_NAMES,safeCandidateDiagnostic} from './permission-runtime-candidate-diagnostic.mjs';
 
 test('visible floor cannot finish close before the selected drawer is hidden',async()=>{
  let release;const hidden=new Promise(resolve=>{release=resolve;});const calls=[];let completed=false;
@@ -32,6 +32,24 @@ test('pending-disabled Save is insufficient; callback must clear the dirty draft
  assert.equal(calls.at(-1),'settings-dirty-badge');completeDraft();await saving;assert.equal(completed,true);assert.equal(calls.at(-1),'disabled');
 });
 
+test('UI action and response failures are owned immediately without replacing the first error',async()=>{
+ const actionError=Error('ACTION_FAILED'),responseError=Error('RESPONSE_FAILED');let rejectResponse;
+ const response=new Promise((_,reject)=>{rejectResponse=reject;});
+ await assert.rejects(candidateActionResponse(response,async()=>{throw actionError;}),e=>e===actionError);
+ rejectResponse(responseError);await nextTurn(); // node:test also rejects any unhandled rejection.
+ let rejectAction;const action=new Promise((_,reject)=>{rejectAction=reject;});
+ await assert.rejects(candidateActionResponse(Promise.reject(responseError),()=>action),e=>e===responseError);
+ rejectAction(actionError);await nextTurn();
+ assert.equal(await candidateActionResponse(Promise.resolve(23),async()=>{}),23);
+});
+
+test('cleanup always executes and cannot mask the primary body failure',async()=>{
+ const primary=Error('BODY_FAILED'),cleanup=Error('CLEANUP_FAILED');let calls=0;
+ await assert.rejects(withCandidateCleanup(async()=>{throw primary;},async()=>{calls++;throw cleanup;}),e=>e===primary);
+ await assert.rejects(withCandidateCleanup(async()=>23,async()=>{calls++;throw cleanup;}),e=>e===cleanup);
+ assert.equal(await withCandidateCleanup(async()=>23,async()=>{calls++;}),23);assert.equal(calls,3);
+});
+
 class FakePage extends EventEmitter {
  mainFrame(){return this;}
  async evaluate(){return {drawerCount:2,inputCount:2,drawerVisible:2,inputVisible:2,inputSuffix:2,inputEqualsPreclear:0,
@@ -45,6 +63,7 @@ const response=(request,name)=>({url:request.url,request:()=>request,ok:()=>true
 test('checkpoint producer and reporter agree on every finite field',()=>{
  assert.deepEqual([...diagnosticFields].sort(),Object.keys(CANDIDATE_CHECKPOINT_BOUNDS).sort());
  assert.deepEqual([...imageDiagnosticFields].sort(),Object.keys(CANDIDATE_IMAGE_BOUNDS).sort());
+ assert.deepEqual([...consumerDiagnosticFields].sort(),Object.keys(CANDIDATE_CONSUMER_BOUNDS).sort());
 });
 
 test('rendered section marker, pending Save and missing input remain distinct in DOM projection',()=>{
@@ -164,4 +183,47 @@ test('probe failures and absent milestones remain unknown, original failed test 
  const value=decoded(out);assert(safeCandidateDiagnostic(value,6));assert.deepEqual(value.observations.map(row=>row.checkpointOrdinal),[2,5]);
  assert.equal(value.observations[0].dbReadState,2);assert.equal(value.observations[0].dbSuffix,0);assert.equal(value.observations[1].drawerCount,0);
  assert(!out.attachments[0].body.toString().includes('PRIVATE_'));assert.equal(page.listenerCount('request'),0);
+});
+
+const consumerPage=(counts={card:1,native:0,role:1,placeholder:1})=>{
+ const page=new FakePage();let calls=0;
+ page.getByTestId=id=>{assert.equal(id,'menu-item-PRIVATE_ITEM');calls++;return{
+  count:async()=>counts.card,locator:selector=>{assert.equal(selector,'img');return{count:async()=>counts.native};},
+  getByRole:role=>{assert.equal(role,'img');return{count:async()=>counts.role};},
+  getByTestId:id=>{assert.equal(id,'menu-image-placeholder');return{count:async()=>counts.placeholder,isVisible:async()=>true};}};};
+ return{page,calls:()=>calls};
+};
+test('consumer projection distinguishes missing/nonunique card, native image and actual role probe',async()=>{
+ for(const card of[0,1,2]){
+  const f=consumerPage({card,native:0,role:1,placeholder:1});
+  const row=await readCandidateConsumerDom(f.page,'PRIVATE_ITEM',2);
+  assert.equal(row.observed,1);assert.equal(row.cardCount,card+1);
+  assert.equal(row.nativeImgCount,card===1?1:0);assert.equal(row.roleImgCount,card===1?2:0);
+  assert.equal(row.placeholderVisible,card===1?2:0);
+ }
+ const f=consumerPage({card:1,native:1,role:2,placeholder:1}),diag=new CandidateDiagnostics(f.page,async()=>''),out=capture(4);
+ diag.expectConsumerImage(2,'PRIVATE_ITEM');await diag.finish(out.info);
+ assert(safeCandidateDiagnostic(decoded(out),4));assert.equal(decoded(out).consumer.nativeImgCount,2);
+ assert.equal(decoded(out).consumer.roleImgCount,3);assert(!out.attachments[0].body.toString().includes('PRIVATE'));
+});
+test('unavailable and hanging probes stay UNKNOWN; late results cannot mutate exported facts',async()=>{
+ for(const kind of['consumer-reject','consumer-hang','image-hang']){
+  const f=consumerPage(),page=f.page,diag=new CandidateDiagnostics(page,async()=>''),out=capture(4);let release;
+  const hanging=new Promise(resolve=>{release=resolve;});
+  if(kind==='image-hang'){
+   const evaluate=page.evaluate.bind(page);page.evaluate=(fn)=>fn===readCandidateImageDom?hanging:evaluate();diag.expectMenuImage(1,'PRIVATE_ITEM','PRIVATE_URL');
+  }else{page.getByTestId=()=>({count:()=>kind==='consumer-reject'?Promise.reject(Error('PRIVATE_PROBE')):hanging});diag.expectConsumerImage(2,'PRIVATE_ITEM');}
+  await diag.finish(out.info);const value=decoded(out),before=out.attachments[0].body.toString();
+  assert(safeCandidateDiagnostic(value,4));assert.equal((kind==='image-hang'?value.image:value.consumer).observed,0);
+  release(kind==='image-hang'?{phaseOrdinal:1,observed:1,selectionCount:2,selectionMatches:2,imageCount:2,srcMatches:2,decoded:2}:0);
+  await nextTurn();assert.equal(out.attachments[0].body.toString(),before);assert.equal(diag.consumerTarget,undefined);assert.equal(diag.imageTarget,undefined);
+ }
+});
+test('passed cases do not probe/attach consumer facts; attachment refusal never masks the test',async()=>{
+ for(const status of['passed','failed']){
+  const f=consumerPage(),diag=new CandidateDiagnostics(f.page,async()=>''),out=capture(4,status);let attachments=0;
+  out.info.attach=async()=>{attachments++;throw Error('PRIVATE_ATTACHMENT_FAILURE');};diag.expectConsumerImage(2,'PRIVATE_ITEM');
+  await diag.finish(out.info);assert.equal(attachments,status==='passed'?0:1);assert.equal(f.calls(),status==='passed'?0:1);
+  assert.equal(f.page.listenerCount('response'),0);assert.equal(diag.consumerTarget,undefined);
+ }
 });

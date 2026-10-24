@@ -1,7 +1,7 @@
 // Candidate-only, source-fixed diagnostic projection. This is not an acceptance
 // catalog: all six full-file tests still pass through validateRuntimeStage.
 export const CANDIDATE_DIAGNOSTIC_ATTACHMENT='candidate-e2e-diagnostics';
-export const CANDIDATE_DIAGNOSTIC_SCHEMA='candidate-e2e-diagnostics-v2';
+export const CANDIDATE_DIAGNOSTIC_SCHEMA='candidate-e2e-diagnostics-v3';
 export const CANDIDATE_DIAGNOSTIC_MAX_BYTES=16384;
 export const CANDIDATE_TEST_FILE='tests/supabase/permissionCandidate.spec.ts';
 export const CANDIDATE_TEST_PROJECT='permission-candidate-isolated';
@@ -25,6 +25,8 @@ export const CANDIDATE_CHECKPOINT_BOUNDS=Object.freeze({
 // One optional test4 image observation, never multiplied across settings rows.
 export const CANDIDATE_IMAGE_BOUNDS=Object.freeze({phaseOrdinal:2,observed:1,selectionCount:3,
  selectionMatches:2,imageCount:3,srcMatches:2,decoded:2});
+export const CANDIDATE_CONSUMER_BOUNDS=Object.freeze({phaseOrdinal:7,observed:1,cardCount:3,
+ nativeImgCount:3,roleImgCount:3,placeholderCount:3,placeholderVisible:2});
 const ordinal=(value,max)=>Number.isSafeInteger(value)&&value>=0&&value<=max;
 const exact=(value,keys)=>value!==null&&typeof value==='object'&&!Array.isArray(value)
  &&Object.keys(value).sort().join(',')===[...keys].sort().join(',');
@@ -34,7 +36,7 @@ export function candidateTestOrdinal(identity){
   ?CANDIDATE_TEST_NAMES.indexOf(identity.name)+1:0;
 }
 export function safeCandidateDiagnostic(value,testOrdinal){
- if(!exact(value,['schemaVersion','testOrdinal','milestoneOrdinal','observations','image'])
+ if(!exact(value,['schemaVersion','testOrdinal','milestoneOrdinal','observations','image','consumer'])
   ||value.schemaVersion!==CANDIDATE_DIAGNOSTIC_SCHEMA||value.testOrdinal!==testOrdinal
   ||!ordinal(testOrdinal,6)||testOrdinal===0||!ordinal(value.milestoneOrdinal,31)
   ||!Array.isArray(value.observations)||value.observations.length>5)return null;
@@ -55,7 +57,17 @@ export function safeCandidateDiagnostic(value,testOrdinal){
    ||value.image.observed===1&&value.image.imageCount===2&&(value.image.srcMatches===0||value.image.decoded===0)
    ||value.image.imageCount!==2&&(value.image.srcMatches!==0||value.image.decoded!==0))return null;
  }
- return {schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal,milestoneOrdinal:value.milestoneOrdinal,observations,image:value.image};
+ if(value.consumer!==null){const c=value.consumer;
+  if(testOrdinal!==4||!exact(c,Object.keys(CANDIDATE_CONSUMER_BOUNDS))
+   ||!Object.entries(CANDIDATE_CONSUMER_BOUNDS).every(([k,max])=>ordinal(c[k],max))||c.phaseOrdinal===0
+   ||c.observed===0&&Object.entries(c).some(([k,v])=>!['phaseOrdinal','observed'].includes(k)&&v!==0)
+   ||c.observed===1&&c.cardCount===0
+   ||c.cardCount!==2&&['nativeImgCount','roleImgCount','placeholderCount','placeholderVisible'].some(k=>c[k]!==0)
+   ||c.observed===1&&c.cardCount===2&&['nativeImgCount','roleImgCount','placeholderCount'].some(k=>c[k]===0)
+   ||c.placeholderCount!==2&&c.placeholderVisible!==0
+   ||c.placeholderCount===2&&c.placeholderVisible===0)return null;
+ }
+ return {schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal,milestoneOrdinal:value.milestoneOrdinal,observations,image:value.image,consumer:value.consumer};
 }
 // Missing/invalid never becomes an observed false. No file attachment is opened.
 export function candidateDiagnosticAttachment(identity,attachments){
@@ -75,6 +87,7 @@ export function candidateDiagnosticBounds(errorCodeMax,errorMatcherMax){
  const out={candidateInventoryStatus:3,candidateUnknownDiscovery:10000,candidateUnknownResults:10000,
   candidateDuplicateDiscovery:10000,candidateDuplicateResults:10000,candidateMissingDiscovery:6,candidateMissingResults:6};
  for(const[key,max]of Object.entries(CANDIDATE_IMAGE_BOUNDS))out['candidateImage'+upper(key)]=max;
+ for(const[key,max]of Object.entries(CANDIDATE_CONSUMER_BOUNDS))out['candidateConsumer'+upper(key)]=max;
  for(let i=1;i<=6;i++){
   const p='candidateTest'+i;
   Object.assign(out,{[p+'Discovered']:1,[p+'State']:6,[p+'Attempts']:10000,[p+'FailureLine']:100000,
@@ -100,6 +113,7 @@ export function candidateRuntimeFailureFacts(report,{errorCodeMax,errorMatcherMa
   candidateDuplicateDiscovery:duplicates(ds),candidateDuplicateResults:duplicates(rs),
   candidateMissingDiscovery:missing(ds),candidateMissingResults:missing(rs)};
  for(const key of Object.keys(CANDIDATE_IMAGE_BOUNDS))out['candidateImage'+upper(key)]=0;
+ for(const key of Object.keys(CANDIDATE_CONSUMER_BOUNDS))out['candidateConsumer'+upper(key)]=0;
  for(let i=1;i<=6;i++){
   const p='candidateTest'+i,row=rs[i-1].length===1?rs[i-1][0]:null;
   out[p+'Discovered']=ds[i-1].length===1?1:0;
@@ -114,6 +128,7 @@ export function candidateRuntimeFailureFacts(report,{errorCodeMax,errorMatcherMa
   out[p+'DiagnosticStatus']=validEnvelope?1:attachment===undefined||exact(attachment,['status'])&&attachment.status===0?0:2;
   out[p+'MilestoneOrdinal']=validEnvelope?value.milestoneOrdinal:0;
   if(i===4&&validEnvelope&&value.image)for(const key of Object.keys(CANDIDATE_IMAGE_BOUNDS))out['candidateImage'+upper(key)]=value.image[key];
+  if(i===4&&validEnvelope&&value.consumer)for(const key of Object.keys(CANDIDATE_CONSUMER_BOUNDS))out['candidateConsumer'+upper(key)]=value.consumer[key];
   for(let j=1;j<=5;j++){
    const checkpoint=validEnvelope?value.observations.find(x=>x.checkpointOrdinal===j):null;
    out[p+'Checkpoint'+j+'Reached']=checkpoint?1:0;

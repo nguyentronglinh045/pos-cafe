@@ -79,7 +79,7 @@ const emptyMenu=()=>Object.fromEntries(['categories','menuItems','optionGroups',
 /** Overrides exist for unit fault/guard controls only. They cannot produce a runtime receipt. */
 export async function runT04ImageMeasurement(options,overrides){
  const now=overrides?.now??Date.now,mono=overrides?.monotonic??(()=>performance.now());
- let admitted=false,cleanup,receipt;
+ let admitted=false,cleanup,receipt,failure,phase=1,cleanupAttempted=0,cleanupFailed=0;
  try{
   check(options&&typeof options.guard==='function'&&typeof options.physical==='function'&&typeof options.db?.query==='function');
   check(options.api===API&&equal(options.storeIds,STORES)&&options.employeeId===EMPLOYEE);
@@ -99,18 +99,22 @@ export async function runT04ImageMeasurement(options,overrides){
    check(await options.physical()===options.binding.physicalBackendSHA);
    check(now()<(cleaning?options.deadline:measurementEnd));};
   const effects=overrides?.effects??createRuntimeEffects;
-  const runtime=await effects(options,{now,mono,gate,measurementEnd});cleanup=runtime.close;admitted=true;
+  phase=2;const runtime=await effects(options,{now,mono,gate,measurementEnd});cleanup=runtime.close;admitted=true;
+  phase=3;
   const result=await runtime.measure();
-  const restored=await runtime.close();cleanup=undefined;
-  receipt={schemaVersion:'permission-t04-image-measurement-v1',scope:'SYNTHETIC_T04_IMAGE_ONLY',status:'PASS',
+  phase=4;cleanupAttempted=1;let restored;
+  try{restored=await runtime.close();}catch(error){cleanupFailed=1;throw error;}cleanup=undefined;
+  phase=5;receipt={schemaVersion:'permission-t04-image-measurement-v1',scope:'SYNTHETIC_T04_IMAGE_ONLY',status:'PASS',
    execution:overrides?'UNIT_SIMULATION':'RUNTIME',binding:{...options.binding},observations:result.observations,timing:result.timing,
    restoration:restored,uploadOrphanStatus:'QUEUE_CLEANUP_UNCERTAIN'};
   validateT04ImageMeasurement({...receipt,execution:'RUNTIME'},options.binding);
   // The public validator always rejects simulated receipts.
   if(!overrides)validateT04ImageMeasurement(receipt,options.binding);
   return receipt;
- }catch{throw Error(admitted?'PERMISSION_T04_IMAGE_MEASUREMENT_FAILED':'PERMISSION_T04_IMAGE_MEASUREMENT_REFUSED');}
- finally{if(cleanup){try{await cleanup();}catch{ /* Parent must fail, never upgrade cleanup uncertainty. */ }}}
+ }catch{failure=Object.assign(Error(admitted?'PERMISSION_T04_IMAGE_MEASUREMENT_FAILED':'PERMISSION_T04_IMAGE_MEASUREMENT_REFUSED'),
+  {t04ImageMeasurementPhaseOrdinal:phase});throw failure;}
+ finally{if(cleanup){cleanupAttempted=1;try{await cleanup();}catch{cleanupFailed=1;}}
+  if(failure)Object.assign(failure,{t04ImageMeasurementCleanupAttempted:cleanupAttempted,t04ImageMeasurementCleanupFailed:cleanupFailed});}
 }
 
 async function createRuntimeEffects(o,{now,mono,gate,measurementEnd}){

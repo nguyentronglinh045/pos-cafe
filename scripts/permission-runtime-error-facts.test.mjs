@@ -68,7 +68,34 @@ test('actual Playwright reporter adapter preserves statuses/attempts/discovery w
  assert(!Object.hasOwn(report,'failureFacts'));assert(!Object.hasOwn(report.results[0],'failureLine'));
 });
 
-import{RUNTIME_ERROR_CODES}from'./permission-runtime-error-facts.mjs';
+import{RUNTIME_ERROR_CODES,COMPATIBILITY_EXTRA_IDENTITY,compatibilityExtraFailureFacts}from'./permission-runtime-error-facts.mjs';
+
+test('count matcher remains finite and cannot infer authorization codes from received values',()=>{
+ const header='expect(locator).toHaveCount(expected)';
+ for(const actual of['PRIVATE_ACTUAL','EMPLOYEE_SESSION_REQUIRED','3']){
+  const out=runtimePlaywrightFailureFacts({message:header+'\nExpected: "PRIVATE_EXPECTED"\nReceived: "'+actual+'"'});
+  assert.equal(out.failureFacts.errorMatcherOrdinal,10);assert.equal(out.failureFacts.errorCodeOrdinal,0);assert(!JSON.stringify(out).includes('PRIVATE'));
+ }
+ assert.equal(runtimeErrorFacts({matcherResult:{name:'toHaveCount',actual:'PRIVATE',expected:'PRIVATE'}}).errorMatcherOrdinal,10);
+ for(const message of[header+'\n'+header,header.replace('(expected)','(private)'),header+'x'.repeat(65537),'PRIVATE'])
+  assert.equal(runtimePlaywrightFailureFacts({message}).failureFacts.errorMatcherOrdinal,0);
+});
+
+test('only the unique fixed extra compatibility identity exposes its failure, never changes required aggregate',()=>{
+ const item=COMPATIBILITY_EXTRA_IDENTITY,row={...item,state:'failed',attempts:1,failureLine:132,failureFacts:{errorCodeOrdinal:1,errorNameOrdinal:4,errorMatcherOrdinal:1}};
+ const report={discovery:[item],results:[row],errorCount:0,hookErrorCount:0};
+ const valid=compatibilityExtraFailureFacts(report);assert.equal(valid.compatibilityExtraStatus,1);assert.equal(valid.compatibilityExtraFailureLine,132);
+ for(const r of[{discovery:[item,item],results:[row]},{discovery:[item],results:[row,row]},{discovery:[],results:[row]}]){
+  const facts=compatibilityExtraFailureFacts(r);assert.equal(facts.compatibilityExtraStatus,2);
+  assert(Object.entries(facts).every(([key,value])=>key==='compatibilityExtraStatus'||value===0));
+ }
+ for(const change of[{file:'other.ts'},{project:'private'},{name:item.name+' extra'}]){
+  const facts=compatibilityExtraFailureFacts({discovery:[{...item,...change}],results:[{...row,...change}]});assert(Object.values(facts).every(x=>x===0));
+ }
+ const projected=runtimeRunnerFailureFacts({stage:'transition-compatibility-database',required:[]},report);
+ assert.equal(projected.firstFailedRequired,0);assert.equal(projected.compatibilityExtraState,2);
+ assert(!Object.hasOwn(runtimeRunnerFailureFacts({stage:'other',required:[]},report),'compatibilityExtraStatus'));
+});
 test('serialized Playwright Received code and matcher project only existing finite categories, never Expected or raw values',()=>{
  const out=runtimePlaywrightFailureFacts({message:'SECRET\nexpect(received).toBe(expected)\nExpected: "PIN_CHANGE_REQUIRED"\nReceived: "EMPLOYEE_SESSION_REQUIRED"'});
  assert.equal(out.failureFacts.errorCodeOrdinal,RUNTIME_ERROR_CODES.indexOf('EMPLOYEE_SESSION_REQUIRED')+1);assert.equal(out.failureFacts.errorMatcherOrdinal,1);assert(!JSON.stringify(out).includes('SECRET'));

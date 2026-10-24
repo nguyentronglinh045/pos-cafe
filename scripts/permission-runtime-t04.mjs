@@ -26,12 +26,23 @@ export function t04TimeBudget(startedAtEpochMs,now){
   return{deadline,harnessTimeoutMs};
 }
 export const T04_FAILURE_BOUNDS=Object.freeze({...Object.fromEntries(Object.entries(RUNTIME_FAILURE_BOUNDS).map(([k,v])=>['t04'+k[0].toUpperCase()+k.slice(1),[0,v]])),t04ReportObserved:[0,3],t04StageOrdinal:[0,19],t04FailureOrdinal:[0,4],t04RunnerErrors:[0,10000],t04HookErrors:[0,10000],
+ t04PhaseOrdinal:[0,8],t04RuntimeStageBoundaryOrdinal:[0,7],t04RuntimeResultFailureOrdinal:[0,16],t04RuntimeStageChildExitOrdinal:[0,256],
+ t04ImageMeasurementPhaseOrdinal:[0,5],t04ImageMeasurementCleanupAttempted:[0,1],t04ImageMeasurementCleanupFailed:[0,1],
  t04MissingRequired:[0,10000],t04FirstFailedRequired:[0,10000],t04BoundaryOrdinal:[1,19],t04BoundaryExit:[0,255],
  t04RestoreErrorOrdinal:[0,15],t04RestoreCommandOrdinal:[0,24],
  ...T04_DIAGNOSTIC_BOUNDS,
  t04RealtimeFailureMask:[0,1023],t04RealtimeFirstFailureOrdinal:[0,480],t04FailedTests:[0,10000],t04FirstFailedLine:[0,100000],t04TestErrorCodeOrdinal:[0,RUNTIME_ERROR_CODES.length],
   t04TestErrorNameOrdinal:[0,5],t04TestErrorMatcherOrdinal:[0,RUNTIME_ERROR_MATCHERS.length]});
 export function t04SafeFailureMetric(key,value){const bounds=T04_FAILURE_BOUNDS[key];return!!bounds&&Number.isSafeInteger(value)&&value>=bounds[0]&&value<=bounds[1];}
+export function t04ParentFailureFacts(error,context={}){
+ const finite=(key,value)=>t04SafeFailureMetric(key,value)?value:0;
+ const exit=error?.runtimeStageChildExitCode;
+ return{t04PhaseOrdinal:finite('t04PhaseOrdinal',context.phaseOrdinal),
+  t04RuntimeStageBoundaryOrdinal:finite('t04RuntimeStageBoundaryOrdinal',error?.runtimeStageBoundaryOrdinal),
+  t04RuntimeResultFailureOrdinal:finite('t04RuntimeResultFailureOrdinal',error?.runtimeResultFailureOrdinal),
+  t04RuntimeStageChildExitOrdinal:Number.isInteger(exit)&&exit>=0&&exit<=255?exit+1:0,
+  ...Object.fromEntries(['t04ImageMeasurementPhaseOrdinal','t04ImageMeasurementCleanupAttempted','t04ImageMeasurementCleanupFailed'].map(key=>[key,finite(key,error?.[key])]))};
+}
 export function t04RunnerFailureFacts(expected,r){
  return Object.fromEntries(Object.entries(runtimeRunnerFailureFacts(expected,r)).map(([k,v])=>['t04'+k[0].toUpperCase()+k.slice(1),v]));
 }
@@ -55,30 +66,35 @@ export async function runT04Profile(adapter){
     runnerPreflight='PASS';
     for(const stage of ids){
       if(failure){rows.push({stage,status:'NOT_RUN'});continue;}
+      let phaseOrdinal=1;
       try{
         adapter.guard();if(await adapter.physical()!==physical||!await adapter.preserved(baseline))refuse();
+        phaseOrdinal=2;
         await adapter.prepare(stage);
+        phaseOrdinal=3;
         const r=await adapter.stage(stage),expected=catalog.find(s=>s.stage===stage);
         if(r?.stage!==stage||r.status!=='PASS'||r.required!==expected.required.length||!Number.isSafeInteger(r.run)
           ||r.run<r.required||r.pass!==r.run||r.fail!==0||r.skip!==0||r.retry!==0)refuse();
-        adapter.guard();if(await adapter.physical()!==physical)refuse();
+        phaseOrdinal=4;adapter.guard();if(await adapter.physical()!==physical)refuse();
         if(stage==='candidate-e2e'){
+          phaseOrdinal=5;
           const measured=await adapter.imageMeasurement();
           validateT04ImageMeasurement(measured,{physicalBackendSHA:physical});
           imageMeasurement=measured;
           adapter.guard();if(await adapter.physical()!==physical)refuse();
         }
-        const beforeResetSHA=await adapter.afterStage(stage);
+        phaseOrdinal=6;const beforeResetSHA=await adapter.afterStage(stage);
         if(!/^[a-f0-9]{64}$/.test(beforeResetSHA))refuse();
         if(t04Lifecycle(stage).reset){
+          phaseOrdinal=7;
           const restored=await adapter.restore(stage,beforeResetSHA);
           if(restored?.stage!==stage||restored.status!=='RESTORED_ORIGINAL'||restored.archiveSHA!==checkpoint.archiveSHA
             ||restored.beforeResetSHA!==beforeResetSHA||restored.baselineSHA!==baseline||restored.physicalSHA!==physical)refuse();
           resets.push(restored);
         }
-        if(await adapter.physical()!==physical||!await adapter.preserved(baseline))refuse();
+        phaseOrdinal=8;if(await adapter.physical()!==physical||!await adapter.preserved(baseline))refuse();
         rows.push(r);
-      }catch(error){failure=stage;rows.push({stage,status:'FAIL'});try{adapter.diagnostic?.(stage,error);}catch{}}
+      }catch(error){failure=stage;rows.push({stage,status:'FAIL'});try{adapter.diagnostic?.(stage,error,{phaseOrdinal});}catch{}}
     }
   }catch(error){failure??='bootstrap';try{adapter.diagnostic?.('bootstrap',error);}catch{}
     for(const stage of ids)if(!rows.some(r=>r.stage===stage))rows.push({stage,status:'NOT_RUN'});}
@@ -181,8 +197,8 @@ async function main(){
     return runtimeHash({system_identifier:row.system_identifier,database_oid:row.database_oid,data_directory:row.data_directory,container:container.Id,
       mountDevice:s.dev,mountInode:s.ino,api:status.API_URL});
   };
-  const diagnostic=(stage,error)=>{
-    const facts={t04StageOrdinal:ids.indexOf(stage)+1,t04FailureOrdinal:({42501:1,42883:2,ECONNREFUSED:3,ETIMEDOUT:4})[error?.code]??0,t04ReportObserved:0};
+  const diagnostic=(stage,error,context)=>{
+    const facts={t04StageOrdinal:ids.indexOf(stage)+1,t04FailureOrdinal:({42501:1,42883:2,ECONNREFUSED:3,ETIMEDOUT:4})[error?.code]??0,t04ReportObserved:0,...t04ParentFailureFacts(error,context)};
     if(Number.isInteger(error?.t04BoundaryOrdinal)&&error.t04BoundaryOrdinal>=1&&error.t04BoundaryOrdinal<=19){
       facts.t04BoundaryOrdinal=error.t04BoundaryOrdinal;
       if(Number.isInteger(error?.status)&&error.status>=0&&error.status<=255)facts.t04BoundaryExit=error.status;

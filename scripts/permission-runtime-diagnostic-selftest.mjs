@@ -1,7 +1,8 @@
 import{mkdirSync,writeFileSync,readFileSync}from'node:fs';import{join,resolve,relative}from'node:path';import{spawnSync}from'node:child_process';
+import{pathToFileURL}from'node:url';
 import{runtimeHash,validateRuntimeStage}from'./permission-runtime-results.mjs';
-import{assertRuntimeDiagnosticBinding}from'./permission-runtime-error-facts.mjs';
-import{t04RunnerFailureFacts,t04FailureFacts,t04SafeFailureMetric}from'./permission-runtime-t04.mjs';
+import{assertRuntimeDiagnosticBinding,COMPATIBILITY_EXTRA_IDENTITY}from'./permission-runtime-error-facts.mjs';
+import{t04RunnerFailureFacts,t04FailureFacts,t04SafeFailureMetric,t04ParentFailureFacts}from'./permission-runtime-t04.mjs';
 import{serviceRunnerFailureFacts,serviceSafeFailureMetric}from'./permission-runtime-service-diagnostic.mjs';import{serviceFailureFacts}from'./permission-runtime-service.mjs';
 import{diagnosticMarker,finiteDiagnosticFacts,collectRuntimeDiagnosticFacts}from'./permission-runtime-diagnostic-transport.mjs';
 import{projectTc18WrapperReceipt}from'./permission-runtime-tc18-diagnostic.mjs';
@@ -50,7 +51,7 @@ export function verifyDiagnosticMutationControls(expected,report,context,mode){
  for(const adapters of mutations){let refused=false;try{verifyDiagnosticPipeline(expected,report,context,mode,adapters);}catch{refused=true;}check(refused);}
  return mutations.length;
 }
-// Nested controls in the existing failed diagnostic group. No browser/backend,
+// Nested controls in the existing post-browser failed diagnostic group. No backend,
 // added acceptance group or relaxed exact-count guard. Exercise real attachment
 // transport through the installed Playwright runner before a costly T04.
 export function candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA}){
@@ -59,15 +60,16 @@ export function candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA
   const dir=join(parent,'candidate-'+kind),tests=join(dir,'tests','supabase');mkdirSync(tests,{recursive:true});
   const file=join(tests,'permissionCandidate.spec.ts'),config=join(dir,'config.mjs');
   const snapshot={schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal:6,milestoneOrdinal:17,
-   observations:[{checkpointOrdinal:3,...Object.fromEntries(Object.keys(CANDIDATE_CHECKPOINT_BOUNDS).map(k=>[k,0])),dbReadState:1,dbSuffix:2}],image:null};
+   observations:[{checkpointOrdinal:3,...Object.fromEntries(Object.keys(CANDIDATE_CHECKPOINT_BOUNDS).map(k=>[k,0])),dbReadState:1,dbSuffix:2}],image:null,consumer:null};
   const image={phaseOrdinal:2,observed:1,selectionCount:2,selectionMatches:2,imageCount:2,srcMatches:1,decoded:1};
-  const imageSnapshot={schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal:4,milestoneOrdinal:6,observations:[],image};
+  const consumer={phaseOrdinal:2,observed:1,cardCount:2,nativeImgCount:2,roleImgCount:3,placeholderCount:2,placeholderVisible:2};
+  const imageSnapshot={schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal:4,milestoneOrdinal:6,observations:[],image,consumer:null};
   const failing=kind==='persist-clear'?[4,6]:[5,6];
-  writeFileSync(file,"import{test,expect}from'@playwright/test';\n"
+  writeFileSync(file,`import{test,expect}from'@playwright/test';import{readCandidateConsumerDom}from${JSON.stringify(pathToFileURL(resolve(root,'tests/supabase/permissionCandidateDiagnostics.ts')).href)};import{expectCandidateImageFallback}from${JSON.stringify(pathToFileURL(resolve(root,'tests/supabase/permissionCandidateUi.ts')).href)};\n`
    +(kind==='beforeall-hook'?"test.beforeAll(()=>{throw Error('PRIVATE_DIAGNOSTIC_SENTINEL');});\n":'')
-   +CANDIDATE_TEST_NAMES.map((name,i)=>`test(${JSON.stringify(name)},async({},info)=>{${i===5||i===3&&kind==='persist-clear'?`await info.attach(${JSON.stringify(CANDIDATE_DIAGNOSTIC_ATTACHMENT)},{contentType:'application/json',body:JSON.stringify(${JSON.stringify(i===3?imageSnapshot:snapshot)})});`:''}${failing.includes(i+1)?"expect('PRIVATE_DIAGNOSTIC_SENTINEL').toBe('different');":''}});`).join('\n'));
+   +CANDIDATE_TEST_NAMES.map((name,i)=>{const imageCase=i===3&&kind==='persist-clear';return `test(${JSON.stringify(name)},async(${imageCase?'{page}':'{}'},info)=>{${imageCase?`await page.setContent('<button data-testid="menu-item-synthetic"><svg data-testid="menu-image-placeholder"></svg><img alt="Synthetic item"></button>');const value={...${JSON.stringify(imageSnapshot)},consumer:await readCandidateConsumerDom(page,'synthetic',2)};await info.attach(${JSON.stringify(CANDIDATE_DIAGNOSTIC_ATTACHMENT)},{contentType:'application/json',body:JSON.stringify(value)});await expectCandidateImageFallback(page.getByTestId('menu-item-synthetic'),expect.configure({timeout:100}));`:i===5?`await info.attach(${JSON.stringify(CANDIDATE_DIAGNOSTIC_ATTACHMENT)},{contentType:'application/json',body:JSON.stringify(${JSON.stringify(snapshot)})});`:''}${!imageCase&&failing.includes(i+1)?"expect('PRIVATE_DIAGNOSTIC_SENTINEL').toBe('different');":''}});`;}).join('\n'));
   writeFileSync(config,`export default ${JSON.stringify({testDir:tests,testMatch:'permissionCandidate.spec.ts',outputDir:join(dir,'browser'),workers:1,retries:0,repeatEach:1,
-   forbidOnly:true,timeout:3000,globalTimeout:20000,use:{trace:'off',screenshot:'off',video:'off'},projects:[{name:CANDIDATE_TEST_PROJECT}]})};\n`);
+   forbidOnly:true,timeout:3000,globalTimeout:20000,use:{channel:'chromium',trace:'off',screenshot:'off',video:'off'},projects:[{name:CANDIDATE_TEST_PROJECT}]})};\n`);
   const argv=[resolve(root,'node_modules/@playwright/test/cli.js'),'test','--config',config,
    '--reporter',resolve(root,'scripts/permission-runtime-playwright-reporter.mjs')];
   const context={stage:'candidate-e2e',runner:'playwright',sourceSHA,sourceFingerprint:runtimeHash('candidate-inventory-control:'+sourceSHA),lockSHA,
@@ -80,7 +82,7 @@ export function candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA
   check(report.discovery.length===6&&report.results.length===6&&report.discovery.every(x=>x.file===CANDIDATE_TEST_FILE));
   let refused=false;try{validateRuntimeStage(expected,report,context,child.status);}catch{refused=true;}check(refused);
   assertRuntimeDiagnosticBinding(expected,report,{...context,argv});
-  const facts={t04StageOrdinal:10,...t04RunnerFailureFacts(expected,report)};
+  const facts={t04StageOrdinal:10,...t04ParentFailureFacts({runtimeStageBoundaryOrdinal:7,runtimeResultFailureOrdinal:16,runtimeStageChildExitCode:1,t04ImageMeasurementPhaseOrdinal:3,t04ImageMeasurementCleanupAttempted:1,t04ImageMeasurementCleanupFailed:1},{phaseOrdinal:3}),...t04RunnerFailureFacts(expected,report)};
   const marker=diagnosticMarker('T04_FAILURE_FACTS',facts,t04SafeFailureMetric);check(Buffer.byteLength(marker)<65536);
   const failure=t04FailureExport({stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:child.status,facts:t04FailureFacts(marker)});
   const fileControl=reporterReceiptFileControl(root,dir,{schemaVersion:'permission-ci1-isolated-failure-v1',runId:context.runId,
@@ -96,16 +98,51 @@ export function candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA
     &&out.t04CandidateTest6Checkpoint3Reached===1&&out.t04CandidateTest6Checkpoint3DbSuffix===2);
    check(out['t04CandidateTest'+failing[0]+'State']===2&&out['t04CandidateTest'+(failing[0]===4?5:4)+'State']===1);
    for(const[key,value]of Object.entries(image))check(out['t04CandidateImage'+key[0].toUpperCase()+key.slice(1)]===(kind==='persist-clear'?value:0));
+   for(const[key,value]of Object.entries(consumer))check(out['t04CandidateConsumer'+key[0].toUpperCase()+key.slice(1)]===(kind==='persist-clear'?value:0));
+   if(kind==='persist-clear')check(out.t04CandidateTest4ErrorMatcherOrdinal===10&&out.t04CandidateTest4ErrorCodeOrdinal===0&&out.t04CandidateTest4FailureLine>0);
    check(out.t04CandidateTest4DiagnosticStatus===(kind==='persist-clear'?1:0));
    outputs.push(out);
   }
  }
  check(outputs.length===2&&JSON.stringify(outputs[0])!==JSON.stringify(outputs[1]));
 }
+// A full-file failure outside the three catalog-required identities still fails
+// acceptance. Only this one fixed extra identity receives diagnostic projection.
+export function compatibilityExtraReporterControl(root,parent,{sourceSHA,lockSHA}){
+ const dir=join(parent,'compatibility-extra'),stage=runtimeStage('transition-compatibility-database');
+ const file=join(dir,COMPATIBILITY_EXTRA_IDENTITY.file),config=join(dir,'config.mjs');mkdirSync(join(dir,'tests','contracts'),{recursive:true});
+ const source="import{test,expect}from'vitest';\n"+stage.required.map(row=>`test(${JSON.stringify(row.name)},()=>expect(true).toBe(true));`).join('\n')
+  +`\ntest(${JSON.stringify(COMPATIBILITY_EXTRA_IDENTITY.name)},()=>expect('PRIVATE_DIAGNOSTIC_SENTINEL').toBe('different'));\n`;
+ writeFileSync(file,source);
+ writeFileSync(config,`export default {root:${JSON.stringify(dir)},test:{include:[${JSON.stringify(COMPATIBILITY_EXTRA_IDENTITY.file)}],environment:'node',allowOnly:false,retry:0,maxWorkers:1,fileParallelism:false,passWithNoTests:false}};\n`);
+ const argv=[resolve(root,'node_modules/vitest/vitest.mjs'),'run','--config',config,'--reporter',resolve(root,'scripts/permission-runtime-vitest-reporter.mjs')];
+ const context={stage:stage.stage,runner:'vitest',sourceSHA,sourceFingerprint:runtimeHash('compatibility-extra-control:'+sourceSHA),lockSHA,
+  configSHA:runtimeHash(readFileSync(config)),runId:process.env.GITHUB_RUN_ID??'1',invocationSHA:runtimeHash(argv),sourceRoot:dir,outputRoot:dir};
+ const cp=join(dir,'context.json');writeFileSync(cp,JSON.stringify(context));
+ const child=spawnSync(process.execPath,argv,{cwd:root,env:{...process.env,PERMISSION_RUNTIME_CONTEXT:cp},encoding:'utf8',timeout:45000,maxBuffer:128*1024,windowsHide:true});
+ check(!child.error&&!child.signal&&child.status!==0);
+ const raw=readFileSync(join(dir,stage.stage+'-runner.json'),'utf8');check(!raw.includes('PRIVATE_DIAGNOSTIC_SENTINEL'));
+ const report=JSON.parse(raw),expected={...stage,configSHA:context.configSHA,argv};assertRuntimeDiagnosticBinding(expected,report,{...context,argv});
+ check(report.discovery.length===4&&report.results.length===4&&report.results.filter(row=>row.state==='passed'&&row.attempts===1).length===3);
+ let refused=false;try{validateRuntimeStage(expected,report,context,child.status);}catch{refused=true;}check(refused);
+ const facts={t04StageOrdinal:19,...t04RunnerFailureFacts(expected,report)};
+ check(facts.t04FirstFailedRequired===0&&facts.t04FailedTests===1&&facts.t04CompatibilityExtraStatus===1
+  &&facts.t04CompatibilityExtraState===2&&facts.t04CompatibilityExtraAttempts===1&&facts.t04CompatibilityExtraFailureLine===5
+  // Installed Vitest serializes AssertionError without matcherResult: UNKNOWN
+  // is intentional, not a guessed matcher derived from private assertion text.
+  &&facts.t04CompatibilityExtraErrorMatcherOrdinal===0&&facts.t04CompatibilityExtraErrorNameOrdinal===4);
+ const marker=diagnosticMarker('T04_FAILURE_FACTS',facts,t04SafeFailureMetric);
+ const failure=t04FailureExport({stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:child.status,facts:t04FailureFacts(marker)});
+ const control=reporterReceiptFileControl(root,dir,{schemaVersion:'permission-ci1-isolated-failure-v1',runId:context.runId,
+  attempt:Number(process.env.GITHUB_RUN_ATTEMPT??1),sourceSHA,failure,cleanupFailure:null});
+ writeFileSync(join(dir,'isolated-receipt-control.json'),JSON.stringify({...control,failure:undefined}));
+ const out=collectRuntimeDiagnosticFacts([{failure:control.failure??failure}],'t04',t04SafeFailureMetric)[0];
+ check(JSON.stringify(out)===JSON.stringify(facts));return{required:3,extraFailed:1,fullFileRefused:1};
+}
 export function diagnosticReporterSelftest(root,parent,{sourceSHA,lockSHA}){
  const summary={run:7,pass:0,states:[...DIAGNOSTIC_CONTROL_STATES],sourceSHA,lockSHA,fullPipeline:true,mutationChecks:0};
  for(const mode of DIAGNOSTIC_CONTROL_STATES.slice(0,5)){
-  if(mode==='failed')candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA});
+  if(mode==='failed'){candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA});compatibilityExtraReporterControl(root,parent,{sourceSHA,lockSHA});}
   const dir=join(parent,'diagnostic-'+mode);mkdirSync(dir);const file=join(dir,'case.spec.mjs'),config=join(dir,'config.mjs');
   const ready=join(dir,'ready');
   const body=mode==='failed'?"throw new Error('UNEXPECTED_LEGACY_FINANCIAL_GRANT');":mode==='metadata-absent'?"throw new Error('PRIVATE_DIAGNOSTIC_SENTINEL');":mode==='interrupted'?`(await import('node:fs')).writeFileSync(${JSON.stringify(ready)},'ready');await new Promise(()=>{});`:mode==='timedOut'?"await new Promise(()=>{});":"";
