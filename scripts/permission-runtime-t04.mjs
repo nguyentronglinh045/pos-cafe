@@ -5,7 +5,7 @@ import{pathToFileURL}from'node:url';
 import{runtimeStageCatalog,runtimeStageCommand}from'./permission-runtime-catalog.mjs';
 import{parseDiagnosticMarker}from'./permission-runtime-diagnostic-transport.mjs';
 import{runtimeHash}from'./permission-runtime-results.mjs';
-import{runtimeRunnerFailureFacts,RUNTIME_ERROR_CODES,RUNTIME_FAILURE_BOUNDS,assertRuntimeDiagnosticBinding}from'./permission-runtime-error-facts.mjs';
+import{runtimeRunnerFailureFacts,RUNTIME_ERROR_CODES,RUNTIME_ERROR_MATCHERS,RUNTIME_FAILURE_BOUNDS,assertRuntimeDiagnosticBinding}from'./permission-runtime-error-facts.mjs';
 import{executeRuntimeStage,prepareRuntimeDirectory}from'./permission-runtime-stage.mjs';
 import{trackedFingerprint}from'./project-ci.mjs';
 import{realAdapter,readCi1LinuxEnvelope,ci1HarnessFailureMarker}from'./permission-runtime-t04-adapter.mjs';
@@ -30,7 +30,7 @@ export const T04_FAILURE_BOUNDS=Object.freeze({...Object.fromEntries(Object.entr
  t04RestoreErrorOrdinal:[0,15],t04RestoreCommandOrdinal:[0,24],
  ...T04_DIAGNOSTIC_BOUNDS,
  t04RealtimeFailureMask:[0,1023],t04RealtimeFirstFailureOrdinal:[0,480],t04FailedTests:[0,10000],t04FirstFailedLine:[0,100000],t04TestErrorCodeOrdinal:[0,RUNTIME_ERROR_CODES.length],
- t04TestErrorNameOrdinal:[0,5],t04TestErrorMatcherOrdinal:[0,8]});
+  t04TestErrorNameOrdinal:[0,5],t04TestErrorMatcherOrdinal:[0,RUNTIME_ERROR_MATCHERS.length]});
 export function t04SafeFailureMetric(key,value){const bounds=T04_FAILURE_BOUNDS[key];return!!bounds&&Number.isSafeInteger(value)&&value>=bounds[0]&&value<=bounds[1];}
 export function t04RunnerFailureFacts(expected,r){
  return Object.fromEntries(Object.entries(runtimeRunnerFailureFacts(expected,r)).map(([k,v])=>['t04'+k[0].toUpperCase()+k.slice(1),v]));

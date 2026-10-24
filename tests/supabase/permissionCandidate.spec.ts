@@ -1,9 +1,20 @@
-import { expect, test, type Page, type Response, type Route } from "@playwright/test";
+import { expect, test as baseTest, type Page, type Response, type Route } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import pg from "pg";
 import { EMPLOYEE_IDS, STORE_IDS, runtimeProof } from "../../scripts/permission-identity-runtime.mjs";
 import { candidateEnvironment, installStoreSession } from "./permissionCandidateEnvironment.ts";
+import { CandidateDiagnostics } from "./permissionCandidateDiagnostics.ts";
+import { closeCandidateDrawerFromPage, waitForCandidateSaveFromPage } from "./permissionCandidateUi.ts";
+
+const test = baseTest.extend<{ candidateDiagnostics: CandidateDiagnostics }>({
+  candidateDiagnostics: [async ({ page }, use, testInfo) => {
+    const diagnostics = new CandidateDiagnostics(page);
+    diagnostics.mark(1);
+    try { await use(diagnostics); }
+    finally { await diagnostics.finish(testInfo); }
+  }, { auto: true }],
+});
 
 const PIN = "384729";
 // A complete PNG, including compressed pixel data and IEND, rather than the
@@ -45,11 +56,7 @@ async function login(page: Page, employeeId: string) {
 async function closeEmployees(page: Page) { await page.getByTestId("employees-close-button").click(); await expect(page.getByTestId("employees-drawer")).toBeHidden(); }
 
 async function closeDrawerFromNav(page: Page) {
-  if (await page.getByTestId("menu-editor").isVisible()) await page.getByRole("button", { name: "Thoát", exact: true }).click();
-  else if (await page.getByTestId("floor-editor").isVisible()) await page.getByRole("button", { name: "Huỷ", exact: true }).click();
-  else if (await page.getByTestId("settings-drawer").isVisible()) await page.getByRole("button", { name: "Huỷ", exact: true }).click();
-  else throw new Error("SUPPORTED_DRAWER_NOT_VISIBLE");
-  await expect(page.getByTestId("floor-view")).toBeVisible();
+  await closeCandidateDrawerFromPage(page);
 }
 
 async function expectSavedRpc(page: Page, name: string, action: () => Promise<void>) {
@@ -58,6 +65,7 @@ async function expectSavedRpc(page: Page, name: string, action: () => Promise<vo
   const saved = await response;
   expect(saved.ok()).toBeTruthy();
   expect(await saved.json()).toMatchObject({ ok: true });
+  await waitForCandidateSaveFromPage(page, name);
 }
 
 test("candidate activation supports owner roster, floor, payment and first receipt preview", async ({ page }) => {
@@ -135,8 +143,9 @@ test("owner creates waiter and real UI hides protected administration and report
   } finally { await context.close(); }
 });
 
-test("owner persists menu, floor and store settings changes through real candidate RPCs", async ({ page }, testInfo) => {
+test("owner persists menu, floor and store settings changes through real candidate RPCs", async ({ page, candidateDiagnostics: diagnostic }, testInfo) => {
   await login(page, EMPLOYEE_IDS[0]);
+  diagnostic.mark(2);
 
   await page.getByTestId("nav-menu-editor").click();
   const menuCard = page.locator('[data-testid^="menu-edit-card-"]').first();
@@ -149,6 +158,7 @@ test("owner persists menu, floor and store settings changes through real candida
   const priceText = new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 }).format(price);
   await nameInput.fill(changedName);
   await page.getByLabel("Chọn ảnh món", { exact: true }).setInputFiles({ name: "candidate-menu.png", mimeType: "image/png", buffer: MENU_IMAGE_PNG });
+  diagnostic.mark(3);
   const { api } = candidateEnvironment();
   const gatewayUrl = `${api}/functions/v1/menu-image-gateway`;
   const preflights: Response[] = [];
@@ -160,10 +170,12 @@ test("owner persists menu, floor and store settings changes through real candida
   const menuRequest = page.waitForRequest(request => request.url() === `${api}/rest/v1/rpc/apply_menu_changes` && request.method() === "POST");
   let uploadHandle: string;
   try {
+    diagnostic.mark(4);
     const [, uploaded, savedRequest] = await Promise.all([
       expectSavedRpc(page, "apply_menu_changes", () => page.getByTestId("save-menu-button").click()),
       uploadResponse, menuRequest,
     ]);
+    diagnostic.mark(5);
     expect(uploaded.status()).toBe(201);
     const clientInfo = uploaded.request().headers()["x-client-info"] ?? "";
     const lockedVersion: string = JSON.parse(readFileSync("package-lock.json", "utf8")).packages["node_modules/@supabase/supabase-js"].version;
@@ -188,6 +200,7 @@ test("owner persists menu, floor and store settings changes through real candida
       // Some browser engines hide automatic preflight from Playwright events.
       // A missing event is explicitly unobserved, never an OPTIONS PASS.
       preflight: options.length ? "OBSERVED" : "NOT_OBSERVABLE", options }), contentType: "application/json" });
+    diagnostic.mark(6);
   } finally { page.off("response", observePreflight); }
   // This committed upload is owned by the isolated candidate-e2e stage. Its
   // post-stage measurement/cleanup must discover exact private registry keys
@@ -198,12 +211,15 @@ test("owner persists menu, floor and store settings changes through real candida
   const savedImage = page.getByTestId("menu-editor-detail-pane").getByRole("img", { name: `Ảnh ${changedName}`, exact: true });
   await expect(savedImage).toHaveAttribute("src", publicUrl);
   await expect.poll(() => savedImage.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+  diagnostic.mark(7);
   await closeDrawerFromNav(page);
   await page.getByTestId("nav-menu-editor").click();
+  diagnostic.mark(8);
   await page.locator('[data-testid^="menu-edit-card-"]').filter({ hasText: changedName }).click();
   await expect(page.getByTestId("menu-item-name-input")).toHaveValue(changedName);
   await expect(savedImage).toHaveAttribute("src", publicUrl);
   await expect.poll(() => savedImage.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+  diagnostic.mark(9);
   await closeDrawerFromNav(page);
 
   await page.getByTestId("nav-floor-editor").click();
@@ -213,20 +229,26 @@ test("owner persists menu, floor and store settings changes through real candida
   const changedTableName = `${await tableName.inputValue()}E`;
   await tableName.fill(changedTableName);
   await expectSavedRpc(page, "apply_floor_changes", () => page.getByTestId("save-floor-button").click());
+  diagnostic.mark(10);
   await closeDrawerFromNav(page);
   await page.getByTestId("nav-floor-editor").click();
   await page.locator('[data-testid^="fe-table-"]').filter({ hasText: changedTableName }).click();
   await expect(page.getByTestId("fe-table-name-input")).toHaveValue(changedTableName);
+  diagnostic.mark(11);
   await closeDrawerFromNav(page);
 
   await page.getByTestId("nav-settings").click();
   const storeName = page.getByTestId("settings-name-input");
   const changedStoreName = `${await storeName.inputValue()} E2E`;
   await storeName.fill(changedStoreName);
+  diagnostic.mark(12);
   await expectSavedRpc(page, "update_store_settings", () => page.getByTestId("save-settings-button").click());
+  diagnostic.mark(13);
+  await diagnostic.checkpoint(1);
   await closeDrawerFromNav(page);
   await page.getByTestId("nav-settings").click();
   await expect(page.getByTestId("settings-name-input")).toHaveValue(changedStoreName);
+  diagnostic.mark(14);
   await closeDrawerFromNav(page);
 
   // TC47 consumer-only variant: real upload/save/render above; this one exact
@@ -238,6 +260,7 @@ test("owner persists menu, floor and store settings changes through real candida
   const orderCard = page.getByTestId(`menu-item-${itemId}`);
   await expect(orderCard.getByRole("img")).toHaveAttribute("src", publicUrl);
   await expect.poll(() => orderCard.getByRole("img").evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+  diagnostic.mark(15);
   const imageBox = orderCard.locator(":scope > div").first();
   const imageBoxBefore = await imageBox.boundingBox(), cardBefore = await orderCard.boundingBox();
   expect(imageBoxBefore).not.toBeNull(); expect(cardBefore).not.toBeNull();
@@ -262,6 +285,7 @@ test("owner persists menu, floor and store settings changes through real candida
     expect((await failed.allHeaders())["cache-control"]).toBe("no-store");
     await expect(orderCard.getByTestId("menu-image-placeholder")).toBeVisible();
     await expect(orderCard.getByRole("img")).toHaveCount(0);
+    diagnostic.mark(16);
     const imageBoxAfter = await imageBox.boundingBox(), cardAfter = await orderCard.boundingBox();
     expect(imageBoxAfter).not.toBeNull(); expect(cardAfter).not.toBeNull();
     for (const dimension of ["width", "height"] as const) {
@@ -295,6 +319,7 @@ test("owner persists menu, floor and store settings changes through real candida
     await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-variant", "receipt");
     await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-order-no", orderNo);
     await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-total", String(price));
+    diagnostic.mark(17);
   } finally { await page.unroute(publicUrl, failImage); }
 });
 
@@ -344,8 +369,11 @@ test("four active roles have protected navigation parity with server authorizati
   }
 });
 
-test("owner clears demo data through UI and refetch preserves custom records", async ({ page }) => {
+test("owner clears demo data through UI and refetch preserves custom records", async ({ page, candidateDiagnostics: diagnostic }) => {
+  diagnostic.mark(18);
+  await diagnostic.checkpoint(2);
   await prepareInitialDemoFixture();
+  diagnostic.mark(19);
   const seeded: Array<Promise<{ stage: string; ok: boolean }>> = [];
   page.on('response', response => {
     if (response.url().includes('/rpc/permission_run_initial_seed_stage') && response.ok())
@@ -354,11 +382,13 @@ test("owner clears demo data through UI and refetch preserves custom records", a
   await login(page, EMPLOYEE_IDS[0]);
   await expect.poll(() => seeded.length).toBe(3);
   expect(await Promise.all(seeded)).toEqual(['employee', 'menu', 'floor'].map(stage => ({ stage, ok: true })));
+  diagnostic.mark(20);
   await page.getByTestId("nav-settings").click();
   await page.getByTestId("settings-section-demo").click();
   await page.getByTestId("open-clear-demo").click();
   await expect(page.getByTestId("clear-demo-dialog")).toBeVisible();
   await expect(page.getByTestId("clear-demo-blocked")).toBeVisible();
+  diagnostic.mark(21);
   await page.getByTestId("clear-demo-dialog").getByRole("button", { name: "Huỷ", exact: true }).click();
   await closeDrawerFromNav(page);
   for (;;) {
@@ -369,6 +399,7 @@ test("owner clears demo data through UI and refetch preserves custom records", a
     await page.getByTestId("pay-button-footer").click(); await expect(page.getByTestId("receipt-preview")).toBeVisible();
     await page.getByTestId("receipt-close-footer").click(); await expect(page.getByTestId("floor-view")).toBeVisible();
   }
+  diagnostic.mark(22);
   await page.getByTestId("nav-settings").click(); await page.getByTestId("settings-section-demo").click();
   // Initial seed ran at normal owner login above. No standalone reseed route is exposed.
   await expect(page.getByTestId("seed-demo-button")).toHaveCount(0);
@@ -384,11 +415,19 @@ test("owner clears demo data through UI and refetch preserves custom records", a
   await page.getByTestId("nav-settings").click(); await page.getByTestId("settings-section-demo").click();
   await page.getByTestId("open-clear-demo").click(); await expect(page.getByTestId("clear-demo-blocked")).toHaveCount(0);
   await page.getByTestId("clear-demo-confirm-input").fill("CLEAR");
+  diagnostic.mark(23);
+  await diagnostic.checkpoint(3);
   await expectSavedRpc(page, "clear_demo_data", () => page.getByTestId("clear-demo-confirm-button").click());
+  diagnostic.mark(24);
   await expect(page.getByTestId("clear-demo-dialog")).toBeHidden();
+  diagnostic.mark(25);
+  await diagnostic.checkpoint(4);
   await closeDrawerFromNav(page);
+  diagnostic.mark(26);
   await page.getByTestId("nav-settings").click();
+  diagnostic.mark(27);
   await expect(page.getByTestId("settings-name-input")).toHaveValue(/E2E$/);
+  diagnostic.mark(28);
   await closeDrawerFromNav(page);
   await page.getByTestId("nav-menu-editor").click();
   await expect(page.getByTestId("menu-editor").getByRole("button", { name: /^Cà phê \d+$/ })).toHaveCount(0);
@@ -399,4 +438,5 @@ test("owner clears demo data through UI and refetch preserves custom records", a
   await expect(page.locator('[data-testid^="employee-row-"]').filter({ hasText: "Waiter E2E" })).toBeVisible();
   await page.locator('[data-testid^="employee-row-"]').filter({ hasText: "Thu ngân demo" }).click();
   await expect(page.getByTestId("employee-active-toggle")).not.toBeChecked();
+  diagnostic.mark(29);
 });

@@ -1,5 +1,5 @@
 // Shared finite bounds apply independently at the child parser and final export.
-import{runtimeRunnerFailureFacts,safeRuntimeErrorFacts,runtimeErrorFacts,RUNTIME_ERROR_CODES,RUNTIME_ERROR_FILES,RUNTIME_FAILURE_BOUNDS}from'./permission-runtime-error-facts.mjs';
+import{runtimeRunnerFailureFacts,safeRuntimeErrorFacts,runtimeErrorFacts,RUNTIME_ERROR_CODES,RUNTIME_ERROR_MATCHERS,RUNTIME_ERROR_FILES,RUNTIME_FAILURE_BOUNDS}from'./permission-runtime-error-facts.mjs';
 import{FIXTURE_DRIFT_CODES}from'./permission-fixture-diagnostics.mjs';
 import{TC18_WRAPPER_CODES}from'./permission-runtime-tc18-diagnostic.mjs';
 export const SERVICE_DIAGNOSTIC_BOUNDS=Object.freeze({...Object.fromEntries(Object.entries(RUNTIME_FAILURE_BOUNDS).map(([k,v])=>['service'+k[0].toUpperCase()+k.slice(1),v])),serviceStageOrdinal:3,serviceSetupOrdinal:3,
@@ -9,8 +9,8 @@ export const SERVICE_DIAGNOSTIC_BOUNDS=Object.freeze({...Object.fromEntries(Obje
  serviceTc18FirstNonPassedRequired:10000,serviceTc18FirstNonPassedLine:100000,
  serviceStageBoundaryOrdinal:7,serviceReportObserved:3,serviceStageErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,serviceStageErrorNameOrdinal:5,
  serviceMissingRequired:10000,serviceFirstFailedRequired:10000,serviceFailedTests:10000,serviceFirstFailedLine:100000,
- serviceRunnerErrors:10000,serviceHookErrors:10000,serviceTestErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,serviceTestErrorNameOrdinal:5,serviceTestErrorMatcherOrdinal:8,
- serviceFirstErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,serviceFirstErrorNameOrdinal:5,serviceFirstErrorMatcherOrdinal:8,
+ serviceRunnerErrors:10000,serviceHookErrors:10000,serviceTestErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,serviceTestErrorNameOrdinal:5,serviceTestErrorMatcherOrdinal:RUNTIME_ERROR_MATCHERS.length,
+ serviceFirstErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,serviceFirstErrorNameOrdinal:5,serviceFirstErrorMatcherOrdinal:RUNTIME_ERROR_MATCHERS.length,
  serviceErrorFileOrdinal:RUNTIME_ERROR_FILES.length,serviceErrorLine:100000,serviceFixtureDriftOrdinal:FIXTURE_DRIFT_CODES.length});
 export const serviceSafeFailureMetric=(key,value)=>Object.hasOwn(SERVICE_DIAGNOSTIC_BOUNDS,key)&&Number.isSafeInteger(value)&&value>=0&&value<=SERVICE_DIAGNOSTIC_BOUNDS[key];
 export function serviceStageErrorFacts(error){

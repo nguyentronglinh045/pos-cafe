@@ -7,6 +7,9 @@ import{diagnosticMarker,finiteDiagnosticFacts,collectRuntimeDiagnosticFacts}from
 import{projectTc18WrapperReceipt}from'./permission-runtime-tc18-diagnostic.mjs';
 import{ci1FailureExport as t04FailureExport}from'./permission-runtime-t04-worker.mjs';
 import{ci1FailureExport as serviceFailureExport}from'./permission-runtime-service-worker.mjs';
+import{runtimeStage}from'./permission-runtime-catalog.mjs';
+import{CANDIDATE_TEST_NAMES,CANDIDATE_TEST_FILE,CANDIDATE_TEST_PROJECT,CANDIDATE_CHECKPOINT_BOUNDS,
+ CANDIDATE_DIAGNOSTIC_SCHEMA,CANDIDATE_DIAGNOSTIC_ATTACHMENT}from'./permission-runtime-candidate-diagnostic.mjs';
 const check=x=>{if(!x)throw Error('RUNTIME_DIAGNOSTIC_SELFTEST_FAILED');};
 export const DIAGNOSTIC_CONTROL_STATES=Object.freeze(['failed','timedOut','interrupted','runner-error','metadata-absent','wrapper-failure','transport-refusal']);
 export function verifyDiagnosticPipeline(expected,report,context,mode,adapters={}){
@@ -46,9 +49,53 @@ export function verifyDiagnosticMutationControls(expected,report,context,mode){
  for(const adapters of mutations){let refused=false;try{verifyDiagnosticPipeline(expected,report,context,mode,adapters);}catch{refused=true;}check(refused);}
  return mutations.length;
 }
+// Nested controls in the existing failed diagnostic group. No browser/backend,
+// added acceptance group or relaxed exact-count guard. Exercise real attachment
+// transport through the installed Playwright runner before a costly T04.
+export function candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA}){
+ const outputs=[];
+ for(const kind of['persist-clear','roles-clear','beforeall-hook']){
+  const dir=join(parent,'candidate-'+kind),tests=join(dir,'tests','supabase');mkdirSync(tests,{recursive:true});
+  const file=join(tests,'permissionCandidate.spec.ts'),config=join(dir,'config.mjs');
+  const snapshot={schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal:6,milestoneOrdinal:17,
+   observations:[{checkpointOrdinal:3,...Object.fromEntries(Object.keys(CANDIDATE_CHECKPOINT_BOUNDS).map(k=>[k,0])),dbReadState:1,dbSuffix:2}]};
+  const failing=kind==='persist-clear'?[4,6]:[5,6];
+  writeFileSync(file,"import{test,expect}from'@playwright/test';\n"
+   +(kind==='beforeall-hook'?"test.beforeAll(()=>{throw Error('PRIVATE_DIAGNOSTIC_SENTINEL');});\n":'')
+   +CANDIDATE_TEST_NAMES.map((name,i)=>`test(${JSON.stringify(name)},async({},info)=>{${i===5?`await info.attach(${JSON.stringify(CANDIDATE_DIAGNOSTIC_ATTACHMENT)},{contentType:'application/json',body:JSON.stringify(${JSON.stringify(snapshot)})});`:''}${failing.includes(i+1)?"expect('PRIVATE_DIAGNOSTIC_SENTINEL').toBe('different');":''}});`).join('\n'));
+  writeFileSync(config,`export default ${JSON.stringify({testDir:tests,testMatch:'permissionCandidate.spec.ts',outputDir:join(dir,'browser'),workers:1,retries:0,repeatEach:1,
+   forbidOnly:true,timeout:3000,globalTimeout:20000,use:{trace:'off',screenshot:'off',video:'off'},projects:[{name:CANDIDATE_TEST_PROJECT}]})};\n`);
+  const argv=[resolve(root,'node_modules/@playwright/test/cli.js'),'test','--config',config,
+   '--reporter',resolve(root,'scripts/permission-runtime-playwright-reporter.mjs')];
+  const context={stage:'candidate-e2e',runner:'playwright',sourceSHA,sourceFingerprint:runtimeHash('candidate-inventory-control:'+sourceSHA),lockSHA,
+   configSHA:runtimeHash(readFileSync(config)),runId:process.env.GITHUB_RUN_ID??'1',invocationSHA:runtimeHash(argv),sourceRoot:dir,outputRoot:dir};
+  const cp=join(dir,'context.json');writeFileSync(cp,JSON.stringify(context));
+  const child=spawnSync(process.execPath,argv,{cwd:root,env:{...process.env,PERMISSION_RUNTIME_CONTEXT:cp},encoding:'utf8',timeout:25000,maxBuffer:128*1024,windowsHide:true});
+  check(!child.error&&!child.signal&&child.status!==0);
+  const raw=readFileSync(join(dir,'candidate-e2e-runner.json'),'utf8');check(!raw.includes('PRIVATE_DIAGNOSTIC_SENTINEL'));
+  const report=JSON.parse(raw),expected={...runtimeStage('candidate-e2e'),configSHA:context.configSHA,argv};
+  check(report.discovery.length===6&&report.results.length===6&&report.discovery.every(x=>x.file===CANDIDATE_TEST_FILE));
+  let refused=false;try{validateRuntimeStage(expected,report,context,child.status);}catch{refused=true;}check(refused);
+  assertRuntimeDiagnosticBinding(expected,report,{...context,argv});
+  const facts={t04StageOrdinal:10,...t04RunnerFailureFacts(expected,report)};
+  const marker=diagnosticMarker('T04_FAILURE_FACTS',facts,t04SafeFailureMetric);check(Buffer.byteLength(marker)<65536);
+  const failure=t04FailureExport({stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:child.status,facts:t04FailureFacts(marker)});
+  const out=collectRuntimeDiagnosticFacts([{failure}],'t04',t04SafeFailureMetric)[0];
+  check(JSON.stringify(out)===JSON.stringify(facts)&&out.t04CandidateInventoryStatus===1);
+  if(kind==='beforeall-hook')check(out.t04HookErrors>0&&out.t04NonPassedTests===6);
+  else{
+   check(out.t04FailedTests===2&&out.t04CandidateTest6State===2&&out.t04CandidateTest6DiagnosticStatus===1
+    &&out.t04CandidateTest6Checkpoint3Reached===1&&out.t04CandidateTest6Checkpoint3DbSuffix===2);
+   check(out['t04CandidateTest'+failing[0]+'State']===2&&out['t04CandidateTest'+(failing[0]===4?5:4)+'State']===1);
+   outputs.push(out);
+  }
+ }
+ check(outputs.length===2&&JSON.stringify(outputs[0])!==JSON.stringify(outputs[1]));
+}
 export function diagnosticReporterSelftest(root,parent,{sourceSHA,lockSHA}){
  const summary={run:7,pass:0,states:[...DIAGNOSTIC_CONTROL_STATES],sourceSHA,lockSHA,fullPipeline:true,mutationChecks:0};
  for(const mode of DIAGNOSTIC_CONTROL_STATES.slice(0,5)){
+  if(mode==='failed')candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA});
   const dir=join(parent,'diagnostic-'+mode);mkdirSync(dir);const file=join(dir,'case.spec.mjs'),config=join(dir,'config.mjs');
   const ready=join(dir,'ready');
   const body=mode==='failed'?"throw new Error('UNEXPECTED_LEGACY_FINANCIAL_GRANT');":mode==='metadata-absent'?"throw new Error('PRIVATE_DIAGNOSTIC_SENTINEL');":mode==='interrupted'?`(await import('node:fs')).writeFileSync(${JSON.stringify(ready)},'ready');await new Promise(()=>{});`:mode==='timedOut'?"await new Promise(()=>{});":"";

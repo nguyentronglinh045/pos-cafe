@@ -65,7 +65,7 @@ test('T04 assertion diagnostic parser and final exporter independently reject ou
  const receipt=f=>({schemaVersion:'permission-ci1-isolated-failure-v1',runId:'123',attempt:1,sourceSHA:sha,failure:f,cleanupFailure:null});
  assert(ci1IsolatedFailure(receipt(failure),ci1Identity('123',1),sha));
  for(const delta of[{t04FirstFailedLine:100001},{t04FirstFailedLine:-1},{t04TestErrorCodeOrdinal:999},
-  {t04TestErrorNameOrdinal:6},{t04TestErrorMatcherOrdinal:9},{t04FailedTests:10001},{t04StageOrdinal:20},{raw:'SECRET'}]){
+   {t04TestErrorNameOrdinal:6},{t04TestErrorMatcherOrdinal:10},{t04FailedTests:10001},{t04StageOrdinal:20},{raw:'SECRET'}]){
   const invalid={...failure,facts:{...facts,...delta}};assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(invalid.facts)),{});
   assert.notDeepEqual(ci1FailureExport(invalid),invalid);assert.throws(()=>ci1IsolatedFailure(receipt(invalid),ci1Identity('123',1),sha));
  }

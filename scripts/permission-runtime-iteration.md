@@ -161,3 +161,63 @@ claims persist. V3 cannot grant again from V3, reset counters or extend time.
 After closing this V3, a later session needs a new explicit owner deadline and
 reviewed guard/spec support for continuing its exact closed history. It cannot
 initialize a new root, reuse V2 or silently restart the counters.
+
+## Candidate E2E diagnostics (six-test file)
+
+The candidate reporter keeps all six source-fixed test identities, even though
+the acceptance catalog requires two identities from that full file. Public
+`t04CandidateTestNState` ordinals are 0 UNKNOWN, 1 passed, 2 failed, 3 timedOut,
+4 interrupted, 5 skipped, 6 pending. N follows source order: 1 activation,
+2 live cashier permission propagation, 3 waiter administration visibility,
+4 menu/floor/settings persistence, 5 four-role parity, 6 clear-demo preservation.
+The canonical file, full names and project are pinned in
+`permission-runtime-candidate-diagnostic.mjs`; arbitrary titles never leave the
+private runner report. Per-test attempts, failure line and known error ordinals
+are exported. Matcher9 appends `toHaveValue`; original matcher1..8 retain meaning.
+
+Inventory status1 means all six identities were discovered and have exactly one
+result row; status2 means missing rows; status3 means duplicate or unknown
+identities. It is not acceptance PASS. Missing/unknown/duplicate counts remain
+explicit. All discovered tests must still pass once under the existing stage
+validator; skipped, retried, expected-failure, hook or runner errors fail closed.
+Playwright hook errors are observed from `onStepEnd` hook steps, not assumed zero.
+
+Only the body of the exact `candidate-e2e-diagnostics` JSON attachment is read,
+up to16KiB. A defined file path is refused (the runner may include `path:undefined`
+for an in-memory body). Duplicate attachments, wrong source identity, extra keys,
+unknown schema or out-of-range fields produce diagnosticStatus2 INVALID; absent
+attachments produce0 UNKNOWN; valid attachments produce1. No attachment file,
+message, credential, raw DB/API value or request URL is opened/exported.
+
+Five fixed checkpoints are projected to bounded scalar fields:
+1 after settings persist settles, 2 pre-seed, 3 post-seed/pre-clear,
+4 post-clear, 5 failure snapshot. Each checkpoint has Reached0 NOT_REACHED or1;
+unreached values remain0 UNKNOWN. Boolean facts use0 UNKNOWN/1 false/2 true.
+Counts use0 UNKNOWN/1 zero/2 one/3 many. DB/API readState uses0 UNKNOWN/1 success/
+2 error; section uses0 UNKNOWN/1 info/2 demo/3 other. Query-state observations
+describe the test's DOM and passive request evidence, not React internal state:
+0 UNKNOWN/1 loading/2 error/3 fetching/4 observed settled. Pre-seed API observations
+may be UNKNOWN before an employee session exists. Probes never log in, mint a
+token or issue an extra authenticated read to fill that gap. Equality to a persist
+snapshot lost on worker restart remains UNKNOWN; no raw names are persisted.
+
+Milestone ordinals: 1 test-start, 2 owner-login, 3 image-selected,
+4 menu-upload-save-started, 5 menu-RPC/UI-settled, 6 image-transport-assertions,
+7 first-image-decoded, 8 menu-reopened, 9 reopened-image-decoded,
+10 floor-save-settled, 11 floor-reopen-asserted, 12 settings-save-started,
+13 settings-save-settled, 14 settings-reopen-asserted, 15 consumer-image-decoded,
+16 consumer503-placeholder, 17 consumer-receipt-asserted, 18 preseed,
+19 seed-prepared, 20 seed-committed, 21 clear-blocked-asserted,
+22 open-orders-settled, 23 preclear, 24 clear-RPC-ok, 25 clear-dialog-hidden,
+26 settings-drawer-hidden, 27 settings-reopened, 28 name-suffix-asserted,
+29 clear-final-asserted; 0 UNKNOWN. Bounds reserve30..31 but producers currently
+emit only the listed milestones. Check the exact source before interpreting.
+
+The existing failed diagnostic selftest group includes real Playwright controls
+for persist+clear failure, roles+clear failure and beforeAll-hook failure, without
+a browser/backend. It verifies actual attachment transport, source binding,
+failure-stage rejection, public projection and collector output. Original4
+reporter groups and7 diagnostic groups/20 transport mutations remain exact;
+these nested controls must also pass. Fixed candidate facts remain below64KiB,
+within unchanged1MiB report/marker limits. Run the existing reporter selftest
+before a newly authorized whole T04; a selftest PASS is not a backend PASS.

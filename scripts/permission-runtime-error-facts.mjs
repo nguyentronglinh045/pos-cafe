@@ -1,4 +1,5 @@
 // Only fixed ordinals leave private exception objects. Never serialize messages,
+import{candidateDiagnosticBounds,candidateRuntimeFailureFacts}from'./permission-runtime-candidate-diagnostic.mjs';
 // query/params, expected/actual values, URLs, paths or stack text.
 // Only exact source-fixed helper messages are eligible; no substring or SQL text.
 export const LEGACY_BROWSER_GUARD_CODES=Object.freeze(["LEGACY_BROWSER_FIXTURE_BINDING_MISMATCH","FRESH_LEGACY_BROWSER_FIXTURE_REQUIRED","LEGACY_BROWSER_TENANT_POLICY_REQUIRED","UNEXPECTED_LEGACY_FINANCIAL_GRANT","LEGACY_BROWSER_TABLE_MISSING","LEGACY_BROWSER_READ_GRANT_RESTORE_FAILED"]);
@@ -22,15 +23,17 @@ export const IMAGE_JWT_ALGORITHMS=Object.freeze(['HS256','ES256','RS256','other'
 export const RUNTIME_ERROR_CODES=Object.freeze(['ERR_MODULE_NOT_FOUND','ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX',
  'ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING','ENOENT','EACCES','ECONNREFUSED','ETIMEDOUT',
  '23502','23503','23505','23514','42501','42601','42703','42883','42P01','42P07','3F000','57P03','57014','53300','PIN_CHANGE_REQUIRED','EMPLOYEE_SESSION_REQUIRED','INVALID_EMPLOYEE_REQUEST','AUTH_REQUIRED','WRITE_PROTOCOL_UNSUPPORTED','FORBIDDEN',...LEGACY_BROWSER_GUARD_CODES,...COMPATIBILITY_ROUTE_GUARD_CODES]);
+// Append only: existing producer/receipt ordinal meanings remain unchanged.
+export const RUNTIME_ERROR_MATCHERS=Object.freeze(['toBe','toEqual','toStrictEqual','toBeTruthy','toBeFalsy','toContain','toThrow','toBeGreaterThan','toHaveValue']);
 export function runtimeErrorFacts(error){
  const codeOrdinal=RUNTIME_ERROR_CODES.indexOf(error?.code)+1;
  const guardOrdinal=LEGACY_BROWSER_GUARD_CODES.indexOf(error?.message);
  return{errorCodeOrdinal:codeOrdinal||(guardOrdinal>=0?28+guardOrdinal:0),
   errorNameOrdinal:['Error','TypeError','SyntaxError','AssertionError','TimeoutError'].indexOf(error?.name)+1,
-  errorMatcherOrdinal:['toBe','toEqual','toStrictEqual','toBeTruthy','toBeFalsy','toContain','toThrow','toBeGreaterThan'].indexOf(error?.matcherResult?.name)+1};
+  errorMatcherOrdinal:RUNTIME_ERROR_MATCHERS.indexOf(error?.matcherResult?.name)+1};
 }
 export function safeRuntimeErrorFacts(value){
- const ranges={errorCodeOrdinal:RUNTIME_ERROR_CODES.length,errorNameOrdinal:5,errorMatcherOrdinal:8};
+ const ranges={errorCodeOrdinal:RUNTIME_ERROR_CODES.length,errorNameOrdinal:5,errorMatcherOrdinal:RUNTIME_ERROR_MATCHERS.length};
  if(!value||Object.keys(value).sort().join(',')!==Object.keys(ranges).sort().join(',')
   ||!Object.entries(ranges).every(([k,max])=>Number.isInteger(value[k])&&value[k]>=0&&value[k]<=max))return null;
  return Object.fromEntries(Object.keys(ranges).map(k=>[k,value[k]]));
@@ -86,10 +89,10 @@ export function safeImageHookFailureFacts(value){
 }
 export const RUNTIME_FAILURE_BOUNDS=Object.freeze({missingRequired:10000,firstFailedRequired:10000,failedTests:10000,
  nonPassedTests:10000,firstNonPassedRequired:10000,diagnosticRequired:10000,outcomeOrdinal:4,failureOriginOrdinal:2,
- firstFailedLine:100000,testErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,testErrorNameOrdinal:5,testErrorMatcherOrdinal:8,
- runnerFirstErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,runnerFirstErrorNameOrdinal:5,runnerFirstErrorMatcherOrdinal:8,
+ firstFailedLine:100000,testErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,testErrorNameOrdinal:5,testErrorMatcherOrdinal:RUNTIME_ERROR_MATCHERS.length,
+ runnerFirstErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,runnerFirstErrorNameOrdinal:5,runnerFirstErrorMatcherOrdinal:RUNTIME_ERROR_MATCHERS.length,
  runnerFirstErrorFileOrdinal:RUNTIME_ERROR_FILES.length,runnerFirstErrorLine:100000,runnerErrors:10000,hookErrors:10000,
- ...IMAGE_HOOK_DIAGNOSTIC_BOUNDS});
+ ...IMAGE_HOOK_DIAGNOSTIC_BOUNDS,...candidateDiagnosticBounds(RUNTIME_ERROR_CODES.length,RUNTIME_ERROR_MATCHERS.length)});
 export function assertRuntimeDiagnosticBinding(expected,report,context){
  if(!report||report.schemaVersion!=='permission-runtime-stage-v1'||report.stage!==expected.stage||report.runner!==expected.runner
   ||!context||!['sourceSHA','sourceFingerprint','lockSHA','configSHA','runId','invocationSHA'].every(k=>typeof context[k]==='string'&&report[k]===context[k])
@@ -139,6 +142,7 @@ export function runtimeRunnerFailureFacts(expected,r){
   const value=result[key];if(!Number.isSafeInteger(value)||value<0||value>max)throw Error('RUNTIME_FAILURE_REPORT_REFUSED');facts[key]=value;
  }
  for(const[k,v]of[['runnerErrors',r.errorCount],['hookErrors',r.hookErrorCount]])if(Number.isSafeInteger(v)&&v>=0&&v<=10000)facts[k]=v;
+ if(expected.stage==='candidate-e2e')Object.assign(facts,candidateRuntimeFailureFacts(r,{errorCodeMax:RUNTIME_ERROR_CODES.length,errorMatcherMax:RUNTIME_ERROR_MATCHERS.length}));
  return facts;
 }
 
@@ -167,12 +171,12 @@ export function runtimePlaywrightFailureFacts(error,file){
   // Classify exactly one complete Received scalar after a single matcher
   // header. Count every Received field before whitelisting: unknown values,
   // duplicate fields and trailing payloads must never select a header code.
-  const matchers=[...message.matchAll(/\bexpect\(received\)(?:\.not)?\.(toBe|toEqual|toStrictEqual|toBeTruthy|toBeFalsy|toContain|toThrow|toBeGreaterThan)\(expected\)/g)];
+  const matchers=[...message.matchAll(/\bexpect\((?:received|locator)\)(?:\.not)?\.(toBe|toEqual|toStrictEqual|toBeTruthy|toBeFalsy|toContain|toThrow|toBeGreaterThan|toHaveValue)\(expected\)/g)];
   const matcher=matchers.length===1?matchers[0]:null;
   const received=matcher?message.slice(matcher.index+matcher[0].length).split(/\r?\n/).filter(line=>/^[\t ]*Received:/.test(line)):[];
   const scalar=received.length===1?/^[\t ]*Received:[\t ]*"([A-Z][A-Z0-9_]{0,63})"[\t ]*$/.exec(received[0]):null;
-  if(failureFacts.errorCodeOrdinal===0&&scalar)failureFacts.errorCodeOrdinal=RUNTIME_ERROR_CODES.slice(0,27).indexOf(scalar[1])+1;
-  if(failureFacts.errorMatcherOrdinal===0&&matcher)failureFacts.errorMatcherOrdinal=['toBe','toEqual','toStrictEqual','toBeTruthy','toBeFalsy','toContain','toThrow','toBeGreaterThan'].indexOf(matcher[1])+1;
+  if(failureFacts.errorCodeOrdinal===0&&scalar&&matcher[1]!=='toHaveValue')failureFacts.errorCodeOrdinal=RUNTIME_ERROR_CODES.slice(0,27).indexOf(scalar[1])+1;
+  if(failureFacts.errorMatcherOrdinal===0&&matcher)failureFacts.errorMatcherOrdinal=RUNTIME_ERROR_MATCHERS.indexOf(matcher[1])+1;
   for(const m of message.matchAll(/REALTIME_TIMING_ORACLE_FAILED:([a-z0-9-]{1,64})(?=$|[\s'"\],.])/g)){
    const ordinal=REALTIME_FAILURE_ORACLES.indexOf(m[1]);if(ordinal>=0)realtimeFailureMask|=2**ordinal;
   }

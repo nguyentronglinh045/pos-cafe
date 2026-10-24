@@ -34,7 +34,7 @@
     "ui-audit/demo-buggy.html": "4c1424232be357167b1cf643ff1baa602d2987856317d40460d95f6358662cce",
     "scripts/permission-runtime-pg16.mjs": "c13578f465b7c39421e93e5a90ab29d6b1e1ad42be6f24062637c38316d45f32",
     "scripts/permission-runtime-pg16-cleanup.mjs": "3a47c5a59c08411a702d4622b74dd514395072be9878630f3dc6a1f54109efa8",
-    "scripts/permission-runtime-error-facts.mjs": "c0039225e22b63c0dda63d73a7b233ce5885a1d480a6c8a87b272b160d285b76",
+    "scripts/permission-runtime-error-facts.mjs": "1a3a8efbabeba152e72c2f542f51f6a63422ad30f87468d6ba0a2fcaf83601e5",
     "scripts/permission-runtime-vitest-reporter.mjs": "aff12fd7758d63f83b22608e47a906feb363455e5472b8de4b2661cfe6f478f4",
     "scripts/project-ci-results.test.mjs": "cc44627aeca3f6d42b66d14bddeff4ba20848fa4e1609cce07aff2f3ef8ee1a7",
     "scripts/permission-runtime-stage.mjs": "bfcede0b296d329ab22fe1eabaacb7ece8f12413add07fc1527d2b96a8295119",
@@ -51,7 +51,8 @@
     "tests/permissions/runtime/edge-resolution/deno.json": "eca3984001a907fb17773aa60e4ce77efb2033c255e3f5462963f3b87b894113",
     "tests/permissions/runtime/edge-resolution/deno.lock": "6f9fc5dd3b6e81d9468c712bfbf3fc423e6ea28d49e8fe44915abca50740ab41",
     "scripts/permission-full-target-policy.test.mjs": "a41194753179f25315eb0639609302a3cc652673fea3276a833f2af19101f917",
-    "scripts/project-preview.README.md": "8ef8984c2d4cbe40204ea6c6b62af63902ebe937b9ba8e0cc6d0427df2177b5c"
+    "scripts/project-preview.README.md": "8ef8984c2d4cbe40204ea6c6b62af63902ebe937b9ba8e0cc6d0427df2177b5c",
+    "scripts/permission-runtime-candidate-diagnostic.mjs": "e12b37777887ee2b7e71820ffd1dbb706be0414e29debaa0f940c0cd1a278791"
   },
   "preview": {
     "projectId": "prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en",
