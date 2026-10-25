@@ -162,3 +162,10 @@ Q10 **đã trả lời về giai đoạn và sự kiện demo**, kèm thời gia
 ### Đợt ghi nhận Q10
 
 Đã nhận diện giai đoạn tiểu luận, tra lịch sử Git và gắn ứng viên code với snapshot docs; lập nhóm chức năng lịch sử để khởi đầu đối chiếu hồi quy. Đồng bộ phase-scope, project-overview, test-strategy, task index và tiến độ checklist local. Chưa xác nhận source demo, chưa hoàn tất ma trận hồi quy hoặc chạy test; không checkout/refactor/deploy.
+
+### Review đợt Q10
+
+- Reviewer độc lập `/root/review_preservation`: **APPROVE** docs candidate `75270f635c3a3d808860a2ec84149064ae9216a1` và checklist local candidate SHA256 `342284066f97120eee63111e990aa8742687b17573cc83b8dbad75027bba2126`; không có finding.
+- Đã đối chiếu ngày/quan hệ Git, snapshot 21/08, 21 FR/8 NFR, thay đổi source/UI tháng 9 và migration 014–016. `c7f2f4e` giữ đúng là ứng viên do AI suy luận, chưa xác nhận source/ngày/deployment bản demo; danh mục lịch sử chưa thành ma trận hoặc PASS hồi quy. Expected/gate hiện hành giữ nguyên.
+- Kiểm tác giả: diff-check đạt; 58 liên kết tương đối trong 5 file sửa không có lỗi path/anchor; đếm lại snapshot khớp 21 FR và 8 NFR. Reviewer kiểm diff/link/hash, chỉ đọc; không chạy ứng dụng/backend hoặc push.
+- Sau APPROVE chỉ bổ sung metadata review này và metadata tương ứng vào checklist. Docs lưu local, chưa push; checklist ngoài Git, các mục P0 vẫn mở.
