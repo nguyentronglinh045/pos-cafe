@@ -2,7 +2,7 @@
 
 ## Phạm vi và nguồn xác nhận
 
-Chủ dự án yêu cầu hỏi theo nhóm, ghi nhận câu trả lời và cập nhật docs cho phù hợp. Nội dung được biên tập thành thông tin dự án, không chép nguyên văn hội thoại. Nguồn là câu trả lời trong chat ngày25/10/2026 cho ba câu hỏi về người đọc docs,12 mục tiêu tốt nghiệp và quá trình lựa chọn kiến trúc.
+Chủ dự án yêu cầu hỏi theo nhóm, ghi nhận câu trả lời và cập nhật docs cho phù hợp. Nội dung được biên tập thành thông tin dự án, không chép nguyên văn hội thoại. Nguồn là hai nhóm câu trả lời trong chat ngày 25/10/2026: Q01–Q03 về người đọc docs, 12 mục tiêu tốt nghiệp và chủ thể quyết định; Q04–Q06 về động cơ chọn kiến trúc, phương án từng cân nhắc và đánh đổi. Chỉ ghi chắc phần chủ dự án xác nhận; phần được nhớ lại kèm yêu cầu kiểm tra vẫn giữ trạng thái cần đối chiếu.
 
 Đây là hồ sơ đang được bổ sung trong quá trình làm rõ. Ngày25/10 là ngày xác nhận thông tin, không tự là ngày ra quyết định kiến trúc ban đầu hoặc ngày giảng viên phê duyệt mục tiêu. Checklist theo dõi vẫn giữ local, không đưa lên Git. Việc cập nhật tài liệu không mở refactor, triển khai chức năng, chạy backend hoặc thay gate nghiệm thu.
 
@@ -25,21 +25,41 @@ Chủ dự án yêu cầu hỏi theo nhóm, ghi nhận câu trả lời và cậ
 
 ## DEC-ARCH-01 — Nguồn của quyết định lựa chọn kiến trúc
 
-- **Trạng thái xác nhận:** chủ dự án xác nhận ngày25/10/2026 rằng mình là người đưa ra quyết định cuối cùng về lựa chọn kiến trúc dựa trên thông tin AI cung cấp.
-- **Điều đã biết:** quá trình có sự tham gia hỗ trợ thông tin của AI và quyết định cuối cùng của chủ dự án. Xác nhận này áp dụng cho lựa chọn kiến trúc đang được hỏi, không mở rộng thành việc chủ dự án đã duyệt mọi quyết định kỹ thuật trong kho.
-- **Nguồn tài liệu cần đối chiếu:** [tech-stack](../../tech-stack.md#architectural-pattern-hexagonal-architecture--ports--adapters) và [architecture](../../architecture.md#hexagonal-architecture--ports--adapters) mô tả lựa chọn Ports & Adapters theo hướng Hexagonal. Các lý do và đánh đổi đã ghi ở đó tiếp tục là nội dung từ tài liệu hiện có.
-- **Chưa được xác nhận trong câu trả lời này:** AI nào/người nào đề xuất ban đầu; thời điểm lựa chọn ban đầu; các phương án thực sự đã được cân nhắc; mức ưu tiên của từng lý do; các đánh đổi chủ dự án đã chấp nhận khi đó. Không coi việc xác nhận người quyết định là xác nhận toàn bộ các chi tiết này.
-- **Hệ quả biên tập:** bổ sung nguồn chủ thể ra quyết định; tiếp tục hỏi và đối chiếu hồ sơ cũ trước khi hoàn thiện phần lý do/phương án. Phân tích bổ sung hiện nay phải ghi rõ hồi cứu, không trình bày như một thử nghiệm hay quyết định đã xảy ra trong quá khứ.
+- **Trạng thái:** đã xác nhận người quyết định và động cơ chính; thông tin về phương án DDD và đánh đổi còn có giới hạn nguồn như bên dưới.
+- **Lựa chọn và người chốt:** dùng Ports & Adapters theo hướng Hexagonal. Chủ dự án xác nhận mình đưa ra quyết định cuối cùng dựa trên thông tin AI cung cấp. Xác nhận này chỉ áp dụng cho lựa chọn kiến trúc đang được hỏi, không bao hàm mọi quyết định kỹ thuật trong kho.
+- **Động cơ đã xác nhận qua Q04:** chủ dự án muốn tách rõ trách nhiệm giữa các phần ngay từ đầu, vì giao diện có thể thay đổi và hệ thống có thể chuyển sang công nghệ cơ sở dữ liệu khác. Lựa chọn kiến trúc hướng tới giảm phụ thuộc giữa nghiệp vụ với UI và hạ tầng, để các thay đổi đó có phạm vi tác động dễ kiểm soát hơn. Đây là lý do chủ dự án đánh giá lựa chọn phù hợp với dự án.
+- **Giới hạn của động cơ:** đó là khả năng muốn giữ cho tương lai, không phải quyết định đổi UI framework hoặc DB ngay trong lượt này, cũng không phải bằng chứng rằng thay DB chỉ cần đổi một adapter. Phần kiểm thử/demo trong tài liệu cũ là lý do đã được tài liệu ghi nhận; Q04 chưa xác nhận đó là động cơ quyết định của chủ dự án.
+- **Phương án nhớ lại qua Q05:** chủ dự án nhớ từng cân nhắc DDD và khi đó đánh giá phương án được trình bày chưa phù hợp tổng thể với dự án, đồng thời yêu cầu kiểm tra lại. Chưa đủ nguồn để xác định phương án cụ thể, tiêu chí so sánh hoặc lý do không chọn. Không chuyển ký ức này thành kết luận chung “DDD không phù hợp” hoặc “Hexagonal loại trừ DDD”.
+- **Đánh đổi nhớ lại qua Q06:** chủ dự án nhớ phải viết nhiều code hơn, kèm yêu cầu đối chiếu. Tài liệu Git ngày 21/06/2026 đã ghi chi phí interface, mapper và adapter bổ sung, hỗ trợ nội dung kỹ thuật của ký ức này; chưa chứng minh chi phí đó được trình bày và chấp nhận ra sao trong cuộc trao đổi ban đầu. Chưa đo số dòng code, thời gian hoặc chi phí so với một phương án khác.
+- **Ngày và phần chưa rõ:** 25/10/2026 là ngày xác nhận hồi cứu; chưa xác định ngày lựa chọn ban đầu hoặc người/AI đề xuất ban đầu. Ngày commit tài liệu không thay ngày ra quyết định.
+- **Điểm tra cứu:** [tech-stack](../../tech-stack.md#architectural-pattern-hexagonal-architecture--ports--adapters) tóm tắt lý do và đánh đổi; [architecture](../../architecture.md#hexagonal-architecture--ports--adapters) mô tả hiện trạng kỹ thuật. Hồ sơ này giữ nguồn xác nhận và phần chưa rõ.
 
-## Các câu hỏi tiếp theo về kiến trúc
+### Đối chiếu lịch sử và thuật ngữ ngày 25/10/2026
 
-| Mã | Nội dung cần làm rõ | Trạng thái |
+| Căn cứ đã kiểm | Kết quả và giới hạn |
+| --- | --- |
+| Commit [7413fc4 ngày 21/06/2026](https://github.com/nguyentronglinh045/pos-cafe/commit/7413fc4213e1988f023922c4aca6af5633b1d540), [tech-stack dòng 7–13](https://github.com/nguyentronglinh045/pos-cafe/blob/7413fc4213e1988f023922c4aca6af5633b1d540/docs/tech-stack.md#L7) | Đã có lựa chọn Ports & Adapters, lý do tách SDK/backend và đánh đổi thêm interface, mapper, adapter. Đây là ghi chép lịch sử, không phải biên bản phê duyệt của chủ dự án hoặc số đo độ phức tạp. |
+| Tìm `DDD` / `domain.driven` trong Markdown của docs local `0eb33e1`, rồi tìm thay đổi nội dung cùng từ khóa trong lịch sử mọi ref local hiện có | Bản hiện tại chỉ thấy tài liệu tham khảo Evans; lịch sử trả về các commit `d62aa4b` và `9f93b93`. Chưa tìm thấy trong phạm vi này một hồ sơ so sánh DDD với phương án được chọn. Không kết luận cuộc so sánh chưa từng diễn ra; chưa kiểm toàn bộ chat cũ, file ngoài Git hoặc nội dung dùng thuật ngữ khác. |
+| Cockburn, *Hexagonal Architecture*, mục Intent / Motivation / Nature of the Solution, [bài gốc](https://alistair.cockburn.us/hexagonal-architecture) | Nguồn lý thuyết cho việc tách tương tác với UI và DB qua port/adapter. Được tra cứu bổ sung ở hiện tại, không chứng minh đây là nguồn chủ dự án đã dùng lúc quyết định. |
+| Vernon, *Implementing Domain-Driven Design*, Guide to This Book → Architecture, trang xxxviii, [bản mẫu từ nhà xuất bản](https://ptgmedia.pearsoncmg.com/images/9780321834577/samplepages/0321834577.pdf) | Mô tả Hexagonal là một kiểu kiến trúc có thể chứa mô hình miền của một Bounded Context. Vì vậy DDD và Hexagonal có thể kết hợp; cần xác định cụ thể cách áp dụng DDD từng được đề xuất trước khi ghi phương án bị loại. Nguồn học thuật này không chứng minh lịch sử lựa chọn của dự án. |
+
+### Trạng thái câu hỏi kiến trúc
+
+| Mã | Nội dung | Trạng thái |
 | --- | --- | --- |
-| Q04 | Kết quả hoặc ưu tiên nào có vai trò quyết định khi lựa chọn kiến trúc? Những lý do đang ghi có phản ánh đúng động cơ lúc đó không? | Chưa trả lời |
-| Q05 | Những phương án nào thực sự đã được đưa ra so sánh, và vì sao không chọn chúng? | Chưa trả lời |
-| Q06 | Những đánh đổi nào được nêu và chủ dự án đã chấp nhận khi quyết định? | Chưa trả lời |
+| Q04 | Động cơ quyết định khi chọn kiến trúc | Đã trả lời: tách rõ các phần từ đầu để thích ứng thay đổi UI hoặc công nghệ DB. |
+| Q05 | Phương án thực sự từng cân nhắc và lý do không chọn | Đã nhận ký ức về DDD; còn cần hồ sơ gốc để xác định phương án và lý do. |
+| Q06 | Đánh đổi được nhận biết và chấp nhận khi quyết định | Đã nhận ký ức về lượng code tăng; tài liệu cũ có căn cứ cho interface/mapper/adapter bổ sung. Chưa xác minh bối cảnh chấp nhận hoặc đo chi phí. |
 
-Ba câu này chặn việc kết luận đầy đủ về lý do lựa chọn kiến trúc, không chặn cập nhật đối tượng sử dụng docs hoặc khung mục tiêu đã được xác nhận. Không yêu cầu người dùng tự kiểm code để trả lời các câu hỏi về hiện trạng kỹ thuật.
+Q05–Q06 còn mở ở phần lịch sử, không chặn ghi nhận động cơ đã xác nhận hoặc làm rõ mục tiêu đồ án. Tiếp tục tìm nguồn khi có manh mối; không yêu cầu chủ dự án đoán lại hoặc tự kiểm code. Nếu không khôi phục được hồ sơ gốc, giữ nhãn chưa xác minh; phân tích so sánh mới phải ghi rõ là hồi cứu.
+
+## Nhóm thông tin cần hỏi tiếp về đích đồ án
+
+| Mã | Thông tin cần làm rõ | Trạng thái |
+| --- | --- | --- |
+| Q07 | Mốc nộp báo cáo, bảo vệ và các mốc kiểm tra với giảng viên, nếu đã có | Chưa trả lời; không lấy lịch phase cũ làm deadline mới. |
+| Q08 | “Triển khai thực tế” cần đạt mức nào: bản triển khai truy cập được để demo, thử nghiệm tại quán thật, hay vận hành thường xuyên với dữ liệu thật? Đã có quán thử nghiệm chưa? | Chưa trả lời; chưa đổi phạm vi phát hành/vận hành. |
+| Q09 | Ngoài danh sách 12 mục tiêu, giảng viên đã yêu cầu đầu ra hoặc bằng chứng bắt buộc cụ thể nào chưa? | Chưa trả lời; không tự đặt rubric hoặc tiêu chí nghiệm thu của giảng viên. |
 
 ## Ghi nhận cập nhật
 
@@ -53,3 +73,7 @@ Ba câu này chặn việc kết luận đầy đủ về lý do lựa chọn ki
 - Rebase chỉ giữ thêm hồ sơ đánh giá main và dòng chỉ mục từ công việc đồng thời; reviewer xác nhận4file nội dung và mục chỉ mục của lượt này không đổi, không review lại nội dung công việc kia.
 - Kiểm tác giả: `git diff --check` PASS;65link tương đối trong5file sửa không có lỗi path/anchor. Sau APPROVE chỉ bổ sung metadata review này và metadata tương ứng ở checklist.
 - Đợt ghi nhận đã được kiểm; hồ sơ vẫn mở để nhận câu trả lời tiếp theo. Verdict không chứng nhận đã hoàn tất P0–P2 hoặc mở quyền triển khai/phát hành.
+
+### Đợt ghi nhận Q04–Q06
+
+Đồng bộ động cơ lựa chọn vào tech-stack và architecture; cập nhật trạng thái câu hỏi, chỉ mục và nguồn học thuật đã đọc đúng phần liên quan. Giữ ký ức về DDD/chi phí code với mức xác minh riêng, không tự đóng các mục P0 hoặc mở refactor. Checklist chỉ bổ sung tiến độ local. Đợt này chỉ kiểm nội dung và liên kết, không chạy ứng dụng/backend.

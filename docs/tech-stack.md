@@ -17,15 +17,18 @@ Vite 8 yêu cầu Node `^20.19.0 || >=22.12.0`; môi trường build/deploy ph�
 
 ## Architectural Pattern: Hexagonal Architecture / Ports & Adapters
 
-**Nguồn quyết định:** chủ dự án xác nhận ngày25/10/2026 rằng lựa chọn kiến trúc cuối cùng do mình quyết định dựa trên thông tin AI cung cấp. Ngày này là ngày xác nhận hồi cứu, chưa xác định ngày lựa chọn ban đầu. [Hồ sơ làm rõ](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-arch-01--nguồn-của-quyết-định-lựa-chọn-kiến-trúc) giữ phần đã xác nhận và câu hỏi còn mở; câu trả lời này chưa xác nhận riêng từng lý do, phương án bị loại hoặc đánh đổi đang ghi bên dưới.
+**Nguồn quyết định:** chủ dự án xác nhận hồi cứu ngày 25/10/2026 rằng mình chọn kiến trúc cuối cùng dựa trên thông tin AI cung cấp. Động cơ chính đã được xác nhận; phương án DDD và bối cảnh chấp nhận đánh đổi còn cần đối chiếu. [Hồ sơ làm rõ](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-arch-01--nguồn-của-quyết-định-lựa-chọn-kiến-trúc) giữ nguồn và giới hạn; ngày xác nhận không phải ngày lựa chọn ban đầu.
 
 - **Quyết định:** dùng Ports & Adapters, lấy cảm hứng từ Hexagonal Architecture.
 - **Dùng cho:** tách UI/feature flow khỏi Supabase, realtime, print và mock data.
-- **Vì sao chọn:** dự án có nhiều nghiệp vụ cần test và demo ổn định; port boundary giúp UI không phụ thuộc trực tiếp SDK backend.
-- **Không chọn:** để React components gọi Supabase client, print API hoặc realtime SDK trực tiếp.
-- **Đánh đổi:** thêm interface, mapper và adapter boilerplate.
-- **Giảm rủi ro:** giữ `AppPorts` nhỏ, adapter Supabase/mock cùng implement contract, print/realtime cũng đi qua port riêng.
-- **Liên quan tới tiểu luận:** có thể trình bày đây là cách cô lập nghiệp vụ khỏi hạ tầng, giúp test bằng mock adapter và mở đường đổi backend/offline/native printer sau này.
+- **Động cơ chủ dự án xác nhận:** tách rõ trách nhiệm giữa các phần ngay từ đầu để có thể thích ứng khi UI thay đổi hoặc chuyển công nghệ cơ sở dữ liệu, giảm phụ thuộc giữa nghiệp vụ với phần giao tiếp và hạ tầng.
+- **Lý do bổ sung từ tài liệu cũ:** kiểm thử/demo ổn định và cô lập SDK backend. Chưa đồng nhất các lý do này với thứ tự ưu tiên cá nhân khi quyết định.
+- **Cách tổ chức tránh theo tài liệu cũ:** để React components gọi trực tiếp Supabase client, print API hoặc realtime SDK; chưa có hồ sơ cho thấy đây là toàn bộ phương án đã được đem ra so sánh.
+- **Phương án cần xác minh:** chủ dự án nhớ từng cân nhắc DDD nhưng chưa rõ cách áp dụng cụ thể và lý do không chọn. DDD có thể kết hợp với Hexagonal; xem nguồn thuật ngữ trong hồ sơ làm rõ. Chưa ghi kết luận “DDD không phù hợp với dự án”.
+- **Đánh đổi có căn cứ tài liệu:** thêm interface, mapper và adapter; đã được ghi tại [tech-stack ngày 21/06/2026](https://github.com/nguyentronglinh045/pos-cafe/blob/7413fc4213e1988f023922c4aca6af5633b1d540/docs/tech-stack.md#L11), phù hợp ký ức “viết nhiều code hơn” nhưng chưa xác minh bối cảnh chủ dự án chấp nhận hoặc định lượng chi phí.
+- **Giảm rủi ro theo thiết kế đã ghi:** giữ `AppPorts` nhỏ, adapter Supabase/mock cùng implement contract, print/realtime cũng đi qua port riêng.
+- **Giới hạn:** mục tiêu giảm tác động khi thay UI/DB không chứng minh đã thay được mọi công nghệ, hoặc việc chuyển DB chỉ cần đổi adapter. Không mở kế hoạch chuyển công nghệ từ xác nhận này.
+- **Đầu vào cho báo cáo:** dùng động cơ đã xác nhận, nguồn lý thuyết đã đọc và mô tả kỹ thuật ở [architecture](architecture.md); giữ rõ phần lịch sử chưa xác minh và khả năng tương lai chưa được kiểm chứng.
 
 ## 1. React + Vite + TypeScript
 

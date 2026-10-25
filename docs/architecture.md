@@ -4,7 +4,9 @@
 
 ## Hexagonal Architecture / Ports & Adapters
 
-UI gọi hook/flow, hook/flow phụ thuộc port, adapter thực hiện I/O. Đây là Ports & Adapters theo hướng Hexagonal; không phải mô hình textbook tuyệt đối vì tính nhất quán giao dịch nằm cả trong PostgreSQL. Chọn boundary này để thay mock/backend và kiểm logic độc lập; đánh đổi là thêm interface/mapper và phải kiểm contract hai adapter.
+UI gọi hook/flow, hook/flow phụ thuộc port, adapter thực hiện I/O. Đây là Ports & Adapters theo hướng Hexagonal; không phải mô hình textbook tuyệt đối vì tính nhất quán giao dịch nằm cả trong PostgreSQL.
+
+**Động cơ lựa chọn:** chủ dự án xác nhận hồi cứu ngày 25/10/2026 rằng muốn tách rõ các phần từ đầu, nhằm thích ứng khi UI thay đổi hoặc chuyển công nghệ cơ sở dữ liệu. Đây là mục tiêu giảm phụ thuộc; chưa phải kết quả kiểm chứng việc thay UI framework/DB. Lý do kiểm logic độc lập và thay mock/backend, cùng chi phí interface/mapper, đã được ghi trong tài liệu cũ. [Hồ sơ quyết định](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-arch-01--nguồn-của-quyết-định-lựa-chọn-kiến-trúc) phân biệt động cơ đã xác nhận với ký ức về DDD và đánh đổi còn cần đối chiếu; [tech-stack](tech-stack.md#architectural-pattern-hexagonal-architecture--ports--adapters) giữ bản tóm tắt.
 
 | Lớp | Trách nhiệm |
 | --- | --- |

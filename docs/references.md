@@ -15,9 +15,10 @@ Lập ngày 2026-09-12 theo yêu cầu của chủ dự án, sau nhận xét c�
 
 | Nguồn | Dùng ở đâu trong báo cáo |
 | --- | --- |
-| Cockburn, A. *Hexagonal Architecture* (bài viết gốc, 2005) | Chương kiến trúc: nguồn gốc của mô hình cổng và bộ điều hợp, thay cho việc chỉ dẫn blog |
+| Cockburn, A. *Hexagonal Architecture* (bài viết gốc, 2005), [nguồn tác giả](https://alistair.cockburn.us/hexagonal-architecture) | Chương kiến trúc: nguồn gốc của mô hình cổng và bộ điều hợp, thay cho việc chỉ dẫn blog |
 | Martin, R. C. *Clean Architecture: A Craftsman Guide to Software Structure and Design*. Prentice Hall, 2017 | Chương kiến trúc: quy tắc phụ thuộc hướng vào trong, lý do tầng nghiệp vụ không được biết tới hạ tầng |
 | Evans, E. *Domain-Driven Design: Tackling Complexity in the Heart of Software*. Addison-Wesley, 2003 | Chương kiến trúc và chương thiết kế: khái niệm tầng miền, mô hình nghiệp vụ tách khỏi kỹ thuật |
+| Vernon, V. *Implementing Domain-Driven Design*. Addison-Wesley, 2013, [bản mẫu nhà xuất bản](https://ptgmedia.pearsoncmg.com/images/9780321834577/samplepages/0321834577.pdf) | Guide to This Book → Architecture, trang xxxviii: Hexagonal có thể chứa mô hình miền của một Bounded Context; hỗ trợ phân biệt DDD với lựa chọn kiến trúc |
 | Fowler, M. *Patterns of Enterprise Application Architecture*. Addison-Wesley, 2002 | Chương thiết kế: mẫu kho dữ liệu, ánh xạ dữ liệu, khóa lạc quan |
 | Ford, N.; Parsons, R.; Kua, P. *Building Evolutionary Architectures*. O'Reilly, 2017 | Chương kiến trúc: khái niệm **hàm kiểm định kiến trúc**, đúng thứ mà việc kiểm tra ranh giới phụ thuộc bằng phân tích cấu trúc import đang hiện thực. Phản biện đánh giá đây là điểm mạnh nổi bật, nên nó xứng đáng có nền lý thuyết |
 | Bass, L.; Clements, P.; Kazman, R. *Software Architecture in Practice*. 4th ed., Addison-Wesley, 2021 | Chương kiến trúc: thuộc tính chất lượng và đánh đổi kiến trúc |
@@ -82,6 +83,12 @@ Dùng cho chương hạn chế và hướng phát triển, để mỗi hướng 
 ## Đối chiếu nguồn ngày 25/10/2026
 
 Đã xác minh metadata NIST SP800-63B-4 (tháng7/2025, thay bản63B cũ) và ASVS5.0.0 (tháng5/2025) từ nguồn chính thức ở bảng trên; chưa xác minh toàn bộ danh mục/số trang. Đây là cập nhật tài liệu tham khảo, không tự nhận hệ thống tuân thủ NIST/ASVS hoặc mở thêm requirement bảo mật. Cần đối chiếu đúng loại authenticator, mục áp dụng và phiên bản mã yêu cầu; ép đổi PIN tạm không đủ để tuyên bố tuân thủ. [Bản rà soát đồ án](workflow/tasks/docs-thesis-audit-2026-10-25.md).
+
+### Phần kiến trúc đã tra cứu trong lượt làm rõ Q04–Q06
+
+Ngày 25/10/2026 đã đọc các mục Intent, Motivation, Nature of the Solution của bài Cockburn và phần Architecture, trang xxxviii của bản mẫu Vernon từ nhà xuất bản. Cockburn hỗ trợ giải thích tách tương tác UI/DB qua port/adapter; Vernon hỗ trợ việc DDD có thể kết hợp với Hexagonal. Chỉ ghi nhận các đoạn liên quan, không nhận đã đọc toàn bộ sách hoặc kiểm toàn bộ danh mục.
+
+Đây là căn cứ lý thuyết bổ sung hiện tại cho [hồ sơ kiến trúc](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#đối-chiếu-lịch-sử-và-thuật-ngữ-ngày-25102026); không chứng minh nguồn đã được dùng hoặc DDD đã bị loại với lý do cụ thể ở thời điểm quyết định ban đầu.
 
 ## Việc Còn Phải Làm
 
