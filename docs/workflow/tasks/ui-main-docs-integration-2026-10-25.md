@@ -11,7 +11,7 @@ Phần này là trạng thái mới nhất. Các checkpoint phía dưới giữ 
 | #13 B03 | Retarget main; head `cf8e304869ad0e92c491736790f59bff1b6f9dcc`, tree `395953d26e9702e307c49ed62a3a7773575be00d`, cả hai reviewer APPROVE; chờ required checks |
 | #14 docs B03 | Đã hòa giải, review checkpoint và cập nhật evidence; chờ merge sau #13 |
 | Audit B01/B02 mới nhất | da743bd:48/48 COMPLETE,0findings,sourcepreserved; strict `uiCounts` PASS48/0fail/0skip, không đổi baseline |
-| Audit B03 mới nhất | 7e75dd8:48/48 COMPLETE,0findings và strict PASS48; audit cf8e304 đang chạy riêng sau delta toast, không nhận kết quả source cũ thành PASS nguồn mới |
+| Audit B03 mới nhất | cf8e304:48/48 COMPLETE,0findings, source trước/sau giữ nguyên; strict `uiCounts` PASS48/0fail/0skip. Snapshot `audit-cf8e304/` chỉ chứa report/status của lượt mới |
 | CI tự kích hoạt | #11:40164686981(pull_request)/40164683402(push) SUCCESS. #13:40166453117(pull_request)/40166451739(push) đang chạy trên cf8e304. Không dispatch/rerun thủ công |
 | Branch cleanup | Đã xóa local+remote `ui/week03-b01-b02-20261024` và `ui-week03-b01-b02-docs-20261024` sau kiểm merged/reachable/SHA/không checked-out. Hai nhánh B03 giữ chờ merge; thư mục worktree giữ nguyên |
 | Deploy/backend | Không deploy, migration, live activation; không mở lại acceptance backend/toàn hệ thống |
