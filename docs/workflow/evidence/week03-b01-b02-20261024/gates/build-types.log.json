@@ -1,0 +1,21 @@
+{
+  "startedAt": "2026-10-24T08:50:42.934Z",
+  "finishedAt": "2026-10-24T08:51:01.054Z",
+  "cwd": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\.worktrees\\week03-b01-b02-main",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "node_modules/typescript/bin/tsc",
+    "-b"
+  ],
+  "exitCode": 0,
+  "source": {
+    "head": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "sha256": "9b6790ca85ca91338087239138c5dc389e45b86b8fb2ece0779703816b4a5209"
+  },
+  "sourceAfter": {
+    "head": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "sha256": "9b6790ca85ca91338087239138c5dc389e45b86b8fb2ece0779703816b4a5209"
+  },
+  "sourcePreserved": true,
+  "logSha256": "169f24774e13a79b6341d6c41c58f159e180701e87e9028aa70afdf8712b6fbb"
+}

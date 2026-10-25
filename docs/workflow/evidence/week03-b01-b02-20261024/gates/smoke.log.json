@@ -1,0 +1,25 @@
+{
+  "startedAt": "2026-10-24T08:55:25.420Z",
+  "finishedAt": "2026-10-24T08:57:35.292Z",
+  "cwd": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\.worktrees\\week03-b01-b02-main",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "node_modules/@playwright/test/cli.js",
+    "test",
+    "--workers=2",
+    "--reporter=json",
+    "--output",
+    "artifacts/ui-remake/week03-final/smoke-traces"
+  ],
+  "exitCode": 0,
+  "source": {
+    "head": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "sha256": "9b6790ca85ca91338087239138c5dc389e45b86b8fb2ece0779703816b4a5209"
+  },
+  "sourceAfter": {
+    "head": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "sha256": "9b6790ca85ca91338087239138c5dc389e45b86b8fb2ece0779703816b4a5209"
+  },
+  "sourcePreserved": true,
+  "logSha256": "6880257b7c5b0751e18c6f8a37f0ddcda00a7391fa05ea59ecec0371179ec43c"
+}

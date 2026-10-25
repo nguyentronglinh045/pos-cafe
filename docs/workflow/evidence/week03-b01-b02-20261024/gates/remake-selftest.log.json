@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-10-24T08:51:36.432Z",
+  "finishedAt": "2026-10-24T08:51:52.927Z",
+  "cwd": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\.worktrees\\week03-b01-b02-main",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "ui-remake/run.mjs",
+    "--selftest",
+    "--out",
+    "artifacts/ui-remake/week03-final/remake-selftest"
+  ],
+  "exitCode": 0,
+  "source": {
+    "head": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "sha256": "9b6790ca85ca91338087239138c5dc389e45b86b8fb2ece0779703816b4a5209"
+  },
+  "sourceAfter": {
+    "head": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "sha256": "9b6790ca85ca91338087239138c5dc389e45b86b8fb2ece0779703816b4a5209"
+  },
+  "sourcePreserved": true,
+  "logSha256": "b39808dec636ac3111bae089d838d407d10c0ff7c1881fc2e406f684b383067a"
+}

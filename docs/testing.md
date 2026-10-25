@@ -188,3 +188,9 @@ Bốn lệnh đầu là cổng chất lượng, chạy được cục bộ và k
 - Kết quả phase cũ là evidence lịch sử, không thay cho baseline hiện tại.
 - Failure lịch sử đã được phase sau sửa phải ghi là “tại checkpoint”, không mô tả như lỗi hiện hành.
 - Phân biệt rõ automated test, manual verification và cấu hình/deployment readiness.
+
+## Tuần3 B01/B02
+
+Cập nhật25/10: [tích hợp UI vào main/docs](workflow/tasks/ui-main-docs-integration-2026-10-25.md) đang thực hiện theo lệnh mới; source/check/merge status lấy ở handoff này. Các số liệu dưới đây giữ nguyên theo nguồn ngày24/10.
+
+[Gate sourcehai màn](workflow/tasks/week03-b01-b02-final.md):642unit/149browser/35smokePASS31scope-skip; auditwholeappFAIL,baselinegiữ. Kiểm thủcôngWindowsNOT_RUN,capturehelpertimeout.

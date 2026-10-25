@@ -1,0 +1,885 @@
+{
+  "version": 1,
+  "kind": "screen-remake",
+  "title": "B02 — Week 03 B01/B02 only, owner approved isolated runtime",
+  "designUrl": "https://stitch.withgoogle.com/projects/15598521297295649761?node-id=9ea864f874bc4789834b6eec7670225f",
+  "actualSourceRoot": ".",
+  "dataMode": "mock",
+  "serverRecipe": "Two-screen worktree week03-b01-b02-main, branch ui/week03-b01-b02-20261024, baseline main2da0d7e: VITE_DATA_MODE=mock, VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY empty; node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5191 --strictPort. Independent references: node ui-remake/serve-reference.mjs --root artifacts/stitch --port 4185. Remake B01/B02 only; PaymentDrawer, payment panes and ReceiptPreview remain current main. One frozen source/PID/cwd binding; no production Supabase, no reference or threshold change.",
+  "clock": "2026-10-21T03:00:00.000Z",
+  "browser": "chromium",
+  "referenceFiles": [
+    "artifacts/stitch/B02/v3/fixture.json",
+    "artifacts/stitch/B02/v3/fonts/BeVietnamPro-Bold.ttf",
+    "artifacts/stitch/B02/v3/fonts/BeVietnamPro-Medium.ttf",
+    "artifacts/stitch/B02/v3/fonts/BeVietnamPro-Regular.ttf",
+    "artifacts/stitch/B02/v3/fonts/BeVietnamPro-SemiBold.ttf",
+    "artifacts/stitch/B02/v3/fonts/OFL.txt",
+    "artifacts/stitch/B02/v3/fonts/provenance.json",
+    "artifacts/stitch/B02/v3/normalized.css",
+    "artifacts/stitch/B02/v3/normalized.html",
+    "artifacts/stitch/B02/v3/normalized.mjs",
+    "artifacts/stitch/B02/v3/palette.css",
+    "artifacts/stitch/B02/v3/palette.json",
+    "artifacts/stitch/B02/v3/raw-manifest.json",
+    "artifacts/stitch/B02/v3/raw.png",
+    "artifacts/stitch/B02/v3/responsive-contract.proposed.json"
+  ],
+  "referenceApproval": {
+    "by": "Owner — \"Duyệt hai hợp đồng runtime B01–B02\" via async reply in this conversation",
+    "at": "2026-10-24T08:47:08.848Z",
+    "sourceSha256": "dcfbc71eaeccdf7b791100ab4014fa85817a61a27040ef4cbe407771771a3c12",
+    "contractSha256": "b7903eebc3e8a68e9ab1434c615c304414af0bac196d500a27f4c941c6e26b4b"
+  },
+  "defaults": {
+    "anchors": [
+      {
+        "id": "header",
+        "actual": "@b02-header",
+        "reference": "[data-ref=\"header\"]"
+      },
+      {
+        "id": "categories",
+        "actual": "@b02-categories",
+        "reference": "[data-ref=\"categories\"]"
+      },
+      {
+        "id": "search-bar",
+        "actual": "@b02-search-bar",
+        "reference": "[data-ref=\"search-bar\"]"
+      },
+      {
+        "id": "menu",
+        "actual": "@b02-menu",
+        "reference": "[data-ref=\"menu\"]"
+      },
+      {
+        "id": "cart",
+        "actual": "@b02-cart",
+        "reference": "[data-ref=\"cart\"]"
+      },
+      {
+        "id": "footer",
+        "actual": "@b02-footer",
+        "reference": "[data-ref=\"footer\"]"
+      },
+      {
+        "id": "close",
+        "actual": "@order-close-button",
+        "reference": "[data-ref=\"close\"]"
+      },
+      {
+        "id": "primary-header",
+        "actual": "@submit-order-button",
+        "reference": "[data-ref=\"primary-header\"]"
+      },
+      {
+        "id": "primary-footer",
+        "actual": "@submit-order-button-footer",
+        "reference": "[data-ref=\"primary-footer\"]"
+      },
+      {
+        "id": "total",
+        "actual": "@order-total-amount",
+        "reference": "[data-ref=\"total\"]"
+      }
+    ],
+    "criticalSelectors": [
+      {
+        "id": "close",
+        "selector": "@order-close-button",
+        "reference": "[data-ref=\"close\"]"
+      },
+      {
+        "id": "primary-header",
+        "selector": "@submit-order-button",
+        "reference": "[data-ref=\"primary-header\"]"
+      },
+      {
+        "id": "primary-footer",
+        "selector": "@submit-order-button-footer",
+        "reference": "[data-ref=\"primary-footer\"]"
+      },
+      {
+        "id": "search",
+        "selector": "@b02-search",
+        "reference": "[data-ref=\"search\"]"
+      },
+      {
+        "id": "menu-item-0",
+        "selector": "@menu-item-3e43bb8c-198f-443f-83ab-18696983edaa",
+        "reference": "[data-ref=\"menu-item-0\"]"
+      },
+      {
+        "id": "menu-item-1",
+        "selector": "@menu-item-aaa3b30e-131a-4435-889f-912b407a14dd",
+        "reference": "[data-ref=\"menu-item-1\"]"
+      },
+      {
+        "id": "menu-item-2",
+        "selector": "@menu-item-80cfbd5a-a538-4da6-888d-2f732b7b8e2d",
+        "reference": "[data-ref=\"menu-item-2\"]"
+      },
+      {
+        "id": "menu-item-3",
+        "selector": "@menu-item-d50ff72b-d0bc-4832-8888-183c19f5a158",
+        "reference": "[data-ref=\"menu-item-3\"]"
+      },
+      {
+        "id": "menu-item-4",
+        "selector": "@menu-item-9491e262-856d-4408-82b7-c9d7f7ac3f27",
+        "reference": "[data-ref=\"menu-item-4\"]"
+      },
+      {
+        "id": "menu-item-5",
+        "selector": "@menu-item-230c8e39-02a6-4ec0-8f6e-a5643ad96d5c",
+        "reference": "[data-ref=\"menu-item-5\"]"
+      },
+      {
+        "id": "category-0",
+        "selector": "@b02-category-c68d7fbd-c06a-42a4-8140-476da8ebbf74",
+        "reference": "[data-ref=\"category-0\"]"
+      },
+      {
+        "id": "category-1",
+        "selector": "@b02-category-1ebf92aa-cf30-4e0d-8279-2b6fe3f8fb54",
+        "reference": "[data-ref=\"category-1\"]"
+      },
+      {
+        "id": "category-2",
+        "selector": "@b02-category-0e2b2b01-1e52-436b-8130-428e82585276",
+        "reference": "[data-ref=\"category-2\"]"
+      },
+      {
+        "id": "category-3",
+        "selector": "@b02-category-d8e03f30-1979-44b1-8fae-dc3cf6756680",
+        "reference": "[data-ref=\"category-3\"]"
+      },
+      {
+        "id": "decrease-0",
+        "selector": "[data-source-item-id=\"3c00b7a3-016f-45a3-8f96-664314c26b4a\"] [data-testid=\"order-cart-decrease\"]",
+        "reference": "[data-ref=\"decrease-0\"]"
+      },
+      {
+        "id": "increase-0",
+        "selector": "[data-source-item-id=\"3c00b7a3-016f-45a3-8f96-664314c26b4a\"] [data-testid=\"order-cart-increase\"]",
+        "reference": "[data-ref=\"increase-0\"]"
+      },
+      {
+        "id": "note-0",
+        "selector": "[data-source-item-id=\"3c00b7a3-016f-45a3-8f96-664314c26b4a\"] [data-testid=\"b02-note\"]",
+        "reference": "[data-ref=\"note-0\"]"
+      },
+      {
+        "id": "decrease-1",
+        "selector": "[data-source-item-id=\"64a0c267-a3e2-47ca-878b-c5b47c7452e5\"] [data-testid=\"order-cart-decrease\"]",
+        "reference": "[data-ref=\"decrease-1\"]"
+      },
+      {
+        "id": "increase-1",
+        "selector": "[data-source-item-id=\"64a0c267-a3e2-47ca-878b-c5b47c7452e5\"] [data-testid=\"order-cart-increase\"]",
+        "reference": "[data-ref=\"increase-1\"]"
+      },
+      {
+        "id": "note-1",
+        "selector": "[data-source-item-id=\"64a0c267-a3e2-47ca-878b-c5b47c7452e5\"] [data-testid=\"b02-note\"]",
+        "reference": "[data-ref=\"note-1\"]"
+      },
+      {
+        "id": "decrease-2",
+        "selector": "[data-source-item-id=\"923bfabf-cffd-4d90-84a8-50bd47b0fd09\"] [data-testid=\"order-cart-decrease\"]",
+        "reference": "[data-ref=\"decrease-2\"]"
+      },
+      {
+        "id": "increase-2",
+        "selector": "[data-source-item-id=\"923bfabf-cffd-4d90-84a8-50bd47b0fd09\"] [data-testid=\"order-cart-increase\"]",
+        "reference": "[data-ref=\"increase-2\"]"
+      },
+      {
+        "id": "note-2",
+        "selector": "[data-source-item-id=\"923bfabf-cffd-4d90-84a8-50bd47b0fd09\"] [data-testid=\"b02-note\"]",
+        "reference": "[data-ref=\"note-2\"]"
+      }
+    ],
+    "thresholds": {
+      "channelThreshold": 16,
+      "maxDiffRatio": 0.015,
+      "geometryTolerancePx": 2,
+      "minTargetPx": 44
+    }
+  },
+  "cases": [
+    {
+      "id": "desktop-clean",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "actual": {
+        "url": "http://127.0.0.1:5191",
+        "ready": ":root:not(:has([data-rht-toaster] > div)) [data-testid=\"order-drawer\"]",
+        "steps": [
+          {
+            "action": "click",
+            "selector": "@go-store-pairing"
+          },
+          {
+            "action": "fill",
+            "selector": "@store-key-input",
+            "value": "0001-X8F3QA"
+          },
+          {
+            "action": "click",
+            "selector": "@go-passcode"
+          },
+          {
+            "action": "click",
+            "selector": "@employee-6b7bd350-7db2-4160-8471-cca2668c070d"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-1"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-2"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-3"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-4"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-5"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-6"
+          },
+          {
+            "action": "click",
+            "selector": "@unlock-button"
+          },
+          {
+            "action": "waitFor",
+            "selector": "@floor-view"
+          },
+          {
+            "action": "click",
+            "selector": "@nav-floor"
+          },
+          {
+            "action": "click",
+            "selector": "@table-a254abd0-b883-4d5c-85c1-89f660409e02"
+          },
+          {
+            "action": "waitFor",
+            "selector": "@order-total-amount"
+          }
+        ]
+      },
+      "reference": {
+        "url": "http://127.0.0.1:4185/B02/v3/normalized.html?state=clean",
+        "ready": "[data-reference-state=\"clean\"]"
+      },
+      "regions": [
+        {
+          "id": "close",
+          "x": 1698,
+          "y": 14,
+          "width": 80,
+          "height": 51,
+          "maxDiffRatio": 0.005
+        },
+        {
+          "id": "primary-header",
+          "x": 1781,
+          "y": 14,
+          "width": 118,
+          "height": 51,
+          "maxDiffRatio": 0.005
+        },
+        {
+          "id": "primary-header-label",
+          "x": 1800,
+          "y": 27,
+          "width": 80,
+          "height": 23,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "menu-price-0",
+          "x": 248,
+          "y": 407,
+          "width": 67,
+          "height": 27,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "menu-price-1",
+          "x": 661,
+          "y": 407,
+          "width": 67,
+          "height": 27,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "menu-price-2",
+          "x": 1074,
+          "y": 407,
+          "width": 68,
+          "height": 27,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "menu-price-3",
+          "x": 248,
+          "y": 705,
+          "width": 68,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "menu-price-4",
+          "x": 661,
+          "y": 705,
+          "width": 68,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "menu-price-5",
+          "x": 1074,
+          "y": 705,
+          "width": 68,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "line-price-0",
+          "x": 1836,
+          "y": 161,
+          "width": 67,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "unit-price-0",
+          "x": 1583,
+          "y": 192,
+          "width": 90,
+          "height": 23,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "quantity-0",
+          "x": 1543,
+          "y": 290,
+          "width": 38,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "line-price-1",
+          "x": 1836,
+          "y": 360,
+          "width": 67,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "unit-price-1",
+          "x": 1583,
+          "y": 391,
+          "width": 89,
+          "height": 23,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "quantity-1",
+          "x": 1543,
+          "y": 461,
+          "width": 38,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "line-price-2",
+          "x": 1836,
+          "y": 531,
+          "width": 67,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "unit-price-2",
+          "x": 1583,
+          "y": 562,
+          "width": 90,
+          "height": 23,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "quantity-2",
+          "x": 1543,
+          "y": 632,
+          "width": 38,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "subtotal",
+          "x": 1830,
+          "y": 917,
+          "width": 73,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "total",
+          "x": 1785,
+          "y": 962,
+          "width": 118,
+          "height": 39,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "primary-footer",
+          "x": 1498,
+          "y": 1007,
+          "width": 405,
+          "height": 58,
+          "maxDiffRatio": 0.005
+        },
+        {
+          "id": "primary-footer-label",
+          "x": 1657,
+          "y": 1023,
+          "width": 87,
+          "height": 25,
+          "maxDiffRatio": 0
+        }
+      ]
+    },
+    {
+      "id": "desktop-dirty",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "actual": {
+        "url": "http://127.0.0.1:5191",
+        "ready": ":root:not(:has([data-rht-toaster] > div)) [data-testid=\"order-drawer\"]",
+        "steps": [
+          {
+            "action": "click",
+            "selector": "@go-store-pairing"
+          },
+          {
+            "action": "fill",
+            "selector": "@store-key-input",
+            "value": "0001-X8F3QA"
+          },
+          {
+            "action": "click",
+            "selector": "@go-passcode"
+          },
+          {
+            "action": "click",
+            "selector": "@employee-6b7bd350-7db2-4160-8471-cca2668c070d"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-1"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-2"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-3"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-4"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-5"
+          },
+          {
+            "action": "click",
+            "selector": "@pin-6"
+          },
+          {
+            "action": "click",
+            "selector": "@unlock-button"
+          },
+          {
+            "action": "waitFor",
+            "selector": "@floor-view"
+          },
+          {
+            "action": "click",
+            "selector": "@nav-floor"
+          },
+          {
+            "action": "click",
+            "selector": "@table-a254abd0-b883-4d5c-85c1-89f660409e02"
+          },
+          {
+            "action": "waitFor",
+            "selector": "@order-total-amount"
+          },
+          {
+            "action": "click",
+            "selector": "@menu-item-80cfbd5a-a538-4da6-888d-2f732b7b8e2d"
+          }
+        ]
+      },
+      "reference": {
+        "url": "http://127.0.0.1:4185/B02/v3/normalized.html?state=dirty",
+        "ready": "[data-reference-state=\"dirty\"]"
+      },
+      "regions": [
+        {
+          "id": "close",
+          "x": 1581,
+          "y": 14,
+          "width": 80,
+          "height": 51,
+          "maxDiffRatio": 0.005
+        },
+        {
+          "id": "primary-header",
+          "x": 1785,
+          "y": 14,
+          "width": 114,
+          "height": 51,
+          "maxDiffRatio": 0.005
+        },
+        {
+          "id": "primary-header-label",
+          "x": 1804,
+          "y": 27,
+          "width": 76,
+          "height": 23,
+          "maxDiffRatio": 0
+        },
+        {
+          "id": "menu-price-0",
+          "x": 248,
+          "y": 407,
+          "width": 67,
+          "height": 27,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "menu-price-1",
+          "x": 661,
+          "y": 407,
+          "width": 67,
+          "height": 27,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "menu-price-2",
+          "x": 1074,
+          "y": 407,
+          "width": 68,
+          "height": 27,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "menu-price-3",
+          "x": 248,
+          "y": 705,
+          "width": 68,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "menu-price-4",
+          "x": 661,
+          "y": 705,
+          "width": 68,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "menu-price-5",
+          "x": 1074,
+          "y": 705,
+          "width": 68,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "line-price-0",
+          "x": 1836,
+          "y": 161,
+          "width": 67,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "unit-price-0",
+          "x": 1583,
+          "y": 192,
+          "width": 90,
+          "height": 23,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "quantity-0",
+          "x": 1543,
+          "y": 290,
+          "width": 38,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "line-price-1",
+          "x": 1836,
+          "y": 360,
+          "width": 67,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "unit-price-1",
+          "x": 1583,
+          "y": 391,
+          "width": 89,
+          "height": 23,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "quantity-1",
+          "x": 1543,
+          "y": 461,
+          "width": 38,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "line-price-2",
+          "x": 1836,
+          "y": 531,
+          "width": 67,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "unit-price-2",
+          "x": 1583,
+          "y": 562,
+          "width": 90,
+          "height": 23,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "quantity-2",
+          "x": 1543,
+          "y": 632,
+          "width": 38,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "line-price-3",
+          "x": 1836,
+          "y": 702,
+          "width": 67,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "unit-price-3",
+          "x": 1597,
+          "y": 733,
+          "width": 90,
+          "height": 23,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "quantity-3",
+          "x": 1543,
+          "y": 775,
+          "width": 38,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "subtotal",
+          "x": 1830,
+          "y": 917,
+          "width": 73,
+          "height": 26,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "total",
+          "x": 1784,
+          "y": 962,
+          "width": 119,
+          "height": 39,
+          "maxDiffRatio": 0.003
+        },
+        {
+          "id": "primary-footer",
+          "x": 1498,
+          "y": 1007,
+          "width": 405,
+          "height": 58,
+          "maxDiffRatio": 0.005
+        },
+        {
+          "id": "primary-footer-label",
+          "x": 1660,
+          "y": 1023,
+          "width": 81,
+          "height": 25,
+          "maxDiffRatio": 0
+        }
+      ],
+      "criticalSelectors": [
+        {
+          "id": "close",
+          "selector": "@order-close-button",
+          "reference": "[data-ref=\"close\"]"
+        },
+        {
+          "id": "primary-header",
+          "selector": "@submit-order-button",
+          "reference": "[data-ref=\"primary-header\"]"
+        },
+        {
+          "id": "primary-footer",
+          "selector": "@submit-order-button-footer",
+          "reference": "[data-ref=\"primary-footer\"]"
+        },
+        {
+          "id": "search",
+          "selector": "@b02-search",
+          "reference": "[data-ref=\"search\"]"
+        },
+        {
+          "id": "menu-item-0",
+          "selector": "@menu-item-3e43bb8c-198f-443f-83ab-18696983edaa",
+          "reference": "[data-ref=\"menu-item-0\"]"
+        },
+        {
+          "id": "menu-item-1",
+          "selector": "@menu-item-aaa3b30e-131a-4435-889f-912b407a14dd",
+          "reference": "[data-ref=\"menu-item-1\"]"
+        },
+        {
+          "id": "menu-item-2",
+          "selector": "@menu-item-80cfbd5a-a538-4da6-888d-2f732b7b8e2d",
+          "reference": "[data-ref=\"menu-item-2\"]"
+        },
+        {
+          "id": "menu-item-3",
+          "selector": "@menu-item-d50ff72b-d0bc-4832-8888-183c19f5a158",
+          "reference": "[data-ref=\"menu-item-3\"]"
+        },
+        {
+          "id": "menu-item-4",
+          "selector": "@menu-item-9491e262-856d-4408-82b7-c9d7f7ac3f27",
+          "reference": "[data-ref=\"menu-item-4\"]"
+        },
+        {
+          "id": "menu-item-5",
+          "selector": "@menu-item-230c8e39-02a6-4ec0-8f6e-a5643ad96d5c",
+          "reference": "[data-ref=\"menu-item-5\"]"
+        },
+        {
+          "id": "category-0",
+          "selector": "@b02-category-c68d7fbd-c06a-42a4-8140-476da8ebbf74",
+          "reference": "[data-ref=\"category-0\"]"
+        },
+        {
+          "id": "category-1",
+          "selector": "@b02-category-1ebf92aa-cf30-4e0d-8279-2b6fe3f8fb54",
+          "reference": "[data-ref=\"category-1\"]"
+        },
+        {
+          "id": "category-2",
+          "selector": "@b02-category-0e2b2b01-1e52-436b-8130-428e82585276",
+          "reference": "[data-ref=\"category-2\"]"
+        },
+        {
+          "id": "category-3",
+          "selector": "@b02-category-d8e03f30-1979-44b1-8fae-dc3cf6756680",
+          "reference": "[data-ref=\"category-3\"]"
+        },
+        {
+          "id": "decrease-0",
+          "selector": "[data-source-item-id=\"3c00b7a3-016f-45a3-8f96-664314c26b4a\"] [data-testid=\"order-cart-decrease\"]",
+          "reference": "[data-ref=\"decrease-0\"]"
+        },
+        {
+          "id": "increase-0",
+          "selector": "[data-source-item-id=\"3c00b7a3-016f-45a3-8f96-664314c26b4a\"] [data-testid=\"order-cart-increase\"]",
+          "reference": "[data-ref=\"increase-0\"]"
+        },
+        {
+          "id": "note-0",
+          "selector": "[data-source-item-id=\"3c00b7a3-016f-45a3-8f96-664314c26b4a\"] [data-testid=\"b02-note\"]",
+          "reference": "[data-ref=\"note-0\"]"
+        },
+        {
+          "id": "decrease-1",
+          "selector": "[data-source-item-id=\"64a0c267-a3e2-47ca-878b-c5b47c7452e5\"] [data-testid=\"order-cart-decrease\"]",
+          "reference": "[data-ref=\"decrease-1\"]"
+        },
+        {
+          "id": "increase-1",
+          "selector": "[data-source-item-id=\"64a0c267-a3e2-47ca-878b-c5b47c7452e5\"] [data-testid=\"order-cart-increase\"]",
+          "reference": "[data-ref=\"increase-1\"]"
+        },
+        {
+          "id": "note-1",
+          "selector": "[data-source-item-id=\"64a0c267-a3e2-47ca-878b-c5b47c7452e5\"] [data-testid=\"b02-note\"]",
+          "reference": "[data-ref=\"note-1\"]"
+        },
+        {
+          "id": "decrease-2",
+          "selector": "[data-source-item-id=\"923bfabf-cffd-4d90-84a8-50bd47b0fd09\"] [data-testid=\"order-cart-decrease\"]",
+          "reference": "[data-ref=\"decrease-2\"]"
+        },
+        {
+          "id": "increase-2",
+          "selector": "[data-source-item-id=\"923bfabf-cffd-4d90-84a8-50bd47b0fd09\"] [data-testid=\"order-cart-increase\"]",
+          "reference": "[data-ref=\"increase-2\"]"
+        },
+        {
+          "id": "note-2",
+          "selector": "[data-source-item-id=\"923bfabf-cffd-4d90-84a8-50bd47b0fd09\"] [data-testid=\"b02-note\"]",
+          "reference": "[data-ref=\"note-2\"]"
+        },
+        {
+          "id": "decrease-3",
+          "selector": "[data-menu-item-id=\"80cfbd5a-a538-4da6-888d-2f732b7b8e2d\"] [data-testid=order-cart-decrease]",
+          "reference": "[data-ref=decrease-3]"
+        },
+        {
+          "id": "increase-3",
+          "selector": "[data-menu-item-id=\"80cfbd5a-a538-4da6-888d-2f732b7b8e2d\"] [data-testid=order-cart-increase]",
+          "reference": "[data-ref=increase-3]"
+        },
+        {
+          "id": "note-3",
+          "selector": "[data-menu-item-id=\"80cfbd5a-a538-4da6-888d-2f732b7b8e2d\"] [data-testid=b02-note]",
+          "reference": "[data-ref=note-3]"
+        }
+      ]
+    }
+  ]
+}

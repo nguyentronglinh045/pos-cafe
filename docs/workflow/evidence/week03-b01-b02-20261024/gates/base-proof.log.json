@@ -1,0 +1,20 @@
+{
+  "startedAt": "2026-10-24T09:01:19.081Z",
+  "finishedAt": "2026-10-24T09:02:17.451Z",
+  "cwd": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\.worktrees\\week03-b01-b02-main",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "../../.week03-b01-b02-tools/compare-base.mjs"
+  ],
+  "exitCode": 1,
+  "source": {
+    "head": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "sha256": "9b6790ca85ca91338087239138c5dc389e45b86b8fb2ece0779703816b4a5209"
+  },
+  "sourceAfter": {
+    "head": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "sha256": "9b6790ca85ca91338087239138c5dc389e45b86b8fb2ece0779703816b4a5209"
+  },
+  "sourcePreserved": true,
+  "logSha256": "b5ad63b05ddc1eec2df65ab8720bc920cf32b9834fe41fb39bfb6755cc0c27a8"
+}
