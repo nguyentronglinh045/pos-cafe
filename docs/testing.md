@@ -191,4 +191,6 @@ Bốn lệnh đầu là cổng chất lượng, chạy được cục bộ và k
 
 ## Tuần3 B01/B02
 
+Cập nhật25/10: [tích hợp UI vào main/docs](workflow/tasks/ui-main-docs-integration-2026-10-25.md) đang thực hiện theo lệnh mới; source/check/merge status lấy ở handoff này. Các số liệu dưới đây giữ nguyên theo nguồn ngày24/10.
+
 [Gate sourcehai màn](workflow/tasks/week03-b01-b02-final.md):642unit/149browser/35smokePASS31scope-skip; auditwholeappFAIL,baselinegiữ. Kiểm thủcôngWindowsNOT_RUN,capturehelpertimeout.
