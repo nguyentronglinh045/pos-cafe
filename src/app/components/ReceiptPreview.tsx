@@ -269,12 +269,13 @@ function ReceiptPreviewContent() {
   const ports = usePorts();
   const preview = useAppStore((state) => state.receiptPreview);
   const close = useAppStore((state) => state.closeReceiptPreview);
-  useDialogFocus('[data-testid="receipt-preview"]', close, !!preview, "Xem trước hóa đơn");
   const settings = useStoreDisplayQuery().data;
   const docRef = useRef<HTMLDivElement>(null);
   const controller = useRef<ReceiptPrintClick | null>(null);
   const [pending, setPending] = useState(false);
   const authority = usePermissionSession();
+  // Authority recovery recreates the portal DOM; rebind the focus listener to it.
+  useDialogFocus('[data-testid="receipt-preview"]', close, !!preview, "Xem trước hóa đơn", !!preview && authority.status === "verified");
   const eligible = () => {
     if (!preview || useAppStore.getState().receiptPreview !== preview || !navigator.onLine) return false;
     if (preview.variant !== "receipt") return sessionHasPermission(preview.requiredPermission ?? "payment.take");

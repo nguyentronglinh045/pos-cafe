@@ -135,6 +135,7 @@ test("keyboard focus, receipt overlay, Escape and touch controls", async ({
   context
 }) => {
   await fixture(page);
+  await expect(page.getByTestId("payment-close-button")).toHaveAccessibleName("Quay lại");
   await page.getByTestId("b03-back-footer").focus();
   await page.keyboard.press("Tab");
   await expect(page.getByTestId("payment-close-button")).toBeFocused();
@@ -186,6 +187,28 @@ test("authority gate keeps hidden payment dialogs out of keyboard handling", asy
   await expect(page.getByTestId("gate-next")).toBeFocused();
   await page.keyboard.press("Escape");
   expect(await page.evaluate(() => (window as any).b03.store.getState().drawer)).toBe("payment");
+});
+test("receipt authority recovery rebinds keyboard focus for provisional and initial receipts", async ({ page }) => {
+  for (const initial of [false, true]) {
+    await fixture(page);
+    await page.getByTestId(initial ? "pay-button-footer" : "print-provisional-button").click();
+    const receipt = page.getByTestId("receipt-preview");
+    await expect(receipt).toBeVisible();
+    await page.evaluate(() => (window as any).b03.gate());
+    await expect(receipt).toBeHidden();
+    await page.getByTestId("gate-retry").focus();
+    await page.keyboard.press("Tab");
+    await expect(page.getByTestId("gate-next")).toBeFocused();
+    await page.keyboard.press("Escape");
+    expect(await page.evaluate(() => !!(window as any).b03.store.getState().receiptPreview)).toBe(true);
+    await page.evaluate(() => (window as any).b03.restoreAuthority());
+    await expect(receipt).toBeVisible();
+    await page.getByTestId("receipt-print-button").focus();
+    await page.keyboard.press("Tab");
+    await expect(page.getByTestId("receipt-close-header")).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(receipt).toBeHidden();
+  }
 });
 test("stress: 100 lines, long labels, quantity999 and large money", async ({
   page

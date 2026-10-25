@@ -26,7 +26,7 @@ export function PaymentHeader({
   action?: ReactNode;
 }) {
   return <header className="header" data-testid="b03-header">
-    <button type="button" className="back" data-testid="payment-close-button" onClick={onClose}><PaymentIcon name="back" /> <span>Quay lại</span></button>
+    <button type="button" className="back" aria-label="Quay lại" data-testid="payment-close-button" onClick={onClose}><PaymentIcon name="back" /> <span>Quay lại</span></button>
     <div className="header-title"><h1 id="b03-title" data-testid="b03-title">Thanh toán đơn hàng</h1>{meta && <p className="meta" data-testid="b03-meta">{meta}</p>}</div>
     {action}<button type="button" className="icon-button quiet" aria-label="Đóng thanh toán" data-testid="b03-close" onClick={onClose}><PaymentIcon name="close" /></button>
   </header>;

@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 
 /** Presentation only: trap keyboard focus in the active top dialog and restore it on close. */
-export function useDialogFocus(selector: string, onClose: () => void, active: boolean, label: string) {
+export function useDialogFocus(selector: string, onClose: () => void, active: boolean, label: string, present = true) {
   const callback = useRef(onClose);
   const enabled = useRef(active),
     last = useRef<HTMLElement | null>(null);
@@ -51,7 +51,7 @@ export function useDialogFocus(selector: string, onClose: () => void, active: bo
         preventScroll: true
       });
     };
-  }, [selector, label]);
+  }, [selector, label, present]);
   useLayoutEffect(() => {
     if (!active) return;
     const root = document.querySelector<HTMLElement>(selector);

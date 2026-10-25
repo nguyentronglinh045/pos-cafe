@@ -76,6 +76,7 @@ Object.assign(window, {
   b03: {
     state,
     gate:()=>{usePermissionSession.getState().setStatus("unavailable");const gate=document.createElement("div");gate.innerHTML='<button data-testid="gate-retry">Thử lại</button><button data-testid="gate-next">Khóa</button>';document.body.append(gate);},
+    restoreAuthority:()=>{document.querySelector('[data-testid="gate-retry"]')?.parentElement?.remove();usePermissionSession.getState().setStatus("verified");},
     ports,
     client,
     store: useAppStore,
