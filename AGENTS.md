@@ -10,7 +10,7 @@
 
 - **This file lives on the `docs` branch and is committed.** Project-wide rules live here since 2026-09-07; operator guides shipped with tooling follow the branch-model exception below.
 - No persistent docs worktree remains after the owner-requested cleanup on 2026-10-25. Read the committed instructions with `git -C D:/Workspace/pos-cafe show docs:AGENTS.md` (and the other docs paths below); verify the ref against the remote before calling it current. Historical checkout paths are provenance, not instructions to recreate a checkout.
-- The copies at `D:/Workspace/pos-cafe` are pointers only; never edit them and never read them as guidance. `D:/Workspace/pos-cafe-docs-retained-20261025` contains old snapshots, not the current instruction source.
+- The copies at `D:/Workspace/pos-cafe` are pointers only; never edit them and never read them as guidance. `D:/Workspace/pos-cafe-archive/pos-cafe-docs-retained-20261025` contains old snapshots, not the current instruction source.
 - Reason for the move: on `main` both files were listed in `.git/info/exclude`, so they never travelled with the repository and were invisible from any worktree. On `docs` they are versioned, they follow the project, and they double as thesis source material.
 - Companion files on the same branch: `CLAUDE.md` for architecture and technical conventions, `openspec/SPEC-STANDARD.md` for the mandatory spec standard.
 - Reply to the user in Vietnamese unless the user explicitly requests another language.

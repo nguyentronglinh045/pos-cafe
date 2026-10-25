@@ -2,6 +2,8 @@
 
 ## Đang theo dõi
 
+- [Gom kho lưu trữ và dọn cache — 25/10/2026](archive-consolidation-2026-10-25.md): gom bản lưu/review vào pos-cafe-archive, giữ code/private/trạng thái vận hành; xóa đúng6cache cũ và1thư mục rỗng; có relocation map và kiểm hash/ACL.
+
 - [Dọn worktree code — 25/10/2026](code-worktree-cleanup-2026-10-25.md): đã xóa12 checkout theo danh sách chủ dự án xác nhận, còn main WIP và timeonly711a22e; giữ source/bằng chứng/nhánh cùng recipe khôi phục.
 
 - [Rà soát docs theo 12 mục tiêu tốt nghiệp — 25/10/2026](docs-thesis-audit-2026-10-25.md): mapping mục tiêu–source–evidence–khoảng thiếu; sửa sự kiện đã xác minh, giữ đề nghị hợp nhất/xóa riêng để chủ dự án xem xét; chưa refactor.
