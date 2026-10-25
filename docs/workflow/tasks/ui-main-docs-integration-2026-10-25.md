@@ -6,17 +6,19 @@ Phần này là trạng thái mới nhất. Các checkpoint phía dưới giữ 
 
 | Hạng mục | Trạng thái hiện hành |
 | --- | --- |
-| #11 B01/B02 | Head `da743bd8743701d8a08bc4f52e4b27202338547d`, cả hai reviewer APPROVE; chờ check GitHub bắt buộc |
-| #12 docs B01/B02 | Đã hòa giải, review; chờ merge sau #11 |
-| #13 B03 | Head `7e75dd809b2c21baa9d5b4eaafd11c91bd1c0e86`, tree `c2717098bb6a145c7a2da4b1d957ec9442ffa3bb`, cả hai reviewer APPROVE; base còn nhánh #11 |
+| #11 B01/B02 | MERGED vào main `3cd71116fa3d70301a08e9e5f3521b31659cadc3` lúc05:29:21UTC; head da743bd đã được cả hai reviewer APPROVE và required checks PASS |
+| #12 docs B01/B02 | MERGED vào docs `6196ed73615f3a18d71fe57ec3a7f5df7a598b24` lúc05:29:24UTC; head b688366 chứa đúng các file handoff/review đã duyệt |
+| #13 B03 | Retarget main; head `cf8e304869ad0e92c491736790f59bff1b6f9dcc`, tree `395953d26e9702e307c49ed62a3a7773575be00d`, cả hai reviewer APPROVE; chờ required checks |
 | #14 docs B03 | Đã hòa giải, review checkpoint và cập nhật evidence; chờ merge sau #13 |
 | Audit B01/B02 mới nhất | da743bd:48/48 COMPLETE,0findings,sourcepreserved; strict `uiCounts` PASS48/0fail/0skip, không đổi baseline |
-| Audit B03 mới nhất | 7e75dd8:48/48 COMPLETE,0findings,sourcepreserved; strict `uiCounts` PASS48/0fail/0skip, không đổi baseline |
-| CI tự kích hoạt trên #11 |40164686981(pull_request)/40164683402(push), chờ kết quả. Không dispatch/rerun thủ công |
-| Branch cleanup | Chưa xóa vì chưa merge; chỉ xóa bốn source branches sau khi kiểm merged/reachable/không WIP hoặc checked-out |
+| Audit B03 mới nhất | cf8e304:48/48 COMPLETE,0findings, source trước/sau giữ nguyên; strict `uiCounts` PASS48/0fail/0skip. Snapshot `audit-cf8e304/` chỉ chứa report/status của lượt mới |
+| CI tự kích hoạt | #11:40164686981(pull_request)/40164683402(push) SUCCESS. #13:40166453117(pull_request)/40166451739(push) đang chạy trên cf8e304. Không dispatch/rerun thủ công |
+| Branch cleanup | Đã xóa local+remote `ui/week03-b01-b02-20261024` và `ui-week03-b01-b02-docs-20261024` sau kiểm merged/reachable/SHA/không checked-out. Hai nhánh B03 giữ chờ merge; thư mục worktree giữ nguyên |
 | Deploy/backend | Không deploy, migration, live activation; không mở lại acceptance backend/toàn hệ thống |
 
-Phần ứng dụng B01/B02 của da743bd giống source76e974c đã build/unit1198/browser52PASS. Phần ứng dụng B03 của7e75dd8 giống6f22106 đã build/unit1201/browser25PASS; các commit tiếp chỉ sửa bộ đo/test/pins và merge ancestry. Đây là đối chiếu tree, không gán các run cũ sang SHA mới. Detector cuối có24tooltests PASS, selftest23findings/14rules/16controls PASS, policy2PASS và64/64canonicalpins khớp; cả hai reviewer APPROVE các delta và merge SHA. [Biên bản review](../../implementation-log/ui-main-docs-integration-review-2026-10-25.md).
+Phần ứng dụng B01/B02 của da743bd giống source76e974c đã build/unit1198/browser52PASS. B03 từng giữ app tree qua7e75dd8/0febe55; delta cf8e304 sửa toast và chờ dữ liệu trong test nên đã chạy lại riêng **buildPASS,1201unit/113filesPASS,26browserPASS,fullsmoke44PASS/37skip**, policy2PASS. Strict smoke normalizer dùng cùng report: map cũ bị bác, map mới PASS81; chỉ cập nhật bốn định danh, giữ37skips. Detector cuối có24tooltests PASS, selftest23findings/14rules/16controls PASS và64/64canonicalpins khớp. [Biên bản review](../../implementation-log/ui-main-docs-integration-review-2026-10-25.md).
+
+CI #11 pull_request đã PASS trên synthetic source `dc1b65a3de6264f56bf0314efd3df032db3aa66e` (prHead da743bd), run push PASS trên chính da743bd. Sau merge #11, PR13 nhận main qua0febe55, tree bằng7e75dd8, cả hai reviewer APPROVE metadata merge. Run B03 cũ40164942919/40164939422 ở7e75dd8 có smoke exit0,44pass/37skip nhưng normalizer FAIL do map còn line489/title cũ; bốn key được đổi sang test462/title hiện hữu, không thêm skip. Full local69c516c phát hiện41pass/37skip/3fail: hai eager-count nhân viên và toast chào mừng che nút thanh toán (hover giữ toast). Candidatecf8e304 cho assertion poll cùng điều kiện>3 và toast thông báo pointer-events:none; giữ aria/status/nội dung/thời lượng, không đổi permission/write/receipt. Regression toast luôn hiển thị RED→GREEN ở ba viewport; run cuối cf8e30444pass/37skip. Các FAIL cũ được giữ riêng, không cộng vào PASS cuối.
 
 Hai worktree có WIP vẫn giữ HEAD: code5156820, docs0fe967d (413 dòng status ở checkpoint); không reset/pull/stash/clean. Không cài thêm package/runtime/WSL/Docker. Chủ dự án đã cho xóa đúng hai cache watcher `watch-test-0e46973a-952d-405d-9bd4-a5c66b9b78b6` và `watch-test-ff096676-d4bd-45ad-972f-4df5f69edc4e` dưới `D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/ui-audit/`, tổng30.625.668 bytes logic. Đã xác minh ownership bằng log và junction `escape` trỏ về repo; không có process dùng cache. Bộ duyệt tự động từ chối cả lệnh xóa gộp và lệnh gỡ junction riêng với **blocked by policy**. Vì vậy hai cache vẫn còn, chưa thu hồi dung lượng. Không thử xóa bằng shell/API khác để vượt chặn.
 
