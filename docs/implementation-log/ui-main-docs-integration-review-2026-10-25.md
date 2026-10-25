@@ -36,6 +36,8 @@ Docs checkpoint đã được cả hai reviewer đọc: diễn đạt đúng l�
 
 ## B03 — candidate6f22106
 
+Checkpoint này được bổ sung bởi detector678a9a8 và mergeB03 5b4d5a4 bên dưới; phần app của6f22106 không đổi.
+
 Code `6f2210663cdde35952747ad1e1a2af45e1231be3`; tree `2db84c20cb0574f205cdd51e90f52b9cc7ca1294`. RI **APPROVE** phạm vi quyền/tiền/lifecycle; R-UI **APPROVE** code/UI đúng SHA này sau khi các finding đã đóng. Không thay core/features/adapters/SQL. Audit coverage/phân loại được ghi riêng, không biến approval code thành product/backend acceptance.
 
 | Finding | Đóng bằng |
@@ -46,3 +48,9 @@ Code `6f2210663cdde35952747ad1e1a2af45e1231be3`; tree `2db84c20cb0574f205cdd51e9
 R-UI xem ảnh partial568×320/844×390/1920×1080: layout có cuộn, header/footer còn rõ, partial29k/received50k/change21k nhất quán; controls ở761×390 chạm được. Audit80aa5a đủ48/48 COMPLETE,19 nhóm floor giống B01/B02 đã xem đủ ba ảnh; không finding B03. Run này trước delta focus/name, không dùng làm bằng chứng source6f22106.
 
 Build6f22106 PASS, unit1201/113files PASS, browser mục tiêu25PASS. Full audit6f22106 đủ48/48 COMPLETE,19 nhóm floor (6error/6warn/7info); detector FAIL, baseline giữ nguyên. Report/status/ảnh annotated tại snapshot `audit-6f22106/` trong evidence local; phân loại giống hai checkpoint trước. Các run23/24browser và1201unit trên source trước được giữ riêng, không cộng dồn vào run cuối. Không xác nhận fidelity/backend/live/phần cứng/zoom thật.
+
+## Detector sau quyết định tiếp tục của chủ dự án
+
+R-UI và RI đều **APPROVE `678a9a81febe641377f282708810cb4dea54fb98`**. Đúng ba file thay đổi: detector, demo-buggy negative controls, hai hash canonical của chúng trong policy. Hai reviewer tự kiểm64/64hashes; RI chạy Chromium so detector cũ/mới trên cùng fixture:25→23, chỉ bỏ hai hidden descendants,23 finding thực còn lại giữ nguyên. Selftest23findings/14rules/16controls và tooling23/policy2PASS. Baseline, ngưỡng, coverage, workflow, protection, productionEnabled:false giữ nguyên.
+
+Full audit678a9a8 sau approval code:48/48 COMPLETE,13warning/infoFP,0error, exit0. Đây là kết quả mới, không viết lại các audit FAIL cũ. B03 merge5b4d5a4 chỉ nhận cùng delta detector/pins, không thay app; review xác minh ancestry/tree và audit cuối ghi riêng khi hoàn tất.

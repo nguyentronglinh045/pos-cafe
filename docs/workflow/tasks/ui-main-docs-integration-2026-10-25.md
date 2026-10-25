@@ -25,6 +25,12 @@ C đầu lượt trống 192.107.458.560 bytes; D 99.045.609.472 bytes. Dùng no
 
 ## Hòa giải và kiểm tra
 
+### Quyết định tiếp tục sau blocker
+
+Chủ dự án đã trả lời rõ trong chat: **“Sửa bộ đo rồi tiếp tục merge”**. Quyền bổ sung chỉ xử lý đúng lỗi báo nhầm, giữ baseline/ngưỡng/coverage/protection. Commit B01/B02 `678a9a81febe641377f282708810cb4dea54fb98` thêm hai guard `getClientRects().length` trong detector và negative controls dưới cha display:none; cập nhật đúng hai trusted hashes tương ứng. Selftest trước sửa25FAIL→sau sửa23PASS, đủ14rules/16controls; zero-size/icon thật vẫn bị phát hiện. Audit tooling23tests và policy2tests PASS; cả R-UI/RI tự đối chiếu64pins và APPROVE đúng SHA.
+
+Audit trên678a9a8: **48/48 COMPLETE,0error,6warn+7info, exit0**.13 nhóm clipping floor còn lại là nhãn/duplicate cố ý visually-hidden, không xóa khỏi report/baseline. Snapshot `audit-678a9a8/`; không biến gate PASS thành nghiệm thu toàn hệ thống. Push tự tạo CI40164221288(pull_request)/40164218948(push); chờ check bắt buộc. Nhánh B03 nhận đúng cùng ba file ở merge commit `5b4d5a44e4eb1b017ca17eb96d9703d4b94366b5`, không đổi app so6f22106; audit B03 source5b4d5a4 đang chạy. Các đoạn blocker/FAIL dưới đây là lịch sử trước quyền bổ sung, không phải trạng thái đã bỏ việc merge.
+
 B01/B02 đã hòa giải 8 file conflict: playwright config; OrderCartPane, OrderDrawer, OrderMenuPane; FloorWorkspace + test; LeftNav + test. Giữ theme/bố cục B01/B02 và ghép các bảo vệ quyền từ main, không đổi backend/migrations/financial protocol. Code merge candidate `76e974c5ff52c65baee5e15b4fc8d096801dc2b0`; PR11 head `b2ecad04294793c3884f1dfb192904dc72440709` bổ sung đúng một trusted hash cho smoke helper đã review.
 
 Các finding B01/B02 đã đóng: display query dùng purpose display thay settings.manage; giữ pay-only routing cho bàn và thẻ đơn; bỏ response mở bàn sau session/permission change hoặc refetch error; CSS portrait không lấn hướng dẫn xoay; keyboard focus bỏ qua drawer bị authority gate ẩn. Harness UI chuyển sang candidate permission runtime, query keys hiện hành; hidden action và unavailable-menu filtering theo contract main, không phục hồi hành vi legacy để làm test xanh.
