@@ -45,4 +45,11 @@ Ba câu này chặn việc kết luận đầy đủ về lý do lựa chọn ki
 
 Đợt này bổ sung hồ sơ xác nhận; đồng bộ phần mục đích ở docs README, nguồn mục tiêu ở project-overview và chủ thể quyết định ở tech-stack; thêm đường vào task index. Không tích hoàn tất P0-01/P0-02 vì danh mục tính năng, chỉ mục quyết định và các chi tiết kiến trúc còn phải thực hiện tiếp.
 
-Review đợt ghi nhận đầu: đang chờ reviewer độc lập. Hồ sơ còn mở để nhận các câu trả lời tiếp theo.
+### Review đợt ghi nhận đầu
+
+- Reviewer độc lập: `/root/review_preservation`; toàn bộ5file docs và delta checklist local.
+- Docs candidate đầu `53d52e8e43bff44b639eae8eb0b7dba5d7d55c39` và candidate sau rebase `2bbfa2c3c6592bdfe5c3a3008dbe2cf398e34b9e`: **APPROVE**, không finding. Đã kiểm tính trung thực với câu trả lời, phạm vi xác nhận, ngày hồi cứu, trạng thái Q04–06, diff và link/anchor; không chạy ứng dụng/backend.
+- Checklist candidate đầu `e706da317202427f18fb89b6ec855363be4725a8ae7b936aeab9362746109c6c`: CHANGES_REQUESTED do câu metadata review cũ chưa giới hạn checkpoint. Đã sửa riêng câu đó; candidate `6a07e1a5d69587c307e9ddf221854df87176cc8341980c369fbd96d9d1f4bd4a` được **APPROVE**, finding đóng, không còn finding khác. Checklist không nằm trong commit docs.
+- Rebase chỉ giữ thêm hồ sơ đánh giá main và dòng chỉ mục từ công việc đồng thời; reviewer xác nhận4file nội dung và mục chỉ mục của lượt này không đổi, không review lại nội dung công việc kia.
+- Kiểm tác giả: `git diff --check` PASS;65link tương đối trong5file sửa không có lỗi path/anchor. Sau APPROVE chỉ bổ sung metadata review này và metadata tương ứng ở checklist.
+- Đợt ghi nhận đã được kiểm; hồ sơ vẫn mở để nhận câu trả lời tiếp theo. Verdict không chứng nhận đã hoàn tất P0–P2 hoặc mở quyền triển khai/phát hành.
