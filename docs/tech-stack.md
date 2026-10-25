@@ -17,6 +17,8 @@ Vite 8 yêu cầu Node `^20.19.0 || >=22.12.0`; môi trường build/deploy ph�
 
 ## Architectural Pattern: Hexagonal Architecture / Ports & Adapters
 
+**Nguồn quyết định:** chủ dự án xác nhận ngày25/10/2026 rằng lựa chọn kiến trúc cuối cùng do mình quyết định dựa trên thông tin AI cung cấp. Ngày này là ngày xác nhận hồi cứu, chưa xác định ngày lựa chọn ban đầu. [Hồ sơ làm rõ](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-arch-01--nguồn-của-quyết-định-lựa-chọn-kiến-trúc) giữ phần đã xác nhận và câu hỏi còn mở; câu trả lời này chưa xác nhận riêng từng lý do, phương án bị loại hoặc đánh đổi đang ghi bên dưới.
+
 - **Quyết định:** dùng Ports & Adapters, lấy cảm hứng từ Hexagonal Architecture.
 - **Dùng cho:** tách UI/feature flow khỏi Supabase, realtime, print và mock data.
 - **Vì sao chọn:** dự án có nhiều nghiệp vụ cần test và demo ổn định; port boundary giúp UI không phụ thuộc trực tiếp SDK backend.

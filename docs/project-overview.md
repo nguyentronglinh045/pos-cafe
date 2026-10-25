@@ -4,6 +4,8 @@ POS Cafe là ứng dụng web bán hàng cho quán cà phê nhỏ, dùng trên n
 
 ## Bài toán và mục tiêu
 
+Theo xác nhận của chủ dự án ngày25/10/2026, [12 mục tiêu tốt nghiệp](workflow/tasks/docs-thesis-audit-2026-10-25.md#đối-chiếu-12-mục-tiêu) đã được giảng viên xác nhận và là định hướng đích của đồ án. [Hồ sơ nguồn và giới hạn](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-docs-02--khung12-mục-tiêu-tốt-nghiệp-được-giảng-viên-xác-nhận) phân biệt xác nhận mục tiêu với tiêu chí chi tiết, hiện trạng và nghiệm thu; lượt này chưa đối chiếu văn bản của giảng viên.
+
 Nhân viên cần nhìn trạng thái bàn, ghi nhận món và tùy chọn, tiếp tục đơn tại bàn hoặc mang đi, thu tiền và tra cứu giao dịch. Chủ quán cần quản lý nhân viên/quyền, thực đơn, sơ đồ và doanh thu. Hệ thống phải giữ lịch sử giá, chống ghi trùng khi mất phản hồi, phát hiện sửa đồng thời và đồng bộ các thiết bị khi online.
 
 Mỗi cửa hàng là một phạm vi dữ liệu riêng. Khả năng phục vụ nhiều cửa hàng trong backend không đồng nghĩa đã có sản phẩm quản lý chuỗi hay báo cáo đa chi nhánh.

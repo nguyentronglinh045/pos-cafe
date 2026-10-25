@@ -2,6 +2,8 @@
 
 ## Đang theo dõi
 
+- [Làm rõ kho docs và nguồn quyết định — 25/10/2026](docs-knowledge-clarification-2026-10-25.md): AI là đối tượng khai thác chủ yếu; khung12 mục tiêu đã được giảng viên xác nhận theo thông tin chủ dự án; đã xác nhận người chốt kiến trúc, đang hỏi tiếp lý do/phương án/đánh đổi. Checklist vẫn local.
+
 - [Đánh giá cấu trúc thư mục main — 25/10/2026](main-structure-assessment-2026-10-25.md): khảo sát main711a22e; giữ phân tầng src, ưu tiên tổ chức tooling/config và shared helpers; 5 boundary tests đạt; chưa refactor.
 
 - [Gom kho lưu trữ và dọn cache — 25/10/2026](archive-consolidation-2026-10-25.md): gom bản lưu/review vào pos-cafe-archive, giữ code/private/trạng thái vận hành; xóa đúng6cache cũ và1thư mục rỗng; có relocation map và kiểm hash/ACL.
