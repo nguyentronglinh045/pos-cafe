@@ -1,5 +1,11 @@
 # Lộ trình phát triển
 
+## Khung thời gian đồ án — xác nhận 2026-10-25
+
+Chủ dự án xác nhận **15 tuần thực hiện từ 2026-10-05**, sau đó **tuần 16 bảo vệ trực tiếp với giảng viên**. Nếu tính các tuần 7 ngày liên tiếp: tuần 3 là 2026-10-19 – 2026-10-25; tuần 15 là 2027-01-11 – 2027-01-17; tuần 16 là 2027-01-18 – 2027-01-24. Chưa xác nhận ngày bảo vệ cụ thể, hạn nộp báo cáo riêng hoặc lịch nghỉ/điều chỉnh của trường.
+
+Đầu ra cần đạt: **các chức năng đã đăng ký chạy được trên Vercel và có thể chứng minh chạy kiểm thử ở local**; chủ dự án cũng nêu định hướng bảo toàn các tính năng của đợt trước. [Hồ sơ Q07–Q09](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-thesis-01--thời-gian-và-mức-hoàn-thành-đồ-án) giữ nguồn và phần chưa rõ. Chưa tự phân bổ lại công việc theo tuần hoặc nhận toàn hệ thống đã đạt; các gate triển khai/kiểm thử hiện hành vẫn áp dụng.
+
 ## Đang ở đâu — 25/10/2026
 
 | Nhóm | Trạng thái hiện hành |
@@ -19,7 +25,7 @@
 3. Tiếp tục NC-02 bản đồ code và NC-03 chốt slice theo [kế hoạch chung](workflow/tasks/post-integration-standardization-plan-2026-10-25.md). Chỉ mở refactor NC-04…08 khi được giao và đủ gate liên quan.
 4. Backend acceptance, deployment, owner/email provisioning, đo tải và lịch báo cáo cần phạm vi/điều kiện riêng. Merge UI không đóng NC-01/NC-11 toàn hệ thống.
 
-Không tự dời hạn đồ án hoặc phân bổ lại quỹ giờ. Lịch gốc ghi bắt đầu 28/08/2026, hạn 21/12/2026, bốn ngày đệm và ngân sách dịch vụ miễn phí; các mốc tuần phía dưới là kế hoạch đã lưu, không phải dự báo hoàn tất cập nhật.
+Khung thời gian hiện hành là xác nhận 2026-10-25 ở đầu trang. Lịch gốc bắt đầu 2026-08-28, hạn 2026-12-21 và bốn ngày đệm dưới đây được giữ để truy vết, không còn là lịch chính dùng cho đồ án. Chưa tự chuyển các tuần/công việc cũ sang ngày mới hoặc phân bổ lại quỹ giờ. Xác nhận thời gian mới không tự thay quyết định ngân sách dịch vụ miễn phí.
 
 ## Hồ sơ kế hoạch và lý do xếp thứ tự
 

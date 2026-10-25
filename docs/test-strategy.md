@@ -9,6 +9,14 @@ Nó không chứa kết quả chạy. Kết quả, số liệu và ngày nằm �
 
 Chốt ngày 2026-09-07 theo `openspec/changes/define-test-strategy`. Lý do đầy đủ của từng lựa chọn nằm ở mục `## Quyết định đã chốt` của proposal đó.
 
+## Đầu ra kiểm chứng cho đồ án — làm rõ 25/10/2026
+
+Theo [Q07–Q09](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-thesis-01--thời-gian-và-mức-hoàn-thành-đồ-án), các chức năng đã đăng ký cần hoạt động trên Vercel và việc chạy kiểm thử ở local cần có thể được chứng minh. Hướng dẫn môi trường/lệnh và evidence theo source phải đủ để thực hiện, không chỉ liệt kê các file test. Đây là mục tiêu đầu ra; lượt làm rõ không chạy lại test hoặc xác nhận deployment đã đạt.
+
+Chủ dự án nêu mong muốn các tính năng từ đợt trước tiếp tục hoạt động tốt. Cần nhận diện bản/mốc cũ rồi ánh xạ các hành trình còn hiệu lực sang kiểm thử hồi quy; không chỉ kiểm phần chức năng mới. Mốc cụ thể còn mở ở Q10. Khi hành vi cũ đã được thay thế bằng quyết định được duyệt, dùng expected hiện hành; không nhận lỗi/hành vi đã bỏ của bản cũ làm chuẩn phải khôi phục.
+
+Theo thông tin chủ dự án, giảng viên không bổ sung minh chứng cụ thể ngoài các mục tiêu đã trao đổi. Điều này không hạ coverage hoặc gate kỹ thuật đã duyệt. Khả năng chạy local không thay bằng chứng cần thiết tại tầng thực thi thật, không đồng nghĩa phải cài mọi dịch vụ/backend trên máy cá nhân; môi trường thực hiện tuân thủ gate và giới hạn tài nguyên hiện có. [Testing](testing.md) tiếp tục là nơi ghi kết quả thực chạy.
+
 ## Sáu Tầng Kiểm Thử
 
 Cột **không kiểm** quan trọng ngang cột **kiểm**. Thiếu nó thì cùng một thứ bị kiểm ở ba tầng, còn thứ khác không tầng nào nhận.

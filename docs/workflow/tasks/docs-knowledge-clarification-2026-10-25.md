@@ -2,7 +2,7 @@
 
 ## Phạm vi và nguồn xác nhận
 
-Chủ dự án yêu cầu hỏi theo nhóm, ghi nhận câu trả lời và cập nhật docs cho phù hợp. Nội dung được biên tập thành thông tin dự án, không chép nguyên văn hội thoại. Nguồn là hai nhóm câu trả lời trong chat ngày 25/10/2026: Q01–Q03 về người đọc docs, 12 mục tiêu tốt nghiệp và chủ thể quyết định; Q04–Q06 về động cơ chọn kiến trúc, phương án từng cân nhắc và đánh đổi. Chỉ ghi chắc phần chủ dự án xác nhận; phần được nhớ lại kèm yêu cầu kiểm tra vẫn giữ trạng thái cần đối chiếu.
+Chủ dự án yêu cầu hỏi theo nhóm, ghi nhận câu trả lời và cập nhật docs cho phù hợp. Nội dung được biên tập thành thông tin dự án, không chép nguyên văn hội thoại. Nguồn là ba nhóm câu trả lời trong chat ngày 25/10/2026: Q01–Q03 về người đọc docs, 12 mục tiêu tốt nghiệp và chủ thể quyết định; Q04–Q06 về động cơ chọn kiến trúc, phương án từng cân nhắc và đánh đổi; Q07–Q09 về thời gian thực hiện, mức triển khai và kiểm chứng cần đạt. Chỉ ghi chắc phần chủ dự án xác nhận; phần được nhớ lại kèm yêu cầu kiểm tra vẫn giữ trạng thái cần đối chiếu.
 
 Đây là hồ sơ đang được bổ sung trong quá trình làm rõ. Ngày25/10 là ngày xác nhận thông tin, không tự là ngày ra quyết định kiến trúc ban đầu hoặc ngày giảng viên phê duyệt mục tiêu. Checklist theo dõi vẫn giữ local, không đưa lên Git. Việc cập nhật tài liệu không mở refactor, triển khai chức năng, chạy backend hoặc thay gate nghiệm thu.
 
@@ -53,13 +53,46 @@ Chủ dự án yêu cầu hỏi theo nhóm, ghi nhận câu trả lời và cậ
 
 Q05–Q06 còn mở ở phần lịch sử, không chặn ghi nhận động cơ đã xác nhận hoặc làm rõ mục tiêu đồ án. Tiếp tục tìm nguồn khi có manh mối; không yêu cầu chủ dự án đoán lại hoặc tự kiểm code. Nếu không khôi phục được hồ sơ gốc, giữ nhãn chưa xác minh; phân tích so sánh mới phải ghi rõ là hồi cứu.
 
-## Nhóm thông tin cần hỏi tiếp về đích đồ án
+## DEC-THESIS-01 — Thời gian và mức hoàn thành đồ án
+
+Nguồn: câu trả lời Q07–Q09 của chủ dự án ngày 25/10/2026. Đây là thông tin lập kế hoạch và mục tiêu đầu ra, không là chứng nhận hệ thống đã đạt hoặc quyền triển khai ngay trong lượt chỉnh lý docs.
+
+### Thời gian đã xác nhận và ngày quy đổi
+
+Chủ dự án xác nhận thời gian thực hiện là **15 tuần bắt đầu từ 05/10/2026**, hiện ở tuần 3; **tuần 16 bảo vệ trực tiếp với giảng viên**. Quy đổi bên dưới tính các tuần 7 ngày liên tiếp từ ngày bắt đầu; chưa có lịch nghỉ/điều chỉnh của trường để áp dụng.
+
+| Mốc | Khoảng ngày quy đổi | Nguồn và giới hạn |
+| --- | --- | --- |
+| Tuần 1 | 05–11/10/2026 | Bắt đầu 05/10 theo chủ dự án. |
+| Tuần 3 | 19–25/10/2026 | Khớp thông tin tuần hiện tại tại ngày trao đổi 25/10. |
+| Tuần 15 | 11–17/01/2027 | Kết thúc 15 tuần thực hiện vào 17/01 nếu lịch liên tục. |
+| Tuần 16 | 18–24/01/2027 | Tuần bảo vệ; chưa xác nhận ngày/giờ cụ thể. |
+
+Chưa có hạn nộp báo cáo riêng hoặc lịch kiểm tra giữa kỳ. Không coi ngày cuối tuần 15 là hạn nộp báo cáo chính thức. Khung này được đặt làm mốc hiện hành trong [roadmap](../../roadmap.md#khung-thời-gian-đồ-án--xác-nhận-2026-10-25); lịch cũ bắt đầu 28/08 và hạn 21/12/2026 giữ làm lịch sử, không dùng để suy tiến độ đồ án mới. Chưa phân bổ lại số tuần cho từng chức năng hoặc tự đổi gate.
+
+### Mức triển khai và kiểm chứng cần đạt
+
+- **Triển khai:** các chức năng đã đăng ký cần chạy được trên bản triển khai Vercel. Đây là mục tiêu chức năng hoạt động trên môi trường triển khai, không chỉ có build hoặc trang web mở được. Phạm vi đăng ký đọc cùng 12 mục tiêu và spec/quyết định tương ứng; các đầu ra báo cáo/tài liệu không được diễn giải thành chức năng web.
+- **Kiểm thử local:** cần chứng minh có thể thực hiện kiểm thử ở môi trường local. Tài liệu phải dẫn tới cách chuẩn bị, lệnh chạy, phạm vi và kết quả gắn đúng source/môi trường theo [chiến lược kiểm thử](../../test-strategy.md). Không tự diễn giải thành chỉ cần unit/mock, hoặc yêu cầu mọi thành phần backend đều phải được cài trực tiếp trên máy cá nhân; lựa chọn môi trường vẫn theo gate và giới hạn tài nguyên đã có.
+- **Giới hạn xác nhận:** chưa có yêu cầu thử nghiệm/vận hành thường xuyên tại quán thật từ câu trả lời này. Không tự thêm hợp đồng vận hành thương mại, cũng không bỏ các mục backup, bảo mật, hiệu năng đã đăng ký. URL/version của bản dùng để bảo vệ và kết quả kiểm chứng vẫn cần xác định khi thực hiện.
+- **Minh chứng bổ sung từ giảng viên:** theo chủ dự án, giảng viên không đưa thêm yêu cầu minh chứng cụ thể ngoài các mục tiêu đã trao đổi. Không tự đặt thêm rubric của giảng viên; các tiêu chí, coverage và gate kỹ thuật đã được duyệt vẫn giữ hiệu lực.
+- **Hồi quy tính năng cũ:** chủ dự án nêu mong muốn các tính năng của đợt trước tiếp tục hoạt động tốt. Ghi đây là định hướng bảo toàn chức năng khi phát triển tiếp, không phải một rubric bổ sung đã được giảng viên xác nhận. Phần kiểm thử cần có phạm vi hồi quy cho bản cũ sau khi xác định mốc đối chiếu; chưa chốt tag/commit hoặc danh mục chỉ bằng câu trả lời này. Các thay đổi nghiệp vụ/UI đã được duyệt vẫn là expected mới, không khôi phục hành vi cũ đã bị thay thế chỉ để khớp baseline.
+
+### Trạng thái câu hỏi về đích đồ án
+
+| Mã | Nội dung | Trạng thái |
+| --- | --- | --- |
+| Q07 | Mốc thực hiện và bảo vệ | Đã có khung 15 tuần từ 05/10, bảo vệ tuần 16; chưa có ngày bảo vệ và hạn nộp báo cáo cụ thể. |
+| Q08 | Mức triển khai cần đạt | Đã trả lời: chức năng đăng ký chạy trên Vercel, chứng minh chạy kiểm thử ở local. Chưa là bằng chứng triển khai/test đã đạt. |
+| Q09 | Yêu cầu minh chứng bổ sung và bảo toàn phần cũ | Không có yêu cầu bổ sung từ giảng viên theo chủ dự án; đã ghi định hướng hồi quy tính năng đợt trước, mốc baseline còn cần xác định. |
+
+## Câu hỏi tiếp theo
 
 | Mã | Thông tin cần làm rõ | Trạng thái |
 | --- | --- | --- |
-| Q07 | Mốc nộp báo cáo, bảo vệ và các mốc kiểm tra với giảng viên, nếu đã có | Chưa trả lời; không lấy lịch phase cũ làm deadline mới. |
-| Q08 | “Triển khai thực tế” cần đạt mức nào: bản triển khai truy cập được để demo, thử nghiệm tại quán thật, hay vận hành thường xuyên với dữ liệu thật? Đã có quán thử nghiệm chưa? | Chưa trả lời; chưa đổi phạm vi phát hành/vận hành. |
-| Q09 | Ngoài danh sách 12 mục tiêu, giảng viên đã yêu cầu đầu ra hoặc bằng chứng bắt buộc cụ thể nào chưa? | Chưa trả lời; không tự đặt rubric hoặc tiêu chí nghiệm thu của giảng viên. |
+| Q10 | “Đợt trước” cần bảo toàn là bản đã nộp/bảo vệ tiểu luận trước giai đoạn tốt nghiệp, hay một mốc khác? Có ngày/tên bản để tra lại không? | Chưa trả lời. AI tự đối chiếu Git/docs sau khi nhận diện mốc, không yêu cầu chủ dự án tìm commit hoặc lập danh mục từ đầu. |
+
+Q10 chặn việc chốt chính xác phạm vi hồi quy mang nhãn “đợt trước”, không chặn giữ gate hiện hành hoặc cập nhật lịch và mục tiêu triển khai đã xác nhận. Q05–Q06 tiếp tục mở ở phần lịch sử kiến trúc.
 
 ## Ghi nhận cập nhật
 
@@ -84,3 +117,7 @@ Q05–Q06 còn mở ở phần lịch sử, không chặn ghi nhận động cơ
 - Đã đối chiếu câu trả lời, commit lịch sử `7413fc4`, tìm kiếm Git, bài Cockburn và phần Architecture trang xxxviii của bản mẫu Vernon. Q04 được ghi đúng; Q05–Q06 còn giới hạn xác minh, Q07–Q09 vẫn mở; không suy quyết định loại DDD, chấp nhận toàn bộ đánh đổi hoặc đổi DB thành công.
 - Kiểm tác giả: `git diff --check` đạt; 44 liên kết tương đối trong 5 file sửa không có lỗi path/anchor. Reviewer kiểm lại diff và link/anchor, không có lỗi. Không chạy ứng dụng/backend.
 - Sau APPROVE chỉ bổ sung metadata review này và metadata tương ứng vào checklist. Lượt này lưu trên docs local, chưa push; checklist ngoài repository, các mục P0 chưa được tích hoàn tất.
+
+### Đợt ghi nhận Q07–Q09
+
+Đồng bộ khung thời gian và mức hoàn thành vào roadmap/project-overview; bổ sung vai trò kiểm thử local và hồi quy vào test-strategy; cập nhật task index và tiến độ checklist local. Chỉ sửa tài liệu theo thông tin mới, giữ lịch sử và gate. Kiểm ngày bằng phép cộng tuần, kiểm diff và liên kết; không chạy ứng dụng/backend, deploy, cài môi trường hoặc refactor.
