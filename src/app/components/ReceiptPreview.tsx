@@ -1,3 +1,4 @@
+import { RemakeThemeProvider } from "@/theme/RemakeThemeProvider";
 import { Printer, X } from "lucide-react";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -11,6 +12,7 @@ import { receiptToPrint } from "@/features/pos/orderFlow";
 import { usePorts } from "@/features/shared/portsContext";
 import { notifyUiError } from "../appErrors";
 import { PortalPopup } from "./PortalPopup";
+import { useDialogFocus } from "./useDialogFocus";
 import { useAppStore } from "../useAppStore";
 
 // ---- Builders: domain order -> print doc -------------------------------------
@@ -258,6 +260,12 @@ ReceiptDocument.displayName = "ReceiptDocument";
 // ---- Popup wrapper (in-app print simulation) ---------------------------------
 
 export function ReceiptPreviewPopup() {
+  const preview = useAppStore(state => state.receiptPreview);
+  if (!preview) return null;
+  return preview.presentation === "remake" ? <RemakeThemeProvider><ReceiptPreviewContent /></RemakeThemeProvider> : <ReceiptPreviewContent />;
+}
+
+function ReceiptPreviewContent() {
   const ports = usePorts();
   const preview = useAppStore((state) => state.receiptPreview);
   const close = useAppStore((state) => state.closeReceiptPreview);
@@ -266,6 +274,8 @@ export function ReceiptPreviewPopup() {
   const controller = useRef<ReceiptPrintClick | null>(null);
   const [pending, setPending] = useState(false);
   const authority = usePermissionSession();
+  // Authority recovery recreates the portal DOM; rebind the focus listener to it.
+  useDialogFocus('[data-testid="receipt-preview"]', close, !!preview, "Xem trước hóa đơn", !!preview && authority.status === "verified");
   const eligible = () => {
     if (!preview || useAppStore.getState().receiptPreview !== preview || !navigator.onLine) return false;
     if (preview.variant !== "receipt") return sessionHasPermission(preview.requiredPermission ?? "payment.take");

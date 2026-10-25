@@ -4,10 +4,10 @@ import type { EmployeeRosterEntry, PermissionSession } from "@/domain/permission
 import { usePermissionSession } from "@/features/shared/permissionSession";
 import { clearDrawerExitGuard, requestDrawerExit } from "./drawerNavigation";
 
-export type ReceiptPreview =
+export type ReceiptPreview = { presentation?: "remake" } & (
   | { variant: "ticket" | "kitchen"; doc: PrintTicket; requiredPermission?: "order.create" | "order.update" | "payment.take" }
   | { variant: "receipt"; doc: PrintReceipt; orderId?: string; legacyMetadata?: boolean;
-      source?: { kind: "reprint" } | { kind: "initial"; grant: import("@/ports/permissionPrint").InitialReceiptPrintGrant } };
+      source?: { kind: "reprint" } | { kind: "initial"; grant: import("@/ports/permissionPrint").InitialReceiptPrintGrant } });
 
 export type DrawerModule = "order" | "payment" | "takeaway" | "writeRecovery" | "menuEditor" | "floorEditor" | "report" | "orderHistory" | "employees" | "settings" | "paymentSettings" | null;
 export type AppScreen = "landing" | "storePairing" | "createStore" | "passcode";

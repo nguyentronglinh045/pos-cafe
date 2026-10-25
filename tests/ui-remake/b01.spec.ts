@@ -145,7 +145,7 @@ for (const vp of [{width:568,height:320},{width:1024,height:600},{width:1920,hei
     await expect(page.getByTestId("order-drawer")).toHaveCount(0);
     await page.getByTestId(`table-${tableIds.B02}`).scrollIntoViewIfNeeded();await page.getByTestId(`table-${tableIds.B02}`).tap();
     await page.getByTestId("submit-order-button-footer").click();await expect(page.getByTestId("payment-drawer")).toBeVisible();
-    await page.getByTestId("payment-drawer").getByRole("button",{name:"Quay lại",exact:true}).click();
+    await page.getByTestId("b03-back-footer").click();
     await expect(page.getByTestId("payment-drawer")).toHaveCount(0);await expect(page.getByTestId("floor-view")).toBeVisible();
   });
 }
@@ -163,7 +163,7 @@ test("shared palette update reaches floor and order controls at runtime", async 
   const outlined=page.getByTestId("order-close-button");
   const muted=JSON.parse(readFileSync("ui-remake/palette-a-v1.json","utf8")).colors["--muted"];
   const rgb=`rgb(${[1,3,5].map(i=>parseInt(muted.slice(i,i+2),16)).join(", ")})`;
-  await expect(outlined).toHaveCSS("color",rgb); // B02 approved close action uses muted, not primary. MUI propagation is covered by the shared theme test.
+  await expect(outlined).toHaveCSS("color",rgb); // B02 approved close action uses muted, not primary. MUI propagation is covered by B03 theme test.
   const font=await outlined.evaluate(e=>getComputedStyle(e).fontFamily);expect(font.split(",")[0].replaceAll('"','').trim()).toBe("Be Vietnam Pro");
   const utility=page.getByTestId("submit-order-button-footer");await expect(utility).toHaveCSS("background-color","rgb(20, 90, 100)");
 });

@@ -1,0 +1,828 @@
+/* Presentation from the owner-approved B03 v3 reference. All colors use shared semantic variables. */
+.ui-remake .b03-remake, .ui-remake .b03-remake * {
+  box-sizing: border-box
+}
+.ui-remake .b03-remake,.ui-remake .b03-remake {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden
+}
+.ui-remake .b03-remake,.ui-remake .b03-remake button,.ui-remake .b03-remake input {
+  font-family: 'Be Vietnam Pro',sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink)
+}
+.ui-remake .b03-remake {
+  background: var(--bg)
+}
+.ui-remake .b03-remake button,.ui-remake .b03-remake input {
+  appearance: auto
+}
+.ui-remake .b03-remake button {
+  cursor: pointer;
+  border: 1px solid var(--line-control);
+  background: var(--surface);
+  border-radius: 8px;
+  min-height: 44px;
+  padding: 8px 14px;
+  font-weight: 600
+}
+.ui-remake .b03-remake button:hover {
+  border-color: var(--primary);
+  background: var(--primary-soft)
+}
+.ui-remake .b03-remake button:disabled {
+  cursor: not-allowed;
+  color: var(--muted);
+  background: var(--surface-2);
+  border-color: var(--line)
+}
+.ui-remake .b03-remake button:focus-visible,.ui-remake .b03-remake input:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px
+}
+.ui-remake .b03-remake p,.ui-remake .b03-remake h1,.ui-remake .b03-remake h2,.ui-remake .b03-remake h3 {
+  margin: 0
+}
+.ui-remake .b03-remake h1 {
+  font-size: 20px;
+  font-weight: 700
+}
+.ui-remake .b03-remake h2 {
+  font-size: 16px;
+  font-weight: 700
+}
+.ui-remake .b03-remake small,.ui-remake .b03-remake .muted {
+  color: var(--muted);
+  font-size: 13px
+}
+.ui-remake .b03-remake .money {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap
+}
+.ui-remake .b03-remake svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  flex: none
+}
+.ui-remake .b03-remake button svg {
+  display: inline-block;
+  vertical-align: middle
+}
+.ui-remake .b03-remake .icon-button {
+  padding: 10px;
+  width: 44px;
+  flex: none
+}
+.ui-remake .b03-remake .primary {
+  background: var(--primary);
+  color: var(--primary-ink);
+  border-color: var(--primary)
+}
+.ui-remake .b03-remake .primary:hover {
+  background: var(--primary-hover);
+  color: var(--primary-ink)
+}
+.ui-remake .b03-remake .quiet {
+  border-color: var(--line)
+}
+.ui-remake .b03-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: grid;
+  place-items: center;
+  padding: 24px
+}
+.ui-remake .b03-remake.panel {
+  width: 100%;
+  max-width: 1360px;
+  height: min(920px,100%);
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0,1fr) auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: 0 20px 50px color-mix(in srgb,var(--ink) 12%,transparent)
+}
+.ui-remake .b03-remake .header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+  min-height: 76px;
+  min-width: 0
+}
+.ui-remake .b03-remake .header-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+  flex-wrap: wrap
+}
+.ui-remake .b03-remake .meta {
+  color: var(--primary);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-line);
+  padding: 5px 10px;
+  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 600
+}
+.ui-remake .b03-remake .header .back {
+  border: 0;
+  border-right: 1px solid var(--line);
+  border-radius: 0;
+  color: var(--muted);
+  padding-right: 20px
+}
+.ui-remake .b03-remake .header-pay {
+  white-space: nowrap
+}
+.ui-remake .b03-remake .body {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0,1.1fr) minmax(0,1fr);
+  gap: 16px;
+  padding: 16px;
+  background: var(--bg);
+  overflow: auto;
+  overscroll-behavior: contain
+}
+.ui-remake .b03-remake .card {
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 20px
+}
+.ui-remake .b03-remake .invoice {
+  display: grid;
+  grid-template-rows: auto auto minmax(0,1fr) auto;
+  overflow: hidden
+}
+.ui-remake .b03-remake .section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding-bottom: 12px
+}
+.ui-remake .b03-remake .section-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: var(--primary);
+  background: var(--primary-soft);
+  flex: none
+}
+.ui-remake .b03-remake .tag {
+  margin-left: auto;
+  white-space: nowrap;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface-2);
+  padding: 5px 8px;
+  color: var(--ink-2);
+  font-size: 12px;
+  font-weight: 600
+}
+.ui-remake .b03-remake .selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 6px 0
+}
+.ui-remake .b03-remake .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  cursor: pointer;
+  font-weight: 600
+}
+.ui-remake .b03-remake .check {
+  appearance: none;
+  margin: 0;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border: 1px solid var(--line-control);
+  background: var(--surface);
+  border-radius: 8px;
+  cursor: pointer
+}
+.ui-remake .b03-remake .check:checked {
+  background: var(--primary);
+  border-color: var(--primary)
+}
+.ui-remake .b03-remake .check:checked:after {
+  content: '✓';
+  color: var(--primary-ink);
+  font-size: 24px;
+  display: block;
+  text-align: center;
+  line-height: 42px
+}
+.ui-remake .b03-remake .items {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain
+}
+.ui-remake .b03-remake .line {
+  display: grid;
+  grid-template-columns: 44px minmax(0,1fr) auto;
+  gap: 10px;
+  align-items: start;
+  border-bottom: 1px solid var(--line);
+  padding: 16px 0
+}
+.ui-remake .b03-remake .line h3 {
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere
+}
+.ui-remake .b03-remake .line p {
+  font-size: 13px;
+  color: var(--muted);
+  overflow-wrap: anywhere
+}
+.ui-remake .b03-remake .line .amount {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: right
+}
+.ui-remake .b03-remake .line-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 8px
+}
+.ui-remake .b03-remake .quantity {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface-2);
+  padding: 5px 8px;
+  font-size: 13px;
+  color: var(--ink-2);
+  font-weight: 600;
+  white-space: nowrap
+}
+.ui-remake .b03-remake .unit {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 6px
+}
+.ui-remake .b03-remake .totals {
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  display: grid;
+  gap: 10px
+}
+.ui-remake .b03-remake .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--muted)
+}
+.ui-remake .b03-remake .row strong {
+  color: var(--ink);
+  font-weight: 600
+}
+.ui-remake .b03-remake .grand {
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 700
+}
+.ui-remake .b03-remake .grand strong {
+  font-size: 26px;
+  color: var(--primary)
+}
+.ui-remake .b03-remake .provisional {
+  justify-self: stretch;
+  color: var(--ink-2)
+}
+.ui-remake .b03-remake .cashier {
+  overflow: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 14px
+}
+.ui-remake .b03-remake .methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px
+}
+.ui-remake .b03-remake .method {
+  display: grid;
+  grid-template-columns: 32px minmax(0,1fr);
+  gap: 8px;
+  align-items: center;
+  text-align: left;
+  min-height: 64px;
+  padding: 8px 10px
+}
+.ui-remake .b03-remake .method .symbol {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  background: var(--surface-sunk);
+  color: var(--muted)
+}
+.ui-remake .b03-remake .method.active {
+  background: var(--primary-soft);
+  border: 2px solid var(--primary);
+  padding: 7px 9px
+}
+.ui-remake .b03-remake .method.active .symbol {
+  color: var(--primary-ink);
+  background: var(--primary)
+}
+.ui-remake .b03-remake .method strong {
+  display: block;
+  font-size: 14px;
+  line-height: 1.4
+}
+.ui-remake .b03-remake .method small {
+  font-size: 12px
+}
+.ui-remake .b03-remake .cash-inputs {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 154px;
+  gap: 10px;
+  align-items: start
+}
+.ui-remake .b03-remake .amount-box {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-2);
+  display: grid;
+  gap: 8px
+}
+.ui-remake .b03-remake .amount-label {
+  font-size: 13px;
+  font-weight: 600
+}
+.ui-remake .b03-remake .input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line-control);
+  border-radius: 8px;
+  background: var(--surface);
+  padding-right: 10px
+}
+.ui-remake .b03-remake .input-row input {
+  min-width: 0;
+  width: 100%;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  padding: 8px 10px;
+  font-size: 20px;
+  font-weight: 700;
+  outline-offset: 0;
+  border-radius: 8px
+}
+.ui-remake .b03-remake .input-row span {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600
+}
+.ui-remake .b03-remake .quick {
+  display: grid;
+  grid-template-columns: repeat(5,minmax(44px,1fr));
+  gap: 4px
+}
+.ui-remake .b03-remake .quick button {
+  padding: 6px 2px;
+  font-size: 12px
+}
+.ui-remake .b03-remake .quick .chosen {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-color: var(--primary)
+}
+.ui-remake .b03-remake .change {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  min-height: 52px
+}
+.ui-remake .b03-remake .change span {
+  font-size: 13px
+}
+.ui-remake .b03-remake .change small {
+  display: block;
+  font-size: 12px
+}
+.ui-remake .b03-remake .change strong {
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--success-soft);
+  color: var(--success);
+  font-size: 18px
+}
+.ui-remake .b03-remake .keypad {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 6px
+}
+.ui-remake .b03-remake .keypad button {
+  height: 44px;
+  min-width: 0;
+  padding: 6px;
+  font-size: 18px
+}
+.ui-remake .b03-remake .print {
+  font-weight: 400;
+  font-size: 13px
+}
+.ui-remake .b03-remake .print svg {
+  color: var(--muted)
+}
+.ui-remake .b03-remake .cashier-note {
+  color: var(--muted);
+  font-size: 13px
+}
+.ui-remake .b03-remake .footer {
+  display: grid;
+  gap: 8px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--line);
+  background: var(--surface)
+}
+.ui-remake .b03-remake .footer button {
+  width: min(720px,100%);
+  justify-self: center
+}
+.ui-remake .b03-remake .footer-pay {
+  min-height: 48px
+}
+.ui-remake .b03-remake .footer-back {
+  color: var(--muted)
+}
+@container b03 (max-width:1100px){
+.ui-remake .b03-backdrop {
+  padding: 0
+}
+.ui-remake .b03-remake.panel {
+  border-radius: 0;
+  border: 0;
+  max-width: none;
+  height: 100%
+}
+.ui-remake .b03-remake .header {
+  padding: 10px 12px;
+  gap: 10px;
+  min-height: 64px
+}
+.ui-remake .b03-remake .header-title {
+  display: block
+}
+.ui-remake .b03-remake .header h1 {
+  font-size: 17px
+}
+.ui-remake .b03-remake .meta {
+  display: inline-block;
+  font-size: 12px;
+  padding: 2px 8px;
+  margin-top: 3px
+}
+.ui-remake .b03-remake .header-pay {
+  display: none
+}
+.ui-remake .b03-remake .body {
+  padding: 10px;
+  gap: 10px
+}
+.ui-remake .b03-remake .card {
+  padding: 14px
+}
+.ui-remake .b03-remake .cash-inputs {
+  grid-template-columns: minmax(0,1fr)
+}
+.ui-remake .b03-remake .keypad {
+  grid-template-columns: repeat(3,minmax(44px,1fr))
+}
+.ui-remake .b03-remake .cashier {
+  display: block
+}
+.ui-remake .b03-remake .cashier>*+* {
+  margin-top: 12px
+}
+.ui-remake .b03-remake .cashier .section-title {
+  margin-top: 0
+}
+.ui-remake .b03-remake .methods {
+  gap: 6px
+}
+.ui-remake .b03-remake .method {
+  padding: 8px;
+  min-height: 64px
+}
+.ui-remake .b03-remake .footer {
+  grid-template-columns: minmax(0,1fr) auto;
+  padding: 8px 12px;
+  gap: 8px
+}
+.ui-remake .b03-remake .footer button {
+  width: 100%
+}
+.ui-remake .b03-remake .footer-back {
+  max-width: 160px
+}
+.ui-remake .b03-remake .footer-pay {
+  min-height: 44px
+}
+.ui-remake .b03-remake .grand strong {
+  font-size: 22px
+}
+.ui-remake .b03-remake .line {
+  gap: 8px
+}
+.ui-remake .b03-remake .line-actions {
+  gap: 4px
+}
+.ui-remake .b03-remake .section-title {
+  flex-wrap: wrap
+}
+.ui-remake .b03-remake .tag {
+  margin-left: 0
+}
+.ui-remake .b03-remake .quantity {
+  padding: 5px
+}
+.ui-remake .b03-remake .quick button {
+  font-size: 12px
+}}
+@container b03 (max-width:760px){
+.ui-remake .b03-remake .body {
+  grid-template-columns: minmax(0,1fr);
+  display: block;
+  scroll-padding: 10px
+}
+.ui-remake .b03-remake .card {
+  padding: 12px
+}
+.ui-remake .b03-remake .invoice {
+  min-height: 420px;
+  height: auto;
+  grid-template-rows: auto auto minmax(180px,1fr) auto
+}
+.ui-remake .b03-remake .items {
+  max-height: 360px
+}
+.ui-remake .b03-remake .cashier {
+  margin-top: 10px
+}
+.ui-remake .b03-remake .cash-inputs {
+  grid-template-columns: minmax(0,1fr) 154px
+}
+.ui-remake .b03-remake .header .back {
+  padding-right: 10px
+}
+.ui-remake .b03-remake .header {
+  gap: 8px
+}
+.ui-remake .b03-remake .header h1 {
+  font-size: 16px
+}
+.ui-remake .b03-remake .meta {
+  max-width: 100%;
+  white-space: normal
+}
+.ui-remake .b03-remake .header .back span {
+  display: none
+}
+.ui-remake .b03-remake .header .back {
+  border-right: 0;
+  width: 44px;
+  padding: 10px
+}
+.ui-remake .b03-remake .footer-back {
+  max-width: 112px
+}
+.ui-remake .b03-remake .grand strong {
+  font-size: 24px
+}}
+@container b03 (max-height:480px){
+.ui-remake .b03-backdrop {
+  padding: 0
+}
+.ui-remake .b03-remake.panel {
+  border-radius: 0;
+  border: 0;
+  height: 100%
+}
+.ui-remake .b03-remake .header {
+  min-height: 56px;
+  padding-top: 6px;
+  padding-bottom: 6px
+}
+.ui-remake .b03-remake .header-title {
+  display: flex;
+  gap: 8px;
+  align-items: center
+}
+.ui-remake .b03-remake .meta {
+  font-size: 12px
+}
+.ui-remake .b03-remake .body {
+  overflow: auto;
+  align-items: start
+}
+.ui-remake .b03-remake .invoice {
+  min-height: 400px;
+  height: auto;
+  grid-template-rows: auto auto minmax(160px,1fr) auto
+}
+.ui-remake .b03-remake .items {
+  max-height: 320px
+}
+.ui-remake .b03-remake .cashier {
+  height: auto;
+  overflow: visible
+}
+.ui-remake .b03-remake .footer {
+  grid-template-columns: minmax(0,1fr) auto;
+  padding: 6px 10px;
+  gap: 8px
+}
+.ui-remake .b03-remake .footer button {
+  width: 100%
+}
+.ui-remake .b03-remake .footer-back {
+  max-width: 130px
+}
+.ui-remake .b03-remake .footer-pay {
+  min-height: 44px
+}}
+
+/* v2: minimum usable invoice scroll area at intermediate viewport heights. */
+.ui-remake .b03-remake .invoice {
+  min-height: 420px
+}
+.ui-remake .b03-remake .cash-inputs,.ui-remake .b03-remake .amount-box,.ui-remake .b03-remake .input-row,.ui-remake .b03-remake .change {
+  min-width: 0
+}
+.ui-remake .b03-remake .change {
+  flex-wrap: wrap
+}
+.ui-remake .b03-remake .cash-inputs {
+  overflow: hidden
+}
+/* 44px target, 24px visual mark as in the source design. */
+.ui-remake .b03-remake .check {
+  position: relative;
+  border: 0;
+  background: transparent
+}
+.ui-remake .b03-remake .check:checked {
+  border: 0;
+  background: transparent
+}
+.ui-remake .b03-remake .check:after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--line-control);
+  border-radius: 5px;
+  background: var(--surface)
+}
+.ui-remake .b03-remake .check:checked:after {
+  content: '✓';
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-ink);
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center
+}
+.ui-remake .b03-remake.panel {
+  position: static;
+  inset: auto;
+  animation: none
+}
+.ui-remake .b03-remake .payment-state {
+  grid-column: 1/-1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px;
+  color: var(--muted)
+}
+.ui-remake .b03-remake .payment-empty {
+  padding: 16px;
+  text-align: center;
+  color: var(--muted)
+}
+.ui-remake .b03-remake .insufficient,.ui-remake .b03-remake .closed-notice {
+  padding: 12px;
+  border: 1px solid var(--warning);
+  border-radius: 8px;
+  color: var(--warning);
+  background: var(--warning-soft)
+}
+.ui-remake .b03-remake .is-insufficient strong {
+  color: var(--danger);
+  background: var(--danger-soft)
+}
+.ui-remake .b03-remake:has([data-testid=write-attempt-notice]) {
+  grid-template-rows: auto auto minmax(0,1fr) auto
+}
+.ui-remake .b03-remake [data-testid=write-attempt-notice] {
+  margin: 0;
+  padding: 10px 16px;
+  background: var(--warning-soft);
+  color: var(--warning);
+  border: 1px solid var(--warning);
+  overflow: auto;
+  max-height: 30vh
+}
+.ui-remake [data-testid=receipt-preview] button {
+  min-height: 44px;
+  min-width: 44px
+}
+.ui-remake [data-testid=receipt-preview] button:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px
+}
+.ui-remake .b03-remake .grand strong {
+  font-weight: 900
+}
+.ui-remake .b03-remake .check {
+  font-weight: 400
+}
+.ui-remake .b03-remake {
+  -webkit-font-smoothing: auto
+}
+.ui-remake .b03-remake *::before,.ui-remake .b03-remake *::after {
+  box-sizing: content-box
+}
+.ui-remake .b03-remake .grand,.ui-remake .b03-remake .row {
+  flex-wrap: wrap
+}
+.ui-remake .b03-remake .tag,.ui-remake .b03-remake .meta {
+  overflow-wrap: anywhere
+}
+
+/* Query the available dialog viewport, including browser/CSS zoom and a visible software keyboard. */
+.ui-remake .b03-backdrop {
+  container-name: b03;
+  container-type: size;
+  padding: 0;
+  height: var(--b03-visible-height,100%);
+  top: var(--b03-visible-top,0px);
+  bottom: auto
+}
+.ui-remake .b03-remake.panel {
+  width: calc(100% - 48px);
+  height: min(920px,calc(100% - 48px))
+}
+@container b03 (max-width:1100px){
+.ui-remake .b03-remake.panel {
+  width: 100%;
+  height: 100%
+}}
+@container b03 (max-height:480px){
+.ui-remake .b03-remake.panel {
+  width: 100%;
+  height: 100%
+}}
+

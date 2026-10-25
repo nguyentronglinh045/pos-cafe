@@ -16,6 +16,7 @@ type PortalDrawerProps = {
   testId?: string;
   viewport?: DrawerViewport;
   panelClassName?: string;
+  overlayClassName?: string;
 };
 
 const getPortalRoot = (containerId: string): HTMLElement => {
@@ -58,6 +59,7 @@ export function PortalDrawer({
   testId,
   viewport = "screen",
   panelClassName,
+  overlayClassName,
 }: PortalDrawerProps) {
   const root = getPortalRoot(containerId);
   const gated = usePermissionSession(state => !!state.session && state.status !== "verified");
@@ -73,7 +75,7 @@ export function PortalDrawer({
 
   return createPortal(
     <div
-      className={clsx(viewport === "workspace" ? workspaceOverlayClass : screenOverlayClass)}
+      className={clsx(viewport === "workspace" ? workspaceOverlayClass : screenOverlayClass, overlayClassName)}
       style={overlayStyle}
       aria-hidden={gated}
       onClick={handleOverlayClick}
