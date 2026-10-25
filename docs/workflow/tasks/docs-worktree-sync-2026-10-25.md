@@ -76,4 +76,9 @@ Allowlist877 bản untracked trong task xuất bản đã được giải quyế
 
 ## Review
 
-`review_knowledge` và `review_preservation` đều kiểm độc lập đủ959 file, remote,16 snapshot,43 local-only commits/ref và phạm vi reset; cùng APPROVE kế hoạch trước thao tác. Candidate biên bản hậu đồng bộ chờ hai reviewer xác nhận kết quả trước xuất bản; approval kế hoạch không thay review receipt.
+`review_knowledge` và `review_preservation` đều kiểm độc lập đủ959 file, remote,16 snapshot,43 local-only commits/ref và phạm vi reset; cùng APPROVE kế hoạch trước thao tác. Biên bản hậu đồng bộ trên candidate `1c863f9b70d025a33f61cf14af2f04b7a31c3926` đã có hai **APPROVE**, không còn finding chặn:
+
+- `review_preservation`: tự kiểm943 nội dung published và16 snapshot, manifest hash, backup ref, allowlist877 không đổi danh sách/hash nhưng đã superseded, raw receipt/disk và diff7files đúng phạm vi. Không coi số bytes tăng sau sync là thu hồi.
+- `review_knowledge`: tự kiểm cùng943+16 nội dung, branch/upstream/cleanliness,16 snapshot không là16 yêu cầu mới, tất cả877path hiện tracked, các pointer tiếp nối và diff-check đạt. Không thay code hoặc mở backend acceptance.
+
+Sau review, commit receipt chỉ bổ sung verdict/status, không sửa nội dung đối chiếu, kho giữ hoặc kết quả reset. Xuất bản bằng push fast-forward thông thường trên docs, không force. Người dùng đã giao dọn/sync; chưa cho xóa16 snapshot hoặc nhánh lịch sử được giữ.
