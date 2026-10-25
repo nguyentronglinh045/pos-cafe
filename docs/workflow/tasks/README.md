@@ -2,7 +2,7 @@
 
 ## Đang theo dõi
 
-- [Chuẩn hóa docs — 25/10/2026](docs-normalization-2026-10-25.md): ưu tiên trước refactor; chỉnh tri thức/điều hướng, giữ WIP và evidence.
+- [Chuẩn hóa docs — 25/10/2026](docs-normalization-2026-10-25.md): đã chỉnh lý, kiểm và có hai APPROVE; giữ WIP/evidence, phần xuất bản WIP/backend còn riêng.
 - [Kế hoạch chuẩn hóa sau tích hợp](post-integration-standardization-plan-2026-10-25.md): NC-10 + phần docs của NC-02 đi trước; NC-04…08 chưa mở.
 - [Tích hợp UI B01–B03](ui-main-docs-integration-2026-10-25.md): đã merge bốn PR, source main711a22e; backend/deploy HOLD.
 

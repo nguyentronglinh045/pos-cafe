@@ -7,7 +7,7 @@
 | Giao thức ghi v1 | Đã có implementation và nghiệm thu lịch sử phase 27; không lấy kết quả đó nhận toàn main mới PASS |
 | Phân quyền | Runtime mới trên main711a22e; backend acceptance/toàn hệ thống còn HOLD; spec/hồ sơ WIP chưa xuất bản đủ |
 | UI B01/B02/B03 | Đã merge; [handoff tích hợp](workflow/tasks/ui-main-docs-integration-2026-10-25.md) giữ checks/source |
-| Chuẩn hóa | **Docs-first:** NC-10 và phần kiểm kê tài liệu của NC-02 làm trước refactor, theo yêu cầu chủ dự án 25/10 |
+| Chuẩn hóa | **Docs-first:** đợt chỉnh lý core/điều hướng đã kiểm và hai reviewer APPROVE; NC-10 tiếp tục theo các slice, phần WIP chưa xuất bản giữ riêng |
 | Phát hành | Không mở deploy/migration/live activation trong lượt này |
 
 ## Làm gì tiếp

@@ -4,7 +4,7 @@
 
 Chủ dự án yêu cầu kiểm tra và chỉnh lý toàn nhánh docs để trở lại nguồn tri thức rõ ràng về dự án; giao thực hiện, không chỉ lập kế hoạch. Chat nhận bàn giao từ `01a1714e-ea77-7172-b78b-da9981e0a5c3`, kế hoạch gốc `01a1711a-d488-7832-baf8-560e04578494`. Ưu tiên này cập nhật NC-10 và phần docs của NC-02 trong [kế hoạch chung](post-integration-standardization-plan-2026-10-25.md).
 
-Đã chỉnh nội dung/điều hướng; kiểm và review đang thực hiện. Được commit/push docs sau review. Không sửa app/DB, deploy/migration/live activation, dispatch CI, dựng môi trường hay dọn worktree. Không xóa/chuyển bằng chứng. Chưa nhận chủ dự án đã nghiệm thu hoặc đọc hết tài liệu.
+**Hoàn tất chỉnh lý, kiểm tài liệu và review độc lập** trên candidateff8a00d; K1–K4 đã đóng. Được commit/push docs sau review. Không sửa app/DB, deploy/migration/live activation, dispatch CI, dựng môi trường hay dọn worktree. Không xóa/chuyển bằng chứng. Chưa nhận chủ dự án đã nghiệm thu hoặc đọc hết tài liệu.
 
 ## Nguồn và nơi làm
 
@@ -102,3 +102,14 @@ Delta còn thêm README ở root để GitHub nhánh docs có điểm vào tự 
 ### Vòng review 2 — candidate1e89f408e9aed89c14e59d70c1718cb52a3478c0
 
 review_preservation **APPROVE**, tái kiểm344Markdown/1239links và bảo toàn trong scope. review_knowledge xác nhận K1/K2/K3 đã sửa nhưng **CHANGES_REQUESTED** với K4 chặn: demo-runbook:21/23 vẫn dùng role admin trong luồng hiện hành. Delta tiếp sửa bước12–16 theo quyền/catalog/fixture, checklist bỏ recipe migration012/013 và giữ cloud evidence phase15–20 dưới nhãn lịch sử. K4 chờ reviewer kiểm lại; không tự nhận đóng.
+
+
+### Kết quả cuối — candidateff8a00d1b98454d3b138c70f6d5cfca358587e44
+
+- **review_knowledge APPROVE** toàn phạm vi core. K1–K4 đóng; runtimeRPC, history/void, B03 và demo khớp source711a22e. Đã kiểm delta cuối, quyền nhân viên/clear-demo; không chạy app/backend hoặc xác nhận thiết bị thật.
+- **review_preservation APPROVE** toàn phạm vi quy trình/bảo toàn. Delta giữ nguyên workflow/spec/evidence; cloud evidence lịch sử không bị sửa thành kết quả mới. Không finding mới; các giới hạn WIP và không HTTP-crawl tiếp tục áp dụng.
+- Điều phối chạy lại checker:344Markdown/1240links;0anchor lỗi,0pinned-source path/line lỗi,0raw blob drift.36missing lịch sử và166local/156vắng giữ nguyên; diff-check exit0.56file thay đổi so baseline, không deletion/rename. Nhóm core (`docs/*.md`,CLAUDE,context) giảm45.108bytes logical từ233.888 xuống188.780; đây là giảm nội dung trùng/cũ, không là dung lượng ổ/Git thu hồi.
+- Remote trước xuất bản vẫn docs2d5806c/main711a22e; dùng push fast-forward thông thường, không force/history rewrite. Code tham chiếu sạch; hai worktree gốc giữ HEAD và số tracked changes124/39. Không có thao tác ghi vào chúng.
+- Checkpoint C192.876.818.432bytes,D98.719.600.640bytes trống; không cài môi trường, xóa hoặc chuyển bằng chứng. Bản ghi receipt sau candidate chỉ bổ sung kết quả/status, không sửa claim/expected đã review.
+
+**Còn mở:** hòa giải/xuất bản riêng bộ spec/evidence WIP; nguồn ảnh archive vắng và link local chưa portable; backend/T04/profiles/supplemental acceptance, thiết bị thật và release gates. Không lấy hoàn tất chỉnh lý này để đóng các việc đó hoặc mở NC-04…08. Walkthrough đã cung cấp đường đọc, chủ dự án chưa xác nhận đã đọc/nghiệm thu.
