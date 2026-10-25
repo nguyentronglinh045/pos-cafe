@@ -3,7 +3,7 @@ import type { OrderDetail } from "@/domain";
 import type { PayableLine, PaymentSelection } from "@/features/pos";
 import { PaymentIcon } from "./PaymentIcon";
 interface PaymentSummaryPaneProps {
-  order?: OrderDetail | null;
+  order?: Pick<OrderDetail, "id" | "orderNo" | "orderType" | "tableId" | "status" | "total" | "lockVersion" | "items"> | null;
   locationLabel: string;
   payableLines: PayableLine[];
   selection: PaymentSelection;

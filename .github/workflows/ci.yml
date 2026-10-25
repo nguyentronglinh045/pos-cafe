@@ -31,3 +31,22 @@ jobs:
           package-manager-cache: false
       - name: Run bounded CI and publish safe summary
         run: node scripts/project-ci-launch.mjs
+      - name: Validate only the three safe synthetic PIN photos after unit release
+        id: pin-ui-export
+        if: always()
+        run: node scripts/permission-runtime-pin-ui.mjs --export-check
+      - name: Retain only reviewed allowlist for PIN visual classification
+        if: always() && steps.pin-ui-export.outputs.ready == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: permission-pin-ui-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            artifacts/permission-pin-ui-safe/${{ github.run_id }}-${{ github.run_attempt }}/manifest.json
+            artifacts/permission-pin-ui-safe/${{ github.run_id }}-${{ github.run_attempt }}/required_pin_change__desktop.png
+            artifacts/permission-pin-ui-safe/${{ github.run_id }}-${{ github.run_attempt }}/required_pin_change__tablet.png
+            artifacts/permission-pin-ui-safe/${{ github.run_id }}-${{ github.run_attempt }}/required_pin_change__mobile.png
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false

@@ -1,0 +1,925 @@
+{
+  "schemaVersion": "permission-full-pin19-source-inventory-v1",
+  "baseCommit": "567af2191400ef559e90b3eccae0a0e4992f82e5",
+  "baseTree": "5b8667b4c421a7e6c47f566e1634129799a5f83d",
+  "testplan": {
+    "path": "openspec/changes/force-default-pin-change/testplan.md",
+    "sha256": "ca86e517d93133edb94e56bd2186c4e806c76f3fd1761434114b7c5bb81738cb",
+    "bytes": 45320,
+    "representation": "SNAPSHOT_BYTES"
+  },
+  "sources": [
+    {
+      "path": "package-lock.json",
+      "sha256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+      "bytes": 182800,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "package.json",
+      "sha256": "f86774d7902b04c160b917f32fe913e71af73ecbc49202e9e37701478b628189",
+      "bytes": 2573,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "playwright.owner-pin-onboarding.config.ts",
+      "sha256": "a0ffdff6d1d495ff0ad667e3626b8d06e4f3de19f687f330a7220fae935741fb",
+      "bytes": 1246,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "playwright.owner-recovery-operator.config.ts",
+      "sha256": "b6e201334e611fafd5e04c97f77a0b7a1f547e4d494a53b440506d78119f60bf",
+      "bytes": 713,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "playwright.permission-pin-expiry.config.ts",
+      "sha256": "f89601f033482495ba757115bbd512bfc30e69f730615352368887961a987b92",
+      "bytes": 1181,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "playwright.permission-pin-race.config.ts",
+      "sha256": "08f3fd61434d6746ba6d16c94471f056565bc14c7576c3393dadeb59406fe681",
+      "bytes": 1199,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "playwright.pin-onboard-closeout.config.ts",
+      "sha256": "0d2f64ae1ce9579672fdcfeb1f37845220c8f1aa51018efaa3748e3410e0d4af",
+      "bytes": 995,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "playwright.pin-tc18.config.ts",
+      "sha256": "0867649656cbb9829867ec64dff283dabdcb71312bb6c356fa01b6e42866c730",
+      "bytes": 669,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/idempotency-artifacts.mjs",
+      "sha256": "eed0691beea83f51ad474b39272c75cfa1495ca4e89f85ac1f18f9549bd9e2a9",
+      "bytes": 974,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/owner-recovery-operator-core.mjs",
+      "sha256": "789c3d395bb3cd11ce272ae11cf28b44aacfd57534ede8211fb0a135257e37c0",
+      "bytes": 10165,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-activate.mjs",
+      "sha256": "6b723c99a8cbf4faf9db32b35b4f97a344c1ab41273ce110e833d86cf4a96605",
+      "bytes": 7938,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-activation-bundle.mjs",
+      "sha256": "d40328598a6db94351c22b796f224886df62a45cb17920f347f5e50f259316d9",
+      "bytes": 7794,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-activation-steps.mjs",
+      "sha256": "981a3cb0066d820cdaaae9751f07a894b683a3cb3750c37adc7076cf598d640f",
+      "bytes": 5988,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-bridge-oracle.mjs",
+      "sha256": "4021b910c2f48f33c135beaa90649b12babd7877c5abd9715d9f77626a44796a",
+      "bytes": 4549,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-ci1-policy.mjs",
+      "sha256": "edc74cc667114a886749ef72b3097410f939f4a7aeb5c12da3c2d3e7689dcb0b",
+      "bytes": 11481,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-compatibility-prepare.mjs",
+      "sha256": "14dc9d3c8c64ed35847a893203360ce3850502fdcf705d454f128799c1680a62",
+      "bytes": 3105,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-execution-evidence.mjs",
+      "sha256": "c87fedfcd6d106db5b014d86fa606661c9facd4a793475fbadbc708b095845a6",
+      "bytes": 6622,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-fixture-bootstrap.mjs",
+      "sha256": "4dcf6f3acce84bdc3a22a646a505fff4797cd64b43f1624024ca9f250a1d8db2",
+      "bytes": 11710,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-fixture-diagnostics.mjs",
+      "sha256": "611f7c1eba6e98ac38e7482ed4c42f8b0cb88fca67b439590db6a93676539170",
+      "bytes": 5410,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-full-runtime-policy.mjs",
+      "sha256": "efa9e4ba861b4e7268e7efaeeaeeb123a9cef4541bb9bd6adb43b9f4a400f0ae",
+      "bytes": 10314,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-identity-runtime.mjs",
+      "sha256": "647797779d36b315c0dae14227810863ca12cc3853038b165da6579d2fafc28e",
+      "bytes": 14212,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-inventory.mjs",
+      "sha256": "9308a93525039b7fbc2f25aaa100b35089715256707e0ba629473a21ec391bf5",
+      "bytes": 25389,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-migration-plan.mjs",
+      "sha256": "a7d51ea74fa634643c89aac2e51edb7b7577e40e95e0ae92977cb57961fb5cc2",
+      "bytes": 17388,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-pin-canary-reporter.mjs",
+      "sha256": "a3b6d348062704476ff46be3684e14dc86327e431dd351c9ecf47db63ecc36d8",
+      "bytes": 1996,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-pin-canary-run.mjs",
+      "sha256": "e1f78109a7ebe54ac126035551686bc75061ba6b871d101068f7447272f9472b",
+      "bytes": 4987,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-pin-identity-runtime.mjs",
+      "sha256": "477bbd6bce4bf378a5ee299a38554d8b7a118e53f59e9c2ceec7fe8c6d47226c",
+      "bytes": 15815,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-preflight-core.mjs",
+      "sha256": "052f7536f36b33971599372633d4e6d8e6c46ec117c5cf2521cc0e89c4bcdcc1",
+      "bytes": 11335,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "scripts/permission-release-preflight.mjs",
+      "sha256": "96a631de0cd00de7e1f18c4a8d1da1a7e32cb15579dc8945e80210d9b4c2b6bc",
+      "bytes": 9617,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/adapters/supabase/authRepo.ts",
+      "sha256": "73ba26fe7dcc73fb63f7902487033b3e057e1c89cac1d880c749b83486786284",
+      "bytes": 8044,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/adapters/supabase/deterministicId.ts",
+      "sha256": "fe65fcf23ba397ad3815c0587e760f5cbb51c5d0b7da9d0618ca0d36d0ab72f0",
+      "bytes": 609,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/adapters/supabase/employeeCredential.ts",
+      "sha256": "998e63def5dd227055a6d3d88e1eaeb40d9d7d70d37b08fb7c8785dd97b7c89f",
+      "bytes": 876,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/adapters/supabase/errors.ts",
+      "sha256": "4fc804fc2792d08e794fbf717a16dddb71b782efc9ee4d40e8fa360442ae70c2",
+      "bytes": 2629,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/adapters/supabase/ownerPinOnboardingCloseout.test.ts",
+      "sha256": "24a1c7317b37459188083905d88776875985a54968242b0abe4eb12f505119e8",
+      "bytes": 6462,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/adapters/supabase/permissionIdentityRepo.ts",
+      "sha256": "62de6a828bc1c16669c603fb735b3acadc85ef90559a829d184477d619f75b4e",
+      "bytes": 10560,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/adapters/supabase/realtimePort.ts",
+      "sha256": "3ec749409c30dbb79667f44cfcee1c1bdb1ae44144269dbb012531b193cb9f38",
+      "bytes": 3072,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/adapters/supabase/repoShared.ts",
+      "sha256": "d5c4002d6ce9fa6ebbb760cb07591e09af9a25b0412db51d42c7069e10ff5776",
+      "bytes": 1949,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/adapters/supabase/storeKey.ts",
+      "sha256": "9a65a9e7a13f848d1fa210be47a60b0308edd159454d2ea2eef5ca71c1ac7663",
+      "bytes": 1426,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/App.tsx",
+      "sha256": "0e7a73cf95d81bb630f727298a6f177e795388a81595f0476e7a575a2e167f9d",
+      "bytes": 6530,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/appErrors.ts",
+      "sha256": "1e3c222dae9543896fc2c7e367960b11b69a04991fc44bf1a8c20d8840dd6576",
+      "bytes": 768,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/compatibilityCreateStore.test.tsx",
+      "sha256": "0577b101334b69c31b29cd5b2a180aa2100754ef403ac4fcecca140ade0cdd6a",
+      "bytes": 10003,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/compatibilityGate.ts",
+      "sha256": "4313b36dc4534a2374244c173c64175b77026454fb0d56b8ea7ef66bef7b29f6",
+      "bytes": 628,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/components/FloorDecorVisual.tsx",
+      "sha256": "8dc29bff367de404d9fef29461cdc621db92c1a4f0ebb2f3b3d02e449aac6772",
+      "bytes": 924,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/components/Metric.tsx",
+      "sha256": "56f9add0cbb0a4bf571e4f4f6cd1b1a483216c03932b41edf0a7b1e00f2cf2ab",
+      "bytes": 381,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/components/PortalDrawer.tsx",
+      "sha256": "c3ea4ddd3b1684b900d9bcf19a5c1dcd3a08c083e4aff1a1193b1d0cd0bf99f4",
+      "bytes": 2979,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/components/PortalPopup.tsx",
+      "sha256": "921075cb68079a553878cfd0a555dc0bdeb3e14083d54b5204b064bdcb16ee03",
+      "bytes": 5187,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/components/ReceiptPreview.tsx",
+      "sha256": "4789fd022ce23e433f6f0e874dcb6d28a603a9114d74e22c98cdd76b26ab0486",
+      "bytes": 16454,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/components/ScaledFloorStage.tsx",
+      "sha256": "c628cb4903a8fedb853c08430b636e3edad3d07700ae113d5ab731bdc11d653f",
+      "bytes": 3827,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/createStoreCloseout.test.tsx",
+      "sha256": "d0051a900778972073c6f9d4adbe9352bdb90a0545851159875f94305b0dd36c",
+      "bytes": 3322,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawerNavigation.ts",
+      "sha256": "77f72a14eace1cf7811ac93a73cca3e483742cc03d138c192aea1c524791cfd3",
+      "bytes": 534,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/ClearDemoDialog.tsx",
+      "sha256": "449fc289070bb2cc3babb62ca8f9f57d6d2f03be45c473b92f258cad3a73b3ac",
+      "bytes": 5972,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/EmployeeDetailPane.tsx",
+      "sha256": "f082d0473c5f074e7514e5c746aa59ee794bf301b5ae0905ecc6434bc522fd09",
+      "bytes": 10647,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/EmployeesDrawer.tsx",
+      "sha256": "89c91570dea19fc4699716c53cda4b797dfc3146e4f130663a1645363fba5c8f",
+      "bytes": 13573,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/FloorDecorAssetPicker.tsx",
+      "sha256": "0823e51088f67936bee83d5d7b2ddeaeaffd4a303ad92bb93208b0e21238cf47",
+      "bytes": 6313,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/FloorEditorDecorNode.tsx",
+      "sha256": "3b3f89f7d3fe94238aff096da18861c0398c5777a4daf254dca182e6f78a35b0",
+      "bytes": 2302,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/FloorEditorDrawer.tsx",
+      "sha256": "f0835ee9867fd96a9e6939a3f04f4616173fa82c712fa54fa9b310ba15b19621",
+      "bytes": 19294,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/FloorEditorInspectorPane.tsx",
+      "sha256": "3c9ac589c28c770d2199b3a63064ebedab5f54d0496549ec67d5be77dd48ef14",
+      "bytes": 15615,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/FloorEditorTableNode.tsx",
+      "sha256": "87c56a16fb7c8b8e1f882d3fa5811ec40ce34dca9c639e6980ce5cb7e5697d21",
+      "bytes": 1952,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/FloorEditorToolbar.tsx",
+      "sha256": "a1e74cc528ca012710d3e567481332df80e661a26a0102f500b7f4e7fdc8276d",
+      "bytes": 3661,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/floorObjectTransforms.tsx",
+      "sha256": "96212df51fdcc51a6dd8d2cec87b4ed34fd8e2996692c2cd3019c347e00cd0c5",
+      "bytes": 7316,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/FloorTableBackgroundPicker.tsx",
+      "sha256": "61745cd61eac528ff0aa435a9c7f3db709e1463a88f2d39655905afd1a124496",
+      "bytes": 4734,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/GeneralSettingsDrawer.tsx",
+      "sha256": "6dc4788cf7809f5dc25ebde8da23264d1a1dbf0e98d4595bb160a557c649b0b2",
+      "bytes": 17037,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/MenuCatalogPane.tsx",
+      "sha256": "8f00f1497a059e36ecb28473509477b3b62e73232f674545694be385f2b679d2",
+      "bytes": 10339,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/MenuEditorDetailPane.tsx",
+      "sha256": "b953009771aa8c6853567b3004ee5cf381397f15ef01d4cc65d2786b780fa07b",
+      "bytes": 16375,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/MenuEditorDrawer.tsx",
+      "sha256": "781928b40fe58cf9489768599f64d5333c92b0d6fb56dfdb2db929ee85a91231",
+      "bytes": 17475,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/ModifierGroupEditor.tsx",
+      "sha256": "b3a87bd48f8dada829ce4476e81fc5d380cbfe30b42bc1394f46a3f13e889352",
+      "bytes": 6628,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/OrderHistoryDetailPane.tsx",
+      "sha256": "0295c4d9c47a9d8677cd6c533ff09386d63ca9ee99e27f5aa187e6ed77dab5ef",
+      "bytes": 12811,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/OrderHistoryDrawer.tsx",
+      "sha256": "61cbbd2b78d62a503d4af4bcb20987b485c503d27e3b3369589631b5cc74fd58",
+      "bytes": 22192,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/OrderHistoryListPane.tsx",
+      "sha256": "b6b5f0da6b95821019ae5a30314bdd8cb652e8c30093fa0b5909b210625a7a52",
+      "bytes": 7450,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/orderHistoryShared.tsx",
+      "sha256": "8093f915eda7cda0a332f69c5ec462adabe3d53c44e958758f9baa70d87007b9",
+      "bytes": 1706,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/PaymentSettingsDrawer.tsx",
+      "sha256": "4c93a2fc34c98241459a29f8d636be4a91f6b1e062a0dad8b01992d3d92f9f97",
+      "bytes": 17343,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/PermissionEmployeeListPane.tsx",
+      "sha256": "19c609f298a896a740322f5c17b330c834994156323cc5083e36c5eb86f6a594",
+      "bytes": 4647,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/admin/ReportDrawer.tsx",
+      "sha256": "9654bbe359d93f15afb5c2c324ff9896c01e2e89aca4e8a10706e2ac6dd2441f",
+      "bytes": 30268,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/DiscardDraftDialog.tsx",
+      "sha256": "00459867029d155a53729fbfec6b27747f0b15d62e7e50178a373f994a690fac",
+      "bytes": 883,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/ModifierPickerPopup.tsx",
+      "sha256": "2487aa4921e04f292cc6623afff790cfe52153fcf00fa73a668ba37ce422018f",
+      "bytes": 9312,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/OrderCartPane.tsx",
+      "sha256": "2effa9a131a1a80250e5de2ecc4d81445f6a4e6a1a0f60afed496482309e89f3",
+      "bytes": 6469,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/OrderDrawer.tsx",
+      "sha256": "8148f499a4b489ab0877bd5639142357c7efaf5b5bb8a4d99f980883ed86bff7",
+      "bytes": 15698,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/OrderMenuPane.tsx",
+      "sha256": "b7061871e7c75d506d043932dd67031c2114daf6c229fcebea559c6c3f3810cb",
+      "bytes": 6425,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/PaymentCashierPane.tsx",
+      "sha256": "fd6626b549693386dc9700d616e7ba1f668897e9906fbf96cc4247d3621c7270",
+      "bytes": 7135,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/PaymentDrawer.tsx",
+      "sha256": "441074b0a6819afb811a45842d706c242e419f422f7aa928e61382464559d4dd",
+      "bytes": 13022,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/paymentShared.tsx",
+      "sha256": "001ac8d446b56f046ca95047f38a227ecae5aa64f22c269165f77851fc0f910e",
+      "bytes": 5224,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/PaymentSummaryPane.tsx",
+      "sha256": "2c14722867c58f2dfac6b1f128f7acbd694059afb7982bdd91ad7a7fafae2913",
+      "bytes": 11886,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/PriceChangedNotice.tsx",
+      "sha256": "6752adb1325084d559c2cafe41186e1a7b32b0a450d39026ab14998d6ad43984",
+      "bytes": 1915,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/TakeawayDrawer.tsx",
+      "sha256": "da543a0050a3ec41778ac7ea2b19f42b3c44f788a48b56c67b935671e1203616",
+      "bytes": 14870,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/useServerOrderDraft.ts",
+      "sha256": "da0fd3124a1cc6d588fc85141d1644ded7427e0e07aa79e4c53aa75062039a45",
+      "bytes": 1767,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/WriteAttemptNotice.tsx",
+      "sha256": "d44d8d370e115bc5ac2dd74c1b13b81c6ea6f5c5c647b36b40cacc88f2a0cf11",
+      "bytes": 2773,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/drawers/pos/WriteRecoveryDrawer.tsx",
+      "sha256": "0e786385121060db01b952d6361567622a6312298cc46382070bcc8d2295aa85",
+      "bytes": 16224,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/floorDecorAssets.ts",
+      "sha256": "6136642c4b3602152b065004259353ccf5054cd88758b74775bc846f8c96281c",
+      "bytes": 2476,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/floorStage.ts",
+      "sha256": "9341d3bfd106f4b76f4f52221356fdccd4fd58f193230478f186f19c7ea7d0d7",
+      "bytes": 1252,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/floorTableBackgroundAssets.ts",
+      "sha256": "bfcbe10e564093d39deccdf98f37965f6e650ba6d186928591c756d3d8fa2db3",
+      "bytes": 984,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/initialSeedLifecycle.test.tsx",
+      "sha256": "a8edf588f44d4810886d2be7f2508fca899f9e90c77ec15136eef32414b12568",
+      "bytes": 6749,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/InitialSeedLifecycle.tsx",
+      "sha256": "ce58fe5f2bf4455dd90727ec43b422ef8ddd11113434d50a68ff3cced29cadec",
+      "bytes": 7360,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/PermissionLifecycle.tsx",
+      "sha256": "a3a88bbc3c68fbb253eb5da2fb43fb3ffca54b80037dce949c3162e2eaf3b89d",
+      "bytes": 6928,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/permissionUi.ts",
+      "sha256": "41f73a75efac5f30c5ba9b7767711313721688cff856ad9061fe7454713800c5",
+      "bytes": 1939,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/reloadRecoveryNotice.test.tsx",
+      "sha256": "d09caacb5a5ced5722bc653ca6919109dcb90820298492650324c9fd8d7f841d",
+      "bytes": 1421,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/requiredPinChange.test.tsx",
+      "sha256": "376661163e567ed0980d727605399aaf62f8decc6aba54755e97a349dc12ca1a",
+      "bytes": 13671,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/restrictedAppGate.test.tsx",
+      "sha256": "ba07cad77d28a1588094a9d39f81094431cc1c24250eb3adb6f8dab4043dd266",
+      "bytes": 2476,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/screens/CreateStoreScreen.tsx",
+      "sha256": "b01a0fd34c717a5111ce5970e3277fbc4d2c72ddf21c48d9ee2f57469aaf4e77",
+      "bytes": 14070,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/screens/LandingScreen.tsx",
+      "sha256": "1119d3a03880a9b319214400d3e5d24a7497d410e68dc0dbb641610ea89e225a",
+      "bytes": 3203,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/screens/PasscodeScreen.tsx",
+      "sha256": "0cf83a7a9a78737a2932ffb0ab1bcf9500139fedd4b64fec9741e4bdff79ce94",
+      "bytes": 11023,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/screens/RequiredPinChangeScreen.tsx",
+      "sha256": "89342e5e42453c6732c47fc065e8f721e90d7ae7153706a2766b062721c218b1",
+      "bytes": 9982,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/screens/RotateGuidance.tsx",
+      "sha256": "d7e0e9cbca3f9ee9b73e2ce620387f3f3aae48e5d535afaee73c34d83d152151",
+      "bytes": 651,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/screens/StorePairingScreen.tsx",
+      "sha256": "dee9c2f6df403b2a9da1334e0487fbb2af99bc516be4964d14578f3efa40bda2",
+      "bytes": 5446,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/shell/AppShell.tsx",
+      "sha256": "9c6d94bbbbe7904ba0b8ace73d094f3989ecd475f4fc74669b9dc82d57938378",
+      "bytes": 2524,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/shell/FloorWorkspace.tsx",
+      "sha256": "c647b0f13211357a02e37159c3b81f0ff25d33f9bc8e909dee5a429f6110230f",
+      "bytes": 15712,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/shell/LeftNav.tsx",
+      "sha256": "b7c0f3e8edfbb580ef33767f250a17359e0a27adbececa23e0f9143e3c1aede9",
+      "bytes": 7083,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/shell/RailButton.tsx",
+      "sha256": "bd0f0114d4e89f7e0d683dc1b183c29eedca1377ba17f4597cefd2d5f3ca088a",
+      "bytes": 1994,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/useAppStore.ts",
+      "sha256": "c6e47b6f4c8335c397e0944e0b28f2c47129825b156341bc7d5e9f0a107365f0",
+      "bytes": 5302,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/app/useViewLifetime.ts",
+      "sha256": "58e583253ed7e4a2b32f185d7f530f551eb28ca5d7629e6ef843b0b7f954d998",
+      "bytes": 1676,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/core/appError.ts",
+      "sha256": "0a286f319de96eedf795666a76d218a5791e6de65e345e6e8a171494713d8bea",
+      "bytes": 916,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/core/permissionCatalog.ts",
+      "sha256": "5d207e40bd019f688bab2f14ff92c529937f1ec4e4d463b447edef7bdf505162",
+      "bytes": 3049,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/core/permissionErrors.ts",
+      "sha256": "4a59631ec1b95662b835bedc4eaba12df3371ebae6ce2af6f4f063afc5923829",
+      "bytes": 2513,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/core/permissionIdentityInputs.test.ts",
+      "sha256": "701e250e83ca07a79811e545bb1fd1856e20203737256661ec08b8e29b6ca277",
+      "bytes": 3203,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/core/permissionIdentityInputs.ts",
+      "sha256": "884a4ddf2d5b60fe7580d4b342b737f56f27d6fda6582e790dd15042b41541c0",
+      "bytes": 2718,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/core/permissionInputs.ts",
+      "sha256": "0136380a755d0fd4ec91697beb5caba96452ca80be76c42f5f0eeceda004b4bc",
+      "bytes": 5796,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "src/core/permissionOverrides.ts",
+      "sha256": "04ae52854d6fac2af75ca722cb0d2d6487b40a5c994cf41001023850e291a0fb",
+      "bytes": 3178,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/observerPreflight.ts",
+      "sha256": "bda9370bba5f64ef66b6bbe112eda369582406a979ad68b0bda97fe39da80973",
+      "bytes": 2830,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/ownerPinProtectedRoutes.ts",
+      "sha256": "ceef8cba571f5a8c45511592b727ed7ce099137a2f6256f635cf0b602124fb18",
+      "bytes": 3983,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/ownerPinServer.contract.test.ts",
+      "sha256": "a1d4e6022a81ea285c08eb6556127062d6905876a849e118c9ccf2f6c24df54a",
+      "bytes": 7734,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+      "sha256": "13469f80f924a6720470bae5e8983f14269aa8a9b426274901f1c7ac65ba1d2d",
+      "bytes": 64789,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/ownerPinSurface.contract.test.ts",
+      "sha256": "50798dcb98325aa0bfae93201dfb6dcdbe466ea4412659f114380178abda5849",
+      "bytes": 10580,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/ownerPinSurfaceFixture.ts",
+      "sha256": "500504c6290c3f2b08245ad094b3a1bd3ce6f8ddd947306e346e4ccc35a1f8e6",
+      "bytes": 12334,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/ownerPinSurfaceOracle.ts",
+      "sha256": "300f308a2915645482451eb591a5b69536518f91ecda3ed92a9ea0cc7d293bb1",
+      "bytes": 1432,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/ownerRecoveryOperator.tool.test.mjs",
+      "sha256": "b5c193d173d2df71f585a743639c39c5c185653aaaa202118dac672d4b75dcb7",
+      "bytes": 5853,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+      "sha256": "47deb6e38372d4331e5c4120a965b9c0083818742ac974329e1676f19b8c80df",
+      "bytes": 26231,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/permissionCanaryOracle.ts",
+      "sha256": "ad4b4b3a42adff58a562f52882f5aecd149073446d1384dc6ccb5e78dda243a6",
+      "bytes": 5994,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/permissionCanaryScenarioMatrix.ts",
+      "sha256": "4419a6f5e1d6347e2a54a09c0c42cffd95b259f244306959bf2f3004ab853e75",
+      "bytes": 3102,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/permissionChangesFixture.ts",
+      "sha256": "d83b821f8e63849791e0ea7ce47bedd5d8ae0add1253f9c3457b05063c7b4856",
+      "bytes": 982,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/permissionEmptyActivation.tool.test.ts",
+      "sha256": "2c553ea6a4950128043612d2e2610a5702917d03b511262ba7f13534ea2b459c",
+      "bytes": 10962,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/permissionFinancialFixture.ts",
+      "sha256": "e8bd83f805ae271d1137f6fcfd1fc5dc9a1c6a1bde9ff2a593d97bfcaca48b01",
+      "bytes": 8395,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/permissionIdentityFixture.ts",
+      "sha256": "8fab1742a00ca5c18aad041d8fd19132e8aca5585e3bbaa97200d5e5aaf71245",
+      "bytes": 14870,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/permissionPinCanaryReporter.tool.test.ts",
+      "sha256": "132ebd38c4f813f38d0b144852a2eb88673cef6a74f2e51525a7ba274286cd8e",
+      "bytes": 2500,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/permissionReadFixture.ts",
+      "sha256": "20c25e78e60e3ab05b52a2876ca4a5ace4b4babee44d2770245104fe3f9b8f76",
+      "bytes": 8895,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/contracts/preflight.ts",
+      "sha256": "d9271dda4320bf344c58aace69fba3f0f80113b5f235f3d1afd3ae5ade4120b4",
+      "bytes": 8201,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/operator/ownerRecoveryOperator.spec.ts",
+      "sha256": "b8d0324254124c798337d7fcb7b87d289bd26f2e518fe4d4d60ec08498af288c",
+      "bytes": 7193,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/supabase/ownerPinOnboarding.spec.ts",
+      "sha256": "a6af2315c393ed0724688ef65a4263db3e448a3a888dba9ccc71efc81b7333d6",
+      "bytes": 25109,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "sha256": "7274a5c3ae37ac7a3445809bfdda993b30160824a15941e6123a200946bbbd6a",
+      "bytes": 278174,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/supabase/permissionCandidateEnvironment.ts",
+      "sha256": "32250edcabbf5eab7c0eb56f784bb2e077a13ca893bdd903985e44fc0e081304",
+      "bytes": 6009,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/supabase/permissionPinAckObserver.ts",
+      "sha256": "9f272a3e2ee33f324c5863ebd687e2159bea2b917f4a1d6323939dc336e13d56",
+      "bytes": 8634,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/supabase/permissionPinCompletionRace.spec.ts",
+      "sha256": "108320d2cdfb084b516db8e508973f9f5830020ddc7c495c2cb81d82fe479ceb",
+      "bytes": 31426,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/supabase/permissionPinExpiryClock.ts",
+      "sha256": "fe118067d8df00efa721ed67e7e10f879e4a333b6cf47fec5a182b3ee30de365",
+      "bytes": 11436,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/supabase/permissionPinExpiryEnvironment.ts",
+      "sha256": "d98d22bd2c0ef364ceb1bb0d5872709b5070143b1dbce9054180385592e66747",
+      "bytes": 8349,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/supabase/permissionPinExpiryWait.spec.ts",
+      "sha256": "2ac142b3a1e55d988c6f3b7971ebd97e051399f2c869bbd43413de41818a08f8",
+      "bytes": 27312,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/supabase/permissionPinOnboardEnvironment.ts",
+      "sha256": "df694bcfb14e2f55701f6a5afb39a99f6993fb33e6ad1d25c515ccdec7ab434c",
+      "bytes": 8189,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/supabase/permissionPinRaceEnvironment.ts",
+      "sha256": "f0d30ac649df98cd17b4fa43a7e98dcf858918f6de9e516856cdf174483e8cb0",
+      "bytes": 7433,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "tests/supabase/permissionPinRaceLocks.ts",
+      "sha256": "08459e360d58c437f2e72a5349ca8ce8ac90722fe8950544d160dc330ff14afd",
+      "bytes": 9880,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "ui-audit/config.json",
+      "sha256": "95229f82d79bd49419856b9a79d14643cb04ce2a3a2a6e7b6d895495a7722515",
+      "bytes": 5009,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "ui-audit/required-pin-change.html",
+      "sha256": "8ae36b6c25b987f3090c6222c99fd52653f70788974699cb3e14a883d37f40b9",
+      "bytes": 2335,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "vitest.config.ts",
+      "sha256": "1cb32e60581f3bc8c6f2a6e487e2c337a89d40f3ae966b82896792ce5b077042",
+      "bytes": 1636,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "vitest.owner-pin-server.config.ts",
+      "sha256": "de3cb6d61c112dae0de7f6bb96bf8655d6b2de4108cfc026cbf3ecfa247beefc",
+      "bytes": 547,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "vitest.owner-pin-surface.config.ts",
+      "sha256": "d909d7132a74ca43ed901d965648385bcc0ec3b57a8cd6521442c68c29ebbf81",
+      "bytes": 440,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "vitest.owner-recovery-operator.config.ts",
+      "sha256": "4f35fd3e0e98158771f3543b2008f385d6e54a96b145b1308d9bab620280f052",
+      "bytes": 270,
+      "representation": "GIT_BLOB_LF"
+    },
+    {
+      "path": "vitest.permission-canary-empty-runtime.config.ts",
+      "sha256": "bb6ddecb5d0b8f111c4bd54c807f857f15443134752c896da3796c0e99b5b0b1",
+      "bytes": 346,
+      "representation": "GIT_BLOB_LF"
+    }
+  ]
+}

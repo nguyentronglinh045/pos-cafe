@@ -11,7 +11,7 @@ export type PaymentMethodOption = {
   icon: LucideIcon;
   active: boolean;
 };
-export const getOrderTypeLabel = (order?: OrderDetail | null) => order?.orderType === "takeaway" ? "Mang đi" : "Tại bàn";
+export const getOrderTypeLabel = (order?: Pick<OrderDetail, "orderType"> | null) => order?.orderType === "takeaway" ? "Mang đi" : "Tại bàn";
 export const formatAmountInputValue = (rawDigits: string) => {
   const normalized = rawDigits.replace(/\D/g, "").replace(/^0+(?=\d)/, "") || "0";
   return normalized.replace(/\B(?=(\d{3})+(?!\d))/g, ".");

@@ -16,6 +16,14 @@ on:
         default: '1'
         required: true
         type: string
+      data_mode:
+        description: 'Expected Preview data mode; Supabase requires reviewed Preview-only public configuration'
+        default: mock
+        required: true
+        type: choice
+        options:
+          - mock
+          - supabase
 
 permissions:
   contents: read
@@ -41,7 +49,7 @@ jobs:
         with:
           node-version: '24.16.0'
           package-manager-cache: false
-      - name: Verify source and create mock frontend Preview
+      - name: Verify source, configuration and create frontend Preview
         env:
           GITHUB_TOKEN: ${{ github.token }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

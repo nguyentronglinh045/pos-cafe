@@ -7,7 +7,7 @@ export function useDialogFocus(selector: string, onClose: () => void, active: bo
     last = useRef<HTMLElement | null>(null);
   callback.current = onClose;
   enabled.current = active;
-  const usable = (el: HTMLElement): boolean => el.isConnected && !el.matches(":disabled") && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== "hidden";
+  const usable = (el: HTMLElement): boolean => el.isConnected && !el.closest('[aria-hidden="true"],[inert]') && !el.matches(":disabled") && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== "hidden";
   useLayoutEffect(() => {
     const root = document.querySelector<HTMLElement>(selector);
     if (!root) return;
@@ -16,8 +16,8 @@ export function useDialogFocus(selector: string, onClose: () => void, active: bo
     root.setAttribute("aria-modal", "true");
     root.setAttribute("aria-label", label);
     root.tabIndex = -1;
-    const controls = () => Array.from(root.querySelectorAll<HTMLElement>('button,input,select,textarea,a[href],[tabindex="0"]')).filter(el => !el.matches(":disabled") && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== "hidden");
-    if (enabled.current) (controls()[0] ?? root).focus({
+    const controls = () => Array.from(root.querySelectorAll<HTMLElement>('button,input,select,textarea,a[href],[tabindex="0"]')).filter(usable);
+    if (enabled.current && usable(root)) (controls()[0] ?? root).focus({
       preventScroll: true
     });
     const focusin = (event: FocusEvent) => {
@@ -25,7 +25,7 @@ export function useDialogFocus(selector: string, onClose: () => void, active: bo
     };
     root.addEventListener("focusin", focusin);
     const keydown = (event: KeyboardEvent) => {
-      if (!enabled.current || event.defaultPrevented) return;
+      if (!enabled.current || !usable(root) || event.defaultPrevented) return;
       if (event.key === "Escape") {
         event.preventDefault();
         callback.current();
@@ -47,7 +47,7 @@ export function useDialogFocus(selector: string, onClose: () => void, active: bo
       if (dialogs.length && dialogs[dialogs.length - 1] !== root) return;
       if (previous instanceof HTMLElement && usable(previous)) previous.focus({
         preventScroll: true
-      });else document.querySelector<HTMLElement>('[data-testid="nav-floor"],[data-testid="payment-close-button"]')?.focus({
+      });else Array.from(document.querySelectorAll<HTMLElement>('[data-testid="nav-floor"],[data-testid="payment-close-button"]')).find(usable)?.focus({
         preventScroll: true
       });
     };
@@ -56,9 +56,10 @@ export function useDialogFocus(selector: string, onClose: () => void, active: bo
     if (!active) return;
     const root = document.querySelector<HTMLElement>(selector);
     if (!root) return;
+    if (!usable(root)) return;
     if (last.current && usable(last.current) && root.contains(last.current)) last.current.focus({
       preventScroll: true
-    });else root.querySelector<HTMLElement>('button:not(:disabled),input:not(:disabled)')?.focus({
+    });else Array.from(root.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled)')).find(usable)?.focus({
       preventScroll: true
     });
   }, [active, selector]);

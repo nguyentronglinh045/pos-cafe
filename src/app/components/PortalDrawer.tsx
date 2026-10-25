@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import type { CSSProperties, MouseEvent, ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { usePermissionSession } from "@/features/shared/permissionSession";
 
 type DrawerPlacement = "Left" | "Right" | "Top" | "Bottom";
 type DrawerViewport = "workspace" | "screen";
@@ -61,7 +62,9 @@ export function PortalDrawer({
   overlayClassName,
 }: PortalDrawerProps) {
   const root = getPortalRoot(containerId);
-  const overlayStyle: CSSProperties = { backgroundColor: overlayColor, zIndex };
+  const gated = usePermissionSession(state => !!state.session && state.status !== "verified");
+  const overlayStyle: CSSProperties = { backgroundColor: overlayColor, zIndex,
+    ...(gated ? { visibility: "hidden", pointerEvents: "none" } as const : {}) };
 
   const handleOverlayClick = (event: MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
@@ -74,6 +77,7 @@ export function PortalDrawer({
     <div
       className={clsx(viewport === "workspace" ? workspaceOverlayClass : screenOverlayClass, overlayClassName)}
       style={overlayStyle}
+      aria-hidden={gated}
       onClick={handleOverlayClick}
     >
       <section

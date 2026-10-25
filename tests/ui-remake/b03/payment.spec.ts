@@ -177,6 +177,16 @@ test("keyboard focus, receipt overlay, Escape and touch controls", async ({
     await touch.close();
   }
 });
+test("authority gate keeps hidden payment dialogs out of keyboard handling", async ({ page }) => {
+  await fixture(page);
+  await page.evaluate(() => (window as any).b03.gate());
+  await expect(page.getByTestId("payment-drawer")).toBeHidden();
+  await page.getByTestId("gate-retry").focus();
+  await page.keyboard.press("Tab");
+  await expect(page.getByTestId("gate-next")).toBeFocused();
+  await page.keyboard.press("Escape");
+  expect(await page.evaluate(() => (window as any).b03.store.getState().drawer)).toBe("payment");
+});
 test("stress: 100 lines, long labels, quantity999 and large money", async ({
   page
 }, info) => {

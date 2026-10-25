@@ -20,21 +20,17 @@ export async function scenario(page: Page, state: string) {
     if (state === "adjacent") patch = "mockFloorPlan.tables[0].width=40;mockFloorPlan.tables[0].height=40;mockFloorPlan.tables[0].rotation=0;mockFloorPlan.tables[1].width=40;mockFloorPlan.tables[1].height=40;mockFloorPlan.tables[1].rotation=0;mockFloorPlan.tables[1].posX=340;mockFloorPlan.tables[1].posY=190;";
     await route.fulfill({ response, body: await response.text() + "\n" + patch });
   });
-  for (const [module, className, method, kind] of [
-    ["floorPlanRepo", "MockFloorPlanRepo", "getFloorPlan", "floor"],
-    ["orderRepo", "MockOrderRepo", "listOpenOrders", "orders"],
-  ]) {
-    await page.route(new RegExp(`/src/adapters/mock/${module}\\.ts(?:\\?|$)`), async (route) => {
-      const response = await route.fetch();
-      const patch = `const b01Original=${className}.prototype.${method};
-        ${className}.prototype.${method}=async function(...args){
-          if(window.__b01Scenario==='${kind}-loading')return new Promise(()=>{});
-          if(window.__b01Scenario==='${kind}-error')throw new Error('Không thể kết nối tới máy chủ.');
-          return b01Original.apply(this,args);
-        };`;
-      await route.fulfill({ response, body: await response.text() + "\n" + patch });
-    });
-  }
+  // Floor and open orders share the same protected operational projection.
+  await page.route(/\/src\/adapters\/mock\/permissionRepos\.ts(?:\?|$)/, async route => {
+    const response = await route.fetch();
+    const patch = `const b01Read=MockPermissionReadRepo.prototype.getFloorOperational;
+      MockPermissionReadRepo.prototype.getFloorOperational=async function(...args){
+        if(['floor-loading','orders-loading'].includes(window.__b01Scenario))return new Promise(()=>{});
+        if(['floor-error','orders-error'].includes(window.__b01Scenario))throw new Error('Không thể kết nối tới máy chủ.');
+        return b01Read.apply(this,args);
+      };`;
+    await route.fulfill({response,body:await response.text()+"\n"+patch});
+  });
 }
 
 export async function login(page: Page, cashier = false) {
@@ -43,7 +39,7 @@ export async function login(page: Page, cashier = false) {
   await page.getByTestId("go-store-pairing").click();
   await page.getByTestId("store-key-input").fill("0001-X8F3QA");
   await page.getByTestId("go-passcode").click();
-  await page.getByTestId(cashier ? "employee-22828322-623b-42e7-8a28-a2bdf367c364" : "employee-6b7bd350-7db2-4160-8471-cca2668c070d").click();
+  await page.getByTestId(cashier ? "employee-30000000-0000-4000-8000-000000000013" : "employee-30000000-0000-4000-8000-000000000011").click();
   for (const digit of cashier ? "111111" : "123456") await page.getByTestId(`pin-${digit}`).click();
   await page.getByTestId("unlock-button").click();
   await expect(page.getByTestId("floor-view")).toBeVisible();

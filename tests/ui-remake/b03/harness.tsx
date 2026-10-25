@@ -5,17 +5,17 @@ import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { Toaster } from "react-hot-toast";
-import { createMockPorts, createSeededMockState } from "@/adapters/mock";
+import { activateCandidateUi, createCandidateRuntimeFixture } from "@/test/candidateRuntimeFixture";
 import { PortsContext } from "@/features/shared/portsContext";
 import { PaymentDrawer } from "@/app/drawers/pos/PaymentDrawer";
 import { ReceiptPreviewPopup } from "@/app/components/ReceiptPreview";
 import { useAppStore } from "@/app/useAppStore";
 import { AppError } from "@/core/appError";
-import { posQueryKeys } from "@/features/shared/queryKeys";
+import { permissionQueryKey, usePermissionSession } from "@/features/shared/permissionSession";
 import "@/tailwind.css";
 const scenario = new URLSearchParams(location.search).get("case") ?? "full";
-const state = createSeededMockState(),
-  ports = createMockPorts(state);
+const fixture = await createCandidateRuntimeFixture({ role: scenario === "cashier" || scenario === "deny" ? "cashier" : "owner", overrides: scenario === "deny" ? {grants:[],denies:["payment.take"]} : undefined });
+const state = fixture.business, ports = fixture.ports;
 const order = state.orders.find(o => o.orderNo === 24)!;
 const client = new QueryClient({
   defaultOptions: {
@@ -29,11 +29,12 @@ const client = new QueryClient({
   }
 });
 let failOrder = scenario === "error";
-const getOrder = ports.order.getOrder.bind(ports.order),
+const getOrder = ports.permission!.read.getOpenOrderDetail.bind(ports.permission!.read),
   execute = ports.write.execute.bind(ports.write);
-ports.order.getOrder = async id => {
+ports.permission!.read.getOpenOrderDetail = async id => {
   if (scenario === "loading") return new Promise(() => {});
   if (failOrder) throw new AppError("NOT_FOUND", "Không tìm thấy đơn trong cửa hàng này.");
+  if (scenario === "paid" || scenario === "void") return structuredClone(order); // Closed-response presentation fixture, not a server contract.
   return getOrder(id);
 };
 if (scenario === "pending") ports.write.execute = async () => new Promise(() => {});
@@ -62,14 +63,7 @@ if (scenario === "stress") {
   }));
   order.total = order.items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
 }
-await ports.auth.pairStore("0001-X8F3QA");
-const employee = state.employees.find(e => e.role === (scenario === "cashier" ? "cashier" : "admin"))!;
-const session = await ports.employee.startSession(employee.id, state.pins[employee.id]);
-if (scenario === "deny") session.employee.permissionOverrides = {
-  grants: [],
-  denies: ["payment.take"]
-};
-useAppStore.getState().setCurrentEmployee(session.employee);
+activateCandidateUi(fixture);
 useAppStore.setState({
   drawer: "payment",
   paymentOrderId: scenario === "missing" ? null : order.id
@@ -81,6 +75,7 @@ function Host() {
 Object.assign(window, {
   b03: {
     state,
+    gate:()=>{usePermissionSession.getState().setStatus("unavailable");const gate=document.createElement("div");gate.innerHTML='<button data-testid="gate-retry">Thử lại</button><button data-testid="gate-next">Khóa</button>';document.body.append(gate);},
     ports,
     client,
     store: useAppStore,
@@ -91,7 +86,7 @@ Object.assign(window, {
       order.lockVersion++;
       order.items[0].quantity = 1;
       order.total = 96000;
-      client.setQueryData(posQueryKeys.order(order.id), structuredClone(order));
+      client.setQueryData(permissionQueryKey("open-order",order.id), structuredClone(order));
     },
     restoreExecute: () => {
       ports.write.execute = execute;

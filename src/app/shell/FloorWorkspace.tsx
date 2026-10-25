@@ -1,10 +1,13 @@
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import { useMediaQuery } from "@mui/material";
 import toast from "react-hot-toast";
-import type { FloorTable, OrderSummary } from "@/domain";
+import type { FloorTable } from "@/domain";
+import type { OperationalOrderSummary } from "@/ports/permissions";
+import { sessionHasPermission } from "@/features/shared/permissionSession";
+import { useViewLifetime } from "../useViewLifetime";
 import { formatCompactVnd, formatVndShort } from "@/core/money";
 import { useFloorPlanQuery, useOpenOrdersQuery } from "@/features/pos";
-import { useStoreSettingsQuery } from "@/features/admin/useAdminData";
+import { useStoreDisplayQuery } from "@/features/pos/usePosData";
 import { useAppStore } from "../useAppStore";
 import { toToastError } from "../appErrors";
 import { getLabelBoost, getObjectBoost, stageStyle } from "../floorStage";
@@ -22,10 +25,12 @@ export function FloorWorkspace() {
   const activeAreaId = useAppStore((s) => s.activeAreaId);
   const setActiveAreaId = useAppStore((s) => s.setActiveAreaId);
   const openOrder = useAppStore((s) => s.openOrder);
+  const openPayment = useAppStore((s) => s.openPayment);
+  const captureView = useViewLifetime(activeAreaId);
   const drawer = useAppStore((s) => s.drawer);
   const floorPlanQuery = useFloorPlanQuery();
   const openOrdersQuery = useOpenOrdersQuery();
-  const settings = useStoreSettingsQuery();
+  const settings = useStoreDisplayQuery();
   const [tableFilter, setTableFilter] = useState<TableFilter>("all");
   const [ordersOpen, setOrdersOpen] = useState(false);
   const compactOrders = useMediaQuery("(max-width: 1279px)");
@@ -55,11 +60,19 @@ export function FloorWorkspace() {
   const allTables = floorPlan?.tables.filter((t) => t.areaId === areaId) ?? [];
   const decorItems = floorPlan?.decorItems.filter((d) => d.areaId === areaId) ?? [];
   const isOccupied = (tableId: string) => allTables.find((t) => t.id === tableId)?.status === "occupied" || orders.some((o) => o.tableId === tableId);
-  const openTableOrder = async (table: FloorTable, cachedOrder?: OrderSummary) => {
-    if (cachedOrder) { openOrder({ orderId: cachedOrder.id, tableId: table.id, orderType: "dine_in" }); return; }
+  const openExistingOrder = (order: OperationalOrderSummary) => {
+    if (!sessionHasPermission("order.update") && sessionHasPermission("payment.take")) { openPayment(order.id); return; }
+    if (!sessionHasPermission("order.update") && !sessionHasPermission("order.voidOpen")) return;
+    openOrder({ orderId: order.id, tableId: order.orderType === "takeaway" ? null : order.tableId, orderType: order.orderType });
+  };
+  const openTableOrder = async (table: FloorTable, cachedOrder?: OperationalOrderSummary) => {
+    if (cachedOrder) { openExistingOrder(cachedOrder); return; }
+    const isCurrent = captureView();
     const refreshed = await openOrdersQuery.refetch();
-    const freshOrder = refreshed.data?.find((order) => order.tableId === table.id);
-    openOrder({ orderId: freshOrder?.id ?? null, tableId: table.id, orderType: "dine_in" });
+    if (!isCurrent() || refreshed.isError) return;
+    const freshOrder = refreshed.data?.openOrders.find((order) => order.tableId === table.id);
+    if (freshOrder) { openExistingOrder(freshOrder); return; }
+    if (sessionHasPermission("order.create")) openOrder({ orderId: null, tableId: table.id, orderType: "dine_in" });
   };
   const filteredTables = allTables.filter((t) => tableFilter === "empty" ? !isOccupied(t.id) : tableFilter === "occupied" ? isOccupied(t.id) : true);
   const dineInOrders = orders.filter((o) => o.orderType === "dine_in");
@@ -76,10 +89,10 @@ export function FloorWorkspace() {
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
     }
   };
-  const orderCard = (order: OrderSummary) => {
+  const orderCard = (order: OperationalOrderSummary) => {
     const table = floorPlan?.tables.find((t) => t.id === order.tableId);
     const name = order.orderType === "takeaway" ? "Mang đi" : table?.name ?? order.tableId ?? "";
-    return <button key={order.id} className="order-card" data-testid={`floor-order-${order.id}`} onClick={() => { setOrdersOpen(false); openOrder({ orderId: order.id, tableId: order.orderType === "takeaway" ? null : order.tableId, orderType: order.orderType }); }}>
+    return <button key={order.id} className="order-card" data-testid={`floor-order-${order.id}`} onClick={() => { setOrdersOpen(false); openExistingOrder(order); }}>
       <span className="order-card-top"><strong title={name}>{name}</strong><span className="order-number">#{order.orderNo}</span></span>
       <span className="order-card-bottom"><span className="order-status"><span className="status-dot"/>Đang phục vụ</span><strong className="order-total" title={formatVndShort(order.total)}>{formatVndShort(order.total)}</strong></span>
       <span className="order-card-hint">Mở đơn hàng <span aria-hidden="true">→</span></span>

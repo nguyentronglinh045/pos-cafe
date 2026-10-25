@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { useStoreSettingsQuery } from "@/features/admin/useAdminData";
+import { useStoreDisplayQuery } from "@/features/pos/usePosData";
 import { RemakeThemeProvider } from "@/theme/RemakeThemeProvider";
 import { useAppStore, type DrawerModule } from "../useAppStore";
 import { EmployeesStubDrawer } from "../drawers/admin/EmployeesDrawer";
@@ -16,6 +16,8 @@ import { WriteRecoveryDrawer } from "../drawers/pos/WriteRecoveryDrawer";
 import { ReceiptPreviewPopup } from "../components/ReceiptPreview";
 import { FloorWorkspace } from "./FloorWorkspace";
 import { LeftNav } from "./LeftNav";
+import { usePermissionSession } from "@/features/shared/permissionSession";
+import { drawerAllowed } from "../permissionUi";
 
 const DRAWER_REGISTRY: Record<NonNullable<DrawerModule>, ComponentType> = {
   order: OrderDrawer,
@@ -32,14 +34,18 @@ const DRAWER_REGISTRY: Record<NonNullable<DrawerModule>, ComponentType> = {
 };
 
 export function AppShell() {
-  const settings = useStoreSettingsQuery();
+  const settings = useStoreDisplayQuery();
   const drawer = useAppStore((state) => state.drawer);
-  const ActiveDrawer = drawer ? DRAWER_REGISTRY[drawer] : null;
+  const context = useAppStore(state => state.orderContext);
+  const authority = usePermissionSession();
+  const ActiveDrawer = drawer && drawerAllowed(authority.bundle, drawer, context) ? DRAWER_REGISTRY[drawer] : null;
 
   return (
     <RemakeThemeProvider><main
-      className="app-frame [@media(orientation:portrait)]:hidden"
+      className="app-frame [@media(orientation:portrait)]:!hidden"
       data-testid="app-shell"
+      style={authority.status !== "verified" ? { visibility: "hidden", pointerEvents: "none" } : undefined}
+      aria-hidden={authority.status !== "verified"}
     >
       <LeftNav storeName={settings.data?.displayName} />
 

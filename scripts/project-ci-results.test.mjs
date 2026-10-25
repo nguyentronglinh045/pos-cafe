@@ -1,3 +1,5 @@
+import { backendInvocation } from './project-backend.mjs';
+import { ci1TrustedRepository } from './permission-ci1-policy.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFileSync, writeFileSync, mkdtempSync, mkdirSync, existsSync, linkSync } from 'node:fs';
@@ -5,7 +7,8 @@ import { crc32 } from 'node:zlib';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
-import SmokeFailureReporter, { smokeStepDiagnostic, smokeTraceDiagnostics, smokeTraceEvents, smokeTraceSnapshotFacts, smokeTraceExpectFacts, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, publicSummary, privateDiagnostics, guardFailureCode, PROJECTS, PROJECT_PHASES, hash } from './project-ci-results.mjs';
+import { pathToFileURL } from 'node:url';
+import SmokeFailureReporter, { smokeStepDiagnostic, smokeTraceDiagnostics, smokeTraceEvents, smokeTraceSnapshotFacts, smokeTraceExpectFacts, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, nodeTapFailureDiagnostics, NODE_FAILURE_ERRNOS, guardFailureCode, PROJECTS, PROJECT_PHASES, hash } from './project-ci-results.mjs';
 import { capturedCommand, trackedFingerprint, lightEnvironment, checkoutGit, allocatedBytes, coreLimitDisabled, browserRuntimeControlCanStart, gitCommitParents } from './project-ci.mjs';
 import { lightService, lightOwnerMatches, withLightCorePattern, stopLightUnit, coreDumpDisabled, linuxCorePatternAdapter } from './project-ci-launch.mjs';
 import { verifyReleaseRun, verifyReleaseEnvironment, verifyReleaseFiles, productionCommands, PRODUCTION_ENABLED } from './project-release.mjs';
@@ -14,6 +17,7 @@ const sha = '1'.repeat(40), other = '2'.repeat(40), digest = '3'.repeat(64);
 const env = { GITHUB_REPOSITORY: 'nguyentronglinh045/pos-cafe', GITHUB_REPOSITORY_ID: '1263057386', GITHUB_ACTIONS: 'true', RUNNER_ENVIRONMENT: 'github-hosted',
   GITHUB_EVENT_NAME: 'push', GITHUB_SHA: sha, GITHUB_WORKFLOW_SHA: sha, GITHUB_RUN_ID: '123', GITHUB_RUN_ATTEMPT: '1' };
 const binding = sourceBinding(env, { after: sha, repository: { full_name: env.GITHUB_REPOSITORY, id: 1263057386 } }, sha);
+const edgeReceipt={schemaVersion:'permission-edge-resolution-v1',sourceSHA:sha,scope:'NATIVE_RESOLVER_ONLY',configSHA256:'a'.repeat(64),lockSHA256:'b'.repeat(64),cacheSHA256:'c'.repeat(64),packages:20,observed:17,metadataOnly:3,warmBundles:2,runtimeBadSRIControls:1,rootRemoved:true,processReleased:true};
 
 const traceLines = events => [{type:'context-options',version:8,playwrightVersion:'1.60.0',browserName:'chromium'},
   ...events].map(event => JSON.stringify(event)).join('\n') + '\n';
@@ -489,6 +493,125 @@ test('Node TAP pending/cancelled/malformed counts cannot become a pass', () => {
   assert.throws(() => nodeCounts('FAKE_PRIVATE_TOKEN'));
 });
 
+const nodeFailureBlock = (location, code = 'ENOENT') => [
+  'not ok 1 - FAKE_NODE_PRIVATE_TITLE', '  ---', '  duration_ms: 1', "  type: 'test'",
+  '  location: ' + JSON.stringify(location), "  failureType: 'testCodeFailure'", '  error: |-',
+  '    FAKE_NODE_PRIVATE_TOKEN TypeError test timed out Protocol error', '  code: ' + JSON.stringify(code),
+  '  stack: |-', '    at /private/FAKE_NODE_PRIVATE_TOKEN:99:99', '  ...',
+].join('\n');
+const nodeTap = body => 'TAP version 13\n' + body + '\n1..1\n# tests 1\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n';
+const publicNodeDiagnostic = diagnostic => publicSummary(binding, PROJECT_PHASES.slice(0,5).map(id => ({
+  id, status:id === 'node-tools' ? 'FAIL' : 'PASS', elapsedMs:1, exitCode:id === 'node-tools' ? 1 : 0,
+  invocationSHA:digest, reportSHA:digest, counts:null, diagnostic:id === 'node-tools' ? diagnostic : null,
+})), {source:digest,lock:digest}).phases[4].diagnostic;
+
+test('Node TAP failures expose only tracked script location and direct finite errno, never message signatures', () => {
+  const output = nodeTap(nodeFailureBlock('/source/scripts/a.test.mjs:42:7'));
+  const result = privateDiagnostics(output, null, ['scripts/a.test.mjs'], '/source');
+  assert.deepEqual(result, {codes:['COMMAND_FAILED','NODE_TEST_FAILURE'], metrics:{nodeFailureCount:1,
+    nodeFailureLine:42,nodeFailureColumn:7,nodeFailureErrnoOrdinal:1},failedFiles:['scripts/a.test.mjs']});
+  assert.deepEqual(publicNodeDiagnostic(result), result);
+  assert.equal(JSON.stringify(result).includes('PRIVATE'), false);
+  assert.equal(JSON.stringify(result).includes('/source'), false);
+  assert.throws(() => nodeCounts(output)); // Diagnostics never replace the acceptance parser.
+  const noErrno = privateDiagnostics(nodeTap(nodeFailureBlock('/source/scripts/a.test.mjs:42:7','FAKE_NODE_PRIVATE_TOKEN')),
+    null,['scripts/a.test.mjs'],'/source');
+  assert.equal(noErrno.metrics.nodeFailureErrnoOrdinal,undefined);
+  for (const [index,code] of NODE_FAILURE_ERRNOS.entries()) assert.equal(privateDiagnostics(
+    nodeTap(nodeFailureBlock('/source/scripts/a.test.mjs:42:7',code)), null,['scripts/a.test.mjs'],'/source')
+    .metrics.nodeFailureErrnoOrdinal,index+1);
+});
+
+test('passing TAP fixture strings and nested fake failure records cannot label a real failure', () => {
+  const body = ['# TypeError test timed out Protocol error FAKE_NODE_PRIVATE_TOKEN',
+    '# PROJECT_UI_WATCH_CONTROL {"version":1,"failureStage":5}', 'ok 1 - FAKE_NODE_PRIVATE_TITLE', '  ---',
+    '  duration_ms: 1', '  expected: |-', ...nodeFailureBlock('/source/scripts/a.test.mjs:42:7').split('\n').map(line=>'    '+line),
+    '  ...'].join('\n');
+  const result = privateDiagnostics(nodeTap(body),null,['scripts/a.test.mjs'],'/source');
+  assert.deepEqual(result,{codes:['COMMAND_FAILED','REPORT_MISSING'],metrics:{},failedFiles:[]});
+  assert.equal(nodeTapFailureDiagnostics('ordinary command failed FAKE_NODE_PRIVATE_TOKEN',[],'/source'),null);
+  assert.deepEqual(privateDiagnostics('ordinary command failed',null),result);
+});
+
+test('truncated, malformed and untrusted TAP locations publish no failure facts', () => {
+  const block = nodeFailureBlock('/source/scripts/a.test.mjs:42:7');
+  for (const body of [block.replace('  ...',''), block.replace('  location:', '  location: |-\n    location:'),
+    block.replace('  duration_ms: 1','  location: "/source/scripts/a.test.mjs:41:7"'),
+    block.replace('  ---',' ---'), block.replace('  code: "ENOENT"','  code: 123'),
+    block.replace('  error: |-','FAKE_NODE_PRIVATE_TOKEN'),
+    ...['/private/scripts/a.test.mjs:42:7','/source-shadow/scripts/a.test.mjs:42:7','/source/scripts/../scripts/a.test.mjs:42:7',
+      'file:///source/scripts/%2e%2e/scripts/a.test.mjs:42:7','file://private/source/scripts/a.test.mjs:42:7',
+      'file:///source/scripts/a.test.mjs?FAKE_NODE_PRIVATE_TOKEN:42:7','/source/scripts/untracked.test.mjs:42:7',
+      '/source/src/a.test.mjs:42:7','/source/scripts/a.test.mjs:0:7','/source/scripts/a.test.mjs:42:1000001']
+      .map(location=>nodeFailureBlock(location))]) {
+    const result = privateDiagnostics(nodeTap(body),null,['scripts/a.test.mjs'],'/source');
+    assert.deepEqual(result,{codes:['COMMAND_FAILED','REPORT_MISSING'],metrics:{},failedFiles:[]});
+    assert.equal(JSON.stringify(publicNodeDiagnostic(result)).includes('PRIVATE'),false);
+  }
+  assert.deepEqual(privateDiagnostics(nodeTap(block),null,[],'/source').failedFiles,[]);
+});
+
+test('nested TAP, file URLs and completed records before truncation preserve only observed source facts', () => {
+  const root=join(tmpdir(),'pos-node-tap-source'), file='scripts/a.test.mjs';
+  const nested=nodeFailureBlock(pathToFileURL(join(root,file)).href+':12:3').split('\n').map(line=>'    '+line).join('\n');
+  const result=privateDiagnostics('TAP version 13\n# Subtest: FAKE_NODE_PRIVATE_TITLE\n'+nested+'\n'+
+    nodeFailureBlock('/private/FAKE_NODE_PRIVATE_TOKEN:1:1').replace('  ...',''),null,[file],root);
+  assert.deepEqual(result.metrics,{nodeFailureCount:1,nodeFailureLine:12,nodeFailureColumn:3,nodeFailureErrnoOrdinal:1});
+  assert.deepEqual(result.failedFiles,[file]);
+  assert.equal(JSON.stringify(result).includes('PRIVATE'),false);
+  const windows=nodeTap(nodeFailureBlock('/source/scripts/a.test.mjs:12:3').replace(
+    '"/source/scripts/a.test.mjs:12:3"', "'D:\\\\source\\\\scripts\\\\a.test.mjs:12:3'"));
+  assert.deepEqual(privateDiagnostics(windows,null,[file],'D:/source').failedFiles,[file]);
+});
+
+test('public TAP export requires parser source provenance, finite bounds and the node-tools phase', () => {
+  const result=privateDiagnostics(nodeTap(nodeFailureBlock('/source/scripts/a.test.mjs:42:7')),null,
+    ['scripts/a.test.mjs','scripts/b.test.mjs'],'/source');
+  result.failedFiles.push('scripts/b.test.mjs','scripts/FAKE_NODE_PRIVATE_TOKEN.test.mjs','scripts/../private.test.mjs','/private/token');
+  result.metrics.raw='FAKE_NODE_PRIVATE_TOKEN';result.codes.push('FAKE_NODE_PRIVATE_TOKEN');
+  const safe=publicNodeDiagnostic(result);
+  assert.deepEqual(safe.failedFiles,['scripts/a.test.mjs']);assert.equal(JSON.stringify(safe).includes('PRIVATE'),false);
+  assert.deepEqual(publicNodeDiagnostic({...result}),{codes:['COMMAND_FAILED'],metrics:{},failedFiles:[]});
+  for (const [key,max] of Object.entries({nodeFailureCount:10000,nodeFailureLine:1000000,nodeFailureColumn:1000000,nodeFailureErrnoOrdinal:NODE_FAILURE_ERRNOS.length})) {
+    const original=result.metrics[key];
+    for (const value of [max+1,0,-1,1.5,'1',Infinity,NaN]) {
+      result.metrics[key]=value;assert.equal(Object.hasOwn(publicNodeDiagnostic(result).metrics,key),false);
+    }
+    result.metrics[key]=original;
+  }
+  const other=publicSummary(binding,[{id:'install',status:'FAIL',elapsedMs:1,exitCode:1,invocationSHA:digest,
+    reportSHA:digest,counts:null,diagnostic:result}],{source:digest,lock:digest}).phases[0].diagnostic;
+  assert.deepEqual(other,{codes:['COMMAND_FAILED'],metrics:{},failedFiles:[]});
+});
+
+test('TAP diagnostics bound output, YAML bodies and the number of exported source files', () => {
+  for (const output of ['TAP version 13\n'+'x'.repeat(8*1024**2),'TAP version 13\n'+'\n'.repeat(200001),
+    nodeTap(nodeFailureBlock('/source/scripts/a.test.mjs:42:7').replace('  stack: |-', '    '+'x'.repeat(65537)+'\n  stack: |-'))])
+    assert.deepEqual(privateDiagnostics(output,null,['scripts/a.test.mjs'],'/source').metrics,{});
+  const files=Array.from({length:33},(_,i)=>`scripts/a${i}.test.mjs`);
+  const result=privateDiagnostics(nodeTap(files.map(file=>nodeFailureBlock('/source/'+file+':1:1')).join('\n')),
+    null,files,'/source');
+  assert.equal(result.metrics.nodeFailureCount,33);assert.equal(result.failedFiles.length,32);
+  assert.equal(publicNodeDiagnostic(result).failedFiles.length,32);
+});
+
+test('a real failing Node child produces the supported TAP metadata without exporting its error or title', () => {
+  const root=mkdtempSync(join(tmpdir(),'pos-node-tap-diagnostics-'));mkdirSync(join(root,'scripts'));
+  const file=join(root,'scripts','a.test.mjs');
+  writeFileSync(file,"import test from 'node:test';\ntest('FAKE_NODE_PRIVATE_TITLE',()=>{throw Object.assign(new Error('FAKE_NODE_PRIVATE_TOKEN TypeError Protocol error'),{code:'ENOENT'});});\n");
+  const childEnv={...process.env};delete childEnv.NODE_TEST_CONTEXT;
+  let output;
+  try { execFileSync(process.execPath,['--test','--test-reporter=tap',file],
+    {cwd:root,env:childEnv,encoding:'utf8',timeout:10000,maxBuffer:1024**2,stdio:['ignore','pipe','pipe']});assert.fail('child must fail'); }
+  catch(error) { assert.equal(error.status,1);output=error.stdout; }
+  const result=privateDiagnostics(output,null,['scripts/a.test.mjs'],root);
+  assert.deepEqual(result.failedFiles,['scripts/a.test.mjs']);assert.equal(result.metrics.nodeFailureCount,1);
+  assert.equal(result.metrics.nodeFailureLine,2);assert.ok(result.metrics.nodeFailureColumn>0);
+  assert.equal(result.metrics.nodeFailureErrnoOrdinal,1);assert.deepEqual(result.codes,['COMMAND_FAILED','NODE_TEST_FAILURE']);
+  assert.deepEqual(publicNodeDiagnostic(result),result);assert.equal(JSON.stringify(result).includes('PRIVATE'),false);
+  assert.throws(()=>nodeCounts(output));
+});
+
 test('smoke requires every project/case and exact applicability skips without retries or expected failures', () => {
   const report = { suites: [{ specs: PROJECTS.map(projectName => ({ file: 'a.ts', line: 1, title: 'case', tests: [
     { projectName, expectedStatus: 'passed', status: 'expected', results: [{ status: 'passed', retry: 0, errors: [] }] }] })) }],
@@ -527,37 +650,49 @@ test('failed Playwright diagnostics expose known source locations and counts wit
   const safe=privateDiagnostics('',bad,[]);assert.deepEqual(safe.failedFiles,[]);assert.equal(safe.metrics.smokeUnexpected,undefined);
 });
 
-test('main light profile requires all twelve phases, including UI calibration, without app acceptance substitutions', () => {
+test('permission light profile requires all seventeen phases, including UI calibration, without app acceptance substitutions', () => {
   assert.deepEqual(PROJECT_PHASES, ['install','build','unit','tooling','node-tools','browser',
-    'ui-tools','ui-remake-selftest','ui-audit-selftest','smoke-discovery','smoke-preflight','smoke']);
+    'runtime-reporters','edge-resolution','permission-static','permission-pg16','ui-tools','ui-remake-selftest','ui-audit-selftest','smoke-discovery','smoke-preflight','smoke','ui-selftest','ui-audit']);
   const rows=PROJECT_PHASES.map(id=>({id,status:'PASS',elapsedMs:1,exitCode:0,invocationSHA:digest,reportSHA:digest,counts:null}));
   assert.equal(publicSummary(binding,rows,{source:digest,lock:digest}).overallStatus,'PASS');
   for(const id of ['ui-selftest','ui-audit','ui-tools']) {
     assert.throws(()=>publicSummary(binding,[...rows,{...rows[0],id}],{source:digest,lock:digest}));
-    assert.throws(()=>publicSummary(binding,[...rows.slice(0,-1),{...rows.at(-1),id}],{source:digest,lock:digest}));
+    assert.throws(()=>publicSummary(binding,[{...rows[0],id},...rows.slice(1)],{source:digest,lock:digest}));
   }
-  for (const index of [6,7,8]) {
+  for (const index of [6,7,8,12]) {
     assert.throws(()=>publicSummary(binding,rows.filter((_,i)=>i!==index),{source:digest,lock:digest}));
     const bad=structuredClone(rows);bad[index].status='FAIL';
     assert.equal(publicSummary(binding,bad,{source:digest,lock:digest}).overallStatus,'FAIL');
   }
+  assert.equal(publicSummary(binding,rows.slice(0,-1),{source:digest,lock:digest}).overallStatus,'FAIL');
+  const failedAudit=structuredClone(rows);failedAudit.at(-1).status='FAIL';
+  assert.equal(publicSummary(binding,failedAudit,{source:digest,lock:digest}).overallStatus,'FAIL');
   const reordered=structuredClone(rows);[reordered[6],reordered[7]]=[reordered[7],reordered[6]];
   assert.throws(()=>publicSummary(binding,reordered,{source:digest,lock:digest}));
 });
 
 test('public evidence excludes arbitrary binding/count/raw fields and incomplete phase sets fail', () => {
   const rows = PROJECT_PHASES.map(id => ({ id, status: 'PASS', elapsedMs: 1, exitCode: 0, invocationSHA: digest, reportSHA: digest,
-    counts: { pass: 1, raw: 'FAKE_PRIVATE_TOKEN' } }));
+    counts: { pass: 1, raw: 'FAKE_PRIVATE_TOKEN',...(id==='edge-resolution'?{edgeResolution:edgeReceipt}:{}) } }));
   const result = publicSummary({ ...binding, raw: 'FAKE_PRIVATE_TOKEN' }, rows, { source: digest, lock: digest });
   assert.equal(result.overallStatus, 'PASS');
   assert.equal(JSON.stringify(result).includes('FAKE_PRIVATE_TOKEN'), false);
   assert.equal(publicSummary(binding, rows.slice(0, -1), { source: digest, lock: digest }).overallStatus, 'FAIL');
 });
 
+test('public native diagnostics independently reject out-of-domain numbers even without private parser',()=>{
+ const limits={pg16Operation:4,pg16Step:30,pg16ErrorCodeOrdinal:21,pg16ErrorNameOrdinal:5,pg16ErrorMatcherOrdinal:8,
+  pg16RunnerErrors:10000,pg16HookErrors:10000,pg16FailedTests:10000,pg16RootRemoved:1,pg16ProcessReleased:1};
+ const project=metrics=>publicSummary(binding,[{id:'install',status:'FAIL',elapsedMs:1,exitCode:1,invocationSHA:digest,reportSHA:digest,
+  diagnostic:{codes:['COMMAND_FAILED'],metrics,failedFiles:[]}}],{source:digest,lock:digest}).phases[0].diagnostic.metrics;
+ assert.deepEqual(project(limits),limits);
+ for(const [key,max]of Object.entries(limits))for(const v of[max+1,Number.MAX_SAFE_INTEGER,-1,1.5,'1',Infinity])assert.equal(Object.hasOwn(project({[key]:v}),key),false);
+ assert.deepEqual(project({raw:'SECRET',pg16Step:30,pg16RootRemoved:1}),{pg16Step:30,pg16RootRemoved:1});
+});
 test('public UI calibration counts stay finite, numeric and separate from product acceptance', () => {
   const rows=PROJECT_PHASES.map(id=>({id,status:'PASS',elapsedMs:1,exitCode:0,invocationSHA:digest,reportSHA:digest,
     counts:{run:11,pass:11,positiveControls:5,negativeControls:6,targetControls:16,detectedFindings:23,
-      productAcceptance:'FAKE_PRIVATE_TOKEN',raw:'FAKE_PRIVATE_TOKEN'}}));
+      productAcceptance:'FAKE_PRIVATE_TOKEN',raw:'FAKE_PRIVATE_TOKEN',...(id==='edge-resolution'?{edgeResolution:edgeReceipt}:{})}}));
   const result=publicSummary(binding,rows,{source:digest,lock:digest});
   assert.equal(result.overallStatus,'PASS');assert.equal(result.phases[7].counts.negativeControls,6);
   assert.equal(result.phases[8].counts.targetControls,16);assert.equal(JSON.stringify(result).includes('FAKE_PRIVATE_TOKEN'),false);
@@ -711,7 +846,7 @@ test('CD verifies canonical Git bytes across CRLF checkouts and rejects checker/
   const blob = checkoutGit(root, ['-c', 'core.autocrlf=true', 'hash-object', '-w', '--path=checker.txt', 'checker.txt']).trim();
   const canonical = execFileSync('git', ['-C', root, 'cat-file', 'blob', blob], { stdio: ['ignore', 'pipe', 'pipe'] });
   assert.equal(canonical.toString(), 'checker\nfixture\n');
-  const policy = { trustedFiles: { 'scripts/project-ci-results.mjs': hash(canonical), 'playwright.project-ci.config.ts': hash(canonical) } };
+  const policy = { trustedFiles: { 'scripts/project-ci-results.mjs': hash(canonical), 'playwright.project-ci.config.ts': hash(canonical), 'ui-audit/audit.js': hash(canonical), 'ui-audit/demo-buggy.html': hash(canonical) } };
   const files = Object.fromEntries(Object.keys(policy.trustedFiles).map(path => [path, canonical]));
   assert.equal(verifyReleaseFiles(files, policy), true);
   for (const path of Object.keys(files)) assert.throws(() => verifyReleaseFiles({ ...files, [path]: Buffer.from('changed') }, policy));
@@ -754,4 +889,22 @@ test('commit parent parser reads only canonical headers, never message or signat
   const text = headers + `\n\nmessage\nparent ${sha}\n`;
   assert.deepEqual(gitCommitParents(text), [base, head]);
   for (const value of ['', 'parent x\n\nmessage', 'parent '+head, null, 'x'.repeat(65537)+'\n\n']) assert.throws(() => gitCommitParents(value));
+});
+
+test('UI gate requires every target/viewport and rejects fresh or incomplete findings', () => {
+  const cfg = { states: [{ name: 'floor' }], viewports: [{ name: 'tablet' }] };
+  const output = ' ok   tablet floor 0 finding(s), 0 new\nno new UI anomalies';
+  assert.equal(uiCounts(output, [], cfg).run, 1);
+  assert.throws(() => uiCounts('no new UI anomalies', [], cfg));
+  assert.throws(() => uiCounts(output, [{ known: false }], cfg));
+});
+
+
+
+test('backend manual guard requires confirmation, immutable workflow/source and exact allowed repositories', () => {
+  assert.ok(backendInvocation({ ...env, GITHUB_EVENT_NAME: 'workflow_dispatch', CI1_CONFIRMATION: 'RUN_SYNTHETIC_PILOT' }, '/node', '/source').argv.includes('CI1_EXECUTION_AUTHORIZED=yes'));
+  assert.throws(() => backendInvocation({ ...env, CI1_CONFIRMATION: 'RUN_SYNTHETIC_PILOT' }, '/node', '/source'));
+  assert.equal(ci1TrustedRepository(env.GITHUB_REPOSITORY), true);
+  assert.equal(ci1TrustedRepository('nguyentronglinh045/pos-cafe-ci-preflight'), true);
+  assert.equal(ci1TrustedRepository('attacker/pos-cafe'), false);
 });

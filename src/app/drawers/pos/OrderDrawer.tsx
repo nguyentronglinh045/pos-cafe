@@ -5,7 +5,7 @@ import { AlertTriangle } from "lucide-react";
 import { Button } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { hasPermission } from "@/core/guards";
+import { usePermission } from "@/features/shared/permissionSession";
 import type { EmployeePermission, PriceChangedDetails } from "@/domain";
 import { AppError } from "@/core/appError";
 import { PriceChangedNotice } from "./PriceChangedNotice";
@@ -80,7 +80,9 @@ export function OrderDrawer() {
     : allCategoryItems;
   const orderDetail = editingOrder;
   const table = context?.tableId ? floorPlanQuery.data?.tables.find((candidate) => candidate.id === context.tableId) : null;
-  const cartLines = useMemo(() => (menu ? buildCartLines(menu, draftItems) : []), [draftItems, menu]);
+  const cartLines = useMemo(() => buildCartLines(menu, draftItems), [draftItems, menu]);
+  const canEdit = usePermission(context?.orderId ? "order.update" : "order.create");
+  const canVoidOpen = usePermission("order.voidOpen"), canPay = usePermission("payment.take");
   const total = calculateCartTotal(cartLines);
   const draftChanged = isDraftChangedFromOrder(orderDetail, draftItems);
   useEffect(() => registerDrawerExitGuard((navigate) => {
@@ -91,14 +93,8 @@ export function OrderDrawer() {
   const primaryAction = getOrderPrimaryAction(orderDetail, draftItems);
   const requiredPermission: EmployeePermission = primaryAction === "payment"
     ? "payment.take" : getSubmitOrderPermission(context ?? { orderId: null }, draftItems);
-  const permissionDenied = primaryAction !== "closed" && !hasPermission(currentEmployee, requiredPermission);
-  const permissionTitle = permissionDenied ? ({
-    "order.create": "Không có quyền tạo đơn",
-    "order.update": "Không có quyền sửa đơn",
-    "order.voidOpen": "Không có quyền hủy đơn",
-    "payment.take": "Không có quyền thanh toán",
-    "order.voidPaid": "Không có quyền hủy đơn đã thanh toán",
-  } satisfies Record<EmployeePermission, string>)[requiredPermission] : undefined;
+  const actionAllowed = usePermission(requiredPermission);
+  const permissionDenied = primaryAction !== "closed" && !actionAllowed;
   const submitDisabled =
     submitMutation.isPending || menuQuery.isError || orderQuery.isError || (!!context?.orderId && orderQuery.isLoading);
   const primaryDisabled =
@@ -160,6 +156,7 @@ export function OrderDrawer() {
           if (result.initialSuccess && result.status !== "void" && addedLines.length > 0) {
             openReceiptPreview({
               variant: "kitchen",
+              requiredPermission: context.orderId ? "order.update" : "order.create",
               doc: {
                 orderNo: result.orderNo,
                 tableName: table?.name ?? null,
@@ -205,7 +202,7 @@ export function OrderDrawer() {
     <PortalDrawer testId="order-drawer" onOutsideClick={handleClose} panelClassName="b02-remake" overlayColor="var(--drawer-overlay)">
       <header className="order-header" data-testid="b02-header" aria-label={titleLabel}>
         <div className="heading"><h1>{`Gọi món — ${orderTypeLabel}`}</h1><p><span className="badge"><span className="dot"/>{context?.orderType === "takeaway" ? "Mang đi" : `${floorPlanQuery.data?.areas.find(area => area.id === table?.areaId)?.name ? floorPlanQuery.data.areas.find(area => area.id === table?.areaId)!.name + " · " : ""}Tại bàn`}</span><span>{orderDetail ? `Đơn #${orderDetail.orderNo}` : "Đơn mới"} · {orderStatusLabel}</span></p></div>
-        <div className="header-actions"><button className="close" data-testid="order-close-button" onClick={handleClose}>Đóng</button>{orderDetail && draftChanged && primaryAction !== "closed" && <button className="payment-locked" disabled>Thanh toán</button>}<button className="primary" data-testid="submit-order-button" disabled={primaryDisabledWithPermission} title={permissionTitle} onClick={runPrimaryAction}><span>{primaryActionLabel}</span></button></div>
+        <div className="header-actions"><button className="close" data-testid="order-close-button" onClick={handleClose}>Đóng</button>{canPay && orderDetail && draftChanged && primaryAction !== "closed" && <button className="payment-locked" disabled>Thanh toán</button>}{canVoidOpen && orderDetail && draftItems.length > 0 && <Button color="error" variant="outlined" disabled={blocked || submitMutation.isPending} data-testid="clear-open-order" onClick={() => setDraftItems([])}>Hủy đơn mở</Button>}{!permissionDenied && <button className="primary" data-testid="submit-order-button" disabled={primaryDisabledWithPermission} onClick={runPrimaryAction}><span>{primaryActionLabel}</span></button>}</div>
       </header>
       <div className="b02-notices" data-testid="b02-notices">
         <WriteAttemptNotice onApplied={() => {
@@ -219,8 +216,8 @@ export function OrderDrawer() {
         {primaryAction === "closed" && <div className="b02-warning" data-testid="order-closed-state"><AlertTriangle size={18}/><strong>Đơn đã được cập nhật</strong><p>Thiết bị khác đã thanh toán hoặc đóng đơn này. Quay lại sơ đồ để xem trạng thái mới nhất.</p></div>}
       </div>
       <fieldset disabled={blocked} className="drawer-body">
-        <OrderMenuPane categories={menu?.categories} items={items} allItems={menu?.menuItems} categoryId={categoryId} search={search} isLoading={menuQuery.isLoading} isError={menuQuery.isError} error={menuQuery.error} getMenuImageUrl={assetKey => ports.menuImages.getImageUrl(assetKey)} hasModifiers={itemId => !!menu && getItemModifierGroups(menu,itemId).length > 0} onSelectCategory={selectedCategoryId => { setActiveCategoryId(selectedCategoryId); setSearch(""); }} onSearchChange={setSearch} onRetry={() => void menuQuery.refetch()} onAddItem={picker.requestAdd}/>
-        <OrderCartPane cartLines={cartLines} draftItems={draftItems} noteOpenId={noteOpenId} total={total} showPaymentHint={!!orderDetail && draftChanged && primaryAction !== "closed"} primaryDisabled={primaryDisabledWithPermission} primaryActionLabel={primaryActionLabel} primaryActionTitle={permissionTitle} onAdjustQuantity={adjustQuantity} onToggleNote={lineId => setNoteOpenId(noteOpenId === lineId ? null : lineId)} onUpdateNote={updateNote} onPrimaryAction={runPrimaryAction}/>
+        {canEdit ? <OrderMenuPane categories={menu?.categories} items={items} allItems={menu?.menuItems} categoryId={categoryId} search={search} isLoading={menuQuery.isLoading} isError={menuQuery.isError} error={menuQuery.error} getMenuImageUrl={assetKey => ports.permission!.menuImages.getImageUrl(assetKey)} hasModifiers={itemId => !!menu && getItemModifierGroups(menu,itemId).length > 0} onSelectCategory={selectedCategoryId => { setActiveCategoryId(selectedCategoryId); setSearch(""); }} onSearchChange={setSearch} onRetry={() => void menuQuery.refetch()} onAddItem={picker.requestAdd}/> : <div className="p-4 text-pos-muted">Các món đã lưu trong đơn. Quyền hiện tại không cho phép sửa món.</div>}
+        <OrderCartPane cartLines={cartLines} draftItems={draftItems} noteOpenId={noteOpenId} total={total} showPaymentHint={!!orderDetail && draftChanged && primaryAction !== "closed"} primaryDisabled={primaryDisabledWithPermission} primaryActionLabel={primaryActionLabel} primaryVisible={!permissionDenied} canEdit={canEdit} onAdjustQuantity={adjustQuantity} onToggleNote={lineId => setNoteOpenId(noteOpenId === lineId ? null : lineId)} onUpdateNote={updateNote} onPrimaryAction={runPrimaryAction}/>
       </fieldset>
       {pendingNavigation && <DiscardDraftDialog onKeep={() => setPendingNavigation(null)} onDiscard={() => { const navigate = pendingNavigation; setPendingNavigation(null); navigate(); }}/>}
       {picker.modifierItem && menu && <ModifierPickerPopup menuItem={picker.modifierItem} groups={getItemModifierGroups(menu,picker.modifierItem.id)} onConfirm={picker.confirm} onClose={picker.cancel}/>}

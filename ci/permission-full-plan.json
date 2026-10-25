@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "permission-full-workflow-v1",
+  "mode": "PLAN_ONLY",
+  "profileOrder": ["STATIC", "PIN_ONBOARD", "PIN_IDENTITY", "PIN_CANARY", "PG16_T01", "SUPABASE_T02", "SUPABASE_T04"],
+  "controller": "scripts/permission-full-controller.mjs",
+  "composition": "scripts/permission-full-compose.mjs",
+  "stageCollector": "scripts/permission-full-perm-collect.mjs",
+  "aggregateStream": "scripts/permission-full-evidence-stream.mjs",
+  "provisioner": "scripts/permission-full-provision-plan.mjs",
+  "custodyRetention": "scripts/permission-full-controller.mjs#custodyRetentionPort",
+  "executor": null,
+  "actualExecution": "STOP_D2_ADMISSION_AND_SEPARATE_RUNTIME_GRANT_REQUIRED",
+  "maxHeavyEnvironments": 1,
+  "sameT04PhysicalBackendStages": 19,
+  "intentionalCleanupAllowed": false
+}

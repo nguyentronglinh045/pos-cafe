@@ -2,10 +2,10 @@ import { AlertTriangle, Banknote, CreditCard, Landmark, QrCode, ReceiptText } fr
 import { Button } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { hasPermission } from "@/core/guards";
+import { usePermission } from "@/features/shared/permissionSession";
 import { formatVnd } from "@/core/money";
 import type { PaymentSelection } from "@/features/pos";
-import type { OrderDetail } from "@/domain";
+import type { OpenOrderOperationalView } from "@/ports/permissions";
 import { buildPayableLines, clampSelection, fullSelection, isFullSelection, selectionAmount, useFloorPlanQuery, useOrderDetailQuery, usePayOrderItemsMutation, useWriteAttempt } from "@/features/pos";
 import { notifyUiError, toToastError } from "../../appErrors";
 import { PortalDrawer } from "../../components/PortalDrawer";
@@ -38,7 +38,7 @@ function PaymentDrawerContent() {
     blocked,
     attempt
   } = useWriteAttempt();
-  const confirmedOrder = useRef<OrderDetail | null>(null);
+  const confirmedOrder = useRef<OpenOrderOperationalView | null>(null);
   const order = attempt && attempt.status !== "settled" && confirmedOrder.current ? confirmedOrder.current : orderQuery.data;
   const [receivedAmountInput, setReceivedAmountInput] = useState("0");
   const [printReceipt, setPrintReceipt] = useState(true);
@@ -71,7 +71,7 @@ function PaymentDrawerContent() {
   const orderClosed = !!order && order.status !== "open";
   const orderItemCount = order?.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
   const nothingSelected = !!order && !orderClosed && amountDue <= 0;
-  const paymentPermissionDenied = !hasPermission(currentEmployee, "payment.take");
+  const paymentPermissionDenied = !usePermission("payment.take");
   const paymentPermissionTitle = paymentPermissionDenied ? "Không có quyền thanh toán" : undefined;
   const paymentDisabled = !order || orderClosed || orderQuery.isError || insufficient || nothingSelected || paymentPermissionDenied || blocked || payMutation.isPending;
   const paymentButtonLabel = orderClosed ? order.status === "paid" ? "Đơn đã thanh toán" : "Đơn đã đóng" : payMutation.isPending ? "Đang xử lý..." : selectAllChecked ? "Hoàn tất thanh toán" : "Thanh toán món đã chọn";
@@ -124,6 +124,7 @@ function PaymentDrawerContent() {
     openReceiptPreview({
       presentation: "remake",
       variant: "ticket",
+      requiredPermission: "payment.take",
       doc: ticketFromOrderDetail(order, table?.name ?? null)
     });
   };
@@ -183,11 +184,12 @@ function PaymentDrawerContent() {
       onSuccess: result => {
         if (!isCurrent()) return;
         // In bill từ payload trả về ngay trong mutation (không chờ refetch).
-        if (printReceipt && result.initialSuccess) {
+        if (printReceipt && result.initialSuccess && result.initialReceiptPrintGrant) {
           openReceiptPreview({
             presentation: "remake",
             variant: "receipt",
-            doc: result.receipt
+            doc: result.receipt,
+            source: { kind: "initial", grant: result.initialReceiptPrintGrant }
           });
         }
         if (result.mode === "full") {

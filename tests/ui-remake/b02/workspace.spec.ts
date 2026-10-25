@@ -71,9 +71,10 @@ for(const state of ['menu-loading','menu-error','order-loading','order-error','e
   await fixture(page,state);await geometry(page);
   if(state==='menu-loading')await expect(page.getByText('Đang tải menu...')).toBeVisible();
   if(state.endsWith('error')){await expect(page.getByTestId(state==='menu-error'?'order-menu-error-state':'order-error-state')).toBeVisible();await page.evaluate(()=> (window as any).b02.retry());await page.getByRole('button',{name:state==='menu-error'?'Thử tải lại':'Thử lại',exact:true}).click();await expect(page.getByTestId('menu-item-'+AMERICANO)).toBeVisible();await expect(page.getByTestId('order-total-amount')).toHaveAttribute('data-amount','125000');}
-  if(state==='order-loading'||state==='deny'||state==='paid'||state==='void')await expect(page.getByTestId('submit-order-button-footer')).toBeDisabled();
+  if(state==='order-loading'||state==='paid'||state==='void')await expect(page.getByTestId('submit-order-button-footer')).toBeDisabled();
+  if(state==='deny')await expect(page.getByTestId('submit-order-button-footer')).toHaveCount(0);
   if(state==='empty')await expect(page.getByText('Không có món.')).toBeVisible();
-  if(state==='unavailable')await expect(page.getByTestId('menu-item-'+AMERICANO)).toBeDisabled();
+  if(state==='unavailable')await expect(page.getByTestId('menu-item-'+AMERICANO)).toHaveCount(0);
   if(state==='cashier')await expect(page.getByTestId('submit-order-button-footer')).toBeEnabled();
   if(state==='void')await expect(page.getByTestId('b02-header')).toContainText('Đã hủy');
   await page.screenshot({path:info.outputPath(state+'.png')});
@@ -110,9 +111,22 @@ test('price review preserves saved prices, submit closes and creates initial kit
   await page.getByTestId('submit-order-button-footer').click();await expect(page.getByTestId('order-drawer')).toBeHidden();await expect(page.getByTestId('fixture-receipt')).toHaveText('kitchen');
 });
 test('permission denial survives programmatic click bypass',async({page})=>{
-  await fixture(page);await page.getByTestId('menu-item-'+AMERICANO).click();await page.evaluate(()=> (window as any).b02.denyUpdate());await expect(page.getByTestId('submit-order-button-footer')).toBeDisabled();
-  await page.getByTestId('submit-order-button-footer').evaluate(e=>{e.removeAttribute('disabled');(e as HTMLElement).click();});
+  await fixture(page);await page.getByTestId('menu-item-'+AMERICANO).click();
+  await page.getByTestId('submit-order-button-footer').evaluate(e=>{(window as any).b02Submit=e;});
+  await page.evaluate(()=> (window as any).b02.denyUpdate());await expect(page.getByTestId('submit-order-button-footer')).toHaveCount(0);
+  await page.evaluate(()=>{const e=(window as any).b02Submit;e.removeAttribute('disabled');document.querySelector('[data-testid=b02-footer]')!.append(e);e.click();});
+  expect(await page.evaluate(()=> (window as any).b02.bypassSubmit())).toBe('FORBIDDEN');
   expect(await page.evaluate(()=> (window as any).b02.state.orders.find((o:any)=>o.orderNo===24).total)).toBe(125000);await expect(page.getByTestId('order-drawer')).toBeVisible();
+});
+
+test('authority gate keeps hidden order dialogs out of keyboard handling',async({page})=>{
+  await fixture(page);
+  await page.evaluate(()=> (window as any).b02.gate());
+  await expect(page.getByTestId('order-drawer')).toBeHidden();
+  await page.getByTestId('gate-retry').focus();
+  await page.keyboard.press('Tab');await expect(page.getByTestId('gate-next')).toBeFocused();
+  await page.keyboard.press('Escape');
+  expect(await page.evaluate(()=> (window as any).b02.store.getState().drawer)).toBe('order');
 });
 test('shared palette module update changes actual CSS controls and MUI popup together',async({page})=>{
   const palette=JSON.parse(await fs.readFile('ui-remake/palette-a-v1.json','utf8'));
