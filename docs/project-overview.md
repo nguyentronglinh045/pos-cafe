@@ -22,7 +22,7 @@ Source main có bốn vai trò bật: chủ quán (`owner`), quản lý (`manage
 | Kiểm chứng UI/local | Có build, unit, browser, smoke và audit theo candidate; [testing](testing.md) giữ nguồn và số liệu riêng |
 | Backend phân quyền | Có adapter/SQL candidate trên main; acceptance toàn backend còn DEFERRED/NOT_ACCEPTED, không nhận local mock thay thế |
 | Phát hành | Task chỉnh lý và đợt tích hợp UI không deploy, migration hay live activation. Không khẳng định main hiện là bản cửa hàng đang chạy |
-| Tài liệu | Đang chuẩn hóa nguồn tri thức trước refactor; WIP gốc được giữ riêng, chưa nhập hàng loạt |
+| Tài liệu | Core đã chỉnh lý; [spec/evidence WIP đã hòa giải](workflow/tasks/docs-wip-publication-2026-10-25.md), bản gốc giữ để chờ duyệt dọn. Baseline capability chưa apply đầy đủ; backend acceptance HOLD |
 
 ## Phạm vi chủ động giới hạn
 

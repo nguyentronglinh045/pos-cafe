@@ -1,7 +1,7 @@
 {
   "method": "Strict Markdown parser; secondary resolver strips historical :line and /D: or resolves unique same-name snapshot targets. Resolution is file existence only, never current line semantics/source equivalence. Original bytes retained. No HTTP crawl.",
   "markdown": 854,
-  "links": 7945,
+  "links": 7948,
   "strict_missing": 175,
   "anchors": 0,
   "source_pin_errors": 0,
@@ -1240,5 +1240,6 @@
       "classification": "line-reference",
       "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\references.md"
     }
-  ]
+  ],
+  "checkpoint": "After W1 correction, before final reviewer verdict; same 175 historical strict-parser issues."
 }

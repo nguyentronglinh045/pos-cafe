@@ -4693,5 +4693,14 @@
       "diagnostic": "new blank line at EOF.",
       "in_preserved_import": true
     }
-  ]
+  ],
+  "reviewDelta": {
+    "baseCandidate": "9f93b935b9624b794c748cc811a37e27e0b22a63",
+    "fix": "W1: overview/requirements WIP status; literal plus formatting; refreshed link-count metadata",
+    "markdownFiles": 854,
+    "linksChecked": 7948,
+    "anchors": 0,
+    "sourcePinErrors": 0,
+    "oldRawBlobDrift": 0
+  }
 }
