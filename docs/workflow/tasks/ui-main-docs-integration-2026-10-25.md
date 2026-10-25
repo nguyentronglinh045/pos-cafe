@@ -25,11 +25,15 @@ C đầu lượt trống 192.107.458.560 bytes; D 99.045.609.472 bytes. Dùng no
 
 ## Hòa giải và kiểm tra
 
-Đang thực hiện. B01/B02 có 8 file conflict: playwright config; OrderCartPane, OrderDrawer, OrderMenuPane; FloorWorkspace + test; LeftNav + test. Giữ theme/bố cục B01/B02 và ghép các bảo vệ quyền từ main, không đổi backend/migrations/financial protocol.
+B01/B02 đã hòa giải 8 file conflict: playwright config; OrderCartPane, OrderDrawer, OrderMenuPane; FloorWorkspace + test; LeftNav + test. Giữ theme/bố cục B01/B02 và ghép các bảo vệ quyền từ main, không đổi backend/migrations/financial protocol. Code merge candidate `76e974c5ff52c65baee5e15b4fc8d096801dc2b0`; PR11 head `b2ecad04294793c3884f1dfb192904dc72440709` bổ sung đúng một trusted hash cho smoke helper đã review.
 
-Các finding đang xử lý: display query phải dùng purpose display thay settings.manage; giữ pay-only routing cho bàn và thẻ đơn; bỏ response mở bàn sau session/permission change hoặc refetch error; CSS portrait không lấn hướng dẫn xoay; keyboard focus bỏ qua drawer bị authority gate ẩn. Harness UI chuyển sang candidate permission runtime, query keys hiện hành; hidden action và unavailable-menu filtering theo contract main, không phục hồi hành vi legacy để làm test xanh.
+Các finding B01/B02 đã đóng: display query dùng purpose display thay settings.manage; giữ pay-only routing cho bàn và thẻ đơn; bỏ response mở bàn sau session/permission change hoặc refetch error; CSS portrait không lấn hướng dẫn xoay; keyboard focus bỏ qua drawer bị authority gate ẩn. Harness UI chuyển sang candidate permission runtime, query keys hiện hành; hidden action và unavailable-menu filtering theo contract main, không phục hồi hành vi legacy để làm test xanh.
 
-Log local tại `D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/ui-integration-20261025/`. Source/evidence cuối, merge SHA và kết quả review sẽ ghi ở checkpoint cuối; các lần test trung gian không được gộp thành PASS candidate cuối.
+Build PASS; unit1198/112files PASS; một run browser52PASS trên source76e974c. Audit48/48 COMPLETE nhưng detector FAIL ở19 nhóm floor:6 error zero-size/empty-icon thuộc panel đóng display:none và13 warning/info clipping thuộc nhãn/duplicate visually-hidden. Cả hai reviewer đã xem ba ảnh annotated và phân loại false positive; không cập nhật baseline. [Review độc lập và delta hash](../../implementation-log/ui-main-docs-integration-review-2026-10-25.md).
+
+Hai run GitHub tự động40162525408/40162523116 ở76e974c FAIL vì trusted hash smoke helper cũ. Delta b2ecad0 đã được cả hai reviewer APPROVE;40163017450(pull_request)/40163012918(push) là run tự kích hoạt sau push, đang chờ kết quả ở checkpoint này. Không dispatch/rerun thủ công. Chưa merge PR11, chưa retarget PR13, chưa xóa source branch.
+
+Log local tại `D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/ui-integration-20261025/`. B01/B02 evidence đóng băng: `b01-b02-76e974c.log`, `b01-b02-unit-final.log`, `b01-b02-build-final.log`, `audit-76e974c/`. Source/evidence cuối của B03, merge SHA và kết quả review sẽ ghi ở checkpoint cuối; các lần test trung gian không được gộp thành PASS candidate cuối.
 
 Số 642/645 unit, 149/186 browser, fidelity ngày 22–24/10 và audit trong #12/#14 chỉ là lịch sử gắn source/ngày của tác giả. Hardware/tablet/phone thật, printer, browser zoom thật và Supabase/backend thật chưa kiểm trong lượt tích hợp. Không nâng trạng thái này thành đã nghiệm thu/phát hành sau merge.
 

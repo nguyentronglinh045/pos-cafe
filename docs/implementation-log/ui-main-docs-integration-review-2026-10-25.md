@@ -24,6 +24,12 @@ RI đối chiếu diff main→candidate, guards/query purposes/write paths và c
 | Hidden drawer bắt Tab/Escape phía sau authority gate | Bỏ root/controls aria-hidden/inert/visibility:hidden; browser authority-gate test PASS |
 | UI harness vẫn dùng legacy ports/permission/query keys | Chuyển candidate fixture và purpose keys; direct submitOrderAndPrint sau revoke trả FORBIDDEN, order không đổi |
 
-Run browser trung gian49PASS/3FAIL dùng nhầm ID manager để đăng nhập cashier; sửa helper sang cashier13, rerun3PASS đúng76e974c. Không cộng hai run thành một run52PASS. Run source đóng băng bổ sung và audit cuối ghi riêng tại handoff khi hoàn thành.
+Run browser trung gian49PASS/3FAIL dùng nhầm ID manager để đăng nhập cashier; sửa helper sang cashier13, rerun3PASS đúng76e974c. Không cộng hai run này. Sau đó chạy riêng một run đóng băng `b01-b02-76e974c.log`: **52 PASS**, source76e974c. Audit cùng source đủ48/48 COMPLETE,19 nhóm finding (detector FAIL), cả hai reviewer xem ảnh và phân loại false positive; không đổi baseline.
+
+### Delta hash kiểm chứng — b2ecad0
+
+PR11 head `b2ecad04294793c3884f1dfb192904dc72440709` chỉ sửa một trusted hash trong `ci/release-policy.json`, trỏ đúng byte của `tests/smoke/helpers.ts` đã được review tại76e974c. Hash mới `110b8b8327acf2198a324aea1adb292a4b84bab1cd45ae903359a9bce5a6577f`; cũ `b82ac51cd36395d757b8e2ce630558ec7ee0ac8922ca6b88e57e22a2e48c6ad5`. Helper vẫn đo geometry dương và fit hoặc overflow ngang có thật, không nới ngưỡng gate. R-UI và RI đều **APPROVE delta này**, tự đối chiếu đủ64 trusted files. Không đổi workflow, branch protection, baseline hoặc productionEnabled:false.
+
+Hai run tự động40162525408(pull_request) và40162523116(push) ở76e974c FAIL vì hash trên còn trỏ bản main cũ; build/unit1198/tooling567PASS,1defer trước lỗi node-tools. Sau pushb2ecad0, GitHub tự tạo40163017450(pull_request) và40163012918(push); chưa dispatch/rerun thủ công. Kết quả cuối và merge ghi trong handoff, không suy ra check PASS từ local tests.
 
 Docs checkpoint đã được cả hai reviewer đọc: diễn đạt đúng lệnh merge mới, CI tự kích hoạt so với thủ công, giữ backend/deploy holds và phân biệt evidence lịch sử. Docs cuối có kết quả merge/branch cleanup sẽ được review delta trước khi bàn giao hoàn tất. B03 chưa được duyệt trong biên bản B01/B02 này.
