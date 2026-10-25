@@ -4,7 +4,7 @@
 
 Chủ dự án giao: “tiếp tục xử lý phần spec/evidence WIP chưa xuất bản trong pos-cafe-docs, đối chiếu rồi đưa nội dung còn cần lên nhánh docs. phần nào nên bỏ thì liệt kê để tôi duyệt, chưa làm refactor.” Đây là task tài liệu, tiếp sau [chỉnh lý core](docs-normalization-2026-10-25.md). Xuất bản không cấp lại các quyền chạy/cleanup/deploy đã hết hạn trong hồ sơ lịch sử.
 
-Candidate đang kiểm và chờ hai review độc lập; chưa ghi nhận là đã xuất bản. Không sửa app/SQL vận hành, chạy backend/CI, refactor, cài môi trường hay xóa dữ liệu. Bản gốc WIP giữ nguyên.
+Hoàn tất hòa giải và kiểm tài liệu; hai reviewer độc lập đã APPROVE candidate `06b9a5091acdfa23b081d5c44bdf2aefafd4799b`. Gói được chốt để xuất bản bằng push fast-forward thông thường lên nhánh docs, không force hoặc rewrite history. Không sửa app/SQL vận hành, chạy backend/CI, refactor, cài môi trường hay xóa dữ liệu. Bản gốc WIP giữ nguyên.
 
 | Nguồn | Mốc khóa đầu lượt |
 | --- | --- |
@@ -94,3 +94,12 @@ Người dùng duyệt hay từ chối allowlist dọn bản lặp; nếu đư�
 | review_preservation | APPROVE scope provenance/privacy/retention/links/quyền. Tự kiểm1.456 nguồn,1.439 bản nhập/Git bytes,Stitch snapshot,877 cleanup candidates,62ảnh,8ZIP,149resolved context/26archive thiếu,776whitespace/73file nguồn. Tại freeze854MD/7947links; đề nghị cập nhật receipt cuối và sửa dấu+ thừa. Không bao phủ delta sửa sau9f93b935 |
 
 Delta vòng2 sửa W1 tại hai trang core, ghi rõ baseline capability chưa apply và backend HOLD; bỏ dấu+ thừa, cập nhật checkpoint7948links và metadata review. Không đổi requirement, raw evidence hoặc allowlist. W1 chờ reviewer xác nhận trên commit delta; không tự nhận đã đóng. Kiểm diff delta exit0.
+
+
+### Review cuối — candidate06b9a5091acdfa23b081d5c44bdf2aefafd4799b
+
+- **review_knowledge APPROVE** toàn scope nội dung/spec/quyết định/trạng thái. W1 đã đóng; overview/requirements phản ánh hồ sơ đã hòa giải, baseline capability còn thiếu và backend HOLD. Delta5files đúng phạm vi; không đổi76banner/nguồn/expected/verdict. Không còn finding chặn.
+- **review_preservation APPROVE** toàn scope provenance/privacy/retention/liên kết/quyền. Tái kiểm854Markdown/7948links,0anchor/source-pin/raw-drift; các giới hạn lịch sử giữ nguyên, diff delta exit0 và candidate sạch. Imports/allowlist/source gốc không đổi.
+- Điều phối kiểm trước xuất bản: remote docs vẫn4e70d0c/main711a22e;1.456 nguồn giữ hash. Worktree docs gốc vẫn0fe967d,39trackedchanges/920untracked; code gốc vẫn5156820,124/429; code đối chiếu711a22e sạch. Không ghi vào các worktree gốc.
+- Dung lượng cuối kiểm trước push: C192.731.144.192 bytes, D98.672.111.616 bytes trống; không cài runtime hoặc xóa dữ liệu. Biến động dung lượng hệ thống không là phép đo riêng lượng dữ liệu do task tạo hay thu hồi.
+- Receipt này chỉ ghi status/verdict/checkpoint sau candidate đã review, không đổi nội dung nghiệm thu, raw evidence hoặc danh sách dọn. Hai approval không cấp quyền cleanup, refactor, DB/deploy hoặc nhận full backend PASS. Walkthrough tài liệu đã có đường đọc; chủ dự án chưa xác nhận đã đọc/nghiệm thu.
