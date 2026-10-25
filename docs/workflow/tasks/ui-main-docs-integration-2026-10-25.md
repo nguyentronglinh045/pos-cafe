@@ -11,7 +11,7 @@ Phần này là trạng thái mới nhất. Các checkpoint phía dưới giữ 
 | #13 B03 | Head `7e75dd809b2c21baa9d5b4eaafd11c91bd1c0e86`, tree `c2717098bb6a145c7a2da4b1d957ec9442ffa3bb`, cả hai reviewer APPROVE; base còn nhánh #11 |
 | #14 docs B03 | Đã hòa giải, review checkpoint và cập nhật evidence; chờ merge sau #13 |
 | Audit B01/B02 mới nhất | da743bd:48/48 COMPLETE,0findings,sourcepreserved; strict `uiCounts` PASS48/0fail/0skip, không đổi baseline |
-| Audit B03 mới nhất | 7e75dd8 đang chạy; không nhận audit source khác thành PASS source này |
+| Audit B03 mới nhất | 7e75dd8:48/48 COMPLETE,0findings,sourcepreserved; strict `uiCounts` PASS48/0fail/0skip, không đổi baseline |
 | CI tự kích hoạt trên #11 |40164686981(pull_request)/40164683402(push), chờ kết quả. Không dispatch/rerun thủ công |
 | Branch cleanup | Chưa xóa vì chưa merge; chỉ xóa bốn source branches sau khi kiểm merged/reachable/không WIP hoặc checked-out |
 | Deploy/backend | Không deploy, migration, live activation; không mở lại acceptance backend/toàn hệ thống |
