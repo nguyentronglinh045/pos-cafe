@@ -8,15 +8,17 @@ Phần này là trạng thái mới nhất. Các checkpoint phía dưới giữ 
 | --- | --- |
 | #11 B01/B02 | MERGED vào main `3cd71116fa3d70301a08e9e5f3521b31659cadc3` lúc05:29:21UTC; head da743bd đã được cả hai reviewer APPROVE và required checks PASS |
 | #12 docs B01/B02 | MERGED vào docs `6196ed73615f3a18d71fe57ec3a7f5df7a598b24` lúc05:29:24UTC; head b688366 chứa đúng các file handoff/review đã duyệt |
-| #13 B03 | Retarget main; head `cf8e304869ad0e92c491736790f59bff1b6f9dcc`, tree `395953d26e9702e307c49ed62a3a7773575be00d`, cả hai reviewer APPROVE; chờ required checks |
-| #14 docs B03 | Đã hòa giải, review checkpoint và cập nhật evidence; chờ merge sau #13 |
+| #13 B03 | MERGED vào main `711a22e71983e3d6aa17799649af05ce4c762555` lúc05:57:39UTC; head `cf8e304869ad0e92c491736790f59bff1b6f9dcc` đã được cả hai reviewer APPROVE, required checks PASS. Merge tree `395953d26e9702e307c49ed62a3a7773575be00d` bằng đúng candidate |
+| #14 docs B03 | MERGED vào docs `8114a25f5b95625d8907b570820b38afef58a152` lúc05:57:45UTC; cả hai reviewer APPROVE head `a8e2447d9eae81a815dd7151de97bb7607ece5a4`; merge tree bằng candidate. Receipt hậu merge được bổ sung trên docs sau mốc này |
 | Audit B01/B02 mới nhất | da743bd:48/48 COMPLETE,0findings,sourcepreserved; strict `uiCounts` PASS48/0fail/0skip, không đổi baseline |
 | Audit B03 mới nhất | cf8e304:48/48 COMPLETE,0findings, source trước/sau giữ nguyên; strict `uiCounts` PASS48/0fail/0skip. Snapshot `audit-cf8e304/` chỉ chứa report/status của lượt mới |
-| CI tự kích hoạt | #11:40164686981(pull_request)/40164683402(push) SUCCESS. #13:40166453117(pull_request)/40166451739(push) đang chạy trên cf8e304. Không dispatch/rerun thủ công |
-| Branch cleanup | Đã xóa local+remote `ui/week03-b01-b02-20261024` và `ui-week03-b01-b02-docs-20261024` sau kiểm merged/reachable/SHA/không checked-out. Hai nhánh B03 giữ chờ merge; thư mục worktree giữ nguyên |
+| CI tự kích hoạt | #11:40164686981(pull_request)/40164683402(push) SUCCESS. #13:40166453117(pull_request)/40166451739(push) SUCCESS trước merge. Không dispatch/rerun thủ công; không nhận đây là kết quả run trên SHA merge mới |
+| Branch cleanup | Đã xóa cả local+remote bốn nhánh: `ui/week03-b01-b02-20261024`, `ui-week03-b01-b02-docs-20261024`, `ui/week03-b03-20261024`, `ui-week03-b03-docs-20261024`. Kiểm merged/reachable, SHA, checkout sạch và không checked-out; xác minh refs đều vắng. Thư mục worktree giữ nguyên |
 | Deploy/backend | Không deploy, migration, live activation; không mở lại acceptance backend/toàn hệ thống |
 
 Phần ứng dụng B01/B02 của da743bd giống source76e974c đã build/unit1198/browser52PASS. B03 từng giữ app tree qua7e75dd8/0febe55; delta cf8e304 sửa toast và chờ dữ liệu trong test nên đã chạy lại riêng **buildPASS,1201unit/113filesPASS,26browserPASS,fullsmoke44PASS/37skip**, policy2PASS. Strict smoke normalizer dùng cùng report: map cũ bị bác, map mới PASS81; chỉ cập nhật bốn định danh, giữ37skips. Detector cuối có24tooltests PASS, selftest23findings/14rules/16controls PASS và64/64canonicalpins khớp. [Biên bản review](../../implementation-log/ui-main-docs-integration-review-2026-10-25.md).
+
+CI #13 pull_request PASS trên synthetic source `aadae07397db20012d9786141ec71f2195081831`, prHead cf8e304; push PASS trên cf8e304. Log `auto-pr13-cf8e304-success.log` và `auto-push13-cf8e304-success.log` được giữ cùng evidence local. Main merge711a22e có cùng tree với candidate; đây là kiểm tree-equivalence, không phải một lần chạy test mới. Hai checkout làm việc đang detached tại main711a22e và docs8114a25 trước commit receipt này; nhánh gốc `fix/operator-indexeddb-evidence-20261022` vẫn giữ a028cc5. Server kiểm thử5178/5191 đã dừng. Checkpoint dung lượng: C192.693.071.872 bytes, D98.739.699.712 bytes trống; không cài thêm môi trường hoặc xóa thư mục worktree.
 
 CI #11 pull_request đã PASS trên synthetic source `dc1b65a3de6264f56bf0314efd3df032db3aa66e` (prHead da743bd), run push PASS trên chính da743bd. Sau merge #11, PR13 nhận main qua0febe55, tree bằng7e75dd8, cả hai reviewer APPROVE metadata merge. Run B03 cũ40164942919/40164939422 ở7e75dd8 có smoke exit0,44pass/37skip nhưng normalizer FAIL do map còn line489/title cũ; bốn key được đổi sang test462/title hiện hữu, không thêm skip. Full local69c516c phát hiện41pass/37skip/3fail: hai eager-count nhân viên và toast chào mừng che nút thanh toán (hover giữ toast). Candidatecf8e304 cho assertion poll cùng điều kiện>3 và toast thông báo pointer-events:none; giữ aria/status/nội dung/thời lượng, không đổi permission/write/receipt. Regression toast luôn hiển thị RED→GREEN ở ba viewport; run cuối cf8e30444pass/37skip. Các FAIL cũ được giữ riêng, không cộng vào PASS cuối.
 
@@ -109,13 +111,14 @@ Recipe smoke source80aa5a: `node node_modules/@playwright/test/cli.js test --pro
 
 ## Dependency và tiếp tục
 
-NC-UI đang thực hiện theo thứ tự #11+#12 rồi #13+#14. NC-00 chỉ chốt nguồn/bảo toàn cho phạm vi UI; NC-10 cập nhật theo từng cặp. NC-01 CI diagnosis chưa tự đóng bằng test mock local; NC-02/03 phải rebind theo main cuối. NC-04…08/11 và các backend hold chưa được mở. Sau merge, xóa đúng remote source branches và local source branches khi merged/reachable, không checked out, không WIP/commit riêng; không xóa thư mục để ép xóa branch.
+NC-UI đã hoàn tất review/hòa giải/merge #11+#12 rồi #13+#14 và xóa bốn source branches local+remote. NC-00 chỉ chốt nguồn/bảo toàn cho phạm vi UI; NC-10 đã cập nhật hồ sơ UI, chưa đóng toàn chương trình chuẩn hóa. NC-01 diagnosis rộng và NC-11 nghiệm thu toàn hệ thống không tự đóng vì các check của PR đã xanh; NC-02/03 phải rebind theo main711a22e. NC-04…08/11 và các backend hold chưa được mở. Hai cache đã được phép dọn vẫn còn do bộ duyệt tự động từ chối; việc này được ghi riêng, không gọi là cleanup thành công.
 
 Walkthrough code/test: chưa thực hiện cùng chủ dự án; bàn giao sẽ chỉ các điểm đọc chính, không coi đã được người dùng nghiệm thu.
 
-Điểm đọc cho walkthrough trên source6f22106:
+Điểm đọc cho walkthrough trên main711a22e:
 
-- [FloorWorkspace: routing theo quyền và response lifetime](https://github.com/nguyentronglinh045/pos-cafe/blob/6f2210663cdde35952747ad1e1a2af45e1231be3/src/app/shell/FloorWorkspace.tsx#L64).
-- [PaymentDrawer: capture lifetime và initial receipt grant](https://github.com/nguyentronglinh045/pos-cafe/blob/6f2210663cdde35952747ad1e1a2af45e1231be3/src/app/drawers/pos/PaymentDrawer.tsx#L176).
-- [ReceiptPreview: presence, eligibility và print controller](https://github.com/nguyentronglinh045/pos-cafe/blob/6f2210663cdde35952747ad1e1a2af45e1231be3/src/app/components/ReceiptPreview.tsx#L278).
+- [FloorWorkspace: routing theo quyền và response lifetime](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/shell/FloorWorkspace.tsx#L64).
+- [PaymentDrawer: capture lifetime và initial receipt grant](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/drawers/pos/PaymentDrawer.tsx#L176).
+- [ReceiptPreview: presence, eligibility và print controller](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/components/ReceiptPreview.tsx#L278).
+- [AppProviders: toast thông báo không chặn thao tác](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/AppProviders.tsx#L54).
 - Browser regression: `tests/ui-remake/b03/payment.spec.ts`; luồng liên màn: `tests/ui-remake/integration/journey.spec.ts`. Lệnh ở log/evidence được chạy với mock, không là kịch bản nghiệm thu backend.

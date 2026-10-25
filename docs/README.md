@@ -68,6 +68,6 @@ Phase log cũ có thể chứa test/gap đúng tại thời điểm đó nhưng 
 
 ## Tuần3 — B01/B02 candidate
 
-Cập nhật25/10: [tích hợp UI vào main/docs](workflow/tasks/ui-main-docs-integration-2026-10-25.md) đang thực hiện theo lệnh mới; source/check/merge status lấy ở handoff này. Các số liệu dưới đây giữ nguyên theo nguồn ngày24/10.
+Cập nhật25/10: [tích hợp UI vào main/docs](workflow/tasks/ui-main-docs-integration-2026-10-25.md) đã hoàn tất bốn PR và xóa bốn source branches local+remote; main711a22e là nguồn code mới. Source/check/review/giới hạn lấy ở handoff này. Các số liệu dưới đây giữ nguyên theo nguồn ngày24/10.
 
 [Biên bản và giới hạn](workflow/tasks/week03-b01-b02-final.md),[spec](../openspec/changes/week03-b01-b02/proposal.md). Chỉ B01/B02,chưa merge/deploy; manualmáythậtNOT_RUN,draftPR.

@@ -169,6 +169,6 @@ Danh sách này mô tả các màn/drawer hiện có theo contract: màn làm g�
 
 ## Tuần3 candidate B01/B02
 
-Cập nhật25/10: [tích hợp UI vào main/docs](workflow/tasks/ui-main-docs-integration-2026-10-25.md) đang thực hiện theo lệnh mới; source/check/merge status lấy ở handoff này. Các số liệu dưới đây giữ nguyên theo nguồn ngày24/10.
+Cập nhật25/10: [tích hợp UI vào main/docs](workflow/tasks/ui-main-docs-integration-2026-10-25.md) đã hoàn tất bốn PR và xóa bốn source branches local+remote; main711a22e là nguồn code mới. Source/check/review/giới hạn lấy ở handoff này. Các số liệu dưới đây giữ nguyên theo nguồn ngày24/10.
 
 B01dãylầucuộnngang và B02menu/giỏhàng theo approvedreferences; [nguồn/kiểm chứng/giới hạn](workflow/tasks/week03-b01-b02-final.md). B03remakekhôngnằmtrongPRnày.

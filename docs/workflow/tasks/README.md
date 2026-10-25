@@ -1,7 +1,7 @@
 # Chỉ mục bàn giao workflow
 
-- [Tích hợp UI B01–B03 vào main/docs, branch cleanup — 25/10/2026](ui-main-docs-integration-2026-10-25.md) — đang thực hiện; CI không chủ động, deployment/backend hold giữ nguyên.
-- [Kế hoạch chuẩn hóa sau tích hợp — nguồn UI đang được cập nhật](post-integration-standardization-plan-2026-10-25.md).
+- [Tích hợp UI B01–B03 vào main/docs, branch cleanup — 25/10/2026](ui-main-docs-integration-2026-10-25.md) — đã merge đủ bốn PR và xóa bốn source branches local+remote; deployment/backend hold giữ nguyên. Hai cache còn do bộ duyệt tự động từ chối xóa.
+- [Kế hoạch chuẩn hóa sau tích hợp — rebind theo main711a22e](post-integration-standardization-plan-2026-10-25.md).
 
 - [D7 — CI bộ đo và publish audit](ui-validation-ci-audit-2026-10-19.md): publish công cụ trên main, thêm CI calibration; pilot remake màn thật để task khác.
 

@@ -6,6 +6,8 @@ Chủ dự án đã giao phiên mới **merge UI vào main và docs, xử lý h�
 
 Dependency đang áp dụng: NC-00 bảo toàn nguồn UI → NC-UI-B (#11/#12) → NC-UI-C/D (#13/#14, retarget main) → chốt SHA nguồn mới cho NC-02/03/10. Không yêu cầu chủ động CI trước merge; kiểm protection và các check tự kích hoạt, không bypass. Review độc lập và kiểm local mục tiêu vẫn áp dụng. NC-01 CI diagnosis và NC-11 nghiệm thu toàn hệ thống vẫn chưa hoàn tất chỉ vì merge UI.
 
+**Kết quả NC-UI ngày25/10:** đã hòa giải, được hai reviewer độc lập APPROVE, merge đủ #11/#12/#13/#14 và xóa đúng bốn source branches local+remote. Nguồn code để NC-02/03 đọc lại là main `711a22e71983e3d6aa17799649af05ce4c762555`; docs B03 merge `8114a25f5b95625d8907b570820b38afef58a152`, receipt tiếp tục trên docs. NC-00/10 chỉ được hoàn tất trong phạm vi bảo toàn và hồ sơ UI này; các task rộng hơn và backend/deploy holds giữ nguyên. Required checks của PR tự chạy và PASS, không dispatch/rerun thủ công. Hai cache watcher được phép dọn nhưng còn nguyên do bộ duyệt tự động từ chối; chưa thực hiện NC-09 dọn worktree. Các mục “chưa thực hiện” bên dưới là lịch sử kế hoạch trước quyền triển khai NC-UI.
+
 ## Đề bài, quyền và trạng thái — lịch sử phiên lập kế hoạch
 
 - Chủ dự án yêu cầu rà cấu trúc/nghiệp vụ, chuẩn hóa UI–nghiệp vụ–dữ liệu, tinh gọn thành phần hết dùng nhưng giữ minh chứng, hồi quy gọi món/thanh toán/phân quyền, đồng bộ nhánh `docs`, và dọn worktree liên quan trong `D:/Workspace`.

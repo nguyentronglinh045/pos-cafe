@@ -2,6 +2,12 @@
 
 Phạm vi/quyền: [handoff](../workflow/tasks/ui-main-docs-integration-2026-10-25.md). Hai reviewer không tham gia sửa candidate; chỉ đọc và chạy kiểm mục tiêu, không deploy/backend.
 
+## Kết quả merge và bàn giao
+
+Cả R-UI và RI **APPROVE docs `a8e2447d9eae81a815dd7151de97bb7607ece5a4`**, xác minh audit cuối cf8e30448/48,0findings,source preserved và strict PASS48; kiểm đúng merge/cleanup cặp đầu và attribution các FAIL lịch sử. Code cf8e304 đã được cả hai APPROVE ở biên bản bên dưới.
+
+Sau cả hai required checks40166453117/40166451739 SUCCESS, #13 merge vào main711a22e lúc05:57:39UTC; #14 merge vào docs8114a25 lúc05:57:45UTC. Tree main/docs merge bằng candidate tương ứng cf8e304/a8e2447. Đã kiểm ancestry/SHA/checkout sạch, detach hai checkout rồi xóa local+remote hai nhánh B03; cùng hai nhánh B01/B02 trước đó, cả bốn refs đều vắng. Không xóa worktree hoặc thay WIP gốc. Receipt này chỉ cập nhật metadata thao tác đã xảy ra; không thêm application changes, tests hay acceptance.
+
 ## B01/B02 — candidate 76e974c
 
 Code `76e974c5ff52c65baee5e15b4fc8d096801dc2b0`; tree `f55df173fa28ad990a7fe7a17d1b2ed71768ad71`; parents #11 `bbd5be7` và main `0dd63ea`. Verdict giới hạn tích hợp #11/#12, không xác nhận fidelity, phần cứng, backend/live hoặc toàn hệ thống.
