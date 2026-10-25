@@ -77,3 +77,10 @@ Q05–Q06 còn mở ở phần lịch sử, không chặn ghi nhận động cơ
 ### Đợt ghi nhận Q04–Q06
 
 Đồng bộ động cơ lựa chọn vào tech-stack và architecture; cập nhật trạng thái câu hỏi, chỉ mục và nguồn học thuật đã đọc đúng phần liên quan. Giữ ký ức về DDD/chi phí code với mức xác minh riêng, không tự đóng các mục P0 hoặc mở refactor. Checklist chỉ bổ sung tiến độ local. Đợt này chỉ kiểm nội dung và liên kết, không chạy ứng dụng/backend.
+
+### Review đợt Q04–Q06
+
+- Reviewer độc lập `/root/review_preservation`: **APPROVE** docs candidate `04f67d957f7f4ccdee146db34c2139f17ab5b0cc` và checklist local candidate SHA256 `d5810c048b5ea6a3448de2b1217998caba5e30d7de8b454aad96ae5b8a5d24b7`; không có finding chặn hoặc không chặn.
+- Đã đối chiếu câu trả lời, commit lịch sử `7413fc4`, tìm kiếm Git, bài Cockburn và phần Architecture trang xxxviii của bản mẫu Vernon. Q04 được ghi đúng; Q05–Q06 còn giới hạn xác minh, Q07–Q09 vẫn mở; không suy quyết định loại DDD, chấp nhận toàn bộ đánh đổi hoặc đổi DB thành công.
+- Kiểm tác giả: `git diff --check` đạt; 44 liên kết tương đối trong 5 file sửa không có lỗi path/anchor. Reviewer kiểm lại diff và link/anchor, không có lỗi. Không chạy ứng dụng/backend.
+- Sau APPROVE chỉ bổ sung metadata review này và metadata tương ứng vào checklist. Lượt này lưu trên docs local, chưa push; checklist ngoài repository, các mục P0 chưa được tích hoàn tất.
