@@ -1,0 +1,19 @@
+{
+  "observedAtUtc": "2026-10-22T09:18:15.8771048+00:00",
+  "status": "APPROVED_PROVIDER_ONLY",
+  "observationSha256": "3ff90ea220d35841d478f9e407fbd803a133051c74e77b16606874612e44d6a0",
+  "allowlistSha256": "d997fe5e4c9522e1a7df4815211c994f3deb8735a0db7c82f04f5a79813d460e",
+  "scope": {
+    "verdict": "APPROVE",
+    "limitation": "Existing public default ACL Dxtm is baseline only; exact bootstrap must retain full postflight raw privileges and PG17 MAINTAIN checks.",
+    "checks": "Raw/observation/catalog equality; validateObservation PASS; three provider role/preload/pending-restart negative controls refused.",
+    "reviewer": "/root/mcp_staging_scope_review"
+  },
+  "operations": {
+    "verdict": "APPROVE",
+    "limitation": "SELECT role/timeout observations do not independently prove apply_migration behavior. Exact bundle/transport still require two-scope review.",
+    "checks": "Native raw receipt matched original actual tool output call_0185461f1fc14717813618c9ca7bd5d8; query hash verified before execute; actual observation/exact allowlist; correct effective staging configuration, 6 tools, original profiles disabled.",
+    "reviewer": "/root/mcp_staging_evidence_review"
+  },
+  "databaseMutationApproved": false
+}

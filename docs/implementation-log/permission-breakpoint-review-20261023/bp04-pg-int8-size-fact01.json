@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "permission-bp4-package-archive-fact-v1",
+  "package": "pg-int8",
+  "version": "1.0.1",
+  "source": "https://registry.npmjs.org/pg-int8/-/pg-int8-1.0.1.tgz",
+  "observedAtUTC": "2026-10-23T03:20:57.796Z",
+  "compressedBytes": 1508,
+  "tarBytes": 7168,
+  "entries": 4,
+  "regularFiles": 4,
+  "regularFileBytes": 3186,
+  "integrityMatched": true,
+  "downloadCapBytes": 65536,
+  "expandedCapBytes": 1048576,
+  "storage": "RAM_ONLY",
+  "installed": false
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "pos-predeploy-readonly-index-v1",
+  "recordedUtc": "2026-10-23T15:54:11.643Z",
+  "candidateSHA": "eac4359d28b20b52309c20af7aa272362043c6c0",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "mcp": {
+    "file": "supabase-mcp-predeploy01.json",
+    "sha256": "aa07235b36bc46819c2959011bfacde435213170a6e9a6d86871a5920617b4eb",
+    "scope": "Pinned newDB/read-only; metadata only. RPC lacked MCP-role EXECUTE; no escalation or mutation."
+  },
+  "publicClient": {
+    "file": "public-readiness01.json",
+    "sha256": "6e8338b6aa326c47daeab6d1f950daca0d378b70e9bbf35c787f4dc595b123a6",
+    "status": "PASS",
+    "scope": "GET settings and immutable RPC POST with public key; no session/business writes."
+  },
+  "edgeFunctions": "Not measured by current MCP capability; prior deployed functions remain separate existing evidence, not re-labelled fresh.",
+  "deployment": "NOT_RUN",
+  "applicationSmoke": "NOT_RUN"
+}

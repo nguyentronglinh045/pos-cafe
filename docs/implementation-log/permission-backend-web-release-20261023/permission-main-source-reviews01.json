@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "permission-main-source-reviews-v1",
+  "date": "2026-10-24",
+  "scope": "Code integration under owner decision M24; no rollout or full backend acceptance",
+  "baseSHA": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "candidateSHA": "a028cc5b07bf3a02e3b837d8aec2b832325503a2",
+  "candidateTreeSHA": "12e8e64bd3df60ee3b1be55ec42f3cd5de35b746",
+  "changedPaths": 703,
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "paths": 224,
+      "scope": "126 production/data src paths, 83 src test paths, 15 Supabase paths",
+      "inventorySHA256": "ee8d080a5a2e43a59eabe5545509cc9967df0889a3197c5a06cbcd5e00c7984b",
+      "support": "Independent /root/final_diagnostic_review/test_surface_audit read all83 src tests and explicitly approved",
+      "findingClosed": "Authority wait could outlive initiating drawer/session and register a new financial write; generation guard now spans authority await, 12 RED controls then56 focused PASS",
+      "rebind": "All224 paths byte-identical from approved3476d145 to a028cc5b"
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "paths": 479,
+      "scope": ".github3, ci3, scripts281, tests137, ui-audit6, operator1, root48; includes all changed files outside src/Supabase",
+      "support": "Independent test/config surface audit182paths and39 full/proof/runtime model modules",
+      "findingClosed": "Generic legacy glob admitted21 permission/PIN suites; explicit9 legacy files with actual discovery and all dedicated permission/PIN routes preserved",
+      "rebind": "Only permissionVerify.tool.test.ts changed from3476d145; actual discovery assertion approved at canonical SHA2562abafdc3d6e67a7c3390e3c2d4fa6fee3e89151f1582e65a2095b59bb4290afb",
+      "collector": "Exact integration branch binding with19 offline controls approved; ordered parents, identical tree and source/workflow/run bindings retained"
+    }
+  ],
+  "allAssignedSourceScopesApproved": true,
+  "remainingBeforeMerge": ["Fresh required PR CI", "Actual PR CI/PIN photo evidence review"],
+  "remainingAfterMerge": ["Fresh main CI", "Final source and deployment hold readback"],
+  "deferred": ["T04 timing/browser-worker", "Remaining full backend profiles and supplemental obligations", "Inherited EmployeesDrawer dirty-close confirmation gap", "HP1 runtime"],
+  "noDeploy": true,
+  "noLiveDbMutation": true
+}

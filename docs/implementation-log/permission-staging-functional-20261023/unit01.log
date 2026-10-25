@@ -1,0 +1,53 @@
+
+> pos-cafe@0.1.0 test:coverage
+> vitest run --coverage --config vitest.config.ts --maxWorkers=1 --no-file-parallelism --retry=0 --reporter=json --outputFile=D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-functional-20261023/unit01.json --coverage.reportsDirectory=D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-functional-20261023/coverage01
+
+JSON report written to D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-functional-20261023/unit01.json
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   88.98 |     84.3 |   92.73 |   92.65 |                   
+ core              |   94.03 |    88.26 |   94.56 |   97.99 |                   
+  guards.ts        |   95.45 |     87.5 |     100 |   95.45 | 46                
+  money.ts         |    87.5 |       50 |     100 |    87.5 | 17                
+  orderDraft.ts    |   97.29 |    92.59 |     100 |     100 | 28,78             
+  ...nAuthority.ts |   96.29 |    96.96 |     100 |     100 | 12                
+  ...ionCatalog.ts |   97.72 |    98.11 |     100 |   96.77 | 25                
+  ...ngesInputs.ts |      80 |       65 |   76.74 |   93.33 | 81-83             
+  ...sionInputs.ts |   98.63 |    96.87 |     100 |   98.11 | 75                
+  ...nLifecycle.ts |   88.65 |    86.73 |     100 |    96.7 | 100,107,157       
+  ...nOverrides.ts |     100 |    98.11 |     100 |     100 | 35                
+  ...PrintClick.ts |   95.12 |    84.21 |     100 |     100 | 27,33             
+  writePayload.ts  |     100 |    99.15 |     100 |     100 | 11                
+ features/admin    |   78.57 |    74.65 |   89.77 |   83.16 |                   
+  adminFlow.ts     |   84.44 |    93.54 |    92.3 |   83.33 | 173-182           
+  draftUtils.ts    |   90.47 |     87.5 |     100 |   86.66 | 6-7               
+  ...DrawerFlow.ts |   94.59 |    70.27 |     100 |   93.75 | 85,108            
+  ...ditorDraft.ts |   76.92 |    70.11 |   66.66 |   85.71 | 61-66,90-93,96-97 
+  ...ditorDraft.ts |    68.8 |    64.44 |     100 |      80 | ...46-154,157-158 
+  ...ImageDraft.ts |    87.5 |    66.66 |     100 |   86.66 | 12,25             
+  ...eSaveDraft.ts |       0 |        0 |       0 |       0 | 8-44              
+  ...ployeeFlow.ts |   98.07 |    93.61 |     100 |   97.67 | 128               
+  ...ImageDraft.ts |   74.07 |       80 |   85.71 |   82.35 | 18,28-29          
+  reportHelpers.ts |      95 |    86.36 |      90 |   94.44 | 44                
+ ...es/integration |     100 |     97.5 |     100 |     100 |                   
+  uiError.ts       |     100 |    97.05 |     100 |     100 | 168               
+ features/pos      |   90.54 |    82.63 |   92.42 |   94.66 |                   
+  ...oryHelpers.ts |   89.65 |    74.35 |   88.23 |   95.74 | 54,99             
+  orderFlow.ts     |    92.7 |    87.34 |   92.59 |   96.45 | ...39,260-261,363 
+  ...validation.ts |      60 |       50 |   33.33 |      60 | 24-25,29-30       
+  ...rationFlow.ts |   90.14 |    78.65 |     100 |   95.09 | 83-84,165-167     
+ features/session  |   94.11 |    83.33 |     100 |     100 |                   
+  sessionFlow.ts   |   94.11 |    83.33 |     100 |     100 | 76-77             
+ features/shared   |   90.74 |    92.45 |    86.2 |   91.89 |                   
+  ...ionSession.ts |      94 |    96.07 |    92.3 |   96.96 | 41                
+  queryKeys.ts     |      50 |        0 |   33.33 |      50 | 18-19             
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 88.98% ( 1576/1771 )
+Branches     : 84.3% ( 1284/1523 )
+Functions    : 92.73% ( 421/454 )
+Lines        : 92.65% ( 1198/1293 )
+================================================================================

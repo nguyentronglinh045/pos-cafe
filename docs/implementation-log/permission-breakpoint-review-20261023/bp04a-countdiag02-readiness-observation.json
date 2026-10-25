@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "permission-bp4a-countdiag-readiness-v1",
+  "observedAtUtc": "2026-10-23T06:57:58.1444841Z",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "sourceStatus": [],
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "grantSHA256": "742173b8a5372cbf46e908df6cc0ea23d4eb476ba9601d01eb0a42103238e04b",
+  "rootBytes": 51644151,
+  "newGeneratedBytes": 335021,
+  "retainedBytes": 333533353,
+  "retainedRoots": [
+    "D:/Workspace/pos-cafe-permission-run-20261020",
+    "D:/Workspace/pos-cafe/.git",
+    "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022"
+  ],
+  "diagnosticLocalBytes": 37089,
+  "volumes": [
+    {
+      "DriveLetter": "D",
+      "SizeRemaining": 98504617984
+    },
+    {
+      "DriveLetter": "C",
+      "SizeRemaining": 193668718592
+    }
+  ],
+  "activeTaskRunners": [],
+  "oldLedgers": {
+    "budget-phase03-close.json": "0eb116c8b4016d54d0b0d90474545bd8012625bdcb0d924e1aca22e3754ce05b",
+    "budget-phase03-negative-controls.json": "ae2a8c9f1380400fba90c2b17c656a8ffe630b71fdd841679a986606f9abeb04",
+    "budget-phase03.json": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+    "budget-phase03.json.anchor.json": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f",
+    "budget-phase03.json.head.json": "adfec165ec85f3d4fd9f69db229249ba743845a5561799f295ae8590a5f6e527",
+    "budget-phase03.json.journal.jsonl": "5390f85e8fb7c01d6a037724ba1f8c2b00a8666ed5603094a3bbeb876ffbb694"
+  },
+  "linksNotFollowedAndNotAdmission": true,
+  "scope": "Snapshot only; binding syntax checked, reused11fake controls prove unchanged logic only"
+}

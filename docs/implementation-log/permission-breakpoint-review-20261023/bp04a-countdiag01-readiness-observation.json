@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "permission-bp4a-countdiag-readiness-v1",
+  "observedAtUtc": "2026-10-23T06:43:34.5939914Z",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "sourceStatus": [],
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "grantSHA256": "8f652460f65b6da51e13c58c7b98d05c6de88951936a0e1afa48d9da92308f95",
+  "rootBytes": 51609345,
+  "newGeneratedBytes": 300215,
+  "retainedRoots": [
+    "D:/Workspace/pos-cafe-permission-run-20261020",
+    "D:/Workspace/pos-cafe/.git",
+    "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022"
+  ],
+  "retainedBytes": 333481233,
+  "volumes": [
+    {
+      "DriveLetter": "D",
+      "SizeRemaining": 98505093120
+    },
+    {
+      "DriveLetter": "C",
+      "SizeRemaining": 193691303936
+    }
+  ],
+  "activeTaskRunners": [],
+  "linksNotFollowedAndNotAdmission": true,
+  "scope": "Read-only snapshot, not OS quota/exclusion lock"
+}

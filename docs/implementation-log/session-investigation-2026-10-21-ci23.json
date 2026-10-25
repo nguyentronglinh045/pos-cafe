@@ -1,0 +1,382 @@
+{
+  "observedAt": "2026-10-21",
+  "repo": "nguyentronglinh045/pos-cafe",
+  "runId": 39479038742,
+  "jobId": 118822469129,
+  "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39479038742",
+  "sourceSHA": "31693d704fc3a7341d15e2843d4d12220883577a",
+  "job": {
+    "id": 118822469129,
+    "name": "Build, unit, tooling and mock UI",
+    "status": "completed",
+    "conclusion": "success",
+    "run_id": 39479038742,
+    "logs_url": null,
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1
+      },
+      {
+        "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2
+      },
+      {
+        "name": "Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3
+      },
+      {
+        "name": "Run bounded CI and publish safe summary",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4
+      },
+      {
+        "name": "Validate only the three safe synthetic PIN photos after unit release",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5
+      },
+      {
+        "name": "Retain only reviewed allowlist for PIN visual classification",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6
+      },
+      {
+        "name": "Post Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 11
+      },
+      {
+        "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 12
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 13
+      }
+    ]
+  },
+  "native": {
+    "schemaVersion": "permission-pg16-runtime-v1",
+    "scope": "NATIVE_PG16_T01_ONLY",
+    "status": "PASS",
+    "failure": null,
+    "stage": {
+      "stage": "legacy-t01-database",
+      "status": "PASS",
+      "required": 30,
+      "discovered": 30,
+      "run": 30,
+      "pass": 30,
+      "fail": 0,
+      "skip": 0,
+      "retry": 0,
+      "reportSHA": "8f0d7d5aae66937032d45fb23d6d6c35d1b10df7e9ab4c0f0eb0cc2fda1e4397",
+      "sourceSHA": "31693d704fc3a7341d15e2843d4d12220883577a",
+      "invocationSHA": "5f30c05e739afde76a2265db88b23933c3d796002dcae9a09a231c27706f79c7",
+      "supplementalOracles": "NOT_PROVEN_BY_STAGE_COUNTS"
+    },
+    "physicalSHA": "1c94d973c8959ad2948e2e6ad32d7429d3a786cac40a3972ca3cd9519a136f20",
+    "cleanup": {
+      "rootRemoved": true,
+      "processReleased": true,
+      "allocatedBeforeBytes": 50741248,
+      "measuredFreeDeltaBytes": 50741248
+    },
+    "full35BusinessRuntime": "NOT_RUN",
+    "remainingBusinessStages": 34,
+    "supplementalOracles": "NOT_PROVEN_BY_STAGE_COUNTS",
+    "sourceSHA": "31693d704fc3a7341d15e2843d4d12220883577a",
+    "sourceFingerprint": "c602bf73dc186f5fe2ecc352160b0fa4e36d2fb72f5d7f8562ca97a7fe88deb2",
+    "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+    "runId": "39479038742",
+    "serverVersionNum": 160015
+  },
+  "ci": {
+    "schemaVersion": "pos-cafe-light-ci-v1",
+    "verificationScope": "LIGHT_AND_NATIVE_PG16_ONLY",
+    "repository": "nguyentronglinh045/pos-cafe",
+    "repositoryID": 1263057386,
+    "event": "push",
+    "sourceSHA": "31693d704fc3a7341d15e2843d4d12220883577a",
+    "prHeadSHA": null,
+    "workflowSHA": "31693d704fc3a7341d15e2843d4d12220883577a",
+    "runId": "39479038742",
+    "attempt": 1,
+    "sourceFingerprint": "c602bf73dc186f5fe2ecc352160b0fa4e36d2fb72f5d7f8562ca97a7fe88deb2",
+    "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+    "overallStatus": "PASS",
+    "runURL": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39479038742/attempts/1",
+    "phases": [
+      {
+        "id": "install",
+        "status": "PASS",
+        "elapsedMs": 5396,
+        "exitCode": 0,
+        "invocationSHA": "eb69fa4c891a8abc26d2540327e61397cf4fd2a74b1fa4b430f6128b788fee06",
+        "reportSHA": "3c2ed91065414853621dd02dba992d794b101d815105ff46d9d1e6a05b6027c7",
+        "counts": null,
+        "diagnostic": null
+      },
+      {
+        "id": "build",
+        "status": "PASS",
+        "elapsedMs": 8707,
+        "exitCode": 0,
+        "invocationSHA": "221f797c1129df54d25a71034dbea9eb9b6fed3c51d535804e41b39d6dd93d35",
+        "reportSHA": "a3857828d35fc7e62371f6ab038b54fc9d19e1160aeb99ac54ce0543f4b2fb67",
+        "counts": null,
+        "diagnostic": null
+      },
+      {
+        "id": "unit",
+        "status": "PASS",
+        "elapsedMs": 99887,
+        "exitCode": 0,
+        "invocationSHA": "65c9a78a557a5d2b642134e4ba8fc1c8bf70124575fd9ce58aeff6e038b1e232",
+        "reportSHA": "fb735704344e29dcd1783364b21ce468791443bc407d9435e709bd5823e1c91a",
+        "counts": {
+          "discovered": 1175,
+          "run": 1175,
+          "pass": 1175,
+          "fail": 0,
+          "skip": 0,
+          "manualDeferred": 0
+        },
+        "diagnostic": null
+      },
+      {
+        "id": "tooling",
+        "status": "PASS",
+        "elapsedMs": 23561,
+        "exitCode": 0,
+        "invocationSHA": "ba855bc23e4a5af529d8cbcf21b94c82f192339c4df8f85931aa9f61017db12a",
+        "reportSHA": "e3a880aaf4919ecddd91ad47a0e159cfaec12c906e2c917d6529c3a436141c1d",
+        "counts": {
+          "discovered": 568,
+          "run": 567,
+          "pass": 567,
+          "fail": 0,
+          "skip": 1,
+          "manualDeferred": 1
+        },
+        "diagnostic": null
+      },
+      {
+        "id": "node-tools",
+        "status": "PASS",
+        "elapsedMs": 4870,
+        "exitCode": 0,
+        "invocationSHA": "4bc4caa7f952aea1f9568e3b57c3963ca9c34ca505d8299e69ef2b9ada5cc1d1",
+        "reportSHA": "43ecd79e92792427a9bc39a248e23a68b3ba89ebe6fa6404fd1fc51d48523460",
+        "counts": {
+          "run": 783,
+          "pass": 783,
+          "fail": 0,
+          "skip": 0
+        },
+        "diagnostic": null
+      },
+      {
+        "id": "browser",
+        "status": "PASS",
+        "elapsedMs": 8401,
+        "exitCode": 0,
+        "invocationSHA": "a3de05aa9d2c0a616eee035f7f5442a8efd8988b6a5e51a572031747b6e6bb25",
+        "reportSHA": "8059a384161f3117f6ea4fe119eed66814c36215fbe879be34e38d9f7326edf0",
+        "counts": null,
+        "diagnostic": null
+      },
+      {
+        "id": "runtime-reporters",
+        "status": "PASS",
+        "elapsedMs": 4677,
+        "exitCode": 0,
+        "invocationSHA": "50e0c6b85a7b805be240bc70e8094c6aab547e7951cfad4742deb8f9f35c7d8b",
+        "reportSHA": "7655265dc38bec0317940105b5019691662eb45cf480fd2939f2bd3a96970469",
+        "counts": {
+          "run": 4,
+          "pass": 4,
+          "fail": 0,
+          "skip": 0,
+          "positiveControls": 2,
+          "negativeControls": 2
+        },
+        "diagnostic": null
+      },
+      {
+        "id": "permission-static",
+        "status": "PASS",
+        "elapsedMs": 22941,
+        "exitCode": 0,
+        "invocationSHA": "ca9a45d2bdfdd83032e6e973a7759f4830645d7eb393fcda31bfad5ea18b7a6d",
+        "reportSHA": "d2cb75d85a59909585d23767fe7a22c9bcd7fadd225d3f81c2c17f06d535c27b",
+        "counts": {
+          "run": 480,
+          "pass": 480,
+          "fail": 0,
+          "skip": 0
+        },
+        "diagnostic": null
+      },
+      {
+        "id": "permission-pg16",
+        "status": "PASS",
+        "elapsedMs": 37955,
+        "exitCode": 0,
+        "invocationSHA": "5d5ac84886e604fcddd2f8bff064a0d5b3babe944c7dcaa1e9a76735d3301492",
+        "reportSHA": "b324042a405f9fd8299ab5ec21352fbbba1a987d17b547b563164ae433eee5b8",
+        "counts": {
+          "run": 30,
+          "pass": 30,
+          "fail": 0,
+          "skip": 0
+        },
+        "diagnostic": null
+      },
+      {
+        "id": "ui-tools",
+        "status": "PASS",
+        "elapsedMs": 21908,
+        "exitCode": 0,
+        "invocationSHA": "7d9a10b7776a2776905d080afd72466826c66042ccfce30ddab3b056ec48c6e9",
+        "reportSHA": "fe5a6e737a76f6d87af5f7f18849534aefe51127fa8583a61370d4c044e6c6e4",
+        "counts": {
+          "run": 100,
+          "pass": 100,
+          "fail": 0,
+          "skip": 0
+        },
+        "diagnostic": null
+      },
+      {
+        "id": "ui-remake-selftest",
+        "status": "PASS",
+        "elapsedMs": 8603,
+        "exitCode": 0,
+        "invocationSHA": "e563caa02f28f66fc9480c13d96e464269219bf459db829880f12b3019586166",
+        "reportSHA": "fda22508ab96c3fa059a1598d7d01fc7dd2e34d0406f8ea76186692758b64f75",
+        "counts": {
+          "run": 11,
+          "pass": 11,
+          "fail": 0,
+          "skip": 0,
+          "positiveControls": 5,
+          "negativeControls": 6
+        },
+        "diagnostic": null
+      },
+      {
+        "id": "ui-audit-selftest",
+        "status": "PASS",
+        "elapsedMs": 1398,
+        "exitCode": 0,
+        "invocationSHA": "51f32877bc0cc7acd68a8c5288bf06a9ddd7a1bf9cb0a9a2dac25b4a18b0d492",
+        "reportSHA": "6de3f21010593f9c7443ec339f109790e17c2941abf095a01a123d1c2512731c",
+        "counts": {
+          "run": 1,
+          "pass": 1,
+          "fail": 0,
+          "skip": 0,
+          "detectedFindings": 23,
+          "targetControls": 16
+        },
+        "diagnostic": null
+      },
+      {
+        "id": "smoke-discovery",
+        "status": "PASS",
+        "elapsedMs": 999,
+        "exitCode": 0,
+        "invocationSHA": "4b5e2eadefb5e9eab2e9e096d0384373c4a191480db1174fc673985051167de0",
+        "reportSHA": "c72971b56a0eb05fb6a008104c5eaad9aeebafca2db283b905150ce0956664a5",
+        "counts": null,
+        "diagnostic": null
+      },
+      {
+        "id": "smoke-preflight",
+        "status": "PASS",
+        "elapsedMs": 6111,
+        "exitCode": 0,
+        "invocationSHA": "e1c45385257d2f850cca592c0f7df1ea6f159e099fcb82232537cec7346f90b7",
+        "reportSHA": "9108bb46d3f332bb07dd8044dd4fe7dd72006934c322ed017d7919819ebdad13",
+        "counts": {
+          "run": 1,
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "diagnostic": null
+      },
+      {
+        "id": "smoke",
+        "status": "PASS",
+        "elapsedMs": 118782,
+        "exitCode": 0,
+        "invocationSHA": "d3cc1913aa66e38db7ad9e07e60b953ceee8c7567f2d145215df6b61df4fa723",
+        "reportSHA": "bca4b0e4a3836a46f2564855e007f3ab3a6a4814d658c5acda6afed8c846e98f",
+        "counts": {
+          "run": 81,
+          "pass": 44,
+          "fail": 0,
+          "skip": 37
+        },
+        "diagnostic": null
+      },
+      {
+        "id": "ui-selftest",
+        "status": "PASS",
+        "elapsedMs": 1372,
+        "exitCode": 0,
+        "invocationSHA": "7c9c4c6e3034514e7fac773285d3f55f1bcd2ec5c8af72e92923cf664c900663",
+        "reportSHA": "6de3f21010593f9c7443ec339f109790e17c2941abf095a01a123d1c2512731c",
+        "counts": {
+          "detectedFindings": 23
+        },
+        "diagnostic": null
+      },
+      {
+        "id": "ui-audit",
+        "status": "PASS",
+        "elapsedMs": 263273,
+        "exitCode": 0,
+        "invocationSHA": "c67506cc4fa5fe853a9b4e2cfe7a0128b96cdb23b4ccd1333be24d6c12adc8d9",
+        "reportSHA": "549b7257f5bec85b5c09ff254c6b1aae6591fddb4dca31d04d7e611582c673ce",
+        "counts": {
+          "run": 48,
+          "pass": 48,
+          "fail": 0,
+          "skip": 0,
+          "acceptedFindings": 6
+        },
+        "diagnostic": null
+      }
+    ],
+    "sourceProfile": "PERMISSION_APP_LIGHT",
+    "deferredFeatureGates": [
+      "PERMISSION_FULL"
+    ],
+    "hp1Execution": "RETIRED",
+    "sourcePreserved": true,
+    "peakOwnedBytes": 1276444672,
+    "operatingCapBytes": 5368709120,
+    "minimumFreeBytes": 32212254720
+  },
+  "reclaim": "{\"schemaVersion\":\"permission-pg16-reclaim-v1\",\"status\":\"NOT_PRESENT\",\"rootRemoved\":true,\"processReleased\":true}",
+  "firstLogUtc": "2026-10-20T18:55:55.1298153Z",
+  "lastLogUtc": "2026-10-20T19:06:44.6200011Z",
+  "scope": "Read-only connector job/log readback; no workflow dispatch or replay. Job log span is not exact job wall duration."
+}

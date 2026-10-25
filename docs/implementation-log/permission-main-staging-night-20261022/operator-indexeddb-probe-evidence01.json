@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "permission-operator-indexeddb-local-browser-probe-v1",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "file": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+    "sha256": "c58ffe1c607ccc9a27f4c5c4ba7a417f20d8d58fc4001b81581b772736dc9e15"
+  },
+  "oracle": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/tests/contracts/permissionCanaryOracle.ts",
+    "sha256": "ad4b4b3a42adff58a562f52882f5aecd149073446d1384dc6ccb5e78dda243a6"
+  },
+  "actualHelperExtractionSHA256": "3a2bf9766f18742be40316369a0166da0b7394b790fbb4216da701930499d071",
+  "mutant": "Only readTc18BrowserStorage replaced by original databases:[] behavior; production control function unchanged.",
+  "startedAtUtc": "2026-10-22T15:44:06.635Z",
+  "completedAtUtc": "2026-10-22T15:44:07.137Z",
+  "status": "PASS",
+  "errorCode": null,
+  "controls": [
+    {
+      "name": "actual_nested_value_control_and_exact_baseline_preservation",
+      "status": "PASS"
+    },
+    {
+      "name": "legal_empty_database_name_nested_value_detected",
+      "status": "PASS"
+    },
+    {
+      "name": "actual_cursor_key_detected",
+      "status": "PASS"
+    },
+    {
+      "name": "original_empty_inventory_mutant_refused_and_control_database_removed",
+      "status": "PASS"
+    },
+    {
+      "name": "enumeration_error_fails_closed",
+      "status": "PASS"
+    },
+    {
+      "name": "all_probe_owned_databases_removed",
+      "status": "PASS"
+    }
+  ],
+  "browserVersion": "155.0.8059.85",
+  "environment": "Installed Chrome via retained Playwright1.60.0; fresh isolated context and synthetic loopback page only.",
+  "browserClosed": true,
+  "loopbackClosed": true,
+  "rawCanaryOrCapturedRowsExported": false,
+  "noInstall": true,
+  "noSupabase": true,
+  "noBackendOrCiRun": true,
+  "disksBefore": [
+    {
+      "path": "C:/",
+      "freeBytes": 192876699648
+    },
+    {
+      "path": "D:/",
+      "freeBytes": 98530836480
+    }
+  ],
+  "disksAfter": [
+    {
+      "path": "C:/",
+      "freeBytes": 192876609536
+    },
+    {
+      "path": "D:/",
+      "freeBytes": 98530836480
+    }
+  ],
+  "scopeLimit": "Validates actual shared reader/control and original-bug mutant only. Not full PIN_ONBOARD, Linux CI or full35/760/12 for the new source."
+}

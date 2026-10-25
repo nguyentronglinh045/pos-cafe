@@ -1,0 +1,32 @@
+{
+  "status": "APPROVED_FINAL_SCHEMA_SETUP_PACKAGE",
+  "observedAtUtc": "2026-10-22 09:43:39 UTC",
+  "candidate": {
+    "handoffSha256": "a7c54ca3b802b8996e0adada2593f709887f3361ff782ac49c0fca077ca4a0d1",
+    "outcomeSha256": "799cd39e460f26ab2506d40a85504ab32368fe0d29f1c0e522bac5605e8a80ca",
+    "restartCheckpointSha256": "28ab53077f6cae0fbe15a0d5a19da5c37ddf3ee83b003e7dd895edd546d48e25"
+  },
+  "scope": {
+    "reviewer": "/root/mcp_staging_scope_review",
+    "verdict": "APPROVE",
+    "checks": "Actual committed marker/binding/source; corrected readonly restoration/retired broken guard; handoff/outcome/snapshot references; final watcher-history metadata corrected."
+  },
+  "operations": {
+    "reviewer": "/root/mcp_staging_evidence_review",
+    "verdict": "APPROVE",
+    "checks": "Original actual tool outputs exactly match receipts;1apply/1reconcile/claims; stored readonlyhash/ACL; snapshot pins, fullgate/limits; corrected watcher history; raw Git blobs must be verified before local commit."
+  },
+  "findingHistory": [
+    {
+      "finding": "Checkpoint mixed PID10588 with launch01/PID34152 and old alive timestamp.",
+      "resolution": "Separate immutable history entries with correct launch receipts, UTC times; no active watcher.",
+      "finalCandidateSha256": "28ab53077f6cae0fbe15a0d5a19da5c37ddf3ee83b003e7dd895edd546d48e25",
+      "closedBy": [
+        "/root/mcp_staging_scope_review",
+        "/root/mcp_staging_evidence_review"
+      ]
+    }
+  ],
+  "limits": "COMMITTED_NOT_READY only. No full app/backend PASS, main/Vercel/originalDB action, live MCP reload or OAuth revocation. Original watcher KNOWN_NOT_REUSABLE.",
+  "storage": "Approved for isolated local docs commit of task evidence directory and own handoff only, raw bytes preserved; shared README excluded; no push. This review record adds reviewer metadata only."
+}

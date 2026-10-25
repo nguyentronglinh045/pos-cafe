@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "permission-publication-observed-v3",
+  "recordedUtc": "2026-10-24T01:50:00.412Z",
+  "sourceSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "runId": "40051559979",
+  "attempt": 1,
+  "event": "push",
+  "path": ".github/workflows/ci.yml",
+  "branch": "review/permission-staging-20261023",
+  "status": "in_progress",
+  "conclusion": null,
+  "createdAt": "2026-10-24T01:50:00Z",
+  "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/40051559979",
+  "repository": "nguyentronglinh045/pos-cafe",
+  "repositoryId": 1263057386,
+  "publicationOrdinal": 3,
+  "automaticCiOrdinal": 3,
+  "consumed": {
+    "publication": 3,
+    "automaticLightCi": 3,
+    "T04": 2
+  },
+  "remaining": {
+    "publication": 0,
+    "automaticLightCi": 0,
+    "T04": 1
+  },
+  "main": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "mergeDeploy": "NOT_RUN"
+}

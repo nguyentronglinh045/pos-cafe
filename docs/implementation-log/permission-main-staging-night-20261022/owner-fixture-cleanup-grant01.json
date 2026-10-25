@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "permission-owned-fixture-cleanup-grant-v1",
+  "reference": "call_0a899e78075b42f4a7ca84a7d0073d9d item0",
+  "answer": "Cho phép dọn nhóm fixture này đến 00:00",
+  "recordingBasis": "Actual user reply in this conversation; this file records, and does not expand, the grant.",
+  "scopeRoot": "D:/Workspace/pos-cafe-permission-timeonly-20261022/temp",
+  "allowedNamePattern": "^night-node[0-9]{2}$",
+  "producer": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/run-local-node.mjs",
+  "deadlineUtc": "2026-10-22T17:00:00Z",
+  "conditions": [
+    "Verify absolute owned fixture identity and release by its process before removal.",
+    "Save and verify report, TAP and hashes before removal.",
+    "Remove only fixtures from the same runner within this scope and deadline.",
+    "Keep all source, TAP, receipt, report and evidence files outside the fixture.",
+    "Measure Windows disk free space after cleanup; distinguish logical bytes from measured free-space delta."
+  ]
+}

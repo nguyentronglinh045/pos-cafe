@@ -5,15 +5,15 @@
 | Nhóm | Trạng thái hiện hành |
 | --- | --- |
 | Giao thức ghi v1 | Đã có implementation và nghiệm thu lịch sử phase 27; không lấy kết quả đó nhận toàn main mới PASS |
-| Phân quyền | Runtime mới trên main711a22e; backend acceptance/toàn hệ thống còn HOLD; spec/hồ sơ WIP chưa xuất bản đủ |
+| Phân quyền | Runtime mới trên main711a22e; backend acceptance/toàn hệ thống còn HOLD; spec15/PIN/CI và evidence WIP đã hòa giải, giữ provenance theo từng nguồn |
 | UI B01/B02/B03 | Đã merge; [handoff tích hợp](workflow/tasks/ui-main-docs-integration-2026-10-25.md) giữ checks/source |
-| Chuẩn hóa | **Docs-first:** đợt chỉnh lý core/điều hướng đã kiểm và hai reviewer APPROVE; NC-10 tiếp tục theo các slice, phần WIP chưa xuất bản giữ riêng |
+| Chuẩn hóa | **Docs-first:** đợt chỉnh lý core/điều hướng đã kiểm và hai reviewer APPROVE; NC-10 tiếp tục theo các slice, phần WIP tiếp tục theo hồ sơ xuất bản25/10 |
 | Phát hành | Không mở deploy/migration/live activation trong lượt này |
 
 ## Làm gì tiếp
 
 1. Chuẩn hóa tri thức, trạng thái, nguồn và đường đọc docs; bảo toàn WIP và evidence. [Handoff đang thực hiện](workflow/tasks/docs-normalization-2026-10-25.md).
-2. Hòa giải/xuất bản riêng hồ sơ phân quyền WIP sau khi xác minh đúng source/quyết định; không coi bản proposal cũ là hợp đồng cho code mới.
+2. [Hồ sơ WIP đã hòa giải](workflow/tasks/docs-wip-publication-2026-10-25.md): kiểm/review/xuất bản, giữ bằng chứng và danh sách dọn chờ duyệt; không mở refactor hoặc backend acceptance.
 3. Tiếp tục NC-02 bản đồ code và NC-03 chốt slice theo [kế hoạch chung](workflow/tasks/post-integration-standardization-plan-2026-10-25.md). Chỉ mở refactor NC-04…08 khi được giao và đủ gate liên quan.
 4. Backend acceptance, deployment, owner/email provisioning, đo tải và lịch báo cáo cần phạm vi/điều kiện riêng. Merge UI không đóng NC-01/NC-11 toàn hệ thống.
 

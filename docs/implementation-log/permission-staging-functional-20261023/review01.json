@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-10-23T12:23:47.704Z",
+  "candidate": {
+    "handoff": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-staging-functional-2026-10-23.md",
+    "handoffSHA256": "d8b5616db8be811b5d896fe6728069f402b75b378fdc814e12f9a2d990324723",
+    "manifest": "manifest01.json",
+    "manifestSHA256": "cdc214f6aebd64eb0a5b1a48883fc6213d749883afd6ff5d5ab42a10a2d4f88d",
+    "source": "e42215044b4faf7e90f787ae8e975937ad3e4479"
+  },
+  "scope": "Finite hosted staging functional milestone and its evidence, not full gate or release authorization",
+  "reviews": [
+    {
+      "reviewer": "/root/audit_process_review",
+      "verdict": "APPROVE",
+      "verified": "37/37 manifest entries, 14 exact executed cells, owner authorization, Auth restoration, protected credential custody, final scan81 text files,0 matches",
+      "limitations": "Retains prior bounded process review scope; no full gate or release claim"
+    },
+    {
+      "reviewer": "/root/audit_technical_review",
+      "verdict": "APPROVE",
+      "verified": "37/37 manifest entries; H2/H3 TTL/revision; H6 actor/tenant; H7 revoked token; H9 same-token grant/revoke; H10 identical-input role loop with documented raw-response retention limit; H11 cashier history/detail/receipt; build,110 exact files,1177 PASS,coverage92.65 and7screenshots",
+      "limitations": "Does not verify full gate, CI/backend e422, Edge/images, UI PIN-submit, production or release permission"
+    }
+  ],
+  "resolvedFindings": [
+    {
+      "finding": "Selected executed-cell provenance and safe retained response projections were missing",
+      "resolution": "Added14 exact tool arguments including cashier order-history read plus sanitized H2/H3/H6/H7/H9 retained objects; H10 raw-body retention limit stated accurately; no new test requests or mutation used to close review"
+    }
+  ],
+  "recordType": "Root records reviewer messages in current chat; this metadata file is intentionally outside candidate manifest"
+}

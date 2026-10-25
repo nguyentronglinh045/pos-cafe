@@ -1,0 +1,93 @@
+{
+  "version": "permission-staging-checkpoint-v1",
+  "capturedUtc": "2026-10-21T14:29:33.099Z",
+  "status": "WAITING_OWNER_CONNECTION",
+  "code": {
+    "commit": "02a118285c4b88c62237bd3db8086207db8eb30f",
+    "published": false,
+    "trackedClean": true,
+    "sourceFingerprintSha256": "35ef7b6781bcfc5ed1b91875f5b129f5c0ee07ef7955509ed98e73231ee8807c",
+    "sourceFileCount": 1097
+  },
+  "review": {
+    "plan": {
+      "source": "APPROVE",
+      "operations": "APPROVE"
+    },
+    "implementation": {
+      "source": "APPROVE",
+      "operations": "APPROVE"
+    },
+    "rounds": 2,
+    "implementationFindingsClosed": 2
+  },
+  "tests": {
+    "node": "v24.16.0",
+    "command": "node --test scripts/permission-staging.test.mjs",
+    "exitCode": 0,
+    "pass": 27,
+    "fail": 0,
+    "skip": 0,
+    "durationMs": 17306.3038,
+    "log": "local-guard-tests04.log",
+    "assurance": "LOCAL_AND_SYNTHETIC_TRANSPORT_ONLY"
+  },
+  "coverage": {
+    "inventorySha256": "0943976f676dcfcecfd76f79c117c81a3ab8cb8d016320484b4593602cbd0e7e",
+    "stages": 35,
+    "requiredRuntimeIdentities": 760,
+    "originalPermissionOccurrences": 726,
+    "originalPinMappings": 111,
+    "hostedBusinessStatus": "NOT_RUN",
+    "coverageReduced": false
+  },
+  "remote": {
+    "connection": "NOT_INSTALLED_AT_LAST_CHECK_OWNER_REQUESTED_GUIDANCE",
+    "projectCreatedByAgent": false,
+    "actualProjectRef": null,
+    "preflightAttempts": 0,
+    "preflightRequests": 0,
+    "sqlMutations": 0,
+    "productionDatabaseOperations": 0,
+    "actualClaimPresent": false
+  },
+  "allowance": {
+    "projectFree": 1,
+    "preflightAttempts": 1,
+    "requestsPerAttempt": 2,
+    "publication": 0,
+    "CI": 0,
+    "heavyRuntime": 0,
+    "reviewRounds": 2
+  },
+  "legacy": {
+    "state": "CLOSED",
+    "policySha256": "3c222cb3a5b66a37107522ddce08c2fc8f68e99777f4a921aeb0eba2c936797c",
+    "journalSha256": "583f336dafa025e3088e0afc1dad23be68b2324c6e5f37facc11ca230d372880",
+    "spent": {
+      "publication": 2,
+      "CI": 2,
+      "heavy": 1,
+      "review": 6
+    },
+    "untouched": true
+  },
+  "cutoffs": {
+    "mutationUtc": "2026-10-21T15:30:00.000Z",
+    "newTestUtc": "2026-10-21T15:45:00.000Z",
+    "checkpointUtc": "2026-10-21T15:55:00.000Z",
+    "hardStopUtc": "2026-10-21T16:00:00.000Z"
+  },
+  "disks": {
+    "snapshotLocal": "2026-10-21T21:25:45+07:00",
+    "CFreeBytes": 195801608192,
+    "DFreeBytes": 98754510848
+  },
+  "next": [
+    "Complete Supabase plugin connection; inspect actual tools and staging access.",
+    "Inspect project metadata before any creation to avoid duplicate projects.",
+    "Create at most one Free staging project, bind actual ref/source/coverage and explicit private input.",
+    "One reviewed read-only preflight before cutoff; no SQL admission from HTTP PASS.",
+    "Provider/DB identity and adapter work remain separately gated; all full backend cases remain required."
+  ]
+}

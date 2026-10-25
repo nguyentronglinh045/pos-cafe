@@ -1,0 +1,11 @@
+{
+  "version": "permission-staging-v1",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "apiOrigin": "https://ineckiashpwloncxnbqx.supabase.co",
+  "baselineSource": "90e30f2b2b0f046c549b268b32f1840ad99c2409",
+  "coverageSha256": "0943976f676dcfcecfd76f79c117c81a3ab8cb8d016320484b4593602cbd0e7e",
+  "sourceFingerprintSha256": "35ef7b6781bcfc5ed1b91875f5b129f5c0ee07ef7955509ed98e73231ee8807c",
+  "deadlineUtc": "2026-10-21T16:00:00.000Z",
+  "scope": "READ_ONLY_PREFLIGHT",
+  "acknowledgement": "STAGING_ONLY_NO_PRODUCTION"
+}

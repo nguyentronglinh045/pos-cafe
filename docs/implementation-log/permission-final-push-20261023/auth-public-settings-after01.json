@@ -1,0 +1,11 @@
+{
+  "capturedUtc": "2026-10-23T14:21:10.9699693Z",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "endpoint": "/auth/v1/settings",
+  "mailer_autoconfirm": true,
+  "disable_signup": false,
+  "emailProvider": true,
+  "grantCall": "call_1da3d032c42b43639c755357f41ac285",
+  "grantAnswer": "Cho tắt để dùng Store Key hiện tại",
+  "restoration": "Keep OFF until real owner-email provisioning is implemented; supersedes prior temporary test-only OFF grant"
+}

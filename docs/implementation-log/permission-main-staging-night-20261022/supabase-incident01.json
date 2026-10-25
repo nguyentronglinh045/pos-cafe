@@ -1,0 +1,10 @@
+{
+  "observedAtUtc": "2026-10-22 11:43:08 UTC",
+  "source": "https://status.supabase.com/api/v2/summary.json",
+  "incidentId": "01M5HNZ0A0GPJTF0WFWA5JF9E9",
+  "status": "investigating",
+  "startedAtUtc": "2026-10-22T11:29:25Z",
+  "lastUpdateUtc": "2026-10-22T11:32:52Z",
+  "impact": "Supabase reports elevated Management API errors/latency in multiple regions and dashboard login timeouts. Staging DB readonly SELECT succeeded independently; no conclusion that every product API is affected.",
+  "executionDecision": "Prioritize isolated code/CI/backend preparation. No repeated control-plane mutations during an unresolved error; inspect/reconcile outcomes before considering another action."
+}

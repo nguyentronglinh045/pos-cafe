@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "permission-bp4a-corrected-orphan-control-v1",
+  "status": "PASS",
+  "startedAtUtc": "2026-10-23T04:05:32.236Z",
+  "grantPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-guard-amendment02.json",
+  "helperSHA256": "794b81dfc28b798bc8341765f58403c4e3d8acf3aada8f6098c114fe81c4315f",
+  "runnerSHA256": "7cacc8dd1eb3574b5597660462538993fc1bc4119a1ee1cd638ddae16365a564",
+  "scope": "ONE_ORPHAN_GUARD_ONLY_NO_APP_TEST",
+  "expected": {
+    "wrapperExit": 1,
+    "rootExit": 0,
+    "orphan": true,
+    "activeProcesses": 0
+  },
+  "wrapper": {
+    "exitCode": 1,
+    "signal": null,
+    "transportError": null,
+    "stdout": "",
+    "stderr": ""
+  },
+  "proof": {
+    "schemaVersion": "permission-bp4a-child-release-v1",
+    "startedAtUtc": "2026-10-23T04:05:33.2542277Z",
+    "completedAtUtc": "2026-10-23T04:05:34.4177689Z",
+    "rootExitCode": 0,
+    "rootPid": 16600,
+    "activeProcesses": 0,
+    "timedOut": false,
+    "orphanDetected": true,
+    "nativeFailure": false,
+    "nativeErrorCode": 0,
+    "releaseVerified": true,
+    "assigned": true,
+    "resumed": true,
+    "passed": false
+  },
+  "ready": {
+    "nonce": "bp4a-orphan02-20261023-ff0f426347c85b5f",
+    "pid": 39088,
+    "parentPid": 16600,
+    "atUtc": "2026-10-23T04:05:33.349Z"
+  },
+  "ack": {
+    "nonce": "bp4a-orphan02-20261023-ff0f426347c85b5f",
+    "workerPid": 39088,
+    "parentPid": 16600,
+    "workerAlive": true,
+    "atUtc": "2026-10-23T04:05:33.358Z"
+  },
+  "proofSHA256": "e762b154deabeacd6fcccec2cfa437c8da0480164082c0a53754b8a68f47dfa4",
+  "workerPidGone": true,
+  "completedAtUtc": "2026-10-23T04:05:34.581Z"
+}

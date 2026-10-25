@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "permission-staging-native-transport-v1",
+  "status": "PENDING_TWO_EXACT_BUNDLE_AND_TRANSPORT_REVIEWS",
+  "server": "supabase_pos_cafe",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "effectiveUrl": "https://mcp.supabase.com/mcp?project_ref=ineckiashpwloncxnbqx&features=database,docs",
+  "tool": "apply_migration",
+  "name": "permission_staging_bootstrap_b2e3122_20261022_1700",
+  "sql": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+    "sha256": "5c5c40dd5a0c3e98000a041da34446370fa539f47bd423fbe6196ba682c4e7f5",
+    "bytes": 543149
+  },
+  "manifestSha256": "b404504fd723fe2df25e471f97d9c11eef5431caac23c1f453f4fa3121f082d3",
+  "payloadLoader": "native-payload-loader01.js.txt",
+  "assembly": "Local read slices only; one complete unchanged SQL string in ONE remote call; no SQL statement splitting.",
+  "admission": {
+    "cutoffUtc": "2026-10-22T09:45:00Z",
+    "hardStopUtc": "2026-10-22T10:00:00Z",
+    "maxRemoteApplyAttempts": 1,
+    "requiresTwoExplicitReviews": true,
+    "requiresDurableExclusiveCreateAttemptClaim": true,
+    "requiresEffectiveTargetConfigHash": "b666027bc770a46c70149b83b8a704bdfff1343dae5e6447a1ae543681b9547c"
+  },
+  "roleTimeout": "execute_sql observed postgres/sessionpostgres and2min statement_timeout. This does NOT prove apply_migration identical runtime. SQL itself rejects wrong role/identity/capabilities/fresh catalog/unbounded or>120s timeout before first application write.",
+  "atomicity": "One top-level DO, complete unchanged full28SQL/controller30fragments; its statement effects roll back on failure. MCP may manage its own migration history separately; no claim about unpublished service internals.",
+  "outcome": "Persist raw apply result. Regardless of success/error/timeout, at most one pinned read-only reconcile SELECT; ambiguous outcome must never trigger apply retry.",
+  "limits": "No Auth settings/Edge deployment/tenant or Auth seed/CI/heavy tests/main/Vercel/original DB. COMMITTED_NOT_READY even when apply and marker reconciliation succeed.",
+  "restore": "After apply/reconcile or at deadline, stored profile readonly restoration under explicit single-writer contract; stop verified watcher10588 and wait exit before root restoration. No claim live transport reload or OAuth revocation.",
+  "documentationLookup": "MCP tool descriptor is authoritative for arguments. Two guessed upstream source paths returned404; no wrapper behavior inferred from unavailable source or secondary reports."
+}

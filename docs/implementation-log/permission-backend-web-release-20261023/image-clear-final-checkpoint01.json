@@ -1,0 +1,203 @@
+{
+  "schemaVersion": "permission-image-clear-final-checkpoint-v1",
+  "recordedUtc": "2026-10-24T04:53:54.704Z",
+  "sourceSHA": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+  "clean": true,
+  "remote": {
+    "recordedUtc": "2026-10-24T04:53:12.317Z",
+    "main": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "review": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+    "in_progress": 0,
+    "queued": 0,
+    "waiting": 0
+  },
+  "consumed": {
+    "publication": 5,
+    "automaticLightCi": 5,
+    "T04": 5
+  },
+  "remainingAdditionalExecution": 0,
+  "ci": {
+    "runId": "40061777912",
+    "attempt": 1,
+    "status": "PASS18",
+    "lightStages": 6,
+    "required": 343
+  },
+  "t04": {
+    "runId": "40063022066",
+    "attempt": 1,
+    "status": "FAIL",
+    "stages": {
+      "pass": 9,
+      "fail": 1,
+      "notRun": 9,
+      "requiredPassed": 275
+    },
+    "candidate": [
+      {
+        "ordinal": 1,
+        "state": 1,
+        "attempts": 1,
+        "line": 0
+      },
+      {
+        "ordinal": 2,
+        "state": 1,
+        "attempts": 1,
+        "line": 0
+      },
+      {
+        "ordinal": 3,
+        "state": 1,
+        "attempts": 1,
+        "line": 0
+      },
+      {
+        "ordinal": 4,
+        "state": 2,
+        "attempts": 1,
+        "line": 293
+      },
+      {
+        "ordinal": 5,
+        "state": 1,
+        "attempts": 1,
+        "line": 0
+      },
+      {
+        "ordinal": 6,
+        "state": 1,
+        "attempts": 1,
+        "line": 0
+      }
+    ],
+    "receipt": {
+      "readOrdinal": 1,
+      "bytes": 34324,
+      "capped": 0,
+      "facts": 776
+    },
+    "cleanup": true,
+    "cleanupFailure": null,
+    "d12Cleanup": true,
+    "reclaim": {
+      "schemaVersion": "permission-ci1-reclaim-v1",
+      "status": "RECLAIMED",
+      "imageUnlinked": true,
+      "imageLogicalBytes": 19327352832,
+      "imageAllocatedBytes": 19327397888,
+      "hostFreeBeforeBytes": 72227069952,
+      "hostFreeAfterBytes": 91554471936,
+      "measuredHostFreeDeltaBytes": 19327401984,
+      "remaining": "compact control/status/safe export only; ephemeral runner"
+    }
+  },
+  "capacity": {
+    "localDisks": [
+      {
+        "DeviceID": "C:",
+        "FreeSpace": 189567787008
+      },
+      {
+        "DeviceID": "D:",
+        "FreeSpace": 98728706048
+      }
+    ],
+    "retained": [
+      {
+        "path": "D:/Workspace/pos-cafe-permission-run-20261020",
+        "logicalBytes": 218509891
+      },
+      {
+        "path": "D:/Workspace/pos-cafe/.git",
+        "logicalBytes": 48907148
+      },
+      {
+        "path": "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+        "logicalBytes": 4981266
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+        "logicalBytes": 328453815
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+        "logicalBytes": 1597957
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+        "logicalBytes": 5135304
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022",
+        "logicalBytes": 1405939
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-final-push-20261023",
+        "logicalBytes": 516026
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023",
+        "logicalBytes": 5056165
+      }
+    ],
+    "retainedLogicalBytes": 614563511,
+    "retainedLogicalCapBytes": 805306368,
+    "linksNotFollowed": [
+      "D:/Workspace/pos-cafe-permission-run-20261020/code/artifacts/ui-audit/test-junction-0096b055-d65e-4184-b94a-d37a2d493804",
+      "D:/Workspace/pos-cafe-permission-run-20261020/code/artifacts/ui-audit/test-junction-e384a654-8af5-47d2-9a7e-e68c5432519a",
+      "D:/Workspace/pos-cafe-permission-timeonly-20261022/temp/night-node06/permission-staging-ci-portability-20261022-0wgANd/dangling-docs/docs-link",
+      "D:/Workspace/pos-cafe-permission-timeonly-20261022/temp/night-node06/permission-staging-ci-portability-20261022-0wgANd/present-docs/docs-alias"
+    ],
+    "allocatedBytes": "NOT_MEASURED"
+  },
+  "evidence": {
+    "ci": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci08-collection.json",
+      "bytes": 1064,
+      "sha256": "d6268a04a7c41a8cf6d072ec90dfdc5ee2497eaef689120ac873a39c7323ab2f"
+    },
+    "t04": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0407.json",
+      "bytes": 93196,
+      "sha256": "b7513496f7f899fdd98d7fad78f1d3d2f49684dc71dc714f3b68ec84d36cc064"
+    },
+    "t04Log": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0407.log",
+      "bytes": 91968,
+      "sha256": "f733822cf7c8d9e0d37631151d7740e05a00824b589679a35952297530907859"
+    },
+    "terminalApi": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-terminal-api05.json",
+      "bytes": 17857,
+      "sha256": "0fc1ecdcc078aca517a0557661878cee114e01d2864515faf330c4bf2cfe8b13"
+    },
+    "svgProbe": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-image-clear-svg-probe01.json",
+      "bytes": 977,
+      "sha256": "6c48c99b81e2d2a55e3b1950c757d07129d4e43f43a918701d099d57df2e368c"
+    },
+    "svgRecipe": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-image-clear-svg-probe02-recipe.json",
+      "bytes": 3314,
+      "sha256": "d80d2bb9726b99a51de4a620db1c7926d41050546b3869c3217c580e1f4ac6ef"
+    },
+    "svgLog": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-image-clear-svg-probe02.log",
+      "bytes": 254,
+      "sha256": "8ccbd417ef0b6b1d1cdebb22ad4707279f10663793fa2edd33d4791344bb526b"
+    },
+    "unremoved": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/unremoved-controls-checkpoint02.json",
+      "bytes": 4083,
+      "sha256": "060d4a78381a30f1cc8c2eccabc828d7aa642e34eb7c5350060035af5591215c"
+    }
+  },
+  "acceptanceChanged": false,
+  "full35BusinessRuntime": "NOT_RUN",
+  "otherSevenProfiles": "HELD_NOT_RUN",
+  "prMergeDeploy": "NOT_AUTHORIZED",
+  "newTestFix": "RECOMMENDED_NOT_IMPLEMENTED_AFTER_FROZEN_RUN",
+  "localProbeCaveat": "Synthetic DOM proves SVG role conflict; actual privateT04 matched count unknown; no network/backend/sourceedit/retry"
+}

@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "permission-bp4a-local-v1",
+  "status": "FAIL_OR_UNKNOWN",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "grantPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-next01-owner-grant.json",
+  "grantSHA256": "8ffe42b6ed2cca26e746256773cc008880fb423ae95c75577657f3d2c223f7eb",
+  "runnerSHA256": "853c733b4e2a0c2cc65da90d43f69e0115e3be378d74dcef11b5f676a4a39f67",
+  "startedAtUtc": "2026-10-23T05:04:50.728Z",
+  "deadlineUtc": "2026-10-23T05:54:18Z",
+  "nodeVersion": "v24.16.0",
+  "retainedRoots": [
+    "D:/Workspace/pos-cafe-permission-run-20261020",
+    "D:/Workspace/pos-cafe/.git",
+    "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022"
+  ],
+  "oldLedgers": {
+    "budget-phase03-close.json": "0eb116c8b4016d54d0b0d90474545bd8012625bdcb0d924e1aca22e3754ce05b",
+    "budget-phase03-negative-controls.json": "ae2a8c9f1380400fba90c2b17c656a8ffe630b71fdd841679a986606f9abeb04",
+    "budget-phase03.json": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+    "budget-phase03.json.anchor.json": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f",
+    "budget-phase03.json.head.json": "adfec165ec85f3d4fd9f69db229249ba743845a5561799f295ae8590a5f6e527",
+    "budget-phase03.json.journal.jsonl": "5390f85e8fb7c01d6a037724ba1f8c2b00a8666ed5603094a3bbeb876ffbb694"
+  },
+  "steps": [],
+  "phases": {
+    "nativeProbe": "NOT_RUN",
+    "archivePreflight": "FAIL_OR_UNKNOWN",
+    "install": "NOT_RUN",
+    "build": "NOT_RUN",
+    "unitCoverage": "NOT_RUN"
+  },
+  "notRun": [
+    "publication",
+    "CI",
+    "backend",
+    "database",
+    "browser",
+    "runtime TS scoped typecheck",
+    "full gate"
+  ],
+  "lastStorage": {
+    "atUtc": "2026-10-23T05:04:51.319Z",
+    "currentRootBytes": 51602088,
+    "newGeneratedBytes": 292958,
+    "retainedBytes": 333440260,
+    "freeBytes": {
+      "C:/": 193699999744,
+      "D:/": 98505256960
+    },
+    "links": [
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\dangling-docs\\docs-link",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\present-docs\\docs-alias",
+      "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-0096b055-d65e-4184-b94a-d37a2d493804",
+      "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-e384a654-8af5-47d2-9a7e-e68c5432519a"
+    ],
+    "linksAreNotAdmission": true,
+    "mainLogBytes": 0,
+    "reportBytes": 0,
+    "metaBytes": 6067,
+    "moduleMetaBytes": 0
+  },
+  "archivePartial": {
+    "ok": false,
+    "results": [],
+    "firstFailure": {
+      "lockPath": "node_modules/@types/pg",
+      "stage": "COUNTS",
+      "code": "BP4_COUNTS_FILES",
+      "bytes": 5484,
+      "httpStatus": 200,
+      "countFailure": {
+        "metric": "regularFiles",
+        "expected": 9,
+        "actual": 7
+      }
+    },
+    "peerAborted": [
+      {
+        "lockPath": "node_modules/@bcoe/v8-coverage",
+        "stage": "STATUS",
+        "code": "BP4_COLLECT_PEER_ABORT",
+        "bytes": 0,
+        "httpStatus": null,
+        "originalCode": "BP4_COLLECT_PEER_ABORT"
+      },
+      {
+        "lockPath": "node_modules/@vitest/coverage-v8",
+        "stage": "STATUS",
+        "code": "BP4_COLLECT_PEER_ABORT",
+        "bytes": 0,
+        "httpStatus": null,
+        "originalCode": "BP4_COLLECT_PEER_ABORT"
+      },
+      {
+        "lockPath": "node_modules/@vitest/expect",
+        "stage": "STATUS",
+        "code": "BP4_COLLECT_PEER_ABORT",
+        "bytes": 0,
+        "httpStatus": null,
+        "originalCode": "BP4_COLLECT_PEER_ABORT"
+      }
+    ],
+    "globalFailure": null,
+    "abortCause": {
+      "scope": "ITEM",
+      "lockPath": "node_modules/@types/pg",
+      "code": "BP4_COUNTS_FILES"
+    },
+    "downloadedBytes": 5484,
+    "startedAtMs": 1792731891321,
+    "completedAtMs": 1792731891643
+  },
+  "stopReason": {
+    "code": "BP4_UNCLASSIFIED_STOP"
+  },
+  "error": "BP4A_STOP: inspect phase state and bounded logs; no retry authorized.",
+  "completedAtUtc": "2026-10-23T05:04:51.644Z",
+  "oldLedgersUnchanged": true
+}

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "permission-bp4a-local75-owner-grant-v1",
+  "reference": "request_user_input_async call_16b37ac7f478441d85b1d9bdb1b11244 item0",
+  "answer": "Duyệt gói local 75 phút (khuyến nghị)",
+  "recordedAtUtc": "2026-10-23T07:36:32Z",
+  "deadlineUtc": "2026-10-23T08:51:32Z",
+  "readinessDeadlineUtc": "2026-10-23T08:01:32Z",
+  "executionDeadlineUtc": "2026-10-23T08:41:32Z",
+  "timezone": "Asia/Bangkok",
+  "recordingTimeIsNotExactUserClick": true,
+  "sourceRoot": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "prefix": "bp4a-local75-01",
+  "approvedPlanSHA256": "13c5eec3b2d244ffe9a845b024d08240a4bd03fd3ac91579312b1d3e2f80486b",
+  "limits": {
+    "archivePreflight": 1,
+    "install": 1,
+    "build": 1,
+    "unitCoverage": 1
+  },
+  "history": {
+    "priorArchivePreflightAttempts": 2,
+    "cumulativeArchivePreflightMaximum": 3,
+    "priorInstall": 0,
+    "priorBuild": 0,
+    "priorUnitCoverage": 0,
+    "priorDiagnosticGET": 1,
+    "externalPhase03": "CLOSED_UNCHANGED"
+  },
+  "caps": {
+    "readinessMs": 1500000,
+    "archivePhaseMs": 240000,
+    "commandChildMs": 480000,
+    "commandPhaseMs": 540000,
+    "nativeProbeChildMs": 10000,
+    "finalReserveMs": 600000,
+    "httpRequests": 45,
+    "httpRedirects": 0,
+    "httpRetries": 0,
+    "requestTimeoutMs": 15000,
+    "singleCompressedBodyMaxBytes": 16777216,
+    "totalRemoteBodyMaxBytes": 33554432,
+    "firstFailureBodyMaxBytes": 16777216
+  },
+  "storage": {
+    "rootBaselineBytes": 51309130,
+    "maxGeneratedBytes": 2147483648,
+    "reserveBytes": 32212254720,
+    "retainedMaxBytes": 805306368,
+    "forecastOverheadBytes": 92274688,
+    "perStreamLogMaxBytes": 4194304,
+    "mainLogsMaxBytes": 25165824,
+    "reportMaxBytes": 33554432,
+    "tempMetaMaxBytes": 33554432
+  },
+  "npm": "One invocation; stock internal finite recovery allowed within8minute child; HTTP fetch retries0; no coordinator phase retry",
+  "r0": "Tooling/control iterations allowed <=25min before R1; preserve reports/markers/snapshots; exact2review admission before remote",
+  "afterR1": "Any phaseFAIL/UNKNOWN/timeout/drift/storage stops dependent work; no automatic fix/retry",
+  "failureBodyRetention": "At mostfirst complete offending body already received, <=16MiB exclusive file withhash/meta, counts towardmeta32MiB/retained; no extraGET/no extraction/no peer-abort body retention",
+  "exclusions": [
+    "application/lock/coverage acceptance changes",
+    "push anybranch",
+    "CI/backend",
+    "database includingread",
+    "Auth/Edge/deployment",
+    "new runtime/browser/WSL/Docker/tools",
+    "cleanup without separateexistingauthority",
+    "oldledger/grant/marker reset"
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "recordedUtc": "2026-10-24T07:20:15.984Z",
+  "sourceSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "runId": "40073087518",
+  "attempt": 1,
+  "conclusion": "failure",
+  "scope": "CANDIDATE_IMAGE_DIAGNOSTIC_ONLY",
+  "receipt": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t04-image01.json",
+    "bytes": 89738,
+    "sha256": "78f961948f01f843a7fde94a429d2c985713524620c7cb1164d4662d2b6d143c"
+  },
+  "log": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t04-image01.log",
+    "bytes": 74480,
+    "sha256": "a3424e36de4d8f0c3b5404355779b36e611119224a1df2bb52ebc93c4c556f0c"
+  },
+  "metadata": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t04-image01-metadata.json",
+    "bytes": 20103,
+    "sha256": "66db0c74647daa4b9ffc7271c3abf97fcfb2f68bc1e20fceca9dd8d72551fbbd"
+  },
+  "facts": {
+    "t04PhaseOrdinal": 5,
+    "t04ImageMeasurementPhaseOrdinal": 3,
+    "t04ImageMeasurementCleanupAttempted": 1,
+    "t04ImageMeasurementCleanupFailed": 0,
+    "t04ImageMeasureStepOrdinal": 28,
+    "t04ImageMeasurePredicateOrdinal": 65,
+    "t04ImageMeasureObservationMask": 16769519,
+    "t04ImageMeasureExceptionClassOrdinal": 1,
+    "t04ImageMeasureCacheTargetOrdinal": 0,
+    "t04ImageMeasureElapsedObserved": 0,
+    "t04ImageMeasureElapsedMs": 0,
+    "t04ImageMeasureElapsedCapped": 0,
+    "t04FailedTests": 0,
+    "t04RunnerErrors": 0,
+    "t04HookErrors": 0,
+    "t04CandidateInventoryStatus": 1,
+    "t04CandidateImagePhaseOrdinal": 0,
+    "t04CandidateConsumerPhaseOrdinal": 0,
+    "isolatedCleanupFailed": 0,
+    "isolatedReceiptReadOrdinal": 1,
+    "isolatedReceiptBytes": 35111,
+    "isolatedReceiptBytesCapped": 0
+  },
+  "observationsProved": [
+    "publication",
+    "pngDecoded",
+    "origin200",
+    "origin304",
+    "storageOrdinary503",
+    "storageConditional503",
+    "lookupOrdinary503",
+    "lookupConditional503",
+    "uploadProbeBypassed",
+    "uploadMetadata503",
+    "uploadStillUploading",
+    "uploadNotPublished",
+    "uploadPreviousBindingPreserved",
+    "cleanupGateway503",
+    "cleanupDiscarded",
+    "cleanupMetadataPreserved",
+    "cleanupBytesPreserved",
+    "cleanupControlDeleted",
+    "faultSentinelsPreserved"
+  ],
+  "observationsUnproved": [
+    "warmCache",
+    "freshAfterUnlink404",
+    "cache59Observed",
+    "cache60Denied",
+    "cache61Denied"
+  ],
+  "failureOracle": "step28/predicate65: warm.status===200 && warm.cached && hash(warm.bytes)===hash(imageBytes())",
+  "attribution": "Warm fetch returned and CDP predicate38 passed; one or more warm predicate65 operands false. Exact operand UNKNOWN in exported receipt.",
+  "cleanup": true,
+  "outerCleanup": true,
+  "cleanupFailure": null,
+  "reclaim": [
+    {
+      "schemaVersion": "permission-ci1-reclaim-v1",
+      "status": "RECLAIMED",
+      "imageUnlinked": true,
+      "imageLogicalBytes": 19327352832,
+      "imageAllocatedBytes": 19327369216,
+      "hostFreeBeforeBytes": 71842471936,
+      "hostFreeAfterBytes": 91169845248,
+      "measuredHostFreeDeltaBytes": 19327373312,
+      "remaining": "compact control/status/safe export only; ephemeral runner"
+    }
+  ],
+  "outside": [
+    {
+      "measuredBytes": 568901632,
+      "budgetBytes": 1073741824,
+      "reservedFutureBytes": 16777216,
+      "technicalQuota": false
+    }
+  ],
+  "wholeT04": "NOT_RUN",
+  "full35BusinessRuntime": "NOT_RUN",
+  "priorWholeRun": "40068845295",
+  "priorWholeStatus": "FAIL",
+  "next": "Focused local Chromium control; no cloud rerun authorized or scheduled",
+  "candidateTests": [
+    {
+      "ordinal": 1,
+      "discovered": 1,
+      "stateOrdinal": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 2,
+      "discovered": 1,
+      "stateOrdinal": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 3,
+      "discovered": 1,
+      "stateOrdinal": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 4,
+      "discovered": 1,
+      "stateOrdinal": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 5,
+      "discovered": 1,
+      "stateOrdinal": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 6,
+      "discovered": 1,
+      "stateOrdinal": 1,
+      "attempts": 1
+    }
+  ],
+  "innerFacts": 798
+}

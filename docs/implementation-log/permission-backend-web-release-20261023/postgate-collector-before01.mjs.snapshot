@@ -1,0 +1,181 @@
+// Coordinator-only, read-only collection. This creates no reservation or terminal
+// settlement and performs no PR, merge, push, rerun, Auth or database action.
+import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
+import {lstatSync,realpathSync,writeFileSync} from 'node:fs';
+import {join,resolve} from 'node:path';
+import {pathToFileURL} from 'node:url';
+import {PROJECT_PHASES,PROJECT_REPOSITORY,PROJECT_REPOSITORY_ID,sourceBinding} from '../code/scripts/project-ci-results.mjs';
+
+const cwd='D:/Workspace/pos-cafe-permission-timeonly-20261022/code';
+const evidenceRoot='D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence';
+const branch='run/permissions-20261020',targetBranch='main',workflowPath='.github/workflows/ci.yml';
+const MiB=1024**2,hash=value=>createHash('sha256').update(value).digest('hex');
+const hex=value=>typeof value==='string'&&/^[a-f0-9]{40}$/.test(value);
+const check=(ok,reason)=>{if(!ok)throw Object.assign(Error('POSTGATE_COLLECTION_REFUSED'),{collectorReason:reason});};
+const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+const text=bytes=>new TextDecoder('utf-8',{fatal:true}).decode(bytes);
+const json=bytes=>JSON.parse(text(bytes));
+const suffixes=['-api.json','-workflow.log','-tested-commit.json','-candidate-commit.json','-pr.json',
+ '-workflow-commit.json','-workflow-tree.json','-workflow-blob-api.json','-workflow.yml','-main-ref.json',
+ '-summary.json','-native-cleanup-raw.json','-native-cleanup.json','-collection.json'];
+
+function writer(tag){
+ for(const path of[cwd,evidenceRoot]){
+  const s=lstatSync(path);check(s.isDirectory()&&!s.isSymbolicLink()&&realpathSync(path)===resolve(path),'ROOT');
+ }
+ for(const suffix of suffixes)check(!lstatSync(join(evidenceRoot,tag+suffix),{throwIfNoEntry:false}),'OUTPUT_EXISTS');
+ return(suffix,value)=>{
+  check(suffixes.includes(suffix),'OUTPUT_NAME');
+  const bytes=Buffer.isBuffer(value)?value:Buffer.from(JSON.stringify(value,null,2)+'\n');
+  check(bytes.length<=4*MiB,'OUTPUT_BOUNDS');
+  const path=join(evidenceRoot,tag+suffix);writeFileSync(path,bytes,{flag:'wx',mode:0o600});
+  return{path,sha256:hash(bytes)};
+ };
+}
+function readOnlyRun(command,args,cap){
+ return execFileSync(command,args,{cwd,timeout:60000,maxBuffer:cap,windowsHide:true});
+}
+
+// Bounded line scanner for real gh log objects. It never prints captured text.
+export function workflowObjects(bytes){
+ check(Buffer.isBuffer(bytes)&&bytes.length<=4*MiB,'LOG_BOUNDS');
+ const lines=text(bytes).split('\n').map(line=>line.replace(/^.*?\t[^\t]*\t\S+Z /,''));
+ check(lines.length<=50000,'LOG_BOUNDS');
+ const objects=[];
+ for(let start=0;start<lines.length;start++){
+  if(!lines[start].trimStart().startsWith('{'))continue;
+  let body='',depth=0,quoted=false,escaped=false,complete=false;
+  for(let end=start;end<Math.min(lines.length,start+2000);end++){
+   const line=lines[end]+'\n';body+=line;check(Buffer.byteLength(body)<=2*MiB,'LOG_OBJECT_BOUNDS');
+   for(const c of line){
+    if(quoted){if(escaped)escaped=false;else if(c==='\\')escaped=true;else if(c==='"')quoted=false;}
+    else if(c==='"')quoted=true;
+    else if(c==='{'||c==='[')depth++;
+    else if(c==='}'||c===']')depth--;
+   }
+   if(depth===0&&!quoted){
+    try{const value=JSON.parse(body);if(value&&typeof value==='object')objects.push(value);}catch{}
+    check(objects.length<=256,'LOG_OBJECT_COUNT');start=end;complete=true;break;
+   }
+   check(depth>=0,'LOG_JSON_FRAMING');
+  }
+  check(complete,'LOG_JSON_INCOMPLETE');
+ }
+ return objects;
+}
+
+export function decodeWorkflowBlob(value,expectedOid){
+ check(value?.encoding==='base64'&&value.sha===expectedOid&&hex(expectedOid)&&typeof value.content==='string'
+  &&Number.isSafeInteger(value.size)&&value.size>0&&value.size<=MiB,'WORKFLOW_BLOB');
+ const encoded=value.content.replace(/[\r\n]/g,'');
+ check(/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(encoded),'WORKFLOW_BASE64');
+ const bytes=Buffer.from(encoded,'base64');
+ check(bytes.length===value.size&&bytes.toString('base64')===encoded,'WORKFLOW_BASE64');
+ const oid=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
+ check(oid===expectedOid&&Buffer.from(text(bytes)).equals(bytes),'WORKFLOW_GIT_OID');
+ return bytes;
+}
+
+// The injectable reader/writer permit offline contract checks without gh or disk
+// writes. The CLI uses only the fixed local roots and one-shot exclusive writer.
+export function collectPostGateCi(input,deps={}){
+ const{runId,tag,purpose,candidateSHA}=input,prNumber=Number(input.prNumber);
+ check(/^[1-9][0-9]{0,19}$/.test(runId??'')&&/^[a-z][a-z0-9-]{0,63}$/.test(tag??'')
+  &&['pull_request','main_push'].includes(purpose)&&/^[1-9][0-9]{0,8}$/.test(String(input.prNumber??''))
+  &&Number.isSafeInteger(prNumber)&&hex(candidateSHA),'ARGS');
+ const run=deps.run??readOnlyRun,save=deps.save??writer(tag),now=deps.now??(()=>new Date().toISOString());
+ const read=(command,args,cap)=>{const bytes=run(command,args,cap);check(Buffer.isBuffer(bytes)&&bytes.length<=cap,'READ_BOUNDS');return bytes;};
+ const api=(path,suffix,cap=2*MiB)=>{
+  const bytes=read('gh',['api','--hostname','github.com','--method','GET','-H','Accept: application/vnd.github+json',
+   'repos/'+PROJECT_REPOSITORY+'/'+path],cap);
+  const ref=save(suffix,bytes);return{value:json(bytes),ref};
+ };
+ // Persist exact raw metadata/log before parsing/binding their derived receipts.
+ const metadataBytes=read('gh',['api','--hostname','github.com','--method','GET','-H','Accept: application/vnd.github+json',
+  'repos/'+PROJECT_REPOSITORY+'/actions/runs/'+runId],2*MiB);
+ const metadataRef=save('-api.json',metadataBytes);
+ const logBytes=read('gh',['run','view',runId,'--repo',PROJECT_REPOSITORY,'--attempt','1','--log'],4*MiB);
+ const logRef=save('-workflow.log',logBytes),metadata=json(metadataBytes),objects=workflowObjects(logBytes);
+ const summaries=objects.filter(x=>x.schemaVersion==='pos-cafe-light-ci-v1');
+ const cleanups=objects.filter(x=>x.schemaVersion==='permission-pg16-reclaim-v1');
+ check(summaries.length===1&&cleanups.length===1,'SUMMARY_OR_CLEANUP_CARDINALITY');
+ const summary=summaries[0],cleanup=cleanups[0],event=purpose==='pull_request'?'pull_request':'push';
+ check(String(metadata.id)===runId&&metadata.run_attempt===1&&metadata.status==='completed'
+  &&['success','failure','cancelled','timed_out'].includes(metadata.conclusion)&&metadata.event===event
+  &&metadata.path===workflowPath&&metadata.head_branch===(purpose==='pull_request'?branch:targetBranch),'RUN_BINDING');
+ for(const repo of[metadata.repository,metadata.head_repository])check(repo?.full_name===PROJECT_REPOSITORY&&repo.id===PROJECT_REPOSITORY_ID,'RUN_REPOSITORY');
+ check(summary.repository===PROJECT_REPOSITORY&&summary.repositoryID===PROJECT_REPOSITORY_ID&&summary.event===event
+  &&summary.runId===runId&&summary.attempt===1&&hex(summary.sourceSHA)&&hex(summary.workflowSHA)
+  &&summary.sourceSHA!==candidateSHA&&/^[a-f0-9]{64}$/.test(summary.sourceFingerprint??'')
+  &&/^[a-f0-9]{64}$/.test(summary.lockSHA??''),'SUMMARY_BINDING');
+ const testedSourceSHA=summary.sourceSHA;
+ const tested=api('git/commits/'+testedSourceSHA,'-tested-commit.json');
+ const candidate=api('git/commits/'+candidateSHA,'-candidate-commit.json');
+ const pull=api('pulls/'+prNumber,'-pr.json'),pr=pull.value,commit=tested.value;
+ check(candidate.value.sha===candidateSHA&&hex(candidate.value.tree?.sha)&&commit.sha===testedSourceSHA
+  &&commit.tree?.sha===candidate.value.tree.sha&&hex(pr.base?.sha)&&pr.base.sha!==candidateSHA
+  &&same(commit.parents?.map(x=>x.sha),[pr.base.sha,candidateSHA]),'COMMIT_TREE_PARENTS');
+ check(pr.number===prNumber&&pr.head?.sha===candidateSHA&&pr.head.ref===branch&&pr.base.ref===targetBranch,'PR_BINDING');
+ for(const repo of[pr.head.repo,pr.base.repo])check(repo?.full_name===PROJECT_REPOSITORY&&repo.id===PROJECT_REPOSITORY_ID,'PR_REPOSITORY');
+ const matches=x=>x.number===prNumber&&x.head?.sha===candidateSHA&&x.base?.sha===pr.base.sha;
+ check(Array.isArray(metadata.pull_requests)&&metadata.pull_requests.every(matches),'RUN_PR_ASSOCIATION');
+ let metadataHeadRole,main=null;
+ if(purpose==='pull_request'){
+  check(metadata.pull_requests.length===1&&summary.prHeadSHA===candidateSHA,'PR_BINDING');
+  metadataHeadRole=metadata.head_sha===candidateSHA?'candidate':metadata.head_sha===testedSourceSHA?'tested_merge':null;
+  check(metadataHeadRole!==null,'RUN_HEAD');
+ }else{
+  check(metadata.head_sha===testedSourceSHA&&summary.prHeadSHA===null&&pr.merged===true&&pr.merge_commit_sha===testedSourceSHA,'MAIN_BINDING');
+  metadataHeadRole='tested_merge';
+ }
+ const eventData=purpose==='pull_request'?{repository:{id:PROJECT_REPOSITORY_ID,full_name:PROJECT_REPOSITORY},pull_request:pr}
+  :{repository:{id:PROJECT_REPOSITORY_ID,full_name:PROJECT_REPOSITORY},after:testedSourceSHA};
+ const binding=sourceBinding({GITHUB_REPOSITORY:PROJECT_REPOSITORY,GITHUB_REPOSITORY_ID:String(PROJECT_REPOSITORY_ID),
+  GITHUB_SHA:testedSourceSHA,GITHUB_WORKFLOW_SHA:summary.workflowSHA,GITHUB_RUN_ID:runId,GITHUB_RUN_ATTEMPT:'1',GITHUB_EVENT_NAME:event},
+  eventData,testedSourceSHA,commit.parents.map(x=>x.sha));
+ for(const key of Object.keys(binding))check(summary[key]===binding[key],'SOURCE_BINDING');
+ const workflow=api('git/commits/'+summary.workflowSHA,'-workflow-commit.json');
+ check(workflow.value.sha===summary.workflowSHA&&hex(workflow.value.tree?.sha),'WORKFLOW_COMMIT');
+ const tree=api('git/trees/'+workflow.value.tree.sha+'?recursive=1','-workflow-tree.json',4*MiB);
+ check(tree.value.sha===workflow.value.tree.sha&&tree.value.truncated===false&&Array.isArray(tree.value.tree)
+  &&tree.value.tree.length<=10000,'WORKFLOW_TREE');
+ const files=tree.value.tree.filter(x=>x.path===workflowPath);
+ check(files.length===1&&files[0].type==='blob'&&files[0].mode==='100644'&&hex(files[0].sha),'WORKFLOW_TREE');
+ const blobApi=api('git/blobs/'+files[0].sha,'-workflow-blob-api.json'),blob=decodeWorkflowBlob(blobApi.value,files[0].sha);
+ const candidateBlob=read('git',['cat-file','blob',candidateSHA+':'+workflowPath],2*MiB);
+ check(blob.equals(candidateBlob),'WORKFLOW_CANDIDATE_PIN');
+ const workflowBlob=save('-workflow.yml',blob);
+ // This is a fresh final read, not an inferred current-main value.
+ if(purpose==='main_push'){
+  main=api('git/ref/heads/'+targetBranch,'-main-ref.json');
+  check(main.value.ref==='refs/heads/'+targetBranch&&main.value.object?.sha===testedSourceSHA,'MAIN_REF');
+ }
+ check(same(Object.keys(cleanup).sort(),['schemaVersion','status','rootRemoved','processReleased'].sort())
+  &&cleanup.status==='NOT_PRESENT'&&cleanup.rootRemoved===true&&cleanup.processReleased===true,'CLEANUP_NOT_OBSERVED');
+ // Existing raw producer has no source/run fields. Added binding comes only from
+ // the exact source/run-verified log above; preserve the raw receipt and log refs.
+ const observation=save('-summary.json',summary),rawCleanup=save('-native-cleanup-raw.json',cleanup);
+ const reclaim=save('-native-cleanup.json',{...cleanup,sourceSHA:testedSourceSHA,runId,
+  bindingBasis:'SAME_SOURCE_BOUND_TERMINAL_WORKFLOW_LOG',rawReceiptSHA256:rawCleanup.sha256,rawReceipt:rawCleanup,workflowLog:logRef});
+ const wholeCi18=metadata.conclusion==='success'&&summary.overallStatus==='PASS'&&summary.sourcePreserved===true
+  &&same(summary.phases?.map(x=>x.id),PROJECT_PHASES)&&summary.phases.every(x=>x.status==='PASS'&&x.exitCode===0);
+ const refs={metadata:metadataRef,observation,reclaim,testedCommit:tested.ref,pullRequest:pull.ref,
+  workflowCommit:workflow.ref,workflowTree:tree.ref,workflowBlob,...(main?{mainRef:main.ref}:{})};
+ const collection={schemaVersion:'permission-postgate-ci-collection-v1',recordedAtUtc:now(),sourceSHA:candidateSHA,testedSourceSHA,
+  workflowSHA:summary.workflowSHA,repository:PROJECT_REPOSITORY,purpose,prNumber,runId,attempt:1,conclusion:metadata.conclusion,
+  metadataHeadRole,candidateTreeSHA:candidate.value.tree.sha,baseSHA:pr.base.sha,wholeCi18,refs,
+  candidateCommit:candidate.ref,workflowBlobApi:blobApi.ref,workflowSHA256:hash(blob),rawCleanup,log:logRef,
+  boundary:'COLLECTION_ONLY_NO_RESERVATION_OR_SETTLEMENT; reviewed packet/intent must still be validated by the frozen guard'};
+ const collectionRef=save('-collection.json',collection);
+ return{...collection,collection:collectionRef};
+}
+
+if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
+ try{
+  check(process.argv.length===7,'ARGS');
+  const[runId,tag,purpose,prNumber,candidateSHA]=process.argv.slice(2);
+  const result=collectPostGateCi({runId,tag,purpose,prNumber,candidateSHA});
+  console.log(JSON.stringify(result));if(!result.wholeCi18)process.exitCode=1;
+ }catch(error){console.error(JSON.stringify({status:'REFUSED',code:'POSTGATE_COLLECTION_REFUSED',reason:error.collectorReason??'IO_OR_PARSE'}));process.exitCode=1;}
+}

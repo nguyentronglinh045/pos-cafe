@@ -1,0 +1,52 @@
+{
+  "status": "PASS_STORED_EFFECTIVE_CLI_CONFIG_ONLY",
+  "observedAtUtc": "2026-10-22T09:32:02.9364668+00:00",
+  "cwd": "D:\\Workspace\\pos-cafe",
+  "executable": "C:\\Users\\nguye\\AppData\\Local\\OpenAI\\Codex\\bin\\a96ca4c1eee0cf35\\codex.exe",
+  "arguments": [
+    "mcp",
+    "list",
+    "--json"
+  ],
+  "localConfigInspectionOnly": true,
+  "rawCliOutputPersisted": false,
+  "selectedProfiles": [
+    {
+      "name": "pos_cafe_supabase_ro",
+      "enabled": false,
+      "transportType": "streamable_http",
+      "host": "mcp.supabase.com",
+      "readOnlyTrue": true,
+      "targetIsAuthorizedStaging": false,
+      "databaseDocsFeaturesOnly": true
+    },
+    {
+      "name": "supabase",
+      "enabled": false,
+      "transportType": "streamable_http",
+      "host": "mcp.supabase.com",
+      "readOnlyTrue": false,
+      "targetIsAuthorizedStaging": false,
+      "databaseDocsFeaturesOnly": false
+    },
+    {
+      "name": "supabase_pos_cafe",
+      "enabled": true,
+      "transportType": "streamable_http",
+      "host": "mcp.supabase.com",
+      "readOnlyTrue": true,
+      "targetIsAuthorizedStaging": true,
+      "databaseDocsFeaturesOnly": true
+    }
+  ],
+  "storedConfigSha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+  "effectiveStagingReadOnly": true,
+  "originalProfilesDisabled": true,
+  "activeDeadlineWatchers": 0,
+  "stoppedWatcherPid": 10588,
+  "initialWatcherPidsAbsent": true,
+  "liveConnectionReloaded": false,
+  "oauthRevoked": false,
+  "databaseCallsByThisAction": 0,
+  "apiCallsByThisAction": 0
+}

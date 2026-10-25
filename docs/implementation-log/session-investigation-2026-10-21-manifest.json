@@ -1,0 +1,25 @@
+{
+  "purpose": "Independent review of analysis only, no gate or application changes",
+  "files": [
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\workflow\\tasks\\session-investigation-2026-10-21.md",
+      "bytes": 20038,
+      "sha256": "ce0ff0bd53073ee12f3302dc6b63a9c4df62bb5e45e516741571064624033a55"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\session-investigation-2026-10-21-evidence.json",
+      "bytes": 70440,
+      "sha256": "4db93fb5030e811a6a1b9f7df30d6cd6cb6f7dac2fee43e008339f0d82b54f1c"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\session-investigation-2026-10-21-ci23.json",
+      "bytes": 12271,
+      "sha256": "aea3b12c31f9188707e366fb6ee6a9264354fd872aa3193112359fee48ce1e59"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\session-investigation-2026-10-21-shutdown.json",
+      "bytes": 456,
+      "sha256": "ce6460f24a2976d33e08db877e29dc2503892808e7b20fa087a286839c7e880b"
+    }
+  ]
+}

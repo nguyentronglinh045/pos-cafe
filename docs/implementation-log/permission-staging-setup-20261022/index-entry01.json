@@ -1,0 +1,5 @@
+{
+  "entry": "- [Ưu tiên setup DB staging trước17h, 22/10/2026](permission-staging-setup-2026-10-22.md) — source b2/28SQL xác định, metadata public còn trống; chuẩn bị phương án schema/logic giữ rỗng. Chờ chọn quyền ghi staging; chưa đổi config hoặc DB, chưa mở CI/backend.\r\n\r\n",
+  "sha256": "c76a2ae6ffc6386687e99c718eccc8322aa36c3a83cc2783324ee3cddb3f7cf9",
+  "previousContentPreserved": true
+}

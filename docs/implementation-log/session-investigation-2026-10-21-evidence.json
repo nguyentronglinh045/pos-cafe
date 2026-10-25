@@ -1,0 +1,1977 @@
+{
+  "scope": "Read-only session investigation; current application source not executed or changed; no secrets or raw transcript copied. Metrics cover parent transcript only; metadata job sums exclude queue and cloud-light23. Command failures include benign searches and expected negative controls. Counts do not equal independent software defects or review rounds. Active-turn time is not CPU time.",
+  "threadId": "01a1535e-9160-7200-bfa0-f71bdec8abec",
+  "title": "Điều phối phân quyền — tiếp nhận REG…",
+  "transcript": {
+    "path": "C:\\Users\\nguye\\.codex\\sessions\\2026\\10\\19\\rollout-2026-10-19T15-54-29-01a1535e-9160-7200-bfa0-f71bdec8abec.jsonl",
+    "bytes": 74076447,
+    "sha256": "2e9d713a8462b7232a70ac756d5fd2cffff5ddeda57b9d41842dcab3e2ac38c5",
+    "cutoffLastExecutionUtc": "2026-10-20T19:00:00.579Z",
+    "lastLineIsSettingsEventOnly": true
+  },
+  "windowSeconds": 122731,
+  "activeTurnSeconds": 69521,
+  "counts": {
+    "FunctionCallOutput": 1,
+    "AgentMessage": 434,
+    "CommandExecution": 1870,
+    "Reasoning": 3561,
+    "McpToolCall": 53,
+    "CommandNonzeroExit": 137,
+    "FileChange": 435,
+    "SubAgentActivity": 623,
+    "CollabAgentToolCall": 29,
+    "UserMessage": 14,
+    "ContextCompaction": 20,
+    "Extension": 140,
+    "ImageView": 30
+  },
+  "collaborationCalls": {
+    "spawn_agent": 4,
+    "list_agents": 21,
+    "wait_agent": 29,
+    "send_message": 117,
+    "request_user_input_async": 3,
+    "followup_task": 254,
+    "sleep": 82,
+    "js": 43,
+    "wait": 15
+  },
+  "compactions": [
+    {
+      "line": 1039,
+      "utc": "2026-10-19T11:29:39.249Z"
+    },
+    {
+      "line": 2001,
+      "utc": "2026-10-19T14:51:34.667Z"
+    },
+    {
+      "line": 2812,
+      "utc": "2026-10-20T00:40:08.235Z"
+    },
+    {
+      "line": 3919,
+      "utc": "2026-10-20T01:25:59.711Z"
+    },
+    {
+      "line": 5197,
+      "utc": "2026-10-20T02:19:35.650Z"
+    },
+    {
+      "line": 6217,
+      "utc": "2026-10-20T03:07:47.537Z"
+    },
+    {
+      "line": 7227,
+      "utc": "2026-10-20T04:00:21.334Z"
+    },
+    {
+      "line": 8270,
+      "utc": "2026-10-20T04:46:11.567Z"
+    },
+    {
+      "line": 9131,
+      "utc": "2026-10-20T05:23:20.944Z"
+    },
+    {
+      "line": 10354,
+      "utc": "2026-10-20T06:22:00.897Z"
+    },
+    {
+      "line": 11341,
+      "utc": "2026-10-20T07:18:26.798Z"
+    },
+    {
+      "line": 12465,
+      "utc": "2026-10-20T08:17:15.184Z"
+    },
+    {
+      "line": 13547,
+      "utc": "2026-10-20T11:02:44.533Z"
+    },
+    {
+      "line": 14540,
+      "utc": "2026-10-20T11:56:18.242Z"
+    },
+    {
+      "line": 15816,
+      "utc": "2026-10-20T13:06:16.089Z"
+    },
+    {
+      "line": 16925,
+      "utc": "2026-10-20T14:01:29.326Z"
+    },
+    {
+      "line": 18165,
+      "utc": "2026-10-20T15:19:49.002Z"
+    },
+    {
+      "line": 19422,
+      "utc": "2026-10-20T16:31:40.605Z"
+    },
+    {
+      "line": 20619,
+      "utc": "2026-10-20T17:36:09.214Z"
+    },
+    {
+      "line": 21872,
+      "utc": "2026-10-20T18:52:53.356Z"
+    }
+  ],
+  "turns": [
+    {
+      "id": "01a1535e-9388-7600-948e-676c52dc4089",
+      "start": 1792400069,
+      "end": 1792400951,
+      "ending": "task_complete",
+      "line": 335
+    },
+    {
+      "id": "01a1536c-0c10-7ad2-93e2-06e5e2a36f00",
+      "start": 1792400952,
+      "end": 1792401620,
+      "ending": "task_complete",
+      "line": 559
+    },
+    {
+      "id": "01a153c6-cbde-7800-837c-9ac84fc679c3",
+      "start": 1792406899,
+      "end": 1792406926,
+      "ending": "task_complete",
+      "line": 577
+    },
+    {
+      "id": "01a153c8-5158-7403-8ee5-468cf20339d8",
+      "start": 1792406999,
+      "end": 1792409829,
+      "ending": "task_complete",
+      "line": 1211
+    },
+    {
+      "id": "01a153f3-871f-7c83-a549-865a35a157ab",
+      "start": 1792409831,
+      "end": 1792410334,
+      "ending": "task_complete",
+      "line": 1372
+    },
+    {
+      "id": "01a1542e-fb86-77f3-a907-e95f5e1bd3f4",
+      "start": 1792413727,
+      "end": 1792414471,
+      "ending": "task_complete",
+      "line": 1544
+    },
+    {
+      "id": "01a1543a-782d-7770-93c3-e4cc1637fc97",
+      "start": 1792414480,
+      "end": 1792415347,
+      "ending": "task_complete",
+      "line": 1779
+    },
+    {
+      "id": "01a1548f-89f8-7313-b867-6f245d8e7abc",
+      "start": 1792420055,
+      "end": 1792420464,
+      "ending": "task_complete",
+      "line": 1883
+    },
+    {
+      "id": "01a15497-7e53-7bc1-a7a8-c9f8c3088059",
+      "start": 1792420576,
+      "end": 1792420886,
+      "ending": "task_complete",
+      "line": 1979
+    },
+    {
+      "id": "01a154a3-2c6e-77e3-843d-93e6dfd56820",
+      "start": 1792421342,
+      "end": 1792422157,
+      "ending": "task_complete",
+      "line": 2215
+    },
+    {
+      "id": "01a154b1-f06e-76e2-980b-4c0875e4dc04",
+      "start": 1792422310,
+      "end": 1792424095,
+      "ending": "task_complete",
+      "line": 2722
+    },
+    {
+      "id": "01a156b9-99a0-74b1-9d38-72d89e9a0bd6",
+      "start": 1792456366,
+      "end": 1792456407,
+      "ending": "task_complete",
+      "line": 2750
+    },
+    {
+      "id": "01a156bb-b1d8-7892-9882-8e3955f6d0ae",
+      "start": 1792456503,
+      "end": 1792487418,
+      "ending": "turn_aborted",
+      "line": 13524
+    },
+    {
+      "id": "01a158f6-f4f0-7483-840d-08c2e9bb7e73",
+      "start": 1792493942,
+      "end": 1792495021,
+      "ending": "task_complete",
+      "line": 13959
+    },
+    {
+      "id": "01a15909-764a-7fc2-8827-1ee3c7d34453",
+      "start": 1792495154,
+      "end": 1792522800,
+      "ending": "lastCommandKilledAtWindowsShutdown",
+      "line": 22130
+    }
+  ],
+  "groups": {
+    "light": {
+      "count": 21,
+      "seconds": 13393.0,
+      "success": 17
+    },
+    "backend": {
+      "count": 3,
+      "seconds": 1270.0,
+      "success": 1
+    },
+    "t04": {
+      "count": 12,
+      "seconds": 10662.0,
+      "success": 0
+    },
+    "service": {
+      "count": 13,
+      "seconds": 6827.0,
+      "success": 7
+    }
+  },
+  "jobSecondsTotal": 32152.0,
+  "jobs": [
+    {
+      "group": "light",
+      "receipt": "cloud-light02",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "731d7f9019308340e9dd9aade4e95381fa4e28c3",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T02:17:06Z",
+      "completedUtc": "2026-10-20T02:26:56Z",
+      "seconds": 590.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39358071488/job/118417437436",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light03",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "8a2acba7dfa52d9766d2f30fe1a643c6058aa18a",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T02:39:30Z",
+      "completedUtc": "2026-10-20T02:42:38Z",
+      "seconds": 188.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39360092950/job/118424015581",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light04",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "c197a60bae4375643fe5dfc950ccf3ab0c7575e8",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T02:49:22Z",
+      "completedUtc": "2026-10-20T03:01:37Z",
+      "seconds": 735.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39360981175/job/118426850553",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light05",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "c19b081a5c184ed2dd542756c49e1a934b8f5845",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T03:08:14Z",
+      "completedUtc": "2026-10-20T03:19:38Z",
+      "seconds": 684.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39362687767/job/118432254671",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light06",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "b36a726c674d23ada1ec13452ecffa4ef7498a43",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T03:32:23Z",
+      "completedUtc": "2026-10-20T03:43:23Z",
+      "seconds": 660.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39364818853/job/118439124096",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light07",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "f5961683514e7b107f113a7a78677238dd3375a8",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T04:04:59Z",
+      "completedUtc": "2026-10-20T04:15:46Z",
+      "seconds": 647.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39367658384/job/118448068064",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light08",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "7642af4ece919b7cdf664faeb3d1fa4ae4ec068e",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T04:47:07Z",
+      "completedUtc": "2026-10-20T04:58:16Z",
+      "seconds": 669.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39371400080/job/118459855470",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light09",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "d566a5542672bc47e1d52635bf45d12d3cd47053",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T05:16:01Z",
+      "completedUtc": "2026-10-20T05:19:29Z",
+      "seconds": 208.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39373968661/job/118467821905",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light10",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "36a20b8bd19c22f82e38ab810f808e2ebc96d1d2",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T05:30:41Z",
+      "completedUtc": "2026-10-20T05:36:13Z",
+      "seconds": 332.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39375275814/job/118471905544",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light11",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "462cd5f0215f43c474ba0e8c33fc3e09cee691c2",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T05:38:00Z",
+      "completedUtc": "2026-10-20T05:41:50Z",
+      "seconds": 230.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39375929977/job/118473948511",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light12",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "3b1314b6ad6246189b78aa7cbde48d24afb39e1e",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T05:42:50Z",
+      "completedUtc": "2026-10-20T05:56:13Z",
+      "seconds": 803.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39376354812/job/118475269313",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light13",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "7c52b9aa504401d1d1a3c4d3dab0f86799698188",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T06:34:14Z",
+      "completedUtc": "2026-10-20T06:47:44Z",
+      "seconds": 810.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39381136160/job/118490268273",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light14",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "7d3b232faf036cd915140d9dd8ef2dbdab4259eb",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T07:42:06Z",
+      "completedUtc": "2026-10-20T07:52:45Z",
+      "seconds": 639.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39388242053/job/118513227804",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light15",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "7ce1b5c26591a955088022491d609241018b35b5",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T08:26:13Z",
+      "completedUtc": "2026-10-20T08:38:20Z",
+      "seconds": 727.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39393379047/job/118530037930",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light16",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "66290607b09d6ced2d518573fb26b8b7a7f54a50",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T11:33:53Z",
+      "completedUtc": "2026-10-20T11:46:09Z",
+      "seconds": 736.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39415842753/job/118604512443",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light17",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "0601f922e18ff2d20611c93abd8e8186cff6b46b",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T12:27:35Z",
+      "completedUtc": "2026-10-20T12:41:16Z",
+      "seconds": 821.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39422398817/job/118626376300",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light18",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "d9dc333b755b030b9972a768eb5f415e04040cec",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T13:21:13Z",
+      "completedUtc": "2026-10-20T13:32:02Z",
+      "seconds": 649.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39429651744/job/118651047920",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light19",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "369ff1ea6a72feecd758d3d268fa7cac49b5238a",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T14:07:58Z",
+      "completedUtc": "2026-10-20T14:21:42Z",
+      "seconds": 824.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39436461963/job/118674647710",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light20",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "3a90375f6f47d9f2eb41ec581ccbab8be18cdd17",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T15:26:08Z",
+      "completedUtc": "2026-10-20T15:39:48Z",
+      "seconds": 820.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39448356829/job/118716189538",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light21",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "84fc931a393c594385f960c127f22a08b16e0e0a",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T16:38:55Z",
+      "completedUtc": "2026-10-20T16:52:25Z",
+      "seconds": 810.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39459282997/job/118754185933",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "light",
+      "receipt": "cloud-light22",
+      "jobName": "Build, unit, tooling and mock UI",
+      "sha": "206052e2c6ec0394e0226bd0f8d829ff4a1cbfb5",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T17:47:07Z",
+      "completedUtc": "2026-10-20T18:00:38Z",
+      "seconds": 811.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39469079780/job/118788067571",
+      "failures": [],
+      "stages": []
+    },
+    {
+      "group": "backend",
+      "receipt": "cloud-backend01",
+      "jobName": "pilot",
+      "sha": "c19b081a5c184ed2dd542756c49e1a934b8f5845",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T03:21:41Z",
+      "completedUtc": "2026-10-20T03:21:53Z",
+      "seconds": 12.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39363871748/job/118436073214",
+      "failures": [
+        {
+          "stage": "source-tools",
+          "operation": "SOURCE_INTAKE",
+          "code": "GUARD_REFUSED",
+          "command": null,
+          "exitCode": null,
+          "facts": {
+            "imageOrdinal": 0
+          }
+        }
+      ],
+      "stages": []
+    },
+    {
+      "group": "backend",
+      "receipt": "cloud-backend02",
+      "jobName": "pilot",
+      "sha": "b36a726c674d23ada1ec13452ecffa4ef7498a43",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T03:46:34Z",
+      "completedUtc": "2026-10-20T03:53:02Z",
+      "seconds": 388.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39366047691/job/118443023735",
+      "failures": [],
+      "stages": [
+        {
+          "status": null,
+          "failure": null,
+          "passedStages": 0,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "backend",
+      "receipt": "cloud-backend03",
+      "jobName": "pilot",
+      "sha": "f5961683514e7b107f113a7a78677238dd3375a8",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T04:16:36Z",
+      "completedUtc": "2026-10-20T04:31:06Z",
+      "seconds": 870.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39368710006/job/118451390259",
+      "failures": [],
+      "stages": [
+        {
+          "status": null,
+          "failure": null,
+          "passedStages": 0,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "t04",
+      "receipt": "cloud-t0401",
+      "jobName": "t04-profile",
+      "sha": "7642af4ece919b7cdf664faeb3d1fa4ae4ec068e",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T04:59:08Z",
+      "completedUtc": "2026-10-20T05:12:49Z",
+      "seconds": 821.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39372442765/job/118463099307",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "t04StageOrdinal": 0,
+            "t04FailureOrdinal": 0,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "bootstrap",
+          "passedStages": 0,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "t04",
+      "receipt": "cloud-t0402",
+      "jobName": "t04-profile",
+      "sha": "3b1314b6ad6246189b78aa7cbde48d24afb39e1e",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T05:58:20Z",
+      "completedUtc": "2026-10-20T06:13:09Z",
+      "seconds": 889.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39377736406/job/118479569811",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "t04StageOrdinal": 4,
+            "t04FailureOrdinal": 0,
+            "t04MissingRequired": 0,
+            "t04FirstFailedRequired": 4,
+            "t04RunnerErrors": 0,
+            "t04HookErrors": 0,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "read-database",
+          "passedStages": 3,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "t04",
+      "receipt": "cloud-t0403",
+      "jobName": "t04-profile",
+      "sha": "7c52b9aa504401d1d1a3c4d3dab0f86799698188",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T06:50:16Z",
+      "completedUtc": "2026-10-20T07:08:48Z",
+      "seconds": 1112.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39382715393/job/118495277991",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "t04StageOrdinal": 10,
+            "t04FailureOrdinal": 0,
+            "t04BoundaryOrdinal": 11,
+            "t04MissingRequired": 0,
+            "t04FirstFailedRequired": 0,
+            "t04FailedTests": 0,
+            "t04RunnerErrors": 0,
+            "t04HookErrors": 0,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "candidate-e2e",
+          "passedStages": 9,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "t04",
+      "receipt": "cloud-t0404",
+      "jobName": "t04-profile",
+      "sha": "7d3b232faf036cd915140d9dd8ef2dbdab4259eb",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T07:55:27Z",
+      "completedUtc": "2026-10-20T08:14:56Z",
+      "seconds": 1169.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39389760901/job/118518159719",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "t04StageOrdinal": 10,
+            "t04FailureOrdinal": 0,
+            "t04BoundaryOrdinal": 15,
+            "t04BoundaryExit": 1,
+            "t04MissingRequired": 0,
+            "t04FirstFailedRequired": 0,
+            "t04FailedTests": 0,
+            "t04RunnerErrors": 0,
+            "t04HookErrors": 0,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "candidate-e2e",
+          "passedStages": 9,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "t04",
+      "receipt": "cloud-t0405",
+      "jobName": "t04-profile",
+      "sha": "7ce1b5c26591a955088022491d609241018b35b5",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T08:39:45Z",
+      "completedUtc": "2026-10-20T08:56:39Z",
+      "seconds": 1014.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39395000047/job/118535439408",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "t04StageOrdinal": 10,
+            "t04FailureOrdinal": 0,
+            "t04BoundaryOrdinal": 15,
+            "t04BoundaryExit": 1,
+            "t04RestoreErrorOrdinal": 0,
+            "t04RestoreCommandOrdinal": 4,
+            "t04MissingRequired": 0,
+            "t04FirstFailedRequired": 0,
+            "t04FailedTests": 0,
+            "t04RunnerErrors": 0,
+            "t04HookErrors": 0,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "candidate-e2e",
+          "passedStages": 9,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "t04",
+      "receipt": "cloud-t0406",
+      "jobName": "t04-profile",
+      "sha": "66290607b09d6ced2d518573fb26b8b7a7f54a50",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T11:47:53Z",
+      "completedUtc": "2026-10-20T12:02:35Z",
+      "seconds": 882.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39417516095/job/118610038559",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "t04StageOrdinal": 0,
+            "t04FailureOrdinal": 0,
+            "t04BoundaryOrdinal": 15,
+            "t04BoundaryExit": 1,
+            "t04PreflightOrdinal": 2,
+            "t04RestoreErrorOrdinal": 0,
+            "t04RestoreCommandOrdinal": 4,
+            "t04RestoreLogObserved": 1,
+            "t04RestoreSqlstateOrdinal": 27,
+            "t04RestoreTargetObserved": 1,
+            "t04RestoreSchemaOrdinal": 5,
+            "t04RestoreLogCapabilityMask": 15,
+            "t04RestoreConstraintKind": 3,
+            "t04RestoreConstraintLocal": 0,
+            "t04RestoreConstraintInherited": 1,
+            "t04RestoreConstraintParent": 1,
+            "t04RestoreDependencyMask": 8,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "bootstrap",
+          "passedStages": 0,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "t04",
+      "receipt": "cloud-t0407",
+      "jobName": "t04-profile",
+      "sha": "0601f922e18ff2d20611c93abd8e8186cff6b46b",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T12:58:53Z",
+      "completedUtc": "2026-10-20T13:06:53Z",
+      "seconds": 480.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39426538638/job/118640429259",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "preservationComponentDriftMask": 1,
+            "preservationFinancialDriftMask": 0,
+            "t04StageOrdinal": 0,
+            "t04FailureOrdinal": 0,
+            "t04BoundaryOrdinal": 18,
+            "t04PreflightOrdinal": 2,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "bootstrap",
+          "passedStages": 0,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "t04",
+      "receipt": "cloud-t0408",
+      "jobName": "t04-profile",
+      "sha": "d9dc333b755b030b9972a768eb5f415e04040cec",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T13:40:50Z",
+      "completedUtc": "2026-10-20T13:45:17Z",
+      "seconds": 267.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39432488654/job/118660819150",
+      "failures": [
+        {
+          "stage": "npm-images",
+          "operation": "IMAGE_PULL",
+          "code": "COMMAND_FAILED",
+          "command": "docker",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 8,
+            "imagePullAttempt": 1,
+            "imageRegistryOrdinal": 1
+          }
+        }
+      ],
+      "stages": []
+    },
+    {
+      "group": "t04",
+      "receipt": "cloud-t0409",
+      "jobName": "t04-profile",
+      "sha": "369ff1ea6a72feecd758d3d268fa7cac49b5238a",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T14:39:38Z",
+      "completedUtc": "2026-10-20T14:52:02Z",
+      "seconds": 744.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39441238161/job/118691336527",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "t04StageOrdinal": 13,
+            "t04FailureOrdinal": 0,
+            "t04MissingRequired": 0,
+            "t04FirstFailedRequired": 1,
+            "t04FailedTests": 1,
+            "t04RunnerErrors": 0,
+            "t04HookErrors": 0,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "realtime-e2e",
+          "passedStages": 12,
+          "successfulResets": 3
+        }
+      ]
+    },
+    {
+      "group": "t04",
+      "receipt": "cloud-t0410",
+      "jobName": "t04-profile",
+      "sha": "3a90375f6f47d9f2eb41ec581ccbab8be18cdd17",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T15:50:30Z",
+      "completedUtc": "2026-10-20T16:05:58Z",
+      "seconds": 928.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39452100356/job/118729314211",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "t04StageOrdinal": 13,
+            "t04FailureOrdinal": 0,
+            "t04MissingRequired": 0,
+            "t04FirstFailedRequired": 1,
+            "t04FailedTests": 1,
+            "t04TestErrorCodeOrdinal": 0,
+            "t04TestErrorNameOrdinal": 0,
+            "t04TestErrorMatcherOrdinal": 2,
+            "t04FirstFailedLine": 227,
+            "t04RealtimeFailureMask": 9,
+            "t04RunnerErrors": 0,
+            "t04HookErrors": 0,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "realtime-e2e",
+          "passedStages": 12,
+          "successfulResets": 3
+        }
+      ]
+    },
+    {
+      "group": "t04",
+      "receipt": "cloud-t0411",
+      "jobName": "t04-profile",
+      "sha": "84fc931a393c594385f960c127f22a08b16e0e0a",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T17:08:52Z",
+      "completedUtc": "2026-10-20T17:28:36Z",
+      "seconds": 1184.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39463507149/job/118768708909",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "t04StageOrdinal": 18,
+            "t04FailureOrdinal": 0,
+            "t04MissingRequired": 0,
+            "t04FirstFailedRequired": 1,
+            "t04FailedTests": 1,
+            "t04TestErrorCodeOrdinal": 0,
+            "t04TestErrorNameOrdinal": 0,
+            "t04TestErrorMatcherOrdinal": 0,
+            "t04FirstFailedLine": 68,
+            "t04RunnerErrors": 0,
+            "t04HookErrors": 0,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "transition-e2e",
+          "passedStages": 17,
+          "successfulResets": 8
+        }
+      ]
+    },
+    {
+      "group": "t04",
+      "receipt": "cloud-t0412",
+      "jobName": "t04-profile",
+      "sha": "206052e2c6ec0394e0226bd0f8d829ff4a1cbfb5",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T18:18:00Z",
+      "completedUtc": "2026-10-20T18:37:32Z",
+      "seconds": 1172.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39473492899/job/118803367006",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "t04StageOrdinal": 18,
+            "t04FailureOrdinal": 0,
+            "t04MissingRequired": 0,
+            "t04FirstFailedRequired": 1,
+            "t04FailedTests": 1,
+            "t04TestErrorCodeOrdinal": 31,
+            "t04TestErrorNameOrdinal": 0,
+            "t04TestErrorMatcherOrdinal": 0,
+            "t04FirstFailedLine": 68,
+            "t04RunnerErrors": 0,
+            "t04HookErrors": 0,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "transition-e2e",
+          "passedStages": 17,
+          "successfulResets": 8
+        }
+      ]
+    },
+    {
+      "group": "service",
+      "receipt": "cloud-service01",
+      "jobName": "service-profile",
+      "sha": "66290607b09d6ced2d518573fb26b8b7a7f54a50",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T12:03:34Z",
+      "completedUtc": "2026-10-20T12:10:39Z",
+      "seconds": 425.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39419406793/job/118616320215",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "serviceStageOrdinal": 1,
+            "serviceSetupOrdinal": 3,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "pin-identity-server",
+          "passedStages": 0,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "service",
+      "receipt": "cloud-service02",
+      "jobName": "service-profile",
+      "sha": "0601f922e18ff2d20611c93abd8e8186cff6b46b",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T12:42:08Z",
+      "completedUtc": "2026-10-20T12:57:06Z",
+      "seconds": 898.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39424307374/job/118632848700",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "serviceStageOrdinal": 1,
+            "serviceSetupOrdinal": 3,
+            "serviceStageErrorCodeOrdinal": 0,
+            "serviceStageErrorNameOrdinal": 1,
+            "serviceStageBoundaryOrdinal": 7,
+            "serviceReportObserved": 1,
+            "serviceMissingRequired": 3,
+            "serviceFirstFailedRequired": 0,
+            "serviceFailedTests": 0,
+            "serviceRunnerErrors": 0,
+            "serviceHookErrors": 0,
+            "serviceFirstErrorCodeOrdinal": 0,
+            "serviceFirstErrorNameOrdinal": 0,
+            "serviceFirstErrorMatcherOrdinal": 0,
+            "serviceErrorFileOrdinal": 0,
+            "serviceErrorLine": 0,
+            "serviceFixtureDriftOrdinal": 0,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "pin-identity-server",
+          "passedStages": 0,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "service",
+      "receipt": "cloud-service03",
+      "jobName": "service-profile",
+      "sha": "d9dc333b755b030b9972a768eb5f415e04040cec",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T13:33:55Z",
+      "completedUtc": "2026-10-20T13:40:11Z",
+      "seconds": 376.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39431482035/job/118657363970",
+      "failures": [],
+      "stages": [
+        {
+          "status": "PASS",
+          "failure": null,
+          "passedStages": 1,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "service",
+      "receipt": "cloud-service04",
+      "jobName": "service-profile",
+      "sha": "369ff1ea6a72feecd758d3d268fa7cac49b5238a",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T14:23:46Z",
+      "completedUtc": "2026-10-20T14:30:13Z",
+      "seconds": 387.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39438818277/job/118682923820",
+      "failures": [],
+      "stages": [
+        {
+          "status": "PASS",
+          "failure": null,
+          "passedStages": 3,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "service",
+      "receipt": "cloud-service05",
+      "jobName": "service-profile",
+      "sha": "369ff1ea6a72feecd758d3d268fa7cac49b5238a",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T14:31:59Z",
+      "completedUtc": "2026-10-20T14:37:29Z",
+      "seconds": 330.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39440072530/job/118687265352",
+      "failures": [],
+      "stages": [
+        {
+          "status": "PASS",
+          "failure": null,
+          "passedStages": 1,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "service",
+      "receipt": "cloud-service06",
+      "jobName": "service-profile",
+      "sha": "369ff1ea6a72feecd758d3d268fa7cac49b5238a",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T14:54:00Z",
+      "completedUtc": "2026-10-20T15:01:44Z",
+      "seconds": 464.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39443433611/job/118698998864",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "serviceStageOrdinal": 1,
+            "serviceSetupOrdinal": 3,
+            "serviceStageErrorCodeOrdinal": 0,
+            "serviceStageErrorNameOrdinal": 1,
+            "serviceStageBoundaryOrdinal": 7,
+            "serviceReportObserved": 1,
+            "serviceMissingRequired": 0,
+            "serviceFirstFailedRequired": 7,
+            "serviceFailedTests": 1,
+            "serviceRunnerErrors": 0,
+            "serviceHookErrors": 0,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "pin-onboard-closeout",
+          "passedStages": 0,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "service",
+      "receipt": "cloud-service07",
+      "jobName": "service-profile",
+      "sha": "3a90375f6f47d9f2eb41ec581ccbab8be18cdd17",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T15:40:44Z",
+      "completedUtc": "2026-10-20T15:48:38Z",
+      "seconds": 474.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39450625191/job/118724155550",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "serviceStageOrdinal": 1,
+            "serviceSetupOrdinal": 3,
+            "serviceStageErrorCodeOrdinal": 0,
+            "serviceStageErrorNameOrdinal": 1,
+            "serviceStageBoundaryOrdinal": 7,
+            "serviceReportObserved": 1,
+            "serviceMissingRequired": 0,
+            "serviceFirstFailedRequired": 7,
+            "serviceFailedTests": 1,
+            "serviceTestErrorCodeOrdinal": 0,
+            "serviceTestErrorNameOrdinal": 0,
+            "serviceTestErrorMatcherOrdinal": 0,
+            "serviceFirstFailedLine": 1728,
+            "serviceRunnerErrors": 0,
+            "serviceHookErrors": 0,
+            "serviceFirstErrorCodeOrdinal": 0,
+            "serviceFirstErrorNameOrdinal": 0,
+            "serviceFirstErrorMatcherOrdinal": 0,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "pin-onboard-closeout",
+          "passedStages": 0,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "service",
+      "receipt": "cloud-service08",
+      "jobName": "service-profile",
+      "sha": "3a90375f6f47d9f2eb41ec581ccbab8be18cdd17",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T16:08:35Z",
+      "completedUtc": "2026-10-20T16:15:42Z",
+      "seconds": 427.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39454800896/job/118738732596",
+      "failures": [],
+      "stages": [
+        {
+          "status": "PASS",
+          "failure": null,
+          "passedStages": 1,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "service",
+      "receipt": "cloud-service09",
+      "jobName": "service-profile",
+      "sha": "3a90375f6f47d9f2eb41ec581ccbab8be18cdd17",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T16:18:09Z",
+      "completedUtc": "2026-10-20T16:26:33Z",
+      "seconds": 504.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39456213839/job/118743664113",
+      "failures": [],
+      "stages": [
+        {
+          "status": "PASS",
+          "failure": null,
+          "passedStages": 1,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "service",
+      "receipt": "cloud-service10",
+      "jobName": "service-profile",
+      "sha": "84fc931a393c594385f960c127f22a08b16e0e0a",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T16:53:20Z",
+      "completedUtc": "2026-10-20T17:07:49Z",
+      "seconds": 869.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39461356536/job/118761353422",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "serviceStageOrdinal": 2,
+            "serviceSetupOrdinal": 3,
+            "serviceStageErrorCodeOrdinal": 0,
+            "serviceStageErrorNameOrdinal": 1,
+            "serviceStageBoundaryOrdinal": 7,
+            "serviceReportObserved": 1,
+            "serviceMissingRequired": 0,
+            "serviceFirstFailedRequired": 0,
+            "serviceFailedTests": 0,
+            "serviceRunnerErrors": 0,
+            "serviceHookErrors": 0,
+            "serviceFirstErrorCodeOrdinal": 0,
+            "serviceFirstErrorNameOrdinal": 0,
+            "serviceFirstErrorMatcherOrdinal": 0,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "pin-tc18-wrapper",
+          "passedStages": 1,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "service",
+      "receipt": "cloud-service11",
+      "jobName": "service-profile",
+      "sha": "84fc931a393c594385f960c127f22a08b16e0e0a",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T17:29:52Z",
+      "completedUtc": "2026-10-20T17:36:46Z",
+      "seconds": 414.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39466573931/job/118779436833",
+      "failures": [],
+      "stages": [
+        {
+          "status": "PASS",
+          "failure": null,
+          "passedStages": 1,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "service",
+      "receipt": "cloud-service12",
+      "jobName": "service-profile",
+      "sha": "84fc931a393c594385f960c127f22a08b16e0e0a",
+      "conclusion": "success",
+      "startedUtc": "2026-10-20T17:37:35Z",
+      "completedUtc": "2026-10-20T17:43:52Z",
+      "seconds": 377.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39467706368/job/118783340522",
+      "failures": [],
+      "stages": [
+        {
+          "status": "PASS",
+          "failure": null,
+          "passedStages": 1,
+          "successfulResets": 0
+        }
+      ]
+    },
+    {
+      "group": "service",
+      "receipt": "cloud-service13",
+      "jobName": "service-profile",
+      "sha": "206052e2c6ec0394e0226bd0f8d829ff4a1cbfb5",
+      "conclusion": "failure",
+      "startedUtc": "2026-10-20T18:02:30Z",
+      "completedUtc": "2026-10-20T18:17:12Z",
+      "seconds": 882.0,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39471264501/job/118795661420",
+      "failures": [
+        {
+          "stage": "offline-edge",
+          "operation": "PILOT_HARNESS",
+          "code": "COMMAND_FAILED",
+          "command": "node",
+          "exitCode": 1,
+          "facts": {
+            "imageOrdinal": 12,
+            "serviceStageOrdinal": 2,
+            "serviceSetupOrdinal": 3,
+            "serviceStageErrorCodeOrdinal": 0,
+            "serviceStageErrorNameOrdinal": 1,
+            "serviceStageBoundaryOrdinal": 7,
+            "serviceChildExitObserved": 1,
+            "serviceChildExitCode": 1,
+            "serviceResultFailureOrdinal": 1,
+            "serviceReportObserved": 1,
+            "serviceMissingRequired": 0,
+            "serviceFirstFailedRequired": 0,
+            "serviceFailedTests": 0,
+            "serviceRunnerErrors": 0,
+            "serviceHookErrors": 0,
+            "serviceTc18ResultCount": 7,
+            "serviceTc18PassedOnceCount": 5,
+            "serviceTc18NonPassedCount": 2,
+            "serviceTc18AttemptAnomalies": 0,
+            "serviceTc18FirstNonPassedRequired": 6,
+            "serviceTc18FirstNonPassedLine": 0,
+            "serviceFirstErrorCodeOrdinal": 0,
+            "serviceFirstErrorNameOrdinal": 0,
+            "serviceFirstErrorMatcherOrdinal": 0,
+            "serviceTc18ReceiptObserved": 1,
+            "serviceTc18WrapperStatus": 2,
+            "serviceTc18WrapperCodeOrdinal": 17,
+            "serviceTc18ControlDeleted": 1,
+            "isolatedFailureSeen": 1,
+            "isolatedCleanupFailed": 0
+          }
+        }
+      ],
+      "stages": [
+        {
+          "status": "FAIL",
+          "failure": "pin-tc18-wrapper",
+          "passedStages": 1,
+          "successfulResets": 0
+        }
+      ]
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light02-metadata.json",
+      "sha256": "d6f6158f1d86016b2af26e5cc348d6831ae30d8b8575c419eeaa00353d255d51"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light02.json",
+      "sha256": "d1964e9c829955caac2ac501cab9e8ea5542467043dd64318d4e29e300474e5c"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light03-metadata.json",
+      "sha256": "c64840e4232e79ed5b05e21c54cf996d0b92378fb86c32607ae7d63976569fa0"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light03.json",
+      "sha256": "7dc05de7fb4c31a7d63977697568dd97de2ccaa922d77883556d06e3b791532d"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light04-metadata.json",
+      "sha256": "65a3f7a6a3dd48fbfffafd8d8cca981e63e1b89d1b69b5939b68cfceff75fcdf"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light04.json",
+      "sha256": "6e2848c33e00df1644e3c57240ac3ddeb31e263eefe32ef49a924b5b338ac29b"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light05-metadata.json",
+      "sha256": "cad3816608be1a528e738273095815b0819fcf6760c7ddcdc11c752a996fcacd"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light05.json",
+      "sha256": "f950fa1b7ae3277c457d80343aa68c91dd495b2353ea3e6562a2c7ac0bcf4a08"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light06-metadata.json",
+      "sha256": "c85d4adb9c39a75ad60c1754801ab0f24c24ac1997c1f9957dedb0922b94ef59"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light06.json",
+      "sha256": "ae8561c99c59ea0f302f79ffc4ae1d73a0f253e53c3d9f7d42a39d87c87715a0"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light07-metadata.json",
+      "sha256": "16b2b620e67c1fd658a9e997c2ffdfb4ce2045476004a0f786f9cc920289a55c"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light07.json",
+      "sha256": "cdb9c9358e2d218583bb4e56e54435cd3e7556708304c7f68f499892be5141cc"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light08-metadata.json",
+      "sha256": "b3d6d5b5b1a36cfcb797132cc6d5f265556f6c2308d787dd8c24bd5661e39495"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light08.json",
+      "sha256": "ebfeff9257136c0f76ea9bd9e22713213debd7417c6d69741ab3b0fe145ed173"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light09-metadata.json",
+      "sha256": "6632b5ded6b0e118139b13cf89705f5adeb79a92c920db4c311d9bd1eb3ebeb3"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light09.json",
+      "sha256": "6228c56b618649f553251d7cbbb572d9eb9b27d16377e6060cb676b08831a35b"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light10-metadata.json",
+      "sha256": "7e34781ff06abb32b5ac2c1058a648541ccbe7672774dd1f1ec4531e28c2c3f7"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light10.json",
+      "sha256": "2899ee246cdd4c4c9f13c64dd42795b8513ac6d1bc881c32b5bee0dcbcf5693d"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light11-metadata.json",
+      "sha256": "28ad2b0d679a44e2c353ea79d6d62a31f6b315ab5c3b805addb224e499ca3140"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light11.json",
+      "sha256": "fe29394ffafab210799051aef2a57ccd90ec3e43cd5a1593a4c02876c0f53474"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light12-metadata.json",
+      "sha256": "1228d5ec9272d1b624deb24c7ed4bbcefe8958a444a7053b2dc17943ccbb3bd5"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light12.json",
+      "sha256": "90a9134a0b0c51ecba882141c741e937607247c59102b2ea4ebabe6e2a3c43b4"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light13-metadata.json",
+      "sha256": "268781e5548192753b6b3e996d04d0ba0bfaf0a34bdccd36533fb8b28156dc8f"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light13.json",
+      "sha256": "31c788ef27bd985b14a63bfec7f26303fd3d374bd64ae1a97ddf0a5332c288a6"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light14-metadata.json",
+      "sha256": "39847242dc53d8ea8c9e95425db1a9aff992e5445ac52b03061d75c0445cee1b"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light14.json",
+      "sha256": "5498029784a67c304b89f9e0fb10233f5a6155c1e9e16d6ffa11c390b9b322ae"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light15-metadata.json",
+      "sha256": "0118c270b48b1f397228eda75bb165e0879639e93be99237d660e7ab45f1dc93"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light15.json",
+      "sha256": "a957640899f85456ed28b70e1f3f70ecd0fa3ce47880337dd68eb0f863d71acc"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light16-metadata.json",
+      "sha256": "42b32ab13f9f5e38e98e5507d54067a2cd1124d8e6599425d4428a85b86fdb70"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light16.json",
+      "sha256": "b4be3ca4c3cf31f693e3a1638baaa607aab183bb067b98361caa3d79a66add24"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light17-metadata.json",
+      "sha256": "7d61fe0287a176e5a44b56682499d2ecbd948435907b2459833aa45e579dfdbc"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light17.json",
+      "sha256": "f77b94f67ed56a35286949cc66790130de3b46e0d4ff8efc2d27edc1e8b539b4"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light18-metadata.json",
+      "sha256": "ee845612ff0b5597c0108338320d14efe6cf437362f07488a152e004adfd389c"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light18.json",
+      "sha256": "99f5f363ed946c8de6101c9e35a262bbf15392d57bf6a87d2af80029c6590a23"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light19-metadata.json",
+      "sha256": "05ef0bd32ae191e85d5584b7972b4dae72969f1e2fe6c5bc808e1f7427f46235"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light19.json",
+      "sha256": "89e7b6663d060d0b77441ab7485d7de9f204d81eaac514189ccf387c64af77c6"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light20-metadata.json",
+      "sha256": "3452230740f3bd56eeb1b7de34ad9a3aabc25df0d638b6bbc705b94f483bd291"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light20.json",
+      "sha256": "a133dea528288312ca516efe72932cce9599cdece73d5a27155a1eec870dd173"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light21-metadata.json",
+      "sha256": "23cb5d9d809bfc67787eecac1f7ec0fd4da5148a99234dc47df872c70816656d"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light21.json",
+      "sha256": "e93134f46da6c5349f0638d2575956b9cd9ca71574202c8661f34cae33a009f9"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light22-metadata.json",
+      "sha256": "7d01ca65cd533bf5c26f3d876ff3c4bf0889d7481cdedf4873e4a7407361c424"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light22.json",
+      "sha256": "52c8ae78bf4a2c2403884452ab2f9d4351ab7b40b043d46afa9719c6e8be89b1"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-backend01-metadata.json",
+      "sha256": "3b37d55c3dcd510504615204bde733ef23b7a45d26f0042293dd8648b709b6f4"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-backend01.json",
+      "sha256": "99861665104b6096edfe60d3f2b98f9ff3cedb637204052bfef3c45342d6492b"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-backend02-metadata.json",
+      "sha256": "6b289fbbe43331393146de637f2f5a01908f7a11c55f92b008f83bf035d2a7cf"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-backend02.json",
+      "sha256": "8cc6465d43a5b9e0e6ff010641d48aad9450fb84a3bff6c53277cdc419e6d7a0"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-backend03-metadata.json",
+      "sha256": "79d2296b0d34b4a5bca716d6850eb8536baaf714299ad3602b1f23c40f84bcc2"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-backend03.json",
+      "sha256": "d8e75eca9885763f5e2348405b5a68ee1ac350f1638a425c853b639fd8be54db"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0401-metadata.json",
+      "sha256": "9f315461b6006605cfa73f6c7a7d1b2d1a0a6da1051ea266b5cc6d3aede71e7e"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0401.json",
+      "sha256": "cc7ce7440232bc6218a2637970c1c1de1344855e03a72495ffd7d557ccd53563"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0402-metadata.json",
+      "sha256": "eda5f3dee25cdc0fdc3cb9c2707d03d8f0885985c25fc3ae7ed14ba18572b771"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0402.json",
+      "sha256": "135d621a53c89093c3c0f4782856b47ecf9e9ee7535f1d10597295e012687874"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0403-metadata.json",
+      "sha256": "579538a4b61abbc4215a9d35bb17b36a6ef8a075d5970ffa769192b4973651a7"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0403.json",
+      "sha256": "0ace1e47b613f9f4c796313e140972e9544e1b117ec0e1b00aed432822c50a29"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0404-metadata.json",
+      "sha256": "3a17793eaca929b7c562a366fc99847bf097528b492718aa380e5fef07488c64"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0404.json",
+      "sha256": "4799249493db369fd83373a6b90f114d31c933668adff5c708158f639a7609d6"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0405-metadata.json",
+      "sha256": "83e646cc6ff99f0b9eca8abbb4629e7228152c78ea10d102197ac06723d289a9"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0405.json",
+      "sha256": "02025520682bfaedc2ad5e8ba7afd55f11f1160839bd8b3f15a0a333deaec9e6"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0406-metadata.json",
+      "sha256": "523f06de4f06c74492e73c2b6b47139a7acc94293ee28f0b39aac4e054e90d40"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0406.json",
+      "sha256": "99667c4497f7df9ece010f2bb22e0399311d5c50d5a00fc9ec89d0865a8a538f"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0407-metadata.json",
+      "sha256": "bc704d597bb11510766e33570f25b14fe4d2384d765ad365b8d1362ee3678a0d"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0407.json",
+      "sha256": "2c1c13879cf9c909b5d6f110d2db86827c48b80597dd1114569fa0ba49f677c8"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0408-metadata.json",
+      "sha256": "52f1bd1d01673221e90e8c5139d54edf210ac748c7989fa75ea4361d298c6032"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0408.json",
+      "sha256": "96fd076a46a99837875fc6416b73f863792612aaf3d3b1b09608a344fcf5d2c7"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0409-metadata.json",
+      "sha256": "74f89808c467d00ef7d150dd6a605fadb52b2a158782c774315e60fb8885ea0f"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0409.json",
+      "sha256": "3951c35dfea9617be69ec529a96bbb835226c4de76ea316380b0e8c0a8ba93a3"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0410-metadata.json",
+      "sha256": "ea548d1dbd0755d32ab4eab7e77aa3fb7832d6f2d0a547f14721925e71c87c0f"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0410.json",
+      "sha256": "c31a5178ce58195917e1df05171b031115832c4bd1a6d4e7643f3362ad6bdd76"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0411-metadata.json",
+      "sha256": "9e83dad43227957c996e7f1382d33f6071395785b9a7392d4f2821dfc0855522"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0411.json",
+      "sha256": "1ffaac8d5cbc89b56b5c0d418a0dca4ece58546fb15eed1cd1048ad010fa274b"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0412-metadata.json",
+      "sha256": "b6daf722d835f976395fec9f4bee540973659b6890326dce197ab1967c22ea29"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-t0412.json",
+      "sha256": "f37ae93e962d6d5c87b345046f61a98f807bbbdcdd2a6bfea71cdfbf3d796d41"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service01-metadata.json",
+      "sha256": "3346080b1e5892c5df91b11bd3e91ce247b7dbe16b611f479e492bb8345a25c5"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service01.json",
+      "sha256": "090a2a11d86bdcd641699db033e13aba10341741d2239d4958f7e527e75a8778"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service02-metadata.json",
+      "sha256": "51ffc5a02345587791dbc144040509a90cfbe535b2b43d52f4521321723f096c"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service02.json",
+      "sha256": "368bfc7629fef85ec88650c1191109414721660511c77d075f35f956f2e5d6b8"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service03-metadata.json",
+      "sha256": "b32e7da85a5ac97088511d54cbc148d3b0db18b925e1f6db27be4e34aeb456c2"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service03.json",
+      "sha256": "af3dedd036df4a52fe629fdb20c4d01ef7e5280285fb1896749f233031277af0"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service04-metadata.json",
+      "sha256": "388dd52e621c1e337b0854a0d05024a1fd697e1a52dfb12d0a2f2c7d01dd57e0"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service04.json",
+      "sha256": "f9a4f231e55af9056d47efd736fa2b9a4feec3e7a7671a107c4309f3d91ad88f"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service05-metadata.json",
+      "sha256": "5e0071aba9b5c2c6d761366ca3f8ad5cd700cc01428a8fe829d1433078ad28f2"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service05.json",
+      "sha256": "edbd3a52b3a3e99ad00b047c1ae1408452f4f502b43a6635e521ce29af28daf9"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service06-metadata.json",
+      "sha256": "ea3525459e09f1547b1f21c0b737e2e039195bdb845cc7df38bca432790acfb6"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service06.json",
+      "sha256": "b02567d948808701e4d23f652b7b6cacd4595562842c3149ab0517dcaf71e5b1"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service07-metadata.json",
+      "sha256": "f2fdc173aedd2b02b38ab21b3902c75ff3b5f62aac93ef18710169493466e8f0"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service07.json",
+      "sha256": "51bd559431ad1521c863ffd2afa7d7b53cc73eebeec94845ba29381fdf6ce018"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service08-metadata.json",
+      "sha256": "ef0364e0a69752e3fe6ea10b9a49e62bdad0b0369d471772deb9db7a8072a0a2"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service08.json",
+      "sha256": "8c6eecbd75f80a3d5267558a6f164b65a5515bad102295fd64f2a0e67ac88b7f"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service09-metadata.json",
+      "sha256": "79f85532fb4258a5d9b2432c2439f3a484705443570754b599ff4740539bf3d5"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service09.json",
+      "sha256": "7697f02d5e639cd2625e1071e21d3751ede9f21682c4a814573eebbd0efe1069"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service10-metadata.json",
+      "sha256": "1ba36ec16f0081b6b443f20616017720531771a435c387e7da5a4c0d58e50ab8"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service10.json",
+      "sha256": "497373dfcefbb21efdd7ff421819fb004fcbfeb5e68e91b67dbd9eb3e2d72c56"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service11-metadata.json",
+      "sha256": "3e4584fa534d26ab2da2d8e391e484355d8ddffb5c40d0d66ef65df7755d6943"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service11.json",
+      "sha256": "1f96f035be6810105b62bea0422a0fbfb34b7598c23df6c24467e78b45a05be8"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service12-metadata.json",
+      "sha256": "b7b0d79bb24428c07a79c478c236d1837c0796545d09e014d2863b76cec58210"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service12.json",
+      "sha256": "9038253f398284ec974a78aca8375e345d6a5f365784a06e32a0b38e06f02142"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service13-metadata.json",
+      "sha256": "95a1b28376be08506dffcdb7b03f53665304f1064b0e8b7846d80cb81e88cde5"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-service13.json",
+      "sha256": "6a07b5a2bc26fc0b98813944301f7a2f1734c1a3f4690dcbb9a06f6f1fb43187"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\runtime-fix17.json",
+      "sha256": "a6d83da1248fd26ed257d0ea0b15328680a3fb50edc3e98879932b6fda812165"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\runtime-fix18.json",
+      "sha256": "f7fb418d92bf9a501e0c3e4e72b0571648d65883b6d3a4c4d44e2c3105793904"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\runtime-fix19.json",
+      "sha256": "49156a0d5e327314d041c8cea4fc2297e996477501b2694b364d669858d4abbd"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\runtime-fix20c.json",
+      "sha256": "48832fcb302ff8f1158801218f3d58f78325758406fbc92b10c5e1efe269cfa8"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\runtime-fix21.json",
+      "sha256": "9b4c348415efd3da4a3120b24220aa30eb893183e5a3ecf607161275147b1151"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\runtime-fix23.json",
+      "sha256": "a6ced19a063e195d626003320cdf146ca260886c5b23611610fa3b85dfa0a62f"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\runtime-fix24.json",
+      "sha256": "30f02250e6bb8123991293f89c9d7b58a10538510f7c5525330cbd85ee6780b9"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\runtime-fix24-review.json",
+      "sha256": "0de56b0f5c73068b4d3c0a5649f0d258e7623e948d83c4ef1c14cd863b3905a6"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\runtime-fix24-unit.json",
+      "sha256": "a4aa19c4c73abe4e1e57ea20c73a8af2ec7e6b3601d369d22ed6e8bae5f8ce86"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\runtime-fix24.patch",
+      "sha256": "c232749ff1a4aef442e2062e32d5e67bdb9a1e939579cc677a748894114586c8"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\cloud-light23-monitor.json",
+      "sha256": "b808c6f6afa838f5845bbc66a7960057ce8ff83d382a5f3f011196ba44375cd9"
+    }
+  ],
+  "selectedTranscriptLines": {
+    "14698": {
+      "utc": "2026-10-20T12:02:57.912Z",
+      "type": "response_item",
+      "subtype": "message"
+    },
+    "15482": {
+      "utc": "2026-10-20T12:42:02.882Z",
+      "type": "event_msg",
+      "subtype": "item_completed"
+    },
+    "15483": {
+      "utc": "2026-10-20T12:42:03.484Z",
+      "type": "event_msg",
+      "subtype": "item_completed"
+    },
+    "21464": {
+      "utc": "2026-10-20T18:21:53.276Z",
+      "type": "event_msg",
+      "subtype": "item_completed"
+    },
+    "22036": {
+      "utc": "2026-10-20T18:56:02.168Z",
+      "type": "response_item",
+      "subtype": "message"
+    },
+    "22130": {
+      "utc": "2026-10-20T19:00:00.579Z",
+      "type": "event_msg",
+      "subtype": "item_completed"
+    }
+  }
+}

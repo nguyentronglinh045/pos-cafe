@@ -1,0 +1,10 @@
+{
+  "recordedUtc": "2026-10-23T15:42:32.271Z",
+  "sourceSHA": "eac4359d28b20b52309c20af7aa272362043c6c0",
+  "branch": "review/permission-staging-20261023",
+  "expectedRemoteSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "publicationOrdinal": 1,
+  "automaticCiOrdinal": 1,
+  "automaticRetry": false,
+  "reviewsSha256": "29cf85ef0993672a1fab3fa3b755f3181fb9643b80e3727ba540d05a76bafeea"
+}

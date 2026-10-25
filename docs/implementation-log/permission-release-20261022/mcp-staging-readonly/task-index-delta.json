@@ -1,0 +1,7 @@
+{
+  "indexPath": "D:\\Workspace\\pos-cafe-docs\\docs\\workflow\\tasks\\README.md",
+  "operation": "prepend one task entry; all previous bytes preserved",
+  "insertedEntry": "- [Chuyển MCP sang staging chỉ đọc, 22/10/2026](permission-mcp-staging-readonly-2026-10-22.md) — cấu hình project trỏ ineckiashpwloncxnbqx, read_only=true, migration bị chặn; effective config PASS, kết nối DB chưa kiểm vì cần xác thực lại URL mới. Không gửi request tới DB gốc.",
+  "insertedEntrySha256": "d3c115e9db34241b0dca378db7aa226c925b726a7abb1cc8c0486e43901d81d6",
+  "previousContentPreserved": true
+}

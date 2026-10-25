@@ -1,0 +1,12 @@
+{
+  "source": "Exact original custom-tool-call input extracted from current thread local rollout; not reconstructed or rerun",
+  "rolloutFile": "C:\\Users\\nguye\\.codex\\sessions\\2026\\10\\21\\rollout-2026-10-21T14-18-10-01a15d53-1c67-7350-a326-1cd9f8119b72.jsonl",
+  "line": 8340,
+  "timestamp": "2026-10-22T08:08:04.729Z",
+  "toolName": "exec",
+  "callId": "call_617e655cbe0c4bb38a925afdedd8aa92",
+  "snapshotFile": "discovery01-original-tool-input.js",
+  "sha256": "87b376f6b6c85643fa7001737ea9a31070507dc195bf55ad1e1f4c42acee1dbd",
+  "databaseProbeRerun": false,
+  "excludesOtherTranscriptContent": true
+}

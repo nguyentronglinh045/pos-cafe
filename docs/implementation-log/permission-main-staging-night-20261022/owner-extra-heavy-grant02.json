@@ -1,0 +1,116 @@
+{
+  "authorizationSource": "request_user_input_async call_d2e1040106fd4c779d52efe6bb3e615f item0",
+  "relationship": "SAME_OWNER_REPLY_TWO_SCOPES",
+  "decision": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/owner-extra-heavy-decision01.json",
+    "sha256": "c61352fd7292b75c5dc22fff0b0cf25418a57f1598c378f8597487283c73ac8c"
+  },
+  "reviewedDataPlan": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-extra-heavy-successor-2026-10-22.md",
+    "sha256": "f179653027d0dbde7d600e4ead383566f5af282945f7260e144a61909a58ebf0"
+  },
+  "recordedAtUtc": "2026-10-22T15:01:46.188Z",
+  "timestampMeaning": "Actual receipt recording time after parent closure; not the user-click time or a second owner reply.",
+  "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+  "authorizedDeadlineUtc": "2026-10-22T17:00:00Z",
+  "answer": "Cấp thêm đúng 1 backend, giữ các giới hạn còn lại",
+  "predecessor": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase01.json",
+    "policySHA256": "86a7ed053fbebcfad314ef985834fb4d70017d61548b15f2d4ad61d7f3390dcc",
+    "anchorSHA256": "d180416dc0e73d64e066cce12663d7fe486ad6367c9ac8f2d66c893502d3e20b",
+    "journalSHA256": "909c6c19fb97a39daa42acc7d2db7017b41a5b527c5c5f3efcfa6a9218ff8de7",
+    "headSHA256": "cef69eef678f151b9d45bb177856bf51fc7137400ecb87ecedc6db206b93a962"
+  },
+  "closedAtUtc": "2026-10-22T15:01:40.872Z",
+  "parentTotalCounts": {
+    "publication": 6,
+    "ci": 6,
+    "heavy": 3,
+    "reviewRounds": 10
+  },
+  "parentPhaseCounts": {
+    "publication": 2,
+    "ci": 2,
+    "heavy": 2,
+    "reviewRounds": 4
+  },
+  "parentPostGateCiCounts": {
+    "pull_request": 0,
+    "main_push": 0,
+    "total": 0
+  },
+  "inheritedBlockedSources": [
+    "ad265321144521c0669500fea9be0f96ebacb769"
+  ],
+  "prerequisiteProofs": {
+    "candidateCi": {
+      "terminal": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci02-terminal.json",
+        "sha256": "8713ce5d8d36c6db8532fd5be7af525fb5ecfa4e80c779bcebfac84c272c2a8b"
+      },
+      "metadata": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci02-api.json",
+        "sha256": "8c7d828418ea85c0e604be1982473ce903d05b12b9b9caf76b2b6347313506b1"
+      },
+      "observation": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci02-summary.json",
+        "sha256": "c4e4d113c1d476c9f6dc1647ef7071ce37e3e17a0535ad8f17b92c28d0e0c201"
+      },
+      "reclaim": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci02-native-cleanup.json",
+        "sha256": "27a95c07554f40d168af2e764797d799d280b1543bb0b6035c7f7a6a4a183ee0"
+      },
+      "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+      "runId": "39792208893",
+      "attempt": 1,
+      "reservationId": "05499d1ef6982b655831448b05563fc00b490f800c74ee26f067450aa32b0a1c",
+      "settlementDigest": "e22ccad490ba6d3f455b5008f1b46fbc08e33dee8a3dad69a79f40bd329fe9e4"
+    },
+    "t04": {
+      "terminal": {
+        "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\evidence\\cloud-t0402-terminal.json",
+        "sha256": "aa08bea392bc5cf28d6346340e34064f3e5964a896342f3bddf0ff8ff02d9363"
+      },
+      "metadata": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0402-api.json",
+        "sha256": "573a5858e4faef04338cdac5f443db8c2ff76e82ecad95b33ec1c7c0bfe3ced4"
+      },
+      "observation": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0402.json",
+        "sha256": "eeeb8489bc9ff9902e3ef9dc5d3f56ce258b942ba9773983033f80e0d32f8162"
+      },
+      "reclaim": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0402-reclaim.json",
+        "sha256": "acd4e45ac59b6a8a37fe86165c2decc87de93ac56458d1d024c34ca1643729f8"
+      },
+      "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+      "runId": "39795876982",
+      "attempt": 1,
+      "reservationId": "bc9e65ee4636e190ebb16283b062ac5ebf6ff58a998945244dff65c850d554ff",
+      "settlementDigest": "cf1eb3c2a51839e3007ca14751c61c0bf1e5df0be6f23afca6c8d94c70d3a4b0"
+    }
+  },
+  "invariants": {
+    "fullGateStages": 35,
+    "fullGateRequiredIdentities": 760,
+    "obligations": 12,
+    "maxConcurrentHeavy": 1,
+    "dispatchReserveMs": 2520000,
+    "originalDbForbidden": true,
+    "productionDeploymentForbidden": true,
+    "authDeferred": true,
+    "sameSourceRetryForbidden": true
+  },
+  "schemaVersion": "permission-extra-heavy-owner-grant-v1",
+  "reference": "request_user_input_async call_d2e1040106fd4c779d52efe6bb3e615f item0",
+  "phaseActionLimits": {
+    "candidatePublication": 0,
+    "candidateCi": 0,
+    "heavyProfiles": 7,
+    "reviewRounds": null
+  },
+  "retiredUnusedHeavy": 6,
+  "netAdditionalHeavy": 1,
+  "retiredUnusedCandidatePublication": 0,
+  "retiredUnusedCandidateCi": 0
+}

@@ -1,0 +1,32 @@
+{
+  "observedAt": "2026-10-22T08:14:48.069541+00:00",
+  "reviewedHandoffSha256BeforeReviewMetadata": "bddfb79127028e28bb15db3152a50f75ee07de478a7621f8b000f7ca2987e0e0",
+  "configSha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+  "discoverySourceSha256": "87b376f6b6c85643fa7001737ea9a31070507dc195bf55ad1e1f4c42acee1dbd",
+  "reviewers": [
+    {
+      "id": "/root/mcp_staging_scope_review",
+      "scope": "config isolation, exact original discovery source, handoff",
+      "verdict": "APPROVE",
+      "blockingFindings": 0
+    },
+    {
+      "id": "/root/mcp_staging_evidence_review",
+      "scope": "evidence hashes and exact source provenance, claims/handoff",
+      "verdict": "APPROVE",
+      "blockingFindings": 0
+    }
+  ],
+  "findingsResolved": [
+    "check returned row values before any future SELECT PASS",
+    "correct changed profile scope",
+    "historical browser callback waiting status",
+    "CLI-managed OAuth token distinction",
+    "exact discovery source provenance retained",
+    "global enabled readback without actor attribution"
+  ],
+  "result": "OAuth and fresh MCP discovery PASS; actual SELECT/database NOT_TESTED",
+  "databaseToolCallsTotal": 0,
+  "originalDatabaseToolCallsTotal": 0,
+  "reloadStatus": "WAITING_FOR_USER_TO_REOPEN_CODEX"
+}

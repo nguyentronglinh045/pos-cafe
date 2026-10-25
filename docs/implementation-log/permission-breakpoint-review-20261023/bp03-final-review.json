@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "permission-breakpoint-review-v1",
+  "breakpoint": "BP3",
+  "status": "APPROVE_SOURCE_AND_LIGHT_CHECKS_ONLY",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "sourceCleanAfterChecks": true,
+  "reviewedFiles": {
+    "bp03-outcome.md": "16a9e763e76601a46ef499edbbf2741f3c8dcbb19a8a2e1d0e87ad21abe643ba",
+    "bp03-authorization.json": "436793135f339395bc845f78b8dd6a546caf18b86b152fc8f26258a81d82c933",
+    "bp03-light-check01.json": "6ba037b463b3d5d8a5dd428cc570f16323f71f26e10cecbd491ed8d9d0a56787",
+    "bp03-node-local01.json": "c2957f4eba90ef5ba4281906a34d7d48df2d9bed017a5e590d2069ffae308ea5",
+    "bp03-node-local01.tap": "08d136a5a14959962dd4e9bf9d8e9ec40d8fc96e3f774e4275c3ce10d8da4457"
+  },
+  "requiredReviewers": [
+    {
+      "agent": "/root/bp1_authority_final_review",
+      "nonAuthor": true,
+      "scope": "security, runtime source correctness, authority, evidence limits and continuation",
+      "verdict": "APPROVE",
+      "approvedSourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+      "approvedOutcomeSHA256": "16a9e763e76601a46ef499edbbf2741f3c8dcbb19a8a2e1d0e87ad21abe643ba",
+      "blockingFindingsRemaining": 0,
+      "execution": "READ_ONLY_REVIEW"
+    },
+    {
+      "agent": "/root/bp1_evidence_final_review",
+      "nonAuthor": true,
+      "scope": "browser consumer flow, T04 integration, receipt propagation, evidence accuracy and docs",
+      "verdict": "APPROVE",
+      "approvedSourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+      "approvedOutcomeSHA256": "16a9e763e76601a46ef499edbbf2741f3c8dcbb19a8a2e1d0e87ad21abe643ba",
+      "blockingFindingsRemaining": 0,
+      "execution": "READ_ONLY_REVIEW"
+    }
+  ],
+  "verified": {"nodeTests": 955, "nodePass": 955, "nodeFail": 0, "nodeSkip": 0, "trackedNodeFiles": 70, "syntaxOnlyTypeScriptFiles": 3, "pngSamples": 5, "nativeDecodedSamples": 3},
+  "staticContract": {"stages": 35, "required": 760, "t04Stages": 19, "t09Cases": 1, "browserCases": 6, "caseIdentitiesUnchanged": true},
+  "runtime": "NOT_RUN",
+  "publication": "NOT_AUTHORIZED_BY_BP3",
+  "ci": "NOT_AUTHORIZED_BY_BP3",
+  "databaseAccess": "NONE",
+  "cleanup": "night-node06 pending owner decision; evidence retained",
+  "limits": ["Sampling records actual target-to-target+749ms dispatch, not exact-instant proof", "QUEUE_CLEANUP_UNCERTAIN requires whole-owned-runtime reclaim", "Full gate 35/760 plus 12 PIN obligations and D19/R0/R1 remains open", "No old budget carry or acceptance change"],
+  "transcriptionNote": "This file records the two explicit final chat verdicts. It grants no authority and is excluded from its own hash list. The earlier reviewer light-hash spacing typo was corrected against actual bytes."
+}

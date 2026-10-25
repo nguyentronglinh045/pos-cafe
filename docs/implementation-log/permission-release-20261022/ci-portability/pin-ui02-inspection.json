@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "permission-pin-ui-inspection-receipt-v1",
+  "atUtc": "2026-10-22T03:10:25.391Z",
+  "scope": "CREDENTIAL_FREE_MOCK_PIN_UI_ONLY",
+  "sourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "runId": "39713372721",
+  "attempt": 1,
+  "manifestSHA256": "529176903d3f631ec1af999ab200e0386bf6880f6f686319c4a20f8077aca6af",
+  "rawManifestUnchanged": true,
+  "reviewers": [
+    {
+      "name": "/root",
+      "method": "VIEW_IMAGE_ALL_THREE_FILES",
+      "verdict": "INSPECTED_LIMITED_SCOPE"
+    },
+    {
+      "name": "/root/continuation_operations_review",
+      "method": "VIEW_IMAGE_ALL_THREE_FILES_AND_PIN_VALIDATION",
+      "verdict": "APPROVE_LIMITED_VISUAL_CLASSIFICATION"
+    }
+  ],
+  "photos": [
+    {
+      "filename": "required_pin_change__desktop.png",
+      "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e",
+      "imageWidth": 1440,
+      "imageHeight": 900,
+      "photoInspected": true,
+      "visibleUnmaskedLayout": "NO_VISIBLE_DEFECT_OBSERVED",
+      "privacyMaskedRegions": 2,
+      "maskedInputDetails": "NOT_ASSESSED",
+      "findingIds": []
+    },
+    {
+      "filename": "required_pin_change__tablet.png",
+      "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca",
+      "imageWidth": 1024,
+      "imageHeight": 768,
+      "photoInspected": true,
+      "visibleUnmaskedLayout": "NO_VISIBLE_DEFECT_OBSERVED",
+      "privacyMaskedRegions": 2,
+      "maskedInputDetails": "NOT_ASSESSED",
+      "findingIds": []
+    },
+    {
+      "filename": "required_pin_change__mobile.png",
+      "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f",
+      "imageWidth": 844,
+      "imageHeight": 419,
+      "photoInspected": true,
+      "visibleUnmaskedLayout": "NO_VISIBLE_DEFECT_OBSERVED",
+      "privacyMaskedRegions": 2,
+      "maskedInputDetails": "NOT_ASSESSED",
+      "findingIds": []
+    }
+  ],
+  "mobileLimit": "FULL_PAGE_HEIGHT_419_EXCEEDS_VIEWPORT_390; NO_ASSERTION_OF_ZERO_VERTICAL_SCROLL",
+  "nativePinBusinessPass": false,
+  "baselineUpdated": false
+}

@@ -1,0 +1,9 @@
+Browser tab: 6, Title: "Sign In / Providers | Authentication | pos-cafe-permission-staging | 24tx810010-hcmute's Org | Supabase", URL: "https://supabase.com/dashboard/project/ineckiashpwloncxnbqx/auth/providers".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 288-291
++					293 text Allow new users to sign up If this is disabled, new users will not be able to sign up to your application
++					294 text Allow manual linking Enable
++					295 text Allow anonymous sign-ins Enable
++					296 text Confirm email Users will need to confirm their email address before signing in for the first time
+~				145 button (disabled) Save changes
+The focused UI element is 0 AXWebArea URL: supabase.com/dashboard/project/ineckiashpwloncxnbqx/auth/providers, Sign In / Providers | Authentication | pos-cafe-permission-staging | 24tx810010-hcmute's Org | Supabase

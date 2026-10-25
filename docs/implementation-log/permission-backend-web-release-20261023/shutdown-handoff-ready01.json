@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "permission-shutdown-handoff-ready-v1",
+  "recordedUtc": "2026-10-23T17:25:01.498Z",
+  "activeWorkStatus": "INCOMPLETE_AT_VERIFIED_FAILED_GATE; stopped current finite phase",
+  "handoff": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-backend-web-release-2026-10-23.md",
+    "sha256": "cbec6095b1dce3b686211874cbcc6f20cc890ef6cc80e3fb18234cbb96e39e6f"
+  },
+  "checkpoint": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/final-failed-phase-checkpoint01.json",
+    "sha256": "c782f566bab00ce6faebf84500474d91efc54c8ba13f6624e2f5645170a11b12"
+  },
+  "failureReviews": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-failure-reviews02.json",
+    "sha256": "16c400041aa9316b19e21ed10ed5a45240bee67012840e777e4b54717935f8d9"
+  },
+  "preparedOpsReviews": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/postgate-collector-reviews01.json",
+    "sha256": "386176f405412d43820d07e169540fcf9d5f6c564aee2fef1ea6aff521a0f1ea"
+  },
+  "frozenDocsStillMatchPacket": true,
+  "codePublished": "49e543d49176692bb2cdabc044cbc69e21054469",
+  "mainUnchanged": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "actualFullGate": "FAIL_NOT_ACCEPTED",
+  "newHeavyActive": false,
+  "taskBrowserTabsClosed": true,
+  "playwrightMcpProcesses": 0,
+  "shutdownDelaySeconds": 20,
+  "shutdownScheduled": false,
+  "ownerRequestFile": "shutdown-owner-request01.json"
+}

@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "recordedUtc": "2026-10-21T15:34:48.693Z",
+  "codeCommit": "dd8efd4908c14f851fb56623761ca0e5abd26af8",
+  "packetSha256": "f730aeac2b7fe07d9e99082aad3e4fe10862bc34e92e57193b262c06b6d3ac8a",
+  "indexDeltaSha256": "84468b5e6d0e694f37b49a584d3f6604072435273e39c85a13e86b3709d8d298",
+  "approvals": [
+    {
+      "reviewer": "/root/continuation_source_review",
+      "scope": "source/security/provider contract and final evidence/index provenance",
+      "verdict": "APPROVE",
+      "pinsVerified": 33,
+      "sourceFilesVerified": 1097,
+      "notes": "Receipt01 remains FAIL; receipt02 routing-only PASS. Both consumed live claims match snapshots. Coverage and legacy ledger unchanged. Index row/head-plus-row staged blob verified."
+    },
+    {
+      "reviewer": "/root/continuation_operations_review",
+      "scope": "operations/isolation/grant/budget and final evidence/index provenance",
+      "verdict": "APPROVE",
+      "pinsVerified": 33,
+      "notes": "Two claims consumed; zero attempts remain. Original claim and CLOSED ledger unchanged. Handoff/cutoffs/S06-S08 pending accurate. Expected index-only blob verified."
+    }
+  ],
+  "limitations": [
+    "No approval for an additional actual attempt",
+    "No SQL/bootstrap/business/full backend certification",
+    "Only approved index row may be staged; unrelated dirty worktree changes retained"
+  ],
+  "approvalMetadataOnly": true
+}

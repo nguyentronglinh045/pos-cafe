@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "permission-main-handoff-reviews-v1",
+  "recordedAtUtc": "2026-10-24T11:50:39.315Z",
+  "mergedMainSHA": "0dd63ea81b27a38800044a55a7f9c8f12f87cad0",
+  "candidateSHA": "a028cc5b07bf3a02e3b837d8aec2b832325503a2",
+  "mainRunId": "40089941679",
+  "mainAttempt": 1,
+  "mainCiStatus": "FAIL",
+  "applicationFailureCause": "UNKNOWN",
+  "codeIntegration": "MERGED",
+  "postMergeVerification": "OPEN_FAILED",
+  "backendAcceptance": "DEFERRED_NOT_ACCEPTED",
+  "deploymentPerformed": false,
+  "approvalScope": "ACCURATE_HANDOFF_ONLY_NOT_GATE_PASS_OR_FIX_VERIFICATION",
+  "documents": [
+    {
+      "id": "outcome",
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/permission-main-outcome-20261024.md",
+      "sha256": "24af9804a05fa66353e2b4be406194b03755c292152feec5484bb542dfeb27b0"
+    },
+    {
+      "id": "diagnosis",
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/permission-main-main01-diagnosis.md",
+      "sha256": "48f2c249449ac234d204b84d944a3d17c89784eb4871c19dac98face89630fde"
+    },
+    {
+      "id": "task",
+      "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-main-integration-2026-10-24.md",
+      "sha256": "e1d8b07a2cdbdf46cfff8d38b1ecb6885101de4af9f8c3c1b764621877b03851"
+    }
+  ],
+  "reviewers": [
+    {
+      "agent": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "Application, merge, holds and bounded diagnosis accuracy; source binding and 13 collection references verified."
+    },
+    {
+      "agent": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "CI, evidence and diagnosis accuracy; terminal failure attribution limitation, synthetic core limitation, unchanged acceptance."
+    }
+  ],
+  "evidence": "Explicit reviewer replies in current owner-authorized M24 session; this record summarizes those replies."
+}

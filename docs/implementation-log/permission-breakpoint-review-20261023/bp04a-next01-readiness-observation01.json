@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "permission-bp4a-next-readiness-observation-v1",
+  "observedAtUtc": "2026-10-23T05:02:13.3996040Z",
+  "activeOtherTaskRunnerCount": 0,
+  "processes": [],
+  "disk": [
+    {
+      "DriveLetter": "D",
+      "SizeRemaining": 98505265152
+    },
+    {
+      "DriveLetter": "C",
+      "SizeRemaining": 193701134336
+    }
+  ],
+  "scope": "Read-only snapshot, not continuous OS exclusion lock"
+}

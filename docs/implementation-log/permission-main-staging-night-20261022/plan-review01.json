@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "permission-night-plan-review-v1",
+  "recordedAtUtc": "2026-10-22 11:53:44 UTC",
+  "candidatePath": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-timeonly-budget-v4-2026-10-22.md",
+  "candidateSHA256": "bd8f385942656ce48c5ac437e62d3a608097dc4cb5e6946f21419a93cb5c26f7",
+  "author": "/root/budget_time_guard_fix",
+  "reviewers": [
+    {"name": "/root/mcp_staging_scope_review", "scope": "source/design/scope", "verdict": "APPROVE"},
+    {"name": "/root/mcp_staging_evidence_review", "scope": "operations/history", "verdict": "APPROVE"}
+  ],
+  "resolvedFindings": ["42-minute reserve includes job35 plus buffer7", "own-sourceCI18 is heavy-only prerequisite", "guard does not grant hosted mutations; isolated profiles retain their contracts"],
+  "authorizationEffect": "Plan review only; implementation, packet, init and dispatch require their own evidence. PR/main extraCI pending owner."
+}

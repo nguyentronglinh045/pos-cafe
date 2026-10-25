@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "permission-breakpoint-final-review-v1",
+  "recordedAtUtc": "2026-10-23T01:52:11.4392907Z",
+  "author": "/root",
+  "status": "BP2_COMPLETE_SOURCE_AND_LIGHT_CHECKS_ONLY",
+  "checkpoint": {
+    "parentSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+    "within60Minutes": true,
+    "startedAtUtc": "2026-10-23T01:34:29Z",
+    "pendingExecution": [],
+    "deadlineUtc": "2026-10-23T02:34:29Z",
+    "closedAtUtc": "2026-10-23T01:52:11.4392907Z",
+    "oldBudgetPhase03": "CLOSED unchanged; no spent reset",
+    "nextBreakpoint": "BP3 image coverage/tooling implementation NOT_AUTHORIZED",
+    "sourceSHA": "5dee19836a81f42e020a0175672da9601044869d",
+    "state": "CLOSED",
+    "sourceClean": true,
+    "treeSHA": "aafc005faebd518fdd6cb6763e0489df712c01bd"
+  },
+  "candidates": [
+    {
+      "sha256": "dfb7e8da3e5dc9d1c6965d64af541df19da7c20a64bb82fe873e4badafa47c7a",
+      "path": "bp02-outcome.md"
+    },
+    {
+      "sha256": "5e48a6b700ad76ff1e998a2c529e7e071e79f70ef7069c2e196ebd235fde1a74",
+      "path": "bp02-authorization.json"
+    },
+    {
+      "sha256": "6515ed4f1be10cd73a0304b787691e6e47aede5053cb5fc5e1c36ce04e2655a9",
+      "path": "bp02-light-check01.json"
+    }
+  ],
+  "sourceFilePins": [
+    {
+      "path": "src/adapters/supabase/client.test.ts",
+      "sha256": "219e5e61469c52d409cc6945acabb52ef1ec4389d9c47749aa726a8cbc6316b8"
+    },
+    {
+      "path": "src/adapters/supabase/menuImageHttp.test.ts",
+      "sha256": "fc58b4f623fefb1eaae7e0b5f60661e692aad16b78f57cc97748e69d76cc9525"
+    },
+    {
+      "path": "supabase/functions/_shared/menuImageHttp.ts",
+      "sha256": "5100252654975ccfefdba774c0a6cd489981375c23cc2ae805a66f2229f0911f"
+    },
+    {
+      "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+      "sha256": "d8e4a5f1ffe4c512c433f10e48bc1fa2ccabe7a1ca3e33d8ca5f1f231fb802b0"
+    },
+    {
+      "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "sha256": "6e6cd8280a852439eacacafa49fb4cb17444503bcadd87705d560ebc95fd17fb"
+    }
+  ],
+  "reviews": [
+    {
+      "basis": "Independently verified final five hashes,commit/tree/clean,rollback savepoints and legacy trigger sideeffects,retry/replay and exact collision preservation,CORS single header. Final three docs hashes approved. No tests/DB/browser run.",
+      "reviewer": "/root/bp2_source_review",
+      "scope": "Source/security and source/evidence accuracy",
+      "verdict": "APPROVE"
+    },
+    {
+      "basis": "Independently verified final sourcecommit/pins,grant,receipt native5checks and5syntaxfiles,versions/sourcebinding,limits/cleanup/reproduction notes and all three docs hashes. No runtime readiness/publication approval.",
+      "reviewer": "/root/bp2_operations_review",
+      "scope": "Authorization/operations/evidence and unchanged acceptance",
+      "verdict": "APPROVE"
+    }
+  ],
+  "verification": {
+    "syntacticErrors": 0,
+    "catalogRequired": 760,
+    "nativeCORSChecks": 5,
+    "nodeVersion": "v24.16.0",
+    "nativeCORSPassed": 5,
+    "optional938": "NOT_RUN unchanged tooling does not execute BP2changedTS; prior4fPASS historical",
+    "testedFilePinsMatchCommitted": 5,
+    "supplementalObligations": 12,
+    "syntacticTranspiles": 5,
+    "typescriptVersion": "5.9.3",
+    "notRun": [
+      "Vitest",
+      "Full typecheck/build",
+      "SQL/seed runtime",
+      "Browser/SDK-generated preflight",
+      "CI",
+      "Eight backend profiles",
+      "Supabase/hosted"
+    ],
+    "catalogStages": 35
+  },
+  "actualActions": {
+    "ownerCheckout": "NOT_MODIFIED",
+    "staging": "NOT_ACCESSED",
+    "publication": 0,
+    "ci": 0,
+    "databaseAccess": 0,
+    "installation": 0,
+    "backend": 0,
+    "tempFixturesCreated": 0,
+    "deployment": 0,
+    "localCodeCommit": 1,
+    "originalDB": "NOT_ACCESSED",
+    "tempDeleted": 0
+  },
+  "cleanup": {
+    "reclaimedBytes": "NOT_APPLICABLE_NO_DELETION",
+    "resolution": "No new task-owned temporary fixtures created; mutant only RAM. Durable source/evidence kept; no old/useful/unrelated data deleted.",
+    "ownerRequested": "delete after completion if possible"
+  },
+  "diskFinal": {
+    "bothAbove30GiB": true,
+    "measuredAtUtc": "2026-10-23T01:49:03Z",
+    "cFreeBytes": 193051541504,
+    "dFreeBytes": 98518003712
+  },
+  "preparationIssues": [
+    {
+      "id": "BP2-CONTROL",
+      "resolution": "Root caught rehash-control false assumption before runtime; builder limited assertion to intended dimension and retained exact post-rollback restoration. No failed DB/CI attempt."
+    },
+    {
+      "id": "BP2-PS-REF",
+      "resolution": "Read-only unquoted HEAD tree ref misparsed by PowerShell; corrected literal quote, commit unchanged/no remote effects."
+    }
+  ],
+  "walkthrough": "Prepared in outcome; owner walkthrough/acceptance not claimed",
+  "remaining": "Image TC45/46/47 closure and AuthEdge fresh recipe; future exactsourceCI/fullgate and owner budgets. No push or merge readiness."
+}

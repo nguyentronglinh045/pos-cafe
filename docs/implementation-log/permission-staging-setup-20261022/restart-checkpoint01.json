@@ -1,0 +1,70 @@
+{
+  "observedAt": "2026-10-22T16:39:39.1128884+07:00",
+  "phase": "staging-setup-until1700-20261022",
+  "deadlineUtc": "2026-10-22T10:00:00Z",
+  "mutationCutoffUtc": "2026-10-22T09:45:00Z",
+  "ownerWriteChoice": "call_f1764eba4eef4958b23d3c87a285418a item0",
+  "ownerAuthorizeConfirmation": "call_e8483eb8dc884bec8ac1eae9a6b86f25 item0",
+  "cliOAuthResult": "PASS; successfully logged in; session36383 exited0",
+  "requestedScopes": [
+    "database:read",
+    "database:write",
+    "projects:read"
+  ],
+  "tokenOrCallbackWrittenToEvidenceFiles": false,
+  "currentConfigSha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+  "readonlyRestoreSnapshot": "current-readonly-config.toml",
+  "originalProfilesDisabled": true,
+  "reviewedPlanSnapshot": "reviewed-plan01.md",
+  "reviewedPlanSha256": "578d011590fd48d240b7223a55a217bfd98ea42dc8a5898be26f27905ceefdc9",
+  "planReviews": [
+    {
+      "id": "/root/mcp_staging_scope_review",
+      "verdict": "APPROVE"
+    },
+    {
+      "id": "/root/mcp_staging_evidence_review",
+      "verdict": "APPROVE"
+    }
+  ],
+  "applicationHead": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "applicationSourceRoot": "D:/Workspace/pos-cafe-permission-ci-fix-20261022/code",
+  "successorHelperRoot": "D:/Workspace/pos-cafe-permission-ci-fix-20261022/tools/staging-setup-20261022",
+  "builder": "/root/staging_latest_sql_inventory",
+  "builderState": "FINISHED_TWO_FILES_7_OFFLINE_TESTS_TWO_SOURCE_APPROVALS",
+  "nativeMcpCatalog": "6 write-session tools loaded after user restart; stored profile restored to5readonly tools at09:31UTC. Live connection not reloaded; no further SQL after restoration.",
+  "databaseMutationsExecuted": 1,
+  "nextAfterRestart": "DO NOT REPLAY BOOTSTRAP: one apply committed and matching marker observed. Reload restored readonly profile before a new scoped read check; agree new bounded window/scope for Auth/Edge/synthetic flow/full remaining gates. Main/originalDB still excluded until accepted fullgate/owner confirmation.",
+  "toolingReview": "successor-tooling-review01.json",
+  "phasePolicy": "phase-policy01.json",
+  "deadlineGuardAgent": "/root/staging_readonly_deadline_guard",
+  "userRestartStatus": "CONFIRMED_BY_USER_NATIVE_6_TOOLS_AND_POSTGRES_METADATA",
+  "deadlineWatcher": {
+    "active": false,
+    "source": "deadline-readonly-guard-source01.ps1",
+    "sourceSha256": "9c3aaff3f3e979c6b45387dee2dbfceb6190106b34ac69f344876568d1673061",
+    "reviewStatus": "HISTORICAL_STATIC_APPROVAL_INVALIDATED_BY_RUNTIME_NULL_BINDING_DEFECT; original source KNOWN_NOT_REUSABLE",
+    "retirement": "deadline-readonly-guard-retired01.json",
+    "actualEarlyRestore": "early-readonly-restore02.json",
+    "coordination": "deadline-readonly-coordination01.json",
+    "historicalSourceReview": "deadline-readonly-guard-review01.json",
+    "restorationScope": "stored_project_config_only; live connection reload and OAuth revocation NOT performed",
+    "history": [
+      {
+        "rootVerifiedAliveAtUtc": "2026-10-22T08:58:20.3551006Z",
+        "survivedCodexRestart": false,
+        "pid": 34152,
+        "launchReceipt": "deadline-readonly-guard-launch01.json"
+      },
+      {
+        "state": "STOPPED_BEFORE_EARLY_RESTORE",
+        "pid": 10588,
+        "stoppedAtUtc": "2026-10-22T09:29:40.3348228+00:00",
+        "launchReceipt": "deadline-readonly-guard-launch02.json",
+        "launchObservedAtUtc": "2026-10-22T09:12:41.8747756+00:00"
+      }
+    ]
+  },
+  "outcome": "outcome01.json",
+  "phaseState": "SCHEMA_PERMISSION_BOOTSTRAP_COMMITTED_NOT_READY"
+}

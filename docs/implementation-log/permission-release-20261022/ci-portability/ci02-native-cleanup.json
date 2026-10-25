@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "permission-pg16-reclaim-v1",
+  "status": "NOT_PRESENT",
+  "rootRemoved": true,
+  "processReleased": true,
+  "sourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "runId": "39713372721",
+  "bindingBasis": "SAME_SOURCE_BOUND_TERMINAL_WORKFLOW_LOG",
+  "rawReceiptSHA256": "cb955148d0d0a6cb661779202ed44e1b97e5208967d12e4c4585cbc2c120052a"
+}

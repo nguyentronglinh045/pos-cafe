@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: new owner phase admits after old cutoff; exact policy and new cutoff fail closed
+ok 1 - new owner phase admits after old cutoff; exact policy and new cutoff fail closed
+  ---
+  duration_ms: 2.0006
+  type: 'test'
+  ...
+# Subtest: pins all source and SQL identities; preserves complete 30-fragment atomic shape and honest provenance
+ok 2 - pins all source and SQL identities; preserves complete 30-fragment atomic shape and honest provenance
+  ---
+  duration_ms: 99.9494
+  type: 'test'
+  ...
+# Subtest: rejects wrong HEAD, dishonest fingerprint, raw/order/controller/introspection drift
+ok 3 - rejects wrong HEAD, dishonest fingerprint, raw/order/controller/introspection drift
+  ---
+  duration_ms: 138.7
+  type: 'test'
+  ...
+# Subtest: rejects nonce reuse and missing/changed predecessor or raw pins
+ok 4 - rejects nonce reuse and missing/changed predecessor or raw pins
+  ---
+  duration_ms: 1.358
+  type: 'test'
+  ...
+# Subtest: provider observation freshness, target, exact allowlist and two independent references stay enforced
+ok 5 - provider observation freshness, target, exact allowlist and two independent references stay enforced
+  ---
+  duration_ms: 500.5698
+  type: 'test'
+  ...
+# Subtest: exclusive output writer refuses existing content/code target and preserves partial failures without cleanup
+ok 6 - exclusive output writer refuses existing content/code target and preserves partial failures without cleanup
+  ---
+  duration_ms: 0.4798
+  type: 'test'
+  ...
+# Subtest: helper hashes identify actual new source/tests separately from frozen application
+ok 7 - helper hashes identify actual new source/tests separately from frozen application
+  ---
+  duration_ms: 0.8667
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1032.5164

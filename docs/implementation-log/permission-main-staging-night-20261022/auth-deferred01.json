@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "permission-staging-auth-deferral-v1",
+  "recordedAtUtc": "2026-10-22T14:07:45.735Z",
+  "status": "DEFERRED_NO_MUTATION",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "ownerDecision": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/owner-auth-incident-decision01.json",
+    "sha256": "771034e8e4b6cdb93c88c3c661bdd20ab08ed9362cb49343a53b8dbdb94e4dcb"
+  },
+  "admissionCutoffUtc": "2026-10-22T14:02:00Z",
+  "reason": "No official RESOLVED evidence was observed within admission. Owner WAIT_RESOLVED window expired without consumer or setting action.",
+  "incidentObservation": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/auth-incident-at-admission01.json",
+    "sha256": "4465da2e8c2ecfaca70e4beda58f54472fb289a28c0d5e22fde846198756637e"
+  },
+  "dashboard": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/auth-dashboard-deferred01.json",
+    "sha256": "37df96ba43ec1e35c2b2c257730133664c2d268fe6c25bd1ad9e61d060f6a6bc"
+  },
+  "readOnlyCounts": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/staging-counts-auth-deferred01.json",
+    "sha256": "55f14c6545bb1746bf818ea6f6bc449c0045c6001068dac4256051c037138ff1"
+  },
+  "observed": {
+    "confirmEmail": true,
+    "saveChangesDisabled": true,
+    "role": "supabase_read_only_user",
+    "transactionReadOnly": "on",
+    "authUsers": 0,
+    "stores": 0,
+    "employees": 0,
+    "storageObjects": 0
+  },
+  "rootActions": {
+    "settingToggles": 0,
+    "consumerExecutions": 0,
+    "testDataCreated": 0,
+    "rollbacks": 0,
+    "originalDBReads": 0,
+    "originalDBWrites": 0
+  },
+  "limits": "Four observed counts and visible setting readback do not prove full physical/business preservation or hosted functional PASS.",
+  "next": "Fresh owner-approved window, admission, reviews and status check required; do not start late from this grant."
+}

@@ -1,0 +1,120 @@
+{
+  "at": "2026-10-23T12:00:23.700Z",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "producer": "UI owner catalog and UI cashier submit/pay",
+  "readbackActor": "cashier",
+  "directOrderTableReadDenied": {
+    "status": 403,
+    "code": "42501"
+  },
+  "order": {
+    "id": "45d996b6-c4df-4b8e-8b4d-dc92a598f172",
+    "total": 32000,
+    "status": "paid",
+    "orderNo": 1,
+    "tableId": null,
+    "orderType": "takeaway",
+    "lockVersion": 1,
+    "businessDate": "2026-10-23"
+  },
+  "detail": {
+    "id": "45d996b6-c4df-4b8e-8b4d-dc92a598f172",
+    "items": [
+      {
+        "id": "42198671-a1b0-409a-b660-f8654a00ded4",
+        "note": null,
+        "options": [],
+        "itemName": "TEST - Cà phê",
+        "quantity": 1,
+        "unitPrice": 32000,
+        "menuItemId": "442499a3-0950-4b6f-a2f4-3ad664897141"
+      }
+    ],
+    "total": 32000,
+    "paidAt": "2026-10-23T11:57:49.818135+00:00",
+    "status": "paid",
+    "orderNo": 1,
+    "payment": {
+      "id": "ec8fc79a-d7e6-4221-bdef-3109d3a51b77",
+      "amount": 32000,
+      "method": "cash",
+      "paidAt": "2026-10-23T11:57:49.818135+00:00",
+      "employeeId": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+      "changeAmount": 0,
+      "receivedAmount": 32000
+    },
+    "tableId": null,
+    "voidedAt": null,
+    "createdAt": "2026-10-23T11:56:37.718144+00:00",
+    "orderType": "takeaway",
+    "updatedAt": "2026-10-23T11:57:49.810225+00:00",
+    "cashierName": "TEST-20261023-cashier",
+    "lockVersion": 1,
+    "businessDate": "2026-10-23",
+    "voidedByName": null,
+    "voidReasonCode": null,
+    "voidReasonNote": null,
+    "receiptSnapshot": {
+      "lines": [
+        {
+          "name": "TEST - Cà phê",
+          "note": null,
+          "options": [],
+          "quantity": 1,
+          "lineTotal": 32000,
+          "unitTotal": 32000,
+          "menuItemId": "442499a3-0950-4b6f-a2f4-3ad664897141",
+          "orderItemId": "42198671-a1b0-409a-b660-f8654a00ded4",
+          "baseUnitPrice": 32000
+        }
+      ],
+      "total": 32000,
+      "footer": "",
+      "paidAt": "2026-10-23T11:57:49.818135+00:00",
+      "address": "",
+      "orderId": "45d996b6-c4df-4b8e-8b4d-dc92a598f172",
+      "orderNo": 1,
+      "paymentId": "ec8fc79a-d7e6-4221-bdef-3109d3a51b77",
+      "storeName": "TEST-20261023-RAPID-A",
+      "tableName": null,
+      "businessDate": "2026-10-23",
+      "changeAmount": 0,
+      "employeeName": "TEST-20261023-cashier",
+      "schemaVersion": 1,
+      "receivedAmount": 32000
+    },
+    "voidedByEmployeeId": null,
+    "createdByEmployeeId": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+    "lastModifiedByEmployeeId": "ed8c51e5-ee26-4273-bacf-fd42458f1261"
+  },
+  "receipt": {
+    "lines": [
+      {
+        "name": "TEST - Cà phê",
+        "note": null,
+        "options": [],
+        "quantity": 1,
+        "lineTotal": 32000,
+        "unitTotal": 32000,
+        "menuItemId": "442499a3-0950-4b6f-a2f4-3ad664897141",
+        "orderItemId": "42198671-a1b0-409a-b660-f8654a00ded4",
+        "baseUnitPrice": 32000
+      }
+    ],
+    "total": 32000,
+    "footer": "",
+    "paidAt": "2026-10-23T11:57:49.818135+00:00",
+    "address": "",
+    "orderId": "45d996b6-c4df-4b8e-8b4d-dc92a598f172",
+    "orderNo": 1,
+    "paymentId": "ec8fc79a-d7e6-4221-bdef-3109d3a51b77",
+    "storeName": "TEST-20261023-RAPID-A",
+    "tableName": null,
+    "businessDate": "2026-10-23",
+    "changeAmount": 0,
+    "employeeName": "TEST-20261023-cashier",
+    "schemaVersion": 1,
+    "receivedAmount": 32000
+  },
+  "serviceRoleUsed": false
+}

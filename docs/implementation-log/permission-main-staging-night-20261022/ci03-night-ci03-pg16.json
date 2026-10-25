@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "permission-pg16-runtime-v1",
+  "scope": "NATIVE_PG16_T01_ONLY",
+  "status": "PASS",
+  "failure": null,
+  "stage": {
+    "stage": "legacy-t01-database",
+    "status": "PASS",
+    "required": 30,
+    "discovered": 30,
+    "run": 30,
+    "pass": 30,
+    "fail": 0,
+    "skip": 0,
+    "retry": 0,
+    "reportSHA": "ae25f38243564c3adfcb408fabbf93fdf40c457b06beb776cb91c6060c89d340",
+    "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+    "invocationSHA": "5f30c05e739afde76a2265db88b23933c3d796002dcae9a09a231c27706f79c7",
+    "supplementalOracles": "NOT_PROVEN_BY_STAGE_COUNTS"
+  },
+  "physicalSHA": "6782e15a2a50c7086679779673478a97b8bdc3cdb80c919ddc5e8c0c3bff6c25",
+  "cleanup": {
+    "rootRemoved": true,
+    "processReleased": true,
+    "allocatedBeforeBytes": 50741248,
+    "measuredFreeDeltaBytes": 50741248
+  },
+  "full35BusinessRuntime": "NOT_RUN",
+  "remainingBusinessStages": 34,
+  "supplementalOracles": "NOT_PROVEN_BY_STAGE_COUNTS",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "sourceFingerprint": "ad15201c0371bff8082cbb212e3e23485200ae4c759cbb095ad8b73d8acbefa7",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "runId": "39811728040",
+  "serverVersionNum": 160015
+}

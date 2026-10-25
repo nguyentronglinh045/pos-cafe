@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "pos-preview-candidate-local-v1",
+  "node": "v24.16.0",
+  "command": "node --test scripts/project-preview.test.mjs scripts/project-ci-results.test.mjs",
+  "status": 0,
+  "pinCount": 44,
+  "pinMismatches": [],
+  "canonicalFiles": {
+    ".github/workflows/frontend-preview.yml": "4095d745a74769f6fdeb08511cd98ee7eb4f527f9d1712eb0e560d1c65e6f7c3",
+    "scripts/project-preview.mjs": "97cb6635e17143116ddb45880a0c8a25a6e169e9340905c681035810ad688101",
+    "scripts/project-preview.test.mjs": "4e5128930862508e93bc57279f79903fc3562dc4e87c1a900c16ccc8eb7dfd73",
+    "scripts/project-preview.README.md": "8ef8984c2d4cbe40204ea6c6b62af63902ebe937b9ba8e0cc6d0427df2177b5c",
+    "ci/release-policy.json": "5383b6ee6105b1129cf419bf991772b70fb005e580ed06686301f16c70969b31"
+  },
+  "summary": [
+    "ℹ tests 84",
+    "ℹ pass 84",
+    "ℹ fail 0",
+    "ℹ cancelled 0",
+    "ℹ skipped 0",
+    "ℹ todo 0"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "permission-preparation-incident-v1",
+  "recordedAtUtc": "2026-10-22T15:52:28.666Z",
+  "author": "/root",
+  "incident": "Generated cleanup05 script changed fixture identity but retained cleanup04 output filename. Actual delete scope was correctly bounded fixture05; only the task-owned receipt04 was temporarily overwritten.",
+  "recovery": "Saved actual fixture05 receipt bytes under05 with wx; restored original04 exactly from reviewed local docs commit537e; preserved exact executed script separately; corrected future recipe output05 and added no-overwrite precondition. No cleanup re-executed.",
+  "actual05ReceiptSHA256": "05dcf05b163c695a003e585969ae20db17ae80317f012b86ce9154e399847cc1",
+  "restored04ReceiptSHA256": "a8f68da4fb9716eb1fc20e46dbd0504f9d66b648233f29f500e2fab35e29425e",
+  "restored04ExpectedSHA256": "a8f68da4fb9716eb1fc20e46dbd0504f9d66b648233f29f500e2fab35e29425e",
+  "executedScriptSHA256": "f2a121693a56f1132b6aa266b03bbb7829b70e6fe496a5adb8813752d5f9a79b",
+  "correctedRecipeSHA256": "b045fe19baae4873be8732d36671943fc40255894420716137045e13755e332f",
+  "outputs": "Both reports/TAP/hash retained. No user file, code, originalDB or production action."
+}

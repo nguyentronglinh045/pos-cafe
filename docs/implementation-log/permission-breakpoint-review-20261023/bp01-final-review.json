@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "permission-breakpoint-review-v1",
+  "recordedAtUtc": "2026-10-23T01:18:52.7928165Z",
+  "author": "/root",
+  "status": "BP1A_INVESTIGATION_AND_REMEDIATION_PLAN_APPROVED",
+  "deliverableBoundary": "Investigation/plan only; source not modified, whole code review incomplete, no new runtime or hosted permission",
+  "candidates": [
+    {
+      "sha256": "46dbf948e7896fe1383aea9a7d8737417e952aaf6ffe5ae30fd99ccde9e144df",
+      "path": "bp01-source-baseline.json"
+    },
+    {
+      "sha256": "c9ed798be0655be2fe1b65d00ccb697e5753029c8176212af9594c4efa32407b",
+      "path": "bp01-review-and-remediation.md"
+    }
+  ],
+  "authority": {
+    "originalDatabase": "FORBIDDEN_READ_WRITE",
+    "latestOwnerAnswer": "Review code và chuẩn bị bản sửa; chốt ngân sách chạy sau (khuyến nghị)",
+    "source": "Owner reply to call_c5c70bdceb7e4e408324a1f1086594d6, question0",
+    "executableBudget": "NOT_GRANTED_FOR_NEW_PHASE",
+    "staging": "ineckiashpwloncxnbqx only, no live access in BP1",
+    "oldPhase03": "CLOSED/pending[]",
+    "historicalBaseline": "Recorded01:03:09UTC before owner answer, retains pending-question state; latest report records accepted scope"
+  },
+  "reviews": [
+    {
+      "scope": "Source/evidence/requirements accuracy and bounded remediation",
+      "reviewer": "/root/bp1_evidence_final_review",
+      "basis": "Independently matched1107canonical blobs,35required arrays/760identities,lock/catalog/configpins; verified TC45/46/47/PIN07 gaps and nonblocking cleanup/old hosted bindings. No full source/runtime approval.",
+      "verdict": "APPROVE"
+    },
+    {
+      "scope": "Authority/continuation/operational feasibility and unchanged acceptance",
+      "reviewer": "/root/bp1_authority_final_review",
+      "basis": "Verified owner scope, plan/continuation and local links/counts; no inherited old grants/PASS, no hosted supplemental/new cleanup gate. Partial review and recipe/injector OPEN clearly retained.",
+      "verdict": "APPROVE"
+    }
+  ],
+  "findingsDisposition": [
+    {
+      "status": "RESOLVED_BY_PRODUCER_SEMANTICS",
+      "detail": "verifyGitBlobPins returns total git cat-file --batch buffer41697989B =41640069B canonical payload+57920B framing. Reviewer independently verified; no baseline correction or CRLF inference.",
+      "id": "REVIEW-BYTES"
+    },
+    {
+      "status": "CLARIFIED",
+      "detail": "catalogSHA256 pins scripts/permission-runtime-catalog.mjs; baseline predates owner scope answer. Added explicit MD explanation, kept historical baseline bytes.",
+      "id": "REVIEW-CATALOG-CHRONOLOGY"
+    }
+  ],
+  "execution": {
+    "sourceWrites": 0,
+    "ciOrPush": 0,
+    "next": "Continue bounded read-only BP1B slices and prepare execution-ready remediation before asking runtime budget",
+    "testsRun": 0,
+    "backendRuns": 0,
+    "authEdgeChanges": 0,
+    "cleanup": 0,
+    "fullGate": "PENDING_35_760_12_PLUS_D19_R0_R1",
+    "installations": 0,
+    "databaseAccess": 0
+  },
+  "storage": {
+    "unit": "logical bytes",
+    "baseline": 205499,
+    "noGeneratedRuntime": true,
+    "report": 26318
+  },
+  "walkthrough": "Prepared in report; owner reading/acceptance not claimed"
+}

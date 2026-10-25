@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "permission-extra-heavy-owner-decision-v1",
+  "recordedAtUtc": "2026-10-22T14:16:58.129Z",
+  "reference": "request_user_input_async call_d2e1040106fd4c779d52efe6bb3e615f item0",
+  "answer": "Cấp thêm đúng 1 backend, giữ các giới hạn còn lại",
+  "questionScope": "One net additional whole-backend run; preserve history, two unused PR/main CI, no additional candidate publication/CI, deadline00:00.",
+  "authorizedDeadlineUtc": "2026-10-22T17:00:00Z",
+  "netAdditional": {
+    "heavy": 1,
+    "candidatePublication": 0,
+    "candidateCi": 0,
+    "postGateCi": 0
+  },
+  "preservedUnusedPostGateCi": {
+    "pull_request": 1,
+    "main_push": 1
+  },
+  "currentPhaseAtDecision": {
+    "publicationSpent": 2,
+    "candidateCiSpent": 2,
+    "heavySpent": 1,
+    "heavyRemaining": 7,
+    "pending": "publication39792208893"
+  },
+  "conditions": [
+    "Do not close a pending ledger or bypass unknown/failed source.",
+    "Retire unused old slots when a new phase is needed; replacement8heavy is oldunused7 plus netadditional1, never both phases spending.",
+    "Same unchanged fullgate35stage760required12obligations; singleheavy,42minreserve, no same-source retry.",
+    "Auth remains deferred; original DB and Vercel deployment remain forbidden."
+  ],
+  "recordingMeaning": "Records actual supplied owner reply; not an exact user-click timestamp or initialized successor policy."
+}

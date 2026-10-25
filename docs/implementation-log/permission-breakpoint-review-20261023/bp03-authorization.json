@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "permission-breakpoint-authorization-v1",
+  "breakpoint": "BP3",
+  "ownerDecision": "Cấp BP3 source + kiểm nhẹ, tối đa 90 phút (khuyến nghị)",
+  "authorizationSource": "request_user_input_async call_7283a1ffc94f4c0fb6650aa16d22fc9c; owner reply in this chat",
+  "startedAtUTC": "2026-10-23T01:56:22Z",
+  "hardStopUTC": "2026-10-23T03:26:22Z",
+  "timezone": "Asia/Bangkok",
+  "codeRoot": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+  "baselineSHA": "5dee19836a81f42e020a0175672da9601044869d",
+  "scope": ["TC45/46/47 source and test additions", "image measurement helper in existing T04 fixture", "lightweight local checks", "two independent non-author reviews", "local source and docs commits"],
+  "excluded": ["dependency installation", "push", "CI", "backend execution", "database access", "deployment", "acceptance or timeout reduction"],
+  "originalDatabase": "kfqjdfwxhkdwihjobpny: forbidden read and write",
+  "stagingDatabase": "ineckiashpwloncxnbqx: no access under BP3",
+  "oldExecutionBudgets": "CLOSED; no carry or reset",
+  "decisionBoundary": "Material permission or acceptance questions wait for the owner; preserve the checkpoint at cutoff."
+}

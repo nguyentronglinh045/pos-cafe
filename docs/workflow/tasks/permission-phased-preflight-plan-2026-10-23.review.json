@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "permission-two-scope-plan-review-v1",
+  "recordedAtUtc": "2026-10-23T00:43:59.400Z",
+  "author": "/root",
+  "candidate": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-phased-preflight-plan-2026-10-23.md",
+    "sha256": "cc3075bf16566a2d258abd6d49ef1e0b2c708a72d68f7ffdee902b98e166eb82"
+  },
+  "scope": "Read-only analysis and proposed phased preflight. No runtime, hosted, source modification or release authorization created.",
+  "reviews": [
+    {
+      "reviewer": "/root/backend_preflight_review_20261023",
+      "scope": "backend/source/dependency/order/guard/evidence",
+      "verdict": "APPROVE",
+      "basis": "Actual final message approves exactcc3075 after rehash and confirming only3href delta from reviewed774903; reverse delta reproduces previous hash and all3targets exist. Prior full review validated T04-first plan vs executable independence, conditional hosted-first/owner choice when blocked, reuse/source-change grants, static CORS finding and NOT_TESTED hosted, Auth credential/G0 trap, job-time limits, strict wholeprofile/oracle/cleanup/settlement gates. No tests/network/DB/runtime/edits."
+    },
+    {
+      "reviewer": "/root/hosted_sequence_review_20261023",
+      "scope": "hosted/operations/authorization/fixture/custody",
+      "verdict": "APPROVE",
+      "basis": "Actual final message approves exactcc3075:4local source links exist, delta only3href fixes; grant/window new, graph20, CORS static finding, identity/menu/custody/partial effects/full gate and no new hosted merge gate preserved. No code/tests/hosted/deployment authority granted."
+    }
+  ],
+  "findings": [
+    {
+      "id": "DOC-LINK-01",
+      "oldCandidateSHA256": "7749031874ba8eb62fbacf60b8f914fb614cd85b43d2b845b9a160eb74377683",
+      "issue": "Three local evidence hrefs used one parent rather than two from docs/workflow/tasks.",
+      "status": "CLOSED",
+      "resolution": "Corrected only3hrefs; both reviewers explicitly approved final hash."
+    }
+  ],
+  "runtimeFindingsStatus": "Old Auth helper bindings and static CORS header contract mismatch recorded for future disposition; no product/helper fix or hosted repro claimed. Full backend/new authorization still pending.",
+  "ownerDecisionsPending": [
+    "New deadline and executable budget before runtime actions",
+    "Source-fix/publication/candidate-CI scope if required after header finding disposition",
+    "Fresh Auth/Edge target/quota/window/rollback/identity-menu-custody recipe",
+    "Scheduling choice if Edge transport remains BLOCKED; no automatic continuation or old unused allowance carryover"
+  ],
+  "storage": "Two small docs files only; no dependencies, caches or test runtime created."
+}

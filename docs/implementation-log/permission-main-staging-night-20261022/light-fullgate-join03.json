@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "permission-reviewed-light-join-v1",
+  "recordedAtUtc": "2026-10-22T16:29:55.656Z",
+  "author": "/root",
+  "status": "BOUNDED_LIGHT_OBSERVATION_PENDING_FINAL_DOCS_REVIEW",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "sourceFingerprint": "ad15201c0371bff8082cbb212e3e23485200ae4c759cbb095ad8b73d8acbefa7",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "runId": "39811728040",
+  "attempt": 1,
+  "summary": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-summary.json",
+    "sha256": "e8daa086c7776fdb5d6928222069593546318cf1ebd171858e00da5c844139b8"
+  },
+  "log": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-workflow.log",
+    "sha256": "b81568098434fd4cccfeadd5e7c4dd04fde5a87bb69320062fd914e63c232272"
+  },
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-packet05.json",
+    "sha256": "abecf340bd01bd1414e8d3bd0277d1e3c6b6bf1ac8fe413291e93e83f56f5571"
+  },
+  "static": {
+    "stageCount": 5,
+    "requiredIdentities": 313,
+    "actualTestsRun": 480,
+    "actualPass": 480,
+    "fail": 0,
+    "skip": 0,
+    "requiredByStage": {
+      "candidate-unit": 171,
+      "foundation-unit": 108,
+      "legacy-t01-tools": 28,
+      "candidate-seed-tools": 4,
+      "pin-static-operator": 2
+    },
+    "basis": "Actual source4f CI03 permission-static phase480/480 plus current canonicalGit/packet05-pinned strict producer and exact unchanged catalog. Required313 identities split171+108+28+4+2; four PERM recipes allow extras, PIN static recipe requires exact discovery. No old-source runtime PASS inherited.",
+    "privateStageRowsReadByReviewer": false,
+    "publicBoundary": "Public log exports outer phase reportSHA/invocationSHA/counts only. Private five per-stage rows/hashes were validated by the pinned producer, not independently retrieved. No fabricated public per-stage reports."
+  },
+  "pg16": {
+    "stageCount": 1,
+    "requiredIdentities": 30,
+    "actualTestsRun": 30,
+    "requiredSkip": 0,
+    "retry": 0,
+    "observation": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-pg16.json",
+      "sha256": "d9dab71e199eb32f467f78abab2ffcca352da2e594ee2b2185f23bb928198b3e"
+    },
+    "basis": "Exact one native receipt from actual CI03 source-bound workflow log; strict renderPg16Evidence validates actual binding and required30/30 zero skip/retry; cleanup observed, publication settled."
+  },
+  "combinedLight": {
+    "stageCount": 6,
+    "requiredIdentities": 343,
+    "actualTestsRun": 510,
+    "actualPass": 510
+  },
+  "otherPhaseExemptions": [
+    {
+      "phase": "tooling",
+      "manualDeferred": 1,
+      "identity": "TC-IDEM-087/tool real preflight fails before test entry and verifies a positive database write",
+      "status": "NOT_RUN_MANUAL_DEFERRED",
+      "basis": "Existing backend-only-tests.json and strict parser; outside required PERM760."
+    },
+    {
+      "phase": "smoke",
+      "discovered": 81,
+      "pass": 44,
+      "skip": 37,
+      "basis": "Actual current-source phase counts; unchanged exact37 viewport-applicability identities outside PERM760, strict parser verifies exact skipped set and zero retries."
+    }
+  ],
+  "fullGate": "PENDING_T04_SEVEN_SERVICE_PROFILES_AND_ALL_SUPPLEMENTAL_OBLIGATIONS",
+  "limitations": "Bounded actual CI03 only. Public STATIC outerphase and pinned strict producer/catalog support aggregate5/313; private per-stage rows/hashes are not independently retrieved or exported. No hosted Auth/Edge or eight backend/12-obligation/main PASS. Tooling1manualDeferred and smoke37 applicability skips remain outside PERM760; no zero-all-skips claim."
+}

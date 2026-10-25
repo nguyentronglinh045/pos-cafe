@@ -1,0 +1,17 @@
+{
+  "observedAt": "2026-10-22T08:21:16.985504+00:00",
+  "configSha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+  "configUnchangedAcrossSql": true,
+  "bothOriginalProjectProfilesDisabled": true,
+  "sqlEvidenceSha256": "c59385cb3da589321ba1bbee8005b2a2ea214aec6d769d998f7e110c5284da3e",
+  "freshConversationCatalog": [
+    "mcp__supabase_pos_cafe__execute_sql",
+    "mcp__supabase_pos_cafe__list_extensions",
+    "mcp__supabase_pos_cafe__list_migrations",
+    "mcp__supabase_pos_cafe__list_tables",
+    "mcp__supabase_pos_cafe__search_docs"
+  ],
+  "noApplyMigrationInCatalog": true,
+  "sqlToolCalls": 1,
+  "originalDatabaseToolCalls": 0
+}

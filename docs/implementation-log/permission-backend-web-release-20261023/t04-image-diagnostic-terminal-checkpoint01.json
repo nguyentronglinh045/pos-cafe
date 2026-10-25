@@ -1,0 +1,58 @@
+{
+  "recordedUtc": "2026-10-24T07:21:21.747Z",
+  "sourceSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "clean": true,
+  "disks": [
+    {
+      "DriveLetter": "D",
+      "SizeRemaining": 98708328448
+    },
+    {
+      "DriveLetter": "C",
+      "SizeRemaining": 189414232064
+    }
+  ],
+  "retained": [
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020",
+      "logicalBytes": 218509891
+    },
+    {
+      "path": "D:/Workspace/pos-cafe/.git",
+      "logicalBytes": 49161307
+    },
+    {
+      "path": "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+      "logicalBytes": 4981266
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+      "logicalBytes": 330301856
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+      "logicalBytes": 1597957
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+      "logicalBytes": 5135304
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022",
+      "logicalBytes": 1405939
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-final-push-20261023",
+      "logicalBytes": 516026
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023",
+      "logicalBytes": 7929521
+    }
+  ],
+  "retainedLogicalBytes": 619539067,
+  "linksNotFollowed": 4,
+  "allocatedLocalBytes": "NOT_MEASURED",
+  "noLocalInstall": true,
+  "noLocalHeavyRuntime": true
+}

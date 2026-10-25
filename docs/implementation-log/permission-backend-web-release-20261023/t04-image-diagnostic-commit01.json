@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "t04-image-diagnostic-commit-binding-v1",
+  "startedUtc": "2026-10-24T06:41:26.233Z",
+  "endedUtc": "2026-10-24T06:41:26.451Z",
+  "sourceSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "tree": "b2e0e4ecdd03201497d48fa97caf912bd3bae947",
+  "parent": "34db1b13ab707bab114fe1d83642d021ff324c93",
+  "changedPaths": [
+    ".github/workflows/backend.yml",
+    "ci/release-policy.json",
+    "scripts/permission-runtime-diagnostic-selftest.mjs",
+    "scripts/permission-runtime-isolated-receipt-control.mjs",
+    "scripts/permission-runtime-isolated-receipt.test.mjs",
+    "scripts/permission-runtime-iteration.md",
+    "scripts/permission-runtime-t04-reclaim.mjs",
+    "scripts/permission-runtime-t04-worker.mjs",
+    "scripts/permission-runtime-t04.mjs",
+    "scripts/permission-runtime-t04.test.mjs",
+    "scripts/permission-t04-image-diagnostic-control.mjs",
+    "scripts/permission-t04-image-diagnostic.test.mjs",
+    "scripts/permission-t04-image-measurement.mjs",
+    "scripts/permission-t04-image-measurement.test.mjs",
+    "scripts/project-backend-t04.mjs"
+  ],
+  "clean": true,
+  "publication": false,
+  "commitOutput": "[fix/operator-indexeddb-evidence-20261022 c416671] test: isolate T04 image diagnostics\n 15 files changed, 903 insertions(+), 150 deletions(-)\n create mode 100644 scripts/permission-t04-image-diagnostic-control.mjs\n create mode 100644 scripts/permission-t04-image-diagnostic.test.mjs\n"
+}

@@ -1,0 +1,20 @@
+{
+  "observedAtUtc": "2026-10-22 09:25:26 UTC",
+  "sqlSha256": "5c5c40dd5a0c3e98000a041da34446370fa539f47bd423fbe6196ba682c4e7f5",
+  "manifestSha256": "b404504fd723fe2df25e471f97d9c11eef5431caac23c1f453f4fa3121f082d3",
+  "reconcileSha256": "54ea8f763573da4bc3aa441b486280bc34c6d881bad37ff87d5f117aa2ce72d7",
+  "loaderSha256": "9da88faced3e3951294d5ce0f35074d3fc608ed47c837ec3ac82a73874b8902b",
+  "transportSha256": "a3d23add85be0e1914bb66e2df1c9e72d513d7d58ded396d31c880f3062a23f7",
+  "scope": {
+    "reviewer": "/root/mcp_staging_scope_review",
+    "verdict": "APPROVE",
+    "checks": "Independent offline exact SQL/manifest/reconcile,28SQL/4controllers/30fragments/everypin; guards before first write,2freshchecks+locks, PG17 ACL/MAINTAIN, immutable complete loader+one-apply contract."
+  },
+  "operations": {
+    "reviewer": "/root/mcp_staging_evidence_review",
+    "verdict": "APPROVE",
+    "checks": "Byte-exact offline reconstruction,8inputpins/source/history/newnonce; carrier33chunks/wronghash andsize refused; disk/source clean; oneclaim/apply and maximum1reconcile."
+  },
+  "limits": "No conclusion about unpublished MCP bookkeeping or apply runtime from SELECT. DO must reject runtime mismatch before application writes. One durable exclusive claim, fresh clock/config/payload/source pins required. No retry; COMMITTED_NOT_READY, no business/fulltest/main/production pass.",
+  "status": "TWO_EXPLICIT_APPROVALS_FOR_EXACT_CANDIDATE"
+}

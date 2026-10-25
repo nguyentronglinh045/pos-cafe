@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "permission-independent-execution-reviews-v1",
+  "recordedUtc": "2026-10-23T15:42:31.402Z",
+  "candidateSHA256": "5ddeb9e462422ae4051705e91a9dce8aae585143a1d428806a113f6946942ea3",
+  "sourceSHA": "eac4359d28b20b52309c20af7aa272362043c6c0",
+  "reviewers": [
+    {
+      "name": "/root/audit_technical_review",
+      "scope": "source",
+      "verdict": "APPROVE",
+      "observed": "1110 Git blobs/path/mode/blob/SHA256, canonical fingerprint/lock/tree/parent, exact5file delta,44policy pins and6receipt/collector refs verified independently"
+    },
+    {
+      "name": "/root/audit_process_review",
+      "scope": "operations",
+      "verdict": "APPROVE",
+      "observed": "Exact packet/source, finite1publication1CI8sequentialprofiles, noautoRetry/oldclaimsretained, A18/D19, rawH/mainM bridge, retained606696090logical<768MiB and4junctionmetadata verified independently"
+    }
+  ],
+  "acceptanceStatus": "ACTUAL_GATES_PENDING",
+  "production": "HELD"
+}

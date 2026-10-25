@@ -1,0 +1,71 @@
+diff --git a/D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/postgate-collector-before01.mjs.snapshot b/D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-postgate-ci.mjs
+index 4c638e6..14a39d3 100644
+--- a/D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/postgate-collector-before01.mjs.snapshot
++++ b/D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-postgate-ci.mjs
+@@ -9,7 +9,8 @@ import {PROJECT_PHASES,PROJECT_REPOSITORY,PROJECT_REPOSITORY_ID,sourceBinding} f
+ 
+ const cwd='D:/Workspace/pos-cafe-permission-timeonly-20261022/code';
+ const evidenceRoot='D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence';
+-const branch='run/permissions-20261020',targetBranch='main',workflowPath='.github/workflows/ci.yml';
++const legacyBranch='run/permissions-20261020',targetBranch='main',workflowPath='.github/workflows/ci.yml';
++const candidateBranches=Object.freeze([legacyBranch,'review/permission-staging-20261023']);
+ const MiB=1024**2,hash=value=>createHash('sha256').update(value).digest('hex');
+ const hex=value=>typeof value==='string'&&/^[a-f0-9]{40}$/.test(value);
+ const check=(ok,reason)=>{if(!ok)throw Object.assign(Error('POSTGATE_COLLECTION_REFUSED'),{collectorReason:reason});};
+@@ -79,11 +80,18 @@ export function decodeWorkflowBlob(value,expectedOid){
+ 
+ // The injectable reader/writer permit offline contract checks without gh or disk
+ // writes. The CLI uses only the fixed local roots and one-shot exclusive writer.
++export function postGateCiInput(args){
++ check(Array.isArray(args)&&[5,6].includes(args.length),'ARGS');
++ const[runId,tag,purpose,prNumber,candidateSHA,candidateBranch]=args;
++ return{runId,tag,purpose,prNumber,candidateSHA,...(args.length===6?{candidateBranch}:{})};
++}
+ export function collectPostGateCi(input,deps={}){
+  const{runId,tag,purpose,candidateSHA}=input,prNumber=Number(input.prNumber);
++ const candidateBranch=input.candidateBranch===undefined?legacyBranch:input.candidateBranch;
+  check(/^[1-9][0-9]{0,19}$/.test(runId??'')&&/^[a-z][a-z0-9-]{0,63}$/.test(tag??'')
+   &&['pull_request','main_push'].includes(purpose)&&/^[1-9][0-9]{0,8}$/.test(String(input.prNumber??''))
+   &&Number.isSafeInteger(prNumber)&&hex(candidateSHA),'ARGS');
++ check(candidateBranches.includes(candidateBranch),'CANDIDATE_BRANCH');
+  const run=deps.run??readOnlyRun,save=deps.save??writer(tag),now=deps.now??(()=>new Date().toISOString());
+  const read=(command,args,cap)=>{const bytes=run(command,args,cap);check(Buffer.isBuffer(bytes)&&bytes.length<=cap,'READ_BOUNDS');return bytes;};
+  const api=(path,suffix,cap=2*MiB)=>{
+@@ -103,7 +111,7 @@ export function collectPostGateCi(input,deps={}){
+  const summary=summaries[0],cleanup=cleanups[0],event=purpose==='pull_request'?'pull_request':'push';
+  check(String(metadata.id)===runId&&metadata.run_attempt===1&&metadata.status==='completed'
+   &&['success','failure','cancelled','timed_out'].includes(metadata.conclusion)&&metadata.event===event
+-  &&metadata.path===workflowPath&&metadata.head_branch===(purpose==='pull_request'?branch:targetBranch),'RUN_BINDING');
++  &&metadata.path===workflowPath&&metadata.head_branch===(purpose==='pull_request'?candidateBranch:targetBranch),'RUN_BINDING');
+  for(const repo of[metadata.repository,metadata.head_repository])check(repo?.full_name===PROJECT_REPOSITORY&&repo.id===PROJECT_REPOSITORY_ID,'RUN_REPOSITORY');
+  check(summary.repository===PROJECT_REPOSITORY&&summary.repositoryID===PROJECT_REPOSITORY_ID&&summary.event===event
+   &&summary.runId===runId&&summary.attempt===1&&hex(summary.sourceSHA)&&hex(summary.workflowSHA)
+@@ -116,7 +124,7 @@ export function collectPostGateCi(input,deps={}){
+  check(candidate.value.sha===candidateSHA&&hex(candidate.value.tree?.sha)&&commit.sha===testedSourceSHA
+   &&commit.tree?.sha===candidate.value.tree.sha&&hex(pr.base?.sha)&&pr.base.sha!==candidateSHA
+   &&same(commit.parents?.map(x=>x.sha),[pr.base.sha,candidateSHA]),'COMMIT_TREE_PARENTS');
+- check(pr.number===prNumber&&pr.head?.sha===candidateSHA&&pr.head.ref===branch&&pr.base.ref===targetBranch,'PR_BINDING');
++ check(pr.number===prNumber&&pr.head?.sha===candidateSHA&&pr.head.ref===candidateBranch&&pr.base.ref===targetBranch,'PR_BINDING');
+  for(const repo of[pr.head.repo,pr.base.repo])check(repo?.full_name===PROJECT_REPOSITORY&&repo.id===PROJECT_REPOSITORY_ID,'PR_REPOSITORY');
+  const matches=x=>x.number===prNumber&&x.head?.sha===candidateSHA&&x.base?.sha===pr.base.sha;
+  check(Array.isArray(metadata.pull_requests)&&metadata.pull_requests.every(matches),'RUN_PR_ASSOCIATION');
+@@ -163,7 +171,7 @@ export function collectPostGateCi(input,deps={}){
+  const refs={metadata:metadataRef,observation,reclaim,testedCommit:tested.ref,pullRequest:pull.ref,
+   workflowCommit:workflow.ref,workflowTree:tree.ref,workflowBlob,...(main?{mainRef:main.ref}:{})};
+  const collection={schemaVersion:'permission-postgate-ci-collection-v1',recordedAtUtc:now(),sourceSHA:candidateSHA,testedSourceSHA,
+-  workflowSHA:summary.workflowSHA,repository:PROJECT_REPOSITORY,purpose,prNumber,runId,attempt:1,conclusion:metadata.conclusion,
++  workflowSHA:summary.workflowSHA,repository:PROJECT_REPOSITORY,purpose,candidateBranch,prNumber,runId,attempt:1,conclusion:metadata.conclusion,
+   metadataHeadRole,candidateTreeSHA:candidate.value.tree.sha,baseSHA:pr.base.sha,wholeCi18,refs,
+   candidateCommit:candidate.ref,workflowBlobApi:blobApi.ref,workflowSHA256:hash(blob),rawCleanup,log:logRef,
+   boundary:'COLLECTION_ONLY_NO_RESERVATION_OR_SETTLEMENT; reviewed packet/intent must still be validated by the frozen guard'};
+@@ -173,9 +181,7 @@ export function collectPostGateCi(input,deps={}){
+ 
+ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
+  try{
+-  check(process.argv.length===7,'ARGS');
+-  const[runId,tag,purpose,prNumber,candidateSHA]=process.argv.slice(2);
+-  const result=collectPostGateCi({runId,tag,purpose,prNumber,candidateSHA});
++  const result=collectPostGateCi(postGateCiInput(process.argv.slice(2)));
+   console.log(JSON.stringify(result));if(!result.wholeCi18)process.exitCode=1;
+  }catch(error){console.error(JSON.stringify({status:'REFUSED',code:'POSTGATE_COLLECTION_REFUSED',reason:error.collectorReason??'IO_OR_PARSE'}));process.exitCode=1;}
+ }

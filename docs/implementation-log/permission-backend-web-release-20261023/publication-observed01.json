@@ -1,0 +1,13 @@
+{
+  "recordedUtc": "2026-10-23T15:44:09.001Z",
+  "remoteBranch": "review/permission-staging-20261023",
+  "sourceSHA": "eac4359d28b20b52309c20af7aa272362043c6c0",
+  "ciRunId": "39980641660",
+  "ciAttempt": 1,
+  "event": "push",
+  "path": ".github/workflows/ci.yml",
+  "status": "in_progress",
+  "conclusion": null,
+  "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39980641660",
+  "createdAt": "2026-10-23T15:42:57Z"
+}

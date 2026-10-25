@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-10-23T13:42:26.499Z",
+  "scope": "Hosted image functional flow and exact authorized two-PNG cleanup only",
+  "candidate": {
+    "handoff": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-menu-images-2026-10-23.md",
+    "handoffSHA256": "124fc7e3b9043dfee6cb648ecf2a3b2ae9128239cf096986dc521eacd1353d84",
+    "manifest": "manifest01.json",
+    "manifestSHA256": "1a77181ebe802d936dea3ad8062603ab191757411ecd008c7fdfd66414c60abb",
+    "source": "e42215044b4faf7e90f787ae8e975937ad3e4479"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/audit_process_review",
+      "verdict": "APPROVE",
+      "scope": "Authorization, process, finite cleanup and honest evidence",
+      "verified": "55/55 entries, raw user deploy/cleanup grants,26functional and17cleanup selected cells, unchanged payload/source, explicit actor/producer limits and Auth/session closeout",
+      "limitations": "No live runtime/DB rerun, credential read or mutation; visual review limited to selected cleanup/final UI screenshots"
+    },
+    {
+      "reviewer": "/root/audit_technical_review",
+      "verdict": "APPROVE",
+      "scope": "Hosted functional evidence/source/oracles and cleanup",
+      "verified": "55/55 entries,8deployed file readbacks, exact actor/header requests, denial state invariants, stage/unpublished/publish/public200304, actualUIreplace/remove/decode and correct cleanup placeholder/history;32logrecords14RPC18Edge",
+      "limitations": "Read-only review, no app/test/DB rerun or credential read; graph20/provider digest/fullgate and production unverified"
+    }
+  ],
+  "openFindings": [],
+  "approvalBoundary": "Not a production release, merge/main permission, full feature matrix or fullgate approval",
+  "recordType": "Root records explicit reviewer messages in current chat; metadata intentionally outside candidate manifest"
+}

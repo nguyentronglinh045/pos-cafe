@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "permission-bp4a-local75-post-stop-observation-v1",
+  "atUtc": "2026-10-23T08:02:41.967Z",
+  "activity": "READ_ONLY_STATIC_HASH_SNAPSHOT_NO_PROBES",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "trackedStatus": "",
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "dependencySnapshot": {
+    "file": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-dependency-snapshot.json",
+    "sha256": "1589438b4344c922690cbe1f84cf75b9250e22950032f23c37d82a68da6a409f",
+    "files": 19068,
+    "payloadBytes": 203000430,
+    "links": 0
+  },
+  "currentRootBytes": 302834058,
+  "retainedBytes": 584778149,
+  "freeBytes": {
+    "C:/": 193213530112,
+    "D:/": 98194354176
+  },
+  "linksNotFollowed": [
+    "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\dangling-docs\\docs-link",
+    "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\present-docs\\docs-alias",
+    "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-0096b055-d65e-4184-b94a-d37a2d493804",
+    "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-e384a654-8af5-47d2-9a7e-e68c5432519a"
+  ],
+  "execution": "STOPPED_BUILD_FAILED",
+  "unitCoverage": "NOT_RUN",
+  "cleanup": "NOT_AUTHORIZED_NOT_RUN",
+  "priorReceiptSHA256": "6113b5da8866bc1b11cb53cb4afb3bf00ec9e33b5de6d46590b6a903cc1143df",
+  "newGeneratedBytes": 251524928
+}

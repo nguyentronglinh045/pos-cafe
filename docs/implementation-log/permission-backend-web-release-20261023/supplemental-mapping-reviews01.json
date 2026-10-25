@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "permission-supplemental-mapping-design-reviews-v1",
+  "recordedUtc": "2026-10-23T16:00:03.268Z",
+  "candidateFile": "supplemental-source-mapping02.json",
+  "candidateSHA256": "40fedddd57082fa7842e52485511c02e243d8d4395cd8d25c090eaf59fd825e1",
+  "sourceSHA": "eac4359d28b20b52309c20af7aa272362043c6c0",
+  "reviewers": [
+    {
+      "name": "/root/audit_technical_review",
+      "scope": "technical/source mapping",
+      "verdict": "APPROVE",
+      "findingsClosed": [
+        "Scoped PIN_REUSE/collision allowed effects",
+        "Observed seed failure vs later lost ACK"
+      ]
+    },
+    {
+      "name": "/root/audit_process_review",
+      "scope": "scope/provenance/process mapping",
+      "verdict": "APPROVE",
+      "observed": "Only3context data changes; source/pins/selectors/runtime statuses unchanged"
+    }
+  ],
+  "actualRuntimeAcceptance": "PENDING"
+}

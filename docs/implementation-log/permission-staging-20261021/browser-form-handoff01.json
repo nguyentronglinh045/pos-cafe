@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "recordedAt": "2026-10-21T15:08:17.751Z",
+  "decision": "USER_SELECTED_LOCAL_CHROME_DASHBOARD_WITHOUT_SUPABASE_CONNECTOR",
+  "projectName": "pos-cafe-permission-staging",
+  "region": "ap-southeast-2",
+  "formPrepared": true,
+  "projectCreatedByAgent": false,
+  "passwordEnteredByAgent": false,
+  "originalDatabaseAccessed": false,
+  "actualPreflightRun": false,
+  "handoff": "User enters and privately stores a new database password and submits Create new project.",
+  "reason": "Browser confirmation policy requires handoff before entering a new authentication credential.",
+  "privacy": "Direct browser access does not make this chat private from anyone with access to the GPT account.",
+  "cutoffsLocal": {
+    "noNewMutation": "2026-10-21T22:30:00+07:00",
+    "noNewTest": "2026-10-21T22:45:00+07:00",
+    "checkpoint": "2026-10-21T22:55:00+07:00",
+    "stop": "2026-10-21T23:00:00+07:00"
+  },
+  "screenshot": {
+    "file": "browser-form-handoff-2208.png",
+    "bytes": 73541,
+    "sha256": "8f4eb6173c86e03b447117b2fbd0cf2e5eaf37d839002428295fa5212452da33"
+  }
+}

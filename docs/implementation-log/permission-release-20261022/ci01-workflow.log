@@ -1,0 +1,317 @@
+Build, unit, tooling and mock UI	Set up job	﻿2026-10-22T02:02:21.4641963Z Current runner version: '2.338.0'
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4660691Z ##[group]Runner Image Provisioner
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4661264Z Hosted Compute Agent
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4661680Z Version: 20261015.610
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4662084Z Commit: 267fdb4e8bbec4ab5ea31367f3a00d5c480c7656
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4662497Z Build Date: 2026-10-14T17:06:54Z
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4662936Z Worker ID: {07d93a5e-421d-4774-980b-464315b1d6a0}
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4663342Z Region: westus2
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4663984Z Cloud: Azure
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4664348Z ##[endgroup]
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4665247Z ##[group]Operating System
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4665671Z Ubuntu
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4665984Z 24.04.5
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4666555Z LTS
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4666935Z ##[endgroup]
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4667283Z ##[group]Runner Image
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4667669Z Image: ubuntu-24.04
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4668000Z Version: 20261018.339.1
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4668586Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261018.339/images/ubuntu/Ubuntu2404-Readme.md
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4669651Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261018.339
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4670221Z ##[endgroup]
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4670902Z ##[group]GITHUB_TOKEN Permissions
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4672302Z Contents: read
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4672651Z Metadata: read
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4672968Z ##[endgroup]
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4674346Z Secret source: Actions
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4674910Z Cache mode: write
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.4675377Z Prepare workflow directory
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.5378420Z Prepare all required actions
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.5410734Z Getting action download info
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:21.8825770Z Download action repository 'actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:22.0579067Z Download action repository 'actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38' (SHA:249970729cb0ef3589644e2896645e5dc5ba9c38)
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:22.1983821Z Download action repository 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+Build, unit, tooling and mock UI	Set up job	2026-10-22T02:02:22.3949435Z Complete job name: Build, unit, tooling and mock UI
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	﻿2026-10-22T02:02:22.5262023Z ##[group]Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5263283Z with:
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5263654Z   persist-credentials: false
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5264086Z   fetch-depth: 1
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5264508Z   repository: nguyentronglinh045/pos-cafe
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5268357Z   token: ***
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5268749Z   ssh-strict: true
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5269112Z   ssh-user: git
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5269460Z   clean: true
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5269842Z   sparse-checkout-cone-mode: true
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5270297Z   fetch-tags: false
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5270682Z   show-progress: true
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5271070Z   lfs: false
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5271418Z   submodules: false
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5271824Z   set-safe-directory: true
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5272274Z   allow-unsafe-pr-checkout: false
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5272913Z ##[endgroup]
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5995906Z Syncing repository: nguyentronglinh045/pos-cafe
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5997349Z ##[group]Getting Git version info
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5997906Z Working directory is '/home/runner/work/pos-cafe/pos-cafe'
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.5998710Z [command]/usr/bin/git version
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6062980Z git version 2.55.0
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6079489Z ##[endgroup]
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6090866Z Temporarily overriding HOME='/home/runner/work/_temp/9327e0f7-94c8-4d3c-bac0-0f934a3b2a43' before making global git config changes
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6091895Z Adding repository directory to the temporary git global config as a safe directory
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6095748Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/pos-cafe/pos-cafe
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6157539Z Deleting the contents of '/home/runner/work/pos-cafe/pos-cafe'
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6161970Z ##[group]Determining repository object format
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6163513Z ##[endgroup]
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6164099Z ##[group]Initializing the repository
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6167459Z [command]/usr/bin/git init /home/runner/work/pos-cafe/pos-cafe
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6274088Z hint: Using 'master' as the name for the initial branch. This default branch name
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6275120Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6276467Z hint: to use in all of your new repositories, which will suppress this warning,
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6298268Z hint: call:
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6298654Z hint:
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6299133Z hint: 	git config --global init.defaultBranch <name>
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6299612Z hint:
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6299934Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6300443Z hint: 'development'. The just-created branch can be renamed via this command:
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6300841Z hint:
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6301070Z hint: 	git branch -m <name>
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6301344Z hint:
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6301685Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6317002Z Initialized empty Git repository in /home/runner/work/pos-cafe/pos-cafe/.git/
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6323451Z [command]/usr/bin/git remote add origin https://github.com/nguyentronglinh045/pos-cafe
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6350780Z ##[endgroup]
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6351542Z ##[group]Disabling automatic garbage collection
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6355103Z [command]/usr/bin/git config --local gc.auto 0
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6388798Z ##[endgroup]
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6389528Z ##[group]Setting up auth
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6390106Z Removing SSH command configuration
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6397337Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6424106Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6744100Z Removing HTTP extra header
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6749283Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6787496Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6973200Z Removing includeIf entries pointing to credentials config files
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.6978479Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.7015297Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.7206186Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.7247545Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git.path /home/runner/work/_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.7282371Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.7318769Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.7353525Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.7385797Z ##[endgroup]
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.7391124Z ##[group]Fetching the repository
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:22.7391907Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +38a55aab775e1d70dba4b62d6658f41e28f8aef1:refs/remotes/origin/run/permissions-20261020
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.3803653Z From https://github.com/nguyentronglinh045/pos-cafe
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.3805386Z  * [new ref]         38a55aab775e1d70dba4b62d6658f41e28f8aef1 -> origin/run/permissions-20261020
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.3811238Z [command]/usr/bin/git branch --list --remote origin/run/permissions-20261020
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.3842582Z   origin/run/permissions-20261020
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.3849342Z [command]/usr/bin/git rev-parse refs/remotes/origin/run/permissions-20261020
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.3875570Z 38a55aab775e1d70dba4b62d6658f41e28f8aef1
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.3879729Z ##[endgroup]
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.3880682Z ##[group]Determining the checkout info
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.3881778Z ##[endgroup]
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.3882540Z [command]/usr/bin/git sparse-checkout disable
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.3932682Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.3964507Z ##[group]Checking out the ref
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.3966567Z [command]/usr/bin/git checkout --progress --force -B run/permissions-20261020 refs/remotes/origin/run/permissions-20261020
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5416830Z Switched to a new branch 'run/permissions-20261020'
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5420672Z branch 'run/permissions-20261020' set up to track 'origin/run/permissions-20261020'.
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5432871Z ##[endgroup]
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5479663Z [command]/usr/bin/git log -1 --format=%H
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5510995Z 38a55aab775e1d70dba4b62d6658f41e28f8aef1
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5520067Z ##[group]Removing auth
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5521251Z Removing SSH command configuration
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5522862Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5558823Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5745843Z Removing HTTP extra header
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5748555Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5785048Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5986509Z Removing includeIf entries pointing to credentials config files
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.5989101Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6025894Z includeif.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git.path
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6026943Z includeif.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git/worktrees/*.path
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6027512Z includeif.gitdir:/github/workspace/.git.path
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6027873Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6034344Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git.path
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6062753Z /home/runner/work/_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6070508Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git.path /home/runner/work/_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6108510Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git/worktrees/*.path
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6135310Z /home/runner/work/_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6142383Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6189863Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6223224Z /github/runner_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6229046Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6262615Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6288961Z /github/runner_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6294258Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6330703Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6510644Z Removing credentials config '/home/runner/work/_temp/git-credentials-bd10b399-b42f-4885-af92-ccf9dbf5fe20.config'
+Build, unit, tooling and mock UI	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:02:24.6518731Z ##[endgroup]
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	﻿2026-10-22T02:02:24.7165329Z ##[group]Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:24.7165658Z with:
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:24.7165804Z   node-version: 24.16.0
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:24.7165969Z   package-manager-cache: false
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:24.7166139Z   check-latest: false
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:24.7167766Z   token: ***
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:24.7167914Z ##[endgroup]
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:24.8119479Z Attempting to download 24.16.0...
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:25.3103360Z Acquiring 24.16.0 - x64 from https://github.com/actions/node-versions/releases/download/24.16.0-26265092718/node-24.16.0-linux-x64.tar.gz
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:25.8347257Z Extracting ...
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:25.8443147Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/c63247cb-e693-446c-bc07-0f892a0a8f10 -f /home/runner/work/_temp/cc8b6145-71e1-42ae-af5d-d9f70da1b9ea
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:26.7330292Z Adding to the cache ...
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:28.7645533Z ##[group]Environment details
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:28.9283162Z node: v24.16.0
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:28.9283855Z npm: 11.13.0
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:28.9283993Z yarn: 1.22.22
+Build, unit, tooling and mock UI	Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38	2026-10-22T02:02:28.9284339Z ##[endgroup]
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	﻿2026-10-22T02:02:28.9702211Z ##[group]Run node scripts/project-ci-launch.mjs
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:02:28.9702553Z ^[[36;1mnode scripts/project-ci-launch.mjs^[[0m
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:02:28.9854064Z shell: /usr/bin/bash -e {0}
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:02:28.9854292Z ##[endgroup]
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:02:34.6609042Z PROJECT_CI_PHASE install PASS
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:02:43.2610465Z PROJECT_CI_PHASE build PASS
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:04:22.1628691Z PROJECT_CI_PHASE unit PASS
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:04:47.6016729Z PROJECT_CI_PHASE tooling PASS
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2082736Z PROJECT_CI_PHASE node-tools FAIL
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2497737Z {
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2498170Z   "schemaVersion": "pos-cafe-light-ci-v1",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2498612Z   "verificationScope": "LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2499022Z   "repository": "nguyentronglinh045/pos-cafe",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2499288Z   "repositoryID": 1263057386,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2499491Z   "event": "push",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2499753Z   "sourceSHA": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2500031Z   "prHeadSHA": null,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2500386Z   "workflowSHA": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2500689Z   "runId": "39709124524",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2500888Z   "attempt": 1,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2501294Z   "sourceFingerprint": "cbe37007075731312b1d21b318cc4a949d52bc2b63969d100e6ec944c223a8f5",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2501940Z   "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2502312Z   "overallStatus": "FAIL",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2502752Z   "runURL": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39709124524/attempts/1",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2503177Z   "phases": [
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2503344Z     {
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2504051Z       "id": "install",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2504302Z       "status": "PASS",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2504504Z       "elapsedMs": 5453,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2504713Z       "exitCode": 0,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2505099Z       "invocationSHA": "12fc5efc9b44af7827700b3ebfba6207bf908f18f8233512b24aeb4254e844fd",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2505690Z       "reportSHA": "9ae458c93c94801ed76fc8ad5a63bed3f4fddcc303cfb94fe1ca26bd191dbb80",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2506075Z       "counts": null,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2506435Z       "diagnostic": null
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2506688Z     },
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2506848Z     {
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2507016Z       "id": "build",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2507209Z       "status": "PASS",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2507410Z       "elapsedMs": 8600,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2507610Z       "exitCode": 0,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2507986Z       "invocationSHA": "851a12580c2a5976942cfeece28005981010585b021396c7c9ee1994f4f01025",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2508543Z       "reportSHA": "70afbfcfacd3658537a09b24c92fbb15e9450a748c37c307148e5e6451b753f3",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2508922Z       "counts": null,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2509113Z       "diagnostic": null
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2509308Z     },
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2509461Z     {
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2509617Z       "id": "unit",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2509799Z       "status": "PASS",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2510001Z       "elapsedMs": 98902,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2510200Z       "exitCode": 0,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2510588Z       "invocationSHA": "f305756bd3a9295b124bcacdfbcefb87de73fa8a3532c32cf5bcfa42a033e44d",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2511155Z       "reportSHA": "276ab33738cb549d0618ccab00b389ff7c770831053cb3ad1e8ac72748bccc31",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2511526Z       "counts": {
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2511715Z         "discovered": 1175,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2511916Z         "run": 1175,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2512096Z         "pass": 1175,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2512280Z         "fail": 0,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2512453Z         "skip": 0,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2512635Z         "manualDeferred": 0
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2512837Z       },
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2513002Z       "diagnostic": null
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2513188Z     },
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2513344Z     {
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2513500Z       "id": "tooling",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2513690Z       "status": "PASS",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2513885Z       "elapsedMs": 25439,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2514517Z       "exitCode": 0,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2514879Z       "invocationSHA": "3d914fe295e3f26ed4e7c28e357f311935c6fcf982072e74696a1bf8762cfbb9",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2515392Z       "reportSHA": "8bf4c4e556f3e016a63e28650cd831c63ef11d6cf3bf181bf73b2ad9fb7f5833",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2515743Z       "counts": {
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2515968Z         "discovered": 568,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2516168Z         "run": 567,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2516479Z         "pass": 567,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2516716Z         "fail": 0,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2516971Z         "skip": 1,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2517187Z         "manualDeferred": 1
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2517381Z       },
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2517546Z       "diagnostic": null
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2517774Z     },
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2517930Z     {
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2518094Z       "id": "node-tools",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2518286Z       "status": "FAIL",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2518474Z       "elapsedMs": 13606,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2518702Z       "exitCode": 1,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2519069Z       "invocationSHA": "7c8d4e746f814821105ce5a87d9ac22068caa2913f1ac7333b79883575d53169",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2519617Z       "reportSHA": "2ca6ad0a8feece8d8b79931dc48c09342e4f36e5857b7090267e134947e29617",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2519974Z       "counts": null,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2520158Z       "diagnostic": {
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2520332Z         "codes": [
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2520455Z           "COMMAND_FAILED",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2520595Z           "REPORT_MISSING",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2520730Z           "TEST_TIMEOUT",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2520865Z           "ASSERTION_ERROR",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2520999Z           "TYPE_ERROR",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2521127Z           "PROTOCOL_ERROR",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2521468Z           "RESULT_INVALID"
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2521598Z         ],
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2521710Z         "metrics": {
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2521850Z           "kernelCorePipe": 0,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2522014Z           "memoryCurrentBytes": 680083456,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2522171Z           "pidsCurrent": 7,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2522326Z           "peakMemoryBytes": 1408053248,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2522481Z           "peakPids": 49,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2522615Z           "oomEvents": 0,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2522742Z           "oomKills": 0,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2522918Z           "pidsLimitEvents": 0,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2523092Z           "minimumObservedFreeBytes": 90349940736,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2523277Z           "initialFreeBytes": 90759270400,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2523459Z           "freeSpaceDecreaseBytes": 409329664,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2523644Z           "ownedBytesAtCheckpoint": 496705536,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2523807Z           "coreFileCount": 1,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2523962Z           "coreAllocatedBytes": 4096,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2524139Z           "largestOwnedFileBytes": 33275904
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2524288Z         },
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2524402Z         "failedFiles": []
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2524526Z       }
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2524627Z     }
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2524728Z   ],
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2524869Z   "sourceProfile": "PERMISSION_APP_LIGHT",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2525029Z   "deferredFeatureGates": [
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2525167Z     "PERMISSION_FULL"
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2525290Z   ],
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2525403Z   "hp1Execution": "RETIRED",
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2525545Z   "sourcePreserved": true,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2525691Z   "peakOwnedBytes": 496705536,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2525846Z   "operatingCapBytes": 5368709120,
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2526006Z   "minimumFreeBytes": 32212254720
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.2526150Z }
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.3293363Z {"schemaVersion":"permission-pg16-reclaim-v1","status":"NOT_PRESENT","rootRemoved":true,"processReleased":true}
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.3294330Z PROJECT_CI_CORE_PATTERN_RESTORED
+Build, unit, tooling and mock UI	Run bounded CI and publish safe summary	2026-10-22T02:05:01.3348730Z ##[error]Process completed with exit code 1.
+Build, unit, tooling and mock UI	Validate only the three safe synthetic PIN photos after unit release	﻿2026-10-22T02:05:01.3474811Z ##[group]Run node scripts/permission-runtime-pin-ui.mjs --export-check
+Build, unit, tooling and mock UI	Validate only the three safe synthetic PIN photos after unit release	2026-10-22T02:05:01.3475143Z ^[[36;1mnode scripts/permission-runtime-pin-ui.mjs --export-check^[[0m
+Build, unit, tooling and mock UI	Validate only the three safe synthetic PIN photos after unit release	2026-10-22T02:05:01.3518564Z shell: /usr/bin/bash -e {0}
+Build, unit, tooling and mock UI	Validate only the three safe synthetic PIN photos after unit release	2026-10-22T02:05:01.3518721Z ##[endgroup]
+Build, unit, tooling and mock UI	Validate only the three safe synthetic PIN photos after unit release	2026-10-22T02:05:01.6626164Z PIN_UI_SAFE_EXPORT_NOT_PRESENT
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	﻿2026-10-22T02:05:01.7169576Z Post job cleanup.
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.7762462Z [command]/usr/bin/git version
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.7809350Z git version 2.55.0
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.7836739Z Temporarily overriding HOME='/home/runner/work/_temp/9c426ae5-f845-49ce-a121-6661cf811fef' before making global git config changes
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.7837533Z Adding repository directory to the temporary git global config as a safe directory
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.7839948Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/pos-cafe/pos-cafe
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.7872134Z Removing SSH command configuration
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.7877165Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.7908079Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.8116853Z Removing HTTP extra header
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.8121408Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.8154791Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.8353002Z Removing includeIf entries pointing to credentials config files
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.8361192Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Build, unit, tooling and mock UI	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-22T02:05:01.8402782Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Build, unit, tooling and mock UI	Complete job	﻿2026-10-22T02:05:01.8738842Z Cleaning up orphan processes

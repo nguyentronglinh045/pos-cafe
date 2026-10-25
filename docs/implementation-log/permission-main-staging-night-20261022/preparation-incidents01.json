@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "permission-night-preparation-incidents-v1",
+  "scope": "Local preparation incidents; preserve separately from application/runtime gate results.",
+  "incidents": [
+    {
+      "id": "GIT-PIN-BUFFER-01",
+      "affectedSource": "f35126a0a11a227d1f294f39ba60032df8978ab1",
+      "symptom": "Actual publication guard refused before reservation; diagnostic ENOBUFS/SIGTERM on a 1743309-byte tracked PNG.",
+      "cause": "Per-file git show maxBuffer was 1MiB, below a valid required asset size.",
+      "resolution": "New ad265 source uses one 64MiB bounded binary git cat-file batch with exact framing/hash/order/EOF checks, retains all1107 pins and adds regression controls. Actual batch41686492 bytes; fresh935 tests and two reviews before successful publication.",
+      "externalActionsSpentByFailure": 0,
+      "improvement": "Exercise the real full pin transport before publication; preserve all assets and reject oversized/invalid framing rather than excluding files."
+    },
+    {
+      "id": "PG16-EXTRACTION-ARGUMENT-01",
+      "symptom": "Local read-only receipt extraction raised TypeError before creating output.",
+      "cause": "Coordinator utility called renderPg16Evidence without its required binding argument.",
+      "resolution": "Read actual exported signature; pass the hash-verified actual CI summary as binding. Corrected utility validated and extracted the existing receipt; no runtime rerun.",
+      "externalActionsSpentByFailure": 0,
+      "improvement": "Read helper signatures and binding contracts before calling them; keep receipt extraction separate from test execution."
+    },
+    {
+      "id": "PUBLIC-CLIENT-CLIPBOARD-01",
+      "symptom": "Dashboard showed Copied, but browser clipboard API returned zero characters.",
+      "cause": "UI copy feedback did not establish that text reached the clipboard surface exposed to the agent. Underlying browser clipboard cause was not independently diagnosed.",
+      "resolution": "Strict parser refused before writing. Read only the already-visible Connect Framework accessibility text, require one unique staging URL and one publishable key, then save client configuration privately. No secret/service-role key or hidden app state was accessed.",
+      "externalGateOrHostedWriteAttemptsSpentByFailure": 0,
+      "improvement": "Verify copied data, and use visible UI text when clipboard transport is empty; never infer success from button feedback."
+    }
+  ]
+}

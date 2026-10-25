@@ -1,0 +1,13 @@
+{
+  "version": "permission-staging-attempt-v1",
+  "workstream": "permission-staging-20261021",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "manifestSha256": "a58a52d7855bf071827350b78619b86a3a56ad030b1721511655ab4346397e1b",
+  "sourceFingerprintSha256": "35ef7b6781bcfc5ed1b91875f5b129f5c0ee07ef7955509ed98e73231ee8807c",
+  "startedUtc": "2026-10-21T15:13:32.182Z",
+  "allowance": {
+    "attempts": 1,
+    "requests": 2
+  },
+  "status": "CONSUMED_BEFORE_NETWORK"
+}

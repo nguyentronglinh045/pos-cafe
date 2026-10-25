@@ -1,0 +1,21 @@
+{
+  "observedAtUtc": "2026-10-22T09:31:08.5499918+00:00",
+  "executable": "C:\\Users\\nguye\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+  "arguments": [
+    "-NoProfile",
+    "-NonInteractive",
+    "-File",
+    "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\early-readonly-restore-source02.ps1",
+    "-ExpectedSourceSha256",
+    "c2f3a392082cb693226fe6e7f831751e2c92ac3358837a744969d9cf1aa545a5"
+  ],
+  "sourcePath": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\early-readonly-restore-source02.ps1",
+  "sourceSha256": "c2f3a392082cb693226fe6e7f831751e2c92ac3358837a744969d9cf1aa545a5",
+  "parseErrors": 0,
+  "priorAttemptSourcePath": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\early-readonly-restore-source01.ps1",
+  "priorAttemptSourceSha256": "feb8c23bf116d099524dc1194d8c27d8883f48a84d94b68d029103d36a7dc47c",
+  "priorFailureReceiptPath": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\early-readonly-restore01.json",
+  "priorFailureReceiptSha256": "2946eb39ae75c38962fa8fd4c6180d33fba4dd40b8abc872110d40078cd0addb",
+  "correction": "Explicit NullString.Value prevents PowerShell conversion of null backup filename to empty string",
+  "scope": "stored_project_config_only"
+}

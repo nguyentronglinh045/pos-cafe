@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "permission-auth-mcp-readonly-inventory-v1",
+  "recordedAtUtc": "2026-10-23T14:21:48Z",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "tool": "mcp__supabase_pos_cafe__execute_sql",
+  "calls": 1,
+  "mutations": 0,
+  "configAdmission": {
+    "path": "D:/Workspace/pos-cafe/.codex/config.toml",
+    "sha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+    "server": "supabase_pos_cafe",
+    "host": "mcp.supabase.com",
+    "projectRef": "ineckiashpwloncxnbqx",
+    "readOnly": true
+  },
+  "query": "select jsonb_build_object(\n  'databaseRole', current_user,\n  'transactionReadOnly', current_setting('transaction_read_only'),\n  'authUsers', (select count(*) from auth.users),\n  'emailConfirmedUsers', (select count(*) from auth.users where email_confirmed_at is not null),\n  'emailUnconfirmedUsers', (select count(*) from auth.users where email_confirmed_at is null),\n  'stores', (select count(*) from public.stores),\n  'employees', (select count(*) from public.employees),\n  'authUsersWithoutStore', (select count(*) from auth.users u where not exists (select 1 from public.stores s where s.id = u.id)),\n  'emailUnconfirmedUsersWithoutStore', (select count(*) from auth.users u where u.email_confirmed_at is null and not exists (select 1 from public.stores s where s.id = u.id)),\n  'storesWithoutAuthUser', (select count(*) from public.stores s where not exists (select 1 from auth.users u where u.id = s.id))\n) as observation;",
+  "observation": {
+    "stores": 2,
+    "authUsers": 2,
+    "employees": 3,
+    "databaseRole": "supabase_read_only_user",
+    "emailConfirmedUsers": 2,
+    "transactionReadOnly": "on",
+    "authUsersWithoutStore": 0,
+    "emailUnconfirmedUsers": 0,
+    "storesWithoutAuthUser": 0,
+    "emailUnconfirmedUsersWithoutStore": 0
+  },
+  "privacy": {
+    "aggregateOnly": true,
+    "emailValuesIncluded": false,
+    "credentialsIncluded": false,
+    "tokensIncluded": false,
+    "personalRowsIncluded": false
+  },
+  "limitations": [
+    "Recorded time is the evidence recording checkpoint, not an exact server execution timestamp.",
+    "Aggregate counts show no current Auth-user/store orphan or unconfirmed Auth user; they do not inspect browser-memory pending create contexts or reservation-only attempts.",
+    "No Auth configuration, user, tenant or business data was modified."
+  ]
+}

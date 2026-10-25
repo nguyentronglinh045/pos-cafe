@@ -1,0 +1,26 @@
+{
+  "recordedUtc": "2026-10-24T09:30:04.557Z",
+  "plan": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-final-origin-fallback-20261024.md",
+    "bytes": 4700,
+    "sha256": "76ab6a67f0dc29576d2078fc6f6500447b09822585bd374e748fb20462a9a417"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "PLAN_ONLY: independent browser worker/full guard, unchanged acceptance/backend/deadline, firstfailure/cancellation/restore/time/transport limits",
+      "blockingFindings": 0
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "PLAN_ONLY: independent browser worker/full guard, unchanged acceptance/backend/deadline, firstfailure/cancellation/restore/time/transport limits",
+      "blockingFindings": 0
+    }
+  ],
+  "implementation": "NOT_IMPLEMENTED",
+  "runtime": "NOT_RUN",
+  "additionalCloudAuthorization": false,
+  "businessPass": false
+}

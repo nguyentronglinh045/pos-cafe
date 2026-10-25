@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "permission-independent-metadata-review-v1",
+  "recordedAtUtc": "2026-10-22T14:18:38.185Z",
+  "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+  "artifacts": [
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/fullgate-source-mapping-wip02.json",
+      "sha256": "f3a3d1108819ec268a8a53c34d3f0a0414eaf1e802f648fe1885532a96091d09"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/fullgate-inventory02.json",
+      "sha256": "ca54450710f0aa8c72414d6dc9ac1e2addaf7973b030ef2c8a3a557cb3d298ad"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/prepare-fullgate-source-mapping02.mjs",
+      "sha256": "1d7edc5d4c0bf756b515b72acee9379b355e8e74cc8587bf452d53dfd77c6a9c"
+    }
+  ],
+  "authors": [
+    "/root/budget_time_guard_fix",
+    "/root/mcp_staging_scope_review (unchanged original mapping portion)"
+  ],
+  "reviewers": [
+    {
+      "name": "/root",
+      "scope": "source-and-declaration",
+      "verdict": "APPROVE",
+      "basis": "Independent read-only Node audit actual31Gitpins/6newhashes/35configs/lock, actualcatalog deepEqual35/760,149 exact required selectors,12obligations34contexts NOT_EXECUTED/evidence[], two unchanged-text anchors62to79 and empty src/supabase delta."
+    },
+    {
+      "name": "/root/mcp_staging_evidence_review",
+      "scope": "operations-and-proof-boundary",
+      "verdict": "APPROVE",
+      "basis": "Actual final reviewer message: independent31pins,6old/newpairs,35config+lock/catalog,149selectors/physical-profile mapping/12/34 statuses; unchanged LIGHT private/public receipt boundary and no old-source PASS imported. No generator/test/API/DB/actions."
+    }
+  ],
+  "limit": "Source mapping/declaration only; raw authorReviewStatus PENDING fields predate this separate review receipt. No runtime/fullgate PASS."
+}

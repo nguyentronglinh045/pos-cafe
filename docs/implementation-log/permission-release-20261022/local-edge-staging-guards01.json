@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "permission-local-test-receipt-v1",
+  "observedAtUtc": "2026-10-22T01:31:36.436Z",
+  "platform": "win32",
+  "node": "v24.16.0",
+  "command": "node --test scripts/permission-edge-probe.test.mjs scripts/permission-edge-resolution.test.mjs scripts/permission-staging.test.mjs",
+  "pass": 50,
+  "fail": 0,
+  "skip": 0,
+  "exitCode": 0,
+  "durationMs": 24630.4396,
+  "networkScope": "synthetic fixtures and local HTTP controls only",
+  "linuxNativeRun": false,
+  "businessTestsRun": false,
+  "logSHA256": "6b050bd725db8b5c22bf37c49ba1761b8c408d62d624eae5572b8d5e5b5b3b47",
+  "files": [
+    {
+      "path": "scripts/permission-edge-probe.mjs",
+      "sha256": "ae736d05e728ad0d6cc0f3f4cd9d7935890c3e6f2764be319a01138275e74367"
+    },
+    {
+      "path": "scripts/permission-edge-probe.test.mjs",
+      "sha256": "e4efc11da74fd1c80bc0f3a1165068eaeac44df8fde4986ebfff6742a3f2b257"
+    },
+    {
+      "path": "scripts/permission-edge-resolution.mjs",
+      "sha256": "7795136a7a533e93c550cec3df09a846fee58ed5ff1eb6fb6237a2b60c4b1178"
+    },
+    {
+      "path": "scripts/permission-edge-resolution.test.mjs",
+      "sha256": "1e0aff133922213419201382502fecc30899d51c9d6863c2a148b6484303272f"
+    },
+    {
+      "path": "scripts/permission-staging.mjs",
+      "sha256": "f23543a4db92eef39e9b557db748b71efeae008164a335e07b05a64504b46ed9"
+    },
+    {
+      "path": "scripts/permission-staging.test.mjs",
+      "sha256": "de6dce3fde8677faca26991ea5b8dd81cd18ba65495afefd67827c6e9656424d"
+    }
+  ]
+}

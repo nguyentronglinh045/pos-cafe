@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "permission-ci-remediation-local-commit-v1",
+  "atUtc": "2026-10-22T02:35:54.849Z",
+  "head": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "parent": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+  "branch": "fix/permissions-ci-portability-20261022",
+  "files": [
+    "ci/release-policy.json",
+    "scripts/permission-release-phase-admission.README.md",
+    "scripts/permission-release-phase-admission.mjs",
+    "scripts/permission-release-phase-admission.test.mjs",
+    "scripts/permission-staging-cli.mjs",
+    "scripts/permission-staging.test.mjs",
+    "scripts/project-ci-results.mjs",
+    "scripts/project-ci-results.test.mjs"
+  ],
+  "sourcePins": [
+    {
+      "path": "ci/release-policy.json",
+      "sha256": "1ddef24836e23599c299e966299349e64a88bd13f25bef0b35da12835fa4c33a"
+    },
+    {
+      "path": "scripts/permission-release-phase-admission.README.md",
+      "sha256": "28171f1e8784a167959eca44378233e64870a6b81c59bd1519c36b94ee5d76ba"
+    },
+    {
+      "path": "scripts/permission-release-phase-admission.mjs",
+      "sha256": "a3a2213b9ae135e55e9d42ea65e755cdcb4e8662edea8f1ad0c86e49c6b2de01"
+    },
+    {
+      "path": "scripts/permission-release-phase-admission.test.mjs",
+      "sha256": "fad0b387fc42a68e061cfd0d122b0838a819b8b67af341812ef1a471455466aa"
+    },
+    {
+      "path": "scripts/permission-staging-cli.mjs",
+      "sha256": "ae88f825c021b6af523f606985a261a64afcd7a7ff959c1d226bdf32ad382320"
+    },
+    {
+      "path": "scripts/permission-staging.test.mjs",
+      "sha256": "5d7a2f312aae5eda4d988789348f757f45990e3b184d2704b9fe646eb37f7345"
+    },
+    {
+      "path": "scripts/project-ci-results.mjs",
+      "sha256": "1fd37ac4dbd59b50fe9f6b6871855105c18177aa5ecbef74744a06662f3c69f2"
+    },
+    {
+      "path": "scripts/project-ci-results.test.mjs",
+      "sha256": "cc44627aeca3f6d42b66d14bddeff4ba20848fa4e1609cce07aff2f3ef8ee1a7"
+    }
+  ],
+  "trackedClean": true,
+  "untrackedClean": true,
+  "trustedPinCount": 43,
+  "allTrustedPinsMatch": true,
+  "productionEnabled": false,
+  "publicationAttempted": false,
+  "sqlRun": false,
+  "fullGate": false,
+  "localTestReceipt": "local-node-tools-remediation03.json"
+}

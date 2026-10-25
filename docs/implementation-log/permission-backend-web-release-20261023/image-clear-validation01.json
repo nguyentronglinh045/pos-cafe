@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "permission-image-clear-validation-v1",
+  "recordedUtc": "2026-10-24T04:12:01.999Z",
+  "sourceSHA": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+  "parentSHA": "f8ee03c195127bb440b0ede3142622ed21c3cc96",
+  "sourceTree": "1cc204ca3d9fef9d219f6bb2ff97785bb3fe5cd3",
+  "sourceFingerprint": "f0b4a5cf6ab41c211cc904875c7d3ac24734dc894105e5bd7918e695c4951c30",
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "environment": {
+    "platform": "win32",
+    "node": "v24.16.0",
+    "installations": 0
+  },
+  "sourceBinding": "Controls executed final9authorworkingbytes over parentf8ee; exactcanonicalhashes verified equal frozenH. Rootpolicy3pins checked separately; no source edits after tests.",
+  "authorManifest": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-image-clear-author-manifest01.json",
+    "bytes": 3680,
+    "sha256": "06311f88604de046176f1c2cfa6d37ef02da00d6b4c1d95d0e0d55dff0e07839"
+  },
+  "tests": {
+    "node": {
+      "tests": 157,
+      "pass": 157,
+      "fail": 0,
+      "skip": 0,
+      "log": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-image-clear-node02.log",
+        "bytes": 16688,
+        "sha256": "14d3fec742fb866c7d33849c14755a20165d169014fb86b4833624a506eda64f"
+      },
+      "recipe": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-image-clear-node02-recipe.json",
+        "bytes": 714,
+        "sha256": "add3630fdf0b6cc3ac79dfc9439c05da5bf3f254209e69ed1a4bc08527f42b6d"
+      }
+    },
+    "realReporters": {
+      "controls": 3,
+      "pass": 3,
+      "coverage": "WINDOWS_REFUSAL_ONLY",
+      "log": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-image-clear-reporters01.log",
+        "bytes": 293,
+        "sha256": "8a66d989541bcbea559b1df2eab9360f7208e06abd69289830355e3ff486ca3c"
+      },
+      "recipe": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-image-clear-reporters01-recipe.json",
+        "bytes": 919,
+        "sha256": "a78b72cdab13ef41afc6254d646189462654e3f279af4f96fd692dbbef8fde77"
+      }
+    },
+    "typecheck": {
+      "exitCode": 0,
+      "log": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-image-clear-typecheck01.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "recipe": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-image-clear-typecheck01-recipe.json",
+        "bytes": 518,
+        "sha256": "78d2bc35328bbf0b4d190863d4571429692a3968973f831a4db736cb7c561060"
+      }
+    },
+    "policy": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "command": "D:/tools/nodejs/node.exe --test scripts/permission-full-target-policy.test.mjs",
+      "proof": "Root executed after final3pins updated; all50 match frozen canonical Git blobs"
+    },
+    "diffCheck": "PASS"
+  },
+  "linuxRequired": {
+    "status": "NOT_EXECUTED_LOCALLY",
+    "nativeFileCases": 29,
+    "realReporterFileRoundtrips": 3,
+    "requiredIn": "freshLinuxCI node-tools/runtime-reporters, nonroot accounting while held and handback"
+  },
+  "bound": {
+    "writerReaderCapBytes": 131072,
+    "t04WorstCaseBytes": 100551,
+    "serviceWorstCaseBytes": 106305,
+    "includesPrimaryAndCleanup": true,
+    "attachmentCapBytes": 16384
+  },
+  "acceptance": {
+    "stages": 35,
+    "requiredIdentities": 760,
+    "supplementalObligations": 12,
+    "errorContexts": 34,
+    "changed": false,
+    "businessRuntimePassClaimed": false
+  },
+  "localTempInventory": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-image-clear-temp-inventory01.json",
+    "bytes": 6787,
+    "sha256": "642594f7762f747bb7d8691c3d509a953f13f25a8804cd5f32930815fb42bde8"
+  },
+  "reviewStatus": "PENDING_TWO_NON_AUTHOR_REVIEWS"
+}

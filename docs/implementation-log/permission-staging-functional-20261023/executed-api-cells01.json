@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "threadId": "01a167f3-952b-7e71-8d3a-9c0fc48d1c3c",
+  "turnId": "01a1688a-222c-78c1-aa05-56ce5272a4b7",
+  "source": "Exact selected node_repl tool arguments returned by codex_app.read_thread. Runtime variables are not replaced with credential values. Tool status is not a testcase verdict; failed diagnostic cells remain included.",
+  "cells": [
+    {
+      "id": "exec-a65e28fb-567b-46f7-a409-870569eaba83",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "completed",
+      "arguments": {
+        "code": "var fs = await import('node:fs/promises'); var pub = JSON.parse(await fs.readFile('D:/Workspace/pos-cafe-permission-timeonly-20261022/private/staging-public-client.json','utf8')); if(pub.projectRef!=='ineckiashpwloncxnbqx'||pub.url!=='https://ineckiashpwloncxnbqx.supabase.co') throw Error('TARGET_MISMATCH'); var evroot='D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-functional-20261023'; var resultRows=[]; var authSettings = await fetch(pub.url+'/auth/v1/settings',{headers:{apikey:pub.publishableKey},signal:AbortSignal.timeout(15000)}); var aset=await authSettings.json(); var settingEvidence={at:new Date().toISOString(),projectRef:pub.projectRef,httpStatus:authSettings.status,mailer_autoconfirm:aset.mailer_autoconfirm,disable_signup:aset.disable_signup}; await fs.writeFile(evroot+'/auth-settings-off01.json',JSON.stringify(settingEvidence,null,2)+'\\n',{flag:'wx'}); nodeRepl.write(settingEvidence); var r=await fetch(pub.url+'/rest/v1/rpc/permission_get_contract',{method:'POST',headers:{apikey:pub.publishableKey,'Content-Type':'application/json','x-pos-permission-contract':'2'},body:'{}',signal:AbortSignal.timeout(15000)}); var b=await r.json(); resultRows.push({id:'H0',at:new Date().toISOString(),status:r.status,hook:r.headers.get('x-pos-permission-hook'),body:b}); await fs.writeFile(evroot+'/functional-results01.json',JSON.stringify(resultRows,null,2)+'\\n'); nodeRepl.write(resultRows.at(-1));",
+        "title": "Readback Auth OFF và kiểm contract RPC staging thật"
+      }
+    },
+    {
+      "id": "exec-045e5d7c-992d-485a-a7ff-d2bf82f58dcf",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "completed",
+      "arguments": {
+        "code": "var aLocal=JSON.parse(await fs.readFile('D:/Workspace/pos-cafe-permission-timeonly-20261022/private/functional-demo-A.json','utf8')); var m=aLocal.storeKey.match(/^(\\d+)-([A-Z0-9]+)$/); if(!m||aLocal.projectRef!==pub.projectRef)throw Error('PRIVATE_TARGET_MISMATCH'); var A={name:aLocal.storeName,storeNo:Number(m[1]),secret:m[2]}; var authR=await fetch(pub.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:pub.publishableKey,'Content-Type':'application/json'},body:JSON.stringify({email:`store${A.storeNo}@store.pos.local`,password:A.secret}),signal:AbortSignal.timeout(15000)}); var ad=await authR.json(); if(!authR.ok||!ad.access_token||!ad.user?.id)throw Error('AUTH_SIGNIN_FAILED_'+authR.status); A.jwt=ad.access_token;A.storeId=ad.user.id; var rpcCount=1; var rpc=async(name,body={},c=A,token)=>{if(++rpcCount>100)throw Error('REQUEST_LIMIT');const h={apikey:pub.publishableKey,'Content-Type':'application/json','x-pos-permission-contract':'2'};if(c?.jwt)h.Authorization='Bearer '+c.jwt;if(token)h['x-pos-employee-token']=token;const rr=await fetch(pub.url+'/rest/v1/rpc/permission_'+name,{method:'POST',headers:h,body:JSON.stringify(body),signal:AbortSignal.timeout(15000)});const jj=await rr.json();const hook=rr.headers.get('x-pos-permission-hook');resultRows.push({step:rpcCount,rpc:name,at:new Date().toISOString(),httpStatus:rr.status,hook,ok:jj.ok??null,code:jj.error?.code??null});await fs.writeFile(evroot+'/functional-results01.json',JSON.stringify(resultRows,null,2)+'\\n');if(hook!=='strict')throw Error('STRICT_ROUTE_MISSING');if(!rr.ok)throw Error('RPC_HTTP_'+rr.status);return jj;}; var storeSession=await rpc('get_store_session'); var roster=await rpc('list_roster'); nodeRepl.write({auth:'PASS',storeNo:A.storeNo,storeId:A.storeId,session:storeSession,roster});",
+        "title": "Đăng nhập quán A và lấy roster qua API quyền người dùng"
+      }
+    },
+    {
+      "id": "exec-10199a3b-f3fa-41da-91e6-6ef662bb3c09",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "completed",
+      "arguments": {
+        "code": "var crypto=await import('node:crypto'); var assert=(x,label)=>{if(!x)throw Error(label)}; A.ownerId=roster.data[0].id; var restrictedA=await rpc('start_session',{p_employee_id:A.ownerId,p_pin:'123456'}); assert(restrictedA.ok&&restrictedA.kind==='required_pin_change'&&typeof restrictedA.token==='string'&&!('authority' in restrictedA)&&Date.parse(restrictedA.expiresAt)-Date.parse(restrictedA.issuedAt)===300000,'RESTRICTED_SESSION_INVALID'); A.restrictedToken=restrictedA.token; var rp=await rpc('check_required_pin_session',{},A,A.restrictedToken); assert(rp.ok&&rp.data.valid&&rp.data.purpose==='required_pin_change','RESTRICTED_PROOF_INVALID'); A.pin=String(crypto.randomInt(100000,1000000)); if(A.pin==='123456')throw Error('DEFAULT_PIN_GENERATED'); A.pinRequestId=crypto.randomUUID(); await fs.writeFile('D:/Workspace/pos-cafe-permission-timeonly-20261022/private/functional-demo-A.json',JSON.stringify({...aLocal,ownerId:A.ownerId,storeId:A.storeId,ownerPin:A.pin,pinRequestId:A.pinRequestId,pinStatus:'PENDING'})+'\\n'); var cp=await rpc('complete_required_pin_change',{p_request:{requestId:A.pinRequestId,expectedRevision:0,newPin:A.pin}},A,A.restrictedToken); assert(cp.ok&&cp.outcome==='applied'&&cp.data.credentialChanged&&cp.data.pinChangeRequired===false&&cp.data.employeeRevision===1,'PIN_CHANGE_UNEXPECTED'); var old=await rpc('get_authority',{},A,A.restrictedToken); assert(old.ok===false&&old.error.code==='EMPLOYEE_SESSION_REQUIRED','OLD_RESTRICTED_TOKEN_NOT_REVOKED'); var normal=await rpc('start_session',{p_employee_id:A.ownerId,p_pin:A.pin}); assert(normal.ok&&normal.kind==='normal'&&normal.authority.snapshot.role==='owner'&&Date.parse(normal.expiresAt)-Date.parse(normal.issuedAt)===43200000,'NORMAL_SESSION_UNEXPECTED'); A.ownerToken=normal.token; A.catalogRevision=normal.authority.catalog.revision; A.ownerRevision=normal.authority.snapshot.employeeRevision; await fs.writeFile('D:/Workspace/pos-cafe-permission-timeonly-20261022/private/functional-demo-A.json',JSON.stringify({...aLocal,ownerId:A.ownerId,storeId:A.storeId,ownerPin:A.pin,pinRequestId:A.pinRequestId,pinStatus:'APPLIED'})+'\\n'); nodeRepl.write({H1_createUI:'PASS',H2_requiredScreenUI:'PASS',H2_pinChangeAPI:cp.outcome,H3_oldTokenDenied:old.error.code,H3_ownerSession:'normal',ownerRevision:A.ownerRevision,catalogRevision:A.catalogRevision,pinKeptPrivate:true});",
+        "title": "Đổi PIN test qua RPC, kiểm token cũ và normal session"
+      }
+    },
+    {
+      "id": "exec-47bf266d-53c3-497c-9736-a21278df77ef",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "failed",
+      "arguments": {
+        "code": "var listA=await rpc('admin_list',{},A,A.ownerToken); assert(listA.ok&&listA.data.length===2,'CASHIER_CREATE_COUNT'); var ca=listA.data.find(x=>x.name==='TEST-20261023-cashier'); assert(ca?.role==='cashier'&&ca.active===true&&ca.revision===0,'CASHIER_CREATE_SHAPE'); A.cashierId=ca.id; var beforeCa=await rpc('admin_get',{p_target_id:A.cashierId},A,A.ownerToken); var cs=await rpc('start_session',{p_employee_id:A.cashierId,p_pin:A.cashierPin}); assert(cs.ok&&cs.kind==='normal'&&cs.authority.snapshot.role==='cashier','CASHIER_SESSION'); A.cashierToken=cs.token; var forbiddenList=await rpc('admin_list',{},A,A.cashierToken); assert(forbiddenList.ok===false&&forbiddenList.error.code==='FORBIDDEN','CASHIER_LIST_BYPASS'); A.deniedRequestId=crypto.randomUUID(); var deniedUpdate=await rpc('admin_update',{p_request:{requestId:A.deniedRequestId,targetId:A.cashierId,expectedRevision:0,expectedCatalogRevision:A.catalogRevision,patch:{name:'TEST_DENIED'}}},A,A.cashierToken); assert(deniedUpdate.ok===false&&deniedUpdate.error.code==='FORBIDDEN','CASHIER_UPDATE_BYPASS'); var afterCa=await rpc('admin_get',{p_target_id:A.cashierId},A,A.ownerToken); assert(JSON.stringify(beforeCa.data)===JSON.stringify(afterCa.data),'DENIED_UPDATE_CHANGED_EMPLOYEE'); var auditA=await rpc('admin_audit',{p_filter:{targetId:A.cashierId,limit:10}},A,A.ownerToken); assert(auditA.ok&&auditA.data.some(x=>x.requestId===A.deniedRequestId&&x.outcome==='denied'&&x.reason==='FORBIDDEN')&&auditA.data.some(x=>x.kind==='create_employee'&&x.outcome==='applied'),'DENIAL_AUDIT_MISSING'); var cashierSaved=JSON.parse(await fs.readFile('D:/Workspace/pos-cafe-permission-timeonly-20261022/private/functional-demo-cashier.json','utf8')); await fs.writeFile('D:/Workspace/pos-cafe-permission-timeonly-20261022/private/functional-demo-cashier.json',JSON.stringify({...cashierSaved,id:A.cashierId})+'\\n'); var proof={H4_UIcreate:'PASS',employees:listA.data.length,cashierId:A.cashierId,H5_listDenied:forbiddenList.error.code,H5_writeDenied:deniedUpdate.error.code,employeeUnchanged:true,denialAudited:true,deniedRequestId:A.deniedRequestId,employeeBefore:beforeCa.data,employeeAfter:afterCa.data,audit:auditA.data}; await fs.writeFile(evroot+'/cashier-denial-proof01.json',JSON.stringify(proof,null,2)+'\\n',{flag:'wx'}); nodeRepl.write({H4_UIcreate:'PASS',employees:listA.data.length,cashierId:A.cashierId,H5_listDenied:forbiddenList.error.code,H5_writeDenied:deniedUpdate.error.code,employeeUnchanged:true,denialAudited:true});",
+        "title": "Kiểm cashier bị chặn API quản trị và dữ liệu nghiệp vụ giữ nguyên"
+      }
+    },
+    {
+      "id": "exec-e342d840-a18a-45bb-aabf-94a21b4b245e",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "completed",
+      "arguments": {
+        "code": "assert(ca?.role==='cashier'&&ca.isActive===true&&ca.permissionRevision===0,'CASHIER_CREATE_CONTRACT'); A.cashierId=ca.id; var beforeCa=await rpc('admin_get',{p_target_id:A.cashierId},A,A.ownerToken); var cs=await rpc('start_session',{p_employee_id:A.cashierId,p_pin:A.cashierPin}); assert(cs.ok&&cs.kind==='normal'&&cs.authority.snapshot.role==='cashier','CASHIER_SESSION'); A.cashierToken=cs.token; var forbiddenList=await rpc('admin_list',{},A,A.cashierToken); assert(forbiddenList.ok===false&&forbiddenList.error.code==='FORBIDDEN','CASHIER_LIST_BYPASS'); A.deniedRequestId=crypto.randomUUID(); var deniedUpdate=await rpc('admin_update',{p_request:{requestId:A.deniedRequestId,targetId:A.cashierId,expectedRevision:0,expectedCatalogRevision:A.catalogRevision,patch:{name:'TEST_DENIED'}}},A,A.cashierToken); assert(deniedUpdate.ok===false&&deniedUpdate.error.code==='FORBIDDEN','CASHIER_UPDATE_BYPASS'); var afterCa=await rpc('admin_get',{p_target_id:A.cashierId},A,A.ownerToken); assert(JSON.stringify(beforeCa.data)===JSON.stringify(afterCa.data),'DENIED_UPDATE_CHANGED_EMPLOYEE'); var auditA=await rpc('admin_audit',{p_filter:{targetId:A.cashierId,limit:10}},A,A.ownerToken); nodeRepl.write({H4_UIcreate:'PASS',H5_listDenied:forbiddenList.error.code,H5_writeDenied:deniedUpdate.error.code,employeeUnchanged:true,auditShape:Object.keys(auditA.data??{}),auditIsArray:Array.isArray(auditA.data)});",
+        "title": "Kiểm các denial theo đúng hợp đồng permissionRevision/isActive"
+      }
+    },
+    {
+      "id": "exec-1c2da58e-e9a2-49d3-bb9d-1f65b190c3ab",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "completed",
+      "arguments": {
+        "code": "var det=(sid,seed)=>{const bytes=crypto.createHash('sha256').update(sid+':'+seed).digest().subarray(0,16);bytes[6]=(bytes[6]&15)|80;bytes[8]=(bytes[8]&63)|128;const h=bytes.toString('hex');return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;}; assert(det(A.storeId,'owner.primary')===A.ownerId,'DETERMINISTIC_UUID_MATCH'); var B={name:'TEST-20261023-RAPID-B',createAttemptId:crypto.randomUUID(),pinRequestId:crypto.randomUUID(),pin:String(crypto.randomInt(100000,1000000)),secret:Array.from(crypto.randomBytes(8),v=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[v%32]).join('')}; assert(B.pin!=='123456','B_DEFAULT_PIN'); var reserveB=await rpc('reserve_store_no',{p_create_attempt_id:B.createAttemptId},null); assert(reserveB.ok&&Number.isInteger(reserveB.data.storeNo),'B_RESERVE'); B.storeNo=reserveB.data.storeNo; await fs.writeFile('D:/Workspace/pos-cafe-permission-timeonly-20261022/private/functional-demo-B.json',JSON.stringify({projectRef:pub.projectRef,storeKey:String(B.storeNo).padStart(4,'0')+'-'+B.secret,storeName:B.name,ownerPin:B.pin,createAttemptId:B.createAttemptId,pinRequestId:B.pinRequestId,status:'RESERVED'})+'\\n',{flag:'wx'}); var signupB=await fetch(pub.url+'/auth/v1/signup',{method:'POST',headers:{apikey:pub.publishableKey,'Content-Type':'application/json'},body:JSON.stringify({email:`store${B.storeNo}@store.pos.local`,password:B.secret}),signal:AbortSignal.timeout(15000)}); var bd=await signupB.json(); assert(signupB.ok&&bd.access_token&&bd.user?.id,'B_SIGNUP_FAILED'); B.jwt=bd.access_token;B.storeId=bd.user.id;B.ownerId=det(B.storeId,'owner.primary');B.bootstrapRequestId=det(B.storeId,'permission.bootstrap.v1'); var bootstrapB=await rpc('bootstrap_store',{p_request:{requestId:B.bootstrapRequestId,ownerId:B.ownerId,storeNo:B.storeNo,displayName:B.name,address:'',seedDemo:false}},B); assert(bootstrapB.ok&&bootstrapB.outcome==='applied'&&bootstrapB.data.storeId===B.storeId,'B_BOOTSTRAP'); var rsB=await rpc('start_session',{p_employee_id:B.ownerId,p_pin:'123456'},B);assert(rsB.ok&&rsB.kind==='required_pin_change','B_RESTRICTED_SESSION'); B.restrictedToken=rsB.token; var completeB=await rpc('complete_required_pin_change',{p_request:{requestId:B.pinRequestId,expectedRevision:0,newPin:B.pin}},B,B.restrictedToken);assert(completeB.ok&&completeB.outcome==='applied','B_PIN_CHANGE'); var nsB=await rpc('start_session',{p_employee_id:B.ownerId,p_pin:B.pin},B);assert(nsB.ok&&nsB.kind==='normal','B_NORMAL_SESSION');B.ownerToken=nsB.token; await fs.writeFile('D:/Workspace/pos-cafe-permission-timeonly-20261022/private/functional-demo-B.json',JSON.stringify({projectRef:pub.projectRef,storeKey:String(B.storeNo).padStart(4,'0')+'-'+B.secret,storeName:B.name,ownerPin:B.pin,ownerId:B.ownerId,storeId:B.storeId,createAttemptId:B.createAttemptId,pinRequestId:B.pinRequestId,status:'BOOTSTRAPPED_PIN_CHANGED'})+'\\n'); nodeRepl.write({B_createdBy:'PUBLIC_AUTH_AND_RPC',storeNo:B.storeNo,storeId:B.storeId,ownerId:B.ownerId,normalSession:true,seedDemo:false});",
+        "title": "Bootstrap B theo đúng UUID và contract đã đối chiếu từ code"
+      }
+    },
+    {
+      "id": "exec-af1b5065-7c9d-4a75-86f2-6c70e900aae8",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "completed",
+      "arguments": {
+        "code": "var listBeforeA=await rpc('admin_list',{},A,A.ownerToken); var listBeforeB=await rpc('admin_list',{},B,B.ownerToken); assert(listBeforeA.ok&&listBeforeA.data.length===2&&listBeforeB.ok&&listBeforeB.data.length===1,'TENANT_BASELINES'); var ownB=await rpc('admin_get',{p_target_id:B.ownerId},B,B.ownerToken); assert(ownB.ok&&ownB.data.id===B.ownerId,'B_POSITIVE_CONTROL'); var aForeign=await rpc('admin_get',{p_target_id:B.ownerId},A,A.ownerToken); var bForeign=await rpc('admin_get',{p_target_id:A.cashierId},B,B.ownerToken); var mixed=await rpc('get_authority',{},A,B.ownerToken); assert(aForeign.ok===false&&aForeign.error.code==='NOT_FOUND','A_FOREIGN_LEAK'); assert(bForeign.ok===false&&bForeign.error.code==='NOT_FOUND','B_FOREIGN_LEAK'); assert(mixed.ok===false&&mixed.error.code==='EMPLOYEE_SESSION_REQUIRED','CROSS_TOKEN_ACCEPTED'); var listAfterA=await rpc('admin_list',{},A,A.ownerToken); var listAfterB=await rpc('admin_list',{},B,B.ownerToken); assert(JSON.stringify(listAfterA.data)===JSON.stringify(listBeforeA.data)&&JSON.stringify(listAfterB.data)===JSON.stringify(listBeforeB.data),'CROSS_TENANT_CHANGED_DATA'); var crossProof={at:new Date().toISOString(),projectRef:pub.projectRef,storeA:A.storeId,storeB:B.storeId,positiveControl:'B owner can read own owner',aForeign:aForeign.error.code,bForeign:bForeign.error.code,mixedToken:mixed.error.code,counts:{A:listAfterA.data.length,B:listAfterB.data.length},employeeListsUnchanged:true};await fs.writeFile(evroot+'/tenant-isolation-proof01.json',JSON.stringify(crossProof,null,2)+'\\n',{flag:'wx'});nodeRepl.write(crossProof); var revokeCashier=await rpc('revoke_session',{},A,A.cashierToken);assert(revokeCashier.ok,'REVOKE_FAILED');var oldCashier=await rpc('get_authority',{},A,A.cashierToken);assert(oldCashier.ok===false&&oldCashier.error.code==='EMPLOYEE_SESSION_REQUIRED','REVOKED_TOKEN_ACCEPTED');await fs.writeFile(evroot+'/session-revocation-proof01.json',JSON.stringify({at:new Date().toISOString(),cashierId:A.cashierId,revoke:revokeCashier.ok,oldToken:oldCashier.error.code},null,2)+'\\n',{flag:'wx'});nodeRepl.write({H7_revoke:'PASS',oldToken:oldCashier.error.code});",
+        "title": "Kiểm cross-tenant, trộn token và token đã revoke trên server thật"
+      }
+    },
+    {
+      "id": "exec-51feb55c-c0a8-4e94-9bf8-0f24510f7366",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "completed",
+      "arguments": {
+        "code": "var cashierFresh=await rpc('start_session',{p_employee_id:A.cashierId,p_pin:A.cashierPin});assert(cashierFresh.ok&&cashierFresh.kind==='normal','CASHIER_REFRESH'); A.cashierFreshToken=cashierFresh.token; var grantReq=crypto.randomUUID();var grant=await rpc('admin_update',{p_request:{requestId:grantReq,targetId:A.cashierId,expectedRevision:0,expectedCatalogRevision:A.catalogRevision,patch:{overrides:{grants:['employee.manage'],denies:[]}}}},A,A.ownerToken); assert(grant.ok&&grant.outcome==='applied'&&grant.data.permissionRevision===1,'GRANT_UNEXPECTED'); var liveAllowed=await rpc('admin_list',{},A,A.cashierFreshToken); var allowedAuth=await rpc('get_authority',{},A,A.cashierFreshToken); var revokeReq=crypto.randomUUID();var permissionRevoke=await rpc('admin_update',{p_request:{requestId:revokeReq,targetId:A.cashierId,expectedRevision:1,expectedCatalogRevision:A.catalogRevision,patch:{overrides:null}}},A,A.ownerToken); assert(permissionRevoke.ok&&permissionRevoke.outcome==='applied'&&permissionRevoke.data.permissionRevision===2,'PERMISSION_REVOKE_UNEXPECTED');var liveDenied=await rpc('admin_list',{},A,A.cashierFreshToken);var afterAuth=await rpc('get_authority',{},A,A.cashierFreshToken); assert(liveAllowed.ok&&allowedAuth.data.snapshot.permissions.includes('employee.manage')&&liveDenied.ok===false&&liveDenied.error.code==='FORBIDDEN'&&!afterAuth.data.snapshot.permissions.includes('employee.manage'),'LIVE_PERMISSION_ENFORCEMENT');var revProof={at:new Date().toISOString(),cashierId:A.cashierId,sameTokenUsed:true,grantRequestId:grantReq,revokeRequestId:revokeReq,allowedAfterGrant:liveAllowed.ok,deniedAfterRevoke:liveDenied.error.code,revisionAfterGrant:allowedAuth.data.snapshot.employeeRevision,revisionAfterRevoke:afterAuth.data.snapshot.employeeRevision,finalOverrides:permissionRevoke.data.overrides,finalRole:permissionRevoke.data.role};await fs.writeFile(evroot+'/permission-live-revocation-proof01.json',JSON.stringify(revProof,null,2)+'\\n',{flag:'wx'});nodeRepl.write(revProof);",
+        "title": "Kiểm thay quyền có hiệu lực ngay với cùng token nhân viên"
+      }
+    },
+    {
+      "id": "exec-30d8fe49-b17c-48aa-bb10-7f0d16fe2099",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "failed",
+      "arguments": {
+        "code": "var readHeaders={apikey:pub.publishableKey,Authorization:'Bearer '+A.jwt,'x-pos-employee-token':A.cashierFreshToken,'x-pos-permission-contract':'2'};var orderR=await fetch(pub.url+'/rest/v1/orders?select=id,store_id,order_no,order_type,status,total,lock_version&store_id=eq.'+A.storeId,{headers:readHeaders,signal:AbortSignal.timeout(15000)});var orders=await orderR.json();assert(orderR.ok&&orders.length===1&&orders[0].status==='paid'&&orders[0].total===32000,'ORDER_READBACK_INVALID');var saleOrder=orders[0];var paymentR=await fetch(pub.url+'/rest/v1/payments?select=id,employee_id,method,amount,received_amount,change_amount&order_id=eq.'+saleOrder.id,{headers:readHeaders,signal:AbortSignal.timeout(15000)});var payments=await paymentR.json();assert(paymentR.ok&&payments.length===1&&payments[0].employee_id===A.cashierId&&payments[0].method==='cash'&&payments[0].amount===32000&&payments[0].received_amount===32000&&payments[0].change_amount===0,'PAYMENT_READBACK_INVALID');var receiptR=await fetch(pub.url+'/rest/v1/rpc/get_payment_receipt',{method:'POST',headers:{...readHeaders,'Content-Type':'application/json'},body:JSON.stringify({p_order_id:saleOrder.id}),signal:AbortSignal.timeout(15000)});var receipt=await receiptR.json();assert(receiptR.ok&&receipt.ok&&receipt.receipt.schemaVersion===1,'RECEIPT_READBACK_INVALID');var saleProof={at:new Date().toISOString(),projectRef:pub.projectRef,producer:'Cashier UI: create catalog owner -> send takeaway -> cash payment',order:saleOrder,payment:payments[0],receipt:receipt.receipt,legacyMetadata:receipt.legacyMetadata??false,readbackActor:'cashier',serviceRoleUsed:false};await fs.writeFile(evroot+'/sale-payment-proof01.json',JSON.stringify(saleProof,null,2)+'\\n',{flag:'wx'});summary.saleCashierUI={orderId:saleOrder.id,orderNo:1,status:'paid',amount:32000,cashier:A.cashierId,receiptSchema:1};summary.rpcRequests=resultRows.length;await fs.writeFile(evroot+'/functional-summary01.json',JSON.stringify(summary,null,2)+'\\n');nodeRepl.write({orderId:saleOrder.id,orderNo:saleOrder.order_no,status:saleOrder.status,total:saleOrder.total,paymentCount:payments.length,method:payments[0].method,receiptSchema:receipt.receipt.schemaVersion,readbackActor:'cashier'});",
+        "title": "Readback đơn, thanh toán và hóa đơn bằng quyền cashier"
+      }
+    },
+    {
+      "id": "exec-b9def22f-3d17-4dc4-a270-c61ad172f9f2",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "completed",
+      "arguments": {
+        "code": "assert(history.data.items.length===1&&history.data.items[0].status==='paid'&&history.data.items[0].total===32000,'PAID_HISTORY_INVALID');var saleOrder=history.data.items[0];var detail=await rpc('get_order_history_detail',{p_order_id:saleOrder.id},A,A.cashierFreshToken);assert(detail.ok,'PAID_DETAIL_FAILED');nodeRepl.write({keys:Object.keys(detail.data),data:detail.data});var receiptR=await fetch(pub.url+'/rest/v1/rpc/get_payment_receipt',{method:'POST',headers:{apikey:pub.publishableKey,Authorization:'Bearer '+A.jwt,'x-pos-employee-token':A.cashierFreshToken,'x-pos-permission-contract':'2','Content-Type':'application/json'},body:JSON.stringify({p_order_id:saleOrder.id}),signal:AbortSignal.timeout(15000)});var receipt=await receiptR.json();assert(receiptR.ok&&receipt.ok&&receipt.receipt.schemaVersion===1,'RECEIPT_READBACK_FAILED');nodeRepl.write({receiptKeys:Object.keys(receipt.receipt),receipt:receipt.receipt});",
+        "title": "Readback đơn đã thanh toán và receipt qua protected RPC"
+      }
+    },
+    {
+      "id": "exec-1fe3d11d-5f86-4736-a820-c5a17b637e23",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "completed",
+      "arguments": {
+        "code": "assert(detail.data.payment.employeeId===A.cashierId&&detail.data.payment.amount===32000&&detail.data.payment.receivedAmount===32000&&detail.data.payment.changeAmount===0&&detail.data.payment.method==='cash'&&detail.data.items.length===1&&detail.data.items[0].quantity===1&&receipt.receipt.total===32000&&receipt.receipt.orderId===saleOrder.id,'SALE_INVARIANTS'); var saleProof={at:new Date().toISOString(),projectRef:pub.projectRef,producer:'UI owner catalog and UI cashier submit/pay',readbackActor:'cashier',directOrderTableReadDenied:{status:orderR.status,code:orders.code},order:saleOrder,detail:detail.data,receipt:receipt.receipt,serviceRoleUsed:false};await fs.writeFile(evroot+'/sale-payment-proof01.json',JSON.stringify(saleProof,null,2)+'\\n',{flag:'wx'});resultRows.push({rpc:'get_payment_receipt',at:new Date().toISOString(),httpStatus:receiptR.status,hook:receiptR.headers.get('x-pos-permission-hook'),ok:receipt.ok,code:null});await fs.writeFile(evroot+'/functional-results01.json',JSON.stringify(resultRows,null,2)+'\\n');summary.saleCashierUI={orderId:saleOrder.id,orderNo:saleOrder.orderNo,status:'paid',amount:32000,cashier:A.cashierId,receiptSchema:1};summary.rpcRequests=resultRows.length;summary.build='PASS';summary.unit=unitSummary;await fs.writeFile(evroot+'/functional-summary01.json',JSON.stringify(summary,null,2)+'\\n');var cpNode=await import('node:child_process');var codeRoot='D:/Workspace/pos-cafe-permission-timeonly-20261022/code';var tracked=cpNode.execFileSync('git',['ls-files','src'],{cwd:codeRoot,encoding:'utf8'}).trim().split('\\n').filter(x=>/\\.(test|spec)\\.tsx?$/.test(x));var actual=unit.testResults.map(x=>x.name.replaceAll('\\\\','/').replace(codeRoot+'/',''));assert(new Set(actual).size===110&&tracked.length===110&&tracked.every(x=>actual.includes(x))&&unit.testResults.every(x=>x.assertionResults.every(a=>a.status==='passed')),'UNIT_FILESET_MISMATCH');var envProof={at:new Date().toISOString(),source:cpNode.execFileSync('git',['rev-parse','HEAD'],{cwd:codeRoot,encoding:'utf8'}).trim(),trackedStatus:cpNode.execFileSync('git',['status','--porcelain'],{cwd:codeRoot,encoding:'utf8'}).trim(),lockSHA256:crypto.createHash('sha256').update(await fs.readFile(codeRoot+'/package-lock.json')).digest('hex'),node:'24.16.0',vitest:JSON.parse(await fs.readFile(codeRoot+'/node_modules/vitest/package.json','utf8')).version,trackedTestFiles:110,executedExactTrackedSet:true,totalAssertions:unit.numTotalTests,allAssertionsPassed:true};await fs.writeFile(evroot+'/source-test-binding01.json',JSON.stringify(envProof,null,2)+'\\n',{flag:'wx'});nodeRepl.write({source:envProof.source,sourceClean:envProof.trackedStatus==='',exactTestSet:true,unit:unitSummary,rpcLogged:resultRows.length,sale:'PASS'});",
+        "title": "Chốt exact file set unit, source sạch và readback thanh toán"
+      }
+    },
+    {
+      "id": "exec-2db5b08e-1df6-4f77-bb56-373b24c51ece",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "completed",
+      "arguments": {
+        "code": "var projectionProof=[];for(var name of ['get_menu_admin','get_floor_admin','get_settings_admin','get_sales_report']){var args=name==='get_sales_report'?{p_filter:{businessDate:'2026-10-23'}}:{};var ownerRead=await rpc(name,args,A,A.ownerToken);var cashierRead=await rpc(name,args,A,A.cashierFreshToken);assert(ownerRead.ok===true&&cashierRead.ok===false&&cashierRead.error.code==='FORBIDDEN','ROLE_PROJECTION_'+name);projectionProof.push({rpc:'permission_'+name,owner:'ALLOW',cashier:cashierRead.error.code});}await fs.writeFile(evroot+'/role-read-projections-proof01.json',JSON.stringify({at:new Date().toISOString(),sameInputsPerRole:true,checks:projectionProof},null,2)+'\\n',{flag:'wx'});summary.roleReadProjectionChecks=projectionProof;summary.rpcRequests=resultRows.length;await fs.writeFile(evroot+'/functional-summary01.json',JSON.stringify(summary,null,2)+'\\n');nodeRepl.write(projectionProof);",
+        "title": "Kiểm owner/cashier trên cùng API menu, sơ đồ, thiết lập và báo cáo"
+      }
+    },
+    {
+      "id": "exec-420d54fc-6dba-4df3-b8d8-0aca4655e286",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "completed",
+      "arguments": {
+        "code": "var closeProof=[];for(var item of [{label:'A-owner-api',c:A,t:A.ownerToken},{label:'A-cashier-api',c:A,t:A.cashierFreshToken},{label:'B-owner-api',c:B,t:B.ownerToken}]){var rev=await rpc('revoke_session',{},item.c,item.t);var old=await rpc('get_authority',{},item.c,item.t);assert(rev.ok&&old.ok===false&&old.error.code==='EMPLOYEE_SESSION_REQUIRED','CLOSE_'+item.label);closeProof.push({label:item.label,revoked:true,oldToken:old.error.code});}await fs.writeFile(evroot+'/api-session-closeout01.json',JSON.stringify({at:new Date().toISOString(),checks:closeProof,uiDemoSession:'retained separately for user',credentialsFilesContainTokens:false},null,2)+'\\n',{flag:'wx'});summary.rpcRequests=resultRows.length;summary.apiSessionCloseout=closeProof;summary.authRestored=true;summary.fullGate='NOT_COMPLETED';summary.unit=unitSummary;await fs.writeFile(evroot+'/functional-summary01.json',JSON.stringify(summary,null,2)+'\\n');nodeRepl.write({apiSessionsClosed:closeProof.length,loggedRPC:resultRows.length,uiDemoRetained:true});",
+        "title": "Thu hồi các token API của lượt test, giữ phiên UI demo riêng"
+      }
+    },
+    {
+      "id": "exec-7105c660-9d65-477f-bd9f-0eb2020cb651",
+      "server": "node_repl",
+      "tool": "js",
+      "status": "completed",
+      "arguments": {
+        "code": "var history=await rpc('list_order_history',{p_filter:{page:1,pageSize:20,status:'paid',fromDate:'2026-10-23',toDate:'2026-10-23'}},A,A.cashierFreshToken);assert(history.ok,'HISTORY_READ_FAILED');nodeRepl.write(history.data);await fs.writeFile(evroot+'/legacy-direct-order-read-denial01.json',JSON.stringify({at:new Date().toISOString(),status:orderR.status,code:orders.code,message:orders.message,interpretation:'Legacy direct table SELECT is revoked; use current permission read RPC, no grant changes'},null,2)+'\\n',{flag:'wx'});",
+        "title": "Đọc lịch sử qua RPC hiện hành, giữ nguyên việc cấm SELECT bảng gốc"
+      }
+    }
+  ]
+}

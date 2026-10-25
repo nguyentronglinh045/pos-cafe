@@ -1,5 +1,7 @@
 # Kiểm thử và kiểm chứng
 
+Bộ [test plan/traceability permission15](../openspec/changes/redesign-permission-model/testplan.md) và [hồ sơ lịch sử WIP](workflow/tasks/docs-wip-publication-2026-10-25.md) đã được hòa giải. Kế hoạch không là kết quả; FAIL/spent/NOT_RUN giữ source riêng, không đóng gate backend hiện hành.
+
 Đây là nơi tổng hợp kết quả theo **source + ngày + môi trường**. [Chiến lược](test-strategy.md) quy định cách kiểm; [workflow](workflow/README.md) quy định review/bàn giao. Trang này không biến kết quả cũ thành lần chạy mới.
 
 ## Nguồn tích hợp UI — 25/10/2026

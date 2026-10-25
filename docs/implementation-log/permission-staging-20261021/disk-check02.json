@@ -1,0 +1,17 @@
+{
+  "measuredUtc": "2026-10-21T15:30:30.2433927Z",
+  "drives": [
+    {
+      "Name": "C",
+      "Root": "C:\\",
+      "UsedBytes": 232926781440,
+      "FreeBytes": 195527659520
+    },
+    {
+      "Name": "D",
+      "Root": "D:\\",
+      "UsedBytes": 493586038784,
+      "FreeBytes": 98737762304
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"schemaVersion":"permission-native-install-probe-v1","status":"PASS","loaded":[{"name":"@rolldown/binding-win32-x64-msvc","version":"1.0.3","loaded":true},{"name":"lightningcss-win32-x64-msvc","version":"1.32.0","loaded":true},{"name":"rolldown","version":"1.0.3","loaded":true},{"name":"lightningcss","version":"1.32.0","loaded":true}]}

@@ -1,0 +1,26 @@
+{
+  "recordedUtc": "2026-10-24T09:15:28.362Z",
+  "parentSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "manifest": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/t04-final-origin-author-manifest02.json",
+    "bytes": 9146,
+    "sha256": "5c4b95c13dd9e2ba979fb022c60c6b1889f68942a50403973ce932c9acbe0b37"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "Final12paths/64canonicalpins; preview cap closure; original70predicates/reader/timing; integration/acceptance/local proof",
+      "blockingFindings": 0
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Final12paths/64canonicalpins; finite diagnostics and realfile; bounded cleanup/firstfailure; evidence source integrity and limits",
+      "blockingFindings": 0
+    }
+  ],
+  "approvalScope": "Source/local proof only; exact commit/packet binding and fresh CI then one gated fixed diagnostic still required",
+  "wholeT04": "NOT_RUN",
+  "mergeDeploy": "NOT_AUTHORIZED"
+}

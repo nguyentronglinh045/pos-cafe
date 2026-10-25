@@ -1,0 +1,95 @@
+{
+  "version": 2,
+  "createdUtc": "2026-10-21T15:26:52.759Z",
+  "state": "S04_COMPLETE_S05_ROUTING_PASS_S06_S08_BLOCKED",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "projectName": "pos-cafe-permission-staging",
+  "gitHead": "dd8efd4908c14f851fb56623761ca0e5abd26af8",
+  "sourceFingerprintSha256": "59b611459df5ec751528f27a675bbe32740971eaf52d0dd039ac7a74eda7e849",
+  "coverageSha256": "0943976f676dcfcecfd76f79c117c81a3ab8cb8d016320484b4593602cbd0e7e",
+  "stageCount": 35,
+  "requiredRows": 760,
+  "originalCounts": {
+    "permissionCases": 60,
+    "permissionOccurrences": 726,
+    "pinCases": 19,
+    "pinSubvariants": 183,
+    "pinMappings": 111,
+    "combinedManifestOccurrences": 837
+  },
+  "guardTests": {
+    "log": "local-guard-tests05.log",
+    "passed": 37,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0,
+    "durationMs": 26419.879
+  },
+  "actualAttempts": [
+    {
+      "receipt": "remote-preflight01.json",
+      "status": "FAIL",
+      "elapsedMs": 2101,
+      "exitCode": 1,
+      "requestCount": 2
+    },
+    {
+      "receipt": "remote-preflight02.json",
+      "status": "PASS_ROUTING_ONLY",
+      "elapsedMs": 2940,
+      "exitCode": 0,
+      "requestCount": 2
+    }
+  ],
+  "attemptBudget": {
+    "originalAllowed": 1,
+    "originalUsed": 1,
+    "additionalAllowed": 1,
+    "additionalUsed": 1,
+    "remaining": 0,
+    "totalRequests": 4
+  },
+  "originalClaimSha256": "3cd550a64bf676090ea3be7d277287173dbd4063f545a46577a5b3068957f766",
+  "additionalClaimSha256": "e6e6a913fc2253fcaa9fbdf53256227f231b5f3f0d0862990deb2a610ab77df0",
+  "restDataAccessVerified": false,
+  "mutationReady": false,
+  "businessTestsRun": false,
+  "sqlExecuted": false,
+  "originalDbAccessed": false,
+  "ciDispatched": false,
+  "published": false,
+  "merged": false,
+  "installedDependencies": false,
+  "privateConfig": {
+    "location": "D:/Workspace/pos-cafe-permission-run-20261020/private/staging-20261021/config.json",
+    "contains": "projectRef and publishable key only",
+    "acl": "current owner and SYSTEM only"
+  },
+  "oldLedger": {
+    "status": "CLOSED",
+    "spent": {
+      "publication": 2,
+      "ci": 2,
+      "heavy": 1,
+      "review": 6
+    },
+    "policySha256": "3c222cb3a5b66a37107522ddce08c2fc8f68e99777f4a921aeb0eba2c936797c",
+    "journalSha256": "583f336dafa025e3088e0afc1dad23be68b2324c6e5f37facc11ca230d372880"
+  },
+  "nextDependencies": [
+    "reviewed provider/DB identity and empty-target proof",
+    "exact SQL bootstrap bundle and same-connection marker/lock",
+    "hosted adapters, isolated lifecycle and full unchanged coverage",
+    "fresh explicit deadline/budget before another actual attempt"
+  ],
+  "deadlinesLocal": {
+    "mutationCutoff": "2026-10-21T22:30:00+07:00",
+    "testCutoff": "2026-10-21T22:45:00+07:00",
+    "checkpoint": "2026-10-21T22:55:00+07:00",
+    "stop": "2026-10-21T23:00:00+07:00"
+  },
+  "reviewState": "PREPARED_FOR_FINAL_DELTA_REVIEW",
+  "networkCountingScope": "Four GETs count only the two bounded CLI preflight attempts. Dashboard metadata/background traffic is separate and is not service-test evidence.",
+  "diskReceipt": "disk-check02.json",
+  "finalOverviewScreenshot": "staging-overview-final.png"
+}

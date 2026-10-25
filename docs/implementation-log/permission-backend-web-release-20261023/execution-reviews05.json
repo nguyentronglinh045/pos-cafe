@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "permission-execution-reviews-v5",
+  "recordedUtc": "2026-10-24T04:14:37.442Z",
+  "sourceSHA": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-packet05.json",
+    "sha256": "43eb89e4e8b933486da162e3a3c1b3046e11d4041d0eeb4fc59dc38f080957a8"
+  },
+  "localValidation": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/image-clear-validation01.json",
+    "sha256": "c13ffac2ccfc0d73385f51a4969ef380b6af888d19ed4c12ed2cde84c0030cb3"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "Exact10path source/integration/seed session state/acceptance and executionbudget; all1118blobs/41887146B/50pins; authorfinal9hashes/testrecipes and log evidence",
+      "findings": []
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Exactsource/packet diagnostics/privacy/UNKNOWN/bothbounds; all1118blobs/50pins and9authorhashes;157testlog, actual3localreportercontrols inspected with sevenimagefacts, WindowsREFUSAL_ONLY",
+      "findings": []
+    }
+  ],
+  "blockingSourceFindings": 0,
+  "publicationCondition": "mapping06 exactsource and two independent approvals; freshmain/review/active0/capacity",
+  "t04Condition": "freshCI18/sourcePreserved and Linux29nativefilecases+3realreporterfile/accounting/handback; LIGHT6/343/nativecleanup and all3freshPINPNG opened by both reviewers; fresh refs/capacity/priorreclaim",
+  "runtimeBusinessPassClaimed": false,
+  "acceptanceChanged": false,
+  "prMergeDeploy": "HELD_NOT_AUTHORIZED"
+}

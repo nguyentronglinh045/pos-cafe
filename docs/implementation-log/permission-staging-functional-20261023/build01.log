@@ -1,0 +1,19 @@
+
+> pos-cafe@0.1.0 build
+> tsc -b && vite build
+
+vite v8.0.16 building client environment for production...
+[2K
+transforming...✓ 3251 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                     0.39 kB │ gzip:   0.26 kB
+dist/assets/index-CpL5EgM6.css     63.85 kB │ gzip:  12.43 kB
+dist/assets/index-WC_0Xc7x.js   1,511.37 kB │ gzip: 416.58 kB
+
+✓ built in 1.39s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.

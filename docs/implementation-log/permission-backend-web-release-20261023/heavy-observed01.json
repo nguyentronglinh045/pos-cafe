@@ -1,0 +1,14 @@
+{
+  "recordedUtc": "2026-10-23T16:00:58.743Z",
+  "sourceSHA": "eac4359d28b20b52309c20af7aa272362043c6c0",
+  "branch": "review/permission-staging-20261023",
+  "runId": "39982830789",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "path": ".github/workflows/backend.yml",
+  "status": "in_progress",
+  "conclusion": null,
+  "profile": "SUPABASE_T04",
+  "createdAt": "2026-10-23T15:58:25Z",
+  "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39982830789"
+}

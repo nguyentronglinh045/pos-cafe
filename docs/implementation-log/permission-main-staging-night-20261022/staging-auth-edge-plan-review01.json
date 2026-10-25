@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "permission-plan-independent-review-v1",
+  "candidate": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-staging-auth-edge-proposal-2026-10-22.md",
+    "sha256": "cf17b62666d0e757aa190a970fd4e5f43a43f36150274855a7824ac0362c4d0d"
+  },
+  "author": "/root/budget_time_guard_fix",
+  "reviewers": [
+    {
+      "name": "/root/mcp_staging_scope_review",
+      "scope": "source, dependencies, JWT settings and security boundaries",
+      "verdict": "APPROVE",
+      "basis": "Explicit final-hash reapproval in this conversation. Read source, official dependency/Auth header/CLI/API documentation and final timing delta."
+    },
+    {
+      "name": "/root/mcp_staging_evidence_review",
+      "scope": "operations, authorization, finite writes, rollback and original-DB exclusion",
+      "verdict": "APPROVE",
+      "basis": "Explicit final-hash reapproval in this conversation. Timing finding closed: new writes stop 21:30; only separately granted restorative Confirm OFF-to-ON rollback may finish before 21:45."
+    }
+  ],
+  "findings": [
+    {
+      "id": "AUTH-WINDOW-01",
+      "status": "CLOSED",
+      "description": "Original new-write cutoff was ambiguous for a rollback after 21:30. Final proposal distinguishes the one restorative exception and all-action cutoff."
+    }
+  ],
+  "approvalBoundary": "PLAN ONLY. Does not grant Auth changes, test-data writes or Edge deployment. Edge remains BLOCKED until separately reviewed exact authenticated transport and payload preserve graph20."
+}

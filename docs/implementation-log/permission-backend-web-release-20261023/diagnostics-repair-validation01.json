@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "permission-diagnostic-repair-local-validation-v1",
+  "recordedUtc": "2026-10-24T01:44:46.254Z",
+  "sourceSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "sourceTree": "7f33dd64e2a17b56277698840a4e43bb39f2f844",
+  "canonicalTrackedFingerprint": "bd50735607395b09db1c0da701df193d6b2e180da946016d0b44a0d62abe1d74",
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "codeClean": true,
+  "scope": "LOCAL_SUPPORTING_CONTROLS_NOT_BACKEND_ACCEPTANCE",
+  "builderChecks": [
+    {
+      "owner": "/root/backend_acceptance",
+      "run": 137,
+      "pass": 137,
+      "fail": 0,
+      "skip": 0,
+      "scope": "Nine focused Node suites before freeze; no blanket final-source runtime claim",
+      "log": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-diagnostic-node-20261024-01.log",
+        "sha256": "a1197c65bd93c7a993b30ba548a0d5e4b3841d6a74043d5e348cd029e4321b46"
+      }
+    },
+    {
+      "owner": "/root/backend_acceptance",
+      "run": 3,
+      "pass": 3,
+      "scope": "Actual Playwright reporter no-browser controls on final config; two double-failure inventories plus beforeAll hook; through worker/collector",
+      "log": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-diagnostic-real-reporter-20261024-01.log",
+        "sha256": "73ad792efa3bb373cdb3470c34eec3a5f313f3f50cb54424652101c48b3a9d3e"
+      }
+    },
+    {
+      "owner": "/root/e2e_diagnosis",
+      "run": 8,
+      "pass": 8,
+      "scope": "Helper/probe controls; targeted TypeScript noEmit PASS; source froze unchanged after builder report"
+    }
+  ],
+  "independentChecks": [
+    {
+      "owner": "/root/final_diagnostic_review",
+      "command": [
+        "D:/tools/nodejs/node.exe",
+        "--test",
+        "scripts/permission-candidate-ui.test.mjs",
+        "scripts/permission-runtime-candidate-diagnostic.test.mjs"
+      ],
+      "run": 15,
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "tempCreated": false,
+      "scope": "Stable working files immediately before commit, exact final bytes"
+    },
+    {
+      "owner": "/root",
+      "command": [
+        "D:/tools/nodejs/node.exe",
+        "--test",
+        "scripts/permission-full-target-policy.test.mjs"
+      ],
+      "run": 2,
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "scope": "45 exact canonical producer pins and existing18phase guards; final working bytes"
+    }
+  ],
+  "unchanged": [
+    "src/",
+    "supabase/",
+    "package.json",
+    "package-lock.json",
+    "playwright.permission-candidate.config.ts",
+    "scripts/permission-runtime-catalog.mjs",
+    "scripts/permission-runtime-results.mjs"
+  ],
+  "nodeVersion": "v24.16.0",
+  "noLocalInstall": true,
+  "noBackendExecution": true,
+  "knownTempRetained": [
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/candidate-diagnostic-control-I5Zvys",
+      "files": 12,
+      "logicalBytes": 21814
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/candidate-diagnostic-control-B7roIZ",
+      "files": 20,
+      "logicalBytes": 35218
+    }
+  ],
+  "capacity": {
+    "disks": [
+      {
+        "path": "C:/",
+        "freeBytes": 193239195648
+      },
+      {
+        "path": "D:/",
+        "freeBytes": 98881982464
+      }
+    ],
+    "retainedLogicalBytes": 609373153
+  }
+}

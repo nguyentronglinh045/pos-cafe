@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "permission-diagnostics-local-recipes-v1",
+  "scope": "Supporting local controls before freeze; not backend acceptance",
+  "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+  "node": "D:/tools/nodejs/node.exe",
+  "focused137": {
+    "args": ["--test", "scripts/permission-runtime-candidate-diagnostic.test.mjs", "scripts/permission-runtime-error-facts.test.mjs", "scripts/permission-runtime-diagnostic-transport.test.mjs", "scripts/permission-runtime-t04.test.mjs", "scripts/permission-runtime-service-diagnostic.test.mjs", "scripts/permission-runtime-results.test.mjs", "scripts/permission-runtime-catalog.test.mjs", "scripts/permission-runtime-admission.test.mjs", "scripts/permission-ci1-worker.test.mjs"],
+    "exitCode": 0,
+    "run": 137,
+    "pass": 137,
+    "log": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-diagnostic-node-20261024-01.log",
+    "sha256": "a1197c65bd93c7a993b30ba548a0d5e4b3841d6a74043d5e348cd029e4321b46"
+  },
+  "actualReporterControls": {
+    "invocation": "node --input-type=module -e; mkdtempSync(resolve('artifacts/candidate-diagnostic-control-')); candidateInventoryReporterControl(process.cwd(),dir,{sourceSHA:'49e543d49176692bb2cdabc044cbc69e21054469',lockSHA:'85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18'})",
+    "functionModule": "scripts/permission-runtime-diagnostic-selftest.mjs",
+    "controls": ["persist and clear fail", "four-roles and clear fail", "beforeAll hook fails"],
+    "exitCode": 0,
+    "pass": 3,
+    "browserRuns": 0,
+    "backendRuns": 0,
+    "sourceBindingMeaning": "49e was the parent HEAD before freeze, used as a synthetic control context parameter; its sourceFingerprint is runtimeHash('candidate-inventory-control:'+sourceSHA), not a business-source fingerprint. Does not claim modified bytes were commit49e or final-commit backend evidence.",
+    "finalControlRoot": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/candidate-diagnostic-control-B7roIZ",
+    "log": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-diagnostic-real-reporter-20261024-01.log",
+    "sha256": "73ad792efa3bb373cdb3470c34eec3a5f313f3f50cb54424652101c48b3a9d3e"
+  },
+  "chronology": "Both recorded runs used final selftest outputDir and trace/screenshot/video-off config; before root updated policy pins and committed90824f7. Fresh CI is required for actual final-source gate evidence.",
+  "tempCleanup": "NOT_PERFORMED; two exact control roots retained pending owner cleanup choice"
+}

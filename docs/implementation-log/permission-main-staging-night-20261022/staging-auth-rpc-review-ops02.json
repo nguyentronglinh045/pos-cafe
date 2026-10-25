@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "permission-staging-auth-rpc-independent-review-v1",
+  "source": "ad265321144521c0669500fea9be0f96ebacb769",
+  "reviewer": "/root/budget_time_guard_fix",
+  "recordedBy": "/root/mcp_staging_evidence_review",
+  "recordingBasis": "Actual final reviewer message delivered directly in this conversation; root independently confirmed receipt of the final APPROVE.",
+  "verdict": "APPROVE",
+  "scope": "OPS, timing, action/evidence bounds and final source-finding delta; approval of artifacts only.",
+  "artifactHashes": {
+    "consumer": "91573dcad6d5ec66bbcda52438300022dd6cdbe25938bb062b104699e30695ba",
+    "observer": "d79cd0cd1d4176c6a864d2221bfabb1c55df4607d4b1133c4c8d0a04112d3e8f",
+    "recipe": "2030fb051192bc1c2b1bb300a33e45a2a9b67c30dba62dc3a3624130410de825"
+  },
+  "reviewed": [
+    "Exclusive claim precedes G0, WAIT_CONFIRM_OFF and Dashboard toggle; same resident process resumes.",
+    "53x15s HTTP +4x90s observer +90s Confirm +5min reserve =25min45s; latest admission21:02.",
+    "Known raw MCP/AX derivation, canonical data equality and exact source/query/project/timestamp bindings.",
+    "Fail-stop without automatic cleanup, closure NOT_VERIFIED on failure and credential privacy.",
+    "Final exact unique-ID/name employee/roster, distinct audit request IDs and default-PIN exclusion delta."
+  ],
+  "checks": {
+    "previousConsumerSha256": "f3cd2fc88a52e573f91da8414ca8ece0fa4d2f426c65eda355f9ca030fc6c3dc",
+    "previousIndependentPureChecks": 26,
+    "finalDelta": "Read-only review; no new test rerun claimed for91573d.",
+    "networkRequests": 0,
+    "dbCalls": 0,
+    "fileWritesByReviewer": 0,
+    "consumerRun": false
+  },
+  "priorFindings": "Claim/toggle order, timing reserve and raw-data binding blockers closed; final source findings also reviewed closed.",
+  "executionCondition": "WAIT_RESOLVED before latest21:02 admission, otherwise DEFER without toggle/consumer attempt; approval does not grant an incident exception or extend time."
+}

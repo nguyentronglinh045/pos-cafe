@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "permission-remediation-review-closure-v1",
+  "atUtc": "2026-10-22T02:46:06.308Z",
+  "ownerReference": "USER_REPLY_call_31849df3bfad47f7aec74d3d7155420c:item0",
+  "sourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "packetSHA256": "88cdaef84606ad227ac15cb41a8940da4672cd3da803bbc4e787f71f32a1eea2",
+  "policySHA256": "18325065527ac125f670932e4cbdee3846466cf7045b36790438dac6bf04ab55",
+  "reviewsSHA256": "685fb6c398c214968527184a9b778e5db1ac5672a0e44e7dba4c499fb9b75c0f",
+  "reviewers": [
+    {
+      "name": "/root/investigation_plan_review",
+      "scope": "source",
+      "verdict": "APPROVE"
+    },
+    {
+      "name": "/root/continuation_operations_review",
+      "scope": "operations",
+      "verdict": "APPROVE"
+    }
+  ],
+  "approvalBasis": "EXPLICIT_FINAL_AGENT_VERDICTS_ON_ACTUAL_OWNER_GRANT_AND_PACKET",
+  "sourceReviewerIndependentParentReplyObserved": true,
+  "publicationAttempted": false,
+  "sqlRun": false
+}

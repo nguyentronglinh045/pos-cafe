@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "permission-publication-intent-v6",
+  "recordedUtc": "2026-10-24T05:44:46.674Z",
+  "state": "INTENT_BEFORE_PUSH",
+  "sourceSHA": "34db1b13ab707bab114fe1d83642d021ff324c93",
+  "expectedMain": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "expectedReviewBefore": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+  "targetBranch": "review/permission-staging-20261023",
+  "pushMode": "NORMAL_NONFORCE_HEAD_TO_REVIEW",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-packet06.json",
+    "bytes": 329235,
+    "sha256": "285ce0df76e4d594d904c77595ee4407a7724a2198c54012442bfec5c6c1ee69"
+  },
+  "reviewRecord": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-reviews06.json",
+    "bytes": 2180,
+    "sha256": "8392595847448655d3e0a41fe634d6639c89bca4bc214be9c59cf644b351bb31"
+  },
+  "mapping": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping07.json",
+    "bytes": 443165,
+    "sha256": "014d67ed7264249bb2d5d40058959c6cd59b1830ece8e64dfeadb9ff373320a6"
+  },
+  "mappingReview": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-mapping-reviews06.json",
+    "bytes": 2226,
+    "sha256": "2650f1dae18a8087cca3665e820c5be2b1356dd8335576bdd9d57e998350e486"
+  },
+  "remoteSnapshot": {
+    "recordedUtc": "2026-10-24T05:44:46.221Z",
+    "main": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "review": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+    "in_progress": 0,
+    "queued": 0,
+    "waiting": 0
+  },
+  "localCheckpoint": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-packet06.json",
+    "bytes": 329235,
+    "sha256": "285ce0df76e4d594d904c77595ee4407a7724a2198c54012442bfec5c6c1ee69"
+  },
+  "consumedBefore": {
+    "publication": 5,
+    "automaticLightCi": 5,
+    "T04": 5
+  },
+  "authorizedMax": {
+    "publication": 6,
+    "automaticLightCi": 6,
+    "T04": 6
+  },
+  "noMergeDeploy": true,
+  "noAutoWholeRetry": true
+}

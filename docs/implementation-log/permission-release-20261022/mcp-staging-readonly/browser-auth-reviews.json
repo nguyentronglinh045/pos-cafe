@@ -1,0 +1,20 @@
+{
+  "observedAt": "2026-10-22T07:53:48.757355+00:00",
+  "candidateReceiptSha256": "0013a9df707b0e14b12f1a610a9769a3ea98c02fab11e4e1189a45c0a57c2bb7",
+  "reviewers": [
+    {
+      "id": "/root/mcp_staging_scope_review",
+      "scope": "read-only scopes and safe user handoff",
+      "verdict": "APPROVE",
+      "blockingFindings": 0
+    },
+    {
+      "id": "/root/mcp_staging_evidence_review",
+      "scope": "receipt hash, actual screenshot and pending claims",
+      "verdict": "APPROVE",
+      "blockingFindings": 0
+    }
+  ],
+  "approvedClaim": "Browser authorization page opened; user consent and DB connection verification remain pending",
+  "credentialOrOAuthUrlWrittenToEvidenceFiles": false
+}

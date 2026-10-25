@@ -1,0 +1,9 @@
+{
+  "recordedUtc": "2026-10-24T08:43:16.448Z",
+  "userDirective": "tôi sẽ tạm chưa xóa",
+  "decision": "Retain control directories; do not continue deletion under prior authorization",
+  "reviewer": "/root/main_integration",
+  "verdict": "APPROVE_METADATA_DELTA",
+  "taskSHA256": "6ae60deb05dd20d46ec1cfd3b8a7cf02370aad80a0cbe735a3990553613cd017",
+  "verifiedChange": "Only append latest user retention instruction; source/T04/evidence unchanged"
+}

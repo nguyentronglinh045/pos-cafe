@@ -1,0 +1,28 @@
+{
+  "observedAt": "2026-10-22T07:58:38.190010+00:00",
+  "reason": "Inherited original-project profile was enabled on fresh CLI readback; add project override to enforce user staging-only instruction",
+  "globalConfigEdited": false,
+  "beforeConfigSha256": "c7fcf77795264691cccf0c84190c1281f4ed632e9bee6f8ed44180249aa8f231",
+  "afterConfigSha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+  "servers": [
+    {
+      "name": "pos_cafe_supabase_ro",
+      "enabled": false,
+      "url": "https://mcp.supabase.com/mcp?project_ref=kfqjdfwxhkdwihjobpny&read_only=true&features=database,docs",
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "supabase",
+      "enabled": false,
+      "url": "https://mcp.supabase.com/mcp?project_ref=kfqjdfwxhkdwihjobpny",
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "supabase_pos_cafe",
+      "enabled": true,
+      "url": "https://mcp.supabase.com/mcp?project_ref=ineckiashpwloncxnbqx&read_only=true&features=database,docs",
+      "authStatus": "o_auth"
+    }
+  ],
+  "databaseRequestsSent": 0
+}

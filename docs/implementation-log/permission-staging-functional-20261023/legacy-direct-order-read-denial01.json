@@ -1,0 +1,7 @@
+{
+  "at": "2026-10-23T11:59:26.844Z",
+  "status": 403,
+  "code": "42501",
+  "message": "permission denied for table orders",
+  "interpretation": "Legacy direct table SELECT is revoked; use current permission read RPC, no grant changes"
+}

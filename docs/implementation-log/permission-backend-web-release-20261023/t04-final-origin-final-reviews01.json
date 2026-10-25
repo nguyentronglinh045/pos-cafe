@@ -1,0 +1,72 @@
+{
+  "recordedUtc": "2026-10-24T09:54:51.306Z",
+  "sourceSHA": "4e78a8c11d2d895ccebaccd2b2f7d3b2c69bcb3e",
+  "ciRunId": "40081353958",
+  "diagnosticRunId": "40082616309",
+  "finalStatus": "CI_PASS_DIAGNOSTIC_FAIL_T04_BLOCKED",
+  "refs": {
+    "outcome": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-final-origin-outcome-20261024.md",
+      "bytes": 8625,
+      "sha256": "47c65eb158847288d43319955df5a8f05efcd6b2abbe7dac536db90ba5687a91"
+    },
+    "observed": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-final-origin-observed-failure01.json",
+      "bytes": 5509,
+      "sha256": "666d0164eea89adf6a821486f65ff96efa070967e9db6b613a691b92a1aca500"
+    },
+    "handoff": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-t04-oracle-hardening-2026-10-24.md",
+      "bytes": 9298,
+      "sha256": "1442b771eb8883de96d11587dbdeadce907c96ab375945421f996c4dbd38e9f8"
+    },
+    "index": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/README.md",
+      "bytes": 52363,
+      "sha256": "9f87aa867626165035c62c670d7a38008d4264209f141976ad4d0c2cfe6beb8f"
+    },
+    "capacity": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-final-origin-capacity-close01.json",
+      "bytes": 1897,
+      "sha256": "d1665e80e4048c5a0a74d1ee03eade08a6b9060180f7d8ba995fc9bcdb14fde5"
+    },
+    "fallback": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-final-origin-fallback-20261024.md",
+      "bytes": 4700,
+      "sha256": "76ab6a67f0dc29576d2078fc6f6500447b09822585bd374e748fb20462a9a417"
+    },
+    "fallbackReviews": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-final-origin-fallback-reviews01.json",
+      "bytes": 1016,
+      "sha256": "a2333a8d0b85b13aca285c069c39ac7f0b87c8b8cdd2d7287bf2d19471c32acc"
+    }
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "Evidence integrity, bounded cause interpretation, final outcome and handoff/index, capacity/retention, reviewed plan-only fallback",
+      "blockingFindings": 0,
+      "businessPass": false
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Evidence integrity, bounded cause interpretation, final outcome and handoff/index, capacity/retention, reviewed plan-only fallback",
+      "blockingFindings": 0,
+      "businessPass": false
+    }
+  ],
+  "executionCountsThisTurn": {
+    "publication": 1,
+    "freshCi": 1,
+    "fixedDiagnostic": 1,
+    "wholeT04": 0,
+    "retries": 0
+  },
+  "confirmed": "Six Candidate tests and warm/fresh image observations passed; first59s fetch dispatched at60657ms outside750ms acceptance window.",
+  "unmeasured": "Exact guard/IPC/scheduler attribution of latency",
+  "next": "Stop retries; approved browser-worker and independent-guard plan remains unimplemented.",
+  "userRetention": "HOLD_CONTROLS_NO_DELETE",
+  "mergeDeploy": "NOT_AUTHORIZED"
+}

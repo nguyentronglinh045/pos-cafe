@@ -1,0 +1,392 @@
+/* ==========================================================================
+   POS Cafe — Hệ thiết kế "Teal Chuẩn Hoá", bản 1
+   Nguồn sự thật duy nhất cho màu, chữ, khoảng cách, bo góc, đổ bóng.
+   Mọi giá trị tương phản ghi trong chú thích là số đo WCAG 2.1 thật.
+   ========================================================================== */
+
+:root {
+  /* --- Thang teal ------------------------------------------------------
+     Chữ chỉ dùng từ teal-700 trở xuống. teal-600 đạt 3:1 cho viền và icon
+     nhưng không đủ 4.5:1 cho chữ. Bậc 50–500 chỉ làm nền. */
+  --teal-50:  #F0FDFA;   /* 1,04 trên trắng — nền */
+  --teal-100: #CCFBF1;   /* 1,13 — nền */
+  --teal-200: #99F6E4;   /* 1,26 — kẻ nhấn */
+  --teal-300: #5EEAD4;   /* 1,48 — nền */
+  --teal-400: #2DD4BF;   /* 1,86 — nền */
+  --teal-500: #14B8A6;   /* 2,49 — nền */
+  --teal-600: #0D9488;   /* 3,74 — viền, icon */
+  --teal-700: #0F766E;   /* 5,47 — chữ, nền nút chính */
+  --teal-800: #115E59;   /* 7,58 — hover nút chính */
+  --teal-900: #134E4A;   /* 9,48 — active nút chính */
+
+  /* --- Thang trung tính ------------------------------------------------
+     Chữ chỉ dùng từ nt-500 trở xuống. nt-400 là viền điều khiển.
+     nt-200 là kẻ phân cách. nt-300 trở lên chỉ làm nền. */
+  --nt-0:   #FFFFFF;
+  --nt-25:  #F8FAFC;
+  --nt-50:  #F4F6F9;
+  --nt-100: #EAEEF4;
+  --nt-200: #D5DCE6;   /* 1,38 — kẻ phân cách, không có ngưỡng bắt buộc */
+  --nt-300: #BFC8D6;   /* 1,69 — nền */
+  --nt-400: #7F8A9D;   /* 3,49 trắng · 3,22 nt-50 — viền điều khiển */
+  --nt-500: #667183;   /* 4,94 trắng · 4,56 nt-50 — chữ cấp ba */
+  --nt-600: #5B6678;   /* 5,81 trắng · 5,36 nt-50 — chữ phụ */
+  --nt-700: #414B5C;   /* 8,80 */
+  --nt-800: #2A3345;   /* 12,67 */
+  --nt-900: #16202F;   /* 16,38 — chữ chính */
+
+  /* --- Ngữ nghĩa -------------------------------------------------------
+     Cặp chữ/nền nhạt đều đạt 4.5:1, nên badge không cần đổi màu chữ. */
+  --success:      #15803D;   /* 5,02 trên trắng · 4,76 trên success-soft */
+  --success-soft: #ECFDF3;
+  --warning:      #9A5B08;   /* 5,42 trên trắng · 4,97 trên warning-soft */
+  --warning-soft: #FDF4E7;
+  --danger:       #B4251E;   /* 6,51 trên trắng · 5,91 trên danger-soft */
+  --danger-soft:  #FEF1F0;
+
+  /* --- Vai trò ---------------------------------------------------------
+     Component chỉ được tham chiếu nhóm này, không tham chiếu thang màu
+     trực tiếp. Đây là tiền đề cho dark mode và theme theo cửa hàng. */
+  --bg:           var(--nt-50);
+  --surface:      var(--nt-0);
+  --surface-2:    var(--nt-25);
+  --surface-sunk: var(--nt-100);
+  --ink:          var(--nt-900);
+  --ink-2:        var(--nt-700);
+  --ink-3:        var(--nt-500);
+  --muted:        var(--nt-600);
+  --line:         var(--nt-200);   /* kẻ phân cách */
+  --line-control: var(--nt-400);   /* viền ô nhập và nút — bắt buộc ≥ 3:1 */
+  --primary:      var(--teal-700);
+  --primary-hover:var(--teal-800);
+  --primary-ink:  var(--nt-0);
+  --primary-soft: var(--teal-50);
+  --primary-line: var(--teal-200);
+
+  /* --- Chữ: 6 bậc, 4 độ đậm ------------------------------------------
+     Giá trị dưới đây là bậc "default" (tablet ngang 900–1279px).
+     Bậc compact và wide ghi đè ở cuối file. */
+  --font: "Be Vietnam Pro", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  --fs-display:  28px;  --lh-display:  1.15;  /* số tiền tổng */
+  --fs-title:    22px;  --lh-title:    1.2;
+  --fs-subtitle: 17px;  --lh-subtitle: 1.3;
+  --fs-body:     15px;  --lh-body:     1.5;
+  --fs-small:    13px;  --lh-small:    1.45;
+  --fs-label:    11px;  --lh-label:    1.3;   /* hoa, letter-spacing .08em */
+
+  --fw-regular:  400;   /* mọi chữ thường */
+  --fw-medium:   500;   /* label, trạng thái */
+  --fw-semibold: 600;   /* tiêu đề, nhãn quan trọng */
+  --fw-bold:     700;   /* CHỈ số tiền tổng và nhãn nút chính */
+
+  /* --- Khoảng cách: gốc 4px ------------------------------------------ */
+  --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;  --sp-4: 16px;  --sp-5: 20px;
+  --sp-6: 24px;  --sp-8: 32px;  --sp-10: 40px; --sp-12: 48px;
+
+  /* --- Bo góc: 2 giá trị + 1 ngoại lệ -------------------------------- */
+  --radius-control: 6px;    /* nút, ô nhập, tab, chip vuông */
+  --radius-surface: 10px;   /* thẻ, drawer, popup, panel */
+  --radius-pill:    999px;  /* ngoại lệ duy nhất — badge trạng thái */
+
+  /* --- Đổ bóng: 3 mức ------------------------------------------------ */
+  --elev-1: 0 1px 2px rgb(22 32 47 / .06);
+  --elev-2: 0 4px 12px rgb(22 32 47 / .10);
+  --elev-3: 0 16px 40px rgb(22 32 47 / .16);
+
+  /* --- Chiều cao control: sàn 44px ----------------------------------- */
+  --ctl-md: 44px;   /* mặc định — mọi control */
+  --ctl-lg: 52px;   /* hành động POS */
+  --ctl-xl: 60px;   /* xác nhận tiền */
+
+  /* --- Bố cục -------------------------------------------------------- */
+  --pane-side: clamp(300px, 30%, 380px);  /* MỘT tỉ lệ cho mọi master-detail */
+  --page-pad: var(--sp-3);
+  --pane-gap: 10px;
+  --card-pad: var(--sp-3);
+
+  --focus-ring: 2px solid var(--primary);
+  --focus-offset: 2px;
+}
+
+/* ==========================================================================
+   Breakpoint — 4 mốc, thay cho 10 mốc tự đặt
+   bp-compact  < 900   điện thoại ngang, tablet nhỏ
+   bp-default  900     tablet ngang (mốc 1024×768 nằm trong vùng này)
+   bp-wide     1280    desktop
+   bp-ultra    1600    màn rộng, giới hạn bề ngang
+   Dưới 640px hiện hướng dẫn xoay máy — không mô phỏng ở đây.
+   ========================================================================== */
+
+@media (max-width: 899px) {
+  :root {
+    --fs-display: 24px;
+    --fs-title:   18px;
+    --fs-subtitle:16px;
+    --fs-body:    14px;
+    --fs-small:   12px;
+    --page-pad:   var(--sp-2);
+    --pane-gap:   var(--sp-2);
+    --card-pad:   10px;
+    --ctl-xl:     var(--ctl-lg);   /* 60px quá cao khi màn thấp */
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --fs-display: 32px;
+    --fs-title:   24px;
+    --page-pad:   var(--sp-4);
+    --pane-gap:   var(--sp-3);
+    --card-pad:   14px;
+  }
+}
+
+@media (min-width: 1600px) {
+  :root { --page-pad: var(--sp-5); }
+}
+
+/* ==========================================================================
+   Nền chung
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: var(--fw-regular);
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+:where(button, input, select, textarea, a, [tabindex]):focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ==========================================================================
+   Primitive — thay 114 <button> thô, 100 <Button> MUI,
+   13 <input> thô và 42 <TextField>
+   ========================================================================== */
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  min-height: var(--ctl-md);
+  padding-inline: 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color .12s ease, border-color .12s ease;
+}
+.btn--lg { min-height: var(--ctl-lg); padding-inline: 22px; }
+.btn--xl { min-height: var(--ctl-xl); padding-inline: 26px; font-size: var(--fs-subtitle); font-weight: var(--fw-bold); }
+.btn--block { width: 100%; }
+
+.btn--primary     { background: var(--primary); color: var(--primary-ink); }
+.btn--primary:hover  { background: var(--primary-hover); }
+.btn--secondary   { background: var(--surface); color: var(--primary); border-color: var(--primary-line); }
+.btn--secondary:hover{ background: var(--primary-soft); }
+.btn--quiet       { background: transparent; color: var(--muted); border-color: var(--line-control); font-weight: var(--fw-medium); }
+.btn--quiet:hover { background: var(--surface-2); }
+.btn--destructive { background: var(--danger); color: var(--nt-0); }
+
+.btn[disabled], .btn[aria-disabled="true"] {
+  background: var(--surface-sunk); color: var(--ink-3);
+  border-color: var(--line); cursor: not-allowed;
+}
+
+.btn-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--ctl-md); height: var(--ctl-md);
+  border: 1px solid var(--line-control); border-radius: var(--radius-control);
+  background: var(--surface); color: var(--muted); cursor: pointer;
+}
+
+.field { display: flex; flex-direction: column; gap: var(--sp-1); }
+.field__label {
+  font-size: var(--fs-label); line-height: var(--lh-label);
+  font-weight: var(--fw-medium); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted);
+}
+.input {
+  min-height: var(--ctl-md);
+  padding: 9px 12px;
+  border: 1px solid var(--line-control);     /* 3,49:1 — không dùng --line */
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  font-size: var(--fs-subtitle);
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+  width: 100%;
+}
+/* Ô nhập tiền là control quan trọng nhất màn thanh toán: cao bằng nút xác nhận
+   và dùng cỡ chữ lớn nhất của thang, không phải cỡ ô nhập thường. */
+.input--money {
+  min-height: var(--ctl-xl);
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.02em;
+  text-align: right;
+  padding-inline: var(--sp-3);
+}
+
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-label); line-height: 1.4;
+  font-weight: var(--fw-medium); white-space: nowrap;
+}
+.badge--primary { background: var(--primary-soft); color: var(--primary); }
+.badge--success { background: var(--success-soft); color: var(--success); }
+.badge--warning { background: var(--warning-soft); color: var(--warning); }
+.badge--danger  { background: var(--danger-soft);  color: var(--danger); }
+.badge--neutral { background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-surface);
+  padding: var(--card-pad);
+}
+
+.toolbar {
+  display: flex; align-items: center; gap: var(--sp-2);
+  min-height: 56px;
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  overflow-x: auto;
+}
+
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-8) var(--sp-5);
+  text-align: center;
+  border: 1px dashed var(--line-control);
+  border-radius: var(--radius-surface);
+  background: var(--surface);
+}
+.empty-state__title { font-size: var(--fs-body); font-weight: var(--fw-semibold); }
+.empty-state__hint  { font-size: var(--fs-small); color: var(--muted); max-width: 38ch; }
+
+/* Chip lọc / tab khu vực — dùng chung một dạng, không tự chế mỗi màn */
+.chip {
+  display: inline-flex; align-items: center;
+  min-height: var(--ctl-md); padding-inline: var(--sp-3);
+  border: 1px solid var(--line); border-radius: var(--radius-control);
+  background: var(--surface); color: var(--muted);
+  font-size: var(--fs-small); font-weight: var(--fw-medium);
+  white-space: nowrap; cursor: pointer;
+}
+.chip[aria-pressed="true"], .chip.is-active {
+  background: var(--primary-soft); border-color: var(--primary-line);
+  color: var(--primary); font-weight: var(--fw-semibold);
+}
+
+/* ==========================================================================
+   Layout primitive — MỘT tỉ lệ chia cột, thay cho 5 tỉ lệ hiện có
+   ========================================================================== */
+
+.master-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--pane-side);
+  gap: var(--pane-gap);
+  min-height: 0;
+}
+.master-detail--list-left {
+  grid-template-columns: var(--pane-side) minmax(0, 1fr);
+}
+@media (max-width: 899px) {
+  .master-detail, .master-detail--list-left { grid-template-columns: minmax(0, 1fr); }
+}
+
+.pane {
+  display: flex; flex-direction: column; min-height: 0; min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-surface);
+  overflow: hidden;
+}
+.pane__header {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3);
+  padding: var(--sp-3);
+  border-bottom: 1px solid var(--line);
+}
+.pane__title { font-size: var(--fs-subtitle); font-weight: var(--fw-semibold); margin: 0; }
+.pane__body { flex: 1; min-height: 0; overflow: auto; }
+.pane__footer {
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  padding: var(--sp-3);
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+}
+
+/* Khung drawer */
+.drawer {
+  display: flex; flex-direction: column; min-height: 0;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-surface);
+  box-shadow: var(--elev-3);
+  overflow: hidden;
+}
+.drawer__header {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3);
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.drawer__heading { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.drawer__eyebrow {
+  font-size: var(--fs-label); line-height: var(--lh-label); font-weight: var(--fw-medium);
+  letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+}
+.drawer__title { font-size: var(--fs-title); line-height: var(--lh-title); font-weight: var(--fw-semibold); margin: 0; letter-spacing: -.015em; }
+.drawer__meta { font-size: var(--fs-small); color: var(--muted); }
+.drawer__actions { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+.drawer__body { flex: 1; min-height: 0; padding: var(--page-pad); overflow: auto; }
+
+/* Dòng tiền */
+.money-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); }
+.money-row__key { font-size: var(--fs-small); color: var(--muted); font-weight: var(--fw-regular); }
+.money-row__val { font-size: var(--fs-small); font-variant-numeric: tabular-nums; font-weight: var(--fw-regular); }
+.money-row--grand .money-row__key { font-size: var(--fs-body); color: var(--ink); font-weight: var(--fw-semibold); }
+.money-row--grand .money-row__val { font-size: var(--fs-display); line-height: var(--lh-display); font-weight: var(--fw-bold); letter-spacing: -.02em; }
+.money-row--change .money-row__key { color: var(--success); font-weight: var(--fw-medium); }
+.money-row--change .money-row__val { color: var(--success); font-weight: var(--fw-semibold); font-size: var(--fs-subtitle); }
+
+/* Banner trạng thái — luôn kèm chữ, không truyền tin chỉ bằng màu */
+/* Khối chữ chạy liền, không phải flex — nếu là flex thì nhãn "Chưa lưu."
+   trở thành flex item và bị ngắt dòng giữa hai từ. */
+.banner {
+  display: block;
+  margin: 0;
+  padding: 10px var(--sp-3);
+  border-radius: var(--radius-control);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+.banner--warning { background: var(--warning-soft); color: var(--warning); border: 1px solid color-mix(in srgb, var(--warning) 28%, transparent); }
+.banner--danger  { background: var(--danger-soft);  color: var(--danger);  border: 1px solid color-mix(in srgb, var(--danger) 28%, transparent); }
+.banner strong { font-weight: var(--fw-semibold); }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}

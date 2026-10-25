@@ -1,0 +1,49 @@
+{
+  "projectRef": "ineckiashpwloncxnbqx",
+  "probes": [
+    {
+      "at": "2026-10-23T12:33:13.351Z",
+      "method": "OPTIONS",
+      "path": "/functions/v1/menu-image-gateway",
+      "status": 404,
+      "headers": {
+        "access-control-allow-headers": "authorization, x-client-info, apikey",
+        "access-control-allow-origin": "*",
+        "access-control-expose-headers": "sb-error-code",
+        "content-type": "application/json",
+        "x-sb-edge-region": "ap-northeast-2"
+      },
+      "body": "{\"code\":\"NOT_FOUND\",\"message\":\"Requested function was not found\"}"
+    },
+    {
+      "at": "2026-10-23T12:33:13.485Z",
+      "method": "GET",
+      "path": "/functions/v1/menu-image-gateway",
+      "status": 404,
+      "headers": {
+        "access-control-allow-headers": "authorization, x-client-info, apikey",
+        "access-control-allow-origin": "*",
+        "access-control-expose-headers": "sb-error-code",
+        "content-type": "application/json",
+        "x-content-type-options": "nosniff",
+        "x-sb-edge-region": "ap-northeast-2"
+      },
+      "body": "{\"code\":\"NOT_FOUND\",\"message\":\"Requested function was not found\"}"
+    },
+    {
+      "at": "2026-10-23T12:33:13.611Z",
+      "method": "GET",
+      "path": "/functions/v1/menu-image-public/00000000-0000-4000-8000-000000000001",
+      "status": 404,
+      "headers": {
+        "access-control-allow-headers": "authorization, x-client-info, apikey",
+        "access-control-allow-origin": "*",
+        "access-control-expose-headers": "sb-error-code",
+        "content-type": "application/json",
+        "x-content-type-options": "nosniff",
+        "x-sb-edge-region": "ap-northeast-2"
+      },
+      "body": "{\"code\":\"NOT_FOUND\",\"message\":\"Requested function was not found\"}"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+    "status":  "blocked_or_failed_no_further_action",
+    "observedAtUtc":  "2026-10-22T08:53:39.3028341+00:00",
+    "guardStartedAtUtc":  "2026-10-22T08:53:39.1882607+00:00",
+    "deadlineUtc":  "2026-10-22T10:00:00.0000000+00:00",
+    "guardPid":  31232,
+    "targetPath":  "D:\\Workspace\\pos-cafe\\.codex\\config.toml",
+    "beforeSha256":  null,
+    "error":  "The term \u0027Get-FileHash\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.",
+    "temporaryPathIfCreated":  null,
+    "scope":  "stored_project_config_only",
+    "liveConnectionReloaded":  false,
+    "oauthRevoked":  false
+}

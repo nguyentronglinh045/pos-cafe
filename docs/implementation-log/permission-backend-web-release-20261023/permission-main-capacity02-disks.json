@@ -1,0 +1,16 @@
+{
+  "recordedUtc": "2026-10-24T11:50:11.8918002Z",
+  "disks": [
+    {
+      "Name": "C",
+      "Free": 192892059648
+    },
+    {
+      "Name": "D",
+      "Free": 98682773504
+    }
+  ],
+  "allocatedTaskBytes": "NOT_MEASURED",
+  "reclaimClaimedBytes": 0,
+  "cleanupAttempted": false
+}

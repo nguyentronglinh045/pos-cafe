@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "permission-docs-package-two-scope-review-v1",
+  "recordedAtUtc": "2026-10-22T14:56:59.494Z",
+  "author": "/root",
+  "candidate": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/docs-package-manifest02.json",
+    "sha256": "6bad9890eab3d23d5158f8606dcb4618c590b462f0f85752e17acbe846effe1a"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/mcp_staging_scope_review",
+      "scope": "SOURCE/evidence",
+      "verdict": "APPROVE",
+      "basis": "Independently rehashed75payloadfiles/992001bytes and157rawreferences; historical snapshots exact; selected README excludes195predirty lines."
+    },
+    {
+      "reviewer": "/root/mcp_staging_evidence_review",
+      "scope": "OPS/provenance",
+      "verdict": "APPROVE",
+      "basis": "Independently rehashed75payloadfiles; allthree findings closed, originalmanifest/review bytes verified, README selection and baseHEAD/index confirmed."
+    }
+  ],
+  "scope": "Local docs commit exact75payloadfiles, manifest, this actual review metadata and selected README only. No docs push or runtime/fullgate PASS."
+}

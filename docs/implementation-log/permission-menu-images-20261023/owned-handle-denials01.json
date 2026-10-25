@@ -1,0 +1,46 @@
+{
+  "at": "2026-10-23T13:14:45.872Z",
+  "actorId": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+  "handle": "9d759f09-5c90-445c-ad7a-706f34f3ba87",
+  "probes": [
+    {
+      "index": 15,
+      "at": "2026-10-23T13:14:45.383Z",
+      "kind": "EDGE",
+      "label": "cashier-owned-handle-GET-denied",
+      "path": "menu-image-gateway/staging/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+      "method": "GET",
+      "status": 403,
+      "code": "FORBIDDEN",
+      "headers": {
+        "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+        "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+        "access-control-allow-origin": "*",
+        "cache-control": "no-store",
+        "content-type": "application/json",
+        "x-content-type-options": "nosniff"
+      },
+      "bytes": 41,
+      "sha256": "8be8b8770e985226c6217544ea7e7b940577b5aa0cf68e59e92755c966fdad95"
+    },
+    {
+      "index": 16,
+      "at": "2026-10-23T13:14:45.872Z",
+      "kind": "EDGE",
+      "label": "cashier-owned-handle-DELETE-denied",
+      "path": "menu-image-gateway/staging/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+      "method": "DELETE",
+      "status": 403,
+      "code": "FORBIDDEN",
+      "headers": {
+        "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+        "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+        "access-control-allow-origin": "*",
+        "cache-control": "no-store",
+        "content-type": "application/json"
+      },
+      "bytes": 41,
+      "sha256": "8be8b8770e985226c6217544ea7e7b940577b5aa0cf68e59e92755c966fdad95"
+    }
+  ]
+}

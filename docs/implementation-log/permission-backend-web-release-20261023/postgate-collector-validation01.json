@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "permission-postgate-collector-offline-validation-v1",
+  "recordedAtUtc": "2026-10-23T17:16:34.965Z",
+  "status": "PASS",
+  "candidateSHA": "49e543d49176692bb2cdabc044cbc69e21054469",
+  "candidateCodeClean": true,
+  "collector": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-postgate-ci.mjs",
+    "bytes": 13250,
+    "sha256": "75e95efdb6a4cd8c90fb8c89c92f19ab7beaeb33ba6b5c72bcdeb214c3404620"
+  },
+  "test": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-postgate-ci.test.mjs",
+    "bytes": 13217,
+    "sha256": "18d6e849fc4692e269cc81ea821e666ef7170e80d23a6e9c501fad89322cd969"
+  },
+  "beforeSnapshot": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/postgate-collector-before01.mjs.snapshot",
+    "bytes": 12801,
+    "sha256": "769e66c5bedbd8b65cfa5a5e70da4c3fef085152af4b10fe581eab15f8ddd3be"
+  },
+  "diff": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/postgate-collector-change01.diff",
+    "bytes": 6343,
+    "sha256": "5ff5956eb7ff74409204713695a6c2fe9967f8b7fb072e8b3a86be24e5354aa2"
+  },
+  "diffCheck": {
+    "exitCode": 1,
+    "stdoutBytes": 0,
+    "stderrBytes": 0,
+    "meaning": "git diff --no-index --check: exit1 identifies the expected two-file difference; no whitespace findings"
+  },
+  "tests": {
+    "node": "v24.16.0",
+    "command": [
+      "D:/tools/nodejs/node.exe",
+      "--test",
+      "--test-reporter=tap",
+      "operations/collect-postgate-ci.test.mjs"
+    ],
+    "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+    "run": 18,
+    "pass": 18,
+    "fail": 0,
+    "skip": 0,
+    "log": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/postgate-collector-tests01.log",
+      "bytes": 4227,
+      "sha256": "52ecd4a8dc714c372bcc0ebb88edde86219bae756d6d6f862b20d665e84d8926"
+    },
+    "scope": "SYNTHETIC_IN_MEMORY_FIXTURES_ONLY_NOT_ACTUAL_GITHUB_OR_CI_METADATA"
+  },
+  "protectedOtherCollectors": [
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-candidate-ci.mjs",
+      "bytes": 3443,
+      "sha256": "9a1f1029fe399d29a7364c5c10816ec72d84c6d3fc7346a90003a77f622e65fa"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-cloud-t04.mjs",
+      "bytes": 3642,
+      "sha256": "d5eab2255147248b3e60b696d60cc8a4793ea2d764a0ae0e256adf87e0d96ece"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-cloud-service.mjs",
+      "bytes": 4573,
+      "sha256": "27c438cf53fdbc59dff46623a9bd82d267e14ed986d38910c0e26664f154b036"
+    }
+  ],
+  "behavior": {
+    "optionalCandidateBranch": true,
+    "legacyDefault": "run/permissions-20261020",
+    "exactAlternative": "review/permission-staging-20261023",
+    "cliFiveArgsPreserved": true,
+    "cliOptionalSixthArgument": true,
+    "branchValidatedBeforeTransportAndWriter": true,
+    "rawApiAndLogPreserved": true,
+    "orderedParentsTreeWorkflowMainNativeAndWhole18GuardsPreserved": true
+  },
+  "boundary": {
+    "externalRequests": 0,
+    "actualMetadataCollected": false,
+    "runtimeExecuted": false,
+    "ledgerOrAdmissionChanged": false,
+    "dependenciesInstalled": false,
+    "commits": 0,
+    "pushes": 0,
+    "deployments": 0,
+    "review": "PENDING_TWO_NON_AUTHOR_REVIEWS",
+    "frozenCandidateCodeEdited": false,
+    "operatorChangeScope": [
+      "operations/collect-postgate-ci.mjs",
+      "operations/collect-postgate-ci.test.mjs"
+    ]
+  }
+}

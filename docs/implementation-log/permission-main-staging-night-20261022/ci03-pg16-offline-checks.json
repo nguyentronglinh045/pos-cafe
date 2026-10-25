@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "permission-ci03-pg16-extractor-offline-check-v1",
+  "recordedAtUtc": "2026-10-22T16:15:35.214Z",
+  "helper": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/extract-light-pg16-03.mjs",
+    "sha256": "2d9e4ec925799f1c4996d7fe6c9396c91dbe6b8da6c3bd45b30a53682ebabf3c"
+  },
+  "status": "PASS",
+  "syntax": "node --check PASS",
+  "checks": 24,
+  "positive": 1,
+  "negative": 23,
+  "actualSourcePinned": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "actualRunPinned": "39811728040",
+  "ledgerPinsBeforeAndAfter": [
+    "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+    "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f",
+    "841ac0b22c90ef4734da8efe2f055bff9866e55e4376ac4281528a146e7f30cd",
+    "991d2192f6ac4f9c7b3e31340b4819e66384f7a49b6eadcd2f003e89ad929923"
+  ],
+  "ledgerUnchanged": true,
+  "noActualExtractionOrAction": true,
+  "limits": "Synthetic CI02-derived in-memory controls only; no actualCI03 artifacts, runtime PASS, network, dispatch or settlement."
+}

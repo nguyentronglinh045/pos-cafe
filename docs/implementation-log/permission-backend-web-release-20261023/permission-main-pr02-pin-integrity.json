@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "permission-main-pin-ui-integrity-v1",
+  "recordedUtc": "2026-10-24T11:22:33.756Z",
+  "binding": {
+    "sourceSHA": "984660f8c059c46100aa6d829a78e6547ae26c4f",
+    "sourceFingerprint": "771c03c33376eccc6b7dfe8c24c4f7556747875d1fcf6cb3f1b8cbefbc5b6f68",
+    "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+    "runId": "40088569310",
+    "attempt": 1
+  },
+  "artifactId": 12558183853,
+  "zip": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-40088569310-1.zip",
+    "bytes": 66520,
+    "sha256": "69f84a131fb95d41856dc678711592fe3fef61adc7a474e13ff673f40d60c4d7"
+  },
+  "entries": [
+    {
+      "name": "manifest.json",
+      "sha256": "0ecab7ec484e98b4e5ac448567f5423804a0ef602df886ac06185795ecdb3451",
+      "crc32": 4093252713,
+      "bytes": 2591
+    },
+    {
+      "name": "required_pin_change__tablet.png",
+      "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca",
+      "crc32": 2037284678,
+      "bytes": 21410
+    },
+    {
+      "name": "required_pin_change__desktop.png",
+      "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e",
+      "crc32": 1968632805,
+      "bytes": 23395
+    },
+    {
+      "name": "required_pin_change__mobile.png",
+      "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f",
+      "crc32": 1313090777,
+      "bytes": 18520
+    }
+  ],
+  "directory": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-40088569310-1",
+  "zipCrcVerified": true,
+  "nativeManifestPngCrcValidated": true,
+  "photos": [
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "height": 900,
+      "filename": "required_pin_change__desktop.png",
+      "bytes": 23395,
+      "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e",
+      "imageWidth": 1440,
+      "imageHeight": 900,
+      "passwordInputsEmpty": true,
+      "maskedPasswordInputs": 2,
+      "photoInspected": false,
+      "classifications": "PENDING_VISUAL_REVIEW",
+      "findingIds": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 1024,
+      "height": 768,
+      "filename": "required_pin_change__tablet.png",
+      "bytes": 21410,
+      "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca",
+      "imageWidth": 1024,
+      "imageHeight": 768,
+      "passwordInputsEmpty": true,
+      "maskedPasswordInputs": 2,
+      "photoInspected": false,
+      "classifications": "PENDING_VISUAL_REVIEW",
+      "findingIds": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 844,
+      "height": 390,
+      "filename": "required_pin_change__mobile.png",
+      "bytes": 18520,
+      "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f",
+      "imageWidth": 844,
+      "imageHeight": 419,
+      "passwordInputsEmpty": true,
+      "maskedPasswordInputs": 2,
+      "photoInspected": false,
+      "classifications": "PENDING_VISUAL_REVIEW",
+      "findingIds": []
+    }
+  ],
+  "findings": [],
+  "visualReview": "PENDING"
+}

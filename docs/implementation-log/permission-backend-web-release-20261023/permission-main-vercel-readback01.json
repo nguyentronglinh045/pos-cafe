@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "permission-main-vercel-readback-v1",
+  "observedDate": "2026-10-24",
+  "method": "Authenticated Vercel Dashboard, read-only CUA accessibility state",
+  "projectUrl": "https://vercel.com/24tx810010-hcmutes-projects/pos-cafe",
+  "gitSettingsUrl": "https://vercel.com/24tx810010-hcmutes-projects/pos-cafe/settings/git",
+  "repository": "nguyentronglinh045/pos-cafe",
+  "gitConnected": true,
+  "deployHooks": "This project does not have any deploy hooks.",
+  "buildSettingsUrl": "https://vercel.com/24tx810010-hcmutes-projects/pos-cafe/settings/build-and-deployment",
+  "ignoredBuildStep": { "scope": "Project Settings", "selectedBehavior": "Don’t build anything", "command": "exit 0" },
+  "production": {
+    "sourceSHA": "4a89cc390894f5f35b61990e4f950a5eb6e481b9",
+    "created": "Oct 17",
+    "status": "Ready",
+    "deploymentId": "Gf8TritxT3TLC6gSQCp97JWyfjgP",
+    "domain": "pos-cafe-azure.vercel.app"
+  },
+  "sourceHold": "main and candidate vercel.json git.deploymentEnabled=false; ignoreCommand=project-preview.mjs ignore; production script refuses execution",
+  "limitations": "No claim of a disconnected Git integration; no environment-secret read, DB or application behavior verification.",
+  "settingsChanged": false,
+  "deploymentTriggered": false,
+  "browserTabClosed": true
+}

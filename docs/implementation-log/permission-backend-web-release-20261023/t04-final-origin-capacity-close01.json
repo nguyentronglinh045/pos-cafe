@@ -1,0 +1,65 @@
+{
+  "recordedUtc": "2026-10-24T09:52:46.765Z",
+  "sourceSHA": "4e78a8c11d2d895ccebaccd2b2f7d3b2c69bcb3e",
+  "sourceClean": true,
+  "retained": [
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020",
+      "logicalBytes": 218509891
+    },
+    {
+      "path": "D:/Workspace/pos-cafe/.git",
+      "logicalBytes": 49238124
+    },
+    {
+      "path": "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+      "logicalBytes": 4981266
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+      "logicalBytes": 331023341
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+      "logicalBytes": 1597957
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+      "logicalBytes": 5135304
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022",
+      "logicalBytes": 1405939
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-final-push-20261023",
+      "logicalBytes": 516026
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023",
+      "logicalBytes": 8456960
+    }
+  ],
+  "retainedLogicalBytes": 620864808,
+  "retainedCapBytes": 805306368,
+  "linksNotFollowed": 4,
+  "localDisks": [
+    {
+      "DeviceID": "C:",
+      "FreeSpace": 189808209920
+    },
+    {
+      "DeviceID": "D:",
+      "FreeSpace": 98703486976
+    }
+  ],
+  "allocatedLocalBytes": "NOT_MEASURED",
+  "localDeletionAttempted": false,
+  "localReclaimClaimedBytes": 0,
+  "userRetention": "HOLD_ALL_CONTROL_FIXTURES",
+  "cloudBackendReclaimedBytes": 19327389696,
+  "ciPg16ReclaimedBytes": 50741248,
+  "noLocalInstall": true,
+  "noWslDocker": true,
+  "mergeDeploy": "NOT_AUTHORIZED"
+}

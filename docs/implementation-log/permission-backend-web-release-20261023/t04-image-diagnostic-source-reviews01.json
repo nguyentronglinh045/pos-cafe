@@ -1,0 +1,43 @@
+{
+  "recordedUtc": "2026-10-24T06:47:58.193Z",
+  "sourceSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-image-diagnostic-packet01.json",
+    "bytes": 331650,
+    "sha256": "2db1ecf3fd562a26cf1830933b95b08868d2c5effa97ef0c231ef087427b02c7"
+  },
+  "mapping": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-image-diagnostic-mapping01.json",
+    "bytes": 4109,
+    "sha256": "477c68fab06da96fd50d12edd87ad0109cced4eb54f5e93acb46ce14e07b967a"
+  },
+  "sourceFingerprint": "1aed310c58c59cb5f6f72e32f88bd4ad83ff39aa0083d0217c83acb233279f85",
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "Frozen15pathsource/1121blobs61pins/author13hashes/fixedstagefull6/lifecycle/wholecrossrejection/collector/final110+8+2+7groups20mutations/packetmapping",
+      "findings": []
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Independent1121blobs61pins39refs/provenance/privacy/bounds103509and107891/70ASTpredicates unchanged/firstfailurecleanup/finalcollector/packetmapping",
+      "findings": []
+    }
+  ],
+  "blockingFindings": 0,
+  "approvalScope": "One fallback publication/CI; one fixed diagnostic segment only after actual CI18/Linux29+5filecontrols/LIGHT/threefreshPNG and two reviews",
+  "notBusinessPass": true,
+  "spentWhole": {
+    "publication": 6,
+    "ci": 6,
+    "T04": 6
+  },
+  "fallbackMax": {
+    "publication": 1,
+    "ci": 1,
+    "segment": 1
+  },
+  "mergeDeploy": "HELD"
+}

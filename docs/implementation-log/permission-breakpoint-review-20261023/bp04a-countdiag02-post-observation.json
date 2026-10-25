@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "permission-bp4a-countdiag-post-observation-v1",
+  "observedAtUtc": "2026-10-23T07:02:53.8289129Z",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "sourceStatus": [],
+  "oldLedgers": {
+    "budget-phase03-close.json": "0eb116c8b4016d54d0b0d90474545bd8012625bdcb0d924e1aca22e3754ce05b",
+    "budget-phase03-negative-controls.json": "ae2a8c9f1380400fba90c2b17c656a8ffe630b71fdd841679a986606f9abeb04",
+    "budget-phase03.json": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+    "budget-phase03.json.anchor.json": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f",
+    "budget-phase03.json.head.json": "adfec165ec85f3d4fd9f69db229249ba743845a5561799f295ae8590a5f6e527",
+    "budget-phase03.json.journal.jsonl": "5390f85e8fb7c01d6a037724ba1f8c2b00a8666ed5603094a3bbeb876ffbb694"
+  },
+  "activeDiagnosticRunners": [],
+  "volumes": [
+    {
+      "DriveLetter": "D",
+      "SizeRemaining": 98504581120
+    },
+    {
+      "DriveLetter": "C",
+      "SizeRemaining": 193667928064
+    }
+  ],
+  "diagnosticLocalBytesBeforeThisReceipt": 49290,
+  "realGETCount": 1,
+  "actualAnalysisBatchCount": 1,
+  "furtherParsingPerformed": false,
+  "bodySHA256": "f8e5fab1d222a3475d6c481ae85446d165b28f24f2ce05b170e7edc880b34ddc",
+  "bodyBytes": 5484,
+  "dependentPaths": [
+    {
+      "path": "code\\node_modules",
+      "exists": false
+    },
+    {
+      "path": "code\\dist",
+      "exists": false
+    },
+    {
+      "path": "npm-cache-bp4a-next01",
+      "exists": false
+    },
+    {
+      "path": "bp4a-next01-coverage",
+      "exists": false
+    }
+  ],
+  "scope": "Read/hash only; no further network/parse/test/install/DB; logical bytes, no OS quota claim"
+}

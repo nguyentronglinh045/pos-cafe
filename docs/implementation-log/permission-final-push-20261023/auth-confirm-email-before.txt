@@ -1,0 +1,36 @@
+Browser tab: 6, Title: "Sign In / Providers | Authentication | pos-cafe-permission-staging | 24tx810010-hcmute's Org | Supabase", URL: "https://supabase.com/dashboard/project/ineckiashpwloncxnbqx/auth/providers".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
++		255 container
++			256 image
++			257 text We are investigating a technical issue
++			258 text ·
++			259 container
++				260 text Follow the 
++				261 link Description: status page, Value: status.supabase.com/
++				262 text  for updates
++			263 button Dismiss banner
++					264 container
++						265 text field (settable)
++					266 pop up button (collapsed) Provider Type, Secondary Actions: Expand
++						267 text Provider Type
++					268 pop up button (collapsed) Status, Secondary Actions: Expand
++						269 text Status
++					270 button New Provider
++					271 container
++						272 table
++							273 row
++								274 cell
++									275 button NAME
++										276 text NAME
++								277 cell
++									278 button IDENTIFIER
++										279 text IDENTIFIER
++								280 cell
++									281 button TYPE
++										282 text TYPE
++								283 cell
++									284 text ENABLED
++							285 row
++								286 cell
++									287 text No custom providers found
+The focused UI element is 0 AXWebArea URL: supabase.com/dashboard/project/ineckiashpwloncxnbqx/auth/providers, Sign In / Providers | Authentication | pos-cafe-permission-staging | 24tx810010-hcmute's Org | Supabase

@@ -1,0 +1,4697 @@
+{
+  "sourceFilesChecked": 1456,
+  "sourceDrift": 0,
+  "importedFilesChecked": 1439,
+  "importedIndexByteMismatch": 0,
+  "extraStitchHistoryByteMismatch": 0,
+  "jsonParseErrors": 0,
+  "zipCRCFailures": 0,
+  "oldPublishedRawBlobDrift": 0,
+  "pngUniqueVisuallyReviewed": 62,
+  "pngTotalByHash": 92,
+  "textCredentialPatternHits": 0,
+  "privacyScope": "No observed raw credentials; limited static/text/visual review, no whole-system security certification; historical manifests unchanged.",
+  "stagedWhitespaceExit": 2,
+  "stagedWhitespaceDiagnostics": 776,
+  "stagedWhitespaceFiles": 73,
+  "allWhitespaceDiagnosticsInPreservedImports": true,
+  "nonImportWhitespaceExit": 0,
+  "nonImportFiles": [
+    ".gitattributes",
+    "docs/README.md",
+    "docs/implementation-log/README.md",
+    "docs/limitations.md",
+    "docs/report-source-map.md",
+    "docs/roadmap.md",
+    "docs/runbooks/README.md",
+    "docs/testing.md",
+    "docs/workflow/evidence/docs-wip-publication-20261025/catalog.md",
+    "docs/workflow/evidence/docs-wip-publication-20261025/cleanup-proposal.json",
+    "docs/workflow/evidence/docs-wip-publication-20261025/inventory.json",
+    "docs/workflow/evidence/docs-wip-publication-20261025/link-audit.json",
+    "docs/workflow/tasks/README.md",
+    "docs/workflow/tasks/docs-normalization-2026-10-25.md",
+    "docs/workflow/tasks/docs-wip-publication-2026-10-25.md",
+    "docs/workflow/tasks/post-integration-standardization-plan-2026-10-25.md",
+    "docs/workflow/tasks/stitch-ui-remake-workflow-2026-10-19.md",
+    "openspec/README.md"
+  ],
+  "inheritedWhitespace": [
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/postgate-collector-change01.diff",
+      "line": 6,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/postgate-collector-change01.diff",
+      "line": 16,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/postgate-collector-change01.diff",
+      "line": 62,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/supabase-mcp-predeploy01.json",
+      "line": 149,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 50,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 56,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 84,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 419,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 441,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 505,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 514,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 716,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 820,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 861,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 866,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 957,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 993,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 1044,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.patch",
+      "line": 1129,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-breakpoint-review-20261023/bp4a-local75-01-build.stdout.log",
+      "line": 4,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-final-push-20261023/auth-confirm-email-before.txt",
+      "line": 8,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-final-push-20261023/ci-completed01.log",
+      "line": 215,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-final-push-20261023/ci-completed01.log",
+      "line": 558,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-git-milestone-evc-review-2026-10-16.md",
+      "line": 60,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-pin-tc19-closeout-2026-10-11.md",
+      "line": 32,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-preview-tracking-off-evc-review-2026-10-16.md",
+      "line": 42,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-probe-launch-transport-evc-review-2026-10-16.md",
+      "line": 42,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-protected-runtime-probe-execution-evc-review-2026-10-16.md",
+      "line": 45,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-protected-runtime-v2-evc-review-2026-10-16.md",
+      "line": 42,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-protected-runtime-v2-execution-evc-review-2026-10-16.md",
+      "line": 51,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 8924,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 8925,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 8926,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 8942,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 8943,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 8944,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 8958,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 8959,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 8960,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 8974,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 8975,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 8976,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 8991,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 9007,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 9023,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 9038,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 9040,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 9054,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 9055,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 9056,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 9070,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 9071,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 9072,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 10183,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/bootstrap01/bootstrap.sql",
+      "line": 10187,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/candidate-source01.patch",
+      "line": 378,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/candidate-source01.patch",
+      "line": 387,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/candidate-source01.patch",
+      "line": 458,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/candidate-source01.patch",
+      "line": 601,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/ci02-workflow.log",
+      "line": 215,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/ci02-workflow.log",
+      "line": 558,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 923,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 926,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 944,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 949,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 968,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 970,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1094,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1099,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1129,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1134,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1164,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1169,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1199,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1204,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1234,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1239,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1269,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1274,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1304,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1309,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1339,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1344,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1374,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1380,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1410,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1416,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1446,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1452,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1482,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1488,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1518,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1524,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1554,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1560,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1589,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1591,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1635,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1637,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1774,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1776,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1795,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation01.log",
+      "line": 1797,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 960,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 963,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 1626,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 1631,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 1657,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 1659,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2160,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2165,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2203,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2208,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2246,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2251,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2289,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2294,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2332,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2337,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2375,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2380,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2418,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2423,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2461,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2466,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2510,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2516,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2555,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2561,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2600,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2606,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2645,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2651,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2690,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2696,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2735,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2741,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2779,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 2781,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 3096,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 3098,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 4454,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/local-node-tools-remediation02.log",
+      "line": 4456,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/node-tap-diagnostics-targeted-01.log",
+      "line": 216,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-release-20261022/ci-portability/node-tap-diagnostics-targeted-01.log",
+      "line": 221,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/build01.log",
+      "line": 15,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/appError.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/appError.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/appError.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/appError.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/appError.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/appError.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/appError.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/appError.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/appError.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/appError.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/appError.ts.html",
+      "line": 184,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/appError.ts.html",
+      "line": 184,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/guards.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/guards.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/guards.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/guards.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/guards.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/guards.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/guards.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/guards.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/guards.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/guards.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/guards.ts.html",
+      "line": 337,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/guards.ts.html",
+      "line": 337,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/index.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/index.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/index.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/index.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/index.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/index.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/index.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/index.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/index.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/index.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/index.html",
+      "line": 341,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/index.html",
+      "line": 341,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/money.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/money.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/money.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/money.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/money.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/money.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/money.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/money.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/money.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/money.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/money.ts.html",
+      "line": 139,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/money.ts.html",
+      "line": 139,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/orderDraft.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/orderDraft.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/orderDraft.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/orderDraft.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/orderDraft.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/orderDraft.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/orderDraft.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/orderDraft.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/orderDraft.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/orderDraft.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/orderDraft.ts.html",
+      "line": 346,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/orderDraft.ts.html",
+      "line": 346,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionAuthority.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionAuthority.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionAuthority.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionAuthority.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionAuthority.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionAuthority.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionAuthority.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionAuthority.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionAuthority.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionAuthority.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionAuthority.ts.html",
+      "line": 208,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionAuthority.ts.html",
+      "line": 208,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionCatalog.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionCatalog.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionCatalog.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionCatalog.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionCatalog.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionCatalog.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionCatalog.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionCatalog.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionCatalog.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionCatalog.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionCatalog.ts.html",
+      "line": 229,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionCatalog.ts.html",
+      "line": 229,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionChangesInputs.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionChangesInputs.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionChangesInputs.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionChangesInputs.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionChangesInputs.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionChangesInputs.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionChangesInputs.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionChangesInputs.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionChangesInputs.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionChangesInputs.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionChangesInputs.ts.html",
+      "line": 427,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionChangesInputs.ts.html",
+      "line": 427,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionErrors.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionErrors.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionErrors.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionErrors.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionErrors.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionErrors.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionErrors.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionErrors.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionErrors.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionErrors.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionErrors.ts.html",
+      "line": 169,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionErrors.ts.html",
+      "line": 169,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionIdentityInputs.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionIdentityInputs.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionIdentityInputs.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionIdentityInputs.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionIdentityInputs.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionIdentityInputs.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionIdentityInputs.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionIdentityInputs.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionIdentityInputs.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionIdentityInputs.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionIdentityInputs.ts.html",
+      "line": 202,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionIdentityInputs.ts.html",
+      "line": 202,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionInputs.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionInputs.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionInputs.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionInputs.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionInputs.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionInputs.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionInputs.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionInputs.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionInputs.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionInputs.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionInputs.ts.html",
+      "line": 364,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionInputs.ts.html",
+      "line": 364,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionLifecycle.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionLifecycle.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionLifecycle.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionLifecycle.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionLifecycle.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionLifecycle.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionLifecycle.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionLifecycle.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionLifecycle.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionLifecycle.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionLifecycle.ts.html",
+      "line": 562,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionLifecycle.ts.html",
+      "line": 562,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionOverrides.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionOverrides.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionOverrides.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionOverrides.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionOverrides.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionOverrides.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionOverrides.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionOverrides.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionOverrides.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionOverrides.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionOverrides.ts.html",
+      "line": 217,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionOverrides.ts.html",
+      "line": 217,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionReadInputs.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionReadInputs.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionReadInputs.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionReadInputs.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionReadInputs.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionReadInputs.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionReadInputs.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionReadInputs.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionReadInputs.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionReadInputs.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionReadInputs.ts.html",
+      "line": 310,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/permissionReadInputs.ts.html",
+      "line": 310,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/receiptPrintClick.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/receiptPrintClick.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/receiptPrintClick.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/receiptPrintClick.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/receiptPrintClick.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/receiptPrintClick.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/receiptPrintClick.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/receiptPrintClick.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/receiptPrintClick.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/receiptPrintClick.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/receiptPrintClick.ts.html",
+      "line": 199,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/receiptPrintClick.ts.html",
+      "line": 199,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writeErrors.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writeErrors.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writeErrors.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writeErrors.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writeErrors.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writeErrors.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writeErrors.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writeErrors.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writeErrors.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writeErrors.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writeErrors.ts.html",
+      "line": 178,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writeErrors.ts.html",
+      "line": 178,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writePayload.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writePayload.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writePayload.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writePayload.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writePayload.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writePayload.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writePayload.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writePayload.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writePayload.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writePayload.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writePayload.ts.html",
+      "line": 367,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/core/writePayload.ts.html",
+      "line": 367,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminFlow.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminFlow.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminFlow.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminFlow.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminFlow.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminFlow.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminFlow.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminFlow.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminFlow.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminFlow.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminFlow.ts.html",
+      "line": 634,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminFlow.ts.html",
+      "line": 634,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminInvalidation.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminInvalidation.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminInvalidation.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminInvalidation.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminInvalidation.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminInvalidation.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminInvalidation.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminInvalidation.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminInvalidation.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminInvalidation.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminInvalidation.ts.html",
+      "line": 205,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminInvalidation.ts.html",
+      "line": 205,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminQueryKeys.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminQueryKeys.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminQueryKeys.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminQueryKeys.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminQueryKeys.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminQueryKeys.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminQueryKeys.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminQueryKeys.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminQueryKeys.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminQueryKeys.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminQueryKeys.ts.html",
+      "line": 115,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/adminQueryKeys.ts.html",
+      "line": 115,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/draftUtils.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/draftUtils.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/draftUtils.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/draftUtils.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/draftUtils.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/draftUtils.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/draftUtils.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/draftUtils.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/draftUtils.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/draftUtils.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/draftUtils.ts.html",
+      "line": 166,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/draftUtils.ts.html",
+      "line": 166,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/employeeDrawerFlow.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/employeeDrawerFlow.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/employeeDrawerFlow.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/employeeDrawerFlow.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/employeeDrawerFlow.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/employeeDrawerFlow.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/employeeDrawerFlow.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/employeeDrawerFlow.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/employeeDrawerFlow.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/employeeDrawerFlow.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/employeeDrawerFlow.ts.html",
+      "line": 445,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/employeeDrawerFlow.ts.html",
+      "line": 445,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/floorEditorDraft.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/floorEditorDraft.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/floorEditorDraft.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/floorEditorDraft.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/floorEditorDraft.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/floorEditorDraft.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/floorEditorDraft.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/floorEditorDraft.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/floorEditorDraft.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/floorEditorDraft.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/floorEditorDraft.ts.html",
+      "line": 658,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/floorEditorDraft.ts.html",
+      "line": 658,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/index.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/index.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/index.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/index.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/index.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/index.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/index.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/index.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/index.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/index.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/index.html",
+      "line": 311,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/index.html",
+      "line": 311,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuDraft.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuDraft.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuDraft.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuDraft.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuDraft.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuDraft.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuDraft.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuDraft.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuDraft.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuDraft.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuDraft.ts.html",
+      "line": 229,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuDraft.ts.html",
+      "line": 229,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuEditorDraft.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuEditorDraft.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuEditorDraft.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuEditorDraft.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuEditorDraft.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuEditorDraft.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuEditorDraft.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuEditorDraft.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuEditorDraft.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuEditorDraft.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuEditorDraft.ts.html",
+      "line": 592,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuEditorDraft.ts.html",
+      "line": 592,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageDraft.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageDraft.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageDraft.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageDraft.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageDraft.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageDraft.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageDraft.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageDraft.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageDraft.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageDraft.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageDraft.ts.html",
+      "line": 184,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageDraft.ts.html",
+      "line": 184,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageSaveDraft.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageSaveDraft.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageSaveDraft.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageSaveDraft.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageSaveDraft.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageSaveDraft.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageSaveDraft.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageSaveDraft.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageSaveDraft.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageSaveDraft.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageSaveDraft.ts.html",
+      "line": 220,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuImageSaveDraft.ts.html",
+      "line": 220,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuItemOrderDraft.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuItemOrderDraft.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuItemOrderDraft.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuItemOrderDraft.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuItemOrderDraft.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuItemOrderDraft.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuItemOrderDraft.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuItemOrderDraft.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuItemOrderDraft.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuItemOrderDraft.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuItemOrderDraft.ts.html",
+      "line": 151,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/menuItemOrderDraft.ts.html",
+      "line": 151,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionEmployeeFlow.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionEmployeeFlow.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionEmployeeFlow.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionEmployeeFlow.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionEmployeeFlow.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionEmployeeFlow.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionEmployeeFlow.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionEmployeeFlow.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionEmployeeFlow.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionEmployeeFlow.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionEmployeeFlow.ts.html",
+      "line": 538,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionEmployeeFlow.ts.html",
+      "line": 538,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionMenuImageDraft.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionMenuImageDraft.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionMenuImageDraft.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionMenuImageDraft.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionMenuImageDraft.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionMenuImageDraft.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionMenuImageDraft.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionMenuImageDraft.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionMenuImageDraft.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionMenuImageDraft.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionMenuImageDraft.ts.html",
+      "line": 178,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/permissionMenuImageDraft.ts.html",
+      "line": 178,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/reportHelpers.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/reportHelpers.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/reportHelpers.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/reportHelpers.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/reportHelpers.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/reportHelpers.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/reportHelpers.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/reportHelpers.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/reportHelpers.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/reportHelpers.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/reportHelpers.ts.html",
+      "line": 325,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/admin/reportHelpers.ts.html",
+      "line": 325,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/dirtyFlow.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/dirtyFlow.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/dirtyFlow.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/dirtyFlow.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/dirtyFlow.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/dirtyFlow.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/dirtyFlow.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/dirtyFlow.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/dirtyFlow.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/dirtyFlow.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/dirtyFlow.ts.html",
+      "line": 232,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/dirtyFlow.ts.html",
+      "line": 232,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/index.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/index.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/index.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/index.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/index.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/index.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/index.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/index.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/index.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/index.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/index.html",
+      "line": 146,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/index.html",
+      "line": 146,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/realtimeInvalidation.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/realtimeInvalidation.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/realtimeInvalidation.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/realtimeInvalidation.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/realtimeInvalidation.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/realtimeInvalidation.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/realtimeInvalidation.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/realtimeInvalidation.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/realtimeInvalidation.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/realtimeInvalidation.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/realtimeInvalidation.ts.html",
+      "line": 181,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/realtimeInvalidation.ts.html",
+      "line": 181,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/uiError.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/uiError.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/uiError.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/uiError.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/uiError.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/uiError.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/uiError.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/uiError.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/uiError.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/uiError.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/uiError.ts.html",
+      "line": 637,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/integration/uiError.ts.html",
+      "line": 637,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/historyHelpers.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/historyHelpers.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/historyHelpers.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/historyHelpers.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/historyHelpers.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/historyHelpers.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/historyHelpers.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/historyHelpers.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/historyHelpers.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/historyHelpers.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/historyHelpers.ts.html",
+      "line": 469,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/historyHelpers.ts.html",
+      "line": 469,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/index.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/index.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/index.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/index.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/index.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/index.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/index.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/index.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/index.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/index.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/index.html",
+      "line": 161,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/index.html",
+      "line": 161,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/orderFlow.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/orderFlow.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/orderFlow.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/orderFlow.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/orderFlow.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/orderFlow.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/orderFlow.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/orderFlow.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/orderFlow.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/orderFlow.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/orderFlow.ts.html",
+      "line": 1384,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/orderFlow.ts.html",
+      "line": 1384,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/posInvalidation.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/posInvalidation.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/posInvalidation.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/posInvalidation.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/posInvalidation.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/posInvalidation.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/posInvalidation.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/posInvalidation.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/posInvalidation.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/posInvalidation.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/posInvalidation.ts.html",
+      "line": 178,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/posInvalidation.ts.html",
+      "line": 178,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/writeOperationFlow.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/writeOperationFlow.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/writeOperationFlow.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/writeOperationFlow.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/writeOperationFlow.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/writeOperationFlow.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/writeOperationFlow.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/writeOperationFlow.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/writeOperationFlow.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/writeOperationFlow.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/writeOperationFlow.ts.html",
+      "line": 589,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/pos/writeOperationFlow.ts.html",
+      "line": 589,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/index.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/index.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/index.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/index.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/index.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/index.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/index.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/index.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/index.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/index.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/index.html",
+      "line": 116,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/index.html",
+      "line": 116,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/sessionFlow.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/sessionFlow.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/sessionFlow.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/sessionFlow.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/sessionFlow.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/sessionFlow.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/sessionFlow.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/sessionFlow.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/sessionFlow.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/sessionFlow.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/sessionFlow.ts.html",
+      "line": 337,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/session/sessionFlow.ts.html",
+      "line": 337,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/index.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/index.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/index.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/index.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/index.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/index.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/index.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/index.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/index.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/index.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/index.html",
+      "line": 131,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/index.html",
+      "line": 131,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/permissionSession.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/permissionSession.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/permissionSession.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/permissionSession.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/permissionSession.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/permissionSession.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/permissionSession.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/permissionSession.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/permissionSession.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/permissionSession.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/permissionSession.ts.html",
+      "line": 373,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/permissionSession.ts.html",
+      "line": 373,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/queryKeys.ts.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/queryKeys.ts.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/queryKeys.ts.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/queryKeys.ts.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/queryKeys.ts.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/queryKeys.ts.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/queryKeys.ts.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/queryKeys.ts.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/queryKeys.ts.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/queryKeys.ts.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/queryKeys.ts.html",
+      "line": 145,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/features/shared/queryKeys.ts.html",
+      "line": 145,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/index.html",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/index.html",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/index.html",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/index.html",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/index.html",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/index.html",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/index.html",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/index.html",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/index.html",
+      "line": 51,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/index.html",
+      "line": 52,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/index.html",
+      "line": 191,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/coverage01/index.html",
+      "line": 191,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 8,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 10,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 11,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 12,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 13,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 14,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 15,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 16,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 17,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 18,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 19,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 20,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 21,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 22,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 23,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 24,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 25,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 26,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 27,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 28,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 29,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 30,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 31,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 32,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 33,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 34,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 35,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 36,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 37,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 38,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 39,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 40,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 41,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 42,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 43,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 44,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-functional-20261023/unit01.log",
+      "line": 45,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 8924,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 8925,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 8926,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 8942,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 8943,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 8944,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 8958,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 8959,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 8960,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 8974,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 8975,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 8976,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 8991,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 9007,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 9023,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 9038,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 9040,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 9054,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 9055,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 9056,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 9070,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 9071,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 9072,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 10183,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+      "line": 10187,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/runbooks/permission-hosted-hp1-2026-10-14.md",
+      "line": 90,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "docs/workflow/tasks/permission-mcp-staging-readonly-2026-10-22.md",
+      "line": 76,
+      "diagnostic": "trailing whitespace.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "openspec/changes/redesign-permission-model/specs/access-control/spec.md",
+      "line": 322,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    },
+    {
+      "path": "openspec/changes/redesign-permission-model/specs/write-idempotency/spec.md",
+      "line": 67,
+      "diagnostic": "new blank line at EOF.",
+      "in_preserved_import": true
+    }
+  ]
+}

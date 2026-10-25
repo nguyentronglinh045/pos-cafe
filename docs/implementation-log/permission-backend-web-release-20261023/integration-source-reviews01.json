@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "permission-integration-source-reviews-v1",
+  "recordedUtc": "2026-10-23T17:08:48.776Z",
+  "base": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "head": "49e543d49176692bb2cdabc044cbc69e21054469",
+  "tree": "b4e30d5a0ba574e2a8ab92c6f938430321277609",
+  "mainDeltaFiles": 687,
+  "e422DeltaUniqueFiles": 14,
+  "reviews": [
+    {
+      "reviewer": "/root/audit_technical_review",
+      "verdict": "APPROVE_FOCUSED_SOURCE_SCOPE",
+      "scope": [
+        "Auth/session/PIN restriction+normal lifetime and tenant/revocation",
+        "admin locks/ceiling/self-owner/atomic registry-audit",
+        "financial/read live authority waits/TTL/rollback/durable rejection/ACL closure",
+        "image caller Auth before Storage/public lookup before304/atomic publication",
+        "candidate-only UI composition/generation/revision/purpose/cache/late response",
+        "12obligations/34effects source mapping"
+      ],
+      "limits": "Not line-by-line audit of all687files; actual runtime final join pending",
+      "blockingFindings": 0
+    },
+    {
+      "reviewer": "/root/audit_process_review",
+      "verdict": "APPROVE_SOURCE_PROCESS_SCOPE",
+      "scope": [
+        "687file inventory/685currenttextblobs signature scan",
+        "4credentialpatternmatches all negativefixtures; no identified actualsecrets",
+        "newactiveapp/autoCI forbid oldDB; exactnewDBfunctionalPreview pin",
+        "dev-onlylockdelta/no install lifecycle/rootruntime dependency changes",
+        "manual exactsource backend/protectedPreview/productionheld/Gitautodeploydisabled",
+        "prior publication/Authreview kept scoped; no blanket mergeapproval"
+      ],
+      "limits": "Pattern scan is not all-secrets certification; actualfullgates/PR-M bridge/mainCI/provider+URL verification pending",
+      "blockingFindings": 0
+    }
+  ],
+  "oldFinalReview": "publication/CI/Authfunctional slice only; not blanket merge acceptance",
+  "actualFullBackend": "PENDING",
+  "actualMerge": "NOT_DONE",
+  "finalMergeApproval": "PENDING",
+  "production": "HELD"
+}

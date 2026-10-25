@@ -1,0 +1,327 @@
+{
+  "schemaVersion": "permission-owned-docs-checkpoint-package-v1",
+  "recordedAtUtc": "2026-10-22T16:33:30.592Z",
+  "author": "/root",
+  "repositoryRoot": "D:/Workspace/pos-cafe-docs",
+  "branch": "docs",
+  "baseHEAD": "537e0e093137f6fabc5d3f63458e6fe1a9183469",
+  "previousPackage": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/docs-package-manifest02.json",
+    "sha256": "6bad9890eab3d23d5158f8606dcb4618c590b462f0f85752e17acbe846effe1a",
+    "payloadCount": 75,
+    "allPriorHashesPreserved": true
+  },
+  "payload": [
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/checkpoint-operator-indexeddb-ci-complete03.json",
+      "bytes": 8213,
+      "sha256": "bca28c1c5b04c31258bff11819d5d2b9efb4fd1c6d45d441ab0e59f3db6cf937"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/checkpoint-operator-indexeddb-ci-pending01.json",
+      "bytes": 3842,
+      "sha256": "8df3b05161cf71da85c5ce8d832af5ca605ce35477ed57219c3bbb58a5d161f6"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/checkpoint-operator-indexeddb-local01.json",
+      "bytes": 3910,
+      "sha256": "72faa087aab01f3c18083ac26771f35adc685fe137372fa7655621b2e9fb2e8f"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/checkpoint-t04-success02.json",
+      "bytes": 2332,
+      "sha256": "27016773cc9bd688c4617ecdc90b9f408a0d45efa8b3dd43b048cd6dd8e640b1"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-budget-negative-controls.json",
+      "bytes": 1276,
+      "sha256": "ae2a8c9f1380400fba90c2b17c656a8ffe630b71fdd841679a986606f9abeb04"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-budget-phase03-close.json",
+      "bytes": 1787,
+      "sha256": "0eb116c8b4016d54d0b0d90474545bd8012625bdcb0d924e1aca22e3754ce05b"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-budget-phase03.json.anchor.json",
+      "bytes": 194,
+      "sha256": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-budget-phase03.json.head.json",
+      "bytes": 305,
+      "sha256": "adfec165ec85f3d4fd9f69db229249ba743845a5561799f295ae8590a5f6e527"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-budget-phase03.json.journal.jsonl",
+      "bytes": 1159,
+      "sha256": "5390f85e8fb7c01d6a037724ba1f8c2b00a8666ed5603094a3bbeb876ffbb694"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-budget-policy.json",
+      "bytes": 1957,
+      "sha256": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-api.json",
+      "bytes": 14748,
+      "sha256": "e306af9723319c7c71c5120074dfd7fa2dc6d40b3341aed5ec01138cfe2a2387"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-artifacts-api.json",
+      "bytes": 764,
+      "sha256": "3fbdc805d0d17ef8a5b6299969ebe797411efa2897590f7db94cae051a807704"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-collection.json",
+      "bytes": 1064,
+      "sha256": "e9be1f85c6a26260388548ba2dd9b2ab7f965114d529c06a53748e098fb67b11"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-jobs-api.json",
+      "bytes": 2706,
+      "sha256": "012c4895177505f0b01ddc8f05d020391665bcfe031eab15704b152c59b8051b"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-native-cleanup-raw.json",
+      "bytes": 129,
+      "sha256": "411a8d15dfa1a3220f9d743cd5bd44ed9fb45b7fcddf455749755a8925af45b4"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-native-cleanup.json",
+      "bytes": 783,
+      "sha256": "d9aa607211dd8077fe7bbb7a0a4a4a794e9fb235bf741f0bde8006f7c1e47f5e"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-pg16-extraction.json",
+      "bytes": 2045,
+      "sha256": "f5b9745c7da5f4b1b12d5f198c83bb9da892d98754762f8564069811566bdcd1"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-pg16.json",
+      "bytes": 1261,
+      "sha256": "d9dab71e199eb32f467f78abab2ffcca352da2e594ee2b2185f23bb928198b3e"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-pin-ui-download.json",
+      "bytes": 2120,
+      "sha256": "2f7d891e029e39f97e9171da8fe1bde96c1addf397beeb7ec081ed4be19903eb"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-settlement.json",
+      "bytes": 4610,
+      "sha256": "aa488118abbca263600c48e635b638862cc42ded6233eeb2becede018e74943a"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-summary.json",
+      "bytes": 9732,
+      "sha256": "e8daa086c7776fdb5d6928222069593546318cf1ebd171858e00da5c844139b8"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-terminal.json",
+      "bytes": 921,
+      "sha256": "232396de36585040eaf7147754e9d0aaed8234f7c17229c7ecdc12b1cb4f87bc"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-pg16-extractor-review01.json",
+      "bytes": 1623,
+      "sha256": "533c92ba4467cc43587f6b297e0224997091666d5dd15b0834ddd93b22f1d840"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-pg16-offline-checks.json",
+      "bytes": 1055,
+      "sha256": "266c2e718290248fc896ae6f86c6a99b1e95ae6dc0f19ddc645fbb628e79450d"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-pin-ui-manifest.json",
+      "bytes": 2591,
+      "sha256": "ad3516790c30ce03875d165ec9910742a9a878f5ac9186b5980a95fa73b337a0"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-pin-ui-required_pin_change__desktop.png",
+      "bytes": 23395,
+      "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-pin-ui-required_pin_change__mobile.png",
+      "bytes": 18520,
+      "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-pin-ui-required_pin_change__tablet.png",
+      "bytes": 21410,
+      "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-publication-admission.json",
+      "bytes": 2554,
+      "sha256": "4eab56463d9fca3ecf40ab17dd4de0cfdd0d8bb33131560922a2cc4f21738f55"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-publication-custody.json",
+      "bytes": 4073,
+      "sha256": "8f74b5a4d8069a00e64e70fdebf5a759fbadd493a8f22da03324465e5ff801fb"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-publication-dryrun.json",
+      "bytes": 2013,
+      "sha256": "707e1617f9f6883eb20afdc78b295a07096b45a0fb4db78baf30dc16197dc164"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-publication-manifest.json",
+      "bytes": 2064,
+      "sha256": "4866f18dbeab5b1da170dd8f4cae9aa0ca626579c0b2ba755cb0a4474aafcd9a"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-publication-packet.json",
+      "bytes": 373018,
+      "sha256": "abecf340bd01bd1414e8d3bd0277d1e3c6b6bf1ac8fe413291e93e83f56f5571"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-publication-reviews.json",
+      "bytes": 1558,
+      "sha256": "27cc9754f48c88b3cd5aa2dd043d1536a767fc7855cd083a2237c30904218083"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-runtime-visual-review01.json",
+      "bytes": 3850,
+      "sha256": "9eb812c2f61e748c6d1f0e1fa0acd921fcfc1a753850ff18c60bbeaa699e5d73"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-settlement-helper-review01.json",
+      "bytes": 2471,
+      "sha256": "a0aa9cfe93cc14d88363339cb35b02f00998249b75f4e3855671345d0635ab4c"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-settlement-offline-checks.json",
+      "bytes": 1359,
+      "sha256": "a786a9a9c74ca95076bd28914092267fbda92899a07eb94595a2a5d42bdf6189"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/ci03-terminal-custody.json",
+      "bytes": 8668,
+      "sha256": "41204379b58616b5632f11c360a5f9700156a6459e9e3286aca80cb0b00f1c46"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/cleanup-node-fixture05-executed.ps1",
+      "bytes": 4437,
+      "sha256": "f2a121693a56f1132b6aa266b03bbb7829b70e6fe496a5adb8813752d5f9a79b"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/cleanup-node-fixture05.json",
+      "bytes": 853,
+      "sha256": "05dcf05b163c695a003e585969ae20db17ae80317f012b86ce9154e399847cc1"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/cleanup-node-fixture05.ps1",
+      "bytes": 4611,
+      "sha256": "b045fe19baae4873be8732d36671943fc40255894420716137045e13755e332f"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/compact-evidence-custody03.json",
+      "bytes": 3046,
+      "sha256": "5887fd65e0e1a44f0e5abbaa47589edd88ad29ca0265ea4166eeadeb18242fb0"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/continuation03.md",
+      "bytes": 5989,
+      "sha256": "30a25baafaee836f3ac0efa3abedf03d2af17ceae36be753fab23aaa1187f6ad"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/extra-heavy-actual-data-review02.json",
+      "bytes": 2041,
+      "sha256": "cf28d42f92324b2d709c7ceeb83c47e8b374d86ee1513a4428b596e9c8d8b38f"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/light-fullgate-join03.json",
+      "bytes": 3757,
+      "sha256": "5bba651c5b7131e96169bd62419e8824c3f8e194f66b176f12d584d7b37ceafc"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/node05-local-evidence.json",
+      "bytes": 8461,
+      "sha256": "8a2025b8dddace0d053f1efd735cbfcf8567e9948689e79111b59d5751a91ce9"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/observed-4d1-pin01.json",
+      "bytes": 3952,
+      "sha256": "bd194cd3f012d20629fe46b73c0dae67d63fe54d2243e8f5bfc1e0c5cc277175"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/observed-4d1-t0202.json",
+      "bytes": 4532,
+      "sha256": "f8929fd23d2aeb2be7bf272e589d566eb44f4b98e4d4c10dd80faaf384d530b4"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/observed-4d1-t0402.json",
+      "bytes": 18383,
+      "sha256": "eeeb8489bc9ff9902e3ef9dc5d3f56ce258b942ba9773983033f80e0d32f8162"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/operator-indexeddb-local-review01.json",
+      "bytes": 2047,
+      "sha256": "d3e5ee77bc50aeb41198e29a747c428c2ff8fa115e85b81c447ed7add2c88e81"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/operator-indexeddb-plan-review01.json",
+      "bytes": 1045,
+      "sha256": "c8e401774385a1bdaa044c058efc25fd6b787d0c6df3f1c38300c5d2218ee7d7"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/operator-indexeddb-policy03-review.json",
+      "bytes": 1685,
+      "sha256": "f3bcb9318c2cc86be2225b3153192b2aad183d3f09408dcda1322cd460edc01c"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/operator-indexeddb-probe-evidence01.json",
+      "bytes": 2330,
+      "sha256": "cd3bb500d95923f0d134bbb3acb8e905083ad967ef8dc54223fa86b80b8dde67"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/operator-indexeddb-probe01.executed.mjs.txt",
+      "bytes": 7563,
+      "sha256": "a8f05a2cc7b271c81314e8f24582118f85656a26149298ece279f05cd0eff1cb"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/owner-extra-heavy-grant02.json",
+      "bytes": 5003,
+      "sha256": "ac0645babb7e917e3317324b9f7e81ee4a0a18ac6e571ca56c2904b7f8f538b6"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/owner-operator-idb-ci-grant03.json",
+      "bytes": 5706,
+      "sha256": "9d9278f0d11660e2a7865e5766185f3810797ff8e10c765eec56ff3d019dc3f6"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/owner-pr-main-preserved-grant02.json",
+      "bytes": 5333,
+      "sha256": "f989f1d9b950809e5cc19208fdb0f3637ea9293d02c687aabeaf37bbb3628648"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/preparation-incidents03.json",
+      "bytes": 1203,
+      "sha256": "47b51bae1df62ea09d9f7b71b748365d43518bdfce96642d4a6fa7e8763a8687"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/review-attribution-errata03.json",
+      "bytes": 1294,
+      "sha256": "64472e88c1f11694e1bd4edb182f0407cae5686992c9c57bb831ae2e3d9b2fce"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/service-settlement-helper-review01.json",
+      "bytes": 1619,
+      "sha256": "4ff40fc1d6ccb4f6aab18b255266a3c94679d88403de806697bdd0a5832afb8f"
+    },
+    {
+      "path": "docs/workflow/tasks/permission-operator-indexeddb-oracle-remediation-2026-10-22.md",
+      "bytes": 6307,
+      "sha256": "5801a583c63a34d74a943f9355bb70a178b589d5ed14cf8e228c5b4da6b09c4a"
+    }
+  ],
+  "totalBytes": 637277,
+  "scope": "Local docs evidence/plan/handoff only for actual4f operator IndexedDB candidate publication+CI03. All new files in this owned task directory and one reviewed taskplan; no source/runtime/deployment authority expanded.",
+  "exclusions": "README.md with195preexisting added lines and all unrelated dirty/untracked docs excluded. No app/main change, branch merge/delete, docs push, originalDB/staging/Vercel action. Review metadata recording final verdicts may be added after approval without changing payload.",
+  "currentResult": "CI03 SUCCESS18phases, boundedLIGHT6/343, local938+Chrome6, cleanup/settle/phaseCLOSED/pending[]. Main full35/760/12+D19/R0/R1 PENDING; all8backend NOT_RUN.",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "deadlineUtc": "2026-10-22T17:00:00Z"
+}

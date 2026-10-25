@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "permission-bp4a-next-local-admission-v1",
+  "status": "APPROVE_READINESS_ONLY",
+  "recordedAtUtc": "2026-10-23T05:04:50.550Z",
+  "pins": {
+    "operations/run-bp4-local03.mjs": "853c733b4e2a0c2cc65da90d43f69e0115e3be378d74dcef11b5f676a4a39f67",
+    "operations/bp4-archive-collector.mjs": "f7ba45a569248201ac176469168b1e0eb4bcbcccc303e4f19aa76e3f7ea1b9b9",
+    "operations/bp4-native-probe-next01.mjs": "e31d7289c27b8e42c6277ed276550a9c39f96e42de668b8af6bbb7a369a14e01",
+    "operations/check-bp4-next01-collector.mjs": "24d43824b4ba68b58c649df59134480313d8305632afdb62e38b4f832523ed04",
+    "evidence/bp4a-next01-owner-grant.json": "8ffe42b6ed2cca26e746256773cc008880fb423ae95c75577657f3d2c223f7eb",
+    "evidence/bp4a-next01-collector-controls01.json": "ed29f4badd4412f541d9fc8de19a09f550e68d729ba4446856319fa2ea606214"
+  },
+  "reviewers": [
+    {
+      "agent": "/root/bp1_authority_final_review",
+      "verdict": "APPROVE",
+      "scope": "authority storage phase caps history Job release"
+    },
+    {
+      "agent": "/root/bp1_evidence_final_review",
+      "verdict": "APPROVE",
+      "scope": "collector/native probe/unit oracles/actual fake controls evidence"
+    }
+  ],
+  "fakeControls": "13_PASS_OFFLINE",
+  "actual": "R1_NOT_STARTED_NO_APPLICATION_PASS_YET",
+  "observationSHA256": "1bc12c36120371bf7ae3e3454c45827af39095ff69cb10a0b764281e7d49e958",
+  "deadlineUtc": "2026-10-23T05:54:18Z"
+}

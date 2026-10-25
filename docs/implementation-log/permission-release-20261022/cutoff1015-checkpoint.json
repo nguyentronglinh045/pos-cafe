@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "permission-release-cutoff-checkpoint-v1",
+  "atUtc": "2026-10-22T03:15:38.104Z",
+  "deadlineUtc": "2026-10-22T04:00:00.000Z",
+  "cutoffUtc": "2026-10-22T03:15:00.000Z",
+  "releaseMomentDecision": "REFUSED",
+  "releaseMomentReason": "DEADLINE",
+  "scope": "LOCAL_READ_ONLY_NO_NETWORK_NO_NEW_CLAIM",
+  "candidateSourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "ci02": "PASS_18_PHASES",
+  "stagingSQLDecision": "NO_EXECUTION_OWNER_ITEM1_UNANSWERED_AT_CUTOFF",
+  "stagingSQLRun": false,
+  "bootstrapAttemptClaimCreated": false,
+  "heavyRun": false,
+  "mainPushed": false,
+  "originalDBModified": false,
+  "existingPublicationClaimsRemainSpent": true,
+  "requiredNextAction": "FRESH_OWNER_WINDOW_AND_REVIEWED_POLICY_BEFORE_FUTURE_MUTATION_OR_HEAVY"
+}

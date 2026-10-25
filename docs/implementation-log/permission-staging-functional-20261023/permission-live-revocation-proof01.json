@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-23T11:51:39.515Z",
+  "cashierId": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+  "sameTokenUsed": true,
+  "grantRequestId": "66dafad8-d0aa-4c0a-beda-8e5df786188a",
+  "revokeRequestId": "da65e7ef-5477-40e8-ac4a-9b0f8635a87a",
+  "allowedAfterGrant": true,
+  "deniedAfterRevoke": "FORBIDDEN",
+  "revisionAfterGrant": 1,
+  "revisionAfterRevoke": 2,
+  "finalOverrides": null,
+  "finalRole": "cashier"
+}

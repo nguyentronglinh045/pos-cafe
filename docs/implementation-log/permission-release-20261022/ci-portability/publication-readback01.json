@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "permission-remediation-publication-readback-v1",
+  "atUtc": "2026-10-22T02:48:42.953Z",
+  "sourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "remoteSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "claimSHA256": "d5fb2f7205a1651f68223d70b4a1f21e68c580149c4e98ff63fe02903d1be99c",
+  "observedMatchingRuns": 1,
+  "runs": [
+    {
+      "id": 39713372721,
+      "head_sha": "b2e3122866f5b6108f026f381f4f12614c98027c",
+      "head_branch": "run/permissions-20261020",
+      "event": "push",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "html_url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39713372721",
+      "created_at": "2026-10-22T02:48:15Z",
+      "updated_at": "2026-10-22T02:48:18Z"
+    }
+  ],
+  "publicationSpent": 1,
+  "ciSpent": 1,
+  "noMoreRetries": true,
+  "mainPushed": false,
+  "sqlRun": false
+}

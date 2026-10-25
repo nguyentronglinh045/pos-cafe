@@ -1,0 +1,15 @@
+{
+  "candidateSHA256": "88cdaef84606ad227ac15cb41a8940da4672cd3da803bbc4e787f71f32a1eea2",
+  "reviewers": [
+    {
+      "name": "/root/investigation_plan_review",
+      "scope": "source",
+      "verdict": "APPROVE"
+    },
+    {
+      "name": "/root/continuation_operations_review",
+      "scope": "operations",
+      "verdict": "APPROVE"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "permission-pin-ui-visual-classification-v1",
+  "sourceSHA": "ad265321144521c0669500fea9be0f96ebacb769",
+  "runId": "39780944907",
+  "attempt": 1,
+  "scope": "CREDENTIAL_FREE_MOCK_PIN_UI_ONLY",
+  "manifest": {"path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/pin-ui01/manifest.json", "sha256": "5bce9067d5cfe610ffb7b9c166f2db8f5d6ed0137372d7eb89f28e5bdd191c4a"},
+  "summary": {"path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci01-summary.json", "sha256": "05f9fa108eed5c5e0eca7ef0fd29d28d56ba132ad32d1e376ffca88e7211966c"},
+  "schemaAndByteValidation": "Actual validatePinUiManifest on all four downloaded files: PASS; binding, source pins, baseline and PNG hashes/size/dimensions verified.",
+  "inspections": [
+    {"reviewer": "/root", "method": "Actual view_image of all three files in this conversation", "verdict": "APPROVE_VISIBLE_LAYOUT_WITH_MASK_LIMITATION"},
+    {"reviewer": "/root/budget_time_guard_fix", "method": "Independent actual view_image(original), manifest/raw Git comparison", "verdict": "APPROVE_VISIBLE_LAYOUT_WITH_MASK_LIMITATION"}
+  ],
+  "photos": [
+    {"viewport": "desktop", "filename": "required_pin_change__desktop.png", "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e", "photoInspected": true, "visibleFindings": [], "classification": "Centered card; title, help, synthetic account and three actions readable and separated. No visible overflow, overlap or clipping outside masks."},
+    {"viewport": "tablet", "filename": "required_pin_change__tablet.png", "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca", "photoInspected": true, "visibleFindings": [], "classification": "Centered card and all three actions visible; no visible overflow, overlap or clipping outside masks."},
+    {"viewport": "mobile", "filename": "required_pin_change__mobile.png", "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f", "photoInspected": true, "visibleFindings": [], "classification": "844x419 full-page capture for 844x390 viewport. All three action regions end before y390; the additional 29px are lower card/page padding and border. Document vertical extension is present; no claim of zero vertical scroll."}
+  ],
+  "detectorFindings": [],
+  "limitations": [
+    "Each image intentionally masks two PIN inputs in black (ui-audit/run.mjs:410-411). Labels, field interiors, text, caret, borders and contrast beneath masks cannot be assessed visually.",
+    "Producer validates exactly two empty password inputs before capture. This is source/producer proof, not visual inspection beneath the masks.",
+    "This proves the reviewed mock state only, not hosted Auth behavior, all app screens or full permission gate."
+  ],
+  "producerManifestPreserved": true,
+  "baselineUpdated": false
+}

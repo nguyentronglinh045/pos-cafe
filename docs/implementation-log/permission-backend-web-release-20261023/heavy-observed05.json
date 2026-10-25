@@ -1,0 +1,26 @@
+{
+  "recordedUtc": "2026-10-24T04:36:27.882Z",
+  "sourceSHA": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+  "runId": "40063022066",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "workflow": ".github/workflows/backend.yml",
+  "repositoryId": 1263057386,
+  "branch": "review/permission-staging-20261023",
+  "status": "in_progress",
+  "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/40063022066",
+  "profile": "SUPABASE_T04",
+  "consumed": {
+    "publication": 5,
+    "automaticLightCi": 5,
+    "T04": 5
+  },
+  "authorizedMax": {
+    "publication": 5,
+    "automaticLightCi": 5,
+    "T04": 5
+  },
+  "remainingAdditionalExecution": 0,
+  "noAutomaticRetry": true,
+  "mergeDeploy": "NOT_AUTHORIZED"
+}

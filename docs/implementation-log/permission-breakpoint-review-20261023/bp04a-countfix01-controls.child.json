@@ -1,0 +1,11 @@
+{
+  "exe": "D:/tools/nodejs/node.exe",
+  "args": [
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/check-bp4-countfix01.mjs",
+    "--run",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-countfix01-owner-grant.json"
+  ],
+  "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+  "timeoutMs": 60000,
+  "proofPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-countfix01-controls.release.json"
+}

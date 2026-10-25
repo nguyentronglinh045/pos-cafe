@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "permission-fullgate-obligation-map-status-v1",
+  "atUtc": "2026-10-22T03:14:30.891Z",
+  "mapSHA256": "2851f3ece8e27aeb98a6119d622b0eb25008a16c0543634ee1ad0d879a4f7c74",
+  "mapStatus": "APPROVED_SOURCE_MAPPING_SNAPSHOT_ONLY",
+  "historicalCoordinatorSnapshot": true,
+  "originalCurrentLightNotTerminalSuperseded": true,
+  "newerTerminalEvidence": "ci-portability/ci02-result.json",
+  "currentLight": {
+    "sourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+    "runId": "39713372721",
+    "attempt": 1,
+    "status": "PASS_18_PHASES"
+  },
+  "newerVisualInspection": "ci-portability/pin-ui02-inspection.json",
+  "doNotInterpretHistoricalWaitForTerminalAsCurrent": true,
+  "mappingStatusesAreNotCurrentRuntimeVerdicts": true,
+  "full12Obligations": "NOT_ALL_PROVEN",
+  "remainingBackendStages": 29,
+  "remainingBackendRequiredIdentities": 417,
+  "fullGate": "PENDING"
+}

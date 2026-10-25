@@ -1,0 +1,17 @@
+{
+  "sourceSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "startedUtc": "2026-10-24T06:48:09.470Z",
+  "endedUtc": "2026-10-24T06:48:11.969Z",
+  "command": [
+    "git",
+    "push",
+    "origin",
+    "HEAD:refs/heads/review/permission-staging-20261023"
+  ],
+  "exitCode": 0,
+  "signal": null,
+  "errorCode": null,
+  "stdout": "",
+  "stderr": "To https://github.com/nguyentronglinh045/pos-cafe.git\n   34db1b1..c416671  HEAD -> review/permission-staging-20261023\n",
+  "noRetry": true
+}

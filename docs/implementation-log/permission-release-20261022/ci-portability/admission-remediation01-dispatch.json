@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "permission-remediation-admission-receipt-v1",
+  "atUtc": "2026-10-22T02:47:41.234Z",
+  "completedAtUtc": "2026-10-22T02:47:55.149Z",
+  "mode": "DISPATCH_ONCE",
+  "exitCode": 0,
+  "signal": null,
+  "errorCode": null,
+  "decision": {
+    "status": "ADMITTED",
+    "phaseId": "permission-release-20261022",
+    "sourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+    "predecessorStatus": "CLOSED",
+    "predecessorCounts": {
+      "publication": 2,
+      "ci": 2,
+      "heavy": 1,
+      "reviewRounds": 6
+    },
+    "continuation": "OWNER_GRANTED_REMEDIATION_01",
+    "priorPhaseActions": {
+      "publication": 1,
+      "ci": 1
+    },
+    "newActions": {
+      "publication": 1,
+      "ci": 1
+    },
+    "windowsGrowthBytes": 506499072,
+    "reservedCIBytes": 5368709120,
+    "dispatch": true,
+    "publicationAttempted": true,
+    "automaticCI": "EXPECTED_NOT_YET_VERIFIED"
+  },
+  "stdout": "{\"status\":\"ADMITTED\",\"phaseId\":\"permission-release-20261022\",\"sourceSHA\":\"b2e3122866f5b6108f026f381f4f12614c98027c\",\"predecessorStatus\":\"CLOSED\",\"predecessorCounts\":{\"publication\":2,\"ci\":2,\"heavy\":1,\"reviewRounds\":6},\"continuation\":\"OWNER_GRANTED_REMEDIATION_01\",\"priorPhaseActions\":{\"publication\":1,\"ci\":1},\"newActions\":{\"publication\":1,\"ci\":1},\"windowsGrowthBytes\":506499072,\"reservedCIBytes\":5368709120,\"dispatch\":true,\"publicationAttempted\":true,\"automaticCI\":\"EXPECTED_NOT_YET_VERIFIED\"}\n",
+  "stderr": "",
+  "mustNotRetry": true
+}

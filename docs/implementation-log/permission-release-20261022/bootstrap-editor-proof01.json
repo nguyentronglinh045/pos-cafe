@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "permission-staging-editor-proof-v1",
+  "observedAtUtc": "2026-10-22T01:59:35.606Z",
+  "targetProjectRef": "ineckiashpwloncxnbqx",
+  "editorUrl": "https://supabase.com/dashboard/project/ineckiashpwloncxnbqx/sql/3765a94e-33a4-44c2-9580-289823e94a38",
+  "sourceSHA": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+  "sourceBytes": 541589,
+  "sourceSHA256": "0094140c55dfe0ab1f7d8e4b32862e3a50318dc743a15a7e2cf9234a69b2073e",
+  "uiRawBytes": 551819,
+  "uiRawSHA256": "4da5ee95828c8d11384e55d48eb5113a95267efe41fb3273c5feec0c74ef9816",
+  "transform": "CRLF_TO_LF",
+  "uiLFBytes": 541589,
+  "uiLFSHA256": "0094140c55dfe0ab1f7d8e4b32862e3a50318dc743a15a7e2cf9234a69b2073e",
+  "normalizedExact": true,
+  "runClicked": false
+}

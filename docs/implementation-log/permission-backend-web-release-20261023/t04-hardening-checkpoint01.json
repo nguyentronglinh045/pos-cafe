@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "t04-hardening-local-checkpoint-v1",
+  "recordedUtc": "2026-10-24T05:26:27.410Z",
+  "sourceFingerprint": "fa38fc2ffbfcb7aab99d5b61b69b36d25c936bcdc7b7d98e9f15f7e1570066ab",
+  "sourceState": "BASELINE_PLUS_UNCOMMITTED_RECOVERABLE_SNAPSHOT",
+  "newCloudRuns": 0,
+  "cloudRemaining": 0,
+  "disks": [
+    {
+      "Name": "C",
+      "Used": 239002976256,
+      "Free": 189451464704
+    },
+    {
+      "Name": "D",
+      "Used": 493600632832,
+      "Free": 98723168256
+    }
+  ],
+  "retained": [
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020",
+      "logicalBytes": 218509891
+    },
+    {
+      "path": "D:/Workspace/pos-cafe/.git",
+      "logicalBytes": 48907148
+    },
+    {
+      "path": "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+      "logicalBytes": 4981266
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+      "logicalBytes": 328978951
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+      "logicalBytes": 1597957
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+      "logicalBytes": 5135304
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022",
+      "logicalBytes": 1405939
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-final-push-20261023",
+      "logicalBytes": 516026
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023",
+      "logicalBytes": 6397515
+    }
+  ],
+  "retainedLogicalBytes": 616429997,
+  "retainedLogicalCapBytes": 805306368,
+  "linksNotFollowed": [
+    "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-0096b055-d65e-4184-b94a-d37a2d493804",
+    "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-e384a654-8af5-47d2-9a7e-e68c5432519a",
+    "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\dangling-docs\\docs-link",
+    "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\present-docs\\docs-alias"
+  ],
+  "allocatedBytes": "NOT_MEASURED",
+  "matchingProcesses": {
+    "ProcessId": 40980,
+    "Name": "pwsh.exe"
+  },
+  "temporaryControls": {
+    "directories": 5,
+    "files": 89,
+    "logicalBytes": 393476,
+    "deletionPerformed": false
+  },
+  "oldCleanup": "36_APPROVED_DIRECTORIES_PREVIOUSLY_BLOCKED_NO_RETRY",
+  "acceptanceChanged": false,
+  "mergeDeploy": false
+}

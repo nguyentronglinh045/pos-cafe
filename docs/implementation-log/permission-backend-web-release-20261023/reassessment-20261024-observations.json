@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "permission-three-items-reassessment-observations-v1",
+  "dateLocal": "2026-10-24",
+  "timezone": "Asia/Bangkok",
+  "scope": "READ_ONLY_SOURCE_LOG_METADATA_AND_PURE_FUNCTION_CHECKS; analysis documents only",
+  "candidateRoot": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+  "candidateSHA": "49e543d49176692bb2cdabc044cbc69e21054469",
+  "candidateTree": "b4e30d5a0ba574e2a8ab92c6f938430321277609",
+  "candidateStatus": "CLEAN",
+  "baseSHA": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "docsHEAD": "0fe967d554cecfa7e0cb58d6efa01d64941439ff",
+  "docsStatus": "PREEXISTING_DIRTY; new analysis artifacts only; no staging/reset/stash/commit",
+  "canonicalRecomputedFromGitBlobs": {
+    "files": 1110,
+    "bytes": 41776886,
+    "fingerprint": "b9bcb5163d7279fe96c8a398bebf84c359fc2ad185ad2fba2418f43d2bbd9a4e",
+    "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+    "recipe": "git ls-tree -rz H; sort paths ASCII; git cat-file --batch exact bytes; SHA256(concat(path,NUL,SHA256(blob),NUL))"
+  },
+  "verifiedFileSHA256": {
+    "cloud-t0404.json": "e3adb72ea226d50631b7fbc4bb8f5fe27543692d6a530d158c9280a547a96751",
+    "cloud-t0404.log": "81059082524126212a4e3995ac41deed85543677e7e4b4650baf924a050bf469",
+    "cloud-t0404-metadata.json": "13db04d9dcbfb3e8838b03e7c2560820d4d3767ba3400b37326728c794444e54",
+    "night-ci05-collection.json": "207ea3cac3334c4af942863de51e80c86b2ba6ee584459f28153c204ed1c3d00",
+    "final-failed-phase-checkpoint01.json": "c782f566bab00ce6faebf84500474d91efc54c8ba13f6624e2f5645170a11b12",
+    "execution-packet02.json": "d01f88ed88f870f56f763f80f721b4985a3bb9778245ef73ff2680017fc5b5ee",
+    "supplemental-source-mapping03.json": "8ca1d763a8dfacce31dfc5771330aa6eb8400c301a5c4f92ac53a7f9561d223a"
+  },
+  "remoteMetadata": {
+    "observer": "/root/main_integration",
+    "transport": "GitHub plugin read-only",
+    "mainMatchesBase": true,
+    "reviewBranchMatchesCandidate": true,
+    "pullRequestsForReviewBranch": 0,
+    "ci": { "runId": "39988537874", "attempt": 1, "event": "push", "status": "completed", "conclusion": "success", "sourceMatchesCandidate": true },
+    "t04": { "runId": "39991210829", "attempt": 1, "event": "workflow_dispatch", "status": "completed", "conclusion": "failure", "sourceMatchesCandidate": true, "actionsArtifacts": [] },
+    "limitation": "Snapshot only; fresh verification needed before future mutation. No raw private artifacts downloaded."
+  },
+  "pureFunctionChecks": {
+    "runtime": "D:/tools/nodejs/node.exe v24.16.0",
+    "catalogObserver": "/root/backend_acceptance",
+    "catalogFunctions": ["runtimeStageCatalog", "serviceProfile"],
+    "union": { "stages": 35, "required": 760 },
+    "light": { "stages": 6, "required": 343 },
+    "t04": { "stages": 19, "required": 291, "passedStages": 9, "passedRequired": 275, "failedStages": 1, "failedStageRequired": 2, "notRunStages": 9, "notRunRequired": 14 },
+    "sevenProfiles": { "stages": 10, "required": 126, "state": "HELD_NOT_RUN" },
+    "catalogInventoryOnly": { "passStages": 15, "passRequired": 618, "failedStages": 1, "failedStageRequired": 2, "notRunStages": 19, "notRunRequired": 140, "notJoinedAcceptance": true },
+    "diagnosticProjectionObservers": ["/root", "/root/e2e_diagnosis"],
+    "diagnosticFunction": "runtimeRunnerFailureFacts",
+    "syntheticCases": ["clear-demo and persist FAIL; other four PASS", "clear-demo and four-roles FAIL; other four PASS"],
+    "syntheticRecipe": "Use six source test names and catalog project/file, attempts1; clear-demo failureLine391, error ordinals0, other failure line200; call runtimeRunnerFailureFacts with candidate-e2e expected.required unchanged",
+    "exportsIdentical": true,
+    "exportedFacts": { "missingRequired": 0, "firstFailedRequired": 1, "failedTests": 2, "nonPassedTests": 2, "firstNonPassedRequired": 1, "diagnosticRequired": 1, "outcomeOrdinal": 1, "failureOriginOrdinal": 1, "testErrorCodeOrdinal": 0, "testErrorNameOrdinal": 0, "testErrorMatcherOrdinal": 0, "firstFailedLine": 391, "runnerErrors": 0, "hookErrors": 0 },
+    "meaning": "Projection loses failure identity; no inference which second test failed in real runtime",
+    "runtimeReproduction": false
+  },
+  "reviewScopeFacts": {
+    "baseToCandidatePaths": 687,
+    "e422ToCandidateUniquePaths": 14,
+    "appSqlEdgeChangedInFourteenPaths": false,
+    "finalMergeApproval": "PENDING",
+    "collector": "PREPARED_NOT_USED_OPS_ONLY; outside Git49e; collection only; exact packet base/lock/fingerprint join still required"
+  },
+  "initialWindowsDiskFreeBytes": { "C": 193602908160, "D": 98884288512 },
+  "effects": { "applicationEdits": 0, "databaseConnections": 0, "databaseWrites": 0, "dependencyInstalls": 0, "backendRuns": 0, "browserRuns": 0, "pullRequestsCreated": 0, "merges": 0, "deployments": 0, "cleanupDeletes": 0, "shutdownScheduled": false },
+  "authorization": "Investigation and proposal only; no extension, new goal, retry or release authorization inferred"
+}

@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "recordedUtc": "2026-10-21T15:30:57.414Z",
+  "cwd": "D:/Workspace/pos-cafe-permission-run-20261020/code/",
+  "nodeVersion": "v24.16.0",
+  "codeCommit": "dd8efd4908c14f851fb56623761ca0e5abd26af8",
+  "guardCommand": "node --test scripts/permission-staging.test.mjs",
+  "guardLogWrittenUtc": "2026-10-21T15:22:20.853Z",
+  "guardResult": {
+    "log": "local-guard-tests05.log",
+    "passed": 37,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0,
+    "durationMs": 26419.879
+  },
+  "preflightCommand": "node scripts/permission-staging-cli.mjs preflight <absolute-staging-manifest02.json> <absolute-private-config.json> 75461dda2633adbb981a414964d1bde0a72c62d702e9d92afc82c59bdd01f9a4 <absolute-remote-preflight02.json>",
+  "privateConfigValuesRecorded": false,
+  "remoteResults": [
+    {
+      "receipt": "remote-preflight01.json",
+      "status": "FAIL",
+      "elapsedMs": 2101,
+      "exitCode": 1,
+      "requestCount": 2
+    },
+    {
+      "receipt": "remote-preflight02.json",
+      "status": "PASS_ROUTING_ONLY",
+      "elapsedMs": 2940,
+      "exitCode": 0,
+      "requestCount": 2
+    }
+  ],
+  "changes": "Four tooling files only; all original coverage inputs unchanged.",
+  "newDependencies": 0,
+  "originalDbCalls": 0,
+  "authoredSqlStatementsExecuted": 0,
+  "fullBusinessSuite": "NOT_RUN"
+}

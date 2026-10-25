@@ -1,0 +1,27 @@
+{
+  "projectRef": "ineckiashpwloncxnbqx",
+  "at": "2026-10-23T13:06:53.447Z",
+  "source": "Dashboard Code tab after deploy/settings save; full-editor clipboard readback; not resolved graph proof",
+  "files": [
+    {
+      "name": "index.ts",
+      "sha256": "674072ae0341cfeaea6421ad5899d6917fe31c0ba4812a385e3282de157ecd46",
+      "matchesPayload": true
+    },
+    {
+      "name": "menuImageHttp.ts",
+      "sha256": "5100252654975ccfefdba774c0a6cd489981375c23cc2ae805a66f2229f0911f",
+      "matchesPayload": true
+    },
+    {
+      "name": "deno.json",
+      "sha256": "eca3984001a907fb17773aa60e4ce77efb2033c255e3f5462963f3b87b894113",
+      "matchesPayload": true
+    },
+    {
+      "name": "deno.lock",
+      "sha256": "6f9fc5dd3b6e81d9468c712bfbf3fc423e6ea28d49e8fe44915abca50740ab41",
+      "matchesPayload": true
+    }
+  ]
+}

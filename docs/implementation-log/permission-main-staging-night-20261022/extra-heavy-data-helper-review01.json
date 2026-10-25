@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "permission-independent-helper-review-v1",
+  "recordedAtUtc": "2026-10-22T14:39:49.382Z",
+  "artifact": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/prepare-extra-heavy-data02.mjs",
+    "sha256": "9446d24bae14a707e51347eb276af1751da59b5e2b316cf9d028cfa9e9f6dc20"
+  },
+  "author": "/root/budget_time_guard_fix",
+  "reviewers": [
+    {
+      "name": "/root",
+      "scope": "operations",
+      "verdict": "APPROVE",
+      "basis": "Full static read: only inspectBatch ledger API; fixed actual CI and T04 proof references tied to journal, parent CLOSED/pending[] and 42min; dynamic unused+1 and no candidate pub/CI; preserved history/scope/storage/postgrant chronology. New receipts+policy wx/fsync and before/after parent hashes; no init/close/reserve/HTTP or automatic partial-error recovery."
+    },
+    {
+      "name": "/root/mcp_staging_scope_review",
+      "scope": "source-and-existing-guard-contract",
+      "verdict": "APPROVE",
+      "basis": "Actual final reviewer message bound9446...: parent reasons exactlyCLOSED, pendingempty, 4d1unblocked/ad265blocked/PGunused, actualCI02andT04successsettles fixedrun/res/pins, allcurrentjournalevents validatUtc; honest one reply/two scopes, existing V4 accepts outputs. Static only, no execution or network."
+    }
+  ],
+  "limit": "Prepares data only after actual T04 PASS/settle and explicit parent close. Three actual output files still need two non-author exact-byte reviews before CLI init. Operational snapshots are not a global OS CAS."
+}

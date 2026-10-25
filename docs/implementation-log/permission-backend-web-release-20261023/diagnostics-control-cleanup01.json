@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "permission-diagnostic-control-cleanup-v1",
+  "recordedUtc": "2026-10-24T02:01:45Z",
+  "authorization": "User explicit answer: Xóa hai thư mục control",
+  "targets": [
+    {"path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/candidate-diagnostic-control-I5Zvys", "files": 12, "logicalBytes": 21814},
+    {"path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/candidate-diagnostic-control-B7roIZ", "files": 20, "logicalBytes": 35218}
+  ],
+  "precheck": "Exact authorized absolute paths, expected three synthetic scenario contexts/specs, no reparse points, zero referencing non-PowerShell processes",
+  "status": "BLOCKED_BY_AUTOMATIC_APPROVAL_POLICY",
+  "toolReason": "blocked by policy; no detailed reason supplied",
+  "deleteCommandExecuted": false,
+  "targetsRetained": true,
+  "allocatedBytes": "NOT_MEASURED",
+  "measuredReclaimedBytes": null,
+  "sourceAndDurableLogsRetained": true,
+  "impactOnCIOrT04": "NONE"
+}

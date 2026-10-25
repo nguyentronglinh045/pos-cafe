@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "permission-supplemental-mapping-reviews-v4",
+  "recordedUtc": "2026-10-24T03:03:58.452Z",
+  "sourceSHA": "f8ee03c195127bb440b0ede3142622ed21c3cc96",
+  "mapping": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping05.json",
+    "sha256": "606ea8f34d1fb1918c806d73668241c138557c704ce85579fc9d8aa8dae4a550"
+  },
+  "validation": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/newmapping-validation05.json",
+    "sha256": "54623e8ec3a45669abe7b8681100bbe974a1ac537981fe0768d68e893768b74e"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "Independently verified127pins/249lines/147scopes120AST+27line/7effects/6rules9ranges/149selectors/35stages760identities/12obligations34contexts; no stale binding or old runtimePASS",
+      "findings": []
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Independently verified127pins/249lines/147scopes120AST+27line/7effects/6rules9ranges/149selectors/35stages760identities/12obligations34contexts; no stale binding or old runtimePASS",
+      "findings": []
+    }
+  ],
+  "runtimeStatus": "PENDING",
+  "acceptanceChanged": false,
+  "olderMapsPreserved": true
+}

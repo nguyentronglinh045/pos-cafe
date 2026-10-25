@@ -1,0 +1,88 @@
+{
+  "recordedUtc": "2026-10-24T07:58:29.7590598Z",
+  "authorization": "User explicitly approved deleting these 8 directories",
+  "status": "AUTOMATIC_APPROVAL_REVIEW_REJECTED_BEFORE_EXECUTION",
+  "action": "Native PowerShell Remove-Item -LiteralPath exact eight validated paths -Recurse -Force",
+  "reason": "blocked by policy",
+  "deletedDirectories": 0,
+  "reclaimedBytesClaimed": 0,
+  "precheckPath": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\evidence\\t04-image-segment-cleanup-precheck01.json",
+  "precheckSHA256": "d8fa5268e21ab445fcfa07718806fab4d305840d99fc538214f30ceb545dc010",
+  "readback": [
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-L3XPke",
+      "exists": true,
+      "files": 0,
+      "logicalBytes": 0,
+      "matchesPrecheck": true
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-efi7ER",
+      "exists": true,
+      "files": 1,
+      "logicalBytes": 34651,
+      "matchesPrecheck": true
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-Mx4eV3",
+      "exists": true,
+      "files": 1,
+      "logicalBytes": 34651,
+      "matchesPrecheck": true
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-9vTES9",
+      "exists": true,
+      "files": 0,
+      "logicalBytes": 0,
+      "matchesPrecheck": true
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-2qyrcx",
+      "exists": true,
+      "files": 1,
+      "logicalBytes": 34651,
+      "matchesPrecheck": true
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-KR9nh9",
+      "exists": true,
+      "files": 1,
+      "logicalBytes": 34651,
+      "matchesPrecheck": true
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\t04-image-segment-reporters-EK9m3F",
+      "exists": true,
+      "files": 63,
+      "logicalBytes": 211793,
+      "matchesPrecheck": true
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\t04-image-segment-reporters-LgPqrn",
+      "exists": true,
+      "files": 63,
+      "logicalBytes": 211793,
+      "matchesPrecheck": true
+    }
+  ],
+  "directoriesRemaining": 8,
+  "filesRemaining": 130,
+  "logicalBytesRemaining": 562190,
+  "allocatedBytes": "NOT_MEASURED",
+  "pathList": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-backend-web-release-20261023\\t04-image-segment-unremoved-paths01.txt",
+  "disksAfter": [
+    {
+      "DriveLetter": "D",
+      "SizeRemaining": 98707824640
+    },
+    {
+      "DriveLetter": "C",
+      "SizeRemaining": 189414772736
+    }
+  ],
+  "sourceHead": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "sourceStatus": [],
+  "retryOrWorkaround": "NOT_ATTEMPTED",
+  "otherArtifactGroups": "UNCHANGED_EXCLUDED"
+}

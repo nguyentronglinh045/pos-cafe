@@ -1,0 +1,43 @@
+{
+  "recordedUtc": "2026-10-24T07:23:47.965Z",
+  "sourceSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "runId": "40073087518",
+  "attempt": 1,
+  "result": "DIAGNOSTIC_FAIL",
+  "evidence": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-image-diagnostic-observed-failure01.json",
+    "sha256": "e55e9d56056cd24cbddf962e7c8f7936496c469fa9f0059bfbad15178830fa88"
+  },
+  "reviewers": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE_EVIDENCE_INTEGRITY",
+      "checked": [
+        "API/source/run/job scope",
+        "log recompute through exact collector",
+        "five validator pins/native renderer",
+        "six Candidate tests once",
+        "798 inner/793 collector facts",
+        "35111B valid uncapped reader",
+        "cleanup and reclaim"
+      ],
+      "limitation": "Predicate65 is compound; no operand attribution; observe/restore/cache59-61 not reached."
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE_EVIDENCE_INTEGRITY",
+      "checked": [
+        "API/source/run/job scope",
+        "collector reconstruction identical",
+        "packet/pins/fingerprint/lock",
+        "bounded finite exports, no raw values",
+        "six Candidate tests once",
+        "cleanup and reclaim"
+      ],
+      "limitation": "Local synthetic repro cannot recover destroyed runtime operand; whole/full35 NOT_RUN and prior whole FAIL unchanged."
+    }
+  ],
+  "wholeT04": "NOT_RUN",
+  "full35BusinessRuntime": "NOT_RUN",
+  "acceptanceChanged": false
+}

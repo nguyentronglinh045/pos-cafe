@@ -1,0 +1,52 @@
+{
+  "recordedUtc": "2026-10-24T10:35:21.244Z",
+  "sourceSHA": "4e78a8c11d2d895ccebaccd2b2f7d3b2c69bcb3e",
+  "mainSHA": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "decision": {
+    "timingAndBrowserWorker": "DEFERRED_BY_OWNER",
+    "mainIntegrationBeforeFullBackendGate": "PENDING_OWNER_SCOPE_DECISION",
+    "existingFullGate": "UNCHANGED",
+    "mergeDeploy": "NOT_PERFORMED"
+  },
+  "refs": {
+    "readiness": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/permission-main-integration-readiness-20261024.md",
+      "bytes": 5261,
+      "sha256": "0217201872071679dcfd85cf8af15db19f15463b325c3cc1b1e7d16083719064"
+    },
+    "task": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-t04-oracle-hardening-2026-10-24.md",
+      "bytes": 9860,
+      "sha256": "5a27f018c89a90be6ce2cf6a50604c3d4cdec48824c2b448b3a9c7434ba0aae9"
+    },
+    "index": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/README.md",
+      "bytes": 52440,
+      "sha256": "cadf98e6d3d0b432c883140698251f05982121d84bb1d9e7c5519ce58fddfa8a"
+    }
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "Readiness/deferral accuracy and authority interpretation; own index row244 only; not full701file review or merge approval",
+      "blockingFindings": 0
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Readiness/deferral accuracy and authority interpretation; own index row244 only; not full701file review or merge approval",
+      "blockingFindings": 0
+    }
+  ],
+  "actionsThisTurn": {
+    "sourceChanges": 0,
+    "tests": 0,
+    "cloudRuns": 0,
+    "push": 0,
+    "prMutation": 0,
+    "merge": 0,
+    "deploy": 0,
+    "cleanupDelete": 0
+  }
+}

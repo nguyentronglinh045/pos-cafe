@@ -1,0 +1,212 @@
+{
+  "schemaVersion": "receipt-boundary-cleanup-precheck-v1",
+  "recordedUtc": "2026-10-24T03:06:04.8255926Z",
+  "inventoryPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/receipt-boundary-local-temps-20261024.json",
+  "inventorySHA256": "39cd677e350f40616c9856397f3d9ba49fe331834b32fb8f2a869667a0757e81",
+  "authorization": "User explicitly requested deletion of exact27dirs; if blocked return paths",
+  "root": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts",
+  "directories": [
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-8Msuj1",
+      "files": 0,
+      "logicalBytes": 0,
+      "creationTimeUtc": "2026-10-24T02:48:30.0764735Z",
+      "lastWriteTimeUtc": "2026-10-24T02:48:30.0764735Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-9PTnGC",
+      "files": 0,
+      "logicalBytes": 0,
+      "creationTimeUtc": "2026-10-24T02:40:21.1469825Z",
+      "lastWriteTimeUtc": "2026-10-24T02:40:21.1469825Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-ClgGQQ",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:49:33.3522319Z",
+      "lastWriteTimeUtc": "2026-10-24T02:49:33.3522319Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-dkQWAY",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:52:23.3500268Z",
+      "lastWriteTimeUtc": "2026-10-24T02:52:23.4656216Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-Dv90RV",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:53:22.0227131Z",
+      "lastWriteTimeUtc": "2026-10-24T02:53:22.1440617Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-gHLufw",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:41:18.8402046Z",
+      "lastWriteTimeUtc": "2026-10-24T02:41:18.9803518Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-gib758",
+      "files": 0,
+      "logicalBytes": 0,
+      "creationTimeUtc": "2026-10-24T02:42:22.8442908Z",
+      "lastWriteTimeUtc": "2026-10-24T02:42:22.8442908Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-hbmL5g",
+      "files": 0,
+      "logicalBytes": 0,
+      "creationTimeUtc": "2026-10-24T02:49:33.2166530Z",
+      "lastWriteTimeUtc": "2026-10-24T02:49:33.2166530Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-HSOaq8",
+      "files": 0,
+      "logicalBytes": 0,
+      "creationTimeUtc": "2026-10-24T02:53:22.0217128Z",
+      "lastWriteTimeUtc": "2026-10-24T02:53:22.0217128Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-Jhrif8",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:42:23.0078483Z",
+      "lastWriteTimeUtc": "2026-10-24T02:42:23.0078483Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-K2Qqoy",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:46:12.5498006Z",
+      "lastWriteTimeUtc": "2026-10-24T02:46:12.6707287Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-kmkLdD",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:42:22.8453307Z",
+      "lastWriteTimeUtc": "2026-10-24T02:42:22.9975295Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-MEKR5S",
+      "files": 1,
+      "logicalBytes": 34040.0,
+      "creationTimeUtc": "2026-10-24T02:40:21.2952791Z",
+      "lastWriteTimeUtc": "2026-10-24T02:40:21.2952791Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-pNoNVw",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:48:30.0774819Z",
+      "lastWriteTimeUtc": "2026-10-24T02:48:30.2006952Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-SrxPdq",
+      "files": 0,
+      "logicalBytes": 0,
+      "creationTimeUtc": "2026-10-24T02:52:23.3480256Z",
+      "lastWriteTimeUtc": "2026-10-24T02:52:23.3480256Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-svVnZD",
+      "files": 1,
+      "logicalBytes": 34040.0,
+      "creationTimeUtc": "2026-10-24T02:40:21.1479821Z",
+      "lastWriteTimeUtc": "2026-10-24T02:40:21.2853171Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-uzIWKh",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:46:12.6797901Z",
+      "lastWriteTimeUtc": "2026-10-24T02:46:12.6797901Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-vb23yf",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:48:30.2122064Z",
+      "lastWriteTimeUtc": "2026-10-24T02:48:30.2122064Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-Vju01H",
+      "files": 0,
+      "logicalBytes": 0,
+      "creationTimeUtc": "2026-10-24T02:41:18.8391701Z",
+      "lastWriteTimeUtc": "2026-10-24T02:41:18.8391701Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-WjVjFX",
+      "files": 0,
+      "logicalBytes": 0,
+      "creationTimeUtc": "2026-10-24T02:46:12.5488006Z",
+      "lastWriteTimeUtc": "2026-10-24T02:46:12.5488006Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-xdsfmC",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:41:18.9901816Z",
+      "lastWriteTimeUtc": "2026-10-24T02:41:18.9901816Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-xJpGg8",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:52:23.4746213Z",
+      "lastWriteTimeUtc": "2026-10-24T02:52:23.4746213Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-xkyqKF",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:49:33.2186520Z",
+      "lastWriteTimeUtc": "2026-10-24T02:49:33.3419040Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-yMFRuJ",
+      "files": 1,
+      "logicalBytes": 34156.0,
+      "creationTimeUtc": "2026-10-24T02:53:22.1530653Z",
+      "lastWriteTimeUtc": "2026-10-24T02:53:22.1530653Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\receipt-reporter-control-72PBho",
+      "files": 26,
+      "logicalBytes": 138342.0,
+      "creationTimeUtc": "2026-10-24T02:42:30.9419812Z",
+      "lastWriteTimeUtc": "2026-10-24T02:42:34.9338722Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\receipt-reporter-control-NxaC2q",
+      "files": 26,
+      "logicalBytes": 138414.0,
+      "creationTimeUtc": "2026-10-24T02:53:47.3161016Z",
+      "lastWriteTimeUtc": "2026-10-24T02:53:50.6453893Z"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\receipt-reporter-control-ZYp6za",
+      "files": 26,
+      "logicalBytes": 138414.0,
+      "creationTimeUtc": "2026-10-24T02:50:44.1072207Z",
+      "lastWriteTimeUtc": "2026-10-24T02:50:47.4851953Z"
+    }
+  ],
+  "filesExclusiveOpenSucceeded": 94,
+  "activeMatchingProcesses": 0,
+  "disksBefore": [
+    {
+      "DeviceID": "C:",
+      "FreeSpace": 190179528704
+    },
+    {
+      "DeviceID": "D:",
+      "FreeSpace": 98858106880
+    }
+  ],
+  "deleted": false
+}

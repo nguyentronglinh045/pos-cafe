@@ -1,0 +1,16 @@
+{
+  "recordedUtc": "2026-10-24T05:45:29.226Z",
+  "sourceSHA": "34db1b13ab707bab114fe1d83642d021ff324c93",
+  "runId": "40067504649",
+  "attempt": 1,
+  "event": "push",
+  "path": ".github/workflows/ci.yml",
+  "branch": "review/permission-staging-20261023",
+  "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/40067504649",
+  "status": "in_progress",
+  "publicationConsumed": 6,
+  "automaticLightCiConsumed": 6,
+  "T04Consumed": 5,
+  "T04Remaining": 1,
+  "mergeDeploy": false
+}

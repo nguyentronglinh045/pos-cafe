@@ -1,0 +1,19 @@
+{
+  "projectRef": "ineckiashpwloncxnbqx",
+  "source": "Dashboard SELECT observer; not user identity",
+  "query": "select jsonb_build_object('checked_at',now(),'storage_total',(select count(*) from storage.objects),'uploads_total',(select count(*) from private.menu_image_uploads),'assets_total',(select count(*) from private.menu_image_assets),'storage_owned',(select coalesce(jsonb_agg(jsonb_build_object('id',id,'bucket',bucket_id,'name',name,'metadata',metadata) order by name),'[]'::jsonb) from storage.objects where name like 'b4e6bfcd-21fb-41a8-8718-6fe26430a2cf/%'),'uploads_owned',(select coalesce(jsonb_agg(jsonb_build_object('handle',upload_handle,'itemId',item_id,'state',state,'bytes',byte_size) order by upload_handle),'[]'::jsonb) from private.menu_image_uploads where store_id='b4e6bfcd-21fb-41a8-8718-6fe26430a2cf'),'assets_owned',(select coalesce(jsonb_agg(jsonb_build_object('assetKey',asset_key,'itemId',item_id,'published',published) order by asset_key),'[]'::jsonb) from private.menu_image_assets where store_id='b4e6bfcd-21fb-41a8-8718-6fe26430a2cf'),'target_item',(select jsonb_build_object('id',id,'name',name,'imageAssetKey',image_asset_key) from public.menu_items where store_id='b4e6bfcd-21fb-41a8-8718-6fe26430a2cf' and id='442499a3-0950-4b6f-a2f4-3ad664897141')) as image_state;",
+  "result": {
+    "checked_at": "2026-10-23T13:08:51.765012+00:00",
+    "target_item": {
+      "id": "442499a3-0950-4b6f-a2f4-3ad664897141",
+      "name": "TEST - Cà phê",
+      "imageAssetKey": null
+    },
+    "assets_owned": [],
+    "assets_total": 0,
+    "storage_owned": [],
+    "storage_total": 0,
+    "uploads_owned": [],
+    "uploads_total": 0
+  }
+}

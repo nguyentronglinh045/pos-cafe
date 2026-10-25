@@ -1,0 +1,522 @@
+[
+  {
+    "index": 1,
+    "at": "2026-10-23T13:04:32.842Z",
+    "kind": "RPC",
+    "name": "start_session",
+    "actor": "owner",
+    "status": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "index": 2,
+    "at": "2026-10-23T13:04:33.103Z",
+    "kind": "RPC",
+    "name": "start_session",
+    "actor": "cashier",
+    "status": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "index": 3,
+    "at": "2026-10-23T13:04:33.694Z",
+    "kind": "RPC",
+    "name": "get_menu_admin",
+    "actor": "owner",
+    "status": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "index": 4,
+    "at": "2026-10-23T13:09:55.780Z",
+    "kind": "EDGE",
+    "label": "browser-preflight",
+    "path": "menu-image-gateway",
+    "method": "OPTIONS",
+    "status": 204,
+    "code": null,
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store"
+    },
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "index": 5,
+    "at": "2026-10-23T13:09:59.359Z",
+    "kind": "EDGE",
+    "label": "anonymous-unknown-public",
+    "path": "menu-image-public/00000000-0000-4000-8000-000000000001",
+    "method": "GET",
+    "status": 404,
+    "code": "NOT_FOUND",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 41,
+    "sha256": "5d710628a54c13f4620c98551d16ec56c097dda9629f48fc632fe3804b59257a"
+  },
+  {
+    "index": 6,
+    "at": "2026-10-23T13:09:59.494Z",
+    "kind": "EDGE",
+    "label": "public-post-denied",
+    "path": "menu-image-public/00000000-0000-4000-8000-000000000001",
+    "method": "POST",
+    "status": 405,
+    "code": "METHOD_NOT_ALLOWED",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json"
+    },
+    "bytes": 50,
+    "sha256": "f03d887f43df03a70d026063227726f26c9579e91c1d81748c778f9b1aaba50a"
+  },
+  {
+    "index": 7,
+    "at": "2026-10-23T13:10:53.903Z",
+    "kind": "EDGE",
+    "label": "cashier-upload-denied",
+    "path": "menu-image-gateway",
+    "method": "POST",
+    "status": 403,
+    "code": "FORBIDDEN",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json"
+    },
+    "bytes": 41,
+    "sha256": "8be8b8770e985226c6217544ea7e7b940577b5aa0cf68e59e92755c966fdad95"
+  },
+  {
+    "index": 8,
+    "at": "2026-10-23T13:10:54.406Z",
+    "kind": "EDGE",
+    "label": "cashier-staging-GET-denied",
+    "path": "menu-image-gateway/staging/0a68421f-8945-4d15-8491-1e6668c841c6",
+    "method": "GET",
+    "status": 403,
+    "code": "FORBIDDEN",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 41,
+    "sha256": "8be8b8770e985226c6217544ea7e7b940577b5aa0cf68e59e92755c966fdad95"
+  },
+  {
+    "index": 9,
+    "at": "2026-10-23T13:10:55.179Z",
+    "kind": "EDGE",
+    "label": "cashier-staging-DELETE-denied",
+    "path": "menu-image-gateway/staging/0a68421f-8945-4d15-8491-1e6668c841c6",
+    "method": "DELETE",
+    "status": 403,
+    "code": "FORBIDDEN",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json"
+    },
+    "bytes": 41,
+    "sha256": "8be8b8770e985226c6217544ea7e7b940577b5aa0cf68e59e92755c966fdad95"
+  },
+  {
+    "index": 4,
+    "at": "2026-10-23T13:10:56.083Z",
+    "kind": "RPC",
+    "name": "apply_menu_changes",
+    "actor": "cashier",
+    "status": 404,
+    "hook": null,
+    "ok": null,
+    "code": null
+  },
+  {
+    "index": 4,
+    "at": "2026-10-23T13:12:22.053Z",
+    "kind": "RPC",
+    "name": "apply_menu_changes",
+    "route": "apply_menu_changes",
+    "actor": "cashier",
+    "status": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "FORBIDDEN"
+  },
+  {
+    "index": 10,
+    "at": "2026-10-23T13:13:36.235Z",
+    "kind": "EDGE",
+    "label": "owner-stage-first-image",
+    "path": "menu-image-gateway",
+    "method": "POST",
+    "status": 201,
+    "code": null,
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json"
+    },
+    "bytes": 74,
+    "sha256": "d002d11acfe9204f5d5b7875e9afc55f0cd6b315afe2ceb90e423010afbf52fd"
+  },
+  {
+    "index": 11,
+    "at": "2026-10-23T13:13:38.754Z",
+    "kind": "EDGE",
+    "label": "known-handle-unpublished-public",
+    "path": "menu-image-public/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+    "method": "GET",
+    "status": 404,
+    "code": "NOT_FOUND",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 41,
+    "sha256": "5d710628a54c13f4620c98551d16ec56c097dda9629f48fc632fe3804b59257a"
+  },
+  {
+    "index": 12,
+    "at": "2026-10-23T13:13:40.603Z",
+    "kind": "EDGE",
+    "label": "owner-staging-read",
+    "path": "menu-image-gateway/staging/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+    "method": "GET",
+    "status": 200,
+    "code": null,
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/octet-stream",
+      "x-content-type-options": "nosniff",
+      "x-image-content-type": "image/png"
+    },
+    "bytes": 68,
+    "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460"
+  },
+  {
+    "index": 5,
+    "at": "2026-10-23T13:13:40.865Z",
+    "kind": "RPC",
+    "name": "get_menu_admin",
+    "route": "permission_get_menu_admin",
+    "actor": "owner",
+    "status": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "index": 6,
+    "at": "2026-10-23T13:13:41.137Z",
+    "kind": "RPC",
+    "name": "apply_menu_changes",
+    "route": "apply_menu_changes",
+    "actor": "owner",
+    "status": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "index": 7,
+    "at": "2026-10-23T13:13:41.432Z",
+    "kind": "RPC",
+    "name": "get_menu_admin",
+    "route": "permission_get_menu_admin",
+    "actor": "owner",
+    "status": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "index": 13,
+    "at": "2026-10-23T13:13:42.970Z",
+    "kind": "EDGE",
+    "label": "anonymous-published-first-image",
+    "path": "menu-image-public/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+    "method": "GET",
+    "status": 200,
+    "code": null,
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "private, max-age=60, must-revalidate",
+      "content-type": "image/png",
+      "etag": "\"9d759f09-5c90-445c-ad7a-706f34f3ba87\"",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 68,
+    "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460"
+  },
+  {
+    "index": 14,
+    "at": "2026-10-23T13:13:43.947Z",
+    "kind": "EDGE",
+    "label": "anonymous-first-image-conditional",
+    "path": "menu-image-public/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+    "method": "GET",
+    "status": 304,
+    "code": null,
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "private, max-age=60, must-revalidate",
+      "etag": "\"9d759f09-5c90-445c-ad7a-706f34f3ba87\"",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "index": 15,
+    "at": "2026-10-23T13:14:45.383Z",
+    "kind": "EDGE",
+    "label": "cashier-owned-handle-GET-denied",
+    "path": "menu-image-gateway/staging/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+    "method": "GET",
+    "status": 403,
+    "code": "FORBIDDEN",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 41,
+    "sha256": "8be8b8770e985226c6217544ea7e7b940577b5aa0cf68e59e92755c966fdad95"
+  },
+  {
+    "index": 16,
+    "at": "2026-10-23T13:14:45.872Z",
+    "kind": "EDGE",
+    "label": "cashier-owned-handle-DELETE-denied",
+    "path": "menu-image-gateway/staging/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+    "method": "DELETE",
+    "status": 403,
+    "code": "FORBIDDEN",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json"
+    },
+    "bytes": 41,
+    "sha256": "8be8b8770e985226c6217544ea7e7b940577b5aa0cf68e59e92755c966fdad95"
+  },
+  {
+    "index": 8,
+    "at": "2026-10-23T13:15:48.793Z",
+    "kind": "RPC",
+    "name": "get_menu_admin",
+    "route": "permission_get_menu_admin",
+    "actor": "owner",
+    "status": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "index": 17,
+    "at": "2026-10-23T13:16:19.289Z",
+    "kind": "EDGE",
+    "label": "anonymous-ui-replacement-image",
+    "path": "menu-image-public/924eb3e9-b3a3-4a79-bb0c-0a051fc25549",
+    "method": "GET",
+    "status": 200,
+    "code": null,
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "private, max-age=60, must-revalidate",
+      "content-type": "image/png",
+      "etag": "\"924eb3e9-b3a3-4a79-bb0c-0a051fc25549\"",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 10109,
+    "sha256": "b2d8dd937d462ac74224246553d9ffbc84e23924dc66ed0f265e6a5f49c42ae2"
+  },
+  {
+    "index": 18,
+    "at": "2026-10-23T13:16:20.177Z",
+    "kind": "EDGE",
+    "label": "old-first-image-after-replacement",
+    "path": "menu-image-public/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+    "method": "GET",
+    "status": 404,
+    "code": "NOT_FOUND",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 41,
+    "sha256": "5d710628a54c13f4620c98551d16ec56c097dda9629f48fc632fe3804b59257a"
+  },
+  {
+    "index": 19,
+    "at": "2026-10-23T13:16:20.993Z",
+    "kind": "EDGE",
+    "label": "old-first-image-conditional-after-replacement",
+    "path": "menu-image-public/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+    "method": "GET",
+    "status": 404,
+    "code": "NOT_FOUND",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 41,
+    "sha256": "5d710628a54c13f4620c98551d16ec56c097dda9629f48fc632fe3804b59257a"
+  },
+  {
+    "index": 9,
+    "at": "2026-10-23T13:17:28.077Z",
+    "kind": "RPC",
+    "name": "get_menu_admin",
+    "route": "permission_get_menu_admin",
+    "actor": "owner",
+    "status": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "index": 20,
+    "at": "2026-10-23T13:17:29.252Z",
+    "kind": "EDGE",
+    "label": "second-image-after-ui-remove",
+    "path": "menu-image-public/924eb3e9-b3a3-4a79-bb0c-0a051fc25549",
+    "method": "GET",
+    "status": 404,
+    "code": "NOT_FOUND",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 41,
+    "sha256": "5d710628a54c13f4620c98551d16ec56c097dda9629f48fc632fe3804b59257a"
+  },
+  {
+    "index": 21,
+    "at": "2026-10-23T13:17:30.611Z",
+    "kind": "EDGE",
+    "label": "second-image-conditional-after-remove",
+    "path": "menu-image-public/924eb3e9-b3a3-4a79-bb0c-0a051fc25549",
+    "method": "GET",
+    "status": 404,
+    "code": "NOT_FOUND",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 41,
+    "sha256": "5d710628a54c13f4620c98551d16ec56c097dda9629f48fc632fe3804b59257a"
+  },
+  {
+    "index": 10,
+    "at": "2026-10-23T13:21:10.249Z",
+    "kind": "RPC",
+    "name": "revoke_session",
+    "route": "permission_revoke_session",
+    "actor": "owner",
+    "status": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "index": 11,
+    "at": "2026-10-23T13:21:11.818Z",
+    "kind": "RPC",
+    "name": "get_authority",
+    "route": "permission_get_authority",
+    "actor": "owner",
+    "status": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "EMPLOYEE_SESSION_REQUIRED"
+  },
+  {
+    "index": 12,
+    "at": "2026-10-23T13:21:13.001Z",
+    "kind": "RPC",
+    "name": "revoke_session",
+    "route": "permission_revoke_session",
+    "actor": "cashier",
+    "status": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "index": 13,
+    "at": "2026-10-23T13:21:13.207Z",
+    "kind": "RPC",
+    "name": "get_authority",
+    "route": "permission_get_authority",
+    "actor": "cashier",
+    "status": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "EMPLOYEE_SESSION_REQUIRED"
+  }
+]

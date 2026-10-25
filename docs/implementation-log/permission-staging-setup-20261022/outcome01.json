@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "permission-staging-setup-outcome-v1",
+  "phase": "permission-staging-setup-20261022-1700",
+  "status": "SCHEMA_PERMISSION_BOOTSTRAP_COMMITTED_NOT_READY",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "sourceHead": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "nonce": "c439a96e8e0a4088865f74185b9a121d",
+  "applicationSourceFingerprint": "b966736214d772b33ebcc37bf6d5ad8e8df79c861d09d877dc6db13ffd6758dd",
+  "sqlSha256": "5c5c40dd5a0c3e98000a041da34446370fa539f47bd423fbe6196ba682c4e7f5",
+  "runtime": {
+    "applyStartedUtc": "2026-10-22T09:26:19Z",
+    "applyResult": "success:true",
+    "matchingCommittedMarkerObserved": true,
+    "authUsers": 0,
+    "storageObjects": 0,
+    "legacyEnum": null,
+    "storesRelation": "stores",
+    "postflight": "PASS_INFERRED_FROM_SUCCESSFUL_COMPLETE_ATOMIC_DO_AND_MATCHING_MARKER"
+  },
+  "newSetupDatabaseCalls": {
+    "readOnlyIntrospection": 1,
+    "applyMigration": 1,
+    "readOnlyReconcile": 1,
+    "originalDb": 0,
+    "additionalAttemptsAllowed": 0
+  },
+  "localChecks": {
+    "successorToolingTests": {
+      "pass": 7,
+      "fail": 0,
+      "skip": 0
+    },
+    "carrierControls": {
+      "wrongSha": "REFUSED",
+      "wrongSize": "REFUSED",
+      "validPayload": {
+        "bytes": 543149,
+        "chars": 540612,
+        "chunks": 33
+      }
+    }
+  },
+  "readonly": {
+    "storedProfileRestoredUtc": "2026-10-22T09:31:09.8181122Z",
+    "sha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+    "aclPreserved": true,
+    "originalProfilesDisabled": true,
+    "activeDeadlineWatchers": 0,
+    "liveMcpReloaded": false,
+    "oauthRevoked": false
+  },
+  "guardDefects": {
+    "first": "Windows powershell.exe did not resolve Get-FileHash; switched to installed bundledpwsh.",
+    "second": "Guard did not survive Codex restart; relaunched exact reviewed source.",
+    "third": "File.Replace null backup path PowerShell binding failed before replacement; explicit NullString.Value actual correction succeeded.",
+    "originalGuardSource": "KNOWN_NOT_REUSABLE; archived only; no absolute deadline/CAS guarantee"
+  },
+  "businessTestsRun": false,
+  "ready": false,
+  "fullAcceptanceChanged": false,
+  "fullGate": {
+    "stages": 35,
+    "identities": 760,
+    "remainingBackendStages": 29,
+    "remainingBackendIdentities": 417,
+    "status": "UNCHANGED_NOT_RUN_IN_THIS_PHASE"
+  },
+  "outOfScope": [
+    "originalDB",
+    "Authsettings",
+    "Edgedeployment",
+    "tenant/Auth/testdata seed",
+    "heavybackend/CI",
+    "mainpush/merge",
+    "Vercel/production"
+  ],
+  "resumeRule": "Do not replay bootstrap. Verify restored readonly connection after reload, then obtain next bounded window/scope for Auth/Edge/synthetic tests and unchanged full gate.",
+  "finalReview": "final-review01.json"
+}

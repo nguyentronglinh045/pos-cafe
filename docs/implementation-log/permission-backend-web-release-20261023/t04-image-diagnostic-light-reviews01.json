@@ -1,0 +1,63 @@
+{
+  "recordedUtc": "2026-10-24T07:09:58.900Z",
+  "sourceSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "runId": "40071662442",
+  "attempt": 1,
+  "scope": "ACTUAL_CI_LIGHT_LINUX_AND_FRESH_PIN_GATE_FOR_ONE_DIAGNOSTIC_ONLY",
+  "refs": {
+    "summary": {
+      "path": "../evidence/night-ci10-summary.json",
+      "bytes": 9734,
+      "sha256": "6acbeafe01fa6ce28a4d23a141799715abb71e8cbb927259bc82b92ee0e3eb10"
+    },
+    "collection": {
+      "path": "../evidence/night-ci10-collection.json",
+      "bytes": 1064,
+      "sha256": "49f5c32a630f8cf2ff65f38939b61c3ae2e474ff0dc1a54f1b20da2d6929b01a"
+    },
+    "log": {
+      "path": "../evidence/night-ci10-workflow.log",
+      "bytes": 88793,
+      "sha256": "46bd359049eb7785aadee8158d2f11aa036f532148f693f0dd8c261a196585ef"
+    },
+    "pinIntegrity": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-integrity07.json",
+      "bytes": 3189,
+      "sha256": "3da31d6fb19de05d6f62a17d9bafaf81b899ac13f61c83e99e633a62886fc26b"
+    },
+    "manual": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-visual-review07.json",
+      "bytes": 1806,
+      "sha256": "9b6f1dde09de0d89198f8d0d2ccd491955464a21c6f6098487d0d804833e3202"
+    },
+    "packet": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-image-diagnostic-packet01.json",
+      "bytes": 331650,
+      "sha256": "2db1ecf3fd562a26cf1830933b95b08868d2c5effa97ef0c231ef087427b02c7"
+    },
+    "mapping": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-image-diagnostic-mapping01.json",
+      "bytes": 4109,
+      "sha256": "477c68fab06da96fd50d12edd87ad0109cced4eb54f5e93acb46ce14e07b967a"
+    }
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "status": "APPROVE",
+      "openedAll3FreshPng": true,
+      "checkedCanonicalBlobs": 1121,
+      "reason": "18 PASS; LIGHT6/343 required and510 actual; Linux29native+5file routes; current PG16 reclaim50741248B; ZIP/manifest/photo bindings verified"
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "status": "APPROVE",
+      "openedAll3FreshPng": true,
+      "checkedCanonicalPins": 61,
+      "reason": "Independent API/log/native producer and artifact/CRC/PNG verification; exact source; scoped bounded exports; no whole promotion"
+    }
+  ],
+  "priorWholeStatus": "FAIL",
+  "full35BusinessRuntime": "NOT_RUN",
+  "held": "PR/merge/deploy/other7profiles"
+}

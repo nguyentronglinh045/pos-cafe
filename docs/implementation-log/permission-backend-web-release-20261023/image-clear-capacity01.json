@@ -1,0 +1,59 @@
+{
+  "recordedUtc": "2026-10-24T04:07:58.004Z",
+  "localDisks": [
+    {
+      "DeviceID": "C:",
+      "FreeSpace": 189616664576
+    },
+    {
+      "DeviceID": "D:",
+      "FreeSpace": 98738913280
+    }
+  ],
+  "retained": [
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020",
+      "logicalBytes": 218509891
+    },
+    {
+      "path": "D:/Workspace/pos-cafe/.git",
+      "logicalBytes": 48840737
+    },
+    {
+      "path": "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+      "logicalBytes": 4981266
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+      "logicalBytes": 327808958
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+      "logicalBytes": 1597957
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+      "logicalBytes": 5135304
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022",
+      "logicalBytes": 1405939
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-final-push-20261023",
+      "logicalBytes": 516026
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023",
+      "logicalBytes": 4127433
+    }
+  ],
+  "retainedLogicalBytes": 612923511,
+  "linksNotFollowed": [
+    "D:/Workspace/pos-cafe-permission-run-20261020/code/artifacts/ui-audit/test-junction-0096b055-d65e-4184-b94a-d37a2d493804",
+    "D:/Workspace/pos-cafe-permission-run-20261020/code/artifacts/ui-audit/test-junction-e384a654-8af5-47d2-9a7e-e68c5432519a",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/temp/night-node06/permission-staging-ci-portability-20261022-0wgANd/dangling-docs/docs-link",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/temp/night-node06/permission-staging-ci-portability-20261022-0wgANd/present-docs/docs-alias"
+  ],
+  "allocatedBytes": "NOT_MEASURED"
+}

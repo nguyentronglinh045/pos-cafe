@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "permission-release-phase-packet-v1",
+  "sourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "admission": {
+    "schemaVersion": "permission-release-phase-admission-v2",
+    "phaseId": "permission-release-20261022",
+    "repository": "nguyentronglinh045/pos-cafe",
+    "branch": "run/permissions-20261020",
+    "sourceRoot": "D:/Workspace/pos-cafe-permission-ci-fix-20261022/code",
+    "sourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+    "expectedRemoteSHA": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+    "deadlineUtc": "2026-10-22T04:00:00.000Z",
+    "publicationCutoffUtc": "2026-10-22T03:15:00.000Z",
+    "predecessor": {
+      "policySHA256": "3c222cb3a5b66a37107522ddce08c2fc8f68e99777f4a921aeb0eba2c936797c",
+      "journalSHA256": "583f336dafa025e3088e0afc1dad23be68b2324c6e5f37facc11ca230d372880",
+      "counts": {
+        "publication": 2,
+        "ci": 2,
+        "heavy": 1,
+        "reviewRounds": 6
+      }
+    },
+    "storage": {
+      "baselineFreeBytes": {
+        "C": 195837095936,
+        "D": 98732089344
+      },
+      "taskMaximumBytes": 21474836480,
+      "reserveBytes": 32212254720,
+      "ciMaximumBytes": 5368709120
+    },
+    "sourceBranch": "fix/permissions-ci-portability-20261022",
+    "continuation": {
+      "kind": "OWNER_GRANTED_REMEDIATION_01",
+      "parentPolicy": {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022/publication-policy01.json",
+        "sha256": "aaf7d7a943927218c1773eb93ba69f308b0e09ec82f9ecff30c87cd4358d6658"
+      },
+      "parentClaim": {
+        "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/permission-release-20261022/publication-autoci.claim.json",
+        "sha256": "74fd7017a497ddc2da4658798f68756edca3ac637e04ecf0b9009f7282e5a598"
+      },
+      "additionalActions": {
+        "publication": 1,
+        "ci": 1
+      },
+      "ownerAuthorization": {
+        "reference": "PENDING",
+        "authorizedAtUtc": "PENDING"
+      }
+    }
+  },
+  "authors": [
+    "/root",
+    "/root/bootstrap_provider_design_20261022",
+    "/root/continuation_source_review",
+    "/root/release_gate_feasibility_20261022"
+  ],
+  "sourcePins": [
+    {
+      "path": "ci/release-policy.json",
+      "sha256": "1ddef24836e23599c299e966299349e64a88bd13f25bef0b35da12835fa4c33a"
+    },
+    {
+      "path": "scripts/permission-release-phase-admission.README.md",
+      "sha256": "28171f1e8784a167959eca44378233e64870a6b81c59bd1519c36b94ee5d76ba"
+    },
+    {
+      "path": "scripts/permission-release-phase-admission.mjs",
+      "sha256": "a3a2213b9ae135e55e9d42ea65e755cdcb4e8662edea8f1ad0c86e49c6b2de01"
+    },
+    {
+      "path": "scripts/permission-release-phase-admission.test.mjs",
+      "sha256": "fad0b387fc42a68e061cfd0d122b0838a819b8b67af341812ef1a471455466aa"
+    },
+    {
+      "path": "scripts/permission-staging-cli.mjs",
+      "sha256": "ae88f825c021b6af523f606985a261a64afcd7a7ff959c1d226bdf32ad382320"
+    },
+    {
+      "path": "scripts/permission-staging.test.mjs",
+      "sha256": "5d7a2f312aae5eda4d988789348f757f45990e3b184d2704b9fe646eb37f7345"
+    },
+    {
+      "path": "scripts/project-ci-results.mjs",
+      "sha256": "1fd37ac4dbd59b50fe9f6b6871855105c18177aa5ecbef74744a06662f3c69f2"
+    },
+    {
+      "path": "scripts/project-ci-results.test.mjs",
+      "sha256": "cc44627aeca3f6d42b66d14bddeff4ba20848fa4e1609cce07aff2f3ef8ee1a7"
+    }
+  ]
+}

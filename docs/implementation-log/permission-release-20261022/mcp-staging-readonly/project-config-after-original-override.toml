@@ -1,0 +1,17 @@
+# Project-scoped Supabase MCP. Sign in with: codex mcp login supabase_pos_cafe
+[mcp_servers.supabase_pos_cafe]
+url = "https://mcp.supabase.com/mcp?project_ref=ineckiashpwloncxnbqx&read_only=true&features=database,docs"
+enabled = true
+enabled_tools = ["execute_sql", "list_tables", "list_extensions", "list_migrations", "search_docs"]
+disabled_tools = ["apply_migration"]
+default_tools_approval_mode = "prompt"
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+# Override the inherited PAT-based entry inside this project to avoid duplicates.
+[mcp_servers.pos_cafe_supabase_ro]
+enabled = false
+
+# Keep the inherited original-project OAuth profile disabled in this project.
+[mcp_servers.supabase]
+enabled = false

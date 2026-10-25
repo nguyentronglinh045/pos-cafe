@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "permission-breakpoint-review-v1",
+  "recordedAtUtc": "2026-10-23T07:06:07.6910068Z",
+  "status": "APPROVE_DIAGNOSTIC_RESULT_AND_PENDING_REMEDIATION_PROPOSAL",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "reviewedFiles": {
+    "docs/implementation-log/permission-breakpoint-review-20261023/bp04a-countdiag02-admission.json": "9e93a6bdbd3b4514abc603b5e291aa92db57e6b0f1c49261fff9dabc6446ffe7",
+    "docs/implementation-log/permission-breakpoint-review-20261023/bp04a-countdiag02-owner-grant.json": "742173b8a5372cbf46e908df6cc0ea23d4eb476ba9601d01eb0a42103238e04b",
+    "docs/implementation-log/permission-breakpoint-review-20261023/bp04a-countdiag02-post-observation.json": "d1742824d1520407b6fe8f2c39b1f08936ca8715482b3955d93b24aa88bb5172",
+    "docs/implementation-log/permission-breakpoint-review-20261023/bp04a-countdiag02-readiness-observation.json": "ae50b1b931b3d5f39983f854feb00dbd77bd1f4a1875c9323d0fdc77a5bffa39",
+    "docs/implementation-log/permission-breakpoint-review-20261023/bp04a-countdiag02.json": "90e6441f084f9f9c5d294ff021634e7c290d7e0bdb24cbabd3a9ffce10cfd86d",
+    "docs/implementation-log/permission-breakpoint-review-20261023/bp04a-countdiag02.started.json": "f3f35c56f61ca01d32724307a708b38fae12629b749760170999595ad0bff425",
+    "docs/implementation-log/permission-breakpoint-review-20261023/bp04a-countdiag02.tgz": "f8e5fab1d222a3475d6c481ae85446d165b28f24f2ce05b170e7edc880b34ddc",
+    "docs/implementation-log/permission-breakpoint-review-20261023/bp04a-countdiag02-manifest.json": "841646ea30141497a36f9a9e508e22edfe9f4e7bce3ac2e4596e356140fffc53",
+    "docs/implementation-log/permission-breakpoint-review-20261023/bp04a-countdiag02-outcome.md": "eeda375b3d9ac28288b53e3aad05406032f1fabe712a4d2ef792d2c46436e70e"
+  },
+  "requiredReviewers": [
+    {
+      "agent": "/root/bp1_authority_final_review",
+      "nonAuthor": true,
+      "scope": "authority/admission/time/history/storage/future scope",
+      "verdict": "APPROVE"
+    },
+    {
+      "agent": "/root/bp1_evidence_final_review",
+      "nonAuthor": true,
+      "scope": "actual body/SRI/counter evidence/source/copy integrity/proposal soundness",
+      "verdict": "APPROVE"
+    }
+  ],
+  "actual": {
+    "diagnosticGET": 1,
+    "analysisBatch": 1,
+    "requestStatus": 200,
+    "bodyBytes": 5484,
+    "bodySHA256": "f8e5fab1d222a3475d6c481ae85446d165b28f24f2ce05b170e7edc880b34ddc",
+    "regularFiles": 7,
+    "directoryEntries": 2,
+    "logicalEntries": 9,
+    "regularPayloadBytes": 19802,
+    "originalCountGuard": "FAIL_EXPECTED9_ACTUAL7_UNCHANGED",
+    "install": "NOT_RUN",
+    "build": "NOT_RUN",
+    "unit": "NOT_RUN",
+    "full46Preflight": "NOT_RUN",
+    "push": 0,
+    "ci": 0,
+    "backend": 0,
+    "database": 0
+  },
+  "combinedDiagnosticLogicalByteObservation": {
+    "atUtc": "2026-10-23T07:04:38Z",
+    "bytes": 99310,
+    "cap": 1048576,
+    "excludesLaterReviewRecordAndGitAllocation": true
+  },
+  "limits": "Scoped to exact retained archive; no universal metadata/publisher claim; no waiver/application admission. Reviewers read/hashed only, no extra actual analysis batch.",
+  "nextProposal": "PENDING_OWNER30min derivedfact/tooling+offline only; no execution authorization from this record",
+  "transcriptionNote": "Both final non-author verdicts explicitly APPROVE exact outcome/manifest and7rawcopies; source/binding reviews also APPROVED before actual GET"
+}

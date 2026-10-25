@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-23T13:25:20.140Z",
+  "questionItemId": "[\"request_user_input_async\",\"call_279be53eb96f4d4ebd16b13779b2f2a3\",0]",
+  "answer": "Xóa hai file TEST này",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "bucket": "menu-item-image-staging",
+  "paths": [
+    "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf/menu-items/442499a3-0950-4b6f-a2f4-3ad664897141/924eb3e9-b3a3-4a79-bb0c-0a051fc25549.png",
+    "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf/menu-items/442499a3-0950-4b6f-a2f4-3ad664897141/9d759f09-5c90-445c-ad7a-706f34f3ba87.png"
+  ],
+  "payloadBytes": 10177,
+  "scope": "Delete only two exact owned PNG Storage files via Dashboard/Storage API; keep registry history and evidence."
+}

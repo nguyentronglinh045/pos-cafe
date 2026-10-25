@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "permission-image-hook-jwt-repair-local-validation-v1",
+  "recordedAtUtc": "2026-10-23T16:30:34.592Z",
+  "status": "PASS",
+  "source": {
+    "root": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+    "baseCommit": "eac4359d28b20b52309c20af7aa272362043c6c0",
+    "uncommittedCandidate": true,
+    "diffSHA256": "d22622069d828e07ca35f55835c12d55a97a5f6260720f5287f6f7af7cb0d495",
+    "files": [
+      {
+        "path": "scripts/permission-runtime-diagnostic-selftest.mjs",
+        "bytes": 9147,
+        "worktreeSHA256": "0d7c6f98ed55a1ba426ed4487d844383f1eb832ff864c604c857243630e98c1a",
+        "gitLfSHA256": "0d7c6f98ed55a1ba426ed4487d844383f1eb832ff864c604c857243630e98c1a"
+      },
+      {
+        "path": "scripts/permission-runtime-diagnostic-transport.test.mjs",
+        "bytes": 8244,
+        "worktreeSHA256": "45e86fb2f2dc68866e04c8f5c3cd277455ce878db917d7b174e52cc107646ad9",
+        "gitLfSHA256": "45e86fb2f2dc68866e04c8f5c3cd277455ce878db917d7b174e52cc107646ad9"
+      },
+      {
+        "path": "scripts/permission-runtime-error-facts.mjs",
+        "bytes": 15363,
+        "worktreeSHA256": "c0039225e22b63c0dda63d73a7b233ce5885a1d480a6c8a87b272b160d285b76",
+        "gitLfSHA256": "c0039225e22b63c0dda63d73a7b233ce5885a1d480a6c8a87b272b160d285b76"
+      },
+      {
+        "path": "scripts/permission-runtime-error-facts.test.mjs",
+        "bytes": 26372,
+        "worktreeSHA256": "1133a585d8c87d95414eb8ccec72f76100e5d86ed65c61080a0ba3e0dec113d0",
+        "gitLfSHA256": "1133a585d8c87d95414eb8ccec72f76100e5d86ed65c61080a0ba3e0dec113d0"
+      },
+      {
+        "path": "scripts/permission-runtime-reporter-selftest.mjs",
+        "bytes": 10712,
+        "worktreeSHA256": "4af7be5f443763bbf6289ae67807850ef4604eb8aa7ec4bc5845eb8b98187dfa",
+        "gitLfSHA256": "4af7be5f443763bbf6289ae67807850ef4604eb8aa7ec4bc5845eb8b98187dfa"
+      },
+      {
+        "path": "scripts/permission-runtime-vitest-reporter.mjs",
+        "bytes": 2457,
+        "worktreeSHA256": "aff12fd7758d63f83b22608e47a906feb363455e5472b8de4b2661cfe6f478f4",
+        "gitLfSHA256": "aff12fd7758d63f83b22608e47a906feb363455e5472b8de4b2661cfe6f478f4"
+      },
+      {
+        "path": "tests/contracts/permissionImagesFixture.ts",
+        "bytes": 32999,
+        "worktreeSHA256": "9247ca41d1eceed18d6d2d2847a01b900b00b07aa376c2444d925d9187e51cff",
+        "gitLfSHA256": "9247ca41d1eceed18d6d2d2847a01b900b00b07aa376c2444d925d9187e51cff"
+      },
+      {
+        "path": "tests/contracts/permissionImagesRuntime.contract.test.ts",
+        "bytes": 30661,
+        "worktreeSHA256": "f929bf1e1afe4dcc5d5ada8514b1884f48202ea7cfff3363947593071d001f58",
+        "gitLfSHA256": "f929bf1e1afe4dcc5d5ada8514b1884f48202ea7cfff3363947593071d001f58"
+      }
+    ],
+    "sourcePreservedDuringReporterRun": true,
+    "fullNewCommitRuntime": "NOT_RUN"
+  },
+  "node": {
+    "version": "v24.16.0",
+    "executable": "D:\\tools\\nodejs\\node.exe",
+    "argv": [
+      "--test",
+      "scripts/permission-runtime-error-facts.test.mjs",
+      "scripts/permission-runtime-diagnostic-transport.test.mjs",
+      "scripts/permission-runtime-service-diagnostic.test.mjs",
+      "scripts/permission-runtime-t04.test.mjs"
+    ],
+    "tests": 63,
+    "pass": 63,
+    "fail": 0,
+    "skip": 0,
+    "newNodeTests": 5,
+    "log": "image-hook-jwt-repair-node02.log",
+    "logSHA256": "3f79871af701437661c605e13fe1cd4aa11af91df3f1e320d01c13bed73cf6ec"
+  },
+  "reporters": {
+    "startedAtUtc": "2026-10-23T16:30:22.312Z",
+    "endedAtUtc": "2026-10-23T16:30:34.592Z",
+    "argv": [
+      "scripts/permission-runtime-reporter-selftest.mjs"
+    ],
+    "exitCode": 0,
+    "errorCode": null,
+    "signal": null,
+    "summary": {
+      "run": 4,
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "positiveControls": 2,
+      "negativeControls": 2,
+      "beforeAllHookDiagnostics": "PASS",
+      "diagnosticControls": {
+        "run": 7,
+        "pass": 7,
+        "states": [
+          "failed",
+          "timedOut",
+          "interrupted",
+          "runner-error",
+          "metadata-absent",
+          "wrapper-failure",
+          "transport-refusal"
+        ],
+        "sourceSHA": "eac4359d28b20b52309c20af7aa272362043c6c0",
+        "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+        "fullPipeline": true,
+        "mutationChecks": 20
+      }
+    },
+    "log": "image-hook-jwt-repair-reporters02.log",
+    "logSHA256": "ce51db77f0a9766edef8c1664ed4f0ecb370b83f286907dcc3d215b4f8878637"
+  },
+  "verification": {
+    "gitDiffCheckExitCode": 0,
+    "runtimeImageAssertionBodyUnchanged": true,
+    "assertionBodySHA256": "c162329bd8e13227437c48f24af55c5b5801d005ab705f0699ec8996961893e1",
+    "actualBackendT04": "NOT_RUN",
+    "hostedRequests": "NONE",
+    "dependenciesInstalled": false,
+    "configurationAclSqlAuthChanged": false
+  },
+  "disks": [
+    {
+      "drive": "C:/",
+      "availableBytes": 195375738880
+    },
+    {
+      "drive": "D:/",
+      "availableBytes": 98885455872
+    }
+  ]
+}

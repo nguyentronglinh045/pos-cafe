@@ -1,0 +1,16 @@
+{
+  "version": "permission-staging-attempt-v2",
+  "workstream": "permission-staging-20261021",
+  "grantId": "REST_PROBE_REMEDIATION_01",
+  "grantSha256": "179959c4b6608cc17807c3150f806cae6afe31036c73018ba5c2c93e92e1803b",
+  "predecessorClaimSha256": "3cd550a64bf676090ea3be7d277287173dbd4063f545a46577a5b3068957f766",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "manifestSha256": "75461dda2633adbb981a414964d1bde0a72c62d702e9d92afc82c59bdd01f9a4",
+  "sourceFingerprintSha256": "59b611459df5ec751528f27a675bbe32740971eaf52d0dd039ac7a74eda7e849",
+  "startedUtc": "2026-10-21T15:25:21.485Z",
+  "allowance": {
+    "additionalAttempts": 1,
+    "requests": 2
+  },
+  "status": "CONSUMED_BEFORE_NETWORK"
+}

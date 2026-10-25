@@ -1,0 +1,1 @@
+{"status":"ADMITTED","phaseId":"permission-release-20261022","sourceSHA":"38a55aab775e1d70dba4b62d6658f41e28f8aef1","predecessorStatus":"CLOSED","predecessorCounts":{"publication":2,"ci":2,"heavy":1,"reviewRounds":6},"newActions":{"publication":1,"ci":1},"windowsGrowthBytes":266256384,"reservedCIBytes":5368709120,"dispatch":false}

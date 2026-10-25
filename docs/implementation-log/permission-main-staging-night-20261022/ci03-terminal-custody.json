@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "permission-compact-evidence-custody-v1",
+  "recordedAtUtc": "2026-10-22T16:27:41.064Z",
+  "author": "/root",
+  "copies": [
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-collection.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-collection.json",
+      "bytes": 1064,
+      "sha256": "e9be1f85c6a26260388548ba2dd9b2ab7f965114d529c06a53748e098fb67b11"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-summary.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-summary.json",
+      "bytes": 9732,
+      "sha256": "e8daa086c7776fdb5d6928222069593546318cf1ebd171858e00da5c844139b8"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-native-cleanup.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-native-cleanup.json",
+      "bytes": 783,
+      "sha256": "d9aa607211dd8077fe7bbb7a0a4a4a794e9fb235bf741f0bde8006f7c1e47f5e"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-native-cleanup-raw.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-native-cleanup-raw.json",
+      "bytes": 129,
+      "sha256": "411a8d15dfa1a3220f9d743cd5bd44ed9fb45b7fcddf455749755a8925af45b4"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-api.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-api.json",
+      "bytes": 14748,
+      "sha256": "e306af9723319c7c71c5120074dfd7fa2dc6d40b3341aed5ec01138cfe2a2387"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-terminal.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-terminal.json",
+      "bytes": 921,
+      "sha256": "232396de36585040eaf7147754e9d0aaed8234f7c17229c7ecdc12b1cb4f87bc"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-settlement.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-settlement.json",
+      "bytes": 4610,
+      "sha256": "aa488118abbca263600c48e635b638862cc42ded6233eeb2becede018e74943a"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-pg16.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-pg16.json",
+      "bytes": 1261,
+      "sha256": "d9dab71e199eb32f467f78abab2ffcca352da2e594ee2b2185f23bb928198b3e"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-pg16-extraction.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-pg16-extraction.json",
+      "bytes": 2045,
+      "sha256": "f5b9745c7da5f4b1b12d5f198c83bb9da892d98754762f8564069811566bdcd1"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-artifacts-api.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-artifacts-api.json",
+      "bytes": 764,
+      "sha256": "3fbdc805d0d17ef8a5b6299969ebe797411efa2897590f7db94cae051a807704"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-jobs-api.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-jobs-api.json",
+      "bytes": 2706,
+      "sha256": "012c4895177505f0b01ddc8f05d020391665bcfe031eab15704b152c59b8051b"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-pin-ui-download.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-night-ci03-pin-ui-download.json",
+      "bytes": 2120,
+      "sha256": "2f7d891e029e39f97e9171da8fe1bde96c1addf397beeb7ec081ed4be19903eb"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03-close.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-budget-phase03-close.json",
+      "bytes": 1787,
+      "sha256": "0eb116c8b4016d54d0b0d90474545bd8012625bdcb0d924e1aca22e3754ce05b"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03.json.anchor.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-budget-phase03.json.anchor.json",
+      "bytes": 194,
+      "sha256": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03.json.journal.jsonl",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-budget-phase03.json.journal.jsonl",
+      "bytes": 1159,
+      "sha256": "5390f85e8fb7c01d6a037724ba1f8c2b00a8666ed5603094a3bbeb876ffbb694"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03.json.head.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-budget-phase03.json.head.json",
+      "bytes": 305,
+      "sha256": "adfec165ec85f3d4fd9f69db229249ba743845a5561799f295ae8590a5f6e527"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/pin-ui03/manifest.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-pin-ui-manifest.json",
+      "bytes": 2591,
+      "sha256": "ad3516790c30ce03875d165ec9910742a9a878f5ac9186b5980a95fa73b337a0"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/pin-ui03/required_pin_change__desktop.png",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-pin-ui-required_pin_change__desktop.png",
+      "bytes": 23395,
+      "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/pin-ui03/required_pin_change__tablet.png",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-pin-ui-required_pin_change__tablet.png",
+      "bytes": 21410,
+      "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/pin-ui03/required_pin_change__mobile.png",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-pin-ui-required_pin_change__mobile.png",
+      "bytes": 18520,
+      "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f"
+    }
+  ],
+  "holder": "Owner of this Windows workspace",
+  "retention": "Keep until owner explicitly authorizes task evidence cleanup.",
+  "rawPrivateArtifacts": "Source-bound workflow log stays at its original retained path. No raw private TC18 captures, keys or canary rows copied to docs. Three PNGs are reviewed credential-free synthetic allowlist artifacts with masked empty inputs.",
+  "retainedRawLog": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-workflow.log",
+    "sha256": "b81568098434fd4cccfeadd5e7c4dd04fde5a87bb69320062fd914e63c232272",
+    "bytes": 88692
+  },
+  "pathInterpretation": "Raw archived bytes match original paths and hashes. Recursive refs still name original retained evidence paths; copies do not authorize execution or reinterpret old-source runtime PASS.",
+  "scope": "Same-source completed CI03 receipts, reclaimed PG16 observation, settled/CLOSED policy ledger and safe synthetic images. Full35/760/12 not proven; all8 backend profiles NOT_RUN."
+}

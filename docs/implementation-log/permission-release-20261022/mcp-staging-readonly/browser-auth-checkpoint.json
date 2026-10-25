@@ -1,0 +1,29 @@
+{
+  "observedAt": "2026-10-22T07:52:39.512096+00:00",
+  "authorization": "User explicitly asked agent to open browser so user can log in",
+  "configReverified": {
+    "project_ref": "ineckiashpwloncxnbqx",
+    "read_only": true,
+    "disabled_tools": [
+      "apply_migration"
+    ]
+  },
+  "initialDefaultScopeFlow": "Cancelled before navigation or consent because default OAuth scopes included write access",
+  "activeCommand": "codex mcp login supabase_pos_cafe --no-browser --scopes database:read,projects:read",
+  "activeExecSessionId": 99013,
+  "oauthScopesRequested": [
+    "database:read",
+    "projects:read"
+  ],
+  "browser": "IAB",
+  "tabId": "2",
+  "visibleState": "Authorize Codex; user already signed in; preselected organization; Database, Projects READ; Authorize Codex button waiting for user",
+  "agentClickedAuthorize": false,
+  "databaseRequestsSent": 0,
+  "credentialOrOAuthUrlSaved": false,
+  "screenshot": {
+    "file": "oauth-readonly-consent.png",
+    "sha256": "8df13b00892beb1911fc964b806c72fbc7692895e87f365486e9ffd83ab1b0e0"
+  },
+  "continuation": "User completes consent in browser. CLI no-browser waits for callback URL on hidden stdin; after consent, inspect current browser URL via Cua and finish CLI callback without asking user to paste URL/code/token into chat. If flow expired, cancel once and generate a fresh same-scope flow. Do not reuse cached DB MCP until fresh staging transport is verified."
+}

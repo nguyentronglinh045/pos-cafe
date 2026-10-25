@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "permission-bp4a-countdiag-raw-copy-v1",
+  "copiedAtUtc": "2026-10-23T06:52:32.2031336Z",
+  "files": [
+    {
+      "file": "bp04a-countdiag01-controls.json",
+      "sha256": "d79040bb0038fd091cafd74f7faa47f830c3a7891e5e43395ea2bfb43c3e4874",
+      "bytes": 1319
+    },
+    {
+      "file": "bp04a-countdiag01-controls.json.started.json",
+      "sha256": "9e1dbaf83fa0cc1ffb78b435c9924d492c35a8c195c793399bcd0584ea27bb8b",
+      "bytes": 44
+    },
+    {
+      "file": "bp04a-countdiag01-controls02.json",
+      "sha256": "6b16c4818a9395370b06269e6de31b4eb668a10a1ecdb7764cb96bc1c0db17a6",
+      "bytes": 1319
+    },
+    {
+      "file": "bp04a-countdiag01-controls02.json.started.json",
+      "sha256": "39be073cf0a784a58e75560b43982d2ea575f602bd9abb50d09712312fd99722",
+      "bytes": 44
+    },
+    {
+      "file": "bp04a-countdiag01-owner-grant.json",
+      "sha256": "8f652460f65b6da51e13c58c7b98d05c6de88951936a0e1afa48d9da92308f95",
+      "bytes": 2283
+    },
+    {
+      "file": "bp04a-countdiag01-readiness-observation.json",
+      "sha256": "bdc33afde014c2b9d97478580fe7b7a51418075286e039555811976372b439ab",
+      "bytes": 1312
+    },
+    {
+      "file": "bp04a-countdiag01-stop.json",
+      "sha256": "cb061cf5271e1a50c172ed45424f959df18f88d2e926676fc30206958f989b70",
+      "bytes": 1870
+    }
+  ],
+  "sourceCopiesByteExact": true,
+  "operationsNotCopiedToDocs": true,
+  "finalOperationsPins": {
+    "script": "c18e42c0813590497f424f1864e57985bfdd5bb5a588fca79e9634e3ed73a082",
+    "controls": "90a3c3b442599ffea41de8efa61c9d97c64ea51766d4a8d51b3327f3a33b7173",
+    "controls02Report": "6b16c4818a9395370b06269e6de31b4eb668a10a1ecdb7764cb96bc1c0db17a6"
+  },
+  "notes": "Controls01 and02 reports+markers preserved; final executable recipe retained in operations; neither realGET nor offlineanalysis of realbody was run"
+}

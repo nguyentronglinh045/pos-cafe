@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "permission-pin-ui-manual-review-v5",
+  "recordedUtc": "2026-10-24T04:33:33.088Z",
+  "sourceSHA": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+  "runId": "40061777912",
+  "attempt": 1,
+  "reviewer": "/root",
+  "status": "APPROVE",
+  "scope": "CREDENTIAL_FREE_MOCK_PIN_UI_ONLY",
+  "openedFreshImages": [
+    {
+      "viewport": "desktop",
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-40061777912-1/required_pin_change__desktop.png",
+      "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e",
+      "photoInspected": true
+    },
+    {
+      "viewport": "tablet",
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-40061777912-1/required_pin_change__tablet.png",
+      "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca",
+      "photoInspected": true
+    },
+    {
+      "viewport": "mobile",
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-40061777912-1/required_pin_change__mobile.png",
+      "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f",
+      "photoInspected": true
+    }
+  ],
+  "findings": [],
+  "observations": [
+    "Title/subtitle/account context and all3actions readable and unobstructed in all3viewports",
+    "Mobile fullpage844x419 with viewport844x390; allactions remain within390 high viewport",
+    "Two intentional black PINinput masks excluded from inspection; no claim about text within masked areas"
+  ],
+  "limits": [
+    "Mock fixture only, no hostedUIproof",
+    "Producer manifest kept unchanged visualReviewNOT_RUN/photoInspectedfalse; this is separate manual review"
+  ]
+}

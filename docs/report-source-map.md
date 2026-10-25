@@ -1,5 +1,7 @@
 # Thesis Report Source Map
 
+Nguồn phân tích/thiết kế bổ sung: [permission15](../openspec/changes/redesign-permission-model/proposal.md), [forced-PIN](../openspec/changes/force-default-pin-change/proposal.md), [catalog evidence](workflow/evidence/docs-wip-publication-20261025/catalog.md). [Danh mục học thuật](references.md) vẫn là đề xuất chưa xác minh bản in/số trang/quy cách; không dùng như tài liệu đã đọc hoặc trích dẫn cuối.
+
 Nhánh `docs` là **nguồn dữ liệu để viết báo cáo**, không phải bản Word hoàn chỉnh. Nguồn implementation đối chiếu ngày **25/10/2026** là `main@711a22e`. Source code, expected của spec và kết quả kiểm là ba loại bằng chứng khác nhau; main không mặc nhiên là bản đã phát hành.
 
 ## Quy Tắc Cứng Cho AI Tổng Hợp Báo Cáo

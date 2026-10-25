@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "permission-old-run-cancel-authorization-v1",
+  "recordedAtUtc": "2026-10-22T02:01:10.217Z",
+  "questionReference": "call_99d94cd4e85d4c3ab6b7dbb319943229:item0",
+  "ownerAnswer": "Hủy run cũ đang chờ, tiếp tục CI candidate",
+  "runId": "39028263852",
+  "repository": "nguyentronglinh045/pos-cafe",
+  "workflowName": "Frontend release approval (held)",
+  "scope": "CANCEL_ONLY_NO_DEPLOY",
+  "cancelRequestSubmitted": true,
+  "terminalStatusVerified": false,
+  "sqlRunAuthorized": false
+}

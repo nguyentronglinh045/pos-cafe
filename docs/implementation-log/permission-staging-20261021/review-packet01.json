@@ -1,0 +1,77 @@
+{
+  "version": "permission-staging-review-packet-v1",
+  "capturedUtc": "2026-10-21T14:29:33.105Z",
+  "codeCommit": "02a118285c4b88c62237bd3db8086207db8eb30f",
+  "code": [
+    {
+      "path": "scripts/permission-staging.mjs",
+      "sha256": "826d6aa156a7094e0475fd22392dcb35146e82cc5695fad4beca09d4c83daa03"
+    },
+    {
+      "path": "scripts/permission-staging-cli.mjs",
+      "sha256": "087c5ee930d6d6a6c9ae31eb95a0e74369a478f7d99e2677837a68a1283f8e4d"
+    },
+    {
+      "path": "scripts/permission-staging.test.mjs",
+      "sha256": "25b2881f5e92b09407ae3f1ad76af7a24bf46ae2b40a6180163bb85d9a0791ec"
+    },
+    {
+      "path": "scripts/permission-staging.README.md",
+      "sha256": "886f1559cad1f24f707a696e594ec519a958a2bf061e0ef3d1933df5cedc5488"
+    }
+  ],
+  "docs": [
+    {
+      "path": "openspec/changes/use-supabase-staging-for-permission-tests/proposal.md",
+      "sha256": "3c4442535bb58e3e6f853d5140942d2ed485ced0f40e7f17b0e4f1a19c7bc8d8"
+    },
+    {
+      "path": "openspec/changes/use-supabase-staging-for-permission-tests/design.md",
+      "sha256": "c9f7eafa6ad139e569cdc5c4cb6641c71e332d51187447b5a9a6d78c4670b2fa"
+    },
+    {
+      "path": "openspec/changes/use-supabase-staging-for-permission-tests/specs/staging-test-isolation/spec.md",
+      "sha256": "1dbd39c45d2ce163ae9dc5f5aea237f2b62b9de37841f2be5610ab015adb1fae"
+    },
+    {
+      "path": "openspec/changes/use-supabase-staging-for-permission-tests/testplan.md",
+      "sha256": "816d45db0e5fc28f30fe748e82cdddb3e553b86196ea963e9adb68760b143c8e"
+    },
+    {
+      "path": "openspec/changes/use-supabase-staging-for-permission-tests/traceability.md",
+      "sha256": "e6d9ed9bae913085c1be80b77e5bcbb8764c2036a3030e5fa2216c7bd0b82438"
+    },
+    {
+      "path": "openspec/changes/use-supabase-staging-for-permission-tests/tasks.md",
+      "sha256": "2101265fb3c274521add794c466eb8139876362efbfcb05dcb6531af27683dc8"
+    },
+    {
+      "path": "docs/workflow/tasks/permission-staging-2026-10-21.md",
+      "sha256": "9664c212a99e8739ae14196b511228696b63417c57db14e25e820ffc2020f131"
+    },
+    {
+      "path": "docs/reviews/2026-10-21-permission-staging.md",
+      "sha256": "db0b8cb44af4faca4530a66646b5b05a98912267b21ee755f4e0c60bd11329c7"
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-20261021/inventory.json",
+      "sha256": "30bd2a158ae24d9f187a0c41d4597ee077cf76c1e6447a5c35bb9f28a4a46b28"
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-20261021/source-fingerprint04.json",
+      "sha256": "4e4740e64136ab287dd6ac0fdd9c2a1d585cd58363fd3d8f6fb2e3e3b759b97e"
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-20261021/local-guard-tests04.log",
+      "sha256": "b5be89f084bb3816392c9aee62570bfc5693617b49a85c874e5acc4021d67422"
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-20261021/checkpoint01.json",
+      "sha256": "22e635e6530807ceed53ce77decb7426a9ee0f2beea7961074290a8197f8a68d"
+    },
+    {
+      "path": "docs/implementation-log/permission-staging-20261021/coverage-stages.md",
+      "sha256": "e0031e0d99f8261e4acc5b58a6057517541d372addd066ee185dbaab298d3dd7"
+    }
+  ]
+}

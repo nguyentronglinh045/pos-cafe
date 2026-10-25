@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "baseReviewPacketSha256": "f730aeac2b7fe07d9e99082aad3e4fe10862bc34e92e57193b262c06b6d3ac8a",
+  "path": "docs/workflow/tasks/README.md",
+  "scope": "ONLY_THIS_INDEX_ROW",
+  "oldRow": "- [Supabase staging riêng cho kiểm thử, 21/10/2026](permission-staging-2026-10-21.md) — kế hoạch và implementation hai scope APPROVE; guard commit local02a1182,27PASS, giữ35stage/760runtime identities. Đang chờ kết nối Supabase; chưa tạo project/chạy hosted hoặc SQL. DB gốc giữ nguyên, V3 cũ CLOSED; hạn23:00.",
+  "newRow": "- [Supabase staging riêng cho kiểm thử, 21/10/2026](permission-staging-2026-10-21.md) — staging ineckiashpwloncxnbqx Healthy; guard dd8efd4 đạt 37PASS, probe bổ sung PASS routing-only trong 2,94s, giữ lượt FAIL trước. Coverage35stage/760identities không đổi; chưa SQL/bootstrap/business. Hai lượt đã tiêu, V3 cũ CLOSED; hạn23:00.",
+  "headBlobSha256": "a715cad86e29a8d3b980981080c108a04250c91c39bc0fbd223b85ab9db4c13d",
+  "intendedStagedBlobSha256": "0c552708c756e23bccfaa1f1e462bcc216ca5cd36549570457a10869c1f4e4de",
+  "unrelatedWorktreeChangesPreserved": true
+}

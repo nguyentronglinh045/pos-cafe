@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "permission-predeploy-supabase-mcp-v1",
+  "recordedAtUtc": "2026-10-23T15:50:47.129Z",
+  "author": "/root/technical_blockers",
+  "sourceSHA": "eac4359d28b20b52309c20af7aa272362043c6c0",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "projectPin": {
+    "configurationPath": "D:/Workspace/pos-cafe/.codex/config.toml",
+    "sha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+    "namespace": "supabase_pos_cafe",
+    "url": "https://mcp.supabase.com/mcp?project_ref=ineckiashpwloncxnbqx&read_only=true&features=database,docs",
+    "readOnly": true,
+    "originalProjectProfilesDisabled": true
+  },
+  "observations": {
+    "buckets": [
+      {
+        "id": "menu-item-image-staging",
+        "public": false,
+        "file_size_limit": 5242880,
+        "allowed_mime_types": [
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ]
+      },
+      {
+        "id": "menu-item-images",
+        "public": true,
+        "file_size_limit": 5242880,
+        "allowed_mime_types": [
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ]
+      }
+    ],
+    "storage_rls": [
+      {
+        "table": "buckets",
+        "rls_forced": false,
+        "rls_enabled": true
+      },
+      {
+        "table": "objects",
+        "rls_forced": false,
+        "rls_enabled": true
+      }
+    ],
+    "current_user": "supabase_read_only_user",
+    "observed_at_utc": "2026-10-23T15:50:47.129Z",
+    "contract_catalog": {
+      "name": "permission_get_contract",
+      "schema": "public",
+      "volatility": "i",
+      "argument_count": 0,
+      "anon_can_execute": true,
+      "security_definer": false,
+      "current_user_can_execute": false,
+      "authenticated_can_execute": true
+    },
+    "transaction_read_only": "on",
+    "storage_policy_metadata": []
+  },
+  "contract": {
+    "actualCall": "BLOCKED_MCP_EXECUTE_GRANT",
+    "attempts": 1,
+    "sqlState": "42501",
+    "safeError": "permission denied for function permission_get_contract",
+    "returnedContractValue": null,
+    "catalogMetadataObserved": true,
+    "explanation": "The read-only MCP database role lacks EXECUTE; anon and authenticated retain EXECUTE. This is a connector-role limitation, not evidence that the application's public RPC is broken. No role change or retry of the RPC was attempted."
+  },
+  "edgeFunctions": {
+    "requestedNames": [
+      "menu-image-gateway",
+      "menu-image-public"
+    ],
+    "status": "NOT_MEASURED_MCP_CAPABILITY_MISSING",
+    "availableTools": [
+      "execute_sql",
+      "list_tables",
+      "list_extensions",
+      "list_migrations",
+      "search_docs"
+    ],
+    "reason": "The project-scoped MCP exposes database/docs features only and has no Edge Function metadata listing tool. No fallback project, raw function source, API key or credential was accessed.",
+    "existenceOrDeploymentVersionClaimed": false
+  },
+  "bucketInterpretation": {
+    "status": "METADATA_CONSISTENT_WITH_CURRENT_SOURCE",
+    "expected": {
+      "menuItemImagesLegacyPublic": true,
+      "menuItemImageStagingPrivate": true
+    },
+    "sources": [
+      {
+        "path": "supabase/candidate/permission-images.sql",
+        "line": 4
+      },
+      {
+        "path": "supabase/candidate/permission-images.sql",
+        "line": 14
+      },
+      {
+        "path": "tests/contracts/permissionImagesRuntime.contract.test.ts",
+        "line": 240
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-menu-images-2026-10-23.md",
+        "line": 20
+      }
+    ],
+    "warning": "RLS and bucket/policy metadata are observations only; no HTTP authorization or image lifecycle was tested in this preflight."
+  },
+  "sourceBoundary": {
+    "functionalSource": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+    "changedPathsToSourceH": [
+      ".github/workflows/frontend-preview.yml",
+      "ci/release-policy.json",
+      "scripts/project-preview.README.md",
+      "scripts/project-preview.mjs",
+      "scripts/project-preview.test.mjs"
+    ],
+    "applicationOrSqlChanged": false,
+    "oldFunctionalRuntimeNotRelabeledAsHAcceptance": true
+  },
+  "successfulMetadataQuery": "select jsonb_build_object(\n 'observed_at_utc',to_char(clock_timestamp() at time zone 'UTC','YYYY-MM-DD\"T\"HH24:MI:SS.MS\"Z\"'),\n 'current_user',current_user,\n 'transaction_read_only',current_setting('transaction_read_only'),\n 'contract_catalog',(select jsonb_build_object('schema',n.nspname,'name',p.proname,'argument_count',p.pronargs,'volatility',p.provolatile,'security_definer',p.prosecdef,'current_user_can_execute',has_function_privilege(current_user,p.oid,'EXECUTE'),'anon_can_execute',has_function_privilege('anon',p.oid,'EXECUTE'),'authenticated_can_execute',has_function_privilege('authenticated',p.oid,'EXECUTE')) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname='permission_get_contract' and p.pronargs=0),\n 'buckets',(select coalesce(jsonb_agg(jsonb_build_object('id',b.id,'public',b.public,'file_size_limit',b.file_size_limit,'allowed_mime_types',b.allowed_mime_types) order by b.id),'[]'::jsonb) from storage.buckets b where b.id in ('menu-item-images','menu-item-image-staging')),\n 'storage_rls',(select coalesce(jsonb_agg(jsonb_build_object('table',c.relname,'rls_enabled',c.relrowsecurity,'rls_forced',c.relforcerowsecurity) order by c.relname),'[]'::jsonb) from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='storage' and c.relname in ('buckets','objects') and c.relkind in ('r','p')),\n 'storage_policy_metadata',(select coalesce(jsonb_agg(jsonb_build_object('table',tablename,'name',policyname,'command',cmd,'roles',roles,'permissive',permissive) order by tablename,policyname),'[]'::jsonb) from pg_policies where schemaname='storage' and tablename in ('buckets','objects'))\n) as observation;",
+  "observationBoundary": {
+    "purpose": "PREDEPLOY_METADATA_READ_ONLY",
+    "mcpRequests": 2,
+    "readOnlySelectRequests": 2,
+    "sqlWrites": 0,
+    "authWrites": 0,
+    "storageWrites": 0,
+    "signups": 0,
+    "testTransactions": 0,
+    "deployments": 0,
+    "roleChanges": 0,
+    "edgeApiCalls": 0,
+    "secretOrCredentialValuesExported": false,
+    "personalRowsExported": false,
+    "originalDatabaseAccessed": false,
+    "fullBackendGatePassClaimed": false,
+    "browserFunctionalPassClaimed": false
+  },
+  "status": "PARTIAL_METADATA_OBSERVED_CONTRACT_CALL_BLOCKED_EDGE_METADATA_UNAVAILABLE"
+}
+

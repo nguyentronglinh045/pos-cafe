@@ -1,0 +1,3204 @@
+{
+  "schemaVersion": "permission-night-fullgate-source-mapping-wip-v1",
+  "author": "/root/mcp_staging_scope_review",
+  "recordedAtUtc": "2026-10-22T12:50:36.286620+00:00",
+  "language": "vi",
+  "status": "WIP_SOURCE_MAPPING_ONLY_NOT_EXECUTED",
+  "source": {
+    "root": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+    "sha": "ad265321144521c0669500fea9be0f96ebacb769",
+    "productAndBusinessTestsUnchangedFrom": "b2e3122866f5b6108f026f381f4f12614c98027c",
+    "canonicalGitPins": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "sha256": "af0b53a559a2970b9d100589802da5a61660369b45268795aaeaacf7dea11a2c"
+      },
+      {
+        "path": "package-lock.json",
+        "sha256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18"
+      },
+      {
+        "path": "scripts/permission-pin-canary-run.mjs",
+        "sha256": "4ffd2d1d5e71705203dc2ad15e6ae9548e7e7abe65899b464e762d83cee25c59"
+      },
+      {
+        "path": "scripts/permission-runtime-catalog.mjs",
+        "sha256": "8ac506e4e9cf19b844cd0f12dfde32278deccca20bfba7cdfc95e43ce3b4e0f7"
+      },
+      {
+        "path": "scripts/permission-runtime-pg16.mjs",
+        "sha256": "c13578f465b7c39421e93e5a90ab29d6b1e1ad42be6f24062637c38316d45f32"
+      },
+      {
+        "path": "scripts/permission-runtime-pin-ui.mjs",
+        "sha256": "a5effa0a9c2a97ad1c35151aa4f8bfb1a35331e3d88edf9f4cdd4fc82bae93f1"
+      },
+      {
+        "path": "scripts/permission-runtime-results.mjs",
+        "sha256": "7cc4c037b888a90362f3b9a51fb1ed10d3e7e914bef20e7840518ba7d8f8ae68"
+      },
+      {
+        "path": "scripts/permission-runtime-service-profile.mjs",
+        "sha256": "7eda31d59cbb3db64bee46c7bd0a1c92e1063e09e2e51e26bb445d0f9bdb5ce0"
+      },
+      {
+        "path": "scripts/permission-runtime-service.mjs",
+        "sha256": "4391f3d44b8a9b8aaab861826f4f720ab84e666c40fc08afc714dad415d9cf3e"
+      },
+      {
+        "path": "scripts/permission-runtime-stage.mjs",
+        "sha256": "bfcede0b296d329ab22fe1eabaacb7ece8f12413add07fc1527d2b96a8295119"
+      },
+      {
+        "path": "scripts/permission-runtime-static.mjs",
+        "sha256": "743f98744e9685f3927f45bd898e0fe08502e24a309aae9ac25c302005c6dfe8"
+      },
+      {
+        "path": "scripts/permission-runtime-t04.mjs",
+        "sha256": "0cdc1901ae1ab34ee7006eb37b34942769035bc59f89a263f5e555b523e016ca"
+      },
+      {
+        "path": "scripts/project-ci-results.mjs",
+        "sha256": "1fd37ac4dbd59b50fe9f6b6871855105c18177aa5ecbef74744a06662f3c69f2"
+      },
+      {
+        "path": "scripts/project-ci.mjs",
+        "sha256": "a29c1ec840bc5cf619a894bf3653b310ac605aedf8216a90c7a0c43e2578c1bd"
+      },
+      {
+        "path": "src/adapters/supabase/authPermissionContract.test.ts",
+        "sha256": "b9ad127d86479dbd4e43a66a630546f89a796779e29feda099d9c2396540df92"
+      },
+      {
+        "path": "src/adapters/supabase/ownerPinOnboardingCloseout.test.ts",
+        "sha256": "24a1c7317b37459188083905d88776875985a54968242b0abe4eb12f505119e8"
+      },
+      {
+        "path": "src/adapters/supabase/permissionIdentityRepo.test.ts",
+        "sha256": "ccf8157afc0de4f3f436139ce6eacfcf5ae6de2a205094a19625bd7743e06a13"
+      },
+      {
+        "path": "src/app/compatibilityGate.test.tsx",
+        "sha256": "9b0293f5669df353f8359123ec1cd9f7c3e0f9561bb78fa2945d4aa0842dd7a1"
+      },
+      {
+        "path": "src/app/passcodeErrorMessages.test.tsx",
+        "sha256": "c7089d11795813d4ee9c1ccdcbbb61a70df3cb7cbbc19109ebb3f73743ae313d"
+      },
+      {
+        "path": "src/app/permissionErrorCatalog.test.ts",
+        "sha256": "e45570759ce80562dea651ee7101153c5528488393e5de3fef0df712508fe378"
+      },
+      {
+        "path": "src/app/requiredPinChange.test.tsx",
+        "sha256": "28e0d1dee00c2bac887f0707ba483e2c0f8b52a492f9d751f752a52be14b28b6"
+      },
+      {
+        "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+        "sha256": "da48b884af4c1d97afa55e51f9e547e8ec98717e45035d7580837a82f2855d3e"
+      },
+      {
+        "path": "tests/contracts/ownerRecoveryOperator.tool.test.mjs",
+        "sha256": "f42f877341e310768c7d13772779ad3441f51082aded53022e145c6f9309df0d"
+      },
+      {
+        "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+        "sha256": "399f238f672817fdab6690654ccad5697f9140e1591c4ce2fbacbdb768857ccd"
+      },
+      {
+        "path": "tests/contracts/permissionCompatibility.contract.test.ts",
+        "sha256": "cdd0611ff68ffcf69c8f3575e5a3cc755495d6229e1d1d86d9c5099e2f62e58a"
+      },
+      {
+        "path": "tests/contracts/permissionIdentity.contract.test.ts",
+        "sha256": "ff092aaeefa9d66dfb7dee04d80e46b5a3430f126c95c321df9b5ef541c3b856"
+      },
+      {
+        "path": "tests/contracts/permissionRead.contract.test.ts",
+        "sha256": "7cde121f7e7645c62255d7a0c0937fe739697ac470d51cefb1c30db7a937ce28"
+      },
+      {
+        "path": "tests/operator/ownerRecoveryOperator.spec.ts",
+        "sha256": "b8d0324254124c798337d7fcb7b87d289bd26f2e518fe4d4d60ec08498af288c"
+      },
+      {
+        "path": "tests/permissions/full-oracle-contracts.json",
+        "sha256": "a5342ece4231010ee341511679e6140cbf996df4b38f0e60537572785256c72a"
+      },
+      {
+        "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+        "sha256": "4713c06c6b30522082c2958ec1f9c291d66731ca9589af5db049c2b8d75fe5a6"
+      },
+      {
+        "path": "ui-audit/baseline.json",
+        "sha256": "79fe315c36c21db23a66724939b085e5ac4065d16780e2a0d26e1f9da5c87080"
+      }
+    ]
+  },
+  "historicalMap": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022/fullgate-obligation-map01.json",
+    "sha256": "2851f3ece8e27aeb98a6119d622b0eb25008a16c0543634ee1ad0d879a4f7c74",
+    "meaning": "Historical mapping input only; no historical runtime or b2PASS imported"
+  },
+  "observationBoundary": {
+    "testsRun": false,
+    "databaseCalls": 0,
+    "networkCalls": 0,
+    "ciStatus": "ROOT_REPORTED_IN_PROGRESS_NOT_REQUERIED",
+    "candidateCiRunId": "39780944907",
+    "actualRuntimePassClaimed": false,
+    "mappingTaskMayReadPureCatalogMetadata": true,
+    "observedEvidence": []
+  },
+  "acceptance": {
+    "decision": "D19/R0/R1",
+    "stages": 35,
+    "requiredRuntimeIdentities": 760,
+    "pinCases": 19,
+    "pinSubvariants": 183,
+    "pinMappings": 111,
+    "permissionCases": 60,
+    "permissionOccurrences": 726,
+    "permissionStages": 27,
+    "supplementalObligations": 12,
+    "status": "NOT_EXECUTED",
+    "noNewAcceptance": true
+  },
+  "obligations": [
+    {
+      "id": "TC-PIN-02.no-skip-control",
+      "requirement": "PIN-02/03/05; màn restricted chỉ có form bắt buộc, logout, đổi quán; không bypass.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 34
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 526,
+          "meaning": "Enumerates button/input/select/textarea/link/role-button/contenteditable controls; exact count and three allowed families."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1331,
+          "meaning": "Calls the control assertion in actual restricted browser test; retry branch calls it at1367."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1375,
+          "meaning": "No protected RPC calls across restricted proof/deep-link probes."
+        }
+      ],
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "receiptRecipes": [
+        {
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-onboard-closeout.config.ts",
+          "configSHA256": "05203e6f86fb0b6e4e25099725a232e1155ad2de325356a5a628d1a637fe9d73",
+          "wholeStageRequired": 48,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-02 restricted proof, network failure, reload and revoked gate",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-02 cached normal floor cannot render after owner recovery and restricted relogin",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-02 late S1 proof cannot change the S2 restricted generation",
+              "project": "pin-onboard-closeout-isolated"
+            }
+          ]
+        }
+      ],
+      "reviewChecklist": [
+        "Enumerate exact allowed controls, deny bypass/skip and protected shell/cache/RPC while restricted; keep generation/TTL boundaries."
+      ]
+    },
+    {
+      "id": "TC-PIN-03.exact-three-allowed-routes",
+      "requirement": "PIN-02/03/05; restricted surface/projections deny authority and business effects while accepted metadata/prelogin lifecycle remain precisely bounded.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 42
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 44
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1595,
+          "meaning": "Reads actual EXECUTE inventory and compares exact protected plus named nonBusiness functions."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1631,
+          "meaning": "Exact contract/store metadata projections and unchanged tenant snapshot."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1645,
+          "meaning": "Restricted/missing-token protected RPC denial loop."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1726,
+          "meaning": "Real Storage upload/delete denials plus payload/catalog preservation checks."
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/permissionIdentity.contract.test.ts",
+          "line": 37,
+          "meaning": "Actual AuthREST minimal id/name roster"
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/permissionRead.contract.test.ts",
+          "line": 348,
+          "meaning": "Actual pre-PIN roster exact id/name, raw employee SELECT denied"
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/permissionCompatibility.contract.test.ts",
+          "line": 62,
+          "meaning": "Actual contract probe/pre-request behavior"
+        }
+      ],
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "receiptRecipes": [
+        {
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-onboard-closeout.config.ts",
+          "configSHA256": "05203e6f86fb0b6e4e25099725a232e1155ad2de325356a5a628d1a637fe9d73",
+          "wholeStageRequired": 48,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-01 blank bootstrap yields only restricted Auth/REST session and safe denials",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-03 activated protected RPC inventory denies restricted and absent tokens without effects",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-03 every protected RPC denies a live token from another store",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-06 completion revokes two restricted tokens and starts a 12h normal session",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 direct authenticated RPC rejects malformed DTO atomically and replays canonical bootstrap",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-16 all-override nonowners and foreign owner cannot mutate seed; legacy routes stay closed",
+              "project": "pin-onboard-closeout-isolated"
+            }
+          ]
+        },
+        {
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER",
+          "config": "vitest.owner-pin-server.config.ts",
+          "configSHA256": "de3cb6d61c112dae0de7f6bb96bf8655d6b2de4108cfc026cbf3ecfa247beefc",
+          "wholeStageRequired": 41,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-01/03/06 restricted login, proof, completion, and normal relogin",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-10/13/14 bootstrap creates a forced owner and receipt-driven insert-only workflow",
+              "project": null
+            }
+          ]
+        },
+        {
+          "stage": "identity-database",
+          "executionProfile": "SUPABASE_T04",
+          "config": "vitest.permission-identity.config.ts",
+          "configSHA256": "7736497355a111e55efb85d105ff595495b17e35d1d7d5de109baad0ac01e9b5",
+          "wholeStageRequired": 42,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/contracts/permissionIdentity.contract.test.ts",
+              "name": "TC-PERM-02/20 T04 real Auth REST login returns catalog authority matching core and minimal roster",
+              "project": null
+            }
+          ]
+        },
+        {
+          "stage": "read-database",
+          "executionProfile": "SUPABASE_T04",
+          "config": "vitest.permission-read.config.ts",
+          "configSHA256": "c858ed4a7a9f5723d21d6560092b25a7c81841853e4afdc724f7fd6b9f42c4e4",
+          "wholeStageRequired": 120,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/contracts/permissionRead.contract.test.ts",
+              "name": "TC-PERM-02/26 T07 pre-PIN roster remains minimal while raw employee reads stay closed",
+              "project": null
+            }
+          ]
+        },
+        {
+          "stage": "transition-compatibility-database",
+          "executionProfile": "SUPABASE_T04",
+          "config": "vitest.permission-compatibility.config.ts",
+          "configSHA256": "79c93debb573f94d76b1679c3162cf95966d12380a45e7c248051b97437b1ea3",
+          "wholeStageRequired": 3,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/contracts/permissionCompatibility.contract.test.ts",
+              "name": "TC-PERM-51 routing probe rejects exposed RPC when pre-request hook is disabled",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/permissionCompatibility.contract.test.ts",
+              "name": "TC-PERM-51 pass-through routing, atomic strict rollback and role matrix",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/permissionCompatibility.contract.test.ts",
+              "name": "TC-PERM-51 missing gate singleton fails closed and is restored",
+              "project": null
+            }
+          ]
+        }
+      ],
+      "reviewChecklist": [
+        "Reconcile3restricted operations with exact minimal public metadata and prelogin lifecycle; do not remove legitimate metadata to satisfy the three-route shorthand.",
+        "Actual EXECUTE inventory, all protected RPC denials, raw-table and Storage denials, exact contract/store/roster projections and preserved effects.",
+        "ownerPinSurface standalone suite is outside35catalog; do not claim its tests ran. Actual hook checks must come from T04 compatibility."
+      ]
+    },
+    {
+      "id": "TC-PIN-05.exact-messages-no-effects",
+      "requirement": "PIN-01/04/06/07; recovery refusals use exact contextual messages and preserve identity/evidence state.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 59
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 61
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 704,
+          "meaning": "Independent expected recovery message literals."
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 733,
+          "meaning": "Finite malformed refs/PIN/missing/nonowner/foreign-target cases."
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 757,
+          "meaning": "After real DB refusal checks exact projected message, no data and unchanged snapshot."
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 764,
+          "meaning": "Owner/manager/cashier/foreign owner cannot assume operator recovery."
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 678,
+          "meaning": "Altered same-request recovery has exact ADMIN_REQUEST_REUSED projection"
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 718,
+          "meaning": "anon/authenticated/service_role EXECUTE and membership denied"
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 798,
+          "meaning": "Rollback-only malformed inactive-owner fixture exercises defensive denial without state effects"
+        }
+      ],
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "receiptRecipes": [
+        {
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER",
+          "config": "vitest.owner-pin-server.config.ts",
+          "configSHA256": "de3cb6d61c112dae0de7f6bb96bf8655d6b2de4108cfc026cbf3ecfa247beefc",
+          "wholeStageRequired": 41,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-05/09 all eight recovery transitions preserve credential policy and replay after real completion",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-05 recovery rejects refs, PIN and targets with an unchanged identity and evidence snapshot",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-05 owner, manager, cashier and foreign owner tokens cannot assume operator recovery",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-05 recovery defensively rejects an inactive owner in a rollback-only malformed fixture",
+              "project": null
+            }
+          ]
+        },
+        {
+          "executionProfile": "LIGHT",
+          "phase": "tooling",
+          "selector": "candidateCi.summary.phases[id=tooling]",
+          "testFiles": [
+            "tests/contracts/ownerRecoveryOperator.tool.test.mjs"
+          ]
+        }
+      ],
+      "reviewChecklist": [
+        "Refs empty/whitespace/too-long/missing; malformedPIN; missing/nonowner/inactive/foreign targets; POSactors and service role have no operator EXECUTE/membership.",
+        "Bind actual refusal+independent projected exact sentence+no-data/no-effects. Same-request altered payload and inactive-owner defensive branch exist."
+      ]
+    },
+    {
+      "id": "TC-PIN-11.exact-error-contexts",
+      "requirement": "PIN-05/07; reserve/signup/bootstrap failures and uncertain ACK retain one canonical creation context and exact context text.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 114
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 115
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2336,
+          "meaning": "Real browser transport failure before execute for reserve/signup/bootstrap."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2346,
+          "meaning": "Independent exact contextual UI message; signup failure snapshot unchanged."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2149,
+          "meaning": "Actual bootstrap conflict mapped to specific safe context sentence."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1287,
+          "meaning": "Authentically signed expired Auth JWT yields actual REST rejection; adapter maps AUTH_REQUIRED."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2371,
+          "meaning": "LostACK reserve/bootstrap waits explicit same-canonical retry"
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2393,
+          "meaning": "Lost signup ACK reconciles without duplicate signup"
+        },
+        {
+          "root": "code",
+          "path": "src/app/passcodeErrorMessages.test.tsx",
+          "line": 20,
+          "meaning": "Independent exact passcode UI context, hides backend text"
+        }
+      ],
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "receiptRecipes": [
+        {
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-onboard-closeout.config.ts",
+          "configSHA256": "05203e6f86fb0b6e4e25099725a232e1155ad2de325356a5a628d1a637fe9d73",
+          "wholeStageRequired": 48,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-01 blank bootstrap yields only restricted Auth/REST session and safe denials",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 direct authenticated RPC rejects malformed DTO atomically and replays canonical bootstrap",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 bootstrap ownerId response mismatch never displays Store Key",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 bootstrap storeNo response mismatch never displays Store Key",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 pending browser submit coalesces repeated clicks before reservation executes",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 reserve transport failure before execute retries one canonical create",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 signup transport failure before execute retries one canonical create",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 bootstrap transport failure before execute retries one canonical create",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 lost reserve ACK waits for explicit retry and reuses one canonical create",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 lost bootstrap ACK waits for explicit retry and reuses one canonical create",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 lost signup ACK reconciles by sign-in and never submits signup twice",
+              "project": "pin-onboard-closeout-isolated"
+            }
+          ]
+        },
+        {
+          "executionProfile": "LIGHT",
+          "phase": "unit",
+          "selector": "candidateCi.summary.phases[id=unit]",
+          "testFiles": [
+            "src/adapters/supabase/ownerPinOnboardingCloseout.test.ts",
+            "src/app/requiredPinChange.test.tsx",
+            "src/app/passcodeErrorMessages.test.tsx"
+          ]
+        }
+      ],
+      "reviewChecklist": [
+        "Before-execute failures and committed lost-ACK differ; check canonical creation, exact context text, explicit retry only and no duplicate signup.",
+        "Real JWT expiry rejection→production adapter→independent component sentence is compositional proof; never label component mock as actual REST."
+      ]
+    },
+    {
+      "id": "TC-PIN-12.no-persistence-URL-log-or-marker",
+      "requirement": "PIN-03/05; Key stays in memory only, absent from persistence/URL/log and no new ACK/reload marker.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 123
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 124
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 544,
+          "meaning": "Enumerates local/session/cookie/IndexedDB marker names and keys."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 569,
+          "meaning": "Key exposure watcher covers console/pageerror/request URLs/current URL/local/session/cookies/IndexedDB contents."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2675,
+          "meaning": "Separates legitimate Auth token marker; exact marker equality before/after create and reload, plus Key absence."
+        }
+      ],
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "receiptRecipes": [
+        {
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-onboard-closeout.config.ts",
+          "configSHA256": "05203e6f86fb0b6e4e25099725a232e1155ad2de325356a5a628d1a637fe9d73",
+          "wholeStageRequired": 48,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-13 create to Key ACK stays restricted until changed PIN login, then seeds once (TC02/12)",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-12 warning acknowledgement prevents all create network before consent",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-12 compatibility unmount keeps Key until ACK, then reloads compatible and clears it",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-12 hard reload loses the in-memory Key, does not recreate, and accepts the externally saved Key",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-12 reload after explicit Key ACK keeps store pairing without credential persistence",
+              "project": "pin-onboard-closeout-isolated"
+            }
+          ]
+        }
+      ],
+      "reviewChecklist": [
+        "Key absent from URL/requestURL/console/pageerror/local/session/cookie/IndexedDB data; compare markers before/afterACK/hardreload.",
+        "Distinguish legitimate Auth token marker; no newACK/reload marker, Key reconstruction or automatic recreate."
+      ]
+    },
+    {
+      "id": "TC-PIN-17.unit-build-permission-regression",
+      "requirement": "PIN-02/03/04; full current unit/build/tooling and permission regression at the accepted source.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 168
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 202
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/redesign-permission-model/proposal.md",
+          "line": 172
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "scripts/project-ci.mjs",
+          "line": 294,
+          "meaning": "Actual install/build/unit coverage/tooling/node-tools phases; phase validators stop failure."
+        },
+        {
+          "root": "code",
+          "path": "scripts/project-ci.mjs",
+          "line": 323,
+          "meaning": "Runs source-bound permission STATIC stages; PG16 follows at330."
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-static.mjs",
+          "line": 20,
+          "meaning": "Checks each required stage identity/counts/source hashes with zero required skip/retry."
+        },
+        {
+          "root": "code",
+          "path": "scripts/project-ci.mjs",
+          "line": 378,
+          "meaning": "Explicitly leaves PERMISSION_FULL deferred; verifies tracked source preservation."
+        },
+        {
+          "root": "code",
+          "path": "scripts/project-ci-results.mjs",
+          "line": 743,
+          "meaning": "publicSummary exports outer phase invocationSHA/reportSHA and filtered counts. These are not the private individual STATIC stage hashes discarded by staticProfileCounts."
+        }
+      ],
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "receiptRecipes": [
+        {
+          "executionProfile": "LIGHT",
+          "phase": "build",
+          "selector": "candidateCi.summary.phases[id=build]",
+          "testFiles": []
+        },
+        {
+          "executionProfile": "LIGHT",
+          "phase": "unit",
+          "selector": "candidateCi.summary.phases[id=unit]",
+          "testFiles": []
+        },
+        {
+          "executionProfile": "LIGHT",
+          "phase": "tooling",
+          "selector": "candidateCi.summary.phases[id=tooling]",
+          "testFiles": []
+        },
+        {
+          "executionProfile": "LIGHT",
+          "phase": "node-tools",
+          "selector": "candidateCi.summary.phases[id=node-tools]",
+          "testFiles": []
+        },
+        {
+          "executionProfile": "LIGHT",
+          "phase": "permission-static",
+          "selector": "candidateCi.summary.phases[id=permission-static]",
+          "testFiles": []
+        },
+        {
+          "executionProfile": "LIGHT",
+          "phase": "permission-pg16",
+          "selector": "candidateCi.summary.phases[id=permission-pg16]",
+          "testFiles": []
+        },
+        {
+          "executionProfile": "LIGHT",
+          "phase": "smoke-discovery",
+          "selector": "candidateCi.summary.phases[id=smoke-discovery]",
+          "testFiles": []
+        },
+        {
+          "executionProfile": "LIGHT",
+          "phase": "smoke-preflight",
+          "selector": "candidateCi.summary.phases[id=smoke-preflight]",
+          "testFiles": []
+        },
+        {
+          "executionProfile": "LIGHT",
+          "phase": "smoke",
+          "selector": "candidateCi.summary.phases[id=smoke]",
+          "testFiles": []
+        }
+      ],
+      "reviewChecklist": [
+        "Require fresh current-source CI18 plus all8whole backend profiles and catalog union35/760; oldb2 evidence remains history.",
+        "Keep PIN19/183subvariants/111mappings; PERM60/726occurrences/27stages and3baseTC53 rollback variants.",
+        "Respect approved smoke applicability/manual rules; no required skip/retry or stage-count-only fullPASS.",
+        "STATIC phase.counts has only run/pass/fail/skip. Outer phase.reportSHA/invocationSHA exist, but per-stage hashes/rows are not exported; join fresh safe phase receipt with pinned producer validation of all5private stage rows, without inventing public per-stage artifacts."
+      ]
+    },
+    {
+      "id": "TC-PIN-17.ui-selftest-23",
+      "requirement": "PIN-02/03/04; detector selftest must find exactly23 and selftest OK before audit.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 168
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "scripts/project-ci.mjs",
+          "line": 367,
+          "meaning": "Invokes actual selftest and requires selftest OK plus23 findings."
+        },
+        {
+          "root": "code",
+          "path": "scripts/project-ci.mjs",
+          "line": 372,
+          "meaning": "PIN audit runs only after preceding selftest phase succeeds."
+        }
+      ],
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "receiptRecipes": [
+        {
+          "executionProfile": "LIGHT",
+          "phase": "ui-selftest",
+          "selector": "candidateCi.summary.phases[id=ui-selftest]",
+          "testFiles": []
+        }
+      ],
+      "reviewChecklist": [
+        "Use actual ui-selftest phase: detectedFindings23 and selftestOK before audit; not only the separate ui-audit-selftest."
+      ]
+    },
+    {
+      "id": "TC-PIN-17.PIN-3-viewports-photos-classified",
+      "requirement": "PIN-02/03/04; inspect masked PIN photos at desktop/tablet/mobile; classify findings and verify no overflow/overlay/zero-size.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 168
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 169
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-pin-ui.mjs",
+          "line": 8,
+          "meaning": "Three fixed viewports."
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-pin-ui.mjs",
+          "line": 29,
+          "meaning": "Validates photo/source/masking/dimensions and emits photoInspected=false with PENDING_VISUAL_REVIEW."
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-pin-ui.mjs",
+          "line": 108,
+          "meaning": "Actual required-pin-change audit; validates three completed pairs and source preservation."
+        },
+        {
+          "root": "code",
+          "path": ".github/workflows/ci.yml",
+          "line": 38,
+          "meaning": "Uploads only allowlisted safe manifest and three synthetic PNGs, retention1day."
+        }
+      ],
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "receiptRecipes": [
+        {
+          "executionProfile": "LIGHT",
+          "phase": "ui-audit",
+          "selector": "candidateCi.summary.phases[id=ui-audit]",
+          "testFiles": []
+        },
+        {
+          "artifactSchema": "permission-pin-ui-photos-v1",
+          "action": "MANUAL_POST_RUN_IMAGE_REVIEW",
+          "expectedSourceSHA": "ad265321144521c0669500fea9be0f96ebacb769",
+          "expectedRunId": "39780944907",
+          "producerVisualReview": "NOT_RUN",
+          "reviewReceipt": "PENDING_FUTURE_ACTUAL_REVIEW"
+        }
+      ],
+      "reviewChecklist": [
+        "Hash/source/run-bind all3safe images:desktop1440x900/tablet1024x768/mobile844x390.",
+        "Inspect actual overflow/overlay/zero-size/masking; classify every finding against accepted baseline with reviewer+rationale.",
+        "Keep producer manifest unchanged; add separate actual review receipt. Record privacy-masked region limitations; do not claim hidden details visually assessed."
+      ]
+    },
+    {
+      "id": "TC-PIN-17.no-ui-baseline-update",
+      "requirement": "PIN-02/03/04; never update UI baseline merely to make the gate green.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 169
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-pin-ui.mjs",
+          "line": 108,
+          "meaning": "Captures baseline hash; targeted audit command has no --update."
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-pin-ui.mjs",
+          "line": 111,
+          "meaning": "Asserts baseline hash unchanged after targeted audit."
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-pin-ui.mjs",
+          "line": 125,
+          "meaning": "Runs actual full audit without update and rechecks baseline hash after child."
+        },
+        {
+          "root": "code",
+          "path": "scripts/project-ci.mjs",
+          "line": 378,
+          "meaning": "Final tracked source fingerprint equality."
+        }
+      ],
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "receiptRecipes": [
+        {
+          "executionProfile": "LIGHT",
+          "phase": "ui-audit",
+          "selector": "candidateCi.summary.phases[id=ui-audit]",
+          "testFiles": []
+        }
+      ],
+      "reviewChecklist": [
+        "Frozen baseline hash unchanged after targeted and full audit; sourcePreserved true; no ui-audit:update or --update used."
+      ]
+    },
+    {
+      "id": "TC-PIN-18.MAC-no-secret-audit-projection",
+      "requirement": "PIN-07; keyed MAC for secret payload, no plaintext/unkeyed PIN hash leakage, exact safe audit/registry/receipt/signal semantics.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 181
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 182
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 117,
+          "meaning": "Reads real registry/key only privately; independently computes request-bound HMAC and rejects unkeyed SHA expectation."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 140,
+          "meaning": "Exact field sets for audit/signals/registry/bootstrap/workflow/stage receipts."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 246,
+          "meaning": "Checks11 actual capture sinks for canary leakage."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4026,
+          "meaning": "Recovery audit actor/target/request/outcome/credential state and signal binding assertions."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4548,
+          "meaning": "Completion audit/registry and changed credential assertions after committed lost ACK."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 179,
+          "meaning": "Capture actual audit/registry/bootstrap/workflow/stage and check projection"
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4687,
+          "meaning": "Require20scenarios/capture220/notApplicable0"
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-pin-canary-run.mjs",
+          "line": 14,
+          "meaning": "Post-exit controls and required artifact set"
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-pin-canary-run.mjs",
+          "line": 40,
+          "meaning": "Strict7browser and artifact-scan success after childexit"
+        }
+      ],
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "receiptRecipes": [
+        {
+          "stage": "pin-tc18-wrapper",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-tc18.config.ts",
+          "configSHA256": "a268f4913f6f9309389de21958363181ff54f82b5355c1298a9cf91cc9d23fc1",
+          "wholeStageRequired": 7,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: completion denial, commit and revoked replay do not leak",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: recovery role denial, fault, commit and replay keep secret projections clean",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: bootstrap denial, fault, lost ACK and replay keep Key out of sinks",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: seed fault, denial, lost ACK and committed replay keep receipts clean",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: completion audit fault rolls back, then lost ACK requires new PIN login",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 operator-only recovery UI applies through the dedicated PostgreSQL role without leaking PIN",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 matrix requires all runtime scenario captures and all eleven sinks",
+              "project": "pin-onboard-closeout-isolated"
+            }
+          ]
+        },
+        {
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER",
+          "config": "vitest.owner-pin-server.config.ts",
+          "configSHA256": "de3cb6d61c112dae0de7f6bb96bf8655d6b2de4108cfc026cbf3ecfa247beefc",
+          "wholeStageRequired": 41,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-04/09 denied completion is replayable only with the same secret MAC",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-05/09 all eight recovery transitions preserve credential policy and replay after real completion",
+              "project": null
+            }
+          ]
+        }
+      ],
+      "reviewChecklist": [
+        "Independent request-bound NodeHMAC over canonical JSONB with actual DB key privately; reject unkeyedSHA. No secret values leave the job.",
+        "Exact actual audit/registry/receipt/signal semantics, actor/target/request/outcome/credential state; canary absence alone is insufficient.",
+        "TC18 whole wrapper requires20scenarios×11sinks+operator and all required artifacts scanned after child exit;7browser tests zero skip/retry/missing.",
+        "No raw private canary export; source+trusted strict-stage receipt links the executed wrapper. Pure declaration/model rows are not actual observations."
+      ]
+    },
+    {
+      "id": "TC-PIN-18.exact-error-context-triggers",
+      "requirement": "PIN-07; every accepted design message needs the correct runtime trigger, exact text and safe state/effects.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 181
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 182
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 200
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerRecoveryOperator.tool.test.mjs",
+          "line": 86,
+          "meaning": "Independent exact recovery message literals and rejection of raw SQL text."
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 757,
+          "meaning": "Actual DB refusals connected to exact recovery context and unchanged state."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2346,
+          "meaning": "Exact create transport failure sentences."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4531,
+          "meaning": "Committed completion ACK-loss sentence; explicit request count and later login verification."
+        },
+        {
+          "root": "code",
+          "path": "tests/operator/ownerRecoveryOperator.spec.ts",
+          "line": 62,
+          "meaning": "Operator browser exact error sentences for additional recovery contexts."
+        }
+      ],
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "receiptRecipes": [
+        {
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-onboard-closeout.config.ts",
+          "configSHA256": "05203e6f86fb0b6e4e25099725a232e1155ad2de325356a5a628d1a637fe9d73",
+          "wholeStageRequired": 48,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > PERM29 app invalidation receives metadata topics; join-only edit needs manual menu refresh",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-01 blank bootstrap yields only restricted Auth/REST session and safe denials",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-02 restricted proof, network failure, reload and revoked gate",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-02 cached normal floor cannot render after owner recovery and restricted relogin",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-02 late S1 proof cannot change the S2 restricted generation",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-08 late S1 completion ACK cannot clear S2 restricted gate",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-03 activated protected RPC inventory denies restricted and absent tokens without effects",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-03 every protected RPC denies a live token from another store",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-06 completion revokes two restricted tokens and starts a 12h normal session",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-09 forced completion ACK loss after execute requires login verification",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-09 forced completion ACK loss before execute requires login verification",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 UI rejects invalid Unicode name and address before network",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 authenticated bootstrap accepts one code point and empty address without demo",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 authenticated bootstrap accepts 120/500 Unicode code points with demo",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 direct authenticated RPC rejects malformed DTO atomically and replays canonical bootstrap",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 Store Key number 1 pairs through Auth/REST to the same store",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 Store Key number 99999999 pairs through Auth/REST to the same store",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 Store Key number 100000000 pairs through Auth/REST to the same store",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 Store Key number 2147483647 pairs through Auth/REST to the same store",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-10 malformed Store Key is rejected before Auth and REST",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-13 blank store skips demo stages after normal owner login",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 bootstrap ownerId response mismatch never displays Store Key",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 bootstrap storeNo response mismatch never displays Store Key",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 pending browser submit coalesces repeated clicks before reservation executes",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 reserve transport failure before execute retries one canonical create",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 signup transport failure before execute retries one canonical create",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 bootstrap transport failure before execute retries one canonical create",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 lost reserve ACK waits for explicit retry and reuses one canonical create",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 lost bootstrap ACK waits for explicit retry and reuses one canonical create",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-11 lost signup ACK reconciles by sign-in and never submits signup twice",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-13 create to Key ACK stays restricted until changed PIN login, then seeds once (TC02/12)",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-13 in_progress requires explicit retry across login, focus and reconnect",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-13 needs_retry requires explicit retry across login, focus and reconnect",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-12 warning acknowledgement prevents all create network before consent",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-12 compatibility unmount keeps Key until ACK, then reloads compatible and clears it",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-12 hard reload loses the in-memory Key, does not recreate, and accepts the externally saved Key",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-12 reload after explicit Key ACK keeps store pairing without credential persistence",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-15 two browser owners race initial claim behind store mutex",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-15 menu fault keeps cashier edit and two owners race explicit retry",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-15 retry reclaim waits behind locked menu stage and returns stale",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-15 menu deterministic collision preserves row and rejects stale stage before retry",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-15 floor deterministic collision preserves row and rejects stale stage before retry",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-16 owner recovery between stages revokes runner and waits for explicit retry",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-16 all-override nonowners and foreign owner cannot mutate seed; legacy routes stay closed",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-17 normal owner PIN and cashier administration preserve sessions and role ceiling",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-14 lost employee ACK preserves allowed-route edit through second-device retry and direct replay",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-14 lost menu ACK preserves allowed-route edit through second-device retry and direct replay",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-14 lost floor ACK preserves allowed-route edit through second-device retry and direct replay",
+              "project": "pin-onboard-closeout-isolated"
+            }
+          ]
+        },
+        {
+          "stage": "pin-tc18-wrapper",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-tc18.config.ts",
+          "configSHA256": "a268f4913f6f9309389de21958363181ff54f82b5355c1298a9cf91cc9d23fc1",
+          "wholeStageRequired": 7,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: completion denial, commit and revoked replay do not leak",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: recovery role denial, fault, commit and replay keep secret projections clean",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: bootstrap denial, fault, lost ACK and replay keep Key out of sinks",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: seed fault, denial, lost ACK and committed replay keep receipts clean",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 runtime canary: completion audit fault rolls back, then lost ACK requires new PIN login",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 operator-only recovery UI applies through the dedicated PostgreSQL role without leaking PIN",
+              "project": "pin-onboard-closeout-isolated"
+            },
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 matrix requires all runtime scenario captures and all eleven sinks",
+              "project": "pin-onboard-closeout-isolated"
+            }
+          ]
+        },
+        {
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER",
+          "config": "vitest.owner-pin-server.config.ts",
+          "configSHA256": "de3cb6d61c112dae0de7f6bb96bf8655d6b2de4108cfc026cbf3ecfa247beefc",
+          "wholeStageRequired": 41,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-01/03/06 restricted login, proof, completion, and normal relogin",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-04/09 denied completion is replayable only with the same secret MAC",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-04 forced endpoint rejects malformed payloads and accepts distinct weak six-digit PINs",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-08 stale expectedRevision is denied while restricted token remains valid",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-17 normal owner same-PIN self change stays a no-op with its session valid",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-08 stage guard rechecks normal-session expiry after its final catalog-write wait",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-15 two seed runners serialize initial claim and retry generation",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-16 seed workflow denies nonowner and scopes a foreign owner to its own tenant",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-16 owner recovery between seed stages revokes the runner and requires explicit retry after forced PIN",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-05/09 all eight recovery transitions preserve credential policy and replay after real completion",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-05 recovery rejects refs, PIN and targets with an unchanged identity and evidence snapshot",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-05 owner, manager, cashier and foreign owner tokens cannot assume operator recovery",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-05 recovery defensively rejects an inactive owner in a rollback-only malformed fixture",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-10/13/14 bootstrap creates a forced owner and receipt-driven insert-only workflow",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-08 two restricted sessions serialize with first queued first",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-08 two restricted sessions serialize with second queued first",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-08 recovery/complete lock race recovery-first has one ordered final state",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-08 recovery/complete lock race completion-first has one ordered final state",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-08 completion rechecks expiry-minus-1ms after waiting for identity lock",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-08 completion rechecks expiry after waiting for identity lock",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-08 completion rechecks expiry-plus-1ms after waiting for identity lock",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-07 complete fault in public.employee_admin_audit rolls back credential, flag, revision, session and evidence",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-07 complete fault in public.store_change_signals rolls back credential, flag, revision, session and evidence",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-07 complete fault in private.employee_admin_requests rolls back credential, flag, revision, session and evidence",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-07 recovery fault in public.employee_admin_audit rolls back forced state, credential, revision, sessions and evidence",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-07 recovery fault in public.store_change_signals rolls back forced state, credential, revision, sessions and evidence",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-07 recovery fault in private.employee_admin_requests rolls back forced state, credential, revision, sessions and evidence",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-07 employee seed fault at public.employee_admin_audit rolls back data/evidence/receipt and records retry",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-07 employee seed fault at public.store_change_signals rolls back data/evidence/receipt and records retry",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-07 employee seed fault at private.initial_seed_stages rolls back data/evidence/receipt and records retry",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-07 menu receipt fault preserves committed stages and edited data across retry",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-07 floor receipt fault preserves committed stages and edited data across retry",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServer.contract.test.ts",
+              "name": "forced owner PIN server SQL contract > declares owner-only forced state and purpose-bound session TTLs",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServer.contract.test.ts",
+              "name": "forced owner PIN server SQL contract > fails every normal employee guard closed after its locked reread",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServer.contract.test.ts",
+              "name": "forced owner PIN server SQL contract > keeps proof minimal and validates complete session before receipt lookup",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServer.contract.test.ts",
+              "name": "forced owner PIN server SQL contract > forces every new owner recovery event while preserving historical replay",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServer.contract.test.ts",
+              "name": "forced owner PIN server SQL contract > uses contract 2, idempotent reservation, and canonical bootstrap seed choice",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServer.contract.test.ts",
+              "name": "durable initial seed server SQL contract > exposes status, claim, and stage routes with a full stable status projection",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServer.contract.test.ts",
+              "name": "durable initial seed server SQL contract > serializes claims by revision and rejects stale generations/order",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServer.contract.test.ts",
+              "name": "durable initial seed server SQL contract > returns committed receipts without invoking insert helpers again",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServer.contract.test.ts",
+              "name": "durable initial seed server SQL contract > uses insert-only deterministic entities and closes standalone seed bypasses",
+              "project": null
+            }
+          ]
+        },
+        {
+          "stage": "pin-static-operator",
+          "executionProfile": "STATIC",
+          "config": "playwright.owner-recovery-operator.config.ts",
+          "configSHA256": "b6e201334e611fafd5e04c97f77a0b7a1f547e4d494a53b440506d78119f60bf",
+          "wholeStageRequired": 2,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/operator/ownerRecoveryOperator.spec.ts",
+              "name": "operator UI keeps recovery local, shows exact errors, and retries one lost ACK safely",
+              "project": "operator-desktop"
+            },
+            {
+              "file": "tests/operator/ownerRecoveryOperator.spec.ts",
+              "name": "operator UI keeps recovery local, shows exact errors, and retries one lost ACK safely",
+              "project": "operator-mobile"
+            }
+          ]
+        },
+        {
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY",
+          "config": "vitest.permission-canary-empty-runtime.config.ts",
+          "configSHA256": "bb6ddecb5d0b8f111c4bd54c807f857f15443134752c896da3796c0e99b5b0b1",
+          "wholeStageRequired": 1,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+              "name": "TC-PIN-19 isolated empty target: orphan, schema drift, post-DDL rollback, new owner and unrelated data",
+              "project": null
+            }
+          ]
+        },
+        {
+          "executionProfile": "LIGHT",
+          "phase": "tooling",
+          "selector": "candidateCi.summary.phases[id=tooling]",
+          "testFiles": [
+            "tests/contracts/ownerRecoveryOperator.tool.test.mjs"
+          ]
+        },
+        {
+          "executionProfile": "LIGHT",
+          "phase": "unit",
+          "selector": "candidateCi.summary.phases[id=unit]",
+          "testFiles": [
+            "src/app/passcodeErrorMessages.test.tsx",
+            "src/app/requiredPinChange.test.tsx",
+            "src/app/permissionErrorCatalog.test.ts",
+            "src/app/compatibilityGate.test.tsx",
+            "src/adapters/supabase/permissionIdentityRepo.test.ts",
+            "src/adapters/supabase/authPermissionContract.test.ts"
+          ]
+        }
+      ],
+      "reviewChecklist": [
+        "Resolve all34accepted contexts in errorContextChains34 through trigger→adapter/projection→independent exact sentence→allowed/no-effects→actual receipts.",
+        "Literal dictionary, canary scan or PASS total alone does not close a context. Composition must preserve source and clearly distinguish mocked UI from actual network/SQL."
+      ]
+    },
+    {
+      "id": "TC-PIN-18.operator-loopback-unlock-CSRF-Origin-body-role",
+      "requirement": "PIN-07; local-only operator unlock/session/CSRF/Origin/body limit and dedicated DB role, without POS recovery authority.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 181
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 182
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerRecoveryOperator.tool.test.mjs",
+          "line": 35,
+          "meaning": "Actual loopback HTTP server tests lock/unlock/session/Origin/CSRF and safe projection."
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerRecoveryOperator.tool.test.mjs",
+          "line": 55,
+          "meaning": "Valid JSON/code/Origin oversized body isolates16KiB limit; no recovery calls."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4576,
+          "meaning": "Checks exact PG17 role grantor, rejects initial SET-role capability, then adds fixture-only grant and verifies permitted role."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4625,
+          "meaning": "Actual DB commit/lost HTTP ACK with explicit-only replay, unchanged post-commit snapshot and audit binding."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4660,
+          "meaning": "Ten actual private operator capture sinks checked for canary leakage."
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerRecoveryOperator.tool.test.mjs",
+          "line": 56,
+          "meaning": "Valid JSON/code/Origin oversized body isolates16384-byte bound"
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 718,
+          "meaning": "POS/service role cannot execute or assume operator"
+        }
+      ],
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "receiptRecipes": [
+        {
+          "stage": "pin-tc18-wrapper",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-tc18.config.ts",
+          "configSHA256": "a268f4913f6f9309389de21958363181ff54f82b5355c1298a9cf91cc9d23fc1",
+          "wholeStageRequired": 7,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+              "name": "owner PIN onboarding on an isolated candidate fixture > TC-PIN-18 operator-only recovery UI applies through the dedicated PostgreSQL role without leaking PIN",
+              "project": "pin-onboard-closeout-isolated"
+            }
+          ]
+        },
+        {
+          "stage": "pin-static-operator",
+          "executionProfile": "STATIC",
+          "config": "playwright.owner-recovery-operator.config.ts",
+          "configSHA256": "b6e201334e611fafd5e04c97f77a0b7a1f547e4d494a53b440506d78119f60bf",
+          "wholeStageRequired": 2,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/operator/ownerRecoveryOperator.spec.ts",
+              "name": "operator UI keeps recovery local, shows exact errors, and retries one lost ACK safely",
+              "project": "operator-desktop"
+            },
+            {
+              "file": "tests/operator/ownerRecoveryOperator.spec.ts",
+              "name": "operator UI keeps recovery local, shows exact errors, and retries one lost ACK safely",
+              "project": "operator-mobile"
+            }
+          ]
+        },
+        {
+          "executionProfile": "LIGHT",
+          "phase": "tooling",
+          "selector": "candidateCi.summary.phases[id=tooling]",
+          "testFiles": [
+            "tests/contracts/ownerRecoveryOperator.tool.test.mjs"
+          ]
+        },
+        {
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER",
+          "config": "vitest.owner-pin-server.config.ts",
+          "configSHA256": "de3cb6d61c112dae0de7f6bb96bf8655d6b2de4108cfc026cbf3ecfa247beefc",
+          "wholeStageRequired": 41,
+          "purpose": "RECEIPT_LOOKUP_ONLY_KEEP_WHOLE_PROFILE_COMMAND",
+          "testSelectors": [
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-05 recovery rejects refs, PIN and targets with an unchanged identity and evidence snapshot",
+              "project": null
+            },
+            {
+              "file": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+              "name": "TC-PIN-05 owner, manager, cashier and foreign owner tokens cannot assume operator recovery",
+              "project": null
+            }
+          ]
+        }
+      ],
+      "reviewChecklist": [
+        "Actual loopback HTTP unlock/session/Origin/CSRF/body<=16384 and safe projection, plus static operator browser bothprojects.",
+        "TC18 real dedicated PostgreSQL role, actualcommit/lostACK/explicit replay/audit and fixture-only membership restoration; POS/service cannot recover.",
+        "No hosted/production recovery authority or Auth/Edge setting change is granted."
+      ]
+    }
+  ],
+  "errorContextChains34": [
+    {
+      "id": "INVALID_PIN / login",
+      "message": "PIN không đúng. Vui lòng thử lại.",
+      "trigger": "LOGIN_WRONG_PIN",
+      "statePolicy": "UNCHANGED",
+      "code": "INVALID_PIN",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2014,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "src/app/passcodeErrorMessages.test.tsx",
+          "line": 20,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "AUTH_REQUIRED / phiên quán",
+      "message": "Phiên cửa hàng không còn hợp lệ. Vui lòng ghép quán lại.",
+      "trigger": "STORE_SESSION_EXPIRED",
+      "statePolicy": "UNCHANGED",
+      "code": "AUTH_REQUIRED",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1282,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1303,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "src/app/passcodeErrorMessages.test.tsx",
+          "line": 20,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "AUTH_REQUIRED / tạo quán",
+      "message": "Chưa xác nhận được tài khoản cửa hàng. Giữ trang này và thử lại.",
+      "trigger": "CREATE_AUTH_REQUIRED",
+      "statePolicy": "UNCHANGED",
+      "code": "AUTH_REQUIRED",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2337,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2347,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "AUTH_REQUIRED / định dạng Store Key",
+      "message": "Store Key không đúng định dạng.",
+      "trigger": "STORE_KEY_ELEVEN_DIGITS",
+      "statePolicy": "UNCHANGED",
+      "code": "AUTH_REQUIRED",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2222,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "src/adapters/supabase/ownerPinOnboardingCloseout.test.ts",
+          "line": 111,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "WRITE_PROTOCOL_UNSUPPORTED",
+      "message": "Phiên bản ứng dụng chưa tương thích. Vui lòng tải phiên bản mới trước khi tiếp tục.",
+      "trigger": "CLIENT_SERVER_CONTRACT_MISMATCH",
+      "statePolicy": "UNCHANGED",
+      "code": "WRITE_PROTOCOL_UNSUPPORTED",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/permissionCompatibility.contract.test.ts",
+          "line": 62,
+          "stage": "transition-compatibility-database",
+          "executionProfile": "SUPABASE_T04"
+        },
+        {
+          "path": "src/adapters/supabase/authPermissionContract.test.ts",
+          "line": 14,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        },
+        {
+          "path": "src/app/compatibilityGate.test.tsx",
+          "line": 153,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "PIN_CHANGE_REQUIRED",
+      "message": "Bạn cần đổi PIN tạm trước khi sử dụng quán.",
+      "trigger": "RESTRICTED_TO_PROTECTED_RPC",
+      "statePolicy": "UNCHANGED",
+      "code": "PIN_CHANGE_REQUIRED",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1645,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "src/app/permissionErrorCatalog.test.ts",
+          "line": 23,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "PIN_REUSE_NOT_ALLOWED",
+      "message": "PIN mới phải khác PIN tạm đang dùng.",
+      "trigger": "NEW_PIN_EQUALS_TEMP",
+      "statePolicy": "UNCHANGED",
+      "code": "PIN_REUSE_NOT_ALLOWED",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 3793,
+          "stage": "pin-tc18-wrapper",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "src/app/requiredPinChange.test.tsx",
+          "line": 142,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "PIN_CONFIRMATION_MISMATCH",
+      "message": "Hai lần nhập PIN mới chưa khớp.",
+      "trigger": "CONFIRMATION_DIFFERS",
+      "statePolicy": "UNCHANGED",
+      "code": "PIN_CONFIRMATION_MISMATCH",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1340,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "src/app/requiredPinChange.test.tsx",
+          "line": 114,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "INVALID_EMPLOYEE_REQUEST / PIN",
+      "message": "PIN mới phải gồm 6 chữ số.",
+      "trigger": "NEW_PIN_FIVE_DIGITS",
+      "statePolicy": "UNCHANGED",
+      "code": "INVALID_EMPLOYEE_REQUEST",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 139,
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER"
+        },
+        {
+          "path": "src/app/requiredPinChange.test.tsx",
+          "line": 114,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "INVALID_EMPLOYEE_REQUEST / payload khác",
+      "message": "Yêu cầu đổi PIN không hợp lệ. Vui lòng thử lại.",
+      "trigger": "FORCED_PAYLOAD_EXTRA_TARGET",
+      "statePolicy": "UNCHANGED",
+      "code": "INVALID_EMPLOYEE_REQUEST",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 139,
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER"
+        },
+        {
+          "path": "src/adapters/supabase/permissionIdentityRepo.test.ts",
+          "line": 120,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        },
+        {
+          "path": "src/app/requiredPinChange.test.tsx",
+          "line": 142,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "EMPLOYEE_SESSION_REQUIRED",
+      "message": "Phiên nhân viên không còn hợp lệ. Vui lòng đăng nhập lại.",
+      "trigger": "REVOKED_EMPLOYEE_SESSION",
+      "statePolicy": "UNCHANGED",
+      "code": "EMPLOYEE_SESSION_REQUIRED",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1385,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "src/app/requiredPinChange.test.tsx",
+          "line": 94,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "EMPLOYEE_VERSION_CONFLICT",
+      "message": "PIN hoặc trạng thái tài khoản đã thay đổi. Vui lòng đăng nhập lại.",
+      "trigger": "STALE_EMPLOYEE_REVISION",
+      "statePolicy": "UNCHANGED",
+      "code": "EMPLOYEE_VERSION_CONFLICT",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 294,
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER"
+        },
+        {
+          "path": "src/app/requiredPinChange.test.tsx",
+          "line": 128,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "ADMIN_REQUEST_REUSED",
+      "message": "Mã yêu cầu đã được dùng cho nội dung khác. Vui lòng tạo yêu cầu mới.",
+      "trigger": "SAME_REQUEST_ID_DIFFERENT_PAYLOAD",
+      "statePolicy": "UNCHANGED",
+      "code": "ADMIN_REQUEST_REUSED",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 678,
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER"
+        },
+        {
+          "path": "tests/operator/ownerRecoveryOperator.spec.ts",
+          "line": 65,
+          "stage": "pin-static-operator",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "PERMISSION_UPDATE_UNAVAILABLE / đổi PIN",
+      "message": "Chưa xác nhận được việc đổi PIN. Vui lòng đăng nhập lại bằng PIN mới; nếu chưa được, thử lại bằng PIN tạm.",
+      "trigger": "COMPLETE_COMMIT_ACK_LOST",
+      "statePolicy": "ACK_OUTCOME_UNKNOWN_NO_AUTO_REPLAY",
+      "code": "PERMISSION_UPDATE_UNAVAILABLE",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1937,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1986,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4448,
+          "stage": "pin-tc18-wrapper",
+          "executionProfile": "PIN_ONBOARD"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "PERMISSION_UPDATE_UNAVAILABLE / recovery",
+      "message": "Chưa xác nhận được việc khôi phục PIN. Kiểm tra hồ sơ trước khi thử lại cùng yêu cầu.",
+      "trigger": "RECOVERY_COMMIT_ACK_LOST",
+      "statePolicy": "ACK_OUTCOME_UNKNOWN_NO_AUTO_REPLAY",
+      "code": "PERMISSION_UPDATE_UNAVAILABLE",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4570,
+          "stage": "pin-tc18-wrapper",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4626,
+          "stage": "pin-tc18-wrapper",
+          "executionProfile": "PIN_ONBOARD"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "PERMISSION_UPDATE_UNAVAILABLE / proof check",
+      "message": "Chưa kiểm tra được phiên. Vui lòng thử lại khi có kết nối.",
+      "trigger": "PROOF_NETWORK_ABORTED",
+      "statePolicy": "ACK_OUTCOME_UNKNOWN_NO_AUTO_REPLAY",
+      "code": "PERMISSION_UPDATE_UNAVAILABLE",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1365,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "src/app/requiredPinChange.test.tsx",
+          "line": 102,
+          "phase": "unit",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "PERMISSION_UPDATE_UNAVAILABLE / tạo quán",
+      "message": "Chưa xác nhận được việc tạo quán. Giữ trang này và thử lại để tiếp tục cùng yêu cầu.",
+      "trigger": "BOOTSTRAP_COMMIT_ACK_LOST",
+      "statePolicy": "ACK_OUTCOME_UNKNOWN_NO_AUTO_REPLAY",
+      "code": "PERMISSION_UPDATE_UNAVAILABLE",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2371,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 502,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "PERMISSION_UPDATE_UNAVAILABLE / seed",
+      "message": "Chưa hoàn tất dữ liệu mẫu. Bạn vẫn có thể vào quán hoặc chọn thử lại.",
+      "trigger": "SEED_STAGE_FAILURE",
+      "statePolicy": "ACK_OUTCOME_UNKNOWN_NO_AUTO_REPLAY",
+      "code": "PERMISSION_UPDATE_UNAVAILABLE",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4277,
+          "stage": "pin-tc18-wrapper",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4326,
+          "stage": "pin-tc18-wrapper",
+          "executionProfile": "PIN_ONBOARD"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "OWNER_RECOVERY_REVIEW_REQUIRED",
+      "message": "Chưa đủ căn cứ khôi phục chủ quán. Cần xác minh hồ sơ hỗ trợ.",
+      "trigger": "RECOVERY_MISSING_REF",
+      "statePolicy": "UNCHANGED",
+      "code": "OWNER_RECOVERY_REVIEW_REQUIRED",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 715,
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER"
+        },
+        {
+          "path": "tests/contracts/ownerRecoveryOperator.tool.test.mjs",
+          "line": 86,
+          "phase": "tooling",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "OWNER_PROTECTED",
+      "message": "Tài khoản cần khôi phục phải là chủ quán đang hoạt động.",
+      "trigger": "RECOVERY_TARGET_INACTIVE_OR_NONOWNER",
+      "statePolicy": "UNCHANGED",
+      "code": "OWNER_PROTECTED",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 715,
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER"
+        },
+        {
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 798,
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER"
+        },
+        {
+          "path": "tests/contracts/ownerRecoveryOperator.tool.test.mjs",
+          "line": 86,
+          "phase": "tooling",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "NOT_FOUND",
+      "message": "Không tìm thấy tài khoản cần khôi phục.",
+      "trigger": "RECOVERY_TARGET_MISSING",
+      "statePolicy": "UNCHANGED",
+      "code": "NOT_FOUND",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 715,
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER"
+        },
+        {
+          "path": "tests/operator/ownerRecoveryOperator.spec.ts",
+          "line": 49,
+          "stage": "pin-static-operator",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "FORBIDDEN",
+      "message": "Bạn không có quyền thực hiện thao tác này.",
+      "trigger": "RECOVERY_OPERATOR_ROLE_MISSING",
+      "statePolicy": "UNCHANGED",
+      "code": "FORBIDDEN",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 764,
+          "stage": "pin-identity-server",
+          "executionProfile": "PIN_IDENTITY_SERVER"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 3962,
+          "stage": "pin-tc18-wrapper",
+          "executionProfile": "PIN_ONBOARD"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "INVALID_WRITE_REQUEST / onboarding",
+      "message": "Tên quán phải có 1–120 ký tự, địa chỉ tối đa 500 ký tự và lựa chọn dữ liệu mẫu phải hợp lệ.",
+      "trigger": "CREATE_NAME_121_CODEPOINTS",
+      "statePolicy": "UNCHANGED",
+      "code": "INVALID_WRITE_REQUEST",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2046,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2056,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "BOOTSTRAP_CONFLICT",
+      "message": "Thông tin tạo quán không khớp yêu cầu ban đầu. Đã dừng để tránh tạo trùng quán.",
+      "trigger": "BOOTSTRAP_SAME_ID_CHANGED_PAYLOAD",
+      "statePolicy": "UNCHANGED",
+      "code": "BOOTSTRAP_CONFLICT",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2088,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2149,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2294,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "ENTITY_ID_CONFLICT / seed",
+      "message": "Dữ liệu hiện có trùng với dữ liệu mẫu. Đã dừng để giữ các thay đổi của quán.",
+      "trigger": "SEED_EXISTING_ID_WITHOUT_STAGE_RECEIPT",
+      "statePolicy": "UNCHANGED",
+      "code": "ENTITY_ID_CONFLICT",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 3015,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 3047,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "INITIAL_SEED_ATTEMPT_STALE",
+      "message": "Tiến trình dữ liệu mẫu đã thay đổi. Kiểm tra trạng thái trước khi thử lại.",
+      "trigger": "SEED_OLD_RUN_GENERATION",
+      "statePolicy": "UNCHANGED",
+      "code": "INITIAL_SEED_ATTEMPT_STALE",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4345,
+          "stage": "pin-tc18-wrapper",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4347,
+          "stage": "pin-tc18-wrapper",
+          "executionProfile": "PIN_ONBOARD"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "Giới hạn hard reload, thông báo không giả server recovery",
+      "message": "Trang đã tải lại. Nếu bạn vừa tạo quán, hãy dùng Store Key đã lưu để ghép quán khi cần. Hệ thống không thể hiển thị lại Store Key chưa được lưu.",
+      "trigger": "PAGE_HARD_RELOAD_UNSAVED_STORE_KEY",
+      "statePolicy": "UNCHANGED",
+      "code": "PAGE_HARD_RELOAD",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2653,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        },
+        {
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2681,
+          "stage": "pin-onboard-closeout",
+          "executionProfile": "PIN_ONBOARD"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "RELEASE_TARGET_NOT_EMPTY / tool mới",
+      "message": "Đích phát hành còn dữ liệu quán. Đã dừng kích hoạt.",
+      "trigger": "RELEASE_TENANT_ROWS_PRESENT",
+      "statePolicy": "UNCHANGED",
+      "code": "RELEASE_TARGET_NOT_EMPTY",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 109,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 139,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 159,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "TARGET_STORE_SET_MISMATCH / tool hiện có",
+      "message": "Dữ liệu đích đã thay đổi. Đã dừng kích hoạt.",
+      "trigger": "RELEASE_STORE_SET_CHANGED",
+      "statePolicy": "UNCHANGED",
+      "code": "TARGET_STORE_SET_MISMATCH",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 109,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 139,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 159,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "TARGET_TENANT_SCHEMA_MISMATCH / release preflight mới",
+      "message": "Lược đồ dữ liệu quán đã thay đổi. Đã dừng để rà soát.",
+      "trigger": "RELEASE_SCHEMA_CHANGED",
+      "statePolicy": "UNCHANGED",
+      "code": "TARGET_TENANT_SCHEMA_MISMATCH",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 109,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 139,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 159,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "ACTIVATION_TARGET_NOT_EMPTY / activation mới",
+      "message": "Đích phát hành còn dữ liệu quán. Đã dừng kích hoạt.",
+      "trigger": "ACTIVATION_TENANT_ROWS_PRESENT",
+      "statePolicy": "UNCHANGED",
+      "code": "ACTIVATION_TARGET_NOT_EMPTY",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 109,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 139,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 159,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "ACTIVATION_STORE_SET_MISMATCH / activation hiện có",
+      "message": "Dữ liệu đích đã thay đổi. Đã dừng kích hoạt.",
+      "trigger": "ACTIVATION_STORE_SET_CHANGED",
+      "statePolicy": "UNCHANGED",
+      "code": "ACTIVATION_STORE_SET_MISMATCH",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 109,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 139,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 159,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "ACTIVATION_TENANT_SCHEMA_MISMATCH / activation mới",
+      "message": "Lược đồ dữ liệu quán đã thay đổi. Đã dừng để rà soát.",
+      "trigger": "ACTIVATION_SCHEMA_CHANGED",
+      "statePolicy": "UNCHANGED",
+      "code": "ACTIVATION_TENANT_SCHEMA_MISMATCH",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 109,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 139,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 159,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    },
+    {
+      "id": "INVALID_TARGET_CONFIG / tool hiện có",
+      "message": "Cấu hình đích phát hành không hợp lệ.",
+      "trigger": "TARGET_CONFIG_INVALID",
+      "statePolicy": "UNCHANGED",
+      "code": "INVALID_TARGET_CONFIG",
+      "mappingStatus": "SOURCE_MAPPING_WIP",
+      "executionStatus": "NOT_EXECUTED",
+      "runtimeVerdict": "NOT_EXECUTED",
+      "observedEvidence": [],
+      "chainAnchors": [
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 109,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 139,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        },
+        {
+          "path": "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts",
+          "line": 159,
+          "stage": "pin-canary-empty",
+          "executionProfile": "PIN_CANARY"
+        }
+      ],
+      "closure": "Bind all actual same-source trigger/adapter/component stage-or-phase receipts; preserve composition boundary and allowed effects."
+    }
+  ],
+  "joinRecipe": {
+    "stageCatalog": [
+      {
+        "stage": "candidate-unit",
+        "executionProfile": "STATIC",
+        "requiredIdentities": 171,
+        "config": "vitest.config.ts",
+        "configSHA256": "1cb32e60581f3bc8c6f2a6e487e2c337a89d40f3ae966b82896792ce5b077042"
+      },
+      {
+        "stage": "foundation-unit",
+        "executionProfile": "STATIC",
+        "requiredIdentities": 108,
+        "config": "vitest.config.ts",
+        "configSHA256": "1cb32e60581f3bc8c6f2a6e487e2c337a89d40f3ae966b82896792ce5b077042"
+      },
+      {
+        "stage": "legacy-t01-tools",
+        "executionProfile": "STATIC",
+        "requiredIdentities": 28,
+        "config": "tests/contracts/tooling.config.ts",
+        "configSHA256": "b778af6f78cf2452fe2c0f7853ee397ef7578ff0771495dd8bb1ff61c4a0eb3c"
+      },
+      {
+        "stage": "candidate-seed-tools",
+        "executionProfile": "STATIC",
+        "requiredIdentities": 4,
+        "config": "vitest.permission-seed.config.ts",
+        "configSHA256": "f75a0487c8ec9a06878d33ad4b39e9bab9dc14de85a301b69c06f0be6183da53"
+      },
+      {
+        "stage": "pin-static-operator",
+        "executionProfile": "STATIC",
+        "requiredIdentities": 2,
+        "config": "playwright.owner-recovery-operator.config.ts",
+        "configSHA256": "b6e201334e611fafd5e04c97f77a0b7a1f547e4d494a53b440506d78119f60bf"
+      },
+      {
+        "stage": "pin-onboard-closeout",
+        "executionProfile": "PIN_ONBOARD",
+        "requiredIdentities": 48,
+        "config": "playwright.pin-onboard-closeout.config.ts",
+        "configSHA256": "05203e6f86fb0b6e4e25099725a232e1155ad2de325356a5a628d1a637fe9d73"
+      },
+      {
+        "stage": "pin-tc18-wrapper",
+        "executionProfile": "PIN_ONBOARD",
+        "requiredIdentities": 7,
+        "config": "playwright.pin-tc18.config.ts",
+        "configSHA256": "a268f4913f6f9309389de21958363181ff54f82b5355c1298a9cf91cc9d23fc1"
+      },
+      {
+        "stage": "pin-onboard-race",
+        "executionProfile": "PIN_RACE",
+        "requiredIdentities": 2,
+        "config": "playwright.permission-pin-race.config.ts",
+        "configSHA256": "08f3fd61434d6746ba6d16c94471f056565bc14c7576c3393dadeb59406fe681"
+      },
+      {
+        "stage": "pin-onboard-expiry",
+        "executionProfile": "PIN_EXPIRY",
+        "requiredIdentities": 1,
+        "config": "playwright.permission-pin-expiry.config.ts",
+        "configSHA256": "f89601f033482495ba757115bbd512bfc30e69f730615352368887961a987b92"
+      },
+      {
+        "stage": "pin-identity-server",
+        "executionProfile": "PIN_IDENTITY_SERVER",
+        "requiredIdentities": 41,
+        "config": "vitest.owner-pin-server.config.ts",
+        "configSHA256": "de3cb6d61c112dae0de7f6bb96bf8655d6b2de4108cfc026cbf3ecfa247beefc"
+      },
+      {
+        "stage": "pin-identity-onboarding",
+        "executionProfile": "PIN_IDENTITY_ONBOARDING",
+        "requiredIdentities": 9,
+        "config": "playwright.owner-pin-onboarding.config.ts",
+        "configSHA256": "a0ffdff6d1d495ff0ad667e3626b8d06e4f3de19f687f330a7220fae935741fb"
+      },
+      {
+        "stage": "pin-canary-empty",
+        "executionProfile": "PIN_CANARY",
+        "requiredIdentities": 1,
+        "config": "vitest.permission-canary-empty-runtime.config.ts",
+        "configSHA256": "bb6ddecb5d0b8f111c4bd54c807f857f15443134752c896da3796c0e99b5b0b1"
+      },
+      {
+        "stage": "legacy-t01-database",
+        "executionProfile": "PG16_T01",
+        "requiredIdentities": 30,
+        "config": "vitest.permission.config.ts",
+        "configSHA256": "15c2ef7eaff78fea90196979f06aadb3ae1b0f15eae21131273d719981b02ae4"
+      },
+      {
+        "stage": "bridge-bridge-database",
+        "executionProfile": "SUPABASE_T02",
+        "requiredIdentities": 10,
+        "config": "vitest.permission-bridge.config.ts",
+        "configSHA256": "02d30da5cca14fc2a66434fe5abe6ab4a2d7abcdae6faa75ca71748859d4c6e5"
+      },
+      {
+        "stage": "candidate-bridge-database",
+        "executionProfile": "SUPABASE_T02",
+        "requiredIdentities": 3,
+        "config": "vitest.permission-bridge.config.ts",
+        "configSHA256": "02d30da5cca14fc2a66434fe5abe6ab4a2d7abcdae6faa75ca71748859d4c6e5"
+      },
+      {
+        "stage": "foundation-database",
+        "executionProfile": "SUPABASE_T02",
+        "requiredIdentities": 4,
+        "config": "vitest.permission-foundation.config.ts",
+        "configSHA256": "7d07e4ae348297e0741194d2ecdc8dc464548954d2cfdd00794ae8051e3043c2"
+      },
+      {
+        "stage": "identity-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 42,
+        "config": "vitest.permission-identity.config.ts",
+        "configSHA256": "7736497355a111e55efb85d105ff595495b17e35d1d7d5de109baad0ac01e9b5"
+      },
+      {
+        "stage": "candidate-images-service",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 1,
+        "config": "vitest.permission-images-runtime.config.ts",
+        "configSHA256": "4ed8571267910a368f61b176615b8eb56027d5d2a57b72459d69e64eaa15d8aa"
+      },
+      {
+        "stage": "administration-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 55,
+        "config": "vitest.permission-administration.config.ts",
+        "configSHA256": "c8603422fa9fa6265a9adbe1b034210e55a405c74848d82d6cd7207e5d3cc21b"
+      },
+      {
+        "stage": "read-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 120,
+        "config": "vitest.permission-read.config.ts",
+        "configSHA256": "c858ed4a7a9f5723d21d6560092b25a7c81841853e4afdc724f7fd6b9f42c4e4"
+      },
+      {
+        "stage": "clear-demo-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 9,
+        "config": "vitest.permission-clear-demo.config.ts",
+        "configSHA256": "f3049d4f893964f58975d97652316e48673ed304419977896102c90762a53fc5"
+      },
+      {
+        "stage": "candidate-signals-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 3,
+        "config": "vitest.permission-signals.config.ts",
+        "configSHA256": "d9f61348f2653383f00b96b04d3745bfc8dc7ea2aa6b380661057031373c8acc"
+      },
+      {
+        "stage": "financial-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 37,
+        "config": "vitest.permission-financial.config.ts",
+        "configSHA256": "19903ae2e4abdf05e0656e9a98f31c7d0a92bbfa80635bc030df7b8d2e651efc"
+      },
+      {
+        "stage": "candidate-print-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 4,
+        "config": "vitest.permission-print.config.ts",
+        "configSHA256": "502da99a9a94badba4bb50bf2558b561e4a1cb504318223622cda055b5503d6d"
+      },
+      {
+        "stage": "candidate-bulk-concurrency-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 4,
+        "config": "vitest.permission-bulk-concurrency.config.ts",
+        "configSHA256": "05463088f02d7eec92707996da1ec629407e729dd36c3fa80eca8fd6c27e7d7d"
+      },
+      {
+        "stage": "candidate-e2e",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 2,
+        "config": "playwright.permission-candidate.config.ts",
+        "configSHA256": "3e6721450d4384c65b5f96e8c865d939d3cedf7cc6cd792223e7c59f307459d7"
+      },
+      {
+        "stage": "candidate-seed-recovery-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 1,
+        "config": "vitest.permission-seed-recovery.config.ts",
+        "configSHA256": "f9ccbf19f0345481a740e8196c1f499a16f7788d84d18baeb23691dbb909f4ad"
+      },
+      {
+        "stage": "candidate-roles-e2e",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 1,
+        "config": "playwright.permission-roles.config.ts",
+        "configSHA256": "9db2abfce2a8cf494719a8827b01ebb900ace58e962f37bfe5d46cbc66384778"
+      },
+      {
+        "stage": "realtime-e2e",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 1,
+        "config": "playwright.permission-realtime.config.ts",
+        "configSHA256": "d6e6d1de9be27e9d6b93dccf266311682402fa825ec72802842d53b9c6fc77d6"
+      },
+      {
+        "stage": "rollback-additive-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 1,
+        "config": "vitest.permission-rollback.config.ts",
+        "configSHA256": "e1ce9099fc3d4f26d1cf99ebeaa17e753546c2ef785273c6d31a1b7f706ca261"
+      },
+      {
+        "stage": "rollback-preflight-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 1,
+        "config": "vitest.permission-rollback.config.ts",
+        "configSHA256": "e1ce9099fc3d4f26d1cf99ebeaa17e753546c2ef785273c6d31a1b7f706ca261"
+      },
+      {
+        "stage": "rollback-recovery-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 1,
+        "config": "vitest.permission-rollback.config.ts",
+        "configSHA256": "e1ce9099fc3d4f26d1cf99ebeaa17e753546c2ef785273c6d31a1b7f706ca261"
+      },
+      {
+        "stage": "transition-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 4,
+        "config": "vitest.permission-transition.config.ts",
+        "configSHA256": "c435ab5bf7cb14d81e5753c444cf833e0476c88569ad1fe636d0504dffa59964"
+      },
+      {
+        "stage": "transition-e2e",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 1,
+        "config": "playwright.permission-legacy-transition.config.ts",
+        "configSHA256": "7852e623e9f7ec71c12a203824a10a47034112efb4c6de893271024a500cb62b"
+      },
+      {
+        "stage": "transition-compatibility-database",
+        "executionProfile": "SUPABASE_T04",
+        "requiredIdentities": 3,
+        "config": "vitest.permission-compatibility.config.ts",
+        "configSHA256": "79c93debb573f94d76b1679c3162cf95966d12380a45e7c248051b97437b1ea3"
+      }
+    ],
+    "catalogUnion35": {
+      "LIGHT": {
+        "stages": 6,
+        "requiredIdentities": 343,
+        "validators": [
+          "staticProfileCounts",
+          "renderPg16Evidence"
+        ]
+      },
+      "SUPABASE_T04": {
+        "stages": 19,
+        "requiredIdentities": 291,
+        "validator": "renderT04Evidence"
+      },
+      "SEVEN_SERVICE_PROFILES": {
+        "stages": 10,
+        "requiredIdentities": 126,
+        "validator": "renderServiceEvidence"
+      }
+    },
+    "requiredBindings": [
+      "Every actual run remains separately identified; no invented common workflowRunId",
+      "Exact candidate source/workflow SHA, same sourceFingerprint and lockSHA; expected configuration and executionProfile",
+      "Raw GitHub API repository/head_repository/head_branch/event/path/run/attempt1/conclusion, plus source-bound log and exact single reclaim",
+      "T04 onephysical backend, checkpoint/preflight/readback/reset/preservation; all stage PASS; nativePG16 version16 and cleanup",
+      "Stage producer validateRuntimeStage checks actual required discovery/result identities, full-file argv/config and zero required skip/retry; public counts alone are insufficient",
+      "Fresh CI18 is required; ui-selftest23 and source-preserved audit remain separate from manual3image classification",
+      "Final recoverable source/spec/config/lock manifest plus two independent non-author final reviews"
+    ],
+    "proofBoundary": "Source-bound trusted CI producer assertions plus actual safe receipts establish observations under D19. STATIC aggregate counts and outer phase hashes do not expose individual stage hashes/identities; those are validated privately by pinned producer. Do not require an unavailable public per-stage report, fabricate one, copy raw private captures, or mistake public counts alone for all12supplemental oracles."
+  },
+  "safeReceiptSelectors": {
+    "LIGHT": "Actual source-bound candidateCi.summary.phases[id=permission-static]: require PASS/exit0. phase.counts exposes only {run,pass,fail,skip}. phase.reportSHA and phase.invocationSHA ARE exported outer-phase hashes by publicSummary; they do not expose or replace any individual STATIC stage reportSHA/invocationSHA. Individual5stage rows/identities/hashes remain private in-job. Join this actual safe phase receipt with pinned project-ci.mjs:323 and staticProfileCounts:13-29, which validates every private stage before returning the aggregate. Do not fabricate public per-stage hashes/reports. PG16 additionally has rendered permission-pg16-runtime-v1 in workflow log and source/run-bound cleanup.",
+    "SERVICE": "service-observed-checkpoint-v1[executionProfile=expected].evidence[0].stages[stage=id] after renderServiceEvidence and source/profile/attempt checks",
+    "T04": "t04-observed-checkpoint-v1.evidence[0].stages[stage=id] after renderT04Evidence and preservation/reset checks",
+    "TC18": "PIN_ONBOARD nested stage pin-tc18-wrapper; command must invoke permission-pin-canary-run.mjs, whose actual successful exit follows post-child artifact scan",
+    "IMAGES": "current-source permission-pin-ui-photos-v1 +3hashedPNG + separate real inspection/classification receipt",
+    "noPassFromCounts": "No source-mapped row or pure permission-full declaration becomes actual PASS merely from a total; complete producer/source/assertion mapping and actual receipts are reviewed together"
+  },
+  "constraints": [
+    "New docs WIP only; frozen candidate, oldmap and historical evidence not edited",
+    "Selectors are lookup recipes, never authorization for partial runtime or grep filters",
+    "No new aggregator/controller/hosted adapter/WSL/runtime install; no extra profile beyond the eight authorized whole profiles invented",
+    "Original database and production remain forbidden; no secrets/private captures copied",
+    "Do not change NOT_EXECUTED to PASS without new exact-source receipts and independent final review; author cannot self-approve this map"
+  ],
+  "scope": "Candidate fullgate before PR/main bookkeeping; PR/main synthetic/merge source binding is reviewed separately under the postgate CI annex.",
+  "authorReviewStatus": "WIP_ONLY_REQUIRES_NON_AUTHOR_REVIEW_BEFORE_FINAL_GATE_USE"
+}

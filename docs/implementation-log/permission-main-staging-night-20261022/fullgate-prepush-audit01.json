@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "permission-night-fullgate-prepush-audit-v1",
+  "recordedAtUtc": "2026-10-22 12:18:33 UTC",
+  "reviewer": "/root/mcp_staging_scope_review",
+  "scope": "Read-only source mapping and existing join recipe; no runtime execution",
+  "sourceRoot": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+  "baseSourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "sourceState": "Base plus five-file guard WIP; product and existing business tests unchanged",
+  "finding": "No demonstrated assertion gap requiring product/test changes before first push; prior NEEDS_VERIFICATION rows are evidence mapping gaps, not proven code defects",
+  "lanes": [
+    {"lane": "fresh light STATIC and native PG16", "stages": 6, "requiredIdentities": 343, "validators": ["staticProfileCounts", "renderPg16Evidence"]},
+    {"lane": "SUPABASE_T04", "stages": 19, "requiredIdentities": 291, "validators": ["renderT04Evidence"]},
+    {"lane": "seven whole service profiles", "stages": 10, "requiredIdentities": 126, "validators": ["renderServiceEvidence"]}
+  ],
+  "expectedUnion": {"stages": 35, "requiredIdentities": 760, "supplementalObligations": 12},
+  "mappingAnchors": {
+    "routes": ["tests/supabase/ownerPinOnboardingCloseout.spec.ts:1595", "tests/contracts/permissionRead.contract.test.ts:348"],
+    "recovery": ["tests/contracts/ownerPinServerRuntime.contract.test.ts:715", "tests/contracts/ownerPinServerRuntime.contract.test.ts:764", "tests/contracts/ownerPinServerRuntime.contract.test.ts:798"],
+    "macAudit": ["tests/supabase/ownerPinOnboardingCloseout.spec.ts:114", "tests/supabase/ownerPinOnboardingCloseout.spec.ts:137", "tests/supabase/ownerPinOnboardingCloseout.spec.ts:4687"],
+    "errors": "34 expected sentences independently present; trigger/adapter/component mapping reviewed, runtime receipts still required"
+  },
+  "remaining": ["Exact-source light CI and eight heavy receipts", "Catalog union and source/fingerprint/lock/profile/config checks", "Zero required skip/retry and actual preservation/reclaim", "Inspect and classify three fresh synthetic PIN screenshots", "Complete 12-obligation receipt mapping and recoverable source manifest", "Two final non-author reviews"],
+  "notRuntimePass": true,
+  "additionalRuntimeIdentified": false,
+  "note": "No executable full-safe-receipt aggregator currently closes all gates; D19 permits reviewed runbook join. Pure permission-full prototypes are not accepted as runtime evidence. Preserve actual run IDs."
+}

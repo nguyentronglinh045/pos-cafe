@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "receipt-boundary-cleanup-blocked-v1",
+  "recordedUtc": "2026-10-24T03:06:37.0962162Z",
+  "authorized": true,
+  "precheck": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/receipt-boundary-cleanup-precheck01.json",
+  "action": "Remove-Item -LiteralPath exact27paths -Recurse -Force",
+  "result": "AUTOMATIC_APPROVAL_POLICY_REJECTED_BEFORE_PROCESS_CREATION",
+  "statedReason": "blocked by policy",
+  "attemptedAlternative": false,
+  "presentDirectories": 27,
+  "deletedDirectories": 0,
+  "logicalBytesRetained": 961434,
+  "reclaimedBytesClaimed": 0,
+  "pathsFile": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/receipt-boundary-control-paths01.txt",
+  "disksAfter": [
+    {
+      "DeviceID": "C:",
+      "FreeSpace": 190182539264
+    },
+    {
+      "DeviceID": "D:",
+      "FreeSpace": 98857959424
+    }
+  ]
+}

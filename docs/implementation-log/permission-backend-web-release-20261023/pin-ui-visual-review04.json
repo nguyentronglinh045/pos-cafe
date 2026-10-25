@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "permission-pin-ui-manual-visual-v4",
+  "recordedUtc": "2026-10-24T03:20:17.356Z",
+  "reviewer": "/root",
+  "sourceSHA": "f8ee03c195127bb440b0ede3142622ed21c3cc96",
+  "runId": "40056801014",
+  "attempt": 1,
+  "artifactId": "12546311442",
+  "manifestSHA256": "5ef794838617de6687ee3b78ca6abb98586ba6d8b829ea29d5722aa71f7b3c78",
+  "inspection": "Freshly opened each exact run artifact with view_image after ZIP/native validator checks; no prior visual verdict reused.",
+  "photos": [
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-40056801014-1/required_pin_change__desktop.png",
+      "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e",
+      "viewport": "desktop",
+      "imageWidth": 1440,
+      "imageHeight": 900,
+      "opened": true,
+      "verdict": "PASS_VISIBLE_UNMASKED_AREAS",
+      "findings": [],
+      "notes": "Readable heading/account/action labels; card and all3actions visible with no unmasked clipping or overlap."
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-40056801014-1/required_pin_change__tablet.png",
+      "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca",
+      "viewport": "tablet",
+      "imageWidth": 1024,
+      "imageHeight": 768,
+      "opened": true,
+      "verdict": "PASS_VISIBLE_UNMASKED_AREAS",
+      "findings": [],
+      "notes": "Readable heading/account/action labels; card and all3actions visible with no unmasked clipping or overlap."
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-40056801014-1/required_pin_change__mobile.png",
+      "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f",
+      "viewport": "mobile",
+      "imageWidth": 844,
+      "imageHeight": 419,
+      "opened": true,
+      "verdict": "PASS_VISIBLE_UNMASKED_AREAS",
+      "findings": [],
+      "notes": "Full-page844x419 for844x390 viewport; heading and all3actions visible within viewport; card lower edge extends full-page, no actionable clipping observed."
+    }
+  ],
+  "scope": "CREDENTIAL_FREE_MOCK_PIN_UI_ONLY",
+  "maskedInputs": "Both password input regions intentionally black-masked; their hidden content/style cannot be judged visually.",
+  "producerManifestUnchanged": true,
+  "producerVisualReview": "NOT_RUN",
+  "hostedOrFunctionalAppProof": false
+}

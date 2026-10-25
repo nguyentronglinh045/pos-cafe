@@ -1,0 +1,131 @@
+{
+  "at": "2026-10-23T13:13:43.948Z",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "actorId": "1cccd1a7-b42d-55ab-8875-1cd088db3267",
+  "itemId": "442499a3-0950-4b6f-a2f4-3ad664897141",
+  "uploadHandle": "9d759f09-5c90-445c-ad7a-706f34f3ba87",
+  "producer": "Existing owner Auth JWT + employee token, public Auth/REST/Edge APIs; explicit multipart; not service_role",
+  "upload": {
+    "index": 10,
+    "at": "2026-10-23T13:13:36.235Z",
+    "kind": "EDGE",
+    "label": "owner-stage-first-image",
+    "path": "menu-image-gateway",
+    "method": "POST",
+    "status": 201,
+    "code": null,
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json"
+    },
+    "bytes": 74,
+    "sha256": "d002d11acfe9204f5d5b7875e9afc55f0cd6b315afe2ceb90e423010afbf52fd"
+  },
+  "unpublishedPublic": {
+    "index": 11,
+    "at": "2026-10-23T13:13:38.754Z",
+    "kind": "EDGE",
+    "label": "known-handle-unpublished-public",
+    "path": "menu-image-public/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+    "method": "GET",
+    "status": 404,
+    "code": "NOT_FOUND",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 41,
+    "sha256": "5d710628a54c13f4620c98551d16ec56c097dda9629f48fc632fe3804b59257a"
+  },
+  "stagedRead": {
+    "index": 12,
+    "at": "2026-10-23T13:13:40.603Z",
+    "kind": "EDGE",
+    "label": "owner-staging-read",
+    "path": "menu-image-gateway/staging/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+    "method": "GET",
+    "status": 200,
+    "code": null,
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/octet-stream",
+      "x-content-type-options": "nosniff",
+      "x-image-content-type": "image/png"
+    },
+    "bytes": 68,
+    "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460"
+  },
+  "bindingBefore": {
+    "id": "442499a3-0950-4b6f-a2f4-3ad664897141",
+    "name": "TEST - Cà phê",
+    "price": 32000,
+    "sortOrder": 1,
+    "categoryId": "d9b66fad-4a53-480c-a5cf-0ea153b39379",
+    "isAvailable": true,
+    "imageAssetKey": null
+  },
+  "publishResponse": {
+    "ok": true,
+    "data": null
+  },
+  "bindingAfter": {
+    "id": "442499a3-0950-4b6f-a2f4-3ad664897141",
+    "name": "TEST - Cà phê",
+    "price": 32000,
+    "sortOrder": 1,
+    "categoryId": "d9b66fad-4a53-480c-a5cf-0ea153b39379",
+    "isAvailable": true,
+    "imageAssetKey": "9d759f09-5c90-445c-ad7a-706f34f3ba87"
+  },
+  "publicRead": {
+    "index": 13,
+    "at": "2026-10-23T13:13:42.970Z",
+    "kind": "EDGE",
+    "label": "anonymous-published-first-image",
+    "path": "menu-image-public/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+    "method": "GET",
+    "status": 200,
+    "code": null,
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "private, max-age=60, must-revalidate",
+      "content-type": "image/png",
+      "etag": "\"9d759f09-5c90-445c-ad7a-706f34f3ba87\"",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 68,
+    "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460"
+  },
+  "conditional": {
+    "index": 14,
+    "at": "2026-10-23T13:13:43.947Z",
+    "kind": "EDGE",
+    "label": "anonymous-first-image-conditional",
+    "path": "menu-image-public/9d759f09-5c90-445c-ad7a-706f34f3ba87",
+    "method": "GET",
+    "status": 304,
+    "code": null,
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "private, max-age=60, must-revalidate",
+      "etag": "\"9d759f09-5c90-445c-ad7a-706f34f3ba87\"",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

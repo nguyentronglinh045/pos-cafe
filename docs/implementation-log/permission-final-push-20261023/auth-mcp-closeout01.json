@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "permission-auth-mcp-readonly-closeout-v1",
+  "requestCheckpointUtc": "2026-10-23 14:33:36 UTC",
+  "responseCheckpointUtc": "2026-10-23 14:33:38 UTC",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "tool": "mcp__supabase_pos_cafe__execute_sql",
+  "calls": 1,
+  "mutations": 0,
+  "configAdmission": {
+    "path": "D:/Workspace/pos-cafe/.codex/config.toml",
+    "sha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+    "server": "supabase_pos_cafe",
+    "projectRef": "ineckiashpwloncxnbqx",
+    "readOnly": true
+  },
+  "previousObservation": {
+    "path": "auth-mcp-inventory-after01.json",
+    "sha256": "82798465d6abcd1ce3dec212a04f1198ddd0920468ac5ae75dc9b30e60369487"
+  },
+  "query": "with target_store as (\n  select id, store_no from public.stores\n  where store_no = 3 and id = '6b2e76fd-b8f8-4fa9-b784-faee8eb4af36'::uuid\n)\nselect jsonb_build_object(\n  'databaseRole', current_user,\n  'transactionReadOnly', current_setting('transaction_read_only'),\n  'authUsers', (select count(*) from auth.users),\n  'emailConfirmedUsers', (select count(*) from auth.users where email_confirmed_at is not null),\n  'emailUnconfirmedUsers', (select count(*) from auth.users where email_confirmed_at is null),\n  'stores', (select count(*) from public.stores),\n  'employees', (select count(*) from public.employees),\n  'targetStore', (select jsonb_build_object(\n    'storeNo', s.store_no,\n    'storeId', s.id,\n    'owners', (select coalesce(jsonb_agg(jsonb_build_object('ownerId', e.id, 'isActive', e.is_active, 'pinChangeRequired', e.pin_change_required, 'permissionRevision', e.permission_revision) order by e.id), '[]'::jsonb) from public.employees e where e.store_id = s.id and e.role = 'owner'),\n    'employeeSessions', (select jsonb_build_object(\n      'total', count(*),\n      'active', count(*) filter (where x.revoked_at is null and x.expires_at > statement_timestamp()),\n      'revoked', count(*) filter (where x.revoked_at is not null)\n    ) from private.employee_sessions x where x.store_id = s.id),\n    'authSessionsSelectAllowed', has_table_privilege(current_user, 'auth.sessions', 'SELECT'),\n    'authSessionRows', (select count(*) from auth.sessions a where a.user_id = s.id),\n    'storeSettings', (select count(*) from public.store_settings x where x.store_id = s.id),\n    'seedWorkflow', (select jsonb_build_object('requested', w.requested, 'status', w.status) from private.initial_seed_workflows w where w.store_id = s.id),\n    'seedStages', (select count(*) from private.initial_seed_stages st join private.initial_seed_workflows w on w.workflow_id = st.workflow_id where w.store_id = s.id),\n    'categories', (select count(*) from public.categories x where x.store_id = s.id),\n    'menuItems', (select count(*) from public.menu_items x where x.store_id = s.id),\n    'floorAreas', (select count(*) from public.floor_areas x where x.store_id = s.id),\n    'tables', (select count(*) from public.tables x where x.store_id = s.id),\n    'orders', (select count(*) from public.orders x where x.store_id = s.id),\n    'payments', (select count(*) from public.payments x where x.store_id = s.id)\n  ) from target_store s)\n) as observation;",
+  "observation": {
+    "stores": 3,
+    "authUsers": 3,
+    "employees": 4,
+    "targetStore": {
+      "orders": 0,
+      "owners": [
+        {
+          "ownerId": "0feee792-8784-54d0-bc2f-ef944e95b2a4",
+          "isActive": true,
+          "pinChangeRequired": false,
+          "permissionRevision": 1
+        }
+      ],
+      "tables": 0,
+      "storeId": "6b2e76fd-b8f8-4fa9-b784-faee8eb4af36",
+      "storeNo": 3,
+      "payments": 0,
+      "menuItems": 0,
+      "categories": 0,
+      "floorAreas": 0,
+      "seedStages": 0,
+      "seedWorkflow": {
+        "status": "skipped",
+        "requested": false
+      },
+      "storeSettings": 1,
+      "authSessionRows": 0,
+      "employeeSessions": {
+        "total": 4,
+        "active": 0,
+        "revoked": 4
+      },
+      "authSessionsSelectAllowed": true
+    },
+    "databaseRole": "supabase_read_only_user",
+    "emailConfirmedUsers": 3,
+    "transactionReadOnly": "on",
+    "emailUnconfirmedUsers": 0
+  },
+  "sourceFieldReferences": [
+    "supabase/migrations/014_write_identity_and_ledger.sql:162 private.employee_sessions(store_id,employee_id,issued_at,expires_at,revoked_at)",
+    "supabase/migrations/017_permission_catalog_bridge.sql:33 employees.permission_revision",
+    "supabase/candidate/permission-identity.sql:13 employees.pin_change_required",
+    "supabase/candidate/permission-identity.sql:172 normal authority requires nonrevoked/unexpired session",
+    "https://github.com/supabase/auth/blob/c3348e8f1cb31454e9783e4eb9eab1e71ad9652f/migrations/20220811173540_add_sessions_table.up.sql sessions.user_id"
+  ],
+  "privacy": {
+    "emailValuesIncluded": false,
+    "pinsIncluded": false,
+    "credentialHashesIncluded": false,
+    "tokensIncluded": false,
+    "sessionRowIdentifiersIncluded": false
+  },
+  "limitations": [
+    "One-statement projection of target storeNo3 only; no individual employee/session rows from earlier TEST stores were returned.",
+    "Active employee session count uses revoked_at IS NULL AND expires_at > statement_timestamp().",
+    "auth.sessions was included under the prior optional source-verified scope; its count is not proof that already-issued JWT access tokens are invalidated.",
+    "The parent later clarified that auth.sessions was unnecessary; the query had already completed and no additional query or upstream investigation was performed afterward.",
+    "No app, Auth configuration, tenant or business data was modified by this inventory."
+  ]
+}

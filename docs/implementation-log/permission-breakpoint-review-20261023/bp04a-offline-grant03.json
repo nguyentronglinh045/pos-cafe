@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "permission-bp4a-offline-remediation-grant-v1",
+  "reference": "request_user_input_async call_1664298b1b0441ff83fe34f0a241f135 item0",
+  "answer": "Cho sửa recipe + kiểm offline trong hạn cũ (khuyến nghị)",
+  "recordedAtUtc": "2026-10-23T04:19:31Z",
+  "deadlineUtc": "2026-10-23T04:30:43Z",
+  "maxMinutes": 20,
+  "actualWindow": "Earlier of recordedAtUtc+20 minutes and deadlineUtc",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "approvedProposalSHA256": "125cf8be15e48d96e71562a790837c979d0c23c8ee86000a869373341c624fe9",
+  "allowed": [
+    "recipe/parser correction in operations with original preserved",
+    "offline existing 309 SRI cache archives and security negative controls",
+    "independent reviews and docs evidence"
+  ],
+  "excluded": [
+    "network",
+    "install",
+    "application build",
+    "application unit suite",
+    "push",
+    "CI",
+    "backend",
+    "database",
+    "deploy",
+    "reset or additional archive preflight attempt"
+  ],
+  "originalArchiveAttemptsSpent": 1,
+  "originalArchiveAttemptsGranted": 1
+}

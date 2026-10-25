@@ -1,0 +1,37 @@
+{
+  "observedAt": "2026-10-22T08:08:05.201207+00:00",
+  "method": "fresh MCP discovery only; no thread/resume, no model, no SQL",
+  "forcedUrl": "https://mcp.supabase.com/mcp?project_ref=ineckiashpwloncxnbqx&read_only=true&features=database,docs",
+  "databaseToolCalls": 0,
+  "originalDatabaseToolCalls": 0,
+  "steps": [
+    {
+      "method": "initialize",
+      "status": "PASS"
+    },
+    {
+      "method": "config/read",
+      "status": "PASS"
+    },
+    {
+      "method": "mcpServerStatus/list",
+      "status": "PASS"
+    }
+  ],
+  "freshConfigVerified": true,
+  "discovery": [
+    {
+      "name": "supabase_pos_cafe",
+      "authStatus": "oAuth",
+      "tools": [
+        "execute_sql",
+        "list_extensions",
+        "list_migrations",
+        "list_tables",
+        "search_docs"
+      ]
+    }
+  ],
+  "status": "MCP_DISCOVERY_PASS_SQL_NOT_TESTED",
+  "processExitCode": 0
+}

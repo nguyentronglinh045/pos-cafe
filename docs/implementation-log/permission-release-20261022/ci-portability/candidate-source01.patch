@@ -1,0 +1,723 @@
+diff --git a/ci/release-policy.json b/ci/release-policy.json
+index 05de936..680a658 100644
+--- a/ci/release-policy.json
++++ b/ci/release-policy.json
+@@ -11,7 +11,7 @@
+     ".github/workflows/ci.yml": "af0b53a559a2970b9d100589802da5a61660369b45268795aaeaacf7dea11a2c",
+     "scripts/project-ci-launch.mjs": "db2ce0777c9bcd314320a7378fb03bfa0dfb18696ca597fc73f733742bd46273",
+     "scripts/project-ci.mjs": "a29c1ec840bc5cf619a894bf3653b310ac605aedf8216a90c7a0c43e2578c1bd",
+-    "scripts/project-ci-results.mjs": "2a821b552b46c364d4bef5d93ed3a4d74c85f95cceae0274532dd9922f3e214a",
++    "scripts/project-ci-results.mjs": "1fd37ac4dbd59b50fe9f6b6871855105c18177aa5ecbef74744a06662f3c69f2",
+     "vitest.config.ts": "1cb32e60581f3bc8c6f2a6e487e2c337a89d40f3ae966b82896792ce5b077042",
+     "vitest.project-tooling.config.ts": "a85416abe41bd3bdb8b70262c82b102be5c48d1e1b5edfdad0eaf7ad9e2b9c31",
+     "playwright.config.ts": "780a3bd5eb4bbb256a2fb1f81cb78a000bf2ee82fd0a2b4e752184eeaa19dba5",
+@@ -36,7 +36,7 @@
+     "scripts/permission-runtime-pg16-cleanup.mjs": "3a47c5a59c08411a702d4622b74dd514395072be9878630f3dc6a1f54109efa8",
+     "scripts/permission-runtime-error-facts.mjs": "5c4a99ae69455cbfd03cb688a7d8df43e2bbe2a7fdfcab630c958606c28b9109",
+     "scripts/permission-runtime-vitest-reporter.mjs": "08b532b0bd2ff64bc8225fc96a7e496f4098e8314e62ee49d186abac996f3252",
+-    "scripts/project-ci-results.test.mjs": "225ac071285288603d0d0a1e75603f5e3ef2c24872b8ba34dfcdd4e075e1bdb6",
++    "scripts/project-ci-results.test.mjs": "cc44627aeca3f6d42b66d14bddeff4ba20848fa4e1609cce07aff2f3ef8ee1a7",
+     "scripts/permission-runtime-stage.mjs": "bfcede0b296d329ab22fe1eabaacb7ece8f12413add07fc1527d2b96a8295119",
+     "scripts/permission-runtime-pin-ui.mjs": "a5effa0a9c2a97ad1c35151aa4f8bfb1a35331e3d88edf9f4cdd4fc82bae93f1",
+     "scripts/permission-pin-ui-policy.mjs": "d23227f8f872c33aa02634e80695577cdf6caaa0040a116f19bc7c1f2adc906e",
+diff --git a/scripts/permission-release-phase-admission.README.md b/scripts/permission-release-phase-admission.README.md
+index 22e0ac0..3dff8a0 100644
+--- a/scripts/permission-release-phase-admission.README.md
++++ b/scripts/permission-release-phase-admission.README.md
+@@ -111,3 +111,61 @@ checks run after claim-parent metadata immediately before exclusive creation,
+ and after claim-hash verification immediately before the actual push. Cached
+ preflight timestamps cannot authorize crossing10:15. Crossing during later
+ revalidation refuses push while retaining the already spent claim.
++
++## Explicit remediation continuation v2
++
++Preparation of v2 grants no publication authority. The original v1 policy and
++`publication-autoci.claim.json` remain immutable and spent; v1 still refuses that
++claim. The21Oct CLOSED budget and its counts2/2/1/6 are unchanged.
++
++V2 uses `schemaVersion=permission-release-phase-admission-v2`, the same phaseId,
++repository, target `branch=run/permissions-20261020`, deadline/cutoff and storage
++caps. Its `sourceRoot` is exactly
++`D:/Workspace/pos-cafe-permission-ci-fix-20261022/code`; its additional
++`sourceBranch` is exactly `fix/permissions-ci-portability-20261022`. Local branch
++facts must match sourceBranch. The target remote expected SHA is fixed to
++`38a55aab775e1d70dba4b62d6658f41e28f8aef1`. The new checkout must have zero
++untracked files; do not copy or stage the15 historical recovery helpers.
++
++Add exactly this `continuation` object to the policy:
++
++```json
++{
++  "kind": "OWNER_GRANTED_REMEDIATION_01",
++  "parentPolicy": {
++    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022/publication-policy01.json",
++    "sha256": "aaf7d7a943927218c1773eb93ba69f308b0e09ec82f9ecff30c87cd4358d6658"
++  },
++  "parentClaim": {
++    "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/permission-release-20261022/publication-autoci.claim.json",
++    "sha256": "74fd7017a497ddc2da4658798f68756edca3ac637e04ecf0b9009f7282e5a598"
++  },
++  "additionalActions": {"publication": 1, "ci": 1},
++  "ownerAuthorization": {
++    "reference": "USER_REPLY_call_ACTUAL_32_LOWERCASE_HEX:item0",
++    "authorizedAtUtc": "ACTUAL_OWNER_REPLY_CANONICAL_ISO_Z"
++  }
++}
++```
++
++The example placeholders are deliberately invalid. Missing, PENDING, malformed,
++non-item0, pre-claim or future authorization is refused. Use the actual owner's
++reply reference and timestamp, after the original claim's02:01:46.917Z timestamp;
++do not fabricate these fields from preparation, silence or an agent's message.
++The guard validates shape/chronology and pinned records; the two non-author
++reviewers must verify that the referenced user reply actually granted this scope.
++It does not independently authenticate a conversation reply.
++
++Both parent files are read-only and raw-hash pinned. Their payloads must bind the
++same phase, source38, predecessor and exactly1publication/1CI. The storage object,
++including baselineFreeBytes, must remain identical to the parent policy: no
++growth-budget reset. Packet schema remains-v1; its admission copies the entire
++v2 scope, and its authors list includes every code author. Two distinct
++non-author source/operations APPROVE records remain required.
++
++Only v2's fixed `publication-autoci-remediation01.claim.json` can be created for
++this continuation, in the original phase evidence directory. It reserves exactly
++one additional publication plus automatic CI before push. The original claim is
++never rewritten. A spent remediation claim is refused independently of policy,
++SHA or output changes. The same fresh-clock barriers, no-open-PR/no-active-job
++checks, reserves and no-retry/no-main/no-DB/no-heavy rules apply.
+diff --git a/scripts/permission-release-phase-admission.mjs b/scripts/permission-release-phase-admission.mjs
+index a930abb..54a89f8 100644
+--- a/scripts/permission-release-phase-admission.mjs
++++ b/scripts/permission-release-phase-admission.mjs
+@@ -7,6 +7,10 @@ export const RELEASE_PHASE=Object.freeze({id:'permission-release-20261022',repos
+  predecessorPolicy:ROOT+'/evidence/loop-prevention-20261021/budget-edge-resolution-2300.json',predecessorJournal:ROOT+'/evidence/loop-prevention-20261021/budget-edge-resolution-2300.json.journal.jsonl',
+  policySHA256:'3c222cb3a5b66a37107522ddce08c2fc8f68e99777f4a921aeb0eba2c936797c',journalSHA256:'583f336dafa025e3088e0afc1dad23be68b2324c6e5f37facc11ca230d372880',
+  claim:ROOT+'/evidence/permission-release-20261022/publication-autoci.claim.json'});
++export const RELEASE_REMEDIATION=Object.freeze({sourceRoot:'D:/Workspace/pos-cafe-permission-ci-fix-20261022/code',sourceBranch:'fix/permissions-ci-portability-20261022',
++ expectedRemoteSHA:'38a55aab775e1d70dba4b62d6658f41e28f8aef1',claim:ROOT+'/evidence/permission-release-20261022/publication-autoci-remediation01.claim.json',
++ parentPolicy:Object.freeze({path:'D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022/publication-policy01.json',sha256:'aaf7d7a943927218c1773eb93ba69f308b0e09ec82f9ecff30c87cd4358d6658'}),
++ parentClaim:Object.freeze({path:RELEASE_PHASE.claim,sha256:'74fd7017a497ddc2da4658798f68756edca3ac637e04ecf0b9009f7282e5a598'})});
+ export const RELEASE_PHASE_TOOLS=Object.freeze(['scripts/permission-release-phase-admission.mjs','scripts/permission-release-phase-admission.test.mjs','scripts/permission-release-phase-admission.README.md']);
+ export const RECOVERY_EXCLUSIONS=Object.freeze(['permission-recovery-capture-controller.mjs','permission-recovery-capture.mjs','permission-recovery-capture.ps1','permission-recovery-cleanup.mjs','permission-recovery-output.mjs','permission-recovery-output.test.mjs','permission-recovery-owner-acl.mjs','permission-recovery-owner-acl.test.mjs','permission-recovery-restore.mjs','permission-recovery-schema.mjs','permission-recovery-schema.test.mjs','permission-recovery-storage.mjs','permission-recovery-toc.mjs','permission-recovery-toc.test.mjs','permission-recovery-tools.mjs'].map(p=>'scripts/'+p));
+ const COUNTS=Object.freeze({publication:2,ci:2,heavy:1,reviewRounds:6}),AUTHORS=['/root','/root/release_gate_feasibility_20261022'];
+@@ -24,10 +28,38 @@ export function candidatePullRequestCount(value){
+ const keys=(v,names)=>check(v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).sort().join(',')===names.slice().sort().join(','),'SCHEMA');
+ export const releasePhaseScope=p=>Object.fromEntries(Object.entries(p).filter(([key])=>!['packet','reviews'].includes(key)));
+ const reference=r=>{keys(r,['path','sha256']);check(typeof r.path==='string'&&/^[A-Z]:[\\/]/i.test(r.path)&&hex(r.sha256,64),'REFERENCE');};
++const remediation=p=>p.schemaVersion==='permission-release-phase-admission-v2';
++const sourceBranch=p=>remediation(p)?p.sourceBranch:p.branch;
++const claimPath=p=>remediation(p)?RELEASE_REMEDIATION.claim:RELEASE_PHASE.claim;
++const iso=value=>typeof value==='string'&&Number.isFinite(Date.parse(value))&&new Date(value).toISOString()===value;
++function validateContinuationGrant(p){
++ const c=p.continuation;check(c&&typeof c==='object','OWNER_GRANT_REQUIRED');keys(c,['kind','parentPolicy','parentClaim','additionalActions','ownerAuthorization']);
++ check(c.kind==='OWNER_GRANTED_REMEDIATION_01'&&canonical(c.parentPolicy)===canonical(RELEASE_REMEDIATION.parentPolicy)
++  &&canonical(c.parentClaim)===canonical(RELEASE_REMEDIATION.parentClaim),'CONTINUATION_BINDING');
++ keys(c.additionalActions,['publication','ci']);check(c.additionalActions.publication===1&&c.additionalActions.ci===1,'ADDITIONAL_ACTIONS');
++ keys(c.ownerAuthorization,['reference','authorizedAtUtc']);check(/^USER_REPLY_call_[a-f0-9]{32}:item0$/.test(c.ownerAuthorization.reference??'')
++  &&iso(c.ownerAuthorization.authorizedAtUtc),'OWNER_GRANT_REQUIRED');
++}
++export function validateContinuationParents(p,parents,nowMs){
++ validateContinuationGrant(p);check(parents&&parents.policy&&parents.claim,'PARENT_RECORDS');const {policy,claim}=parents;
++ check(policy.schemaVersion==='permission-release-phase-admission-v1'&&policy.phaseId===RELEASE_PHASE.id&&policy.repository===RELEASE_PHASE.repository
++  &&policy.branch===RELEASE_PHASE.branch&&policy.sourceRoot===RELEASE_PHASE.sourceRoot&&policy.sourceSHA===RELEASE_REMEDIATION.expectedRemoteSHA
++  &&policy.deadlineUtc===RELEASE_PHASE.deadlineUtc&&policy.publicationCutoffUtc===RELEASE_PHASE.publicationCutoffUtc
++  &&canonical(policy.predecessor)===canonical(p.predecessor),'PARENT_POLICY');
++ check(claim.schemaVersion==='permission-release-phase-publication-claim-v1'&&claim.phaseId===RELEASE_PHASE.id&&claim.sourceSHA===policy.sourceSHA
++  &&claim.policySHA256===RELEASE_REMEDIATION.parentPolicy.sha256&&claim.packetSHA256===policy.packet?.sha256&&claim.reviewsSHA256===policy.reviews?.sha256
++  &&claim.expectedRemoteSHA===policy.expectedRemoteSHA&&canonical(claim.predecessor)===canonical(policy.predecessor)
++  &&canonical(claim.actions)===canonical({publication:1,ci:1})&&iso(claim.atUtc),'PARENT_CLAIM');
++ check(canonical(p.storage)===canonical(policy.storage),'STORAGE_BASELINE_RESET');
++ const authorized=Date.parse(p.continuation.ownerAuthorization.authorizedAtUtc);
++ check(integer(nowMs)&&authorized>Date.parse(claim.atUtc)&&authorized<=nowMs,'OWNER_GRANT_CHRONOLOGY');
++ return true;
++}
+ function validateReleaseScope(p,packet,reviews){
+- keys(p,['schemaVersion','phaseId','repository','branch','sourceRoot','sourceSHA','expectedRemoteSHA','deadlineUtc','publicationCutoffUtc','predecessor','storage','packet','reviews']);
+- check(p.schemaVersion==='permission-release-phase-admission-v1'&&p.phaseId===RELEASE_PHASE.id&&p.repository===RELEASE_PHASE.repository&&p.branch===RELEASE_PHASE.branch
+-  &&p.sourceRoot===RELEASE_PHASE.sourceRoot&&hex(p.sourceSHA,40)&&hex(p.expectedRemoteSHA,40)&&p.sourceSHA!==p.expectedRemoteSHA,'SCOPE');
++ const v2=remediation(p);keys(p,['schemaVersion','phaseId','repository','branch','sourceRoot','sourceSHA','expectedRemoteSHA','deadlineUtc','publicationCutoffUtc','predecessor','storage','packet','reviews',...(v2?['sourceBranch','continuation']:[])]);
++ check((v2||p.schemaVersion==='permission-release-phase-admission-v1')&&p.phaseId===RELEASE_PHASE.id&&p.repository===RELEASE_PHASE.repository&&p.branch===RELEASE_PHASE.branch
++  &&p.sourceRoot===(v2?RELEASE_REMEDIATION.sourceRoot:RELEASE_PHASE.sourceRoot)&&hex(p.sourceSHA,40)&&hex(p.expectedRemoteSHA,40)&&p.sourceSHA!==p.expectedRemoteSHA,'SCOPE');
++ if(v2){check(p.sourceBranch===RELEASE_REMEDIATION.sourceBranch&&p.expectedRemoteSHA===RELEASE_REMEDIATION.expectedRemoteSHA,'CONTINUATION_SOURCE');validateContinuationGrant(p);}
+  check(p.deadlineUtc===RELEASE_PHASE.deadlineUtc&&p.publicationCutoffUtc===RELEASE_PHASE.publicationCutoffUtc,'DEADLINE_POLICY');
+  keys(p.predecessor,['policySHA256','journalSHA256','counts']);check(p.predecessor.policySHA256===RELEASE_PHASE.policySHA256&&p.predecessor.journalSHA256===RELEASE_PHASE.journalSHA256
+   &&canonical(p.predecessor.counts)===canonical(COUNTS),'PREDECESSOR');
+@@ -56,9 +88,10 @@ export function collectReleaseFacts(readFacts,clock=Date.now){const facts=readFa
+ export function runAtReleaseMoment(p,action,clock=Date.now){requireReleaseMoment(p,clock());return action();}
+ export function validateReleasePhase(p,packet,reviews,f){
+  validateReleaseScope(p,packet,reviews);requireReleaseMoment(p,f.nowMs);
++ if(remediation(p))validateContinuationParents(p,f.continuationParents,f.nowMs);
+  check(f.predecessorPolicySHA256===RELEASE_PHASE.policySHA256&&f.predecessorJournalSHA256===RELEASE_PHASE.journalSHA256&&f.predecessorClosed===true,'PREDECESSOR_CHANGED');
+- check(f.head===p.sourceSHA&&f.branch===p.branch&&f.sourceRoot===p.sourceRoot&&f.trackedClean===true&&f.remoteSHA===p.expectedRemoteSHA&&f.fastForward===true,'SOURCE_OR_REMOTE');
+- check(Array.isArray(f.untracked)&&f.untracked.length===RECOVERY_EXCLUSIONS.length&&new Set(f.untracked).size===RECOVERY_EXCLUSIONS.length&&f.untracked.every(x=>RECOVERY_EXCLUSIONS.includes(x)),'UNTRACKED');
++ check(f.head===p.sourceSHA&&f.branch===sourceBranch(p)&&f.sourceRoot===p.sourceRoot&&f.trackedClean===true&&f.remoteSHA===p.expectedRemoteSHA&&f.fastForward===true,'SOURCE_OR_REMOTE');
++ check(Array.isArray(f.untracked)&&(remediation(p)?f.untracked.length===0:f.untracked.length===RECOVERY_EXCLUSIONS.length&&new Set(f.untracked).size===RECOVERY_EXCLUSIONS.length&&f.untracked.every(x=>RECOVERY_EXCLUSIONS.includes(x))),'UNTRACKED');
+  check(Array.isArray(f.tracked)&&Array.isArray(f.pinMatches)&&f.pinMatches.length===packet.sourcePins.length&&f.pinMatches.every(v=>v===true)
+   &&packet.sourcePins.every(pin=>f.tracked.includes(pin.path))&&!RECOVERY_EXCLUSIONS.some(path=>f.tracked.includes(path)),'SOURCE_OR_TOOL_PINS');
+  check(f.originMatches===true&&f.activeJobs===0&&f.claimPresent===false,'REMOTE_OR_CLAIM');
+@@ -66,10 +99,12 @@ export function validateReleasePhase(p,packet,reviews,f){
+  keys(f.freeBytes,['C','D']);check(Object.values(f.freeBytes).every(v=>integer(v)&&v>=30*GiB),'DISK_RESERVE');
+  const windowsGrowthBytes=['C','D'].reduce((n,d)=>n+Math.max(0,p.storage.baselineFreeBytes[d]-f.freeBytes[d]),0);
+  check(Number.isSafeInteger(windowsGrowthBytes)&&windowsGrowthBytes+5*GiB<=20*GiB,'TASK_GROWTH');
+- return{status:'ADMITTED',phaseId:p.phaseId,sourceSHA:p.sourceSHA,predecessorStatus:'CLOSED',predecessorCounts:{...COUNTS},newActions:{publication:1,ci:1},windowsGrowthBytes,reservedCIBytes:5*GiB};
++ return{status:'ADMITTED',phaseId:p.phaseId,sourceSHA:p.sourceSHA,predecessorStatus:'CLOSED',predecessorCounts:{...COUNTS},
++  ...(remediation(p)?{continuation:'OWNER_GRANTED_REMEDIATION_01',priorPhaseActions:{publication:1,ci:1}}:{}),newActions:{publication:1,ci:1},windowsGrowthBytes,reservedCIBytes:5*GiB};
+ }
+ function readRegular(path,max=4*1024**2){check(isAbsolute(path),'PATH');const s=lstatSync(path);check(s.isFile()&&!s.isSymbolicLink()&&s.nlink===1&&s.size<=max&&realpathSync(path)===resolve(path),'FILE');return readFileSync(path);}
+-function readReference(ref){reference(ref);const bytes=readRegular(ref.path);check(releasePhaseHash(bytes)===ref.sha256,'REFERENCE_CHANGED');return JSON.parse(bytes);}
++export function parsePinnedReleaseJSON(bytes,expectedSHA256){check(hex(expectedSHA256,64)&&releasePhaseHash(bytes)===expectedSHA256,'REFERENCE_CHANGED');return JSON.parse(bytes);}
++function readReference(ref){reference(ref);return parsePinnedReleaseJSON(readRegular(ref.path),ref.sha256);}
+ // One combined exclusive reservation precedes the callback. Failure, crash or
+ // uncertain push keeps it spent. No reset/delete/alternate claim path in the CLI.
+ export function claimReleasePublication(path,payload,publish,beforeConsume=()=>{}){
+@@ -79,7 +114,8 @@ export function claimReleasePublication(path,payload,publish,beforeConsume=()=>{
+ }
+ export function releasePhaseAdmission(policyPath,{dispatch=false}={}){
+  check(process.platform==='win32'&&typeof dispatch==='boolean','PLATFORM');const policyBytes=readRegular(resolve(policyPath),128*1024),p=JSON.parse(policyBytes);
+- check(p.sourceRoot===RELEASE_PHASE.sourceRoot&&p.repository===RELEASE_PHASE.repository&&p.branch===RELEASE_PHASE.branch,'SCOPE');
++ check((p.schemaVersion==='permission-release-phase-admission-v1'||remediation(p))&&p.sourceRoot===(remediation(p)?RELEASE_REMEDIATION.sourceRoot:RELEASE_PHASE.sourceRoot)
++  &&p.repository===RELEASE_PHASE.repository&&p.branch===RELEASE_PHASE.branch,'SCOPE');
+  const packet=readReference(p.packet),reviews=readReference(p.reviews);validateReleaseScope(p,packet,reviews);const cwd=realpathSync(p.sourceRoot);
+  const command=(name,args,max=4*1024**2)=>execFileSync(name,args,{cwd,encoding:'utf8',windowsHide:true,timeout:30000,maxBuffer:max,stdio:['ignore','pipe','pipe']});
+  const git=args=>command('git',args),normal=path=>path.replaceAll('\\','/');
+@@ -88,6 +124,8 @@ export function releasePhaseAdmission(policyPath,{dispatch=false}={}){
+   check(releasePhaseHash(readRegular(resolve(policyPath),128*1024))===releasePhaseHash(policyBytes),'POLICY_CHANGED');readReference(p.packet);readReference(p.reviews);
+   const oldPolicy=readRegular(RELEASE_PHASE.predecessorPolicy),oldJournal=readRegular(RELEASE_PHASE.predecessorJournal);
+   const journal=oldJournal.toString('utf8').trim().split('\n').map(line=>JSON.parse(line));
++  const continuationParents=remediation(p)?{policy:readReference(p.continuation.parentPolicy),claim:readReference(p.continuation.parentClaim)}:null;
++  if(remediation(p))validateContinuationParents(p,continuationParents,Date.now());
+   const urls=[git(['remote','get-url','origin']).trim(),git(['remote','get-url','--all','--push','origin']).trim()];
+   const allowed=['https://github.com/'+p.repository+'.git','git@github.com:'+p.repository+'.git'];
+   const repository=JSON.parse(command('gh',['api','repos/'+p.repository]));check(repository.id===1263057386&&repository.full_name===p.repository&&repository.private===false,'REPOSITORY_IDENTITY');
+@@ -96,20 +134,21 @@ export function releasePhaseAdmission(policyPath,{dispatch=false}={}){
+   const tracked=git(['ls-files','-z']).split('\0').filter(Boolean),untracked=git(['ls-files','--others','--exclude-standard','-z']).split('\0').filter(Boolean);
+   const output=git(['ls-remote','origin','refs/heads/'+p.branch]).trim();check(new RegExp('^[a-f0-9]{40}\\s+refs/heads/'+p.branch+'$').test(output),'REMOTE_RESPONSE');
+   let fastForward=false;try{git(['merge-base','--is-ancestor',p.expectedRemoteSHA,p.sourceSHA]);fastForward=true;}catch{}
+-  return{predecessorPolicySHA256:releasePhaseHash(oldPolicy),predecessorJournalSHA256:releasePhaseHash(oldJournal),predecessorClosed:journal.at(-1)?.type==='close',
++  return{continuationParents,predecessorPolicySHA256:releasePhaseHash(oldPolicy),predecessorJournalSHA256:releasePhaseHash(oldJournal),predecessorClosed:journal.at(-1)?.type==='close',
+    head:git(['rev-parse','HEAD']).trim(),branch:git(['branch','--show-current']).trim(),sourceRoot:normal(cwd),
+    trackedClean:git(['diff','--no-ext-diff','--no-textconv','--name-only','HEAD','--']).trim()===''&&git(['ls-files','-v','-z']).split('\0').filter(Boolean).every(line=>line.startsWith('H ')),
+    remoteSHA:output.split(/\s/)[0],fastForward,tracked,untracked,pinMatches:packet.sourcePins.map(pin=>{const path=resolve(cwd,pin.path),s=lstatSync(path);return tracked.includes(pin.path)&&s.isFile()&&!s.isSymbolicLink()&&s.nlink===1&&realpathSync(path)===path
+     &&releasePhaseHash(execFileSync('git',['show',p.sourceSHA+':'+pin.path],{cwd,windowsHide:true,timeout:30000,maxBuffer:4*1024**2,stdio:['ignore','pipe','pipe']}))===pin.sha256;}),
+-   originMatches:urls.every(url=>allowed.includes(url)),activeJobs,openPullRequests,claimPresent:!!lstatSync(RELEASE_PHASE.claim,{throwIfNoEntry:false}),
++   originMatches:urls.every(url=>allowed.includes(url)),activeJobs,openPullRequests,claimPresent:!!lstatSync(claimPath(p),{throwIfNoEntry:false}),
+    freeBytes:Object.fromEntries(['C','D'].map(d=>{const s=statfsSync(d+':/');return[d,s.bavail*s.bsize];}))};
+  });
+  const facts=collect(),decision=validateReleasePhase(p,packet,reviews,facts);if(!dispatch)return{...decision,dispatch:false};
+- const claim={schemaVersion:'permission-release-phase-publication-claim-v1',phaseId:p.phaseId,atUtc:new Date().toISOString(),policySHA256:releasePhaseHash(policyBytes),packetSHA256:p.packet.sha256,reviewsSHA256:p.reviews.sha256,
++ const claim={schemaVersion:remediation(p)?'permission-release-phase-publication-claim-v2':'permission-release-phase-publication-claim-v1',phaseId:p.phaseId,atUtc:new Date().toISOString(),policySHA256:releasePhaseHash(policyBytes),packetSHA256:p.packet.sha256,reviewsSHA256:p.reviews.sha256,
++  ...(remediation(p)?{continuation:p.continuation}:{}),
+   sourceSHA:p.sourceSHA,expectedRemoteSHA:p.expectedRemoteSHA,predecessor:p.predecessor,actions:{publication:1,ci:1}};
+- return claimReleasePublication(RELEASE_PHASE.claim,claim,()=>{
++ return claimReleasePublication(claimPath(p),claim,()=>{
+   const fresh=collect();check(fresh.claimPresent,'CLAIM_LOST');fresh.claimPresent=false;validateReleasePhase(p,packet,reviews,fresh);
+-  check(releasePhaseHash(readRegular(RELEASE_PHASE.claim))===releasePhaseHash(Buffer.from(JSON.stringify(claim)+'\n')),'CLAIM_CHANGED');
++  check(releasePhaseHash(readRegular(claimPath(p)))===releasePhaseHash(Buffer.from(JSON.stringify(claim)+'\n')),'CLAIM_CHANGED');
+   runAtReleaseMoment(p,()=>command('git',['-c','remote.origin.mirror=false','-c','push.followTags=false','push','--porcelain','--no-verify','--recurse-submodules=no','origin',p.sourceSHA+':refs/heads/'+p.branch]));
+   return{...decision,dispatch:true,publicationAttempted:true,automaticCI:'EXPECTED_NOT_YET_VERIFIED'};
+  },()=>requireReleaseMoment(p,Date.now()));
+diff --git a/scripts/permission-release-phase-admission.test.mjs b/scripts/permission-release-phase-admission.test.mjs
+index 1f2b3d8..6606bc0 100644
+--- a/scripts/permission-release-phase-admission.test.mjs
++++ b/scripts/permission-release-phase-admission.test.mjs
+@@ -1,6 +1,6 @@
+ import test from'node:test';import assert from'node:assert/strict';
+ import{mkdtempSync,readFileSync,readdirSync,rmSync,lstatSync}from'node:fs';import{join,resolve}from'node:path';import{tmpdir}from'node:os';
+-import{RELEASE_PHASE as P,RELEASE_PHASE_TOOLS,RECOVERY_EXCLUSIONS,releasePhaseScope,validateReleasePhase,claimReleasePublication,requireReleaseMoment,collectReleaseFacts,runAtReleaseMoment,RELEASE_OPEN_PR_PATH,candidatePullRequestCount}from'./permission-release-phase-admission.mjs';
++import{RELEASE_PHASE as P,RELEASE_REMEDIATION as R,RELEASE_PHASE_TOOLS,RECOVERY_EXCLUSIONS,releasePhaseScope,validateReleasePhase,claimReleasePublication,requireReleaseMoment,collectReleaseFacts,runAtReleaseMoment,RELEASE_OPEN_PR_PATH,candidatePullRequestCount,validateContinuationParents,parsePinnedReleaseJSON,releasePhaseHash}from'./permission-release-phase-admission.mjs';
+ const GiB=1024**3;
+ function fixture(){
+  const p={schemaVersion:'permission-release-phase-admission-v1',phaseId:P.id,repository:P.repository,branch:P.branch,sourceRoot:P.sourceRoot,sourceSHA:'a'.repeat(40),expectedRemoteSHA:'b'.repeat(40),deadlineUtc:P.deadlineUtc,publicationCutoffUtc:P.publicationCutoffUtc,
+@@ -13,6 +13,49 @@ function fixture(){
+  return{p,packet,reviews,facts};
+ }
+ const verify=x=>validateReleasePhase(x.p,x.packet,x.reviews,x.facts);
++// Synthetic record shapes only; these fixtures never substitute for the pinned
++// raw parent files or an actual owner reply in execution.
++function continuationFixture(){
++ const x=fixture(),parentPolicy=structuredClone(x.p);parentPolicy.sourceSHA=R.expectedRemoteSHA;
++ const parentClaim={schemaVersion:'permission-release-phase-publication-claim-v1',phaseId:P.id,atUtc:'2026-10-22T02:01:46.917Z',sourceSHA:parentPolicy.sourceSHA,
++  expectedRemoteSHA:parentPolicy.expectedRemoteSHA,policySHA256:R.parentPolicy.sha256,packetSHA256:parentPolicy.packet.sha256,reviewsSHA256:parentPolicy.reviews.sha256,
++  predecessor:structuredClone(parentPolicy.predecessor),actions:{publication:1,ci:1}};
++ Object.assign(x.p,{schemaVersion:'permission-release-phase-admission-v2',sourceRoot:R.sourceRoot,sourceBranch:R.sourceBranch,expectedRemoteSHA:R.expectedRemoteSHA,
++  continuation:{kind:'OWNER_GRANTED_REMEDIATION_01',parentPolicy:{...R.parentPolicy},parentClaim:{...R.parentClaim},additionalActions:{publication:1,ci:1},
++   ownerAuthorization:{reference:'USER_REPLY_call_11111111111111111111111111111111:item0',authorizedAtUtc:'2026-10-22T02:10:00.000Z'}}});
++ x.packet.admission=releasePhaseScope(x.p);Object.assign(x.facts,{nowMs:Date.parse('2026-10-22T02:11:00.000Z'),sourceRoot:R.sourceRoot,branch:R.sourceBranch,
++  remoteSHA:R.expectedRemoteSHA,untracked:[],continuationParents:{policy:parentPolicy,claim:parentClaim}});return x;
++}
++test('v2 is a separately owner-granted single continuation; v1 spent claim remains refused',()=>{
++ const x=continuationFixture(),parents=structuredClone(x.facts.continuationParents),result=verify(x);
++ assert.equal(result.continuation,'OWNER_GRANTED_REMEDIATION_01');assert.deepEqual(result.priorPhaseActions,{publication:1,ci:1});assert.deepEqual(result.newActions,{publication:1,ci:1});
++ assert.deepEqual(result.predecessorCounts,{publication:2,ci:2,heavy:1,reviewRounds:6});assert.deepEqual(x.facts.continuationParents,parents);
++ assert.notEqual(R.claim,P.claim);assert.equal(R.parentClaim.path,P.claim);assert.match(R.claim,/publication-autoci-remediation01\.claim\.json$/);
++ const spent=fixture();spent.facts.claimPresent=true;assert.throws(()=>verify(spent),error=>error.reason==='REMOTE_OR_CLAIM');
++});
++test('v2 refuses absent or PENDING owner grant, wrong reply form, stale/future authorization and expanded allowance',()=>{
++ for(const change of[x=>delete x.p.continuation,x=>x.p.continuation.ownerAuthorization.reference='PENDING',x=>x.p.continuation.ownerAuthorization.reference='USER_REPLY_call_PENDING:item0',
++  x=>x.p.continuation.ownerAuthorization.reference='USER_REPLY_call_11111111111111111111111111111111:item1',x=>x.p.continuation.ownerAuthorization.authorizedAtUtc='PENDING',
++  x=>x.p.continuation.ownerAuthorization.authorizedAtUtc='2026-10-22T02:01:46.917Z',x=>x.p.continuation.ownerAuthorization.authorizedAtUtc='2026-10-22T02:12:00.000Z',
++  x=>x.p.continuation.additionalActions.publication=2,x=>x.p.continuation.additionalActions.ci=2,x=>x.p.continuation.additionalActions.heavy=1]){
++  const x=continuationFixture();change(x);x.packet.admission=releasePhaseScope(x.p);assert.throws(()=>verify(x),/REFUSED/);
++ }
++});
++test('v2 binds exact new local branch/root, old target38, immutable parent references and original disk baseline',()=>{
++ for(const change of[x=>x.p.sourceRoot=P.sourceRoot,x=>x.p.sourceBranch=P.branch,x=>x.facts.branch=P.branch,x=>x.p.expectedRemoteSHA='b'.repeat(40),
++  x=>x.p.continuation.parentPolicy.path='D:/other/policy.json',x=>x.p.continuation.parentPolicy.sha256='f'.repeat(64),x=>x.p.continuation.parentClaim.path=R.claim,
++  x=>x.p.continuation.parentClaim.sha256='f'.repeat(64),x=>x.p.storage.baselineFreeBytes.C++,x=>x.facts.untracked.push(RECOVERY_EXCLUSIONS[0]),
++  x=>x.facts.continuationParents.claim.sourceSHA='f'.repeat(40),x=>x.facts.continuationParents.claim.actions.ci=0,x=>x.facts.continuationParents.claim.policySHA256='f'.repeat(64),
++  x=>x.facts.continuationParents.policy.sourceSHA='f'.repeat(40),x=>x.facts.continuationParents.policy.deadlineUtc='2026-10-23T04:00:00.000Z',x=>x.facts.claimPresent=true]){
++  const x=continuationFixture();change(x);x.packet.admission=releasePhaseScope(x.p);assert.throws(()=>verify(x),/REFUSED/);
++ }
++});
++test('pinned JSON reader rejects a raw-byte change before parent payload validation',()=>{
++ const x=continuationFixture(),bytes=Buffer.from(JSON.stringify(x.facts.continuationParents)),sha=releasePhaseHash(bytes);
++ const parents=parsePinnedReleaseJSON(bytes,sha);assert.equal(validateContinuationParents(x.p,parents,x.facts.nowMs),true);
++ assert.throws(()=>parsePinnedReleaseJSON(Buffer.concat([bytes,Buffer.from(' ')]),sha),error=>error.reason==='REFERENCE_CHANGED');
++ assert.throws(()=>parsePinnedReleaseJSON(bytes,'f'.repeat(64)),error=>error.reason==='REFERENCE_CHANGED');
++});
+ test('transparent new phase preserves old CLOSED counts and reserves only one candidate publication plus automatic CI',()=>{
+  const x=fixture(),before=structuredClone(x);const result=verify(x);assert.equal(result.status,'ADMITTED');assert.equal(result.predecessorStatus,'CLOSED');
+  assert.deepEqual(result.predecessorCounts,{publication:2,ci:2,heavy:1,reviewRounds:6});assert.deepEqual(result.newActions,{publication:1,ci:1});assert.equal(result.reservedCIBytes,5*GiB);assert.deepEqual(x,before);
+diff --git a/scripts/permission-staging-cli.mjs b/scripts/permission-staging-cli.mjs
+index d336182..c71952d 100644
+--- a/scripts/permission-staging-cli.mjs
++++ b/scripts/permission-staging-cli.mjs
+@@ -1,5 +1,5 @@
+-import { readFileSync, writeFileSync, realpathSync, statSync, openSync, closeSync, ftruncateSync, writeSync } from 'node:fs';
+-import { isAbsolute, resolve, relative, dirname } from 'node:path';
++import { readFileSync, writeFileSync, realpathSync, statSync, lstatSync, openSync, closeSync, ftruncateSync, writeSync } from 'node:fs';
++import { isAbsolute, resolve, relative, dirname, basename } from 'node:path';
+ import { fileURLToPath } from 'node:url';
+ import { buildStagingInventory, canonical, inventoryHash, stagingPreflight,
+   stagingErrorCode, validateStagingManifest, validateStagingPrivateConfig,
+@@ -20,6 +20,37 @@ function outside(root, path) {
+   const part = relative(root, path);
+   return part !== '' && (part === '..' || part.startsWith('..\\') || part.startsWith('../') || isAbsolute(part));
+ }
++// A code-only checkout may have no docs worktree. Canonicalize its nearest
++// existing directory and append only genuinely absent components. Resolving an
++// existing symlink is deliberately outside the ENOENT catch: dangling links,
++// permission errors and non-directory ancestors must never become fallbacks.
++export function protectedDirectoryBoundary(path, { lstat = lstatSync, realpath = realpathSync, stat = statSync } = {}) {
++  requireInput(typeof path === 'string' && isAbsolute(path));
++  let ancestor = resolve(path);
++  const missing = [];
++  while (true) {
++    let item;
++    try { item = lstat(ancestor); }
++    catch (error) {
++      if (error.code !== 'ENOENT') throw error;
++      const parent = dirname(ancestor);
++      requireInput(parent !== ancestor);
++      missing.unshift(basename(ancestor)); ancestor = parent;
++      continue;
++    }
++    requireInput(item.isDirectory() || item.isSymbolicLink());
++    const actual = realpath(ancestor);
++    requireInput(stat(actual).isDirectory());
++    return resolve(actual, ...missing);
++  }
++}
++export function privateConfigLocation(path, { codeRoot = ROOT, docsRoot = DOCS } = {}) {
++  const actual = absoluteExisting(path);
++  const code = absoluteExisting(codeRoot);
++  requireInput(statSync(code).isDirectory()
++    && outside(code, actual) && outside(protectedDirectoryBoundary(docsRoot), actual));
++  return actual;
++}
+ function writeNew(path, value) {
+   requireInput(typeof path === 'string' && isAbsolute(path));
+   writeFileSync(path, JSON.stringify(value, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
+@@ -50,8 +81,7 @@ export async function runStagingCli(argv, { clock, fetchImpl, attemptStore } = {
+     const [manifestPath, configPath, expectedManifestSha256, receiptPath] = args;
+     const manifest = readJson(manifestPath, 16384);
+     validateStagingManifest(manifest, inventory, clock?.());
+-    const configRealPath = absoluteExisting(configPath);
+-    requireInput(outside(realpathSync(ROOT), configRealPath) && outside(realpathSync(DOCS), configRealPath));
++    const configRealPath = privateConfigLocation(configPath);
+     const privateConfig = readJson(configRealPath, 16384);
+     validateStagingPrivateConfig(privateConfig, manifest.projectRef);
+     requireInput(expectedManifestSha256 === inventoryHash(manifest));
+diff --git a/scripts/permission-staging.test.mjs b/scripts/permission-staging.test.mjs
+index daa0a67..9af9c64 100644
+--- a/scripts/permission-staging.test.mjs
++++ b/scripts/permission-staging.test.mjs
+@@ -1,9 +1,10 @@
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+-import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
++import { mkdirSync, mkdtempSync, writeFileSync, readFileSync, existsSync, realpathSync, symlinkSync } from 'node:fs';
+ import { resolve, dirname, join } from 'node:path';
+ import { fileURLToPath } from 'node:url';
+-import { runStagingCli } from './permission-staging-cli.mjs';
++import { tmpdir } from 'node:os';
++import { runStagingCli, privateConfigLocation, protectedDirectoryBoundary } from './permission-staging-cli.mjs';
+ import { buildStagingInventory, canonical, inventoryHash, validateStagingManifest,
+   validateStagingPrivateConfig, stagingPreflight, STAGING_BASELINE, STAGING_DEADLINE,
+   STAGING_TEST_CUTOFF, PRODUCTION_PROJECT_REF } from './permission-staging.mjs';
+@@ -18,6 +19,16 @@ const jwt = claims => Buffer.from('{"alg":"HS256"}').toString('base64url') + '.'
+   + Buffer.from(JSON.stringify(claims)).toString('base64url') + '.CANARY_SIGNATURE_DO_NOT_LOG';
+ const key = jwt({ role: 'anon', ref });
+ const config = () => ({ projectRef: ref, anonKey: key });
++// All synthetic files remain below one task-owned temp root, included in CI's
++// TMPDIR accounting. No real claim/evidence/config path is used or removed.
++const temporaryParent = resolve(process.env.PERMISSION_STATIC_TEST_TMP ?? process.env.TMPDIR ?? tmpdir());
++mkdirSync(temporaryParent, { recursive: true });
++const fixtureRoot = mkdtempSync(join(realpathSync(temporaryParent), 'permission-staging-ci-portability-20261022-'));
++function ownedFixture(name) {
++  const path = join(fixtureRoot, name);
++  mkdirSync(path, { mode: 0o700 });
++  return path;
++}
+ const missingResource = (body = { code: 'PGRST205', message: 'CANARY_BODY_DO_NOT_LOG', hint: key }) =>
+   new Response(JSON.stringify(body), { status: 404, headers: { 'content-type': 'application/json; charset=utf-8' } });
+ const successResponse = url => url.endsWith('/auth/v1/settings') ? new Response(null, { status: 200 }) : missingResource();
+@@ -135,8 +146,7 @@ test('chunked JSON at exactly4096bytes is accepted without preserving body field
+ });
+ 
+ test('additional grant is bound to the consumed prior claim, fixed target and a single new slot', () => {
+-  const root=resolve(dirname(fileURLToPath(import.meta.url)),'..','..','evidence','staging-grant-fixtures-'+Date.now());
+-  mkdirSync(root,{recursive:true});
++  const root=ownedFixture('staging-grant');
+   const prior={version:'permission-staging-attempt-v1',workstream:'permission-staging-20261021',projectRef:'ineckiashpwloncxnbqx',
+     manifestSha256:'a58a52d7855bf071827350b78619b86a3a56ad030b1721511655ab4346397e1b',
+     sourceFingerprintSha256:'35ef7b6781bcfc5ed1b91875f5b129f5c0ee07ef7955509ed98e73231ee8807c',
+@@ -258,8 +268,7 @@ test('actual HTTP cannot use an injected attempt store and synthetic HTTP must d
+ 
+ test('CLI reserves parseable evidence before network, refuses repeat path and invalid output without network', async () => {
+   const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+-  const fixture = resolve(root, '..', 'evidence', 'staging-node-fixtures-' + Date.now());
+-  mkdirSync(fixture, { recursive: true });
++  const fixture = ownedFixture('staging-cli');
+   const manifestPath = join(fixture, 'manifest.json'), privatePath = join(fixture, 'synthetic-private.json');
+   const outputPath = join(fixture, 'receipt.json');
+   const value = manifest();
+@@ -289,3 +298,51 @@ test('CLI reserves parseable evidence before network, refuses repeat path and in
+     join(fixture, 'forbidden-private-receipt.json')], adapter);
+   assert.equal(insideCode.exitCode, 1); assert.equal(calls, 0);
+ });
++
++test('private config is accepted outside a code-only checkout with a genuinely absent docs boundary', () => {
++  const root = ownedFixture('absent-docs'), codeRoot = join(root, 'code');
++  mkdirSync(codeRoot);
++  const docsRoot = join(root, 'missing-parent', 'docs');
++  const configPath = join(root, 'synthetic-private.json');
++  writeFileSync(configPath, JSON.stringify(config()));
++  assert.equal(protectedDirectoryBoundary(docsRoot), docsRoot);
++  assert.equal(privateConfigLocation(configPath, { codeRoot, docsRoot }), realpathSync(configPath));
++  assert.equal(existsSync(join(root, 'missing-parent')), false);
++});
++
++test('existing canonical code/docs boundaries reject inside and symlink-aliased private configs', () => {
++  const root = ownedFixture('present-docs'), codeRoot = join(root, 'code'), docsRoot = join(root, 'docs');
++  mkdirSync(codeRoot); mkdirSync(docsRoot);
++  const outsidePath = join(root, 'synthetic-private.json');
++  const codePath = join(codeRoot, 'synthetic-private.json'), docsPath = join(docsRoot, 'synthetic-private.json');
++  for (const path of [outsidePath, codePath, docsPath]) writeFileSync(path, JSON.stringify(config()));
++  assert.equal(privateConfigLocation(outsidePath, { codeRoot, docsRoot }), realpathSync(outsidePath));
++  for (const path of [codePath, docsPath]) assert.throws(() => privateConfigLocation(path, { codeRoot, docsRoot }), /STAGING_INPUT_REFUSED/);
++  const alias = join(root, 'docs-alias');
++  symlinkSync(docsRoot, alias, process.platform === 'win32' ? 'junction' : 'dir');
++  assert.throws(() => privateConfigLocation(docsPath, { codeRoot, docsRoot: alias }), /STAGING_INPUT_REFUSED/);
++  assert.throws(() => privateConfigLocation(join(alias, 'synthetic-private.json'), { codeRoot, docsRoot }), /STAGING_INPUT_REFUSED/);
++});
++
++test('dangling docs links or ancestors never become an absent-directory fallback', () => {
++  const root = ownedFixture('dangling-docs'), target = join(root, 'missing-target'), link = join(root, 'docs-link');
++  symlinkSync(target, link, process.platform === 'win32' ? 'junction' : 'dir');
++  for (const path of [link, join(link, 'missing-child')]) {
++    assert.throws(() => protectedDirectoryBoundary(path), error => error.code === 'ENOENT');
++  }
++});
++
++test('permission and non-directory errors are propagated without canonical-boundary fallback', () => {
++  const root = ownedFixture('boundary-errors');
++  for (const code of ['EACCES', 'ENOTDIR']) {
++    let realpathCalls = 0;
++    assert.throws(() => protectedDirectoryBoundary(join(root, 'docs'), {
++      lstat() { throw Object.assign(new Error('synthetic boundary error'), { code }); },
++      realpath() { realpathCalls++; return root; },
++    }), error => error.code === code);
++    assert.equal(realpathCalls, 0);
++  }
++  const file = join(root, 'file'); writeFileSync(file, 'synthetic regular file');
++  assert.throws(() => protectedDirectoryBoundary(file), /STAGING_INPUT_REFUSED/);
++  assert.throws(() => protectedDirectoryBoundary(join(file, 'docs')), error => error.code === 'ENOTDIR' || error.message === 'STAGING_INPUT_REFUSED');
++});
+diff --git a/scripts/project-ci-results.mjs b/scripts/project-ci-results.mjs
+index da4ebb7..8fdbb88 100644
+--- a/scripts/project-ci-results.mjs
++++ b/scripts/project-ci-results.mjs
+@@ -3,6 +3,7 @@ import { stripVTControlCharacters } from 'node:util';
+ import { lstatSync, realpathSync } from 'node:fs';
+ import { resolve, sep } from 'node:path';
+ import { execFileSync } from 'node:child_process';
++import { fileURLToPath } from 'node:url';
+ import {publicEdgeResolution,edgeProbeFailureMetrics,EDGE_PROBE_PUBLIC_LIMITS} from './permission-edge-resolution.mjs';
+ 
+ export const PROJECT_REPOSITORY = 'nguyentronglinh045/pos-cafe';
+@@ -14,6 +15,77 @@ export const PROJECTS = Object.freeze(['desktop', 'tablet-landscape', 'phone-lan
+ export const hash = value => createHash('sha256').update(value).digest('hex');
+ const reject = () => { throw new Error('PROJECT_CI_RESULT_INVALID'); };
+ const integer = n => Number.isSafeInteger(n) && n >= 0;
++export const NODE_FAILURE_ERRNOS = Object.freeze(['ENOENT', 'ENOTDIR', 'EACCES', 'EPERM', 'EEXIST', 'EISDIR',
++  'ENOSPC', 'EMFILE', 'ENFILE', 'ENOTEMPTY', 'EXDEV']);
++const NODE_FAILURE_PUBLIC_LIMITS = Object.freeze({nodeFailureCount:10000, nodeFailureLine:1000000,
++  nodeFailureColumn:1000000, nodeFailureErrnoOrdinal:NODE_FAILURE_ERRNOS.length});
++// Keep source membership private and attached to the parser's actual object.
++// A cloned/forged diagnostic cannot extend the public script-path allowlist.
++const nodeFailureFiles = new WeakMap();
++const scriptTestPath = value => typeof value === 'string' && /^scripts\/[A-Za-z0-9_./-]+\.test\.mjs$/.test(value)
++  && value.split('/').every(part => part !== '' && part !== '.' && part !== '..');
++
++// This is a deliberately narrow reader of Node's TAP reporter, not a YAML
++// parser. Never inspect error/expected/actual/stack text or a test's title.
++export function nodeTapFailureDiagnostics(output, expectedFiles = [], root = '') {
++  if (typeof output !== 'string' || !/^TAP version 13(?:\r?\n|$)/.test(output)) return null;
++  const result = {codes:['COMMAND_FAILED', 'REPORT_MISSING'], metrics:{}, failedFiles:[]};
++  if (output.length > 8 * 1024 ** 2) return result;
++  const lines = output.replaceAll('\r\n', '\n').split('\n');
++  if (lines.length > 200000) return result;
++  const expected = new Set(expectedFiles.filter(scriptTestPath));
++  const prefix = root.replaceAll('\\', '/').replace(/\/$/, '') + '/';
++  const scalar = value => {
++    if (/^'(?:[^']|'')*'$/.test(value)) return value.slice(1, -1).replaceAll("''", "'");
++    if (/^"[^\r\n]*"$/.test(value)) { try { const v = JSON.parse(value); return typeof v === 'string' ? v : null; } catch { return null; } }
++    return null;
++  };
++  for (let i = 1; i < lines.length; i++) {
++    const record = /^( {0,128})(not ok|ok) [1-9][0-9]{0,5}(?: -[^\r\n]*)?$/.exec(lines[i]);
++    if (!record || lines[i].length > 8192 || lines[i + 1] !== record[1] + '  ---') continue;
++    const indent = record[1] + '  ', values = {}, seen = new Set();
++    let end = i + 2, size = 0, valid = true;
++    for (; end < lines.length && lines[end] !== indent + '...'; end++) {
++      size += lines[end].length + 1;
++      if (size > 65536 || end - i > 4096 || lines[end].length > 8192) valid = false;
++      if (!lines[end].startsWith(indent)) valid = false;
++      const field = /^(location|code): (.*)$/.exec(lines[end].slice(indent.length));
++      if (!field || !lines[end].startsWith(indent)) continue;
++      if (seen.has(field[1])) valid = false;
++      seen.add(field[1]); values[field[1]] = scalar(field[2]);
++      if (values[field[1]] === null) valid = false;
++    }
++    if (end === lines.length) break; // A truncated block proves no new fact.
++    i = end; // Includes passing blocks: fake records inside their bodies are data.
++    if (!valid || record[2] !== 'not ok' || /\s#\s*(?:TODO|SKIP)\b/i.test(record[0])) continue;
++    const location = typeof values.location === 'string' && /^(.*):([1-9][0-9]{0,6}):([1-9][0-9]{0,6})$/.exec(values.location);
++    if (!location || Number(location[2]) > 1000000 || Number(location[3]) > 1000000) continue;
++    let path = location[1];
++    // Node's single-quoted TAP location escapes Windows backslashes twice.
++    if (/^[A-Za-z]:\\\\/.test(path)) path = path.replaceAll('\\\\', '\\');
++    path = path.replaceAll('\\', '/');
++    if (path.split('/').some(part => part === '.' || part === '..') || /%(?:2e|2f|5c)/i.test(path)) continue;
++    if (path.startsWith('file:')) {
++      try { const url = new URL(path); if (url.hostname || url.search || url.hash) continue; path = fileURLToPath(url).replaceAll('\\', '/'); }
++      catch { continue; }
++    }
++    const file = root && path.startsWith(prefix) ? path.slice(prefix.length) : path;
++    if (!scriptTestPath(file) || !expected.has(file)) continue;
++    result.metrics.nodeFailureCount = (result.metrics.nodeFailureCount ?? 0) + 1;
++    if (!result.failedFiles.length) {
++      result.metrics.nodeFailureLine = Number(location[2]); result.metrics.nodeFailureColumn = Number(location[3]);
++      const ordinal = NODE_FAILURE_ERRNOS.indexOf(values.code) + 1;
++      if (ordinal) result.metrics.nodeFailureErrnoOrdinal = ordinal;
++    }
++    if (!result.failedFiles.includes(file) && result.failedFiles.length < 32) result.failedFiles.push(file);
++    if (result.metrics.nodeFailureCount === NODE_FAILURE_PUBLIC_LIMITS.nodeFailureCount) break;
++  }
++  if (result.failedFiles.length) {
++    result.codes = ['COMMAND_FAILED', 'NODE_TEST_FAILURE'];
++    nodeFailureFiles.set(result, new Set(result.failedFiles));
++  }
++  return result;
++}
+ const SMOKE_STEP_FILES = Object.freeze(['tests/smoke/pos-cafe.spec.ts', 'tests/smoke/helpers.ts',
+   'tests/smoke/permission-ui-closeout.spec.ts', 'tests/smoke/demo-runbook.spec.ts']);
+ const SMOKE_STEP_LOCATORS = Object.freeze(['landing-screen', 'store-pairing-screen', 'passcode-screen',
+@@ -275,7 +347,7 @@ export function smokeTraceSnapshotFacts(events) {
+   }
+   return facts;
+ }
+-const DIAGNOSTIC_CODES = Object.freeze(['COMMAND_FAILED', 'VITEST_ASSERTION', 'VITEST_RUNTIME', 'REPORT_MISSING',
++const DIAGNOSTIC_CODES = Object.freeze(['COMMAND_FAILED', 'VITEST_ASSERTION', 'VITEST_RUNTIME', 'REPORT_MISSING', 'NODE_TEST_FAILURE',
+   'TEST_TIMEOUT', 'ASSERTION_ERROR', 'TYPE_ERROR', 'REFERENCE_ERROR', 'MODULE_NOT_FOUND', 'OUT_OF_MEMORY', 'COVERAGE_LINES',
+   'RESOURCE_FREE_SPACE', 'RESOURCE_OWNED_CAP', 'RESOURCE_CGROUP_DRIFT', 'RESOURCE_CORE_LIMIT', 'GUARD_IO_ENOENT', 'GUARD_IO_ENOTDIR',
+   'GUARD_IO_EACCES', 'GUARD_REFUSED', 'COMMAND_TIMEOUT', 'OUTPUT_LIMIT', 'COMMAND_SPAWN_FAILED', 'RESULT_INVALID',
+@@ -306,6 +378,10 @@ export function pg16FailureMetrics(output){
+   }catch{return{};}
+ }
+ export function privateDiagnostics(output, report, expectedFiles = [], root = '') {
++  // TAP comments and YAML bodies can contain passing negative-control fixtures.
++  // Never run the generic error-signature scanner over a Node TAP report.
++  const node = !report && nodeTapFailureDiagnostics(output, expectedFiles, root);
++  if (node) return node;
+   const codes = ['COMMAND_FAILED'];
+   const metrics = {};
+   Object.assign(metrics,pg16FailureMetrics(output));
+@@ -669,9 +745,10 @@ export function publicSummary(binding, rows, fingerprints) {
+       ['discovered', 'run', 'pass', 'fail', 'skip', 'manualDeferred', 'acceptedFindings', 'detectedFindings', 'positiveControls', 'negativeControls', 'targetControls'].includes(key) && integer(value))),
+    ...(id==='runtime-reporters'&&Object.hasOwn(counts,'diagnosticControls')?{diagnosticControls:publicDiagnosticControls(counts.diagnosticControls,binding,fingerprints)}:{}),
+    ...(id==='edge-resolution'?{edgeResolution:publicEdgeResolution(counts.edgeResolution,binding.sourceSHA)}:{})} : null,
+-    diagnostic: diagnostic ? { codes: diagnostic.codes.filter(code => DIAGNOSTIC_CODES.includes(code)),
++    diagnostic: diagnostic ? { codes: diagnostic.codes.filter(code => DIAGNOSTIC_CODES.includes(code)
++      && (code !== 'NODE_TEST_FAILURE' || id === 'node-tools' && nodeFailureFiles.has(diagnostic))),
+       metrics: Object.fromEntries(Object.entries(diagnostic.metrics).filter(([key, value]) =>
+-        ['numTotalTests', 'numPassedTests', 'numFailedTests', 'numPendingTests', 'numRuntimeErrorTestSuites', 'architectureAssertion', ...Object.keys(EDGE_PROBE_PUBLIC_LIMITS),
++        ['numTotalTests', 'numPassedTests', 'numFailedTests', 'numPendingTests', 'numRuntimeErrorTestSuites', 'architectureAssertion', ...Object.keys(EDGE_PROBE_PUBLIC_LIMITS), ...Object.keys(NODE_FAILURE_PUBLIC_LIMITS),
+           'pg16Operation','pg16Step','pg16ErrorCodeOrdinal','pg16ErrorNameOrdinal','pg16ErrorMatcherOrdinal',
+           'pg16RunnerErrors','pg16HookErrors','pg16FailedTests','pg16RootRemoved','pg16ProcessReleased',
+           'minimumObservedFreeBytes', 'initialFreeBytes', 'freeSpaceDecreaseBytes', 'ownedBytesAtCheckpoint', 'coreFileCount', 'coreAllocatedBytes', 'largestOwnedFileBytes', 'kernelCorePipe',
+@@ -696,8 +773,10 @@ export function publicSummary(binding, rows, fingerprints) {
+           'browserProbeNativeFatalObserved', 'browserProbeNativeFatalSourceOrdinal', 'browserProbeNativeFatalLine', 'browserProbeNativeFatalReasonMask',
+           'smokeExpected', 'smokeUnexpected', 'smokeSkipped', 'smokeFlaky', 'smokeProgressIndex', 'smokeProgressTotal',
+           'memoryCurrentBytes', 'peakMemoryBytes', 'pidsCurrent', 'peakPids', 'oomEvents', 'oomKills', 'pidsLimitEvents'].includes(key) && integer(value)
+-          &&(!Object.hasOwn(PG16_PUBLIC_LIMITS,key)||value<=PG16_PUBLIC_LIMITS[key])&&(!Object.hasOwn(EDGE_PROBE_PUBLIC_LIMITS,key)||value<=EDGE_PROBE_PUBLIC_LIMITS[key]))),
+-      failedFiles: diagnostic.failedFiles.filter(path => /^(?:src|tests)\/[A-Za-z0-9_./-]+\.(?:ts|tsx|mjs)$/.test(path)).slice(0, 32) } : null }));
++          &&(!Object.hasOwn(PG16_PUBLIC_LIMITS,key)||value<=PG16_PUBLIC_LIMITS[key])&&(!Object.hasOwn(EDGE_PROBE_PUBLIC_LIMITS,key)||value<=EDGE_PROBE_PUBLIC_LIMITS[key])
++          &&(!Object.hasOwn(NODE_FAILURE_PUBLIC_LIMITS,key)||id==='node-tools'&&nodeFailureFiles.has(diagnostic)&&value>0&&value<=NODE_FAILURE_PUBLIC_LIMITS[key]))),
++      failedFiles: diagnostic.failedFiles.filter(path => /^(?:src|tests)\/[A-Za-z0-9_./-]+\.(?:ts|tsx|mjs)$/.test(path)
++        || id==='node-tools'&&scriptTestPath(path)&&nodeFailureFiles.get(diagnostic)?.has(path)).slice(0, 32) } : null }));
+   return { schemaVersion: 'pos-cafe-light-ci-v1', verificationScope: 'LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY', repository: PROJECT_REPOSITORY, repositoryID: PROJECT_REPOSITORY_ID,
+     event: binding.event, sourceSHA: binding.sourceSHA, prHeadSHA: binding.prHeadSHA, workflowSHA: binding.workflowSHA,
+     runId: binding.runId, attempt: binding.attempt,
+diff --git a/scripts/project-ci-results.test.mjs b/scripts/project-ci-results.test.mjs
+index ef14582..ad22d4f 100644
+--- a/scripts/project-ci-results.test.mjs
++++ b/scripts/project-ci-results.test.mjs
+@@ -7,7 +7,8 @@ import { crc32 } from 'node:zlib';
+ import { tmpdir } from 'node:os';
+ import { join } from 'node:path';
+ import { execFileSync } from 'node:child_process';
+-import SmokeFailureReporter, { smokeStepDiagnostic, smokeTraceDiagnostics, smokeTraceEvents, smokeTraceSnapshotFacts, smokeTraceExpectFacts, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, guardFailureCode, PROJECTS, PROJECT_PHASES, hash } from './project-ci-results.mjs';
++import { pathToFileURL } from 'node:url';
++import SmokeFailureReporter, { smokeStepDiagnostic, smokeTraceDiagnostics, smokeTraceEvents, smokeTraceSnapshotFacts, smokeTraceExpectFacts, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, nodeTapFailureDiagnostics, NODE_FAILURE_ERRNOS, guardFailureCode, PROJECTS, PROJECT_PHASES, hash } from './project-ci-results.mjs';
+ import { capturedCommand, trackedFingerprint, lightEnvironment, checkoutGit, allocatedBytes, coreLimitDisabled, browserRuntimeControlCanStart, gitCommitParents } from './project-ci.mjs';
+ import { lightService, lightOwnerMatches, withLightCorePattern, stopLightUnit, coreDumpDisabled, linuxCorePatternAdapter } from './project-ci-launch.mjs';
+ import { verifyReleaseRun, verifyReleaseEnvironment, verifyReleaseFiles, productionCommands, PRODUCTION_ENABLED } from './project-release.mjs';
+@@ -492,6 +493,125 @@ test('Node TAP pending/cancelled/malformed counts cannot become a pass', () => {
+   assert.throws(() => nodeCounts('FAKE_PRIVATE_TOKEN'));
+ });
+ 
++const nodeFailureBlock = (location, code = 'ENOENT') => [
++  'not ok 1 - FAKE_NODE_PRIVATE_TITLE', '  ---', '  duration_ms: 1', "  type: 'test'",
++  '  location: ' + JSON.stringify(location), "  failureType: 'testCodeFailure'", '  error: |-',
++  '    FAKE_NODE_PRIVATE_TOKEN TypeError test timed out Protocol error', '  code: ' + JSON.stringify(code),
++  '  stack: |-', '    at /private/FAKE_NODE_PRIVATE_TOKEN:99:99', '  ...',
++].join('\n');
++const nodeTap = body => 'TAP version 13\n' + body + '\n1..1\n# tests 1\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n';
++const publicNodeDiagnostic = diagnostic => publicSummary(binding, PROJECT_PHASES.slice(0,5).map(id => ({
++  id, status:id === 'node-tools' ? 'FAIL' : 'PASS', elapsedMs:1, exitCode:id === 'node-tools' ? 1 : 0,
++  invocationSHA:digest, reportSHA:digest, counts:null, diagnostic:id === 'node-tools' ? diagnostic : null,
++})), {source:digest,lock:digest}).phases[4].diagnostic;
++
++test('Node TAP failures expose only tracked script location and direct finite errno, never message signatures', () => {
++  const output = nodeTap(nodeFailureBlock('/source/scripts/a.test.mjs:42:7'));
++  const result = privateDiagnostics(output, null, ['scripts/a.test.mjs'], '/source');
++  assert.deepEqual(result, {codes:['COMMAND_FAILED','NODE_TEST_FAILURE'], metrics:{nodeFailureCount:1,
++    nodeFailureLine:42,nodeFailureColumn:7,nodeFailureErrnoOrdinal:1},failedFiles:['scripts/a.test.mjs']});
++  assert.deepEqual(publicNodeDiagnostic(result), result);
++  assert.equal(JSON.stringify(result).includes('PRIVATE'), false);
++  assert.equal(JSON.stringify(result).includes('/source'), false);
++  assert.throws(() => nodeCounts(output)); // Diagnostics never replace the acceptance parser.
++  const noErrno = privateDiagnostics(nodeTap(nodeFailureBlock('/source/scripts/a.test.mjs:42:7','FAKE_NODE_PRIVATE_TOKEN')),
++    null,['scripts/a.test.mjs'],'/source');
++  assert.equal(noErrno.metrics.nodeFailureErrnoOrdinal,undefined);
++  for (const [index,code] of NODE_FAILURE_ERRNOS.entries()) assert.equal(privateDiagnostics(
++    nodeTap(nodeFailureBlock('/source/scripts/a.test.mjs:42:7',code)), null,['scripts/a.test.mjs'],'/source')
++    .metrics.nodeFailureErrnoOrdinal,index+1);
++});
++
++test('passing TAP fixture strings and nested fake failure records cannot label a real failure', () => {
++  const body = ['# TypeError test timed out Protocol error FAKE_NODE_PRIVATE_TOKEN',
++    '# PROJECT_UI_WATCH_CONTROL {"version":1,"failureStage":5}', 'ok 1 - FAKE_NODE_PRIVATE_TITLE', '  ---',
++    '  duration_ms: 1', '  expected: |-', ...nodeFailureBlock('/source/scripts/a.test.mjs:42:7').split('\n').map(line=>'    '+line),
++    '  ...'].join('\n');
++  const result = privateDiagnostics(nodeTap(body),null,['scripts/a.test.mjs'],'/source');
++  assert.deepEqual(result,{codes:['COMMAND_FAILED','REPORT_MISSING'],metrics:{},failedFiles:[]});
++  assert.equal(nodeTapFailureDiagnostics('ordinary command failed FAKE_NODE_PRIVATE_TOKEN',[],'/source'),null);
++  assert.deepEqual(privateDiagnostics('ordinary command failed',null),result);
++});
++
++test('truncated, malformed and untrusted TAP locations publish no failure facts', () => {
++  const block = nodeFailureBlock('/source/scripts/a.test.mjs:42:7');
++  for (const body of [block.replace('  ...',''), block.replace('  location:', '  location: |-\n    location:'),
++    block.replace('  duration_ms: 1','  location: "/source/scripts/a.test.mjs:41:7"'),
++    block.replace('  ---',' ---'), block.replace('  code: "ENOENT"','  code: 123'),
++    block.replace('  error: |-','FAKE_NODE_PRIVATE_TOKEN'),
++    ...['/private/scripts/a.test.mjs:42:7','/source-shadow/scripts/a.test.mjs:42:7','/source/scripts/../scripts/a.test.mjs:42:7',
++      'file:///source/scripts/%2e%2e/scripts/a.test.mjs:42:7','file://private/source/scripts/a.test.mjs:42:7',
++      'file:///source/scripts/a.test.mjs?FAKE_NODE_PRIVATE_TOKEN:42:7','/source/scripts/untracked.test.mjs:42:7',
++      '/source/src/a.test.mjs:42:7','/source/scripts/a.test.mjs:0:7','/source/scripts/a.test.mjs:42:1000001']
++      .map(location=>nodeFailureBlock(location))]) {
++    const result = privateDiagnostics(nodeTap(body),null,['scripts/a.test.mjs'],'/source');
++    assert.deepEqual(result,{codes:['COMMAND_FAILED','REPORT_MISSING'],metrics:{},failedFiles:[]});
++    assert.equal(JSON.stringify(publicNodeDiagnostic(result)).includes('PRIVATE'),false);
++  }
++  assert.deepEqual(privateDiagnostics(nodeTap(block),null,[],'/source').failedFiles,[]);
++});
++
++test('nested TAP, file URLs and completed records before truncation preserve only observed source facts', () => {
++  const root=join(tmpdir(),'pos-node-tap-source'), file='scripts/a.test.mjs';
++  const nested=nodeFailureBlock(pathToFileURL(join(root,file)).href+':12:3').split('\n').map(line=>'    '+line).join('\n');
++  const result=privateDiagnostics('TAP version 13\n# Subtest: FAKE_NODE_PRIVATE_TITLE\n'+nested+'\n'+
++    nodeFailureBlock('/private/FAKE_NODE_PRIVATE_TOKEN:1:1').replace('  ...',''),null,[file],root);
++  assert.deepEqual(result.metrics,{nodeFailureCount:1,nodeFailureLine:12,nodeFailureColumn:3,nodeFailureErrnoOrdinal:1});
++  assert.deepEqual(result.failedFiles,[file]);
++  assert.equal(JSON.stringify(result).includes('PRIVATE'),false);
++  const windows=nodeTap(nodeFailureBlock('/source/scripts/a.test.mjs:12:3').replace(
++    '"/source/scripts/a.test.mjs:12:3"', "'D:\\\\source\\\\scripts\\\\a.test.mjs:12:3'"));
++  assert.deepEqual(privateDiagnostics(windows,null,[file],'D:/source').failedFiles,[file]);
++});
++
++test('public TAP export requires parser source provenance, finite bounds and the node-tools phase', () => {
++  const result=privateDiagnostics(nodeTap(nodeFailureBlock('/source/scripts/a.test.mjs:42:7')),null,
++    ['scripts/a.test.mjs','scripts/b.test.mjs'],'/source');
++  result.failedFiles.push('scripts/b.test.mjs','scripts/FAKE_NODE_PRIVATE_TOKEN.test.mjs','scripts/../private.test.mjs','/private/token');
++  result.metrics.raw='FAKE_NODE_PRIVATE_TOKEN';result.codes.push('FAKE_NODE_PRIVATE_TOKEN');
++  const safe=publicNodeDiagnostic(result);
++  assert.deepEqual(safe.failedFiles,['scripts/a.test.mjs']);assert.equal(JSON.stringify(safe).includes('PRIVATE'),false);
++  assert.deepEqual(publicNodeDiagnostic({...result}),{codes:['COMMAND_FAILED'],metrics:{},failedFiles:[]});
++  for (const [key,max] of Object.entries({nodeFailureCount:10000,nodeFailureLine:1000000,nodeFailureColumn:1000000,nodeFailureErrnoOrdinal:NODE_FAILURE_ERRNOS.length})) {
++    const original=result.metrics[key];
++    for (const value of [max+1,0,-1,1.5,'1',Infinity,NaN]) {
++      result.metrics[key]=value;assert.equal(Object.hasOwn(publicNodeDiagnostic(result).metrics,key),false);
++    }
++    result.metrics[key]=original;
++  }
++  const other=publicSummary(binding,[{id:'install',status:'FAIL',elapsedMs:1,exitCode:1,invocationSHA:digest,
++    reportSHA:digest,counts:null,diagnostic:result}],{source:digest,lock:digest}).phases[0].diagnostic;
++  assert.deepEqual(other,{codes:['COMMAND_FAILED'],metrics:{},failedFiles:[]});
++});
++
++test('TAP diagnostics bound output, YAML bodies and the number of exported source files', () => {
++  for (const output of ['TAP version 13\n'+'x'.repeat(8*1024**2),'TAP version 13\n'+'\n'.repeat(200001),
++    nodeTap(nodeFailureBlock('/source/scripts/a.test.mjs:42:7').replace('  stack: |-', '    '+'x'.repeat(65537)+'\n  stack: |-'))])
++    assert.deepEqual(privateDiagnostics(output,null,['scripts/a.test.mjs'],'/source').metrics,{});
++  const files=Array.from({length:33},(_,i)=>`scripts/a${i}.test.mjs`);
++  const result=privateDiagnostics(nodeTap(files.map(file=>nodeFailureBlock('/source/'+file+':1:1')).join('\n')),
++    null,files,'/source');
++  assert.equal(result.metrics.nodeFailureCount,33);assert.equal(result.failedFiles.length,32);
++  assert.equal(publicNodeDiagnostic(result).failedFiles.length,32);
++});
++
++test('a real failing Node child produces the supported TAP metadata without exporting its error or title', () => {
++  const root=mkdtempSync(join(tmpdir(),'pos-node-tap-diagnostics-'));mkdirSync(join(root,'scripts'));
++  const file=join(root,'scripts','a.test.mjs');
++  writeFileSync(file,"import test from 'node:test';\ntest('FAKE_NODE_PRIVATE_TITLE',()=>{throw Object.assign(new Error('FAKE_NODE_PRIVATE_TOKEN TypeError Protocol error'),{code:'ENOENT'});});\n");
++  const childEnv={...process.env};delete childEnv.NODE_TEST_CONTEXT;
++  let output;
++  try { execFileSync(process.execPath,['--test','--test-reporter=tap',file],
++    {cwd:root,env:childEnv,encoding:'utf8',timeout:10000,maxBuffer:1024**2,stdio:['ignore','pipe','pipe']});assert.fail('child must fail'); }
++  catch(error) { assert.equal(error.status,1);output=error.stdout; }
++  const result=privateDiagnostics(output,null,['scripts/a.test.mjs'],root);
++  assert.deepEqual(result.failedFiles,['scripts/a.test.mjs']);assert.equal(result.metrics.nodeFailureCount,1);
++  assert.equal(result.metrics.nodeFailureLine,2);assert.ok(result.metrics.nodeFailureColumn>0);
++  assert.equal(result.metrics.nodeFailureErrnoOrdinal,1);assert.deepEqual(result.codes,['COMMAND_FAILED','NODE_TEST_FAILURE']);
++  assert.deepEqual(publicNodeDiagnostic(result),result);assert.equal(JSON.stringify(result).includes('PRIVATE'),false);
++  assert.throws(()=>nodeCounts(output));
++});
++
+ test('smoke requires every project/case and exact applicability skips without retries or expected failures', () => {
+   const report = { suites: [{ specs: PROJECTS.map(projectName => ({ file: 'a.ts', line: 1, title: 'case', tests: [
+     { projectName, expectedStatus: 'passed', status: 'expected', results: [{ status: 'passed', retry: 0, errors: [] }] }] })) }],

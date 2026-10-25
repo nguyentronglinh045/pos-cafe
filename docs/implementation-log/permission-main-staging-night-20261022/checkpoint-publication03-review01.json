@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "permission-independent-checkpoint-review-v1",
+  "recordedAtUtc": "2026-10-22T14:18:38.185Z",
+  "author": "/root",
+  "artifacts": [
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/handoff-snapshot-publication03.md",
+      "sha256": "f16ca2b909a91e609c7ca61b7241632696f4d4815dc44a0e1e2dbe8124e150b1",
+      "originalMutablePath": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-main-staging-night-2026-10-22.md"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/checkpoint-publication03.json",
+      "sha256": "eb2fcf8b66ce05fbc9b8f1386448c968b48381a4e9ee8004bdbbf6132d22c453"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/auth-deferred01.json",
+      "sha256": "d11e973f73b89de53b7f1b8f70b35f9dc0a47276cd5248bcee05b6de74b24fe2"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/t04-remediation-plan-review01.json",
+      "sha256": "980925dd33544a86d9008fb781f7fcc4d6934b31c911fb493274325b1f9c9e51"
+    }
+  ],
+  "reviewers": [
+    {
+      "name": "/root/mcp_staging_scope_review",
+      "scope": "source-and-evidence",
+      "verdict": "APPROVE",
+      "basis": "Actual final message: current03/03/04 pointer finding closed, 43rawrefs/32unique checked, Auth read-only zero counts/ConfirmON, original decision and exact source/CI pending/budget history correct."
+    },
+    {
+      "name": "/root/mcp_staging_evidence_review",
+      "scope": "operations",
+      "verdict": "APPROVE",
+      "basis": "Actual final message:36recursive refs checked, readonly0quartet/AXConfirmON/SaveDisabled and no resident attempt, WAIT_RESOLVED deferral and2/2/1 pending state correct; no full preservation or runtime PASS claimed."
+    }
+  ],
+  "timeBoundary": "Snapshot before additional-heavy owner reply. New owner-extra-heavy-decision01.json supersedes ASKED_NOT_AUTHORIZED only; snapshot remains immutable.",
+  "historicalReferenceResolution": {
+    "recordedAtUtc": "2026-10-22T14:48:49.386Z",
+    "originalReviewSHA256": "e04a900ab3da15e49e4e293c3bbcf75d5416bc139a3e1c654451b77a22c0c16c",
+    "originalReviewBase64": "ewogICJzY2hlbWFWZXJzaW9uIjogInBlcm1pc3Npb24taW5kZXBlbmRlbnQtY2hlY2twb2ludC1yZXZpZXctdjEiLAogICJyZWNvcmRlZEF0VXRjIjogIjIwMjYtMTAtMjJUMTQ6MTg6MzguMTg1WiIsCiAgImF1dGhvciI6ICIvcm9vdCIsCiAgImFydGlmYWN0cyI6IFsKICAgIHsKICAgICAgInBhdGgiOiAiRDovV29ya3NwYWNlL3Bvcy1jYWZlLWRvY3MvZG9jcy93b3JrZmxvdy90YXNrcy9wZXJtaXNzaW9uLW1haW4tc3RhZ2luZy1uaWdodC0yMDI2LTEwLTIyLm1kIiwKICAgICAgInNoYTI1NiI6ICJmMTZjYTJiOTA5YTkxZTYwOWM3Y2E2MWI3MjQxNjMyNjk2ZjRkNDgxNWRjNDRhMGUxZTJkYmU4MTI0ZTE1MGIxIgogICAgfSwKICAgIHsKICAgICAgInBhdGgiOiAiRDovV29ya3NwYWNlL3Bvcy1jYWZlLWRvY3MvZG9jcy9pbXBsZW1lbnRhdGlvbi1sb2cvcGVybWlzc2lvbi1tYWluLXN0YWdpbmctbmlnaHQtMjAyNjEwMjIvY2hlY2twb2ludC1wdWJsaWNhdGlvbjAzLmpzb24iLAogICAgICAic2hhMjU2IjogImViMmZjZjhiNjZjZTA1ZmJjOWI4ZjEzODY0NDhjOTY4YjQ4MzgxYTRlOWVlODAwNGJkYmJmNjEzMmQyMmM0NTMiCiAgICB9LAogICAgewogICAgICAicGF0aCI6ICJEOi9Xb3Jrc3BhY2UvcG9zLWNhZmUtZG9jcy9kb2NzL2ltcGxlbWVudGF0aW9uLWxvZy9wZXJtaXNzaW9uLW1haW4tc3RhZ2luZy1uaWdodC0yMDI2MTAyMi9hdXRoLWRlZmVycmVkMDEuanNvbiIsCiAgICAgICJzaGEyNTYiOiAiZDExZTk3M2Y3M2I4OWRlNTNiN2YxYjhmNzBiMzVmOWRjMGE0NzI3NmNkNTI0OGJjZWUwNWI2ZGU3NGIyNGZlMiIKICAgIH0sCiAgICB7CiAgICAgICJwYXRoIjogIkQ6L1dvcmtzcGFjZS9wb3MtY2FmZS1kb2NzL2RvY3MvaW1wbGVtZW50YXRpb24tbG9nL3Blcm1pc3Npb24tbWFpbi1zdGFnaW5nLW5pZ2h0LTIwMjYxMDIyL3QwNC1yZW1lZGlhdGlvbi1wbGFuLXJldmlldzAxLmpzb24iLAogICAgICAic2hhMjU2IjogIjk4MDkyNWRkMzM1NDRhODZkOTAwOGZiNzgxZjdmY2M0ZDY5MzRiMzFjOTExZmI0OTMyNzQzMjViMWY5YzllNTEiCiAgICB9CiAgXSwKICAicmV2aWV3ZXJzIjogWwogICAgewogICAgICAibmFtZSI6ICIvcm9vdC9tY3Bfc3RhZ2luZ19zY29wZV9yZXZpZXciLAogICAgICAic2NvcGUiOiAic291cmNlLWFuZC1ldmlkZW5jZSIsCiAgICAgICJ2ZXJkaWN0IjogIkFQUFJPVkUiLAogICAgICAiYmFzaXMiOiAiQWN0dWFsIGZpbmFsIG1lc3NhZ2U6IGN1cnJlbnQwMy8wMy8wNCBwb2ludGVyIGZpbmRpbmcgY2xvc2VkLCA0M3Jhd3JlZnMvMzJ1bmlxdWUgY2hlY2tlZCwgQXV0aCByZWFkLW9ubHkgemVybyBjb3VudHMvQ29uZmlybU9OLCBvcmlnaW5hbCBkZWNpc2lvbiBhbmQgZXhhY3Qgc291cmNlL0NJIHBlbmRpbmcvYnVkZ2V0IGhpc3RvcnkgY29ycmVjdC4iCiAgICB9LAogICAgewogICAgICAibmFtZSI6ICIvcm9vdC9tY3Bfc3RhZ2luZ19ldmlkZW5jZV9yZXZpZXciLAogICAgICAic2NvcGUiOiAib3BlcmF0aW9ucyIsCiAgICAgICJ2ZXJkaWN0IjogIkFQUFJPVkUiLAogICAgICAiYmFzaXMiOiAiQWN0dWFsIGZpbmFsIG1lc3NhZ2U6MzZyZWN1cnNpdmUgcmVmcyBjaGVja2VkLCByZWFkb25seTBxdWFydGV0L0FYQ29uZmlybU9OL1NhdmVEaXNhYmxlZCBhbmQgbm8gcmVzaWRlbnQgYXR0ZW1wdCwgV0FJVF9SRVNPTFZFRCBkZWZlcnJhbCBhbmQyLzIvMSBwZW5kaW5nIHN0YXRlIGNvcnJlY3Q7IG5vIGZ1bGwgcHJlc2VydmF0aW9uIG9yIHJ1bnRpbWUgUEFTUyBjbGFpbWVkLiIKICAgIH0KICBdLAogICJ0aW1lQm91bmRhcnkiOiAiU25hcHNob3QgYmVmb3JlIGFkZGl0aW9uYWwtaGVhdnkgb3duZXIgcmVwbHkuIE5ldyBvd25lci1leHRyYS1oZWF2eS1kZWNpc2lvbjAxLmpzb24gc3VwZXJzZWRlcyBBU0tFRF9OT1RfQVVUSE9SSVpFRCBvbmx5OyBzbmFwc2hvdCByZW1haW5zIGltbXV0YWJsZS4iCn0K",
+    "method": "Recovered exact historical raw bytes by reversing recorded later line edits, verified against original approved SHA256 before writing snapshot.",
+    "recoveryRecipe": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/recover-handoff-snapshot01.mjs",
+      "sha256": "9a9041fee71f56a6247d07d46953207be853e7ceee39a975782d7966b96190c8"
+    },
+    "boundary": "Original reviewer verdicts apply only to the exact f16 snapshot at their original time. This resolution changes the dereferenceable path, not the reviewed bytes or approval scope. Relative links in the snapshot use originalMutablePath context."
+  }
+}

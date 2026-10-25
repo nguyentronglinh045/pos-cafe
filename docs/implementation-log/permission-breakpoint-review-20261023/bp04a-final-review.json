@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "permission-breakpoint-review-v1",
+  "breakpoint": "BP4A_GUARD_STOP",
+  "recordedAtUtc": "2026-10-23T03:56:27.274Z",
+  "status": "APPROVE_ACCURATE_STOP_AND_REMEDIATION_PROPOSAL",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "reviewedFiles": {
+    "bp04a-owner-grant01.json": "a833cc5eb0236879307c9a957194d274f4c73bc78992ca588d621d78382076d2",
+    "bp04a-outcome-and-guard-remediation.md": "0d2861fdbfa7bba83ecb7864f4b595ea2265a7f418e166eaf8dab03c8d7ff81c",
+    "bp04a-stop01.json": "c6a63876d2d24856b078f550127edadaeb383242e96e3330cbd44c0dbf05285b",
+    "bp04a-process-release01.json": "ac2d4bab1a677740ac0c0981aef0f0baba30bdb9c14195a90de8d4ab257bab5d",
+    "bp04a-guard-controls01.json": "d93af40247ad9d4bd5728d74a5fa31e7f0d83bc9974a107543c5f657f48cb085",
+    "bp04a-guard-normal01.config.json": "d10e7c178373b9615ff59fc56a42a46b82257505affdfd2e82f3a48a1de2eab2",
+    "bp04a-guard-normal01.proof.json": "077c45dab96f4af39182b7f8b3182e0d9de11ce91676a9b4e07eb71a926c7e6e",
+    "bp04a-guard-nonzero01.config.json": "e3afae95a6ca1f1c82d167a43ab60ad0abec7ef99818d3cf9e8222823e946d20",
+    "bp04a-guard-nonzero01.proof.json": "5c7ab6715d0db346c0e8c9023b1508317852a8b5a0a0082c942155abe1dd46ec",
+    "bp04a-guard-orphan01.config.json": "057e559c445448dbf648c26560438fa5ce7e5cc7f4f65751754727533197a6b7",
+    "bp04a-guard-orphan01.proof.json": "16aaa5d1afd47c6e0bcdb7dd9a8e4b7c7c171ae6649f1750e389569735b91f82"
+  },
+  "requiredReviewers": [
+    {
+      "agent": "/root/bp1_authority_final_review",
+      "nonAuthor": true,
+      "scope": "authority stop/no-retry deadline storage process release and bounded proposed amendment",
+      "verdict": "APPROVE"
+    },
+    {
+      "agent": "/root/bp1_evidence_final_review",
+      "nonAuthor": true,
+      "scope": "actual controls/raw byte preservation source-based inference and proposed READY nonce PID oracle",
+      "verdict": "APPROVE"
+    }
+  ],
+  "findingsDisposition": {
+    "retainedPacketPin": "RESOLVED_BEFORE_EXECUTION",
+    "childTreeRelease": "RESOLVED_IN_RECIPE_BEFORE_EXECUTION_RUNTIME_ORPHAN_BRANCH_NOT_PROVEN",
+    "logIOStopPath": "RESOLVED_BEFORE_EXECUTION",
+    "npmFetchRetries": "RESOLVED_BEFORE_EXECUTION",
+    "orphanCalibrationFixture": "OPEN_REQUIRES_OWNER_AMENDMENT_AND_NEW_RECIPE_REVIEW"
+  },
+  "executionPermission": "NONE_NEW; original BP4A stopped after FAIL; unused local phases may not auto-resume",
+  "transcriptionNote": "Records both explicit final verdicts on the frozen result/proposal. This metadata does not approve itself or create permission."
+}

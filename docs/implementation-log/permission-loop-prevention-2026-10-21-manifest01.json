@@ -1,0 +1,16 @@
+{
+  "candidate": "01",
+  "scope": "Analysis/proposal only; no guard/threshold/authorization activated",
+  "files": [
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\workflow\\tasks\\permission-loop-prevention-2026-10-21.md",
+      "bytes": 16318,
+      "sha256": "beeab85487adad633c9b41bdb8d99205c4ca06894237a151ec043d92f4b192d7"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-loop-prevention-2026-10-21-evidence.json",
+      "bytes": 6132,
+      "sha256": "76993a18fe38a6f484efbe0eb5f0dbc8213c0112f6307e2b9b50a056dd10d5af"
+    }
+  ]
+}

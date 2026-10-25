@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "permission-bp4-countdiag-v1",
+  "status": "DIAGNOSTIC_COMPLETE_NO_ADMISSION",
+  "startedAtUtc": "2026-10-23T06:58:44.678Z",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "grantSHA256": "742173b8a5372cbf46e908df6cc0ea23d4eb476ba9601d01eb0a42103238e04b",
+  "scriptSHA256": "e2c1aadf6da3219131a4c4c2ea8586c0f2f41c4a36a747daf352a611be8e8dbd",
+  "transport": {
+    "ok": true,
+    "code": "OK",
+    "status": 200,
+    "requests": 1,
+    "sha256": "f8e5fab1d222a3475d6c481ae85446d165b28f24f2ce05b170e7edc880b34ddc",
+    "truncated": false,
+    "receivedBytes": 5484,
+    "retainedBytes": 5484
+  },
+  "bodyPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-countdiag02.tgz",
+  "analysis": {
+    "integrityMatched": true,
+    "sha256": "f8e5fab1d222a3475d6c481ae85446d165b28f24f2ce05b170e7edc880b34ddc",
+    "compressedBytes": 5484,
+    "tarBytes": 27648,
+    "original": {
+      "status": "FAIL",
+      "code": "BP4_COUNTS_FILES",
+      "stage": "COUNTS",
+      "details": {
+        "expected": 9,
+        "actual": 7
+      }
+    },
+    "diagnostic": {
+      "status": "PASS",
+      "result": {
+        "compressedBytes": 5484,
+        "tarBytes": 27648,
+        "entries": 9,
+        "regularFiles": 7,
+        "regularFileBytes": 19802,
+        "root": "pg"
+      }
+    },
+    "reference": {
+      "packageVersion": "7.5.13",
+      "pins": {
+        "package.json": "411dcf185790f307cd615302b349fdecb4cabd3a8a2d2a2921f4442850571af3",
+        "dist/commonjs/index.js": "83eb0daab4f9156e153292f263952eef9bf5386af8dc7b8f2d2c3a57a96ba45a",
+        "dist/commonjs/parse.js": "a32a55a73fa615791b9f6d0b5f6dffa28a8b5b8a31e89612169818ac142d0f40",
+        "dist/commonjs/read-entry.js": "24a949d86f43f66fe0dbc2fd177765787a9e1511a610ed6f5c8c29dc64e77237",
+        "dist/commonjs/header.js": "97917e803a2c487eed67716c31aff0f852bb94b37685325ee686cdb108c5813c"
+      },
+      "entryCount": 9,
+      "typeCounts": {
+        "Directory": 2,
+        "File": 7
+      },
+      "regularFiles": 7,
+      "regularFileBytes": 19802,
+      "entries": [
+        {
+          "path": "pg/",
+          "type": "Directory",
+          "size": 0
+        },
+        {
+          "path": "pg/LICENSE",
+          "type": "File",
+          "size": 1141
+        },
+        {
+          "path": "pg/README.md",
+          "type": "File",
+          "size": 604
+        },
+        {
+          "path": "pg/index.d.mts",
+          "type": "File",
+          "size": 1980
+        },
+        {
+          "path": "pg/index.d.ts",
+          "type": "File",
+          "size": 11428
+        },
+        {
+          "path": "pg/lib/",
+          "type": "Directory",
+          "size": 0
+        },
+        {
+          "path": "pg/package.json",
+          "type": "File",
+          "size": 1089
+        },
+        {
+          "path": "pg/lib/connection-parameters.d.ts",
+          "type": "File",
+          "size": 1730
+        },
+        {
+          "path": "pg/lib/type-overrides.d.ts",
+          "type": "File",
+          "size": 1830
+        }
+      ],
+      "warnings": []
+    },
+    "admission": "NOT_EVALUATED_DIAGNOSTIC_ONLY"
+  },
+  "completedAtUtc": "2026-10-23T06:58:45.158Z"
+}

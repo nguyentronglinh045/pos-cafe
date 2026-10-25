@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "permission-runtime-admission-v2",
+  "repository": "nguyentronglinh045/pos-cafe",
+  "branch": "run/permissions-20261020",
+  "sourceRoot": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+  "expectedRemoteSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+  "retainedRoots": [
+    "D:/Workspace/pos-cafe-permission-run-20261020",
+    "D:/Workspace/pos-cafe/.git",
+    "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022"
+  ],
+  "knownHistoricalLinks": [
+    "test-junction-0096b055-d65e-4184-b94a-d37a2d493804",
+    "test-junction-e384a654-8af5-47d2-9a7e-e68c5432519a"
+  ],
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "workstreamId": "permission-loop-prevention-20261021",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-packet05.json",
+    "sha256": "abecf340bd01bd1414e8d3bd0277d1e3c6b6bf1ac8fe413291e93e83f56f5571"
+  },
+  "reviews": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-reviews05.json",
+    "sha256": "27cc9754f48c88b3cd5aa2dd043d1536a767fc7855cd083a2237c30904218083"
+  },
+  "prior": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-service02.json",
+    "sha256": "f8929fd23d2aeb2be7bf272e589d566eb44f4b98e4d4c10dd80faaf384d530b4"
+  },
+  "budget": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03.json",
+    "sha256": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142"
+  },
+  "local": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-node05.json",
+    "sha256": "8a2025b8dddace0d053f1efd735cbfcf8567e9948689e79111b59d5751a91ce9"
+  }
+}

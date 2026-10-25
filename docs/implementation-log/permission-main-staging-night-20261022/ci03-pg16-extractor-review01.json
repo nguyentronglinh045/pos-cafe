@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "permission-independent-helper-review-v1",
+  "recordedAtUtc": "2026-10-22T16:16:42.986Z",
+  "authors": [
+    "/root/budget_time_guard_fix"
+  ],
+  "candidate": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/extract-light-pg16-03.mjs",
+    "sha256": "2d9e4ec925799f1c4996d7fe6c9396c91dbe6b8da6c3bd45b30a53682ebabf3c"
+  },
+  "offlineChecks": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/ci03-pg16-extractor-offline-check01.json",
+    "sha256": "266c2e718290248fc896ae6f86c6a99b1e95ae6dc0f19ddc645fbb628e79450d"
+  },
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "runId": "39811728040",
+  "reviewers": [
+    {
+      "name": "/root/final_security_join_review",
+      "scope": "source/strict PG16 extraction",
+      "verdict": "APPROVE",
+      "evidence": "Actual final message approves exact2d9e...: source/run/pins, wholeCI validation, exactonePG16/render, recheck inputs/wx/deadline/noHTTPledger;24syntheticcontrols receipt hash valid; not executed."
+    },
+    {
+      "name": "/root/mcp_staging_evidence_review",
+      "scope": "operations/custody/deadline",
+      "verdict": "APPROVE",
+      "evidence": "Actual message approves exact2d9e...6050bytes: fixed4f/run/tag/callerSHA, helper1905/parser769+4canonicalmodulepins checked, rawrefs rechecked; exactonePG16 full binding, wx/fsync and deadline entry+eachsave, partialstate stop; no inflation/runtimeexecution."
+    }
+  ],
+  "scope": "Read already completed local CI collection only. No runtime rerun, network, DB or ledger action; fullGate NOT_PROVEN_BY_THIS_ONE_STAGE."
+}

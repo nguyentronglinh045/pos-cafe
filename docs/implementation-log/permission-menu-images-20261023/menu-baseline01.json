@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-23T13:04:33.695Z",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "storeId": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf",
+  "actorId": "1cccd1a7-b42d-55ab-8875-1cd088db3267",
+  "data": {
+    "menuItems": [
+      {
+        "id": "442499a3-0950-4b6f-a2f4-3ad664897141",
+        "name": "TEST - Cà phê",
+        "price": 32000,
+        "sortOrder": 1,
+        "categoryId": "d9b66fad-4a53-480c-a5cf-0ea153b39379",
+        "isAvailable": true,
+        "imageAssetKey": null
+      }
+    ],
+    "categories": [
+      {
+        "id": "d9b66fad-4a53-480c-a5cf-0ea153b39379",
+        "name": "TEST - Đồ uống",
+        "sortOrder": 1
+      }
+    ],
+    "optionGroups": [],
+    "optionValues": [],
+    "menuItemOptionGroups": []
+  }
+}

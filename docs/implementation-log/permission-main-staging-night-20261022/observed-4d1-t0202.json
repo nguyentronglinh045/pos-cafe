@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "service-observed-checkpoint-v1",
+  "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+  "executionProfile": "SUPABASE_T02",
+  "runId": "39804303097",
+  "attempt": 1,
+  "conclusion": "success",
+  "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39804303097",
+  "observation": "OBSERVED",
+  "validatorPins": [
+    {
+      "path": "scripts/permission-runtime-service.mjs",
+      "gitLfSHA256": "4391f3d44b8a9b8aaab861826f4f720ab84e666c40fc08afc714dad415d9cf3e"
+    },
+    {
+      "path": "scripts/permission-runtime-service-profile.mjs",
+      "gitLfSHA256": "7eda31d59cbb3db64bee46c7bd0a1c92e1063e09e2e51e26bb445d0f9bdb5ce0"
+    },
+    {
+      "path": "scripts/permission-runtime-results.mjs",
+      "gitLfSHA256": "7cc4c037b888a90362f3b9a51fb1ed10d3e7e914bef20e7840518ba7d8f8ae68"
+    },
+    {
+      "path": "scripts/permission-runtime-catalog.mjs",
+      "gitLfSHA256": "8ac506e4e9cf19b844cd0f12dfde32278deccca20bfba7cdfc95e43ce3b4e0f7"
+    }
+  ],
+  "outside": [
+    {
+      "measuredBytes": 568446976,
+      "budgetBytes": 1073741824,
+      "reservedFutureBytes": 16777216,
+      "technicalQuota": false
+    }
+  ],
+  "failure": [],
+  "diagnosticFacts": [],
+  "evidence": [
+    {
+      "schemaVersion": "permission-service-runtime-v1",
+      "scope": "ONE_SERVICE_PROFILE_ONLY",
+      "executionProfile": "SUPABASE_T02",
+      "logicalProfile": "SUPABASE_T02",
+      "status": "PASS",
+      "failure": null,
+      "stages": [
+        {
+          "stage": "bridge-bridge-database",
+          "status": "PASS",
+          "required": 10,
+          "discovered": 52,
+          "run": 52,
+          "pass": 52,
+          "fail": 0,
+          "skip": 0,
+          "retry": 0,
+          "reportSHA": "30dd4538d318ea4c44f8958457dda848190802904ce467cd631b604396bad685",
+          "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+          "invocationSHA": "c06919e008b51ffeadc601aec0a3ddcf8a16788d8ef091e21b888feb7aa78c85",
+          "supplementalOracles": "NOT_PROVEN_BY_STAGE_COUNTS"
+        },
+        {
+          "stage": "candidate-bridge-database",
+          "status": "PASS",
+          "required": 3,
+          "discovered": 52,
+          "run": 52,
+          "pass": 52,
+          "fail": 0,
+          "skip": 0,
+          "retry": 0,
+          "reportSHA": "3589aadc1eb8a4851b97b6a8845cb3e67546c358c048c863b13b3c2f242505fd",
+          "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+          "invocationSHA": "c06919e008b51ffeadc601aec0a3ddcf8a16788d8ef091e21b888feb7aa78c85",
+          "supplementalOracles": "NOT_PROVEN_BY_STAGE_COUNTS"
+        },
+        {
+          "stage": "foundation-database",
+          "status": "PASS",
+          "required": 4,
+          "discovered": 4,
+          "run": 4,
+          "pass": 4,
+          "fail": 0,
+          "skip": 0,
+          "retry": 0,
+          "reportSHA": "74120ff145bcd89e76e7a68dec85f458bbd582c60c9b65f8a1e30eaee5e5312e",
+          "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+          "invocationSHA": "031b12b4a8467a2508bdcd0bfbb81713413e67bdfec903901c55e2ce808b95f7",
+          "supplementalOracles": "NOT_PROVEN_BY_STAGE_COUNTS"
+        }
+      ],
+      "physicalBackendSHA": "f589c8344efdf14339dfafab1f461f058378f34e4f124954138c4a297db1ed5d",
+      "fixtureConnectionClosed": true,
+      "full35BusinessRuntime": "NOT_RUN",
+      "remainingBusinessStages": 32,
+      "supplementalOracles": "NOT_PROVEN_BY_STAGE_COUNTS",
+      "repository": "nguyentronglinh045/pos-cafe",
+      "runId": "39804303097",
+      "attempt": 1,
+      "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+      "workflowSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+      "sourceFingerprint": "75baa948ab715401052d032dbc58b957d24ee35896ae6a3beea2c748b4c34552",
+      "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+      "stoppedPeerSHA": null
+    }
+  ],
+  "reclaim": [
+    {
+      "schemaVersion": "permission-ci1-reclaim-v1",
+      "status": "RECLAIMED",
+      "imageUnlinked": true,
+      "imageLogicalBytes": 19327352832,
+      "imageAllocatedBytes": 19327389696,
+      "hostFreeBeforeBytes": 71067217920,
+      "hostFreeAfterBytes": 90394611712,
+      "measuredHostFreeDeltaBytes": 19327393792,
+      "remaining": "compact control/status/safe export only; ephemeral runner"
+    }
+  ],
+  "logBytes": 40493,
+  "logSHA256": "804758fdcfb50af6ba3989737941edd2afcc197a2683edc565ca1ca95350a690",
+  "full35BusinessRuntime": "NOT_PROVEN_BY_SINGLE_PROFILE",
+  "liveMutation": false
+}

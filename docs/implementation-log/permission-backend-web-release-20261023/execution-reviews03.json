@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "permission-execution-reviews-v3",
+  "recordedUtc": "2026-10-24T01:49:25.145Z",
+  "sourceSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-packet03.json",
+    "sha256": "f002d4857a6e3c08237d07a7108d59e2011bee61466fb0bcb781d9cf347de175"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "Entire14filedelta/source/privacy/provenance/finitepacket/capacity",
+      "blockingFindings": 0
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Entire14filedelta/unchangedassertions/privacy/sourcebinding/finitepacket",
+      "blockingFindings": 0
+    }
+  ],
+  "resolvedFinding": {
+    "id": "ATTACHMENT_PATH_UNDEFINED",
+    "reason": "Actual Playwright body attachment retains own path:undefined; original draft rejected it",
+    "fix": "Reject non-undefined path; actual Playwright three control runs verify checkpoints reach collector"
+  },
+  "localRecipeClarification": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/diagnostics-local-recipes01.json",
+    "sha256": "1bc1ff172b161a66b80c7d5e31ed086f91566daeb3feb13527bdfef59b58094f",
+    "scope": "Synthetic reporter context parent49e beforefreeze, not backend receipt"
+  },
+  "authority": {
+    "publication": 1,
+    "automaticPushCI": 1,
+    "wholeT04": 1,
+    "otherProfiles": 0,
+    "pullRequest": 0,
+    "merge": 0,
+    "deploy": 0
+  },
+  "beforeT04": [
+    "freshCI18 PASS+sourcepreserved+nativecleanup",
+    "two actualLIGHT/PINvisual reviews",
+    "two mapping04 sourceplan reviews",
+    "freshrefs/capacity/activeheavy0/priorreclaim"
+  ],
+  "actualAcceptance": "PENDING_NOT_RUN"
+}

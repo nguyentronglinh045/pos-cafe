@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "permission-bp4a-next-local-owner-grant-v1",
+  "reference": "request_user_input_async call_2470b0ddccbc488dab91fc80e6ee2dbf item0",
+  "answer": "Duyệt toàn lượt 60 phút (khuyến nghị)",
+  "recordedAtUtc": "2026-10-23T04:54:18Z",
+  "deadlineUtc": "2026-10-23T05:54:18Z",
+  "readinessDeadlineUtc": "2026-10-23T05:09:18Z",
+  "timezone": "Asia/Bangkok",
+  "recordingTimeIsNotExactUserClick": true,
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "approvedPlanSHA256": "0add4c37ad1991767e2b9e631610d35da247d4f7977385f25f3febecd4a3c98e",
+  "sourceRoot": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+  "prefix": "bp4a-next01",
+  "limits": {
+    "archivePreflight": 1,
+    "install": 1,
+    "build": 1,
+    "unitCoverage": 1
+  },
+  "history": {
+    "priorArchivePreflightAttempts": 1,
+    "cumulativeArchivePreflightMaximum": 2,
+    "priorInstall": 0,
+    "priorBuild": 0,
+    "priorUnitCoverage": 0,
+    "externalPhase03": "CLOSED_UNCHANGED"
+  },
+  "caps": {
+    "archivePhaseMs": 240000,
+    "commandChildMs": 480000,
+    "commandPhaseMs": 540000,
+    "nativeProbeChildMs": 10000,
+    "finalReserveMs": 600000
+  },
+  "storage": {
+    "rootBaselineBytes": 51309130,
+    "maxGeneratedBytes": 2147483648,
+    "reserveBytes": 32212254720,
+    "retainedMaxBytes": 805306368,
+    "forecastOverheadBytes": 92274688,
+    "perStreamLogMaxBytes": 4194304,
+    "mainLogsMaxBytes": 25165824,
+    "reportMaxBytes": 33554432,
+    "tempMetaMaxBytes": 33554432
+  },
+  "npm": "One invocation; stock internal recovery allowed within child cap; HTTP fetch retries=0; coordinator phase retry forbidden",
+  "r0": "Tooling corrections and offline collector controls/review may iterate within readiness deadline; all evidence retained",
+  "afterR1": "Any phase FAIL/UNKNOWN, timeout, drift or storage threshold stops dependent work; no automatic fix/retry",
+  "excluded": [
+    "application source or lock changes",
+    "coverage/acceptance reduction",
+    "push any branch",
+    "CI",
+    "backend",
+    "database access including read",
+    "deployment",
+    "new tool/browser/WSL/Docker installation",
+    "cleanup without existing explicit authority"
+  ]
+}

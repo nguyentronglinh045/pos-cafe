@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "permission-bp4a-process-observation-v1",
+  "observedAtUtc": "2026-10-23T03:54:01.1113754Z",
+  "rootPids": [
+    43340,
+    2612,
+    17208
+  ],
+  "matchingOwnedProcessCount": 0,
+  "matches": [],
+  "scope": "Read-only CIM; original leaf PID was not captured; proof files additionally report job activeProcesses=0"
+}

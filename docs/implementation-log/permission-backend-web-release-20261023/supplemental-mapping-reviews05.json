@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "permission-source-mapping-reviews-v5",
+  "recordedUtc": "2026-10-24T04:17:17.217Z",
+  "sourceSHA": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+  "mapping": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping06.json",
+    "sha256": "577a3a380c7f4413a92e39b650e020b93b7ad606c6c40fb20d7706113cdaefcf"
+  },
+  "validation": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/newmapping-validation06.json",
+    "sha256": "efb0080329ddb04c2f1c11880765b9b638d6a13181947ebbe62939a8870865f2"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "132pins/249lines/120actualAST+27line scopes/149selectors,35/760/12/34,A18D19/effects exact,83runtimePENDING/nooldPASS",
+      "findings": []
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Independent132pins/249lines/147scopes/7effectranges/6rulefiles9ranges/149selectors; sourcebinding/UNKNOWN/nooldPASS/supporttooling",
+      "findings": []
+    }
+  ],
+  "acceptanceChanged": false,
+  "runtimePassClaimed": false
+}

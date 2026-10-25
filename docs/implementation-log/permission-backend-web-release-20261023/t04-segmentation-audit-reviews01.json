@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "t04-segmentation-audit-reviews-v1",
+  "document": "t04-segmentation-audit-20261024.md",
+  "bytes": 11258,
+  "sha256": "d131085699eff0f1df8e9d9b7edb21cd539e31c7bc3474f94b9ed8f951611aa6",
+  "sourceSHA": "34db1b13ab707bab114fe1d83642d021ff324c93",
+  "author": "/root/backend_acceptance",
+  "reviews": [
+    {"reviewer":"/root/main_integration","verdict":"APPROVE_DOCS_AUDIT_ONLY","blockingFindings":[]},
+    {"reviewer":"/root/final_diagnostic_review","verdict":"APPROVE_DOCS_AUDIT_ONLY","blockingFindings":[]}
+  ],
+  "closedFinding": "Clarify cleanup=true is necessary for PASS; structurally valid FAIL receipts may carry cleanup=false",
+  "verified": "19/291; ten resets; full-file execution; same backend/checkpoint and original deadlines; separate-backend subsets diagnostic-only",
+  "fallbackTriggered": false,
+  "fallbackImplemented": false,
+  "newExecutionAuthorizationFromReview": false
+}

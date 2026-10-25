@@ -2,6 +2,8 @@
 
 ## Đang theo dõi
 
+- [Xuất bản spec/evidence WIP — 25/10/2026](docs-wip-publication-2026-10-25.md): permission15/PIN/CI và lịch sử evidence theo nguồn; bản gốc giữ nguyên, danh sách dọn chờ duyệt.
+
 - [Chuẩn hóa docs — 25/10/2026](docs-normalization-2026-10-25.md): đã chỉnh lý, kiểm và có hai APPROVE; giữ WIP/evidence, phần xuất bản WIP/backend còn riêng.
 - [Kế hoạch chuẩn hóa sau tích hợp](post-integration-standardization-plan-2026-10-25.md): NC-10 + phần docs của NC-02 đi trước; NC-04…08 chưa mở.
 - [Tích hợp UI B01–B03](ui-main-docs-integration-2026-10-25.md): đã merge bốn PR, source main711a22e; backend/deploy HOLD.

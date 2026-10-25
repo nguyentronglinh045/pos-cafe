@@ -1,0 +1,69 @@
+{
+  "recordedUtc": "2026-10-24T09:35:56.642Z",
+  "sourceSHA": "4e78a8c11d2d895ccebaccd2b2f7d3b2c69bcb3e",
+  "runId": "40081353958",
+  "attempt": 1,
+  "scope": "ACTUAL_CI_LIGHT_LINUX_AND_FRESH_PIN_GATE_FOR_ONE_DIAGNOSTIC_ONLY",
+  "refs": {
+    "summary": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci11-summary.json",
+      "bytes": 9734,
+      "sha256": "7b90348d9590de37265cfa85ba5852748d0ebc09b20986d72141e520591e7457"
+    },
+    "collection": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci11-collection.json",
+      "bytes": 1064,
+      "sha256": "13e185a87e7bc9c990f9bf160813c4982f602f4916c7447cfcde37d721418e13"
+    },
+    "log": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci11-workflow.log",
+      "bytes": 88799,
+      "sha256": "0465c25036e8211b8c52f448afbe55d8db7e6fad40e3fb80e8900b1e57e2352f"
+    },
+    "native": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci11-native-cleanup.json",
+      "bytes": 783,
+      "sha256": "bb2d4b0903a620301a9a6bd739f200e7fa5c9e850ef09a9777cdfcdc027ca40e"
+    },
+    "pinIntegrity": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-integrity08.json",
+      "bytes": 3116,
+      "sha256": "c359dc9d24ce2dfe111f5b1edb91a7c96ec2483ac505346fc536725c5d325f23"
+    },
+    "manual": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-visual-review08.json",
+      "bytes": 2260,
+      "sha256": "8a736f3f8cd70add1fc35f366df6d246c4b0781fdf6376eff680f0f197f1a9dc"
+    },
+    "packet": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-final-origin-packet01.json",
+      "bytes": 331998,
+      "sha256": "373268905437d3cbf0cea04656deeb51982a98a34ab70475bb85f33bf0fa578f"
+    },
+    "mapping": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-final-origin-mapping01.json",
+      "bytes": 4109,
+      "sha256": "159b389c1394c8a76b9392cb2ab4648bf1eacc85f3733cf388c2c0f995e5ff58"
+    }
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "status": "APPROVE",
+      "openedAll3FreshPng": true,
+      "scope": "Exact-source18PASS/LIGHT6-343required-510actual/Linux29+5file/boundedbrowser61s/PG16reclaim50741248B/ZIPCRC/nativePNG/fresh3photos",
+      "blockingFindings": 0
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "status": "APPROVE",
+      "openedAll3FreshPng": true,
+      "scope": "Exact-source18PASS/LIGHT6-343required-510actual/Linux29+5file/boundedbrowser61s/PG16reclaim50741248B/ZIPCRC/nativePNG/fresh3photos",
+      "blockingFindings": 0
+    }
+  ],
+  "proofLimit": "Linux inner control results inferred from exact trusted producer with PASS; no public raw per-case timing is claimed. PIN producer visualReview remains NOT_RUN; manual reviews are separate.",
+  "wholeT04": "NOT_RUN",
+  "priorWholeStatus": "FAIL",
+  "mergeDeploy": "NOT_AUTHORIZED"
+}

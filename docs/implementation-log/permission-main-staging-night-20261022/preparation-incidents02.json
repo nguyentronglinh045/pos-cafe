@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "permission-preparation-incident-record-v1",
+  "recordedAtUtc": "2026-10-22T14:39:49.382Z",
+  "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+  "status": "FACTUAL_PREPARATION_AND_METADATA_OBSERVATIONS_ONLY",
+  "incidents": [
+    {
+      "id": "COMPLETED_AGENT_NOT_WOKEN",
+      "basis": "Root-reported approximate20:23to20:40local; recorded in reviewed remediation plan52c312...; no exact autonomous timing claim.",
+      "impact": "Coordination delay distinct from actual17m45 historical T04 job.",
+      "remedy": "Use followup_task to reactivate idle/completed agents; send_message queues or delivers messages without starting a new turn. Check agent status after assignment."
+    },
+    {
+      "id": "TRUSTED_PIN_STALE_LOCAL03",
+      "sourceSHA": "9395f4a5674c01ce72b863203628eae2f982a0eb",
+      "observation": "Node03 937/938 with one FRONTEND_RELEASE_BLOCKED from canonical trusted pin mismatch; no publication/CI/heavy spent by this local failure.",
+      "remedy": "Update only reviewed error-facts hash in release policy, preserve43paths and productionhold; successor4d1 Node04 938/938, two reviews and own-sourceCI18 PASS. Historical failing receipt preserved."
+    },
+    {
+      "id": "CI02_JOB_AND_RUN_TIMESTAMPS_DIFFER",
+      "jobMetadata": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci02-jobs-api.json",
+        "sha256": "37a54de2a0085e912c8b59554c78db640d3a613f5f6e14923401b593cc1de459"
+      },
+      "runMetadata": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci02-api.json",
+        "sha256": "8c7d828418ea85c0e604be1982473ce903d05b12b9b9caf76b2b6347313506b1"
+      },
+      "jobStartedAtUtc": "2026-10-22T14:02:09Z",
+      "jobCompletedAtUtc": "2026-10-22T14:16:05Z",
+      "jobDurationSeconds": 836,
+      "terminalRunUpdatedAtUtc": "2026-10-22T14:25:39Z",
+      "differenceAfterJobSeconds": 574,
+      "interpretation": "Difference between saved API timestamps, separate from test execution. Earlier parent status/attempt showed in_progress with null conclusion after job/check success; those intermediate console observations were not saved as rawAPI files. First terminal observation enabled normal frozen collection/settlement.",
+      "rootCause": "UNKNOWN; no claim of a public GitHub incident or a proved cache/internal-service failure.",
+      "remedy": "Use detailed jobs endpoint for progress; require actual terminal run metadata plus source-bound summary/reclaim to settle. Bounded read-only polling, no duplicate dispatch/rerun or acceptance bypass."
+    },
+    {
+      "id": "T04_PARENT_QUEUED_SNAPSHOT_LAG",
+      "basis": "Root actual REST jobs observation21:33:41local reports T04 job119882939459 in_progress from21:27:56 while earlier gh run view/parent snapshots were queued.",
+      "correction": "Do not count that interval as proved runner queue time. Progress report corrected in conversation; workflow terminal remains mandatory."
+    },
+    {
+      "id": "CHECKPOINT_SHELL_WRITE_REJECTED",
+      "basis": "Automatic command review rejected one proposed shell-only local JSON receipt write with generic blocked-by-policy reason; no files or external mutations were performed by that rejected command.",
+      "resolution": "Used the authorized structured apply_patch file editor to save the same bounded local documentation. No permission escalation, Auth/database action, or gate waiver."
+    }
+  ],
+  "limit": "Historical preparation/metadata observations explain delay and corrections; they are not permission/runtime/fullgate PASS."
+}

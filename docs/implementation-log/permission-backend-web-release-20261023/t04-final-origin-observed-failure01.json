@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "t04-final-origin-observed-failure-v1",
+  "recordedUtc": "2026-10-24T09:49:44.966Z",
+  "sourceSHA": "4e78a8c11d2d895ccebaccd2b2f7d3b2c69bcb3e",
+  "runId": "40082616309",
+  "attempt": 1,
+  "status": "DIAGNOSTIC_FAIL",
+  "refs": {
+    "receipt": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t04-image02.json",
+      "bytes": 90000,
+      "sha256": "ac73adc952b88861443483da487c45b0b1286134d42a62f7322152ccc2cac8af"
+    },
+    "log": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t04-image02.log",
+      "bytes": 74585,
+      "sha256": "fa499c902293421f3b87cd017749851491d58fd7f7d42fb36ecb6dfbb9576325"
+    },
+    "metadata": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t04-image02-metadata.json",
+      "bytes": 19995,
+      "sha256": "2f929642001e3a93d0b5157fc84cb2c4b500914c33412c5500d57b3b003c965f"
+    },
+    "ci": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci11-collection.json",
+      "bytes": 1064,
+      "sha256": "13e185a87e7bc9c990f9bf160813c4982f602f4916c7447cfcde37d721418e13"
+    },
+    "source": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-final-origin-packet01.json",
+      "bytes": 331998,
+      "sha256": "373268905437d3cbf0cea04656deeb51982a98a34ab70475bb85f33bf0fa578f"
+    },
+    "fallback": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-final-origin-fallback-20261024.md",
+      "bytes": 4700,
+      "sha256": "76ab6a67f0dc29576d2078fc6f6500447b09822585bd374e748fb20462a9a417"
+    },
+    "artifactApi": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t04-image02-artifacts-api.json",
+      "bytes": 232,
+      "sha256": "f9ae32aecafca80aaec290dab1321519456a0a4fd3e580c15fe3237663205b76"
+    }
+  },
+  "candidateTests": [
+    {
+      "ordinal": 1,
+      "discovered": 1,
+      "state": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 2,
+      "discovered": 1,
+      "state": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 3,
+      "discovered": 1,
+      "state": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 4,
+      "discovered": 1,
+      "state": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 5,
+      "discovered": 1,
+      "state": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 6,
+      "discovered": 1,
+      "state": 1,
+      "attempts": 1
+    }
+  ],
+  "image": {
+    "step": 30,
+    "predicate": 67,
+    "targetMs": 59000,
+    "exclusiveUpperBoundMs": 59750,
+    "actualDispatchMs": 60657,
+    "elapsedObserved": 1,
+    "elapsedCapped": 0,
+    "lateFromTargetMs": 1657,
+    "beyondExclusiveUpperMs": 907,
+    "observationMask": 16770047,
+    "completedObservations": [
+      "publication",
+      "pngDecoded",
+      "origin200",
+      "origin304",
+      "warmCache",
+      "storageOrdinary503",
+      "storageConditional503",
+      "lookupOrdinary503",
+      "lookupConditional503",
+      "freshAfterUnlink404",
+      "uploadProbeBypassed",
+      "uploadMetadata503",
+      "uploadStillUploading",
+      "uploadNotPublished",
+      "uploadPreviousBindingPreserved",
+      "cleanupGateway503",
+      "cleanupDiscarded",
+      "cleanupMetadataPreserved",
+      "cleanupBytesPreserved",
+      "cleanupControlDeleted",
+      "faultSentinelsPreserved"
+    ],
+    "unprovedObservations": [
+      "cache59Observed",
+      "cache60Denied",
+      "cache61Denied"
+    ],
+    "warmOperandZeroMeaning": "RESET_AT_NEXT_STEP_UNKNOWN; completed warmCache bit proves previous exact predicate passed",
+    "imageMeasurementReceipt": null,
+    "observeRestoreReached": false,
+    "resetCount": 0
+  },
+  "transport": {
+    "readOrdinal": 1,
+    "bytes": 35212,
+    "bytesCapped": 0,
+    "innerFactCount": 801,
+    "projectedFactCount": 796
+  },
+  "cleanup": {
+    "inner": true,
+    "outer": true,
+    "cleanupFailure": null,
+    "imageAttempted": 1,
+    "imageFailed": 0
+  },
+  "outside": [
+    {
+      "measuredBytes": 568946688,
+      "budgetBytes": 1073741824,
+      "reservedFutureBytes": 16777216,
+      "technicalQuota": false
+    }
+  ],
+  "reclaim": [
+    {
+      "schemaVersion": "permission-ci1-reclaim-v1",
+      "status": "RECLAIMED",
+      "imageUnlinked": true,
+      "imageLogicalBytes": 19327352832,
+      "imageAllocatedBytes": 19327385600,
+      "hostFreeBeforeBytes": 72225693696,
+      "hostFreeAfterBytes": 91553083392,
+      "measuredHostFreeDeltaBytes": 19327389696,
+      "remaining": "compact control/status/safe export only; ephemeral runner"
+    }
+  ],
+  "reclaimFailure": [],
+  "artifacts": [],
+  "causality": {
+    "observed": "Browser actual dispatch missed first59s window",
+    "sourceMechanism": "Timing loop and browserGet execute full synchronous envelope/physical guards immediately before dispatch",
+    "guardDurationBreakdown": "NOT_MEASURED; guard vs IPC vs scheduling contribution unknown",
+    "fixedWarmDefect": "Current exact warm-cache predicate and fresh-after-unlink passed; historical failing warm operand was not directly exported"
+  },
+  "decision": "STOP_RETRIES; propose approved separate browser worker with independent full guard on SAME backend/deadline; no implementation or new run",
+  "wholeT04": "NOT_RUN_ON_NEW_SOURCE; PRIOR_WHOLE_FAIL_UNCHANGED",
+  "full35BusinessRuntime": "NOT_RUN",
+  "mergeDeploy": "NOT_AUTHORIZED",
+  "temporaryControls": "RETAINED_USER_HOLD"
+}

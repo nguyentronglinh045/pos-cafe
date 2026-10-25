@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "permission-bp4a-guard-amendment-v1",
+  "reference": "request_user_input_async call_a9e341778a63427fac2fdf52890bc4de item0",
+  "answer": "Cho phép sửa fixture + 1 guard, tiếp tục trong hạn cũ (khuyến nghị)",
+  "recordedAtUtc": "2026-10-23T04:02:16Z",
+  "deadlineUtc": "2026-10-23T04:30:43Z",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "approvedProposalSHA256": "0d2861fdbfa7bba83ecb7864f4b595ea2265a7f418e166eaf8dab03c8d7ff81c",
+  "originalGrantSHA256": "a833cc5eb0236879307c9a957194d274f4c73bc78992ca588d621d78382076d2",
+  "additionalGuardAttempts": 1,
+  "maxWrapperMs": 30000,
+  "conditionalResume": "Only after corrected orphan control PASS; use original unused archive/install/build/unit quotas; no reset or deadline extension",
+  "stopOn": "Any FAIL/UNKNOWN or admission threshold; no automatic fix/retry",
+  "exclusions": [
+    "application source or lock changes",
+    "main recipe or helper changes",
+    "push",
+    "CI",
+    "backend",
+    "SQL/DB",
+    "deploy"
+  ],
+  "preserve": "All FAIL01 evidence and original grant, recipes and lifetime history"
+}

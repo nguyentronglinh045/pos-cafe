@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "permission-bp4-local75-readiness-v1",
+  "observedAtUtc": "2026-10-23T07:51:44.3565807Z",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "sourceStatus": [],
+  "grantSHA256": "3a6751f1b022247dcac9c66514a908cf0ff91dcc0194de59ddcc994a5982f660",
+  "rootBytes": 51755030,
+  "newTaskGeneratedBytes": 445900,
+  "retainedBytes": 333699121,
+  "retainedRoots": [
+    "D:/Workspace/pos-cafe-permission-run-20261020",
+    "D:/Workspace/pos-cafe/.git",
+    "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022"
+  ],
+  "volumes": [
+    {
+      "DriveLetter": "D",
+      "SizeRemaining": 98498367488
+    },
+    {
+      "DriveLetter": "C",
+      "SizeRemaining": 193230143488
+    }
+  ],
+  "activeTaskRunners": [],
+  "oldLedgers": {
+    "budget-phase03-close.json": "0eb116c8b4016d54d0b0d90474545bd8012625bdcb0d924e1aca22e3754ce05b",
+    "budget-phase03-negative-controls.json": "ae2a8c9f1380400fba90c2b17c656a8ffe630b71fdd841679a986606f9abeb04",
+    "budget-phase03.json": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+    "budget-phase03.json.anchor.json": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f",
+    "budget-phase03.json.head.json": "adfec165ec85f3d4fd9f69db229249ba743845a5561799f295ae8590a5f6e527",
+    "budget-phase03.json.journal.jsonl": "5390f85e8fb7c01d6a037724ba1f8c2b00a8666ed5603094a3bbeb876ffbb694"
+  },
+  "r0Controls": "20/20PASS_FAKE_NETWORK0",
+  "r0ReleaseVerified": true,
+  "estimate": "LARGER_THAN1GB; planning1-2GiBpeakD; npm downloads100-200MBestimated; monitor isnotOSquota",
+  "scope": "Snapshot beforeR1; allheavyphasesnotstarted; noenv/app/lock change"
+}

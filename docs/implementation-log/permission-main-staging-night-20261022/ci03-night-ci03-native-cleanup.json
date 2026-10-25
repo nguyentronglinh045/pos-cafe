@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "permission-pg16-reclaim-v1",
+  "status": "NOT_PRESENT",
+  "rootRemoved": true,
+  "processReleased": true,
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "runId": "39811728040",
+  "bindingBasis": "SAME_SOURCE_BOUND_TERMINAL_WORKFLOW_LOG",
+  "rawReceiptSHA256": "411a8d15dfa1a3220f9d743cd5bd44ed9fb45b7fcddf455749755a8925af45b4",
+  "rawReceipt": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-native-cleanup-raw.json",
+    "sha256": "411a8d15dfa1a3220f9d743cd5bd44ed9fb45b7fcddf455749755a8925af45b4"
+  },
+  "workflowLog": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-workflow.log",
+    "sha256": "b81568098434fd4cccfeadd5e7c4dd04fde5a87bb69320062fd914e63c232272"
+  }
+}

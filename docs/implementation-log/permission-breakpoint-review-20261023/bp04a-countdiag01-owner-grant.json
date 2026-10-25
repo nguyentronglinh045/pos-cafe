@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "permission-bp4a-countdiag-owner-grant-v1",
+  "reference": "request_user_input_async call_a52e0b478fa04806ac6e58203f1711ed item0",
+  "answer": "Mở cửa sổ 15 phút mới (khuyến nghị)",
+  "recordedAtUtc": "2026-10-23T06:41:54Z",
+  "deadlineUtc": "2026-10-23T06:56:54Z",
+  "readinessDeadlineUtc": "2026-10-23T06:48:54Z",
+  "executionDeadlineUtc": "2026-10-23T06:51:54Z",
+  "timezone": "Asia/Bangkok",
+  "recordingTimeIsNotExactUserClick": true,
+  "planSHA256": "09caf0a76aebecc00b3b0ae6983918b36221ff2f6697b71ccfbbf7cdd5cd918c",
+  "amendment": "Explicitly replaces expired12:54:18 hardstop; all other diagnostic caps and exclusions unchanged",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "parserSHA256": "00c8948c16b10b76160cc722acf937942225e793f6c7a10b5e9456ee2bd509f2",
+  "limits": {
+    "diagnosticGET": 1,
+    "compressedBodyMaxBytes": 65536,
+    "requestTimeoutMs": 15000,
+    "gzipOutputMaxBytes": 1048576,
+    "analysisBatch": 1,
+    "analysisTimeoutMs": 60000,
+    "totalGeneratedDiagnosticBytes": 1048576,
+    "diagnosticDataMemoryAllowanceBytes": 8388608,
+    "redirects": 0,
+    "retries": 0
+  },
+  "history": {
+    "archivePreflightUsed": 2,
+    "archivePreflightMaximum": 2,
+    "diagnosticGETPreviouslyUsed": 0,
+    "installPreviouslyUsed": 0,
+    "buildPreviouslyUsed": 0,
+    "unitPreviouslyUsed": 0,
+    "oldLedgers": "UNCHANGED_CLOSED"
+  },
+  "storage": {
+    "rootBaselineBytes": 51309130,
+    "maxGeneratedBytes": 2147483648,
+    "reserveBytes": 32212254720,
+    "retainedMaxBytes": 805306368
+  },
+  "excluded": [
+    "acceptance/count waiver or source/lock changes",
+    "main03/parser/collector admission edits",
+    "full46archive preflight",
+    "npm ci/install",
+    "build",
+    "appunit/coverage",
+    "push",
+    "CI",
+    "backend",
+    "database evenread",
+    "deploy",
+    "cleanup",
+    "new tools/browser/runtime"
+  ],
+  "stopPolicy": "One diagnostic invocation. Preserve raw/error evidence. No retry or fix/replay after actual request; known count mismatch may be observed within same offline diagnostic batch only. Final5minutes reserved for review/docs."
+}

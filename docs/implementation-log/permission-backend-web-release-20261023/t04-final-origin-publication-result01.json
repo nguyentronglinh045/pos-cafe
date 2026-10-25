@@ -1,0 +1,17 @@
+{
+  "recordedUtc": "2026-10-24T09:17:18.683Z",
+  "sourceSHA": "4e78a8c11d2d895ccebaccd2b2f7d3b2c69bcb3e",
+  "publicationCount": 1,
+  "ciCount": 1,
+  "runId": "40081353958",
+  "attempt": 1,
+  "event": "push",
+  "path": ".github/workflows/ci.yml",
+  "status": "in_progress",
+  "conclusion": null,
+  "reviewBranch": "review/permission-staging-20261023",
+  "main": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "diagnosticCount": 0,
+  "wholeT04": "NOT_RUN",
+  "mergeDeploy": "NOT_AUTHORIZED"
+}

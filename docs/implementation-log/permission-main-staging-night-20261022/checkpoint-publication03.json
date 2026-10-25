@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "permission-night-checkpoint-v1",
+  "recordedAtUtc": "2026-10-22T14:07:45.735Z",
+  "supersedesForCurrentState": "checkpoint-t04-failure01.json",
+  "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+  "treeSHA": "55d70f701b9b173da53c8f91a752a8050e340f3c",
+  "candidateBranch": "run/permissions-20261020",
+  "local": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-node04.json",
+    "sha256": "d9299dcc37fe5c96a4669049ff923d6b80b86038abbed603872e6b1d03b95dfa"
+  },
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-packet03.json",
+    "sha256": "c53fcb4d270c1815d5fb5fc8276047a7dfaa7256081bf1d1bfcc97411848ae4d"
+  },
+  "reviews": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-reviews03.json",
+    "sha256": "dda7015418ea27a8511b1332444454604be98cdd374d2c544a70ea0f0dc9d55a"
+  },
+  "publication": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-admission03.json",
+    "sha256": "3b6d6db553bb57fabddf3735163c661bbf2b2dbf4b07a0777faa03cf6b7bcc2d"
+  },
+  "ci": {
+    "runId": "39792208893",
+    "attempt": 1,
+    "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39792208893",
+    "lastObserved": "in_progress",
+    "terminal": "PENDING"
+  },
+  "plan": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-t04-fixture-remediation-2026-10-22.md",
+    "sha256": "52c312264af66d4f5566a45a8b37445bcbc5d87352ddac4f3f999f95c7f01ab8"
+  },
+  "planReviewPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/t04-remediation-plan-review01.json",
+  "authDeferredPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/auth-deferred01.json",
+  "budget": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase01.json",
+    "sha256": "86a7ed053fbebcfad314ef985834fb4d70017d61548b15f2d4ad61d7f3390dcc"
+  },
+  "phaseCountsAtCheckpoint": {
+    "publication": 2,
+    "ci": 2,
+    "heavy": 1,
+    "reviewRounds": 4
+  },
+  "pending": {
+    "kind": "publication",
+    "reservationId": "05499d1ef6982b655831448b05563fc00b490f800c74ee26f067450aa32b0a1c"
+  },
+  "remaining": {
+    "candidatePublication": 0,
+    "candidateCi": 0,
+    "wholeBackend": 7,
+    "pullRequestCi": 1,
+    "mainCi": 1
+  },
+  "extraHeavyDecision": "ASKED_NOT_AUTHORIZED_PENDING_OWNER",
+  "blockedSource": "ad265321144521c0669500fea9be0f96ebacb769",
+  "acceptance": {
+    "stages": 35,
+    "requiredIdentities": 760,
+    "supplementalObligations": 12,
+    "status": "PENDING_CURRENT_SOURCE_CI_AND_BACKEND"
+  },
+  "main": "UNCHANGED_2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "deadlineUtc": "2026-10-22T17:00:00Z",
+  "next": "Collect and settle exact CI terminal/native cleanup before fresh whole T04 admission. No duplicate push, workflow retry, ledger reset, original DB or Vercel action."
+}

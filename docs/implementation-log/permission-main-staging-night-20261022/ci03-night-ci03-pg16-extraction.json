@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "permission-safe-pg16-extraction-v1",
+  "recordedAtUtc": "2026-10-22T16:25:06.813Z",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "runId": "39811728040",
+  "attempt": 1,
+  "method": "EXACT_ONE_JSON_OBJECT_FROM_SOURCE_BOUND_ACTUAL_WORKFLOW_LOG",
+  "log": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-workflow.log",
+    "sha256": "b81568098434fd4cccfeadd5e7c4dd04fde5a87bb69320062fd914e63c232272"
+  },
+  "binding": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-summary.json",
+    "sha256": "e8daa086c7776fdb5d6928222069593546318cf1ebd171858e00da5c844139b8"
+  },
+  "observation": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-pg16.json",
+    "sha256": "d9dab71e199eb32f467f78abab2ffcca352da2e594ee2b2185f23bb928198b3e"
+  },
+  "collection": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-collection.json",
+    "sha256": "e9be1f85c6a26260388548ba2dd9b2ab7f965114d529c06a53748e098fb67b11"
+  },
+  "metadata": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-api.json",
+    "sha256": "e306af9723319c7c71c5120074dfd7fa2dc6d40b3341aed5ec01138cfe2a2387"
+  },
+  "helpers": [
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/settle-candidate-ci03.mjs",
+      "sha256": "190503b63dfab8601025ff55c0baa87f45020b13af2a0fd1910fbd71c5027677"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-postgate-ci.mjs",
+      "sha256": "769e66c5bedbd8b65cfa5a5e70da4c3fef085152af4b10fe581eab15f8ddd3be"
+    }
+  ],
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-packet05.json",
+    "sha256": "abecf340bd01bd1414e8d3bd0277d1e3c6b6bf1ac8fe413291e93e83f56f5571"
+  },
+  "renderer": "scripts/permission-runtime-pg16.mjs:renderPg16Evidence",
+  "validation": "PASS",
+  "fullGate": "NOT_PROVEN_BY_THIS_ONE_STAGE"
+}

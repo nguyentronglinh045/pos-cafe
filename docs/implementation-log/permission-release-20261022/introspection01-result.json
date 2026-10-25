@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "permission-staging-introspection-result-v1",
+  "status": "READ_ONLY_OBSERVATION_RECORDED",
+  "completedAtUtc": "2026-10-22T01:28:00.494Z",
+  "claimSHA256": "f4564e5eeb2f7455b2ed9ae0babcf0956cd2004472c28d1ed6d27a6a2eb9f82a",
+  "rawExportSHA256": "7fe96a229056901d16aeee6a68f0faec62fde8bc5ab59a746faf567255802550",
+  "observationSHA256": "b7e1defe89c76d85a0aa7c3d529bb424bc8b5369b0462ec404d10014dff70d8b",
+  "screenshotSHA256": "140274b915b73bf18249dd2286f1974ceb98f99e51b44a5b08d1d0bc3197b635",
+  "targetProjectRef": "ineckiashpwloncxnbqx",
+  "runClicks": 1,
+  "retries": 0,
+  "rows": 1,
+  "ddlDmlExecuted": false,
+  "mutationReady": false,
+  "businessTestsRun": false
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "permission-host-capacity-v1",
+  "hostFreeBytes": 92046118912,
+  "memoryBytes": 16766414848,
+  "cpus": 4,
+  "requiredHostFreeBytes": 53687091200,
+  "taskBudgetBytes": 21474836480,
+  "hostReserveBytes": 32212254720,
+  "status": "CAPACITY_AVAILABLE",
+  "fullExecution": "NOT_RUN",
+  "quotaEnforced": false,
+  "note": "Capacity observation only; unpack bounds, namespace, writer placement and full test dispatch remain required",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "workflowSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "runId": "39972994240",
+  "attempt": 1,
+  "node": "v22.23.3",
+  "observedUtc": "2026-10-23T14:50:08.132Z"
+}

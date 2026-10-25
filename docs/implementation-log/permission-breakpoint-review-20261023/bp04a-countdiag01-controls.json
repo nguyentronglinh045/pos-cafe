@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "permission-bp4-countdiag-controls-v1",
+  "status": "PASS",
+  "offlineOnly": true,
+  "networkRequests": 0,
+  "scriptSHA256": "e729d158bee6d9d5b0e565999809a848e15f58fa2b72d8cdb1ff85eaf577df3a",
+  "controlsSHA256": "87423efb252bc373581bed9fa39a924b2780eb9f71aaa576999d3b2f6a7d8846",
+  "results": [
+    {
+      "name": "one GET success and retained hash",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP503 body retained no retry",
+      "status": "PASS"
+    },
+    {
+      "name": "redirect refused no retry",
+      "status": "PASS"
+    },
+    {
+      "name": "fetch timeout bounded ignoring abort",
+      "status": "PASS"
+    },
+    {
+      "name": "body timeout preserves prefix",
+      "status": "PASS"
+    },
+    {
+      "name": "oversize retains exactly cap no retry",
+      "status": "PASS"
+    },
+    {
+      "name": "SRI before both parsers",
+      "status": "PASS"
+    },
+    {
+      "name": "7 regular plus 2 directories are distinct",
+      "status": "PASS"
+    },
+    {
+      "name": "7 regular plus 2 PAX headers are distinct",
+      "status": "PASS"
+    },
+    {
+      "name": "old parser rejects traversal before reference",
+      "status": "PASS"
+    },
+    {
+      "name": "gzip output cap",
+      "status": "PASS"
+    }
+  ],
+  "completedAtUtc": "2026-10-23T06:46:55.071Z"
+}

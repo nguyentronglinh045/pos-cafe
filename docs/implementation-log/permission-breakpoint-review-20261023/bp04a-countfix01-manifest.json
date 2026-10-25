@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "permission-bp4a-countfix-raw-copy-v1",
+  "copiedAtUtc": "2026-10-23T07:29:32.9761010Z",
+  "files": [
+    {
+      "file": "bp04a-countfix01-certified-fact.json",
+      "bytes": 2462,
+      "sha256": "3fae28db2709013b7aef24a77bafe413310ff64381f635ecb5ae3c99a219ad23"
+    },
+    {
+      "file": "bp04a-countfix01-controls.child.json",
+      "bytes": 480,
+      "sha256": "9cb5b3fa745f7129e3b7e6ce7d24297aebf2cf577e0c436a17f1f3acb339ae23"
+    },
+    {
+      "file": "bp04a-countfix01-controls.json",
+      "bytes": 3728,
+      "sha256": "1343d9fdb79651ff706fc4a007abcfedb062bbfc5d968d28dd8043400e8d316f"
+    },
+    {
+      "file": "bp04a-countfix01-controls.json.started.json",
+      "bytes": 125,
+      "sha256": "64df64866b5b72ea304aa438c04391696c19f8759742773da3030ceb71d04d78"
+    },
+    {
+      "file": "bp04a-countfix01-controls.release.json",
+      "bytes": 422,
+      "sha256": "720ca2cd2aac9847d8fe1fc61e3fbeee5e583f743932af19dc7fe06bc20465dc"
+    },
+    {
+      "file": "bp04a-countfix01-owner-grant.json",
+      "bytes": 2068,
+      "sha256": "fd5aaf16be50e24269862bc1fccbc6e64f172734e32458b3345dd9c5d475b479"
+    },
+    {
+      "file": "bp04a-countfix01-post-observation.json",
+      "bytes": 2482,
+      "sha256": "b62173df7462fe3c077e4db6f01dde213e0449b33f2c09347cd4d62a2182b083"
+    },
+    {
+      "file": "bp04a-countfix01-readiness-observation.json",
+      "bytes": 2749,
+      "sha256": "383281e812193cdb7ce2982a67c7558bdb246601b05256506e0750ca734dfbda"
+    },
+    {
+      "file": "bp04a-countfix01-source-admission.json",
+      "bytes": 1337,
+      "sha256": "7b3bdd2ea31241eeefb57718344e03fc01896472e013b64008a8fc4c28cec9a4"
+    }
+  ],
+  "sourceCopiesByteExact": true,
+  "toolingPins": {
+    "operations\\bp4-regular-count-facts01.mjs": "6230b753ccbdb1f71cd748c99f4732c2b5816cc69ce132ce60745dc5d7537311",
+    "operations\\bp4-archive-collector-countfix01.mjs": "8091a91f64fda093a733fbf8ed079282a6fb4c95b5d9a9b8ab16db0d525acca5",
+    "operations\\check-bp4-countfix01.mjs": "c518e6eec98b83f1341fa3ac22d4d838f17bad72bc9eae9cb2d333db8c8dd032"
+  },
+  "note": "Executable tooling remains in operations; certified derived data/receipts/proof copied to docs. All old inputs/ledgers preserved; one offline batch only."
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "permission-t04-final-api-observation-v1",
+  "observedUtc": "2026-10-24 02:22:59 UTC",
+  "run": {
+    "id": 40052956373,
+    "status": "completed",
+    "conclusion": "failure",
+    "sourceSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+    "attempt": 1,
+    "event": "workflow_dispatch",
+    "path": ".github/workflows/backend.yml",
+    "branch": "review/permission-staging-20261023",
+    "repository": "nguyentronglinh045/pos-cafe",
+    "repositoryId": 1263057386,
+    "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/40052956373",
+    "created": "2026-10-24T02:09:00Z",
+    "updated": "2026-10-24T02:19:55Z"
+  },
+  "artifacts": {
+    "total_count": 0,
+    "ids": []
+  },
+  "activeRuns": 0,
+  "refs": {
+    "main": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "review": "90824f7cb81660818ab247f7dccf55b8a111d471"
+  }
+}

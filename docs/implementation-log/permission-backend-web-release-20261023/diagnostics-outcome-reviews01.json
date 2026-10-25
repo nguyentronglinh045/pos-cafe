@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "permission-diagnostics-outcome-reviews-v1",
+  "recordedUtc": "2026-10-24T02:27:54.308Z",
+  "sourceSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "reviewedArtifacts": {
+    "outcome": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/diagnostics-outcome-20261024.md",
+      "sha256": "53fef6ddf018fb46c9555ec6d2e69913acd6554ae210a1f5f6d26e2588945ee3"
+    },
+    "handoff": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-diagnostics-t04-2026-10-24.md",
+      "sha256": "2ddbc6e61921e8b2946fe4f1da8ac73a7714e38ae83db1aa26ae8f734fbc0a60"
+    },
+    "checkpoint": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/diagnostics-run-checkpoint02.json",
+      "sha256": "d291bf2aaf23eece8402736fdafa30cff4f16e773b328f9c1d7a4a4575acd791"
+    },
+    "envelopeAnalysis": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/diagnostics-envelope-analysis01.json",
+      "sha256": "20e61e7461bf17e3fdcf7702945d244018edcb6885489d110adc8e89cd101216"
+    }
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE_REPORT_ONLY",
+      "scope": "Actual CI/T04 provenance, source-bound receipts, capacity/reclaim, budget and acceptance accounting, final outcome/handoff/README terminal row",
+      "checks": "All4artifact hashes,33local links,4checkpoint refs,3control input hashes,clean source; UNKNOWN innerbusiness, unconfirmedactualcause, nofalseNOT_RUN/noacceptance claim",
+      "blockingReportFindings": []
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE_REPORT_ONLY",
+      "scope": "Source cause analysis, diagnostics limits, correction of prioroverclaim, exact final outcome/handoff/checkpoint/analysis",
+      "checks": "Known8KiBsource defect separated from unknown actualrun; controls missed realreader; spentgrant/cleanup/heldprofiles/no mergeDeploy accurate",
+      "blockingReportFindings": []
+    }
+  ],
+  "sourceVerdict": "CHANGES_REQUESTED",
+  "sourceBlocker": {
+    "code": "DIAGNOSTIC_ISOLATED_RECEIPT_BOUND_MISMATCH",
+    "writer": "scripts/permission-runtime-t04-worker.mjs:654",
+    "reader": "scripts/permission-runtime-t04-worker.mjs:825",
+    "readerCapBytes": 8192,
+    "validSyntheticEnvelopeBytes": [
+      34157,
+      34157,
+      34182
+    ],
+    "runtimeCausation": "UNCONFIRMED"
+  },
+  "historicalApprovals": {
+    "sourcePacketReviews": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-reviews03.json",
+      "sha256": "8d38bef36b67fa5d2ffb2c4d458dcc1af7fb4b3c81ed256dad655d46762197f7"
+    },
+    "supersession": "Earlier full transport completeness/no-blocker claim withdrawn; preserve historical reviews and passingchecks within their actually exercised scope"
+  },
+  "implementationComplete": false,
+  "authorizedExecutionCycle": "COMPLETED_WITH_T04_FAILURE",
+  "fullAcceptance": "NOT_ACHIEVED",
+  "additionalRunAuthorized": false,
+  "mergeDeployAuthorized": false
+}

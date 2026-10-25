@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "permission-heavy-dispatch-intent-v2",
+  "recordedUtc": "2026-10-23T16:58:02.103Z",
+  "sourceSHA": "49e543d49176692bb2cdabc044cbc69e21054469",
+  "branch": "review/permission-staging-20261023",
+  "main": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-packet02.json",
+    "sha256": "d01f88ed88f870f56f763f80f721b4985a3bb9778245ef73ff2680017fc5b5ee"
+  },
+  "reviews": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-reviews02.json",
+    "sha256": "bb0fd1ef80a643ce55d64bcada96d8bb36f1739dd15cec919a523bc99d85d7b3"
+  },
+  "actualLightReviews": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/light-reviews02.json",
+    "sha256": "d378abb96559a98521d107d83e2c582388ece22d676fc0e2b8af026e11611911"
+  },
+  "profile": "SUPABASE_T04",
+  "currentAuthorizationOrdinal": 2,
+  "globalRetainedT04Tag": "cloud-t0404",
+  "consumedPriorFailedRun": "39982830789",
+  "noAutomaticRetry": true,
+  "exactExpectedSourceSha": "49e543d49176692bb2cdabc044cbc69e21054469",
+  "remoteActiveBefore": 0,
+  "priorMeasuredReclaim": {
+    "schemaVersion": "permission-ci1-reclaim-v1",
+    "status": "RECLAIMED",
+    "imageUnlinked": true,
+    "imageLogicalBytes": 19327352832,
+    "imageAllocatedBytes": 19327377408,
+    "hostFreeBeforeBytes": 72227725312,
+    "hostFreeAfterBytes": 91555106816,
+    "measuredHostFreeDeltaBytes": 19327381504,
+    "remaining": "compact control/status/safe export only; ephemeral runner"
+  },
+  "checkpoint": {
+    "sourceSHA": "49e543d49176692bb2cdabc044cbc69e21054469",
+    "tree": "b4e30d5a0ba574e2a8ab92c6f938430321277609",
+    "fingerprint": "b9bcb5163d7279fe96c8a398bebf84c359fc2ad185ad2fba2418f43d2bbd9a4e",
+    "files": 1110,
+    "bytes": 41776886,
+    "pins": 44,
+    "capacity": {
+      "localDisks": [
+        {
+          "path": "C:/",
+          "freeBytes": 195092692992
+        },
+        {
+          "path": "D:/",
+          "freeBytes": 98881523712
+        }
+      ],
+      "retainedLogicalBytes": 609041753,
+      "retainedLogicalCapBytes": 805306368,
+      "retained": [
+        {
+          "path": "D:/Workspace/pos-cafe-permission-run-20261020",
+          "logicalBytes": 218509891
+        },
+        {
+          "path": "D:/Workspace/pos-cafe/.git",
+          "logicalBytes": 48727079
+        },
+        {
+          "path": "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+          "logicalBytes": 4981266
+        },
+        {
+          "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+          "logicalBytes": 326023141
+        },
+        {
+          "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+          "logicalBytes": 1597957
+        },
+        {
+          "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+          "logicalBytes": 5135304
+        },
+        {
+          "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022",
+          "logicalBytes": 1405939
+        },
+        {
+          "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-final-push-20261023",
+          "logicalBytes": 516026
+        },
+        {
+          "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023",
+          "logicalBytes": 2145150
+        }
+      ],
+      "linksNotFollowed": [
+        {
+          "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-0096b055-d65e-4184-b94a-d37a2d493804",
+          "target": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\junction-target-6e0328dc-d474-4ba3-9a99-6c84896c44f9",
+          "followed": false
+        },
+        {
+          "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-e384a654-8af5-47d2-9a7e-e68c5432519a",
+          "target": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\junction-target-1e4e40e2-3c74-4d99-8166-6a34fe9e6fc4",
+          "followed": false
+        },
+        {
+          "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\dangling-docs\\docs-link",
+          "target": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\dangling-docs\\missing-target",
+          "followed": false
+        },
+        {
+          "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\present-docs\\docs-alias",
+          "target": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\present-docs\\docs",
+          "followed": false
+        }
+      ],
+      "allocatedBytes": "NOT_MEASURED; logical sizes only, no reclaim claim",
+      "heavyLoopBytes": 19327352832,
+      "taskBudgetBytes": 21474836480,
+      "hostMinimumFreeBeforeLoopBytes": 53687091200,
+      "hostReserveBytes": 32212254720,
+      "outsideAdmissionBytes": 1073741824,
+      "outsideQuotaEnforced": false,
+      "noLocalInstall": true,
+      "noWslDockerDesktop": true,
+      "measuredAtUtc": "2026-10-23T16:58:02.062Z",
+      "measurement": "logical bytes; no links followed, not allocated-byte quota"
+    },
+    "recordedUtc": "2026-10-23T16:58:02.095Z"
+  },
+  "workerCapacityQuota": "MUST_RECHECK_IN_NEW_JOB; not yet created",
+  "otherSevenProfiles": "HELD_UNSPENT",
+  "reservedBeforePost": true
+}

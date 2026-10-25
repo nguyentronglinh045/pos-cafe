@@ -1,0 +1,106 @@
+{
+  "source": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "storeA": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf",
+  "storeB": "a1169660-de34-4a17-8fac-d05ead2201fa",
+  "cashierId": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+  "createA": "UI",
+  "createB": "API",
+  "uiChecks": {
+    "create": true,
+    "requiredPinScreen": true,
+    "ownerLoginAfterAPIPinChange": true,
+    "createCashier": true,
+    "cashierAdminHidden": true,
+    "rePairOwner": true
+  },
+  "apiChecks": {
+    "contractStrict": true,
+    "restrictedPinChange": true,
+    "oldRestrictedTokenDenied": true,
+    "cashierForbidden": true,
+    "deniedBusinessSnapshotUnchanged": true,
+    "denialAudit": true,
+    "crossTenantNotFound": true,
+    "mixedTokenDenied": true,
+    "revokedSessionDenied": true,
+    "sameTokenReflectsPermissionRevoke": true
+  },
+  "authRestored": true,
+  "rpcRequests": 56,
+  "limitations": [
+    "PIN completion button was not submitted in UI; completion tested by RPC",
+    "No images/Edge hosted test",
+    "No full 35/760 backend gate",
+    "No main/production release"
+  ],
+  "rpcRecords": 55,
+  "contractProbeRecords": 1,
+  "lastRequestIndex": 55,
+  "saleCashierUI": {
+    "orderId": "45d996b6-c4df-4b8e-8b4d-dc92a598f172",
+    "orderNo": 1,
+    "status": "paid",
+    "amount": 32000,
+    "cashier": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+    "receiptSchema": 1
+  },
+  "build": "PASS",
+  "unit": {
+    "success": true,
+    "files": 110,
+    "total": 1177,
+    "passed": 1177,
+    "failed": 0,
+    "pending": 0,
+    "todo": 0,
+    "lines": 92.65,
+    "statements": 88.98,
+    "branches": 84.3,
+    "functions": 92.73,
+    "allFilesPassed": true,
+    "skipped": 0,
+    "durationMs": 157048.1298828125,
+    "coverageSummarySHA256": "e805eff96da4f8f91eaaa3832430a3a171987f52332b6b92aa437d73f54f57d4"
+  },
+  "roleReadProjectionChecks": [
+    {
+      "rpc": "permission_get_menu_admin",
+      "owner": "ALLOW",
+      "cashier": "FORBIDDEN"
+    },
+    {
+      "rpc": "permission_get_floor_admin",
+      "owner": "ALLOW",
+      "cashier": "FORBIDDEN"
+    },
+    {
+      "rpc": "permission_get_settings_admin",
+      "owner": "ALLOW",
+      "cashier": "FORBIDDEN"
+    },
+    {
+      "rpc": "permission_get_sales_report",
+      "owner": "ALLOW",
+      "cashier": "FORBIDDEN"
+    }
+  ],
+  "apiSessionCloseout": [
+    {
+      "label": "A-owner-api",
+      "revoked": true,
+      "oldToken": "EMPLOYEE_SESSION_REQUIRED"
+    },
+    {
+      "label": "A-cashier-api",
+      "revoked": true,
+      "oldToken": "EMPLOYEE_SESSION_REQUIRED"
+    },
+    {
+      "label": "B-owner-api",
+      "revoked": true,
+      "oldToken": "EMPLOYEE_SESSION_REQUIRED"
+    }
+  ],
+  "fullGate": "NOT_COMPLETED"
+}

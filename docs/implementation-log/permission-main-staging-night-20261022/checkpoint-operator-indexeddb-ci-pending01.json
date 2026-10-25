@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "permission-task-checkpoint-v1",
+  "recordedAtUtc": "2026-10-22T16:11:02.403Z",
+  "state": "CANDIDATE_PUBLISHED_CI_IN_PROGRESS_NO_BACKEND",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "treeSHA": "95013ef246608c96239b8ac31e8e5ea3fa744cef",
+  "localBranch": "fix/operator-indexeddb-evidence-20261022",
+  "remoteBranch": "run/permissions-20261020",
+  "ci": {
+    "repository": "nguyentronglinh045/pos-cafe",
+    "runId": "39811728040",
+    "attempt": 1,
+    "event": "push",
+    "observedStatus": "in_progress",
+    "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39811728040",
+    "collected": false
+  },
+  "scope": {
+    "candidatePublication": 1,
+    "candidateCI": 1,
+    "backend": 0,
+    "postGateCI": 0,
+    "main": false,
+    "originalDB": false,
+    "stagingWrites": false,
+    "Vercel": false
+  },
+  "policy": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03.json",
+    "sha256": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142"
+  },
+  "grant": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/owner-operator-idb-ci-grant03.json",
+    "sha256": "9d9278f0d11660e2a7865e5766185f3810797ff8e10c765eec56ff3d019dc3f6"
+  },
+  "policyReview": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/operator-indexeddb-policy03-review.json",
+    "sha256": "f3bcb9318c2cc86be2225b3153192b2aad183d3f09408dcda1322cd460edc01c"
+  },
+  "negativeControls": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03-negative-controls.json",
+    "sha256": "ae2a8c9f1380400fba90c2b17c656a8ffe630b71fdd841679a986606f9abeb04"
+  },
+  "publication": {
+    "packet": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-packet05.json",
+      "sha256": "abecf340bd01bd1414e8d3bd0277d1e3c6b6bf1ac8fe413291e93e83f56f5571"
+    },
+    "reviews": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-reviews05.json",
+      "sha256": "27cc9754f48c88b3cd5aa2dd043d1536a767fc7855cd083a2237c30904218083"
+    },
+    "manifest": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publish-manifest05.json",
+      "sha256": "4866f18dbeab5b1da170dd8f4cae9aa0ca626579c0b2ba755cb0a4474aafcd9a"
+    },
+    "admission": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-admission05.json",
+      "sha256": "4eab56463d9fca3ecf40ab17dd4de0cfdd0d8bb33131560922a2cc4f21738f55"
+    }
+  },
+  "local": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-node05.json",
+    "sha256": "8a2025b8dddace0d053f1efd735cbfcf8567e9948689e79111b59d5751a91ce9"
+  },
+  "probe": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/operator-indexeddb-local-probe01.json",
+    "sha256": "cd3bb500d95923f0d134bbb3acb8e905083ad967ef8dc54223fa86b80b8dde67"
+  },
+  "actualBudget": {
+    "phaseCounts": {
+      "publication": 1,
+      "ci": 1,
+      "heavy": 0,
+      "reviewRounds": 0
+    },
+    "lifetimeCounts": {
+      "publication": 7,
+      "ci": 7,
+      "heavy": 5,
+      "reviewRounds": 10
+    },
+    "reservationId": "c590ae5dd348f08fa62815b3873a8d8210b26464301f0ba384450ad33bafc632"
+  },
+  "mainSHA": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "allEightBackendProfiles": "NOT_RUN_FOR_THIS_SOURCE",
+  "fullGate": "PENDING; unchanged35stages760required12obligations plusD19/R0/R1",
+  "deadlineUtc": "2026-10-22T17:00:00Z",
+  "next": "Observe terminal CI, collect source-bound log/API/cleanup, settle actual pending reservation. No retry, backend, PR/main, hosted action. If terminal proof is incomplete preserve UNKNOWN/pending; stop before cutoff."
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "permission-service-settlement-helper-review-v1",
+  "recordedAtUtc": "2026-10-22T15:13:24.649Z",
+  "author": "/root",
+  "helper": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/settle-cloud-service.mjs",
+    "sha256": "6afb816164be17d6e43b886df872c846f744b7f0931d79335fb9b46c8e0e57f7"
+  },
+  "parser": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-postgate-ci.mjs",
+    "sha256": "769e66c5bedbd8b65cfa5a5e70da4c3fef085152af4b10fe581eab15f8ddd3be"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/mcp_staging_scope_review",
+      "scope": "source",
+      "verdict": "APPROVE",
+      "evidence": "Fullstaticread and frozen collector/guard crosscheck. Exact current policy/packet/source/profile/reservation, dualactualterminal, fourinputpins and sourcevalidatorpins; rawlog runtime/reclaim deep equality; whole profile renderer on success; exclusive durable outputs then productionAPI settlement. No execution by reviewer."
+    },
+    {
+      "reviewer": "/root/mcp_staging_evidence_review",
+      "scope": "operations",
+      "verdict": "APPROVE",
+      "evidence": "Fullstaticread/parserhash and guardedCLI verified; finite seven profiles/tags, actualraw/native metadata, exact executionProfile, log/runtime/reclaim bindings; partial outputs refuse retry. No API/ledger/DB or execution by reviewer."
+    }
+  ],
+  "limits": "Author51purecontrols support preparation only; every real collection and four input hashes must be checked before settlement. Helper adds no dispatch, retry or coverage. Full35/760/12 remains pending."
+}

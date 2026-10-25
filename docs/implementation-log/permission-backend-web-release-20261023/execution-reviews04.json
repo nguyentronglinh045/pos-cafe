@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "permission-execution-reviews-v4",
+  "recordedUtc": "2026-10-24T02:59:39.366Z",
+  "sourceSHA": "f8ee03c195127bb440b0ede3142622ed21c3cc96",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-packet04.json",
+    "sha256": "cc216c8e6b4b1056fe8139695b633ee98f206b824d986f4b80adec398ab93798"
+  },
+  "localValidation": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/receipt-boundary-validation01.json",
+    "sha256": "40b288c4f401ae54966c3342fe0c3cc91581ab561177d6e43bd0bd802f76a609"
+  },
+  "recipes": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/receipt-boundary-recipes01.json",
+    "sha256": "d45211a7714112870e360d4ad1b593d9240e17bfe8abdb2c8d1e9057e60f30c2"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "Exact frozen8paths; source/integration/accounting lifecycle; canonical1118blobs/41868998B/fingerprint/lock/50pins; packet refs/localvalidation/finiteexecution authorization",
+      "findings": []
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Exact frozen8paths; receipt byte/schema/path/ownership/fd security and failure fact privacy; canonical source/50pins; packet13refs; localvalidation/recipes and diagnostic lifecycle",
+      "findings": []
+    }
+  ],
+  "blockingSourceFindings": 0,
+  "publicationCondition": "Mapping05 exact candidate and independent approvals before publication, fresh refs/active0/capacity; source approvals do not substitute Linux execution.",
+  "t04Condition": "Fresh CI18 and Linux29filesystemcases+3realreporterroundtrips/accounting/handback; actual LIGHT6/343 and all3freshPIN photos reviewed by both reviewers; nativecleanup; fresh refs/capacity/priorreclaim.",
+  "runtimeBusinessPassClaimed": false,
+  "acceptanceChanged": false,
+  "prMergeDeploy": "HELD_NOT_AUTHORIZED"
+}

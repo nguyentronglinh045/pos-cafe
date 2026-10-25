@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "permission-ci-portability-candidate-v1",
+  "atUtc": "2026-10-22T02:31:48.088Z",
+  "sourceRoot": "D:\\Workspace\\pos-cafe-permission-ci-fix-20261022\\code",
+  "base": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+  "pins": [
+    {
+      "path": "ci/release-policy.json",
+      "rawBytes": 5191,
+      "rawSHA256": "9ec9b5fd12a2abc4c11f4aa77dbe103a1b0d8cb939455672bb2456f79c04f06d",
+      "gitCanonicalSHA256": "1ddef24836e23599c299e966299349e64a88bd13f25bef0b35da12835fa4c33a"
+    },
+    {
+      "path": "scripts/permission-release-phase-admission.README.md",
+      "rawBytes": 9571,
+      "rawSHA256": "55e1154d4adc798b9f21db255d0edb73332bceff6bbbd774c06b51e9771af55a",
+      "gitCanonicalSHA256": "28171f1e8784a167959eca44378233e64870a6b81c59bd1519c36b94ee5d76ba"
+    },
+    {
+      "path": "scripts/permission-release-phase-admission.mjs",
+      "rawBytes": 19775,
+      "rawSHA256": "dfce8e7bf8013a4a5a0bf2e60b3df28409f5ee714e7d9ea08e5da2c93fee1065",
+      "gitCanonicalSHA256": "a3a2213b9ae135e55e9d42ea65e755cdcb4e8662edea8f1ad0c86e49c6b2de01"
+    },
+    {
+      "path": "scripts/permission-release-phase-admission.test.mjs",
+      "rawBytes": 17334,
+      "rawSHA256": "918600f4abc8c24a9ee29b9153a597c1894778119656765671bf8c80c905c25e",
+      "gitCanonicalSHA256": "fad0b387fc42a68e061cfd0d122b0838a819b8b67af341812ef1a471455466aa"
+    },
+    {
+      "path": "scripts/permission-staging-cli.mjs",
+      "rawBytes": 6069,
+      "rawSHA256": "8dfce38ecbaa7fdb373523fa7bb353ca6cd3fe7d90c0192edba26ca29869f1fa",
+      "gitCanonicalSHA256": "ae88f825c021b6af523f606985a261a64afcd7a7ff959c1d226bdf32ad382320"
+    },
+    {
+      "path": "scripts/permission-staging.test.mjs",
+      "rawBytes": 22202,
+      "rawSHA256": "d5945badbf50634da020e328b1d17f8eb5b3709c445bb853d1ce3e6d2283cc1b",
+      "gitCanonicalSHA256": "5d7a2f312aae5eda4d988789348f757f45990e3b184d2704b9fe646eb37f7345"
+    },
+    {
+      "path": "scripts/project-ci-results.mjs",
+      "rawBytes": 58814,
+      "rawSHA256": "9cbf117e0c296675bdf73ee7fe2a697609851ed41444935a5e034491ac1b1978",
+      "gitCanonicalSHA256": "1fd37ac4dbd59b50fe9f6b6871855105c18177aa5ecbef74744a06662f3c69f2"
+    },
+    {
+      "path": "scripts/project-ci-results.test.mjs",
+      "rawBytes": 77128,
+      "rawSHA256": "d5e1426428cb2a9dafeae02dbcc39a527395435a0c28b4cc964c5af4c438bebf",
+      "gitCanonicalSHA256": "cc44627aeca3f6d42b66d14bddeff4ba20848fa4e1609cce07aff2f3ef8ee1a7"
+    }
+  ],
+  "patchSHA256": "43bb7309f50033ffa99a536ae5747faa2f86079b2f943810bf72c7159e2e8510",
+  "authors": [
+    "/root",
+    "/root/bootstrap_provider_design_20261022",
+    "/root/continuation_source_review",
+    "/root/release_gate_feasibility_20261022"
+  ],
+  "publicationPermission": "PENDING_ADDITIONAL_OWNER_GRANT",
+  "sqlPermission": "SEPARATE_PENDING_ITEM1"
+}

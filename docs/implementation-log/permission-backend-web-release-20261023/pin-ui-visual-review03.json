@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "permission-pin-ui-manual-visual-review-v3",
+  "recordedUtc": "2026-10-24T02:06:21.682Z",
+  "reviewer": "/root",
+  "sourceSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "runId": "40051559979",
+  "attempt": 1,
+  "manifestSHA256": "a945d989b6820beaf20d2ce5a583f765a732bb12f297592afb9ce2c4c272b072",
+  "allThreePhotosOpenedWithViewImage": true,
+  "verdict": "APPROVE_WITH_STATED_SCOPE",
+  "photos": [
+    {
+      "viewport": "desktop",
+      "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e",
+      "photoInspected": true,
+      "classification": "NO_VISIBLE_ACTIONABLE_DEFECT_IN_UNMASKED_CONTENT",
+      "note": "Card, unmasked text and3actions readable, aligned, not clipped."
+    },
+    {
+      "viewport": "tablet",
+      "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca",
+      "photoInspected": true,
+      "classification": "NO_VISIBLE_ACTIONABLE_DEFECT_IN_UNMASKED_CONTENT",
+      "note": "Card, unmasked text and3actions readable, aligned, not clipped."
+    },
+    {
+      "viewport": "mobile",
+      "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f",
+      "photoInspected": true,
+      "classification": "NO_VISIBLE_ACTIONABLE_DEFECT_IN_UNMASKED_CONTENT",
+      "note": "Full image 844x419 vs viewport844x390:29px vertical overflow; all3actions remain within initial390px; no horizontal clipping observed."
+    }
+  ],
+  "limits": [
+    "Credential-free mock only; no hosted backend/runtime proof",
+    "Two PIN input areas intentionally black-masked; their content and internal styling are not judged",
+    "Empty-input and mask-count claims validated via producer manifest/native validator; image alone cannot prove contents"
+  ],
+  "producerManifestUnmodified": true
+}

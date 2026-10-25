@@ -1,0 +1,13 @@
+# Candidate image và clear-demo — 24/10/2026
+
+Người dùng đã giao subagent sửa hai test, finite diagnostics, test/hai review rồi một freshCI + wholeT04; giữ acceptance và chưa merge/deploy. Baseline sạch f8ee03c195127bb440b0ede3142622ed21c3cc96. Đây là extension mới maxpublication5/CI5/T045, lúc bắt đầu đã tiêu4/4/4, hiện đã dùng5/5/5; tags night-ci08/cloud-t0407, không reset lịch sử.
+
+Trạng thái T04_FAILED_NEW_TC47_ASSERTION; current run closed; verdict review cuối lưu riêng cùng outcome. Source frozen7dbd6dd4b8abb8d8b614b5957559952372905529, publication thứ5 đã xong; freshCI40061777912/a1 PASS18, LIGHT6/343 và3freshPINPNG được cảhai reviewer APPROVE. WholeT0440063022066/a1 FAIL:9PASS/1FAIL/9NOT_RUN, chỉtest4line293fail; test6clear-demoPASS. New failure is broadroleimg counting SVGplaceholder; localprobe confirms semanticconflict, privateT04countUNKNOWN. Tác giả backend_acceptance, root policy/docs/execution; main_integration và final_diagnostic_review độc lập. Test4 reselect exactitemId sau save; test6 tự thiết lập/đọc lại customsettings trước seed qua UI/RPC, giữ mọi oracle. Diagnostics ảnh hữu hạn, failure-only; success bỏ snapshot/target tạm, runtime reclaim private data sau export. Không đổi source sau freeze để xóa log rồi nhận PASS cũ.
+
+[Brief, phạm vi và budget](../../implementation-log/permission-backend-web-release-20261023/candidate-image-clear-execution-20261024.md). [Outcome trước](../../implementation-log/permission-backend-web-release-20261023/receipt-boundary-outcome-20261024.md) vẫn chính xác: receipt fix đã xác nhận, CI PASS, T04 test4/6 FAIL; không suy nguyên nhân ảnh runtime chưa đo hoặc clear làm mất tên.
+
+Giữ35/760+12/34,A18/D19,sáu test/hai requiredidentities, toàn bộ assertions/retries/timeouts và gates. Bảy profile khác/PR/merge/deploy/hostedmutation HELD. Cần exact source+packet05+mapping06 hai approvals trước push; fresh LIGHT/photos/nativecleanup hai reviews trướcT04. Đã tiêu publication5/CI5/T045; không còn quyền chạy lại trong extension này. Hai nonauthor đã APPROVE exactsource+packet05+mapping06; local157/157 +3reporterWindowsREFUSAL_ONLY +typecheckPASS. Temp cũ29dirs vẫn bị policy chặn xóa; không retry cách khác.
+
+7tempcontrol mới đã được user cho phép xóa, nhưng automatic approval review chặn trước process creation (blocked by policy); chưa xóa, không retryđườngvòng. [Đường dẫn](../../implementation-log/permission-backend-web-release-20261023/image-clear-unremoved-paths01.txt).
+
+[Outcome/currentcause/nextscope](../../implementation-log/permission-backend-web-release-20261023/image-clear-outcome-20261024.md). Oneactualreclaim18GiB verified; noheavy runtime; sourceclean7dbd andmainunchanged. No further publication/CI/T04 grant; nextselectorfix recommended, notimplemented.

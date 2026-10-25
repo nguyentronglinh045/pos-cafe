@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "permission-bp2-light-check-v1",
+  "status": "PASS",
+  "startedAtUtc": "2026-10-23T01:43:06.274Z",
+  "completedAtUtc": "2026-10-23T01:43:06.745Z",
+  "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+  "baselineSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "sourceMode": "BASELINE_PLUS_EXACT_WORKTREE_PINS",
+  "filePins": [
+    {
+      "path": "src/adapters/supabase/client.test.ts",
+      "sha256": "219e5e61469c52d409cc6945acabb52ef1ec4389d9c47749aa726a8cbc6316b8"
+    },
+    {
+      "path": "src/adapters/supabase/menuImageHttp.test.ts",
+      "sha256": "fc58b4f623fefb1eaae7e0b5f60661e692aad16b78f57cc97748e69d76cc9525"
+    },
+    {
+      "path": "supabase/functions/_shared/menuImageHttp.ts",
+      "sha256": "5100252654975ccfefdba774c0a6cd489981375c23cc2ae805a66f2229f0911f"
+    },
+    {
+      "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+      "sha256": "d8e4a5f1ffe4c512c433f10e48bc1fa2ccabe7a1ca3e33d8ca5f1f231fb802b0"
+    },
+    {
+      "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "sha256": "6e6cd8280a852439eacacafa49fb4cb17444503bcadd87705d560ebc95fd17fb"
+    }
+  ],
+  "nodeVersion": "v24.16.0",
+  "typescriptVersion": "5.9.3",
+  "checks": [
+    "shared-cors-preflight-header-contract",
+    "production-error-response-401",
+    "production-error-response-403",
+    "production-error-response-503",
+    "negative-control-old-header-list-refused"
+  ],
+  "syntax": [
+    {
+      "path": "src/adapters/supabase/client.test.ts",
+      "syntacticErrors": 0
+    },
+    {
+      "path": "src/adapters/supabase/menuImageHttp.test.ts",
+      "syntacticErrors": 0
+    },
+    {
+      "path": "supabase/functions/_shared/menuImageHttp.ts",
+      "syntacticErrors": 0
+    },
+    {
+      "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+      "syntacticErrors": 0
+    },
+    {
+      "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+      "syntacticErrors": 0
+    }
+  ],
+  "limits": {
+    "noInstall": true,
+    "noDatabase": true,
+    "noNetwork": true,
+    "noHeavy": true
+  },
+  "notProven": [
+    "Vitest execution",
+    "full TypeScript typecheck",
+    "SQL execution",
+    "browser preflight",
+    "SDK-generated requests",
+    "hosted behavior",
+    "full gate"
+  ],
+  "reproduce": {
+    "execPath": "D:\\tools\\nodejs\\node.exe",
+    "args": [
+      "--input-type=module",
+      "-e",
+      "import assert from 'node:assert/strict';\nimport {readFileSync,writeFileSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\nimport {pathToFileURL} from 'node:url';\nconst root='D:/Workspace/pos-cafe-permission-timeonly-20261022',cwd=root+'/code';\nconst deadline=Date.parse('2026-10-23T02:34:29Z');\nif(Date.now()>=deadline)throw Error('BP2_DEADLINE');\nconst files=['src/adapters/supabase/client.test.ts','src/adapters/supabase/menuImageHttp.test.ts','supabase/functions/_shared/menuImageHttp.ts','tests/contracts/ownerPinServerRuntime.contract.test.ts','tests/supabase/ownerPinOnboardingCloseout.spec.ts'];\nconst sha=x=>createHash('sha256').update(x).digest('hex');\nconst pins=()=>files.map(path=>({path,sha256:sha(readFileSync(cwd+'/'+path))}));\nconst before=pins(),startedAtUtc=new Date().toISOString();\nconst ts=(await import(pathToFileURL('D:/Workspace/pos-cafe/node_modules/typescript/lib/typescript.js').href)).default;\nconst installed=JSON.parse(readFileSync('D:/Workspace/pos-cafe/node_modules/typescript/package.json'));\nconst lock=JSON.parse(readFileSync(cwd+'/package-lock.json'));\nassert.equal(installed.version,lock.packages['node_modules/typescript'].version);\nconst syntax=files.map(path=>{\n const output=ts.transpileModule(readFileSync(cwd+'/'+path,'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext},fileName:path,reportDiagnostics:true});\n const errors=(output.diagnostics??[]).filter(x=>x.category===ts.DiagnosticCategory.Error);\n assert.equal(errors.length,0,'SYNTAX_'+path);\n return {path,syntacticErrors:errors.length};\n});\nconst helperPath=cwd+'/supabase/functions/_shared/menuImageHttp.ts';\nconst helper=await import(pathToFileURL(helperPath).href);\nconst requested=new Headers({authorization:'Bearer synthetic',apikey:'synthetic','x-client-info':'supabase-js-web/2.108.1','content-type':'application/json','x-pos-employee-token':'synthetic','if-none-match':'\"asset\"'});\nconst verify=response=>{\n const allowed=new Set((response.headers.get('access-control-allow-headers')??'').split(',').map(x=>x.trim().toLowerCase()));\n for(const name of requested.keys())assert.ok(allowed.has(name),'MISSING_CORS_HEADER_'+name);\n for(const method of ['GET','POST','DELETE','OPTIONS'])assert.ok(response.headers.get('access-control-allow-methods').split(',').includes(method),'MISSING_CORS_METHOD_'+method);\n};\nconst checked=[];\nverify(new Response(null,{headers:helper.cors}));checked.push('shared-cors-preflight-header-contract');\nfor(const status of [401,403,503]){const response=helper.failure(status,'SYNTHETIC');verify(response);assert.equal(response.headers.get('cache-control'),'no-store');checked.push('production-error-response-'+status);}\nconst raw=readFileSync(helperPath,'utf8');\nassert.equal(raw.split(',x-client-info').length,2,'EXACT_MUTATION_SITE');\nconst mutant=ts.transpileModule(raw.replace(',x-client-info',''),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext}}).outputText;\nconst old=await import('data:text/javascript;base64,'+Buffer.from(mutant).toString('base64'));\nassert.throws(()=>verify(new Response(null,{headers:old.cors})),/MISSING_CORS_HEADER_x-client-info/);\nchecked.push('negative-control-old-header-list-refused');\nassert.deepEqual(pins(),before,'SOURCE_CHANGED_DURING_CHECK');\nif(Date.now()>=deadline)throw Error('BP2_DEADLINE');\nconst receipt={schemaVersion:'permission-bp2-light-check-v1',status:'PASS',startedAtUtc,completedAtUtc:new Date().toISOString(),cwd,baselineSHA:'4f8772667fc0607c77451e5b0c5ddbedfe7b63b5',sourceMode:'BASELINE_PLUS_EXACT_WORKTREE_PINS',filePins:before,nodeVersion:process.version,typescriptVersion:ts.version,checks:checked,syntax,limits:{noInstall:true,noDatabase:true,noNetwork:true,noHeavy:true},notProven:['Vitest execution','full TypeScript typecheck','SQL execution','browser preflight','SDK-generated requests','hosted behavior','full gate'],reproduce:{execPath:process.execPath,args:process.execArgv,cwd}};\nconst path=root+'/evidence/bp2-light-check01.json';writeFileSync(path,JSON.stringify(receipt,null,2)+'\\n',{flag:'wx'});\nconsole.log(JSON.stringify({status:receipt.status,checks:checked.length,syntaxFiles:syntax.length,typescript:ts.version,receipt:path,sha256:sha(readFileSync(path))}));"
+    ],
+    "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code"
+  }
+}

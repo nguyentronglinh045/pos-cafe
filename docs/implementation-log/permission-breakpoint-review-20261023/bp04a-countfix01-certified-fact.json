@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "permission-regular-count-certified-fact-v1",
+  "package": "@types/pg",
+  "version": "8.23.1",
+  "lockPath": "node_modules/@types/pg",
+  "resolved": "https://registry.npmjs.org/@types/pg/-/pg-8.23.1.tgz",
+  "integrity": "sha512-fKVHpikPdg4GKks3JuLEhvwSyvwzF23hnabPy6DD8ljVbC7+6J5dQzdv4arV6jqq57djnMgs1HKBxX4P8aBI3A==",
+  "bodySHA256": "f8e5fab1d222a3475d6c481ae85446d165b28f24f2ce05b170e7edc880b34ddc",
+  "compressedBytes": 5484,
+  "metadataFileCount": 9,
+  "regularFiles": 7,
+  "regularFileBytes": 19802,
+  "directoryCount": 2,
+  "logicalEntryCount": 9,
+  "physicalHeaderCount": 9,
+  "root": "pg",
+  "inventory": [
+    {
+      "path": "pg/",
+      "type": "Directory",
+      "size": 0
+    },
+    {
+      "path": "pg/LICENSE",
+      "type": "File",
+      "size": 1141
+    },
+    {
+      "path": "pg/README.md",
+      "type": "File",
+      "size": 604
+    },
+    {
+      "path": "pg/index.d.mts",
+      "type": "File",
+      "size": 1980
+    },
+    {
+      "path": "pg/index.d.ts",
+      "type": "File",
+      "size": 11428
+    },
+    {
+      "path": "pg/lib/",
+      "type": "Directory",
+      "size": 0
+    },
+    {
+      "path": "pg/package.json",
+      "type": "File",
+      "size": 1089
+    },
+    {
+      "path": "pg/lib/connection-parameters.d.ts",
+      "type": "File",
+      "size": 1730
+    },
+    {
+      "path": "pg/lib/type-overrides.d.ts",
+      "type": "File",
+      "size": 1830
+    }
+  ],
+  "evidence": {
+    "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+    "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+    "originalPackageFactsSHA256": "1c00b0b0a3fb3279cad9ddb072cef74d8508a01215b46a92c2f4f3171a7c21f9",
+    "diagnosisReceiptSHA256": "90e6441f084f9f9c5d294ff021634e7c290d7e0bdb24cbabd3a9ffce10cfd86d",
+    "diagnosisBodyPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-countdiag02.tgz",
+    "parserSHA256": "00c8948c16b10b76160cc722acf937942225e793f6c7a10b5e9456ee2bd509f2",
+    "reference": "node-tar7.5.13 explicit CJS index pinned in diagnosis receipt",
+    "reviewStatus": "Both non-author reviewers APPROVE exact diagnostic evidence; new derived fact still needs source/fact review before controls"
+  },
+  "scope": "Certified regular inventory for this exactidentity/body only; preserves registry metadata9; not universal fileCount conversion or application admission"
+}

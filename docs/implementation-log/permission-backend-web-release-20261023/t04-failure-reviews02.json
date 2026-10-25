@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "permission-t04-failed-observation-review-v1",
+  "recordedUtc": "2026-10-23T17:25:01.494Z",
+  "sourceSHA": "49e543d49176692bb2cdabc044cbc69e21054469",
+  "runId": "39991210829",
+  "receipt": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0404.json",
+    "sha256": "e3adb72ea226d50631b7fbc4bb8f5fe27543692d6a530d158c9280a547a96751"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/audit_technical_review",
+      "verdict": "APPROVE_OBSERVED_FAIL_AND_DIAGNOSTIC_BOUNDARY"
+    },
+    {
+      "reviewer": "/root/audit_process_review",
+      "verdict": "APPROVE_OBSERVED_FAIL_RECLAIM_AND_STOP"
+    }
+  ],
+  "actualGate": "FAIL",
+  "nineStagesRequiredPass": 275,
+  "laterStagesNotRun": 9,
+  "secondFailureIdentity": "UNKNOWN",
+  "candidateSourceGaps": [
+    "drawer-close wait does not await actual drawer hidden",
+    "clear-demo name suffix depends on earlier persist test reaching settings"
+  ],
+  "noProvenActualRootCause": true,
+  "keepBusinessAssertions": true,
+  "noFurtherDispatch": true,
+  "sevenProfiles": "HELD_UNSPENT"
+}

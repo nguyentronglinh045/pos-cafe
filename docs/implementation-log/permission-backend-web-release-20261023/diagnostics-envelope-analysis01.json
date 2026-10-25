@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "permission-diagnostic-envelope-analysis-v1",
+  "recordedUtc": "2026-10-24T02:24:03.373Z",
+  "sourceSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "method": "Read retained synthetic Playwright reports, current t04RunnerFailureFacts and ci1FailureExport; serialize only in memory using actual-run-shaped binding. No test/browser/backend execution.",
+  "scope": "SOURCE_DEFECT_PROOF_ONLY; not actual run40052956373 facts or root-cause proof",
+  "rows": [
+    {
+      "control": "persist-clear",
+      "input": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/candidate-diagnostic-control-B7roIZ/candidate-persist-clear/candidate-e2e-runner.json",
+        "sha256": "d6ed5bbf080ada274d2c3afad88d0d4b8b511cf6fe6571612cf5d442a74a95fc"
+      },
+      "fields": 766,
+      "isolatedRecordBytes": 34157,
+      "outerFileCap": 8192,
+      "passesFileSizeGate": false
+    },
+    {
+      "control": "roles-clear",
+      "input": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/candidate-diagnostic-control-B7roIZ/candidate-roles-clear/candidate-e2e-runner.json",
+        "sha256": "0078b94a88f888baa66f897d31ef9546c7dde6b79ba66fe1f9d3c2efe409cb13"
+      },
+      "fields": 766,
+      "isolatedRecordBytes": 34157,
+      "outerFileCap": 8192,
+      "passesFileSizeGate": false
+    },
+    {
+      "control": "beforeall-hook",
+      "input": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/candidate-diagnostic-control-B7roIZ/candidate-beforeall-hook/candidate-e2e-runner.json",
+        "sha256": "d633b586d4e894d4f2dd07a71bae9b079a2dd7f9296f947071995e01b911adb1"
+      },
+      "fields": 766,
+      "isolatedRecordBytes": 34182,
+      "outerFileCap": 8192,
+      "passesFileSizeGate": false
+    }
+  ],
+  "sourceLocations": {
+    "writer": "scripts/permission-runtime-t04-worker.mjs:654-657",
+    "reader": "scripts/permission-runtime-t04-worker.mjs:823-829",
+    "businessEvidenceGate": "scripts/project-backend-t04.mjs:46-57"
+  },
+  "finding": "All three valid full-inventory control envelopes exceed actual reader8KiB cap; current controls bypass this file reader.",
+  "actualCause": "UNCONFIRMED: private receipt was reclaimed and no safe file-rejection telemetry exists"
+}

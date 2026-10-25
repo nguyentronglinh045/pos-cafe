@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thanh toán — hiện trạng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap">
+<style>
+/* ==========================================================================
+   Bản dựng lại hiện trạng màn thanh toán, để đối chiếu.
+   Mọi giá trị dưới đây lấy đúng từ mã nguồn hiện hành, không làm xấu thêm:
+   token màu từ tailwind.posCafeStyles.ts, thang chữ từ paymentShared.tsx,
+   lưới cột và chiều cao nút từ PaymentDrawer.tsx.
+   KHÔNG dùng hệ thiết kế mới. File này không nạp tokens.css.
+   ========================================================================== */
+:root{
+  --primary:#0f766e; --primary-soft:#f0fdfa; --primary-line:#99f6e4;
+  --bg:#f5f7fa; --surface:#ffffff; --surface-2:#f8fafc; --line:#d7dee8;
+  --ink:#172033; --muted:#657286;
+  --success:#15803d; --warning:#b45309; --danger:#b91c1c;
+}
+*,*::before,*::after{box-sizing:border-box;}
+body{margin:0; background:var(--bg); color:var(--ink);
+     font-family:Inter,"Segoe UI",Arial,sans-serif; font-size:14px;}
+button,input{font:inherit; color:inherit;}
+
+.mock-bar{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px;
+          padding:10px 16px; background:#172033; color:#fff; font-size:12px;}
+.mock-bar b{font-weight:600;} .mock-bar span{color:#9aa6b8;} .mock-bar a{color:#5eead4;}
+.stage{padding:14px;}
+
+/* Thang chữ hiện hành — 3 mốc riêng cho chữ, khác 10 mốc bố cục */
+.t-amountHeader{font-size:12px;} .t-body{font-size:13px;} .t-emphasis{font-size:16px;}
+.t-micro{font-size:12px;} .t-secondary{font-size:12px;} .t-strong{font-size:15px;}
+@media (min-width:1024px){
+  .t-amountHeader{font-size:15px;} .t-body{font-size:15px;} .t-emphasis{font-size:17px;}
+  .t-micro{font-size:13px;} .t-secondary{font-size:14px;} .t-strong{font-size:16px;}
+}
+@media (min-width:1280px){
+  .t-amountHeader{font-size:16px;} .t-body{font-size:16px;}
+  .t-micro{font-size:14px;} .t-secondary{font-size:15px;} .t-strong{font-size:17px;}
+}
+
+.drawer{background:var(--bg); border:1px solid var(--line); border-radius:8px;
+        box-shadow:0 16px 40px rgb(15 23 42 / .18); overflow:hidden;
+        display:flex; flex-direction:column; height:calc(100dvh - 96px); min-height:520px;}
+
+.hd{display:flex; align-items:center; gap:10px; padding:10px 14px;
+    background:var(--surface); border-bottom:1px solid var(--line);}
+.hd__txt{min-width:0; flex:1;}
+.hd h2{margin:0; font-weight:900; line-height:1.2; letter-spacing:normal;
+       overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.hd p{margin:0; font-weight:700; color:var(--muted);
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+
+/* Nút MUI hiện hành: min-h-9 = 36px, xuống 30px dưới 900px */
+.mui-btn{min-height:36px; padding:0 16px; border-radius:4px; border:1px solid transparent;
+         font-weight:700; text-transform:none; white-space:nowrap; cursor:pointer;}
+.mui-btn--contained{background:var(--primary); color:#fff;}
+.mui-btn--outlined{background:transparent; color:var(--primary); border-color:rgb(15 118 110 / .5);}
+@media (max-width:900px){ .mui-btn{min-height:30px; padding:0 10px;} }
+
+/* Thân: hai cột, KHÔNG xếp dọc ở màn nhỏ; min-width 720px ép cuộn ngang */
+.body{flex:1; min-height:0; overflow:auto; background:var(--bg); padding:12px;}
+.cols{display:grid; height:100%; min-height:0; min-width:720px;
+      grid-template-columns:minmax(420px,1fr) minmax(272px,330px); gap:12px;}
+@media (max-width:900px){
+  .cols{grid-template-columns:minmax(414px,1fr) minmax(268px,300px); gap:6px;}
+}
+
+.pane{display:flex; flex-direction:column; min-height:0; background:var(--surface);
+      border:1px solid var(--line); border-radius:8px; overflow:hidden;}
+.pane__hd{display:flex; align-items:center; justify-content:space-between; gap:8px;
+          padding:8px 12px; border-bottom:1px solid var(--line);}
+.pane__hd h3{margin:0; font-weight:900; line-height:1.2;
+             overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.pane__hd p{margin:2px 0 0; font-weight:700; color:var(--muted);}
+@media (max-width:900px){ .pane__hd p{display:none;} }
+.pane__body{flex:1; min-height:0; overflow-y:auto; padding:8px 12px;}
+@media (max-width:900px){ .pane__body{padding:6px 8px;} }
+
+.sel-all{display:flex; align-items:center; gap:6px; font-weight:800; font-size:12px; cursor:pointer;}
+.sel-all input{width:16px; height:16px; accent-color:var(--primary);}
+
+.item{display:grid; grid-template-columns:auto minmax(0,1fr) auto auto;
+      align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid var(--line);}
+.item:last-child{border-bottom:0;}
+.item input[type=checkbox]{width:16px; height:16px; accent-color:var(--primary);}
+.item__name{font-weight:800; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.qty{display:flex; align-items:center; gap:4px;}
+.qty button{width:26px; height:26px; border:1px solid var(--line); background:var(--surface);
+            border-radius:6px; color:var(--muted); font-weight:800; cursor:pointer;}
+.qty span{min-width:22px; text-align:center; font-weight:800;}
+.item__amt{font-weight:800; min-width:64px; text-align:right;}
+
+.sum{padding:8px 12px; border-top:1px solid var(--line); background:var(--surface-2);
+     display:flex; flex-direction:column; gap:4px;}
+.sum__row{display:flex; justify-content:space-between; gap:8px;}
+.sum__row span{font-weight:900; color:var(--muted);}
+.sum__row strong{font-weight:900;}
+.print-row{display:flex; align-items:center; gap:6px; font-weight:700; font-size:12px; cursor:pointer;}
+.print-row input{width:16px; height:16px; accent-color:var(--primary);}
+
+.cash{display:flex; flex-direction:column; min-height:0; gap:8px; padding:8px 12px;}
+@media (max-width:900px){ .cash{padding:6px 8px; gap:6px;} }
+.methods{display:flex; flex-direction:column; gap:4px; max-height:96px; overflow-y:auto; padding-right:4px;}
+.method{display:flex; align-items:center; justify-content:space-between; gap:8px;
+        min-height:32px; padding:0 10px; border:1px solid var(--line); border-radius:7px;
+        background:var(--surface); font-weight:800; cursor:pointer;}
+.method.on{border-color:var(--primary); background:var(--primary-soft); color:var(--primary);}
+
+.recv{border:1px solid var(--line); border-radius:7px; background:var(--surface);
+      padding:6px 10px; min-height:34px; display:flex; align-items:center; justify-content:flex-end;
+      font-weight:900; font-variant-numeric:tabular-nums;}
+.warn{border:1px solid #fde68a; background:#fffbeb; color:#92400e;
+      border-radius:6px; padding:5px 10px; font-weight:800; font-size:12px;}
+
+.quick{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:6px;}
+@media (max-width:900px){ .quick{gap:4px;} }
+.quick button{min-height:30px; border:1px solid var(--line); background:var(--surface);
+              border-radius:6px; font-weight:800; font-size:11px; cursor:pointer;}
+
+.keypad{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; min-height:0;}
+@media (max-width:900px){ .keypad{gap:4px;} }
+.keypad button{min-height:34px; border:1px solid var(--line); background:var(--surface);
+               border-radius:7px; font-weight:900; cursor:pointer;}
+
+.foot{padding:8px 12px; border-top:1px solid var(--line); background:var(--surface-2);}
+.foot .mui-btn{width:100%;}
+</style>
+</head>
+<body>
+
+<div class="mock-bar">
+  <b>Bản mẫu 00 · Thanh toán — HIỆN TRẠNG</b>
+  <span>Dựng lại từ mã nguồn hiện hành để đối chiếu</span>
+  <span>Không dùng hệ thiết kế mới</span>
+  <span>So với <a href="01-thanh-toan.html">bản 01</a></span>
+</div>
+
+<div class="stage">
+<section class="drawer">
+
+  <header class="hd">
+    <div class="hd__txt">
+      <h2 class="t-emphasis">Thanh toán · Đơn #A-041</h2>
+      <p class="t-micro">Bàn 12 · Trong nhà · Nguyễn Trọng Linh · online</p>
+    </div>
+    <button type="button" class="mui-btn mui-btn--outlined t-body">Đóng</button>
+    <button type="button" class="mui-btn mui-btn--contained t-body">Thanh toán phần chọn</button>
+  </header>
+
+  <div class="body">
+    <div class="cols">
+
+      <section class="pane">
+        <div class="pane__hd">
+          <div style="min-width:0">
+            <h3 class="t-strong">Đơn #A-041</h3>
+            <p class="t-body">Bàn 12 · 3 món</p>
+          </div>
+          <label class="sel-all"><input type="checkbox"><span>Chọn tất cả</span></label>
+        </div>
+
+        <div class="pane__body">
+          <div class="item">
+            <input type="checkbox" checked aria-label="Chọn Cà phê sữa đá">
+            <span class="item__name t-body">Cà phê sữa đá</span>
+            <span class="qty"><button type="button" aria-label="Giảm">−</button><span>2</span><button type="button" aria-label="Tăng">+</button></span>
+            <span class="item__amt t-body">70.000</span>
+          </div>
+          <div class="item">
+            <input type="checkbox" checked aria-label="Chọn Bạc xỉu">
+            <span class="item__name t-body">Bạc xỉu · ít đường</span>
+            <span class="qty"><button type="button" aria-label="Giảm">−</button><span>1</span><button type="button" aria-label="Tăng">+</button></span>
+            <span class="item__amt t-body">35.000</span>
+          </div>
+          <div class="item">
+            <input type="checkbox" aria-label="Chọn Trà đào cam sả">
+            <span class="item__name t-body">Trà đào cam sả</span>
+            <span class="qty"><button type="button" aria-label="Giảm">−</button><span>2</span><button type="button" aria-label="Tăng">+</button></span>
+            <span class="item__amt t-body">80.000</span>
+          </div>
+        </div>
+
+        <div class="sum">
+          <div class="sum__row"><span class="t-secondary">Tổng đơn</span><strong class="t-body">185.000</strong></div>
+          <div class="sum__row"><span class="t-secondary">Thanh toán lần này</span><strong class="t-amountHeader">105.000</strong></div>
+          <label class="print-row"><input type="checkbox" checked><span>In hóa đơn sau khi thanh toán</span></label>
+          <button type="button" class="mui-btn mui-btn--outlined t-body" style="align-self:flex-start">In lại hóa đơn</button>
+        </div>
+
+        <div class="foot">
+          <button type="button" class="mui-btn mui-btn--contained t-body">Thanh toán phần chọn</button>
+        </div>
+      </section>
+
+      <section class="pane">
+        <div class="cash">
+          <div class="methods">
+            <button type="button" class="method on t-body"><span>Tiền mặt</span><span>✓</span></button>
+            <button type="button" class="method t-body"><span>Chuyển khoản</span><span></span></button>
+          </div>
+
+          <div class="recv t-strong">150.000</div>
+          <div class="warn">Còn thiếu 0</div>
+
+          <div class="quick">
+            <button type="button">105.000</button>
+            <button type="button">110.000</button>
+            <button type="button">150.000</button>
+            <button type="button">200.000</button>
+            <button type="button">500.000</button>
+          </div>
+
+          <div class="keypad">
+            <button type="button">1</button><button type="button">2</button><button type="button">3</button>
+            <button type="button">4</button><button type="button">5</button><button type="button">6</button>
+            <button type="button">7</button><button type="button">8</button><button type="button">9</button>
+            <button type="button">000</button><button type="button">0</button><button type="button">Xoá</button>
+          </div>
+
+          <div class="sum" style="border-top:1px solid var(--line); margin-top:auto">
+            <div class="sum__row"><span class="t-secondary">Phải trả</span><strong class="t-strong">105.000</strong></div>
+            <div class="sum__row"><span class="t-secondary">Tiền thối</span><strong class="t-strong">45.000</strong></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+{
+  "recordedAtUtc": "2026-10-24T11:30:14.3492898Z",
+  "mainSHA": "0dd63ea81b27a38800044a55a7f9c8f12f87cad0",
+  "mainTree": "12e8e64bd3df60ee3b1be55ec42f3cd5de35b746",
+  "productionEnvironment": {
+    "can_admins_bypass": false,
+    "deployment_branch_policy": {
+      "custom_branch_policies": true,
+      "protected_branches": false
+    },
+    "name": "Production",
+    "protection_rules": [
+      {
+        "reviewers": [
+          "nguyentronglinh045"
+        ],
+        "type": "required_reviewers"
+      },
+      {
+        "reviewers": [],
+        "type": "branch_policy"
+      }
+    ]
+  },
+  "previewEnvironment": {
+    "can_admins_bypass": false,
+    "deployment_branch_policy": {
+      "custom_branch_policies": true,
+      "protected_branches": false
+    },
+    "name": "Preview",
+    "protection_rules": [
+      {
+        "reviewers": [
+          "nguyentronglinh045"
+        ],
+        "type": "required_reviewers"
+      },
+      {
+        "reviewers": [],
+        "type": "branch_policy"
+      }
+    ]
+  },
+  "gitDeploymentEnabled": false,
+  "releasePolicyProductionEnabled": false,
+  "vercelUi": {
+    "method": "Authenticated CUA read-only after merge",
+    "productionSource": "4a89cc390894f5f35b61990e4f950a5eb6e481b9",
+    "productionDeployment": "Gf8TritxT3TLC6gSQCp97JWyfjgP",
+    "productionCreated": "Oct 17",
+    "ignoredBuildBehavior": "Don’t build anything",
+    "ignoredBuildCommand": "exit 0",
+    "browserClosed": true
+  },
+  "latestReleaseRun": "39028263852",
+  "latestPreviewRun": "39102130352",
+  "newReleaseOrPreviewWorkflow": false,
+  "deployed": false,
+  "liveDbMutation": false,
+  "settingsChanged": false
+}

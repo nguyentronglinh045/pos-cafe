@@ -1,0 +1,33 @@
+{
+  "observedAt": "2026-10-22T08:06:25.036797+00:00",
+  "transport": "fresh installed Codex app-server stdio client; existing thread resumed; no LLM turn",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "mcpUrl": "https://mcp.supabase.com/mcp?project_ref=ineckiashpwloncxnbqx&read_only=true&features=database,docs",
+  "query": "select 1 as connection_ok, current_user as database_role, current_setting('transaction_read_only') as transaction_read_only;",
+  "databaseToolCalls": 0,
+  "originalDatabaseToolCalls": 0,
+  "newThreadCreated": false,
+  "newModelTurnStarted": false,
+  "steps": [
+    {
+      "method": "initialize",
+      "status": "PASS"
+    },
+    {
+      "method": "config/read",
+      "status": "PASS"
+    },
+    {
+      "method": "thread/resume",
+      "status": "RPC_ERROR",
+      "code": -32600
+    }
+  ],
+  "projectConfigSha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+  "processOnlyConfigPreflight": "PASS",
+  "freshClientConfigVerified": true,
+  "status": "PROBE_STOPPED",
+  "errorType": "RuntimeError",
+  "sidecarProcessExitCode": 0,
+  "finishedAt": "2026-10-22T08:06:31.194751+00:00"
+}

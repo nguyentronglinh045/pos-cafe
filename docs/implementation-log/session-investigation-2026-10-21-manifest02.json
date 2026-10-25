@@ -1,0 +1,28 @@
+{
+  "purpose": "Independent review of analysis only, no gate or application changes",
+  "candidate": "02",
+  "predecessorManifestSHA256": "19fd73cdc19832d88d51a2297d5b87dad591701cd709b0255f6ccf9b79430813",
+  "delta": "Only report TC18 factual description: replay button locator Xóa PIN khỏi trang exact:true at test4671/operator162; input label4672 unchanged. Three evidence JSON unchanged.",
+  "files": [
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\workflow\\tasks\\session-investigation-2026-10-21.md",
+      "bytes": 20190,
+      "sha256": "96363b5a8e9f7c964b35ac67aa645f1f23464f7ee6b55813d0ba383e4646f3ff"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\session-investigation-2026-10-21-evidence.json",
+      "bytes": 70440,
+      "sha256": "4db93fb5030e811a6a1b9f7df30d6cd6cb6f7dac2fee43e008339f0d82b54f1c"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\session-investigation-2026-10-21-ci23.json",
+      "bytes": 12271,
+      "sha256": "aea3b12c31f9188707e366fb6ee6a9264354fd872aa3193112359fee48ce1e59"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\session-investigation-2026-10-21-shutdown.json",
+      "bytes": 456,
+      "sha256": "ce6460f24a2976d33e08db877e29dc2503892808e7b20fa087a286839c7e880b"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "capturedUtc": "2026-10-23T14:29:33.930Z",
+  "storeId": "6b2e76fd-b8f8-4fa9-b784-faee8eb4af36",
+  "nodeEmployeeSessionRevoked": true,
+  "oldNormalTokenError": "EMPLOYEE_SESSION_REQUIRED",
+  "nodeAuthLogoutHttpStatus": 204,
+  "uiSession": "separate; root will lock and unpair UI TEST context",
+  "recordCount": 11,
+  "rpcLog": [
+    {
+      "name": "permission_get_store_session",
+      "httpStatus": 426,
+      "ok": null,
+      "errorCode": "WRITE_PROTOCOL_UNSUPPORTED"
+    },
+    {
+      "name": "permission_get_store_session",
+      "httpStatus": 200,
+      "ok": true,
+      "errorCode": null
+    },
+    {
+      "name": "permission_list_roster",
+      "httpStatus": 200,
+      "ok": true,
+      "errorCode": null
+    },
+    {
+      "name": "permission_start_session",
+      "httpStatus": 200,
+      "ok": true,
+      "errorCode": null
+    },
+    {
+      "name": "permission_get_authority",
+      "httpStatus": 200,
+      "ok": false,
+      "errorCode": "PIN_CHANGE_REQUIRED"
+    },
+    {
+      "name": "permission_complete_required_pin_change",
+      "httpStatus": 200,
+      "ok": true,
+      "errorCode": null
+    },
+    {
+      "name": "permission_get_authority",
+      "httpStatus": 200,
+      "ok": false,
+      "errorCode": "EMPLOYEE_SESSION_REQUIRED"
+    },
+    {
+      "name": "permission_start_session",
+      "httpStatus": 200,
+      "ok": true,
+      "errorCode": null
+    },
+    {
+      "name": "permission_get_authority",
+      "httpStatus": 200,
+      "ok": true,
+      "errorCode": null
+    },
+    {
+      "name": "permission_revoke_session",
+      "httpStatus": 200,
+      "ok": true,
+      "errorCode": null
+    },
+    {
+      "name": "permission_get_authority",
+      "httpStatus": 200,
+      "ok": false,
+      "errorCode": "EMPLOYEE_SESSION_REQUIRED"
+    }
+  ]
+}

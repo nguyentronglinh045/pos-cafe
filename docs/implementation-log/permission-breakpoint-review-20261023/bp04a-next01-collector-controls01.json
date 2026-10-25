@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "permission-archive-collector-offline-controls-v1",
+  "status": "PASS",
+  "startedAtUtc": "2026-10-23T04:59:58.395Z",
+  "collectorSHA256": "f7ba45a569248201ac176469168b1e0eb4bcbcccc303e4f19aa76e3f7ea1b9b9",
+  "runnerSHA256": "24d43824b4ba68b58c649df59134480313d8305632afdb62e38b4f832523ed04",
+  "scope": "FAKE_TRANSPORT_ONLY_NO_NETWORK_OR_APP_UNIT",
+  "controls": [
+    {
+      "name": "success-and-max-four-workers",
+      "status": "PASS"
+    },
+    {
+      "name": "http503-stops-before-next-batch",
+      "status": "PASS"
+    },
+    {
+      "name": "sri-failure-preserves-first-and-aborts-peers",
+      "status": "PASS"
+    },
+    {
+      "name": "count-byte-diagnostic-schema",
+      "status": "PASS"
+    },
+    {
+      "name": "count-file-diagnostic-schema",
+      "status": "PASS"
+    },
+    {
+      "name": "single-archive-byte-limit",
+      "status": "PASS"
+    },
+    {
+      "name": "aggregate-byte-limit-global-cause",
+      "status": "PASS"
+    },
+    {
+      "name": "request-timeout-bounded-with-unresponsive-transport",
+      "status": "PASS"
+    },
+    {
+      "name": "whole-timeout-cause-precedes-peer-abort",
+      "status": "PASS"
+    },
+    {
+      "name": "budget-cause-recorded-before-any-fetch",
+      "status": "PASS"
+    },
+    {
+      "name": "injected-clock-deadline-cause",
+      "status": "PASS"
+    },
+    {
+      "name": "external-stop-has-global-cause",
+      "status": "PASS"
+    },
+    {
+      "name": "redirect-response-rejected",
+      "status": "PASS"
+    }
+  ],
+  "currentControl": "redirect-response-rejected",
+  "completedAtUtc": "2026-10-23T04:59:58.469Z"
+}

@@ -1,0 +1,192 @@
+{
+  "schemaVersion": "permission-bp3-light-v1",
+  "status": "PASS",
+  "scope": "SOURCE_SYNTAX_AND_NATIVE_IMAGE_FIXTURES_ONLY",
+  "startedAtUTC": "2026-10-23T02:20:46.580Z",
+  "completedAtUTC": "2026-10-23T02:20:47.853Z",
+  "nodeVersion": "v24.16.0",
+  "typescriptVersion": "5.9.3",
+  "baselineSHA": "5dee19836a81f42e020a0175672da9601044869d",
+  "sourcePins": {
+    "scripts/permission-runtime-t04.mjs": "d74ce1ad1853cbe399c9c49e744ad792e15201442816380b2fdca560251e9004",
+    "scripts/permission-runtime-t04.test.mjs": "9bf0869549e4bceeb3ac5bc6aac397c7b45fb979a053cb39abc4d02d78ab384f",
+    "scripts/permission-t04-image-measurement.mjs": "b8f1e241aad96af0c99ec75aa531d100470a51b3fbb911a2905010da719c8c77",
+    "scripts/permission-t04-image-measurement.test.mjs": "4003e90bc1ec7aab5badd492bd442cd40a6cd886b357a0b629755ad9a7359d97",
+    "tests/contracts/permissionImagesFixture.ts": "c74a145d1f8c0fe744feab62456c07613542adf134a10d5435e6c3090e0d5e64",
+    "tests/contracts/permissionImagesRuntime.contract.test.ts": "69c2884a3fc4657d0a90f50518b9a027ff04f3a11d6823e0c47cad74211e8447",
+    "tests/supabase/permissionCandidate.spec.ts": "570a6aafdb94f4250f698065dcda7a10ee601b4ec0c559f7d9bef90ed71457d1"
+  },
+  "syntax": [
+    {
+      "file": "tests/contracts/permissionImagesFixture.ts",
+      "errors": []
+    },
+    {
+      "file": "tests/contracts/permissionImagesRuntime.contract.test.ts",
+      "errors": []
+    },
+    {
+      "file": "tests/supabase/permissionCandidate.spec.ts",
+      "errors": []
+    }
+  ],
+  "syntaxLimitation": "transpileModule is syntax only, not typecheck or dependency resolution",
+  "pngChecks": [
+    {
+      "label": "helper",
+      "bytes": 68,
+      "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460",
+      "width": 1,
+      "height": 1,
+      "chunks": [
+        {
+          "type": "IHDR",
+          "size": 13
+        },
+        {
+          "type": "IDAT",
+          "size": 11
+        },
+        {
+          "type": "IEND",
+          "size": 0
+        }
+      ],
+      "inflatedBytes": 3
+    },
+    {
+      "label": "browser",
+      "bytes": 68,
+      "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460",
+      "width": 1,
+      "height": 1,
+      "chunks": [
+        {
+          "type": "IHDR",
+          "size": 13
+        },
+        {
+          "type": "IDAT",
+          "size": 11
+        },
+        {
+          "type": "IEND",
+          "size": 0
+        }
+      ],
+      "inflatedBytes": 3
+    },
+    {
+      "label": "normal",
+      "bytes": 68,
+      "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460",
+      "width": 1,
+      "height": 1,
+      "chunks": [
+        {
+          "type": "IHDR",
+          "size": 13
+        },
+        {
+          "type": "IDAT",
+          "size": 11
+        },
+        {
+          "type": "IEND",
+          "size": 0
+        }
+      ],
+      "inflatedBytes": 3
+    },
+    {
+      "label": "5MiB",
+      "bytes": 5242880,
+      "sha256": "65fd2302d0ca8e3894c672ef5bdcbd511ff69a3b15f1f0d6b182c86eed5647c5",
+      "width": 1,
+      "height": 1,
+      "chunks": [
+        {
+          "type": "IHDR",
+          "size": 13
+        },
+        {
+          "type": "IDAT",
+          "size": 11
+        },
+        {
+          "type": "paDd",
+          "size": 5242800
+        },
+        {
+          "type": "IEND",
+          "size": 0
+        }
+      ],
+      "inflatedBytes": 3
+    },
+    {
+      "label": "5MiB+1",
+      "bytes": 5242881,
+      "sha256": "ea67122adc3cafe6990ca6b5bd85ced6ee300bb5b9774363907a39837b29b040",
+      "width": 1,
+      "height": 1,
+      "chunks": [
+        {
+          "type": "IHDR",
+          "size": 13
+        },
+        {
+          "type": "IDAT",
+          "size": 11
+        },
+        {
+          "type": "paDd",
+          "size": 5242801
+        },
+        {
+          "type": "IEND",
+          "size": 0
+        }
+      ],
+      "inflatedBytes": 3
+    }
+  ],
+  "nativeDecode": [
+    {
+      "label": "helperPNG",
+      "status": "PASS",
+      "pixel": -16777216,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "label": "browserPNG",
+      "status": "PASS",
+      "pixel": -16777216,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "label": "JPEG",
+      "status": "PASS",
+      "pixel": -8355712,
+      "width": 1,
+      "height": 1
+    }
+  ],
+  "webp": {
+    "bytes": 122384,
+    "sha256": "0240b4921f521020a94edc272ab3d3070b97d6451326e1d6b381002a52e2ee23",
+    "container": "RIFF_WEBP_VALID",
+    "decode": "NOT_RUN"
+  },
+  "notRun": [
+    "Vitest",
+    "browser application",
+    "SQL",
+    "backend",
+    "CI",
+    "database access"
+  ],
+  "sourcePinsUnchanged": true
+}

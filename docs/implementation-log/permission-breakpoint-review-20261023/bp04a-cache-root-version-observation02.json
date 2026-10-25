@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "permission-bp4a-existing-cache-version-root-observation-v1",
+  "recordedAtUtc": "2026-10-23T04:10:57.154Z",
+  "scope": "READ_ONLY_EXISTING_CACHE_NO_NETWORK_NO_EXTRA_PREFLIGHT",
+  "samples": [
+    {
+      "lockPath": "node_modules/@types/node",
+      "version": "25.9.3",
+      "integrity": "sha512-603BddQMv3pUcr4U2dhujk83N2tTDVr/34wII2B6bJy6g+8WD6yUb11jszNs0gdi4PesVWl7ABt8nYMVpnLUcg==",
+      "cacheIntegrityMatched": true,
+      "firstTarHeaderName": "node/",
+      "compressedBytes": 437660
+    },
+    {
+      "lockPath": "node_modules/@types/react",
+      "version": "18.3.31",
+      "integrity": "sha512-vfEqpXTvwT91yhmwdfouStN2hSKwTvyRs8qpLfADyrq/kxDw0hZM7Wk9Ug1FELj8hIby+S/+kQCSRFF32nv2Qw==",
+      "cacheIntegrityMatched": true,
+      "firstTarHeaderName": "react v18.3/",
+      "compressedBytes": 80345
+    },
+    {
+      "lockPath": "node_modules/@types/react-dom",
+      "version": "18.3.7",
+      "integrity": "sha512-MEe3UeoENYVFXzoXEWsvcpg6ZvlrFNlOQ7EOsvhI3CfAXwzPfO8Qwuxd40nepsYKqyyVQnTdEfv68q91yLcKrQ==",
+      "cacheIntegrityMatched": true,
+      "firstTarHeaderName": "react-dom v18.3/",
+      "compressedBytes": 9608
+    }
+  ]
+}

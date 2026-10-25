@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "permission-loop-continuation-state-v1",
+  "status": "STOPPED_CI18_FAIL_EDGE_CLEANUP_NOT_COMPLETE",
+  "sourceRoot": "D:/Workspace/pos-cafe-permission-run-20261020/code",
+  "branch": "run/permissions-20261020",
+  "sourceSHA": "90e30f2b2b0f046c549b268b32f1840ad99c2409",
+  "remoteSHA": "90e30f2b2b0f046c549b268b32f1840ad99c2409",
+  "trackedClean": true,
+  "unrelatedPrivateHelpersPreserved": 15,
+  "candidateSHA256": "a0a8e556aca511b753a9919b55af11cdf61bc85107dd231b4154f8b150b772b2",
+  "reviewVerdicts": {
+    "source": "APPROVE",
+    "operations": "APPROVE"
+  },
+  "budgetPath": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/budget-edge-resolution-2300.json",
+  "policySHA256": "3c222cb3a5b66a37107522ddce08c2fc8f68e99777f4a921aeb0eba2c936797c",
+  "deadlineUtc": "2026-10-21T16:00:00Z",
+  "deviceTimeZone": "SE Asia Standard Time (UTC+07:00)",
+  "spent": {
+    "publication": 2,
+    "ci": 2,
+    "heavy": 1,
+    "reviewRounds": 6
+  },
+  "allowance": {
+    "publication": 2,
+    "ci": 2,
+    "heavy": 3,
+    "reviewRounds": 6
+  },
+  "activeRuns": [],
+  "localNode": {
+    "run": 823,
+    "pass": 823,
+    "fail": 0,
+    "skip": 0
+  },
+  "actualNativeResolver": "UNKNOWN_OUTCOME_MASKED_BY_CLEANUP",
+  "backend": "NOT_DISPATCHED_ON_SOURCE90_CI_FAIL_AND_CLOSED",
+  "priorBackend": {
+    "runId": "39593847459",
+    "sourceSHA": "ed73a415737aaf6d460e90f1756148a6be4d19dc",
+    "status": "FAIL_SETUP_EDGE_CACHE_PIN_PHOENIX1.6.8",
+    "businessStagesObserved": false,
+    "reclaimedBytes": 19327365120
+  },
+  "nextAction": "Do not dispatch. Prepare owned-directory0555 cleanup, independent primary/cleanup failure facts and tiny Linuxnonroot permission control. Future source needs explicit allocation/deadline, updated guard/spec, two-scope review and full own-sourceCI18 before any heavy.",
+  "constraints": [
+    "No merge",
+    "No hostedSupabase writes",
+    "No coverage reduction",
+    "No newlocalWSL/Docker",
+    "No additionalpublication/CI/review",
+    "Stop by23:00device regardless completion"
+  ],
+  "futureResume": "After closingV3, obtain a new explicit owner deadline and reviewed guard/spec support that inherits exact closed history; no newroot or reset.",
+  "updatedAtUtc": "2026-10-21T12:51:29.576Z",
+  "budgetClosed": true,
+  "lastCI": {
+    "runId": "39600415703",
+    "status": "completed",
+    "conclusion": "failure",
+    "passedPhases": 7,
+    "failedPhase": "edge-resolution",
+    "remainingPhases": "NOT_RUN",
+    "logSHA256": "c96de747b82e12a637feaa24f706f931da1848ade98ed03b1c4dafe18977b890"
+  },
+  "edgeRootRemoved": "NOT_PROVEN",
+  "confirmedDefect": {
+    "archiveDirectoryMode": "0555",
+    "directories": [
+      "./",
+      "./bin/",
+      "./lib/"
+    ],
+    "ciUser": "nonroot",
+    "cleanup": "plain rmSync without owner-write normalization",
+    "nodeLinuxError": "EACCES",
+    "reasonMapper": "EACCES not classified, becomes0",
+    "errorPrecedence": "finally can replace primary failure or discard successful result"
+  },
+  "closedLedgerHashes": {
+    "policy": "3c222cb3a5b66a37107522ddce08c2fc8f68e99777f4a921aeb0eba2c936797c",
+    "anchor": "089157c4f1af815bd825316f896d30da35d6a81d9aad61b246a6a81dd1a2402e",
+    "journal": "583f336dafa025e3088e0afc1dad23be68b2324c6e5f37facc11ca230d372880",
+    "head": "7f5d12c37918d6efbb48b336234bcc2efb627c0c8e4fb96002f599f26a4bab15"
+  },
+  "incidentReport": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/edge-cleanup-incident.json",
+  "backendGuardReceipt": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/backend-held-after-ci25.json",
+  "nextFixApplied": false,
+  "nextFixReviewed": false
+}

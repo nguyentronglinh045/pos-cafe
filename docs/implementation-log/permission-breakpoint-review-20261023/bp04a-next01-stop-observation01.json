@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "permission-bp4a-next-stop-observation-v1",
+  "observedAtUtc": "2026-10-23T05:12:35.0343287Z",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "sourceStatus": [],
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "phase03Pins": [
+    {
+      "name": "budget-phase03-close.json",
+      "sha256": "0eb116c8b4016d54d0b0d90474545bd8012625bdcb0d924e1aca22e3754ce05b"
+    },
+    {
+      "name": "budget-phase03-negative-controls.json",
+      "sha256": "ae2a8c9f1380400fba90c2b17c656a8ffe630b71fdd841679a986606f9abeb04"
+    },
+    {
+      "name": "budget-phase03.json",
+      "sha256": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142"
+    },
+    {
+      "name": "budget-phase03.json.anchor.json",
+      "sha256": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f"
+    },
+    {
+      "name": "budget-phase03.json.head.json",
+      "sha256": "adfec165ec85f3d4fd9f69db229249ba743845a5561799f295ae8590a5f6e527"
+    },
+    {
+      "name": "budget-phase03.json.journal.jsonl",
+      "sha256": "5390f85e8fb7c01d6a037724ba1f8c2b00a8666ed5603094a3bbeb876ffbb694"
+    }
+  ],
+  "dependentPaths": [
+    {
+      "relativePath": "code\\node_modules",
+      "exists": false
+    },
+    {
+      "relativePath": "code\\dist",
+      "exists": false
+    },
+    {
+      "relativePath": "npm-cache-bp4a-next01",
+      "exists": false
+    },
+    {
+      "relativePath": "temp-bp4a-next01",
+      "exists": false
+    },
+    {
+      "relativePath": "bp4a-next01-coverage",
+      "exists": false
+    },
+    {
+      "relativePath": "evidence\\bp4a-next01-install.started.json",
+      "exists": false
+    },
+    {
+      "relativePath": "evidence\\bp4a-next01-build.started.json",
+      "exists": false
+    },
+    {
+      "relativePath": "evidence\\bp4a-next01-unitCoverage.started.json",
+      "exists": false
+    }
+  ],
+  "disk": [
+    {
+      "DriveLetter": "D",
+      "SizeRemaining": 98505228288
+    },
+    {
+      "DriveLetter": "C",
+      "SizeRemaining": 193692327936
+    }
+  ],
+  "activeMain03": [],
+  "ownerInstalledPackage": {
+    "path": "D:\\Workspace\\pos-cafe\\node_modules\\@types\\pg",
+    "version": "8.23.1",
+    "regularFiles": 7,
+    "regularFileBytes": 19802.0,
+    "files": [
+      {
+        "path": "index.d.mts",
+        "bytes": 1980,
+        "sha256": "5aea76ab98173f2c230b1f78dc010da403da622c105c468ace9fe24e3b77883c"
+      },
+      {
+        "path": "index.d.ts",
+        "bytes": 11428,
+        "sha256": "67f3d03f61a43f045851624e52ec438803ecf5d2247660f208bd9bcadb6ff298"
+      },
+      {
+        "path": "lib/connection-parameters.d.ts",
+        "bytes": 1730,
+        "sha256": "f347b7cc533c54be78d730df75fd6bbaf7af3d837d41b1659fe7d3e46524c08e"
+      },
+      {
+        "path": "lib/type-overrides.d.ts",
+        "bytes": 1830,
+        "sha256": "798367363a3274220cbed839b883fe2f52ba7197b25e8cb2ac59c1e1fd8af6b7"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 1141,
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+      },
+      {
+        "path": "package.json",
+        "bytes": 1089,
+        "sha256": "d122ef1e1bdb760edd5cff70d39597b9b3ae757c80e829bc297cd34fb7f01bd3"
+      },
+      {
+        "path": "README.md",
+        "bytes": 604,
+        "sha256": "557076e4a63452599623b64d6f5ec2c1e0c4c597f8e6f35c5de33532ccf8c53f"
+      }
+    ],
+    "scope": "Read-only installed package observation; not exact archive/SRI proof; not reused as task installation"
+  },
+  "noArchiveFetchOrTest": "Observation only; post-R1 no package request, phase replay, code edit or test"
+}

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "permission-publication-intent-v5",
+  "recordedUtc": "2026-10-24T04:17:17.219Z",
+  "state": "INTENT_BEFORE_PUSH",
+  "sourceSHA": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+  "expectedMain": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "expectedReviewBefore": "f8ee03c195127bb440b0ede3142622ed21c3cc96",
+  "targetBranch": "review/permission-staging-20261023",
+  "pushMode": "NORMAL_NONFORCE_HEAD_TO_REVIEW",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-packet05.json",
+    "sha256": "43eb89e4e8b933486da162e3a3c1b3046e11d4041d0eeb4fc59dc38f080957a8"
+  },
+  "reviewRecord": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-reviews05.json",
+    "sha256": "a11f43f91103dadbae4d3b32e0599d14d5797cac601175177685670859c5fb2e"
+  },
+  "mapping": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping06.json",
+    "sha256": "577a3a380c7f4413a92e39b650e020b93b7ad606c6c40fb20d7706113cdaefcf"
+  },
+  "mappingReview": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-mapping-reviews05.json",
+    "sha256": "7a765c1c58b7f407965906370c3a43be162d8d02c225432b07d27670fb875ffd"
+  },
+  "remoteSnapshot": {
+    "recordedUtc": "2026-10-24T04:17:04.104Z",
+    "main": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "review": "f8ee03c195127bb440b0ede3142622ed21c3cc96",
+    "in_progress": 0,
+    "queued": 0,
+    "waiting": 0
+  },
+  "localDisks": [
+    {
+      "DeviceID": "C:",
+      "FreeSpace": 189581275136
+    },
+    {
+      "DeviceID": "D:",
+      "FreeSpace": 98733195264
+    }
+  ],
+  "retainedLogicalBytesAtPacket": 613319739,
+  "consumedBefore": {
+    "publication": 4,
+    "automaticLightCi": 4,
+    "T04": 4
+  },
+  "authorizedMax": {
+    "publication": 5,
+    "automaticLightCi": 5,
+    "T04": 5
+  },
+  "noMergeDeploy": true,
+  "noAutoRetry": true
+}

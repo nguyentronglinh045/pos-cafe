@@ -1,0 +1,24 @@
+{
+  "observedAt": "2026-10-21T22:10:00+07:00",
+  "observedVia": "LOCAL_CHROME_DASHBOARD_UI",
+  "sourceUrl": "https://supabase.com/dashboard/project/ineckiashpwloncxnbqx",
+  "projectName": "pos-cafe-permission-staging",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "apiOrigin": "https://ineckiashpwloncxnbqx.supabase.co",
+  "status": "Healthy",
+  "organizationPlan": "FREE",
+  "compute": "NANO",
+  "region": "ap-southeast-2",
+  "migrationsUi": "No migrations",
+  "githubUi": "No repository connected",
+  "projectCreatedBy": "OWNER_USER",
+  "originalDbAccessed": false,
+  "limitations": [
+    "Dashboard metadata is not SQL DB identity or proof of empty schemas.",
+    "Provider PRODUCTION branch label names the default branch of this separate project, not the original DB."
+  ],
+  "screenshot": {
+    "path": "staging-overview-2210.png",
+    "sha256": "53073e519f243d3e3cc9de987f619466ea0adfbd06bf1f8b4a1774921d44bad8"
+  }
+}

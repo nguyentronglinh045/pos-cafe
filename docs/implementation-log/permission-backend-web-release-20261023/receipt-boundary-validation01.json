@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "permission-receipt-boundary-validation-v1",
+  "recordedUtc": "2026-10-24T02:57:26.208Z",
+  "sourceSHA": "f8ee03c195127bb440b0ede3142622ed21c3cc96",
+  "parentSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "sourceTree": "feea4c8694f180f5e4a452214e1d68305c3bc55a",
+  "sourceFingerprint": "f3705ab28ce370b6589ecf628a03685598aaba81494ac1ed6581beb685e3d10a",
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "environment": {
+    "platform": "win32",
+    "node": "v24.16.0",
+    "installations": 0
+  },
+  "sourceBinding": "Tests ran on author working bytes over parent90824; author confirmed all7 final files exactly match canonical frozen commit; policy checked separately after pin update.",
+  "tests": {
+    "node": {
+      "tests": 143,
+      "pass": 143,
+      "fail": 0,
+      "skip": 0,
+      "log": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/receipt-boundary-node-20261024-06.log",
+        "bytes": 15409,
+        "sha256": "59241d7d02865711e6e270579297e9e3e84e300611536fb8962c03c8f316cadb"
+      }
+    },
+    "realReporters": {
+      "controls": 3,
+      "pass": 3,
+      "coverage": "WINDOWS_REFUSAL_ONLY",
+      "log": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/receipt-boundary-real-reporter-20261024-03.log",
+        "bytes": 303,
+        "sha256": "ba8b95e7c0555d8eb22b1585910bed43a15f0971c9811a56e7a289a6d642057d"
+      }
+    },
+    "policy": {
+      "command": "D:/tools/nodejs/node.exe --test scripts/permission-full-target-policy.test.mjs",
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "proof": "Executed by root after pin update; all50 additionally checked against frozen canonical Git blobs."
+    },
+    "diffCheck": "PASS"
+  },
+  "linuxRequired": {
+    "status": "NOT_EXECUTED_LOCALLY",
+    "nativeFileCases": 29,
+    "realReporterFileRoundtrips": 3,
+    "requiredIn": "fresh Linux CI node-tools and runtime-reporters; root file proof, original nonroot allocatedBytes while held, caller handback/cleanup"
+  },
+  "bound": {
+    "oldReadCapBytes": 8192,
+    "newWriterReaderCapBytes": 131072,
+    "t04WorstCaseBytes": 99879,
+    "serviceWorstCaseBytes": 105577,
+    "includesPrimaryAndCleanup": true,
+    "otherCapsChanged": false
+  },
+  "acceptance": {
+    "stages": 35,
+    "requiredIdentities": 760,
+    "supplementalObligations": 12,
+    "errorContexts": 34,
+    "changed": false,
+    "businessRuntimePassClaimed": false
+  },
+  "localTempInventory": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/receipt-boundary-local-temps-20261024.json",
+    "bytes": 5130,
+    "sha256": "39cd677e350f40616c9856397f3d9ba49fe331834b32fb8f2a869667a0757e81"
+  },
+  "notes": [
+    "File boundary controls pass through production write/read/recover and outer failure evidence gate on Linux only.",
+    "Historical T04 inner business progress remains UNKNOWN. The oversized receipt is a proven source flaw, not confirmed historical cause.",
+    "Finite failure facts are retained; no raw sensitive trace or success console spam.",
+    "Transient Linux fixture accounting/cleanup issues found in review were repaired before publication using sealed root directories and fd-bound no-follow handback."
+  ],
+  "reviewStatus": "PENDING_TWO_NON_AUTHOR_REVIEWS"
+}

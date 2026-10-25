@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "service-observed-checkpoint-v1",
+  "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+  "executionProfile": "PIN_ONBOARD",
+  "runId": "39802018031",
+  "attempt": 1,
+  "conclusion": "success",
+  "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39802018031",
+  "observation": "OBSERVED",
+  "validatorPins": [
+    {
+      "path": "scripts/permission-runtime-service.mjs",
+      "gitLfSHA256": "4391f3d44b8a9b8aaab861826f4f720ab84e666c40fc08afc714dad415d9cf3e"
+    },
+    {
+      "path": "scripts/permission-runtime-service-profile.mjs",
+      "gitLfSHA256": "7eda31d59cbb3db64bee46c7bd0a1c92e1063e09e2e51e26bb445d0f9bdb5ce0"
+    },
+    {
+      "path": "scripts/permission-runtime-results.mjs",
+      "gitLfSHA256": "7cc4c037b888a90362f3b9a51fb1ed10d3e7e914bef20e7840518ba7d8f8ae68"
+    },
+    {
+      "path": "scripts/permission-runtime-catalog.mjs",
+      "gitLfSHA256": "8ac506e4e9cf19b844cd0f12dfde32278deccca20bfba7cdfc95e43ce3b4e0f7"
+    }
+  ],
+  "outside": [
+    {
+      "measuredBytes": 568446976,
+      "budgetBytes": 1073741824,
+      "reservedFutureBytes": 16777216,
+      "technicalQuota": false
+    }
+  ],
+  "failure": [],
+  "diagnosticFacts": [],
+  "evidence": [
+    {
+      "schemaVersion": "permission-service-runtime-v1",
+      "scope": "ONE_SERVICE_PROFILE_ONLY",
+      "executionProfile": "PIN_ONBOARD",
+      "logicalProfile": "PIN_ONBOARD",
+      "status": "PASS",
+      "failure": null,
+      "stages": [
+        {
+          "stage": "pin-onboard-closeout",
+          "status": "PASS",
+          "required": 48,
+          "discovered": 48,
+          "run": 48,
+          "pass": 48,
+          "fail": 0,
+          "skip": 0,
+          "retry": 0,
+          "reportSHA": "d64fd752611cfcd0bb0b2b7272469ea8693cfb9d43c03a1b389ab4981c62b752",
+          "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+          "invocationSHA": "e500a1a311da3f4c5fc7ea26298645a682427b4d3fb39138b1be44f14434bf4c",
+          "supplementalOracles": "NOT_PROVEN_BY_STAGE_COUNTS"
+        },
+        {
+          "stage": "pin-tc18-wrapper",
+          "status": "PASS",
+          "required": 7,
+          "discovered": 7,
+          "run": 7,
+          "pass": 7,
+          "fail": 0,
+          "skip": 0,
+          "retry": 0,
+          "reportSHA": "3c82ef63fa10f369ebc835c3443e06c232b642edf87fdd626bdb750f86a45670",
+          "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+          "invocationSHA": "2cfcdde2fce6a7fa949d540bd40c58c29c1a7fbab61af33e5a51b1280131a358",
+          "supplementalOracles": "NOT_PROVEN_BY_STAGE_COUNTS"
+        }
+      ],
+      "physicalBackendSHA": "00dc3f2f70a4edf456578d47fbebb4d22859fad11da67cf60a86b81c631adc6e",
+      "fixtureConnectionClosed": true,
+      "full35BusinessRuntime": "NOT_RUN",
+      "remainingBusinessStages": 33,
+      "supplementalOracles": "NOT_PROVEN_BY_STAGE_COUNTS",
+      "repository": "nguyentronglinh045/pos-cafe",
+      "runId": "39802018031",
+      "attempt": 1,
+      "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+      "workflowSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+      "sourceFingerprint": "75baa948ab715401052d032dbc58b957d24ee35896ae6a3beea2c748b4c34552",
+      "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+      "stoppedPeerSHA": null
+    }
+  ],
+  "reclaim": [
+    {
+      "schemaVersion": "permission-ci1-reclaim-v1",
+      "status": "RECLAIMED",
+      "imageUnlinked": true,
+      "imageLogicalBytes": 19327352832,
+      "imageAllocatedBytes": 19327393792,
+      "hostFreeBeforeBytes": 71441080320,
+      "hostFreeAfterBytes": 90768478208,
+      "measuredHostFreeDeltaBytes": 19327397888,
+      "remaining": "compact control/status/safe export only; ephemeral runner"
+    }
+  ],
+  "logBytes": 38661,
+  "logSHA256": "16cdcdbedb62014258007ad113e1916996772dacd9c056f0183c7d9cece06819",
+  "full35BusinessRuntime": "NOT_PROVEN_BY_SINGLE_PROFILE",
+  "liveMutation": false
+}

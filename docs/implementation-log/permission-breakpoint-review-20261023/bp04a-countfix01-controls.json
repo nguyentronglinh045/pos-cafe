@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "permission-bp4-countfix-controls-v1",
+  "status": "PASS",
+  "offlineOnly": true,
+  "networkRequests": 0,
+  "grantSHA256": "fd5aaf16be50e24269862bc1fccbc6e64f172734e32458b3345dd9c5d475b479",
+  "pins": {
+    "helper": "6230b753ccbdb1f71cd748c99f4732c2b5816cc69ce132ce60745dc5d7537311",
+    "collector": "8091a91f64fda093a733fbf8ed079282a6fb4c95b5d9a9b8ab16db0d525acca5",
+    "parser": "00c8948c16b10b76160cc722acf937942225e793f6c7a10b5e9456ee2bd509f2",
+    "fact": "3fae28db2709013b7aef24a77bafe413310ff64381f635ecb5ae3c99a219ad23",
+    "facts": "1c00b0b0a3fb3279cad9ddb072cef74d8508a01215b46a92c2f4f3171a7c21f9",
+    "lock": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+    "body": "f8e5fab1d222a3475d6c481ae85446d165b28f24f2ce05b170e7edc880b34ddc"
+  },
+  "harnessSHA256": "c518e6eec98b83f1341fa3ac22d4d838f17bad72bc9eae9cb2d333db8c8dd032",
+  "startedAtUtc": "2026-10-23T07:22:32.714Z",
+  "completedAtUtc": "2026-10-23T07:22:32.813Z",
+  "results": [
+    {
+      "name": "derive46 enriched identities; raw1579 preserved; expected1577",
+      "status": "PASS"
+    },
+    {
+      "name": "exact retainedbody remains old9FAIL; adapter7PASS19802",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong version fails closed",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong target SRI fails closed",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong retainedbody fails closed",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong certified fact fails closed",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown package cannot use special fact",
+      "status": "PASS"
+    },
+    {
+      "name": "missing required byte count fails closed",
+      "status": "PASS"
+    },
+    {
+      "name": "missing required file count fails closed",
+      "status": "PASS"
+    },
+    {
+      "name": "raw target metadata9 cannot be replaced silently",
+      "status": "PASS"
+    },
+    {
+      "name": "derive lock/version drift refuses",
+      "status": "PASS"
+    },
+    {
+      "name": "new collector fake transport uses certified actualbody once",
+      "status": "PASS"
+    },
+    {
+      "name": "new collector wrongidentity yields original finite firstFailure",
+      "status": "PASS"
+    },
+    {
+      "name": "arithmetic only expected1577 accepted, not actual46 verification",
+      "status": "PASS"
+    },
+    {
+      "name": "old aggregate1579 rejects target9",
+      "status": "PASS"
+    },
+    {
+      "name": "compensating wrong counts cannot pass aggregate",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate/missing result identities refuse",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong aggregate SRI identity refuses",
+      "status": "PASS"
+    },
+    {
+      "name": "ordinary directory headers never substitute for regular9",
+      "status": "PASS"
+    },
+    {
+      "name": "ordinary PAX headers never substitute for regular9",
+      "status": "PASS"
+    },
+    {
+      "name": "ordinary no generic minus2 override",
+      "status": "PASS"
+    },
+    {
+      "name": "ordinary SRI guard retained",
+      "status": "PASS"
+    },
+    {
+      "name": "ordinary byte guard retained",
+      "status": "PASS"
+    },
+    {
+      "name": "ordinary traversal guard retained",
+      "status": "PASS"
+    },
+    {
+      "name": "ordinary type guard retained",
+      "status": "PASS"
+    },
+    {
+      "name": "ordinary consistentroot guard retained",
+      "status": "PASS"
+    }
+  ],
+  "metadataTotal": 1579,
+  "expectedRegularTotal": 1577,
+  "actualArchiveBodiesUsed": 1,
+  "full46Preflight": "NOT_RUN",
+  "arithmeticControlIsNotActual45ArchiveEvidence": true,
+  "stopPolicy": "First unexpected failure stops; no automatic fix/retry"
+}

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "permission-reviewed-light-join-v1",
+  "sourceSHA": "ad265321144521c0669500fea9be0f96ebacb769",
+  "runId": "39780944907",
+  "attempt": 1,
+  "reviewer": "/root/mcp_staging_scope_review",
+  "verdict": "APPROVE_BOUNDED_LIGHT_JOIN",
+  "summary": {"path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci01-summary.json", "sha256": "05f9fa108eed5c5e0eca7ef0fd29d28d56ba132ad32d1e376ffca88e7211966c"},
+  "log": {"path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci01-workflow.log", "sha256": "02aa404002e17f1d366667c14d3c31530b09671c68cd4aa43e9f3d45a24738e7"},
+  "inventory": {"path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/fullgate-inventory01.json", "sha256": "1e955f2df60a61ec195a7fe116c57a5817d4860fef37daa9e82f0e00eb29368e"},
+  "static": {
+    "stageCount": 5,
+    "requiredIdentities": 313,
+    "actualTestsRun": 480,
+    "actualPass": 480,
+    "fail": 0,
+    "skip": 0,
+    "requiredByStage": {"candidate-unit": 171, "foundation-unit": 108, "legacy-t01-tools": 28, "candidate-seed-tools": 4, "pin-static-operator": 2},
+    "basis": "Actual source-bound phase receipt plus pinned strict producer. Four PERM recipes allow extra discovered tests; PIN recipe requires exact discovery. Required identity discovery/results, one attempt and source/config/lock binding are checked by permission-runtime-results.mjs before PASS. staticProfileCounts locks the five stages and required counts.",
+    "privateStageRowsReadByReviewer": false,
+    "publicBoundary": "Only outer phase reportSHA/invocationSHA and counts are exported. Private per-stage rows/hashes are not independently retrieved from this public log. The reviewed D19 join uses the pinned producer and actual same-source public receipt."
+  },
+  "pg16": {
+    "stageCount": 1,
+    "requiredIdentities": 30,
+    "actualTestsRun": 30,
+    "requiredSkip": 0,
+    "retry": 0,
+    "observation": {"path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci01-pg16.json", "sha256": "5bdc89427a88483ede1f8e6e0eff2b6ab899e071dd8fb40c1b637fd103a1be6a"},
+    "basis": "Exactly one actual rendered native receipt in workflow log; independently parsed and validated with renderPg16Evidence and actual CI binding. PG16.15; cleanup observed."
+  },
+  "combinedLight": {"stageCount": 6, "requiredIdentities": 343},
+  "otherPhaseExemptions": [
+    {"phase": "tooling", "manualDeferred": 1, "identity": "TC-IDEM-087/tool real preflight fails before test entry and verifies a positive database write", "status": "NOT_RUN_MANUAL_DEFERRED", "basis": "Exact existing ci/backend-only-tests.json and project-ci-results.mjs:620-654. Outside PERM760; never counted as a permission PASS."},
+    {"phase": "smoke", "discovered": 81, "pass": 44, "skip": 37, "basis": "Exact existing 37 viewport-applicability identities in ci/smoke-applicability.json; project-ci-results.mjs:694-709 checks the exact skipped set and zero retries. These are outside required PERM760 identities."}
+  ],
+  "fullGate": "PENDING_REMAINING_RUNTIME_AND_OBLIGATION_JOIN",
+  "limitations": "This closes bounded LIGHT evidence only. It does not prove T04, seven service profiles, hosted Auth behavior or all 12 supplemental obligations."
+}

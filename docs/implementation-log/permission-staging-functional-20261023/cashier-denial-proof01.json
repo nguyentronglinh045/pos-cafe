@@ -1,0 +1,386 @@
+{
+  "H4_UIcreate": "PASS",
+  "employees": 2,
+  "cashierId": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+  "H5_listDenied": "FORBIDDEN",
+  "H5_writeDenied": "FORBIDDEN",
+  "employeeUnchanged": true,
+  "denialAudited": true,
+  "deniedRequestId": "4b2b63e1-5fd1-455f-9aa8-a84413c61479",
+  "employeeBefore": {
+    "id": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+    "name": "TEST-20261023-cashier",
+    "role": "cashier",
+    "sources": [
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "data.clearDemo"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "employee.manage"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "employee.permission.edit"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "floor.manage"
+      },
+      {
+        "sources": [
+          "default",
+          "baseline"
+        ],
+        "effective": true,
+        "permission": "floor.view"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "menu.manage"
+      },
+      {
+        "sources": [
+          "default"
+        ],
+        "effective": true,
+        "permission": "order.create"
+      },
+      {
+        "sources": [
+          "default"
+        ],
+        "effective": true,
+        "permission": "order.update"
+      },
+      {
+        "sources": [
+          "default"
+        ],
+        "effective": true,
+        "permission": "order.voidOpen"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "order.voidPaid"
+      },
+      {
+        "sources": [
+          "default"
+        ],
+        "effective": true,
+        "permission": "orderHistory.view"
+      },
+      {
+        "sources": [
+          "default"
+        ],
+        "effective": true,
+        "permission": "payment.take"
+      },
+      {
+        "sources": [
+          "default"
+        ],
+        "effective": true,
+        "permission": "receipt.reprint"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "report.view"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "settings.manage"
+      }
+    ],
+    "isActive": true,
+    "effective": [
+      "floor.view",
+      "order.create",
+      "order.update",
+      "order.voidOpen",
+      "orderHistory.view",
+      "payment.take",
+      "receipt.reprint"
+    ],
+    "overrides": null,
+    "pinChangeRequired": false,
+    "permissionRevision": 0
+  },
+  "employeeAfter": {
+    "id": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+    "name": "TEST-20261023-cashier",
+    "role": "cashier",
+    "sources": [
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "data.clearDemo"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "employee.manage"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "employee.permission.edit"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "floor.manage"
+      },
+      {
+        "sources": [
+          "default",
+          "baseline"
+        ],
+        "effective": true,
+        "permission": "floor.view"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "menu.manage"
+      },
+      {
+        "sources": [
+          "default"
+        ],
+        "effective": true,
+        "permission": "order.create"
+      },
+      {
+        "sources": [
+          "default"
+        ],
+        "effective": true,
+        "permission": "order.update"
+      },
+      {
+        "sources": [
+          "default"
+        ],
+        "effective": true,
+        "permission": "order.voidOpen"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "order.voidPaid"
+      },
+      {
+        "sources": [
+          "default"
+        ],
+        "effective": true,
+        "permission": "orderHistory.view"
+      },
+      {
+        "sources": [
+          "default"
+        ],
+        "effective": true,
+        "permission": "payment.take"
+      },
+      {
+        "sources": [
+          "default"
+        ],
+        "effective": true,
+        "permission": "receipt.reprint"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "report.view"
+      },
+      {
+        "sources": [],
+        "effective": false,
+        "permission": "settings.manage"
+      }
+    ],
+    "isActive": true,
+    "effective": [
+      "floor.view",
+      "order.create",
+      "order.update",
+      "order.voidOpen",
+      "orderHistory.view",
+      "payment.take",
+      "receipt.reprint"
+    ],
+    "overrides": null,
+    "pinChangeRequired": false,
+    "permissionRevision": 0
+  },
+  "audit": {
+    "rows": [
+      {
+        "kind": "update_employee",
+        "before": {
+          "id": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+          "name": "TEST-20261023-cashier",
+          "role": "cashier",
+          "isActive": true,
+          "effective": [
+            "floor.view",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint"
+          ],
+          "overrides": null,
+          "pinChangeRequired": false,
+          "permissionRevision": 0
+        },
+        "reason": "FORBIDDEN",
+        "details": null,
+        "outcome": "denied",
+        "storeId": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf",
+        "actorKey": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+        "auditKey": "WyJiNGU2YmZjZC0yMWZiLTQxYTgtODcxOC02ZmUyNjQzMGEyY2YiLCAiZW1wbG95ZWUiLCAiZWQ4YzUxZTUtZWUyNi00MjczLWJhY2YtZmQ0MjQ1OGYxMjYxIiwgIjRiMmI2M2UxLTVmZDEtNDU1Zi05YWE4LWE4NDQxM2M2MTQ3OSIsICJlZDhjNTFlNS1lZTI2LTQyNzMtYmFjZi1mZDQyNDU4ZjEyNjEiXQ",
+        "targetId": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+        "actorType": "employee",
+        "requestId": "4b2b63e1-5fd1-455f-9aa8-a84413c61479",
+        "occurredAt": "2026-10-23T11:47:43.847561+00:00",
+        "actualAfter": {
+          "id": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+          "name": "TEST-20261023-cashier",
+          "role": "cashier",
+          "isActive": true,
+          "effective": [
+            "floor.view",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint"
+          ],
+          "overrides": null,
+          "pinChangeRequired": false,
+          "permissionRevision": 0
+        },
+        "proposedAfter": {
+          "id": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+          "name": "TEST_DENIED",
+          "role": "cashier",
+          "isActive": true,
+          "effective": [
+            "floor.view",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint"
+          ],
+          "overrides": null,
+          "pinChangeRequired": false,
+          "permissionRevision": 0
+        },
+        "actorEffective": [
+          "floor.view",
+          "order.create",
+          "order.update",
+          "order.voidOpen",
+          "orderHistory.view",
+          "payment.take",
+          "receipt.reprint"
+        ],
+        "catalogRevision": 0,
+        "operatorCaseRef": null,
+        "operatorProofRef": null,
+        "credentialChanged": false
+      },
+      {
+        "kind": "create_employee",
+        "before": null,
+        "reason": null,
+        "details": null,
+        "outcome": "applied",
+        "storeId": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf",
+        "actorKey": "1cccd1a7-b42d-55ab-8875-1cd088db3267",
+        "auditKey": "WyJiNGU2YmZjZC0yMWZiLTQxYTgtODcxOC02ZmUyNjQzMGEyY2YiLCAiZW1wbG95ZWUiLCAiMWNjY2QxYTctYjQyZC01NWFiLTg4NzUtMWNkMDg4ZGIzMjY3IiwgImRmNjdhZTk0LWE2MmEtNDMyNC1iOTlhLWNmOWVhYTQ4N2M3YiIsICJlZDhjNTFlNS1lZTI2LTQyNzMtYmFjZi1mZDQyNDU4ZjEyNjEiXQ",
+        "targetId": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+        "actorType": "employee",
+        "requestId": "df67ae94-a62a-4324-b99a-cf9eaa487c7b",
+        "occurredAt": "2026-10-23T11:46:37.651998+00:00",
+        "actualAfter": {
+          "id": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+          "name": "TEST-20261023-cashier",
+          "role": "cashier",
+          "isActive": true,
+          "effective": [
+            "floor.view",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint"
+          ],
+          "overrides": null,
+          "pinChangeRequired": false,
+          "permissionRevision": 0
+        },
+        "proposedAfter": {
+          "id": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+          "name": "TEST-20261023-cashier",
+          "role": "cashier",
+          "isActive": true,
+          "effective": [
+            "floor.view",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint"
+          ],
+          "overrides": null,
+          "pinChangeRequired": null,
+          "permissionRevision": 0
+        },
+        "actorEffective": [
+          "data.clearDemo",
+          "employee.manage",
+          "employee.permission.edit",
+          "floor.manage",
+          "floor.view",
+          "menu.manage",
+          "order.create",
+          "order.update",
+          "order.voidOpen",
+          "order.voidPaid",
+          "orderHistory.view",
+          "payment.take",
+          "receipt.reprint",
+          "report.view",
+          "settings.manage"
+        ],
+        "catalogRevision": 0,
+        "operatorCaseRef": null,
+        "operatorProofRef": null,
+        "credentialChanged": false
+      }
+    ],
+    "nextCursor": null
+  }
+}

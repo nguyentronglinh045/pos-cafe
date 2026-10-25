@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "permission-publication-result-v6",
+  "startedUtc": "2026-10-24T05:45:05.655Z",
+  "finishedUtc": "2026-10-24T05:45:08.538Z",
+  "sourceSHA": "34db1b13ab707bab114fe1d83642d021ff324c93",
+  "branch": "review/permission-staging-20261023",
+  "command": "git push origin HEAD:refs/heads/review/permission-staging-20261023",
+  "exitCode": 0,
+  "signal": null,
+  "errorCode": null,
+  "stdout": "",
+  "stderr": "To https://github.com/nguyentronglinh045/pos-cafe.git\n   7dbd6dd..34db1b1  HEAD -> review/permission-staging-20261023\n",
+  "remoteReadback": "PENDING",
+  "attempts": 1
+}

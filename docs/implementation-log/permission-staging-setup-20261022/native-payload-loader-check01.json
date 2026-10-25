@@ -1,0 +1,20 @@
+{
+  "negative": [
+    {
+      "name": "wrong_sha",
+      "refused": true
+    },
+    {
+      "name": "wrong_size",
+      "refused": true
+    }
+  ],
+  "sha256": "5c5c40dd5a0c3e98000a041da34446370fa539f47bd423fbe6196ba682c4e7f5",
+  "bytes": 543149,
+  "chars": 540612,
+  "chunkCount": 33,
+  "databaseCalls": 0,
+  "command": "functions.exec recipe in native-payload-loader01.js.txt plus wrong-SHA and wrong-byte-size controls",
+  "result": "PASS_LOCAL_ONLY",
+  "assembly": "33 ordered char slices from full byte buffers individually pinned to expected file hash; stored immutable string for ONE approved apply; no independent assembled-string JS digest claim"
+}

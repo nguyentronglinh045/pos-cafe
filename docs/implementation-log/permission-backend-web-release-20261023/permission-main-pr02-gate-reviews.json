@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "permission-main-pr-gate-reviews-v1",
+  "date": "2026-10-24",
+  "candidateSHA": "a028cc5b07bf3a02e3b837d8aec2b832325503a2",
+  "testedMergeSHA": "984660f8c059c46100aa6d829a78e6547ae26c4f",
+  "treeSHA": "12e8e64bd3df60ee3b1be55ec42f3cd5de35b746",
+  "runId": "40088569310",
+  "attempt": 1,
+  "collectionSHA256": "8ff68b52ac4fe84d751b5da1b56a61fdc949b86be1f6589804f1d0c740652fd5",
+  "summarySHA256": "694972df88f6ccdc687ffd9cf81d639ad287aeeecfd28270c9eec2fa6eae91db",
+  "phasesPassed": 18,
+  "counts": {
+    "unitPassed": 1189,
+    "nodePassed": 1044,
+    "toolingPassed": 567,
+    "toolingExistingManualDeferred": 1,
+    "staticPassed": 480,
+    "nativePg16Passed": 30,
+    "uiStateViewportPairsPassed": 48,
+    "acceptedBaselineFindings": 6
+  },
+  "artifact": {
+    "id": 12558183853,
+    "bytes": 66520,
+    "zipSHA256": "69f84a131fb95d41856dc678711592fe3fef61adc7a474e13ff673f40d60c4d7",
+    "manifestSHA256": "0ecab7ec484e98b4e5ac448567f5423804a0ef602df886ac06185795ecdb3451"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "Actual PR CI source/run/tree binding, counts and cleanup; opened all3 fresh PIN images"
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Independently hashed12 refs and replayed collector in memory with13 matching outputs; native producer and ZIP/PNG integrity; opened all3 fresh PIN images"
+    }
+  ],
+  "coordinatorOpenedAllThreeImages": true,
+  "visualClassification": "No observed unmasked defect in desktop/tablet/mobile; two intentional black masks exclude input appearance from claims; mobile fullpage844x419, viewport844x390, actions within viewport",
+  "producerVisualReview": "NOT_RUN retained unchanged in producer manifest; manual reviews are separate",
+  "nativePg16MeasuredReclaimBytes": 50741248,
+  "boundary": "Integration/LIGHT gate only; T04, remaining backend profiles and supplemental obligations remain NOT_ACCEPTED. No deploy, migration or live DB activation."
+}

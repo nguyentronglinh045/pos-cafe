@@ -1,0 +1,13 @@
+{
+  "atUtc": "2026-10-22T02:51:38.971Z",
+  "id": 39713372721,
+  "sourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "branch": "run/permissions-20261020",
+  "event": "push",
+  "status": "in_progress",
+  "conclusion": null,
+  "attempt": 1,
+  "createdAt": "2026-10-22T02:48:15Z",
+  "updatedAt": "2026-10-22T02:48:18Z",
+  "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39713372721"
+}

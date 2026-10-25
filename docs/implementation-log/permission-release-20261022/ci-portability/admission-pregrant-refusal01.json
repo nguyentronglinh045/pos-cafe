@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "permission-remediation-pregrant-refusal-v1",
+  "atUtc": "2026-10-22T02:36:32.525Z",
+  "status": "REFUSED",
+  "reason": "OWNER_GRANT_REQUIRED",
+  "scope": "PURE_MODEL_NO_NETWORK_NO_CLAIM",
+  "policySHA256": "68071f2edde0465678481f2313374e82c50680d5d5563055e48ab133ed53dd03",
+  "packetSHA256": "2f2c7da12cf9ae7a47ca95098001e005205f7ebfc3d4a5c0419b11b6f0a3615a",
+  "ownerGrant": "PENDING",
+  "parentHistoryPreserved": true,
+  "publicationAttempted": false,
+  "ciStarted": false
+}

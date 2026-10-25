@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "permission-reviewed-light-join-v1",
+  "recordedAtUtc": "2026-10-22T14:30:34.992Z",
+  "author": "/root",
+  "status": "BOUNDED_LIGHT_OBSERVATION_PENDING_INDEPENDENT_REVIEW",
+  "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+  "runId": "39792208893",
+  "attempt": 1,
+  "summary": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci02-summary.json",
+    "sha256": "c4e4d113c1d476c9f6dc1647ef7071ce37e3e17a0535ad8f17b92c28d0e0c201"
+  },
+  "log": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci02-workflow.log",
+    "sha256": "2b6d79b4bc6bb2827b54bd6b86f0a9d6fa09f38bec7fb6e137e38761a8d48f52"
+  },
+  "inventory": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/fullgate-inventory02.json",
+    "sha256": "ca54450710f0aa8c72414d6dc9ac1e2addaf7973b030ef2c8a3a557cb3d298ad"
+  },
+  "static": {
+    "stageCount": 5,
+    "requiredIdentities": 313,
+    "actualTestsRun": 480,
+    "actualPass": 480,
+    "fail": 0,
+    "skip": 0,
+    "requiredByStage": {
+      "candidate-unit": 171,
+      "foundation-unit": 108,
+      "legacy-t01-tools": 28,
+      "candidate-seed-tools": 4,
+      "pin-static-operator": 2
+    },
+    "basis": "Actual current-source CI phase plus pinned strict producer and unchanged exact static catalog. Existing producer checks full discovery/result identities, config/source/lock and one attempt; four PERM recipes allow extras, PIN static recipe requires exact discovery.",
+    "privateStageRowsReadByReviewer": false,
+    "publicBoundary": "Public log exports outer phase reportSHA/invocationSHA/counts only. Private five per-stage rows/hashes were validated by the pinned producer, not independently retrieved. No fabricated public per-stage reports."
+  },
+  "pg16": {
+    "stageCount": 1,
+    "requiredIdentities": 30,
+    "actualTestsRun": 30,
+    "requiredSkip": 0,
+    "retry": 0,
+    "observation": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci02-pg16.json",
+      "sha256": "507d4cefa98eac0c21c043a060f082887d0f5c10076e2a5d885f6b476ebcf2bc"
+    },
+    "basis": "Exact one native receipt from actual current-source workflow log validated by renderPg16Evidence with actual CI02 binding. Native cleanup observed and publication settled."
+  },
+  "combinedLight": {
+    "stageCount": 6,
+    "requiredIdentities": 343
+  },
+  "otherPhaseExemptions": [
+    {
+      "phase": "tooling",
+      "manualDeferred": 1,
+      "identity": "TC-IDEM-087/tool real preflight fails before test entry and verifies a positive database write",
+      "status": "NOT_RUN_MANUAL_DEFERRED",
+      "basis": "Existing backend-only-tests.json and strict parser; outside required PERM760."
+    },
+    {
+      "phase": "smoke",
+      "discovered": 81,
+      "pass": 44,
+      "skip": 37,
+      "basis": "Actual current-source phase counts; unchanged exact37 viewport-applicability identities outside PERM760, strict parser verifies exact skipped set and zero retries."
+    }
+  ],
+  "fullGate": "PENDING_T04_SEVEN_SERVICE_PROFILES_AND_ALL_SUPPLEMENTAL_OBLIGATIONS",
+  "limitations": "Bounded LIGHT only. No hosted Auth, T04/service/12-obligation PASS. This record uses current4d1 CI02 observations; old ad265 results remain historical."
+}

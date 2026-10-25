@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "deadline-readonly-coordination-v1",
+  "observedAtUtc": "2026-10-22T09:01:17.1120427+00:00",
+  "source": "deadline-readonly-guard-source01.ps1",
+  "sourceSha256": "9c3aaff3f3e979c6b45387dee2dbfceb6190106b34ac69f344876568d1673061",
+  "watcherPid": 34152,
+  "target": "D:/Workspace/pos-cafe/.codex/config.toml",
+  "deadlineUtc": "2026-10-22T10:00:00Z",
+  "assumption": "operational single authorized writer; no OS-enforced compare-and-swap",
+  "rootCommitment": "Root will not mutate target config while exact watcher process is alive. Early restore requires validating watcher PID/executable/source/hash command identity, stopping only that watcher and waiting for exit before any target write.",
+  "otherAgents": "Reviewers and all other active agents are read-only for target config. Guard must not launch duplicate writer.",
+  "retainedChecks": "Source/ancestor/reparse/live hash/snapshot hash/ACL checks and same-volume atomic replacement remain unchanged.",
+  "limitations": [
+    "Hash/ACL checks followed by File.Replace do not implement compare-and-swap.",
+    "An uncoordinated external writer can change target between last check and replacement; no race-proof no-overwrite guarantee.",
+    "Detached process was verified after launcher exit; survival across Codex restart and actual deadline restoration are not yet observed.",
+    "Stored config restoration does not reload a live MCP transport or revoke OAuth.",
+    "No absolute wall-clock guarantee during device sleep or process termination."
+  ],
+  "findingDisposition": "Scope review finding retained; clarification requires explicit reviewer approval before marking guard reviewed.",
+  "databaseCalls": 0
+}

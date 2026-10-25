@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "permission-bp4a-child-release-v1",
+  "startedAtUtc": "2026-10-23T07:22:32.4057072Z",
+  "completedAtUtc": "2026-10-23T07:22:32.8241632Z",
+  "rootExitCode": 0,
+  "rootPid": 45820,
+  "activeProcesses": 0,
+  "timedOut": false,
+  "orphanDetected": false,
+  "nativeFailure": false,
+  "nativeErrorCode": 0,
+  "releaseVerified": true,
+  "assigned": true,
+  "resumed": true,
+  "passed": true
+}

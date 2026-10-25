@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "permission-auth-mcp-readonly-after-inventory-v1",
+  "requestCheckpointUtc": "2026-10-23 14:24:06 UTC",
+  "responseCheckpointUtc": "2026-10-23 14:24:12 UTC",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "tool": "mcp__supabase_pos_cafe__execute_sql",
+  "calls": 1,
+  "mutations": 0,
+  "configAdmission": {
+    "path": "D:/Workspace/pos-cafe/.codex/config.toml",
+    "sha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+    "server": "supabase_pos_cafe",
+    "projectRef": "ineckiashpwloncxnbqx",
+    "readOnly": true
+  },
+  "baseline": {
+    "path": "auth-mcp-inventory01.json",
+    "sha256": "f6f0b0939a254f77ee2baea787e6deb01d0d66cdb3446a9761c66e9c1caeb2a5"
+  },
+  "query": "with target_store as (\n  select id, store_no from public.stores where store_no = 3\n)\nselect jsonb_build_object(\n  'databaseRole', current_user,\n  'transactionReadOnly', current_setting('transaction_read_only'),\n  'authUsers', (select count(*) from auth.users),\n  'emailConfirmedUsers', (select count(*) from auth.users where email_confirmed_at is not null),\n  'emailUnconfirmedUsers', (select count(*) from auth.users where email_confirmed_at is null),\n  'stores', (select count(*) from public.stores),\n  'employees', (select count(*) from public.employees),\n  'authUsersWithoutStore', (select count(*) from auth.users u where not exists (select 1 from public.stores s where s.id = u.id)),\n  'emailUnconfirmedUsersWithoutStore', (select count(*) from auth.users u where u.email_confirmed_at is null and not exists (select 1 from public.stores s where s.id = u.id)),\n  'storesWithoutAuthUser', (select count(*) from public.stores s where not exists (select 1 from auth.users u where u.id = s.id)),\n  'targetStore', (select jsonb_build_object(\n    'storeNo', s.store_no,\n    'storeId', s.id,\n    'owners', (select coalesce(jsonb_agg(jsonb_build_object('ownerId', e.id, 'isActive', e.is_active, 'pinChangeRequired', e.pin_change_required) order by e.id), '[]'::jsonb) from public.employees e where e.store_id = s.id and e.role = 'owner'),\n    'storeSettings', (select count(*) from public.store_settings x where x.store_id = s.id),\n    'seedWorkflow', (select jsonb_build_object('requested', w.requested, 'status', w.status) from private.initial_seed_workflows w where w.store_id = s.id),\n    'seedStages', (select count(*) from private.initial_seed_stages st join private.initial_seed_workflows w on w.workflow_id = st.workflow_id where w.store_id = s.id),\n    'categories', (select count(*) from public.categories x where x.store_id = s.id),\n    'menuItems', (select count(*) from public.menu_items x where x.store_id = s.id),\n    'floorAreas', (select count(*) from public.floor_areas x where x.store_id = s.id),\n    'tables', (select count(*) from public.tables x where x.store_id = s.id),\n    'orders', (select count(*) from public.orders x where x.store_id = s.id),\n    'payments', (select count(*) from public.payments x where x.store_id = s.id)\n  ) from target_store s)\n) as observation;",
+  "observation": {
+    "stores": 3,
+    "authUsers": 3,
+    "employees": 4,
+    "targetStore": {
+      "orders": 0,
+      "owners": [
+        {
+          "ownerId": "0feee792-8784-54d0-bc2f-ef944e95b2a4",
+          "isActive": true,
+          "pinChangeRequired": true
+        }
+      ],
+      "tables": 0,
+      "storeId": "6b2e76fd-b8f8-4fa9-b784-faee8eb4af36",
+      "storeNo": 3,
+      "payments": 0,
+      "menuItems": 0,
+      "categories": 0,
+      "floorAreas": 0,
+      "seedStages": 0,
+      "seedWorkflow": {
+        "status": "skipped",
+        "requested": false
+      },
+      "storeSettings": 1
+    },
+    "databaseRole": "supabase_read_only_user",
+    "emailConfirmedUsers": 3,
+    "transactionReadOnly": "on",
+    "authUsersWithoutStore": 0,
+    "emailUnconfirmedUsers": 0,
+    "storesWithoutAuthUser": 0,
+    "emailUnconfirmedUsersWithoutStore": 0
+  },
+  "delta": {
+    "authUsers": 1,
+    "emailConfirmedUsers": 1,
+    "emailUnconfirmedUsers": 0,
+    "stores": 1,
+    "employees": 1
+  },
+  "privacy": {
+    "emailValuesIncluded": false,
+    "pinsIncluded": false,
+    "hashesIncluded": false,
+    "credentialsIncluded": false,
+    "tokensIncluded": false,
+    "employeeSessionsNotQueried": true
+  },
+  "sourceFieldReferences": [
+    "supabase/migrations/001_schema_enums.sql:18 stores/store_no",
+    "supabase/migrations/001_schema_enums.sql:29 employees/id/store_id/role/is_active",
+    "supabase/candidate/permission-identity.sql:13 pin_change_required",
+    "supabase/candidate/permission-identity.sql:72 initial_seed_workflows",
+    "supabase/candidate/permission-identity.sql:85 initial_seed_stages",
+    "supabase/candidate/permission-identity.sql:496 bootstrap seed=false produces skipped workflow and no stages"
+  ],
+  "limitations": [
+    "Counts and pinChangeRequired describe one statement snapshot; root may change owner PIN after it.",
+    "No employee-session counts were read because root is checking restricted/normal PIN flow concurrently.",
+    "This observation confirms creation delta and empty business rows, not a complete permission/security gate."
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "permission-bp4a-countdiag-stop-v1",
+  "status": "NOT_ADMITTED_READINESS_EXPIRED",
+  "observedDeadlineCheckUtc": "2026-10-23T06:48:59Z",
+  "readinessDeadlineUtc": "2026-10-23T06:48:54Z",
+  "recordedAtUtc": "2026-10-23T06:52:32.0384366Z",
+  "hardStopUtc": "2026-10-23T06:56:54Z",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "sourceStatus": [],
+  "grantSHA256": "8f652460f65b6da51e13c58c7b98d05c6de88951936a0e1afa48d9da92308f95",
+  "finalPins": {
+    "script": "c18e42c0813590497f424f1864e57985bfdd5bb5a588fca79e9634e3ed73a082",
+    "controls": "90a3c3b442599ffea41de8efa61c9d97c64ea51766d4a8d51b3327f3a33b7173",
+    "controls02Report": "6b16c4818a9395370b06269e6de31b4eb668a10a1ecdb7764cb96bc1c0db17a6"
+  },
+  "actual": {
+    "offlineControlBatches": 2,
+    "finalOfflineControls": "11/11 PASS, corrected filecount oracle",
+    "diagnosticGET": 0,
+    "analysisBatch": 0,
+    "fullArchivePreflight": 0,
+    "install": 0,
+    "build": 0,
+    "unit": 0,
+    "push": 0,
+    "ci": 0,
+    "backend": 0,
+    "database": 0
+  },
+  "actualArtifactAbsence": [
+    {
+      "suffix": "-admission.json",
+      "absent": true
+    },
+    {
+      "suffix": ".started.json",
+      "absent": true
+    },
+    {
+      "suffix": ".tgz",
+      "absent": true
+    },
+    {
+      "suffix": ".json",
+      "absent": true
+    }
+  ],
+  "reviewStatus": "Both final source reviews APPROVE received; coordinator had not admitted before readiness cap; final review does not reopen expired admission",
+  "history": {
+    "archivePreflightUsed": 2,
+    "diagnosticGETUsed": 0,
+    "reset": false
+  },
+  "cause": "Preparation/review cap underestimated for new tooling. Review corrected structural-stop and synthetic count oracle before any GET. This stop is a readiness planning miss, not an archive failure."
+}

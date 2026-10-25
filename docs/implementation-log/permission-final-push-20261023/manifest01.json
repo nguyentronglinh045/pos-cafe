@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "scope": "Final branch publication+CI+Auth functional slice; not full release",
+  "files": [
+    {
+      "path": "auth-confirm-email-after.png",
+      "bytes": 73000,
+      "sha256": "46fc305104b9cb33c28f74d2c517ff466a23a05a344c30ac7b11ea0e5878e6d6"
+    },
+    {
+      "path": "auth-confirm-email-after.txt",
+      "bytes": 994,
+      "sha256": "22eb1197cee00e817400956c65fcc1fe041a72a8687cf8e58bab1e00ed4889aa"
+    },
+    {
+      "path": "auth-confirm-email-before.png",
+      "bytes": 72545,
+      "sha256": "87558d3eef9cec670ab5b70c2a55c70142a849529ebcecd8f716fe697bb77029"
+    },
+    {
+      "path": "auth-confirm-email-before.txt",
+      "bytes": 1548,
+      "sha256": "2e4b917bbbbfbe76d1a58579c6e055f5e51da1753db4699f0d990577d11367ad"
+    },
+    {
+      "path": "auth-confirm-email-committed.png",
+      "bytes": 72420,
+      "sha256": "7cc0c308be30bb16aa64684ca6792f6691dfa3e64b09c7aa5df9764d94d8c8ef"
+    },
+    {
+      "path": "auth-confirm-email-committed.txt",
+      "bytes": 954,
+      "sha256": "62afef200611f23f92c9fb3b84999a829fd6a145746cfb7a28c509e0e6dd55f4"
+    },
+    {
+      "path": "auth-create-ui-success-redacted.txt",
+      "bytes": 775,
+      "sha256": "dfbc524efa4b98b3dd587fe706532f94520ace9dfc6de6a4e8689935657fac42"
+    },
+    {
+      "path": "auth-created-roster.png",
+      "bytes": 27415,
+      "sha256": "391ab9cf775d34ce57fafd7f6e23a8da86b3ca54793b3f73abd671c34ffe77e0"
+    },
+    {
+      "path": "auth-mcp-closeout01.json",
+      "bytes": 5735,
+      "sha256": "3c3e571c406264b5eaf2a70da40fc6ff40102786c2bc2f029916cfb398bed2c5"
+    },
+    {
+      "path": "auth-mcp-inventory-after01.json",
+      "bytes": 5198,
+      "sha256": "82798465d6abcd1ce3dec212a04f1198ddd0920468ac5ae75dc9b30e60369487"
+    },
+    {
+      "path": "auth-mcp-inventory01.json",
+      "bytes": 2423,
+      "sha256": "f6f0b0939a254f77ee2baea787e6deb01d0d66cdb3446a9761c66e9c1caeb2a5"
+    },
+    {
+      "path": "auth-new-owner-before-pin01.json",
+      "bytes": 1077,
+      "sha256": "f0762bf94aaa9fb7ed94ea41ac846e8307cbe9b7d36e8a70d656421ae4719658"
+    },
+    {
+      "path": "auth-new-owner-normal-ui.png",
+      "bytes": 30774,
+      "sha256": "512d94514d0ac7bed2467616617ec208fbfb76c927ba5e53da60201245be405a"
+    },
+    {
+      "path": "auth-new-owner-normal-ui.txt",
+      "bytes": 1412,
+      "sha256": "4e02f44b72d1375e70290ba067c3ea2c98317b1ef5b0ad530178059503db8d6a"
+    },
+    {
+      "path": "auth-new-owner-pin-complete01.json",
+      "bytes": 3466,
+      "sha256": "4315f9e68d9cb42a25544764e97b46f9084cf0d22daecc3612f1236151ea0fce"
+    },
+    {
+      "path": "auth-new-owner-pin-gate.png",
+      "bytes": 20184,
+      "sha256": "57bc149d0ac4dbb89f00e863a4766a12d8471e51b3455bdba521a37c080a66ef"
+    },
+    {
+      "path": "auth-new-owner-pin-gate.txt",
+      "bytes": 593,
+      "sha256": "fa5ab8bfed8401b1f09798863a69ee09a03ef7fda2816dc81a52cf2ceaadf577"
+    },
+    {
+      "path": "auth-node-session-closeout01.json",
+      "bytes": 1790,
+      "sha256": "36f7633d41fa4982061e5952a4d01748f7baa9664bacbb336cfbd2aa7e261aff"
+    },
+    {
+      "path": "auth-public-settings-after01.json",
+      "bytes": 469,
+      "sha256": "d33826185ca381d02aa6ea8c749eeaa2d2acd3aae39257f8aadb6145f17a9947"
+    },
+    {
+      "path": "auth-public-settings-before01.json",
+      "bytes": 239,
+      "sha256": "ebb4ca1d2b893958fa2b809f498449ce450bb468a52d5e8cd561493ba1c1fc4d"
+    },
+    {
+      "path": "auth-test-private-custody01.json",
+      "bytes": 547,
+      "sha256": "23799ed968f6f09a790ad12826f6f84c08ee7793fd9b273caeef613e8c8833e7"
+    },
+    {
+      "path": "auth-ui-closeout.png",
+      "bytes": 35604,
+      "sha256": "7aa7d83bc6439d87c932e7509e7b00102a6bd510d41d0498877e738d6222da29"
+    },
+    {
+      "path": "auth-ui-closeout.txt",
+      "bytes": 973,
+      "sha256": "f0f51d455c90c9c99834e689bf11abb46cb6e16d9268fe3ce9e4f26aadcce9c9"
+    },
+    {
+      "path": "ci-completed01.log",
+      "bytes": 89386,
+      "sha256": "2157a1577cc74c61dd92968fbca09a43779dbfd90d4a286fb6491678cda747c7"
+    },
+    {
+      "path": "ci-status01.json",
+      "bytes": 365,
+      "sha256": "2c22e27481c568e3eac4535c9d57e9bc3005faa463bf6faf69dc1499e5fd3a70"
+    },
+    {
+      "path": "ci-summary01.json",
+      "bytes": 9731,
+      "sha256": "64aeb243999ee2f48cf4ae322b58173b989f6d010ccafcb192fe19049c37c135"
+    },
+    {
+      "path": "ci-terminal01.json",
+      "bytes": 370,
+      "sha256": "3ce0dc5e412a231bd9b0b1b418ca1072fc78e63058146453f86ff470ae1a23cb"
+    },
+    {
+      "path": "executed-cells01.json",
+      "bytes": 29744,
+      "sha256": "6e2a30feeeeda42d6c7334c7878e5b4c1a2fdb9183f85609e591309538ce0033"
+    },
+    {
+      "path": "owner-messages01.json",
+      "bytes": 1602,
+      "sha256": "f5ac59aa703ddd06dfc8925dd435fd5aae964da511a449e98621f407f42a0485"
+    },
+    {
+      "path": "prepublication-review01.json",
+      "bytes": 1129,
+      "sha256": "8634d2379eaccd5658ca245e92eefe57c70fbe6e83b726fa30648cf4e1355ec4"
+    },
+    {
+      "path": "publication01.json",
+      "bytes": 527,
+      "sha256": "7c4b790ec3aabc55eb3f208589d61ec96434f86643140388b6922b6c8bf3bc04"
+    },
+    {
+      "path": "secret-scan01.json",
+      "bytes": 224,
+      "sha256": "fab113c38d82d135ed016d2ddbdad36398602d59cf55c16cb24e10477001c296"
+    },
+    {
+      "path": "source-auth-closeout01.json",
+      "bytes": 820,
+      "sha256": "5a74efe75d4d25d6e1d9cd663c9c3cca42008929747649f732a96274ecf8f854"
+    },
+    {
+      "path": "source-before-push01.json",
+      "bytes": 1702,
+      "sha256": "5b8415c84c2f3b9cc4822de4056ae5ddc83767d6f3ea0a059ea71b65c45b5e7d"
+    }
+  ],
+  "logicalBytes": 495735,
+  "excludes": [
+    "manifest01.json",
+    "final-review01.json"
+  ]
+}

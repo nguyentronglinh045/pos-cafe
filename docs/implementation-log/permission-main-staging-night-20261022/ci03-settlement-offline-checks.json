@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "permission-ci03-settlement-helper-offline-check-v1",
+  "recordedAtUtc": "2026-10-22T16:13:56.067Z",
+  "helper": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/settle-candidate-ci03.mjs",
+    "sha256": "190503b63dfab8601025ff55c0baa87f45020b13af2a0fd1910fbd71c5027677"
+  },
+  "status": "PASS",
+  "syntax": "node --check PASS",
+  "checks": 58,
+  "positive": 6,
+  "negative": 52,
+  "actualRunPinned": "39811728040",
+  "actualReservationPinned": "c590ae5dd348f08fa62815b3873a8d8210b26464301f0ba384450ad33bafc632",
+  "actualProducerRunUrlVerified": "Historical CI02 summary runURL equals metadata.html_url + /attempts/1",
+  "deadlineControls": "Read-only actual inspectBatch with own reservation at16:18 and deadline-1ms accepted; deadline and deadline+1ms refused; no settle API invoked.",
+  "ledgerPinsBeforeAndAfter": [
+    "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+    "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f",
+    "841ac0b22c90ef4734da8efe2f055bff9866e55e4376ac4281528a146e7f30cd",
+    "991d2192f6ac4f9c7b3e31340b4819e66384f7a49b6eadcd2f003e89ad929923"
+  ],
+  "ledgerUnchanged": true,
+  "noOutputOrAction": true,
+  "limits": "Synthetic collection controls and read-only admission checks only; no actual CI03 settlement, HTTP, dispatch or runtime PASS."
+}

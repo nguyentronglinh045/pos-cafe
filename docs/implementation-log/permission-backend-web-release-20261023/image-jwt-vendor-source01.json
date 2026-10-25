@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "permission-image-jwt-vendor-source-analysis-v1",
+  "recordedUtc": "2026-10-23T16:21:06.556Z",
+  "vendorTag": "v2.117.0",
+  "scope": "Source-only analysis; not raw runtime token observation",
+  "hypothesis": "Default Auth signs ES256; fixture currently requires original token HS256, causing deterministic incompatibility when default signing configuration applies",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/start/services/gotrue.service.ts",
+      "sha256": "36e8bb30e188031ff6ec99601675a3350ee20e35d5cba8eb0d0eda16dc8243da",
+      "selected": [
+        {
+          "line": 54,
+          "text": "import { LEGACY_DEFAULT_SIGNING_KEY } from \"../../../command-internal/legacy-go-jwt.ts\";"
+        },
+        {
+          "line": 118,
+          "text": " * is unset. Hoisted to `legacy-go-jwt.ts` (as `LEGACY_DEFAULT_SIGNING_KEY`)"
+        },
+        {
+          "line": 123,
+          "text": "const LEGACY_GOTRUE_DEFAULT_SIGNING_KEY: LegacyGotrueSigningKey = LEGACY_DEFAULT_SIGNING_KEY;"
+        },
+        {
+          "line": 204,
+          "text": "   * configured). Defaults to the hardcoded single ES256 key"
+        },
+        {
+          "line": 205,
+          "text": "   * ({@link LEGACY_GOTRUE_DEFAULT_SIGNING_KEY}) when omitted."
+        },
+        {
+          "line": 410,
+          "text": "    GOTRUE_JWT_SECRET: input.jwtSecret,"
+        },
+        {
+          "line": 469,
+          "text": "  const signingKeys = input.signingKeys ?? [LEGACY_GOTRUE_DEFAULT_SIGNING_KEY];"
+        },
+        {
+          "line": 470,
+          "text": "  env[\"GOTRUE_JWT_KEYS\"] = JSON.stringify(signingKeys.map(legacyOrderGotrueSigningKey));"
+        },
+        {
+          "line": 473,
+          "text": "  env[\"GOTRUE_JWT_VALIDMETHODS\"] = \"HS256,RS256,ES256\";"
+        },
+        {
+          "line": 474,
+          "text": "  env[\"GOTRUE_JWT_VALID_METHODS\"] = \"HS256,RS256,ES256\";"
+        }
+      ]
+    },
+    {
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/legacy-go-jwt.ts",
+      "sha256": "12676378617ddee96786075924aee7eb3fc702c3eb378995b23130e9f85943a0",
+      "selected": [
+        {
+          "line": 10,
+          "text": " * both `GOTRUE_JWT_KEYS` and the published JWKS just like every other field here). A superset of"
+        },
+        {
+          "line": 38,
+          "text": " * a single ES256 key, unconditionally present on every resolved config UNLESS overwritten by a"
+        },
+        {
+          "line": 51,
+          "text": "export const LEGACY_DEFAULT_SIGNING_KEY: LegacyJwk = {"
+        },
+        {
+          "line": 56,
+          "text": "  alg: \"ES256\","
+        }
+      ]
+    },
+    {
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli-go/pkg/config/config.go",
+      "sha256": "47fe3e947a083698a3d7f0b77a41d4534bcdf1c29f4e83f294ab5ac3a3599dca",
+      "selected": [
+        {
+          "line": 508,
+          "text": "\t\t\tSigningKeys: []JWK{{"
+        }
+      ]
+    },
+    {
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli-go/pkg/config/constants.go",
+      "sha256": "6bccac7527677c3e5f13f2fb3fe62a758421f12238a4647db9d93400e36b7c71",
+      "selected": []
+    }
+  ]
+}

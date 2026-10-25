@@ -1,0 +1,48 @@
+{
+  "recordedUtc": "2026-10-24T07:10:00.812Z",
+  "sourceSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "confirmation": "RUN_T04_IMAGE_DIAGNOSTIC",
+  "branch": "review/permission-staging-20261023",
+  "workflow": "backend.yml",
+  "attempt": 1,
+  "reviews": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-image-diagnostic-light-reviews01.json",
+    "bytes": 2611,
+    "sha256": "1b193f7b85e3a47b612d22c7acae58bd0e09fff415a5a274528147301ce53b3b"
+  },
+  "remoteCheckpoint": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-image-diagnostic-predispatch-remote01.json",
+    "bytes": 2231,
+    "sha256": "972edb05d2f9e52fb4a825676723b8fa5ef5a90feb536ba607c77ce1f4b9783c"
+  },
+  "localDisks": [
+    {
+      "DriveLetter": "D",
+      "SizeRemaining": 98708959232
+    },
+    {
+      "DriveLetter": "C",
+      "SizeRemaining": 189420531712
+    }
+  ],
+  "cloud": {
+    "ownedLoopLogicalCapBytes": 19327352832,
+    "outsideBudgetBytes": 1073741824,
+    "minimumFreeBytes": 32212254720,
+    "oneHeavyEnvironment": true,
+    "technicalQuota": false
+  },
+  "before": {
+    "publication": 1,
+    "ci": 1,
+    "segment": 0
+  },
+  "reservedAfter": {
+    "publication": 1,
+    "ci": 1,
+    "segment": 1
+  },
+  "additionalWhole": 0,
+  "noRetry": true,
+  "tag": "cloud-t04-image01"
+}

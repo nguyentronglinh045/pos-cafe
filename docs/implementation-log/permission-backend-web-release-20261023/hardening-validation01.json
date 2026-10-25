@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "permission-t04-hardening-validation-v1",
+  "recordedUtc": "2026-10-24T05:39:20.037Z",
+  "source": {
+    "schemaVersion": "t04-hardening-commit-binding-v1",
+    "recordedUtc": "2026-10-24T05:36:27.048Z",
+    "sourceSHA": "34db1b13ab707bab114fe1d83642d021ff324c93",
+    "tree": "cb6f69c67f70d9391877ab492dd25935b05c428f",
+    "parent": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+    "sourceFingerprint": "fa38fc2ffbfcb7aab99d5b61b69b36d25c936bcdc7b7d98e9f15f7e1570066ab",
+    "trackedFiles": 1119,
+    "canonicalBytes": 41923864,
+    "trustedPins": 56,
+    "changedPaths": [
+      "ci/release-policy.json",
+      "scripts/permission-candidate-browser-control.mjs",
+      "scripts/permission-candidate-ui.test.mjs",
+      "scripts/permission-runtime-candidate-diagnostic.mjs",
+      "scripts/permission-runtime-candidate-diagnostic.test.mjs",
+      "scripts/permission-runtime-diagnostic-selftest.mjs",
+      "scripts/permission-runtime-error-facts.mjs",
+      "scripts/permission-runtime-error-facts.test.mjs",
+      "scripts/permission-runtime-isolated-receipt.test.mjs",
+      "scripts/permission-runtime-iteration.md",
+      "scripts/permission-runtime-reporter-selftest.mjs",
+      "scripts/permission-runtime-t04.mjs",
+      "scripts/permission-runtime-t04.test.mjs",
+      "scripts/permission-t04-image-measurement.mjs",
+      "scripts/permission-t04-image-measurement.test.mjs",
+      "tests/supabase/permissionCandidate.spec.ts",
+      "tests/supabase/permissionCandidateDiagnostics.ts",
+      "tests/supabase/permissionCandidateUi.ts"
+    ],
+    "clean": true,
+    "exactFrozenTreeVerified": true,
+    "publication": false
+  },
+  "sourceManifest": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source01.json",
+    "bytes": 327881,
+    "sha256": "952a33aeccef0134c0e544c22c9f43ef763466aa6435a8e39ebd3ac953540796"
+  },
+  "authorManifest": {
+    "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\evidence\\candidate-t04-hardening-author-manifest01.json",
+    "bytes": 10247,
+    "sha256": "00a4d97bf9c40697c365fcab12fc66918992091f03fcd183287a908ac3aeea19"
+  },
+  "sourceReviews": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-source-reviews01.json",
+    "bytes": 3733,
+    "sha256": "b6f535545b6a503b3d18ea93e61c522334a4fd55a6644c798444a4e33a380830"
+  },
+  "reportReviews": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-outcome-reviews01.json",
+    "bytes": 2584,
+    "sha256": "d328d91b34dba75f37faee5519e09bfbee579be611797215cd93f107839ba521"
+  },
+  "checks": {
+    "affectedNode": {
+      "pass": 182,
+      "fail": 0,
+      "skip": 0,
+      "finalSourceException": "Only diagnostic-selftest control expectation matcher1→UNKNOWN0 after node02; finalreporters02 exactbytes exercised"
+    },
+    "policy": {
+      "pass": 2,
+      "fail": 0,
+      "pins": 56
+    },
+    "typecheck": {
+      "exit": 0
+    },
+    "browser": {
+      "pass": 3,
+      "networkRequests": 0,
+      "closed": true
+    },
+    "diagnostics": {
+      "groups": 7,
+      "pass": 7,
+      "mutationChecks": 20,
+      "nestedCandidate": 3,
+      "nestedCompatibilityExtra": 1
+    },
+    "nativeFile": "WINDOWS_REFUSAL_ONLY; newLinuxCIrequired"
+  },
+  "limits": {
+    "candidateAttachmentBytes": 16384,
+    "isolatedReceiptBytes": 131072,
+    "t04ConservativeDualFailureMaximumBytes": 102713,
+    "serviceConservativeDualFailureMaximumBytes": 107891
+  },
+  "localEvidenceNotBusinessPass": true,
+  "gitTreeMatchesFrozenSource": true,
+  "acceptanceChanged": false
+}

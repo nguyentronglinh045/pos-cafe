@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "permission-source-mapping-independent-reviews-v6",
+  "recordedUtc": "2026-10-24T05:44:46.673Z",
+  "sourceSHA": "34db1b13ab707bab114fe1d83642d021ff324c93",
+  "sourceFingerprint": "fa38fc2ffbfcb7aab99d5b61b69b36d25c936bcdc7b7d98e9f15f7e1570066ab",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-packet06.json",
+    "bytes": 329235,
+    "sha256": "285ce0df76e4d594d904c77595ee4407a7724a2198c54012442bfec5c6c1ee69"
+  },
+  "mapping": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping07.json",
+    "bytes": 443165,
+    "sha256": "014d67ed7264249bb2d5d40058959c6cd59b1830ece8e64dfeadb9ff373320a6"
+  },
+  "mappingValidation": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/newmapping-validation07.json",
+    "bytes": 9125,
+    "sha256": "2364094b3943b046187af357a391286d10804a88c00c76173318302a3e426253"
+  },
+  "reviewers": [
+    {
+      "agent": "/root/main_integration",
+      "scope": "integration/acceptance/authorization/source-and-mapping",
+      "verdict": "APPROVE",
+      "blockingFindings": []
+    },
+    {
+      "agent": "/root/final_diagnostic_review",
+      "scope": "diagnostics/privacy/provenance/bounds/source-and-mapping",
+      "verdict": "APPROVE",
+      "blockingFindings": []
+    }
+  ],
+  "verified": {
+    "gitBlobs": 1119,
+    "canonicalBytes": 41923864,
+    "deltaPaths": 18,
+    "policyPins": 56,
+    "acceptancePins": 119,
+    "supportPins": 18,
+    "lineAnchors": 249,
+    "scopes": 147,
+    "actualAstNodes": 120,
+    "selectors": 149,
+    "stages": 35,
+    "required": 760,
+    "obligations": 12,
+    "contexts": 34,
+    "runtimePending": 83,
+    "oldPassInherited": false
+  },
+  "conditions": [
+    "ONE publication/freshCI;ONEwholeT04onlyafteractualCI18/nativeproof/sourcepreserved/cleanup andtwoLIGHT/3PNG reviews",
+    "freshremote/capacitychecks",
+    "conditionalfallbackauditonlyuntilfailure;noacceptancedowngrade",
+    "noautowholeretry,other7profiles,PR,merge,deploy"
+  ],
+  "businessAcceptance": "PENDING",
+  "scope": "MAPPING07_NO_BUSINESS_PASS"
+}

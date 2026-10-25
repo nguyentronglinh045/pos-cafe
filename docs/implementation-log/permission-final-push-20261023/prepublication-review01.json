@@ -1,0 +1,28 @@
+{
+  "candidate": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "base": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "scope": "Publish new review branch, no merge/deploy/full release claim",
+  "rootAuthor": "executor, not independent reviewer",
+  "reviewers": [
+    {
+      "id": "/root/audit_technical_review",
+      "verdict": "APPROVE",
+      "scope": "Critical app/Auth/session/tenant/financial/SQL grant/image paths",
+      "limitations": "Targeted review, not all683files; no new runtime; Authnewstore needs configdecision"
+    },
+    {
+      "id": "/root/technical_blockers",
+      "verdict": "APPROVE",
+      "scope": "Tooling/workflows/private artifacts and publication risk",
+      "limitations": "No fullsemantic review; whitespace955cosmetic; hostedAuth not mutated"
+    },
+    {
+      "id": "/root/audit_process_review",
+      "verdict": "APPROVE",
+      "scope": "Owner authorization and branchpublication/CI vsrelease boundary",
+      "limitations": "Full35/760 andotherreleasegates stillopen; no maindeploy"
+    }
+  ],
+  "blockingPublicationFindings": [],
+  "releaseApproval": false
+}

@@ -1,0 +1,57 @@
+Browser tab: 8, Title: "POS Cafe", URL: "http://localhost:5173/".
+1 AXWebArea POS Cafe, URL: localhost:5173/
+	2 container root
+		3 container
+			4 container Đang đăng nhập: Chủ quán · Chủ quán
+				5 text C ĐANG ĐĂNG NHẬP
+				6 text Chủ quán
+				7 text CHỦ QUÁN
+			8 container POS modules
+				9 text VẬN HÀNH
+				10 button Bàn
+					11 image
+					12 text Bàn
+				13 button Tra cứu thao tác
+					14 image
+					15 text Tra cứu thao tác
+				16 button Mang đi
+					17 image
+					18 text Mang đi
+				19 button Lịch sử
+					20 image
+					21 text Lịch sử
+				22 text QUẢN TRỊ
+				23 button Nhân viên
+					24 image
+					25 text Nhân viên
+				26 button Menu
+					27 image
+					28 text Menu
+				29 button Sơ đồ
+					30 image
+					31 text Sơ đồ
+				32 button Báo cáo
+					33 image
+					34 text Báo cáo
+				35 button Thanh toán
+					36 image
+					37 text Thanh toán
+				38 button Cài đặt
+					39 image
+					40 text Cài đặt
+			41 button Khoá
+				42 image
+				43 text Khoá
+			44 container
+				45 button Làm mới
+					46 image
+					47 text Làm mới
+				48 button Tất cả
+				49 button Trống
+				50 button Đang phục vụ
+				51 image
+				52 text Chưa có bàn. Vào Sơ đồ để tạo bàn.
+			53 container
+				54 text ĐƠN ĐANG MỞ ·  0 Chưa có đơn tại bàn.
+
+The focused UI element is 1 AXWebArea POS Cafe, URL: localhost:5173/

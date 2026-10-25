@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "permission-diagnostics-run-checkpoint-v1",
+  "recordedUtc": "2026-10-24T01:55:47.668Z",
+  "sourceSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "sourceTree": "7f33dd64e2a17b56277698840a4e43bb39f2f844",
+  "sourceFingerprint": "bd50735607395b09db1c0da701df193d6b2e180da946016d0b44a0d62abe1d74",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "publication": {
+    "status": "PUSHED_NONFORCE",
+    "ordinal": 3,
+    "branch": "review/permission-staging-20261023"
+  },
+  "freshCI": {
+    "id": "40051559979",
+    "attempt": 1,
+    "status": "IN_PROGRESS",
+    "acceptance": "PENDING"
+  },
+  "wholeT04": {
+    "status": "NOT_DISPATCHED",
+    "remaining": 1,
+    "nextTag": "cloud-t0405"
+  },
+  "mapping04": {
+    "status": "SOURCE_PLAN_REVIEWED",
+    "sha256": "80a2ebc348c6634fdab9b78657f1a4ef4908771a33a2289f294021adb8a67e5b",
+    "reviewers": [
+      "/root/main_integration",
+      "/root/final_diagnostic_review"
+    ],
+    "actualRuntime": "PENDING"
+  },
+  "currentCumulativeSpent": {
+    "publication": 3,
+    "automaticLightCi": 3,
+    "T04": 2
+  },
+  "remaining": {
+    "publication": 0,
+    "automaticLightCi": 0,
+    "T04": 1
+  },
+  "otherProfiles": "HELD",
+  "mergeDeploy": "NOT_AUTHORIZED",
+  "hostedChanges": 0,
+  "rootCause": "HISTORICAL_UNDETERMINED_AWAIT_NEW_RUNTIME_FACTS",
+  "localTempCleanup": "QUESTION_PENDING_KEEP_UNTIL_OWNER_REPLY",
+  "noShutdown": true
+}

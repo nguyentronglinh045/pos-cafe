@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "permission-independent-light-visual-review-v1",
+  "recordedAtUtc": "2026-10-22T14:34:59.045Z",
+  "author": "/root",
+  "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+  "runId": "39792208893",
+  "artifacts": [
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/light-fullgate-join02.json",
+      "sha256": "962fc67109199e398c10d00852e5b44f203f5347ca5e05ad1bbe9e63ca6cf5b2"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/pin-ui-visual-classification02.json",
+      "sha256": "1d06a450a5db5301bc6f16372e671e1d6aed38d265525c0eb6e7cb8262f640a7"
+    }
+  ],
+  "reviewers": [
+    {
+      "name": "/root/mcp_staging_scope_review",
+      "scope": "source-and-evidence",
+      "verdict": "APPROVE",
+      "actualImagesViewed": 3,
+      "basis": "Actual current-source CI terminal/18phases/native PG16/render and5STATIC required313+native30=6/343. All3newPNG original views plus production manifest validation/fingerprint/pins. Scope preserves private-stage boundary, exemptions and two masks/mobile extension."
+    },
+    {
+      "name": "/root/mcp_staging_evidence_review",
+      "scope": "operations-and-visual",
+      "verdict": "APPROVE",
+      "actualImagesViewed": 3,
+      "basis": "Actual independent message: current rawrefs/renderedPG16/480actualstatic and native30; all1107 fingerprint, actual3newPNG views/production validation, credential-free mock scope and mask/mobile limits. No network/test or artifact edits."
+    }
+  ],
+  "limit": "Bounded LIGHT6stage343 required plus visible mock layout only; source T04/seven service profiles/all12 obligations remain PENDING. Producer NOT_RUN flags and prior evidence preserved; raw PENDING_REVIEW fields predate this separate actual review."
+}

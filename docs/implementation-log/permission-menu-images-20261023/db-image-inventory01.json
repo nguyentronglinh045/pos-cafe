@@ -1,0 +1,66 @@
+{
+  "projectRef": "ineckiashpwloncxnbqx",
+  "method": "Dashboard SQL Editor SELECT; privileged catalog metadata only, not a user-authorization test",
+  "query": "select jsonb_build_object('checked_at',now(),'functions',(select jsonb_agg(jsonb_build_object('name',p.proname,'args',pg_get_function_identity_arguments(p.oid),'authenticated_execute',has_function_privilege('authenticated',p.oid,'EXECUTE'),'service_execute',has_function_privilege('service_role',p.oid,'EXECUTE')) order by p.proname) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname like 'permission_menu_image_%'),'uploads_table',to_regclass('private.menu_image_uploads')::text,'assets_table',to_regclass('private.menu_image_assets')::text,'withdrawal_trigger',(select count(*) from pg_trigger where tgname='permission_menu_image_withdrawal' and not tgisinternal),'buckets',(select jsonb_agg(jsonb_build_object('id',id,'public',public,'file_size_limit',file_size_limit,'mime_types',allowed_mime_types) order by id) from storage.buckets where id in('menu-item-images','menu-item-image-staging')),'storage_objects_policies',(select jsonb_agg(jsonb_build_object('name',policyname,'command',cmd,'roles',roles,'using',qual,'check',with_check)) from pg_policies where schemaname='storage' and tablename='objects')) as image_inventory;",
+  "result": {
+    "buckets": [
+      {
+        "id": "menu-item-image-staging",
+        "public": false,
+        "mime_types": [
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ],
+        "file_size_limit": 5242880
+      },
+      {
+        "id": "menu-item-images",
+        "public": true,
+        "mime_types": [
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ],
+        "file_size_limit": 5242880
+      }
+    ],
+    "functions": [
+      {
+        "args": "p_item_id uuid, p_upload_handle uuid, p_mime_type text, p_byte_size bigint",
+        "name": "permission_menu_image_begin_upload",
+        "service_execute": false,
+        "authenticated_execute": true
+      },
+      {
+        "args": "p_upload_handle uuid",
+        "name": "permission_menu_image_discard_upload",
+        "service_execute": false,
+        "authenticated_execute": true
+      },
+      {
+        "args": "p_upload_handle uuid",
+        "name": "permission_menu_image_mark_ready",
+        "service_execute": false,
+        "authenticated_execute": true
+      },
+      {
+        "args": "p_asset_key uuid",
+        "name": "permission_menu_image_public_lookup",
+        "service_execute": true,
+        "authenticated_execute": false
+      },
+      {
+        "args": "p_upload_handle uuid",
+        "name": "permission_menu_image_read_staging",
+        "service_execute": false,
+        "authenticated_execute": true
+      }
+    ],
+    "checked_at": "2026-10-23T12:35:22.902839+00:00",
+    "assets_table": "private.menu_image_assets",
+    "uploads_table": "private.menu_image_uploads",
+    "withdrawal_trigger": 1,
+    "storage_objects_policies": null
+  }
+}

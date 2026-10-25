@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-23T12:00:23.757Z",
+  "source": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "trackedStatus": "",
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "node": "24.16.0",
+  "vitest": "4.1.11",
+  "trackedTestFiles": 110,
+  "executedExactTrackedSet": true,
+  "totalAssertions": 1177,
+  "allAssertionsPassed": true
+}

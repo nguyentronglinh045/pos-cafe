@@ -6,13 +6,16 @@
 | --- | --- |
 | `specs/` | 16 capability baseline; đọc nguồn/thời điểm, không tự nhận khớp runtime permission mới |
 | `add-idempotent-write-operations` | Bộ đầy đủ, quyết định/acceptance lịch sử phase27; kết quả mới đọc [testing](../docs/testing.md) |
-| `redesign-permission-model` | Remote còn bản cũ 14 quyền/có kế toán và placeholders; main có catalog15/bốn role bật. Bộ WIP đầy đủ ở checkout gốc chưa xuất bản; không sửa requirement theo code để giả khớp |
-| `add-owner-account-and-store-provisioning` | Có khung bảy loại nhưng các phần còn placeholder; role owner trong main không chứng minh email provisioning đã làm |
-| `remake-b01`, `remake-b02`, `remake-b03`, `week03-b01-b02` | Giữ bộ spec/decision của tác giả; trạng thái merge mới ở [handoff25/10](../docs/workflow/tasks/ui-main-docs-integration-2026-10-25.md) |
-| `add-stitch-ui-remake-workflow` | Đủ sáu loại cho tooling; proposal nêu rõ ngoại lệ usecases |
-| 26 change còn lại | Proposal khảo sát, chưa có design/spec/test/traceability/tasks đầy đủ; không tạo khung giả chỉ để báo đủ file |
+| `redesign-permission-model` | Bộ15 quyền/Q1–Q15, 7 capability delta, usecases/testplan/traceability được khôi phục từ WIP; có banner phân biệt yêu cầu và checkpoint lịch sử. Backend acceptance vẫn HOLD |
+| `force-default-pin-change` | Đủ7 loại; code forced-PIN đã có trên main, full acceptance phải theo đúng source |
+| `add-owner-account-and-store-provisioning` | Có khung7 loại nhưng còn placeholder; role owner không chứng minh email provisioning đã làm |
+| `setup-project-ci-cd`, `bound-permission-test-iterations`, `use-supabase-staging-for-permission-tests`, `permission-provider-capability-guard`, `adopt-ai-task-workflow` | Bộ tooling/process6 loại; usecases theo ngoại lệ trong proposal. Lịch sử grant/cutoff không cấp quyền mới |
+| `optimize-store-data-access` | Bộ7 loại cho kế hoạch; còn câu hỏi/ngưỡng/lịch, ước lượng legacy không là số đo main hiện hành |
+| `remake-b01`, `remake-b02`, `remake-b03`, `week03-b01-b02` | Giữ spec/decision; trạng thái merge ở [handoff25/10](../docs/workflow/tasks/ui-main-docs-integration-2026-10-25.md) |
+| `add-stitch-ui-remake-workflow` | Đủ6 loại cho tooling; proposal nêu ngoại lệ usecases |
+| Các proposal còn lại | Khảo sát/kế hoạch, chưa đủ artifact để thực hiện; xem câu hỏi và phạm vi từng proposal. Không tạo khung giả để báo đủ file |
 
-[Chuẩn bắt buộc](SPEC-STANDARD.md) vẫn giữ bảy loại artifact và ngoại lệ đã định. Chỉ làm sâu khi phần việc tới lượt. Inventory là kiểm sự hiện diện, không xác nhận chất lượng/coverage requirement. [Hồ sơ chỉnh lý và WIP](../docs/workflow/tasks/docs-normalization-2026-10-25.md).
+[Chuẩn bắt buộc](SPEC-STANDARD.md) vẫn giữ bảy loại artifact và ngoại lệ đã định. Chỉ làm sâu khi phần việc tới lượt. Inventory là kiểm sự hiện diện, không xác nhận chất lượng/coverage requirement. [Hồ sơ xuất bản WIP và đối chiếu](../docs/workflow/tasks/docs-wip-publication-2026-10-25.md).
 
 ## Workflow remake UI Stitch — 19/10/2026
 

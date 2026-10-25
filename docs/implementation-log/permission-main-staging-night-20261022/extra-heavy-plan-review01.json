@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "permission-independent-plan-review-v1",
+  "recordedAtUtc": "2026-10-22T14:34:59.045Z",
+  "plan": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-extra-heavy-successor-2026-10-22.md",
+    "sha256": "f179653027d0dbde7d600e4ead383566f5af282945f7260e144a61909a58ebf0"
+  },
+  "ownerDecision": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/owner-extra-heavy-decision01.json",
+    "sha256": "c61352fd7292b75c5dc22fff0b0cf25418a57f1598c378f8597487283c73ac8c"
+  },
+  "author": "/root/budget_time_guard_fix",
+  "reviewers": [
+    {
+      "name": "/root/mcp_staging_scope_review",
+      "scope": "source-and-grant-provenance",
+      "verdict": "APPROVE"
+    },
+    {
+      "name": "/root/mcp_staging_evidence_review",
+      "scope": "operations-and-history",
+      "verdict": "APPROVE"
+    }
+  ],
+  "basis": "Actual final reviewer messages bound plan f179...: dynamic unused+1, no pub/candidateCI increase, exact inherited history/block/reservations, same actual owner reply explicitly covers net-heavy and retained two PR/main slots. Honest scoped reference suffix creates no second reply; semantic scope/resuffix replay remains review responsibility. Existing guard supports data; actual parent CLOSED/pending[]/terminal and two exact final-data reviews mandatory.",
+  "limit": "Plan approval only; no closure/init/heavy action while parent pending."
+}

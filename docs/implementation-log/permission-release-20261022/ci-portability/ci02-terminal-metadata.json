@@ -1,0 +1,19 @@
+{
+  "atUtc": "2026-10-22T03:02:33.689Z",
+  "id": 39713372721,
+  "sourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "status": "completed",
+  "conclusion": "success",
+  "attempt": 1,
+  "artifacts": [
+    {
+      "id": 12398875152,
+      "name": "permission-pin-ui-39713372721-1",
+      "sizeBytes": 66520,
+      "expired": false,
+      "createdAt": "2026-10-22T03:01:08Z",
+      "expiresAt": "2026-10-23T03:01:07Z",
+      "digest": "sha256:5ad1de5f3d5b03b3af84fcbd1b11d4a2455666f9a3d444e82f1259f7d586ec2a"
+    }
+  ]
+}

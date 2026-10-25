@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "permission-actual-light-photo-reviews-v5",
+  "recordedUtc": "2026-10-24T04:35:55.725Z",
+  "sourceSHA": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+  "ciRun": "40061777912",
+  "attempt": 1,
+  "collection": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci08-collection.json",
+    "sha256": "d6268a04a7c41a8cf6d072ec90dfdc5ee2497eaef689120ac873a39c7323ab2f"
+  },
+  "summary": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci08-summary.json",
+    "sha256": "d243515c94796bcf8117f91552ae069610b755f1f61d3408d3c875d6a854c0f0"
+  },
+  "nativeCleanup": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci08-native-cleanup.json",
+    "sha256": "9c0f6010796aff5b906ba2638026740b074ebaf9ff726629138f40b0d6f577a8"
+  },
+  "workflowLog": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci08-workflow.log",
+    "sha256": "d83b4b066d7033f84cde98b922fb7bf6954a8931ba1099b36abdcd5692b00572"
+  },
+  "integrity": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-integrity05.json",
+    "sha256": "5f98ad8c82a45588b2a7288925ffe44c85e5de526c32ad816ce3ba035b9a614d"
+  },
+  "manualVisual": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-visual-review05.json",
+    "sha256": "955f669ae3a04e8be5aea541294f426e013608782a73b41d67fd16e04f61ee0d"
+  },
+  "manifest": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-40061777912-1/manifest.json",
+    "sha256": "8f949026febabbddd0c3ff10a2534707fd74e6c5e83fd0d322a839b72b9e6434"
+  },
+  "artifactMetadata": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-artifact-metadata05.json",
+    "sha256": "b06c87681b1b7b4f044eaad98693c3b43c3ccd2515ebbc810410ffaeac01804b"
+  },
+  "zip": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-40061777912-1.zip",
+    "sha256": "b73e4421ef969a14e6f840a8502ce67e9d82a11299464e178a11ce1f6fec18a9"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "ActualAPI/log strictCI18/LIGHT6/343/Linux29nativefilecases+3realreporter filecontrols/accounting/handback; nativecleanup; openedall3freshPNG and validatedZIPmanifestCRC",
+      "findings": []
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Independent uniqueCI/PG/cleanup reparse and nativevalidators/sourcebinding; Linuxactualfilecontrolproducer; independentlyopenedall3freshPNG/ZIP4regularallowlistCRC",
+      "findings": []
+    }
+  ],
+  "blockingFindings": 0,
+  "ci18": "PASS",
+  "light": {
+    "stages": 6,
+    "requiredIdentities": 343,
+    "actualPassed": 510
+  },
+  "linuxReceiptFileControls": {
+    "status": "PASS_VIA_EXACT_SOURCE_BOUND_TRUSTED_PRODUCER",
+    "nativeCases": 29,
+    "realReporterRoundtrips": 3,
+    "imageFields": 7,
+    "accountingAndHandback": true,
+    "nodeTools": {
+      "run": 996,
+      "pass": 996,
+      "skip": 0
+    },
+    "runtimeReporters": {
+      "pass": 4,
+      "diagnosticGroups": 7,
+      "mutations": 20
+    },
+    "rawPerControlLogsPublic": false
+  },
+  "nativeMeasuredReclaimBytes": 50741248,
+  "nativeMeasurementBasis": "Current PG16 runtime receipt cleanup fields atworkflowlog200-204; separate terminalNOT_PRESENTreceipt",
+  "limits": [
+    "MockPINUIonly",
+    "Two maskedinputs excluded",
+    "Tooling1manualDeferred/smoke37policy skips outsideLIGHT",
+    "Counts alone do not prove supplemental oracles"
+  ],
+  "fullBackend": "PENDING",
+  "production": "HELD"
+}

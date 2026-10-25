@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "files": 110,
+  "total": 1177,
+  "passed": 1177,
+  "failed": 0,
+  "pending": 0,
+  "todo": 0,
+  "lines": 92.65,
+  "statements": 88.98,
+  "branches": 84.3,
+  "functions": 92.73,
+  "allFilesPassed": true,
+  "skipped": 0,
+  "durationMs": 157048.1298828125,
+  "coverageSummarySHA256": "e805eff96da4f8f91eaaa3832430a3a171987f52332b6b92aa437d73f54f57d4"
+}

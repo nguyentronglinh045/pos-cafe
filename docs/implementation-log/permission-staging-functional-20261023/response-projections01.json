@@ -1,0 +1,2784 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-10-23T12:18:09.516Z",
+  "provenance": "Sanitized response objects retained in the same node_repl memory from original executed requests; not a new network capture or rerun. Request actor/token aliases are verified against executed-api-cells01.json.",
+  "H2_H3": {
+    "restrictedResponse": {
+      "ok": true,
+      "kind": "required_pin_change",
+      "name": "Chủ quán",
+      "storeId": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf",
+      "issuedAt": "2026-10-23T11:45:07.414455+00:00",
+      "expiresAt": "2026-10-23T11:50:07.414455+00:00",
+      "employeeId": "1cccd1a7-b42d-55ab-8875-1cd088db3267",
+      "employeeRevision": 0,
+      "pinChangeRequired": true
+    },
+    "requiredSessionProof": {
+      "ok": true,
+      "data": {
+        "valid": true,
+        "purpose": "required_pin_change",
+        "expiresAt": "2026-10-23T11:50:07.414455+00:00",
+        "employeeRevision": 0
+      }
+    },
+    "completeResponse": {
+      "ok": true,
+      "data": {
+        "employeeRevision": 1,
+        "credentialChanged": true,
+        "pinChangeRequired": false
+      },
+      "outcome": "applied"
+    },
+    "normalResponse": {
+      "ok": true,
+      "kind": "normal",
+      "issuedAt": "2026-10-23T11:45:12.22366+00:00",
+      "authority": {
+        "catalog": {
+          "roles": [
+            {
+              "code": "cashier",
+              "enabled": true,
+              "labelVi": "Thu ngân",
+              "selectable": true
+            },
+            {
+              "code": "kitchen",
+              "enabled": false,
+              "labelVi": "Bếp",
+              "selectable": false
+            },
+            {
+              "code": "manager",
+              "enabled": true,
+              "labelVi": "Quản lý",
+              "selectable": true
+            },
+            {
+              "code": "owner",
+              "enabled": true,
+              "labelVi": "Chủ quán",
+              "selectable": false
+            },
+            {
+              "code": "waiter",
+              "enabled": true,
+              "labelVi": "Phục vụ",
+              "selectable": true
+            }
+          ],
+          "defaults": [
+            {
+              "roleCode": "cashier",
+              "permissionCode": "floor.view"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "order.create"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "order.update"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "order.voidOpen"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "orderHistory.view"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "payment.take"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "receipt.reprint"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "employee.manage"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "floor.manage"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "floor.view"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "menu.manage"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "order.create"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "order.update"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "order.voidOpen"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "order.voidPaid"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "orderHistory.view"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "payment.take"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "receipt.reprint"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "report.view"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "data.clearDemo"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "employee.manage"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "employee.permission.edit"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "floor.manage"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "floor.view"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "menu.manage"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "order.create"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "order.update"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "order.voidOpen"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "order.voidPaid"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "orderHistory.view"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "payment.take"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "receipt.reprint"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "report.view"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "settings.manage"
+            },
+            {
+              "roleCode": "waiter",
+              "permissionCode": "floor.view"
+            },
+            {
+              "roleCode": "waiter",
+              "permissionCode": "order.create"
+            },
+            {
+              "roleCode": "waiter",
+              "permissionCode": "order.update"
+            }
+          ],
+          "revision": 0,
+          "permissions": [
+            {
+              "code": "data.clearDemo",
+              "module": "clearDemo",
+              "labelVi": "Xóa dữ liệu mẫu",
+              "baseline": false,
+              "ownerOnly": true
+            },
+            {
+              "code": "employee.manage",
+              "module": "employees",
+              "labelVi": "Quản lý nhân viên",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "employee.permission.edit",
+              "module": "employees",
+              "labelVi": "Chỉnh quyền nhân viên",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "floor.manage",
+              "module": "floorEditor",
+              "labelVi": "Điều chỉnh sơ đồ bàn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "floor.view",
+              "module": "floor",
+              "labelVi": "Xem sơ đồ bàn",
+              "baseline": true,
+              "ownerOnly": false
+            },
+            {
+              "code": "menu.manage",
+              "module": "menuEditor",
+              "labelVi": "Quản lý thực đơn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "order.create",
+              "module": "order",
+              "labelVi": "Tạo đơn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "order.update",
+              "module": "order",
+              "labelVi": "Sửa đơn mở",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "order.voidOpen",
+              "module": "order",
+              "labelVi": "Hủy đơn mở",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "order.voidPaid",
+              "module": "orderHistory",
+              "labelVi": "Hủy đơn đã thanh toán",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "orderHistory.view",
+              "module": "orderHistory",
+              "labelVi": "Xem lịch sử đơn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "payment.take",
+              "module": "payment",
+              "labelVi": "Thu tiền",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "receipt.reprint",
+              "module": "receipt",
+              "labelVi": "In lại hóa đơn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "report.view",
+              "module": "report",
+              "labelVi": "Xem báo cáo",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "settings.manage",
+              "module": "settings",
+              "labelVi": "Quản lý thiết lập",
+              "baseline": false,
+              "ownerOnly": false
+            }
+          ],
+          "contractVersion": 1
+        },
+        "snapshot": {
+          "role": "owner",
+          "active": true,
+          "sources": [
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "data.clearDemo"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "employee.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "employee.permission.edit"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "floor.manage"
+            },
+            {
+              "sources": [
+                "default",
+                "baseline"
+              ],
+              "effective": true,
+              "permission": "floor.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "menu.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.create"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.update"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidOpen"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidPaid"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "orderHistory.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "payment.take"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "receipt.reprint"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "report.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "settings.manage"
+            }
+          ],
+          "storeId": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf",
+          "employeeId": "1cccd1a7-b42d-55ab-8875-1cd088db3267",
+          "permissions": [
+            "data.clearDemo",
+            "employee.manage",
+            "employee.permission.edit",
+            "floor.manage",
+            "floor.view",
+            "menu.manage",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "order.voidPaid",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint",
+            "report.view",
+            "settings.manage"
+          ],
+          "catalogRevision": 0,
+          "employeeRevision": 1
+        }
+      },
+      "expiresAt": "2026-10-23T23:45:12.22366+00:00",
+      "pinChangeRequired": false
+    }
+  },
+  "H6": {
+    "requestActors": {
+      "ownB": "B JWT + B owner token",
+      "AtoB": "A JWT + A owner token",
+      "BtoA": "B JWT + B owner token",
+      "mixed": "A JWT + B owner token"
+    },
+    "targets": {
+      "A": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf",
+      "B": "a1169660-de34-4a17-8fac-d05ead2201fa",
+      "cashier": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+      "Bowner": "8ab1f5e7-ade8-54af-a18d-55192ff70af0"
+    },
+    "ownPositive": {
+      "ok": true,
+      "data": {
+        "id": "8ab1f5e7-ade8-54af-a18d-55192ff70af0",
+        "name": "Chủ quán",
+        "role": "owner",
+        "sources": [
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "data.clearDemo"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "employee.manage"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "employee.permission.edit"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "floor.manage"
+          },
+          {
+            "sources": [
+              "default",
+              "baseline"
+            ],
+            "effective": true,
+            "permission": "floor.view"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "menu.manage"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "order.create"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "order.update"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "order.voidOpen"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "order.voidPaid"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "orderHistory.view"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "payment.take"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "receipt.reprint"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "report.view"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "settings.manage"
+          }
+        ],
+        "isActive": true,
+        "effective": [
+          "data.clearDemo",
+          "employee.manage",
+          "employee.permission.edit",
+          "floor.manage",
+          "floor.view",
+          "menu.manage",
+          "order.create",
+          "order.update",
+          "order.voidOpen",
+          "order.voidPaid",
+          "orderHistory.view",
+          "payment.take",
+          "receipt.reprint",
+          "report.view",
+          "settings.manage"
+        ],
+        "overrides": null,
+        "pinChangeRequired": false,
+        "permissionRevision": 1
+      }
+    },
+    "AtoB": {
+      "ok": false,
+      "error": {
+        "code": "NOT_FOUND",
+        "details": null,
+        "message": "Không tìm thấy dữ liệu được phép truy cập."
+      }
+    },
+    "BtoA": {
+      "ok": false,
+      "error": {
+        "code": "NOT_FOUND",
+        "details": null,
+        "message": "Không tìm thấy dữ liệu được phép truy cập."
+      }
+    },
+    "mixedResponse": {
+      "ok": false,
+      "error": {
+        "code": "EMPLOYEE_SESSION_REQUIRED",
+        "details": null,
+        "message": "Phiên nhân viên đã hết hiệu lực. Vui lòng nhập lại PIN."
+      }
+    },
+    "listBeforeA": {
+      "ok": true,
+      "data": [
+        {
+          "id": "1cccd1a7-b42d-55ab-8875-1cd088db3267",
+          "name": "Chủ quán",
+          "role": "owner",
+          "sources": [
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "data.clearDemo"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "employee.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "employee.permission.edit"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "floor.manage"
+            },
+            {
+              "sources": [
+                "default",
+                "baseline"
+              ],
+              "effective": true,
+              "permission": "floor.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "menu.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.create"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.update"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidOpen"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidPaid"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "orderHistory.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "payment.take"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "receipt.reprint"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "report.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "settings.manage"
+            }
+          ],
+          "isActive": true,
+          "effective": [
+            "data.clearDemo",
+            "employee.manage",
+            "employee.permission.edit",
+            "floor.manage",
+            "floor.view",
+            "menu.manage",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "order.voidPaid",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint",
+            "report.view",
+            "settings.manage"
+          ],
+          "overrides": null,
+          "pinChangeRequired": false,
+          "permissionRevision": 1
+        },
+        {
+          "id": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+          "name": "TEST-20261023-cashier",
+          "role": "cashier",
+          "sources": [
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "data.clearDemo"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "employee.manage"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "employee.permission.edit"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "floor.manage"
+            },
+            {
+              "sources": [
+                "default",
+                "baseline"
+              ],
+              "effective": true,
+              "permission": "floor.view"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "menu.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.create"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.update"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidOpen"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "order.voidPaid"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "orderHistory.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "payment.take"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "receipt.reprint"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "report.view"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "settings.manage"
+            }
+          ],
+          "isActive": true,
+          "effective": [
+            "floor.view",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint"
+          ],
+          "overrides": null,
+          "pinChangeRequired": false,
+          "permissionRevision": 0
+        }
+      ]
+    },
+    "listAfterA": {
+      "ok": true,
+      "data": [
+        {
+          "id": "1cccd1a7-b42d-55ab-8875-1cd088db3267",
+          "name": "Chủ quán",
+          "role": "owner",
+          "sources": [
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "data.clearDemo"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "employee.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "employee.permission.edit"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "floor.manage"
+            },
+            {
+              "sources": [
+                "default",
+                "baseline"
+              ],
+              "effective": true,
+              "permission": "floor.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "menu.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.create"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.update"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidOpen"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidPaid"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "orderHistory.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "payment.take"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "receipt.reprint"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "report.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "settings.manage"
+            }
+          ],
+          "isActive": true,
+          "effective": [
+            "data.clearDemo",
+            "employee.manage",
+            "employee.permission.edit",
+            "floor.manage",
+            "floor.view",
+            "menu.manage",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "order.voidPaid",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint",
+            "report.view",
+            "settings.manage"
+          ],
+          "overrides": null,
+          "pinChangeRequired": false,
+          "permissionRevision": 1
+        },
+        {
+          "id": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+          "name": "TEST-20261023-cashier",
+          "role": "cashier",
+          "sources": [
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "data.clearDemo"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "employee.manage"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "employee.permission.edit"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "floor.manage"
+            },
+            {
+              "sources": [
+                "default",
+                "baseline"
+              ],
+              "effective": true,
+              "permission": "floor.view"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "menu.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.create"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.update"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidOpen"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "order.voidPaid"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "orderHistory.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "payment.take"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "receipt.reprint"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "report.view"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "settings.manage"
+            }
+          ],
+          "isActive": true,
+          "effective": [
+            "floor.view",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint"
+          ],
+          "overrides": null,
+          "pinChangeRequired": false,
+          "permissionRevision": 0
+        }
+      ]
+    },
+    "listBeforeB": {
+      "ok": true,
+      "data": [
+        {
+          "id": "8ab1f5e7-ade8-54af-a18d-55192ff70af0",
+          "name": "Chủ quán",
+          "role": "owner",
+          "sources": [
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "data.clearDemo"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "employee.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "employee.permission.edit"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "floor.manage"
+            },
+            {
+              "sources": [
+                "default",
+                "baseline"
+              ],
+              "effective": true,
+              "permission": "floor.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "menu.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.create"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.update"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidOpen"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidPaid"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "orderHistory.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "payment.take"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "receipt.reprint"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "report.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "settings.manage"
+            }
+          ],
+          "isActive": true,
+          "effective": [
+            "data.clearDemo",
+            "employee.manage",
+            "employee.permission.edit",
+            "floor.manage",
+            "floor.view",
+            "menu.manage",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "order.voidPaid",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint",
+            "report.view",
+            "settings.manage"
+          ],
+          "overrides": null,
+          "pinChangeRequired": false,
+          "permissionRevision": 1
+        }
+      ]
+    },
+    "listAfterB": {
+      "ok": true,
+      "data": [
+        {
+          "id": "8ab1f5e7-ade8-54af-a18d-55192ff70af0",
+          "name": "Chủ quán",
+          "role": "owner",
+          "sources": [
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "data.clearDemo"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "employee.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "employee.permission.edit"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "floor.manage"
+            },
+            {
+              "sources": [
+                "default",
+                "baseline"
+              ],
+              "effective": true,
+              "permission": "floor.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "menu.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.create"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.update"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidOpen"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidPaid"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "orderHistory.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "payment.take"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "receipt.reprint"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "report.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "settings.manage"
+            }
+          ],
+          "isActive": true,
+          "effective": [
+            "data.clearDemo",
+            "employee.manage",
+            "employee.permission.edit",
+            "floor.manage",
+            "floor.view",
+            "menu.manage",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "order.voidPaid",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint",
+            "report.view",
+            "settings.manage"
+          ],
+          "overrides": null,
+          "pinChangeRequired": false,
+          "permissionRevision": 1
+        }
+      ]
+    }
+  },
+  "H7": {
+    "actor": "A JWT + cashier token",
+    "revokeResponse": {
+      "ok": true
+    },
+    "oldTokenAuthorityResponse": {
+      "ok": false,
+      "error": {
+        "code": "EMPLOYEE_SESSION_REQUIRED",
+        "details": null,
+        "message": "Phiên nhân viên đã hết hiệu lực. Vui lòng nhập lại PIN."
+      }
+    }
+  },
+  "H9": {
+    "tokenAliasForBothChecks": "A.cashierFreshToken",
+    "grantResponse": {
+      "ok": true,
+      "data": {
+        "id": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+        "name": "TEST-20261023-cashier",
+        "role": "cashier",
+        "sources": [
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "data.clearDemo"
+          },
+          {
+            "sources": [
+              "grant"
+            ],
+            "effective": true,
+            "permission": "employee.manage"
+          },
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "employee.permission.edit"
+          },
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "floor.manage"
+          },
+          {
+            "sources": [
+              "default",
+              "baseline"
+            ],
+            "effective": true,
+            "permission": "floor.view"
+          },
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "menu.manage"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "order.create"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "order.update"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "order.voidOpen"
+          },
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "order.voidPaid"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "orderHistory.view"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "payment.take"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "receipt.reprint"
+          },
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "report.view"
+          },
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "settings.manage"
+          }
+        ],
+        "isActive": true,
+        "effective": [
+          "employee.manage",
+          "floor.view",
+          "order.create",
+          "order.update",
+          "order.voidOpen",
+          "orderHistory.view",
+          "payment.take",
+          "receipt.reprint"
+        ],
+        "overrides": {
+          "denies": [],
+          "grants": [
+            "employee.manage"
+          ]
+        },
+        "pinChangeRequired": false,
+        "permissionRevision": 1
+      },
+      "outcome": "applied"
+    },
+    "readAfterGrant": {
+      "ok": true,
+      "data": [
+        {
+          "id": "1cccd1a7-b42d-55ab-8875-1cd088db3267",
+          "name": "Chủ quán",
+          "role": "owner",
+          "sources": [
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "data.clearDemo"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "employee.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "employee.permission.edit"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "floor.manage"
+            },
+            {
+              "sources": [
+                "default",
+                "baseline"
+              ],
+              "effective": true,
+              "permission": "floor.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "menu.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.create"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.update"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidOpen"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidPaid"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "orderHistory.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "payment.take"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "receipt.reprint"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "report.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "settings.manage"
+            }
+          ],
+          "isActive": true,
+          "effective": [
+            "data.clearDemo",
+            "employee.manage",
+            "employee.permission.edit",
+            "floor.manage",
+            "floor.view",
+            "menu.manage",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "order.voidPaid",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint",
+            "report.view",
+            "settings.manage"
+          ],
+          "overrides": null,
+          "pinChangeRequired": false,
+          "permissionRevision": 1
+        },
+        {
+          "id": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+          "name": "TEST-20261023-cashier",
+          "role": "cashier",
+          "sources": [
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "data.clearDemo"
+            },
+            {
+              "sources": [
+                "grant"
+              ],
+              "effective": true,
+              "permission": "employee.manage"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "employee.permission.edit"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "floor.manage"
+            },
+            {
+              "sources": [
+                "default",
+                "baseline"
+              ],
+              "effective": true,
+              "permission": "floor.view"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "menu.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.create"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.update"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidOpen"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "order.voidPaid"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "orderHistory.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "payment.take"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "receipt.reprint"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "report.view"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "settings.manage"
+            }
+          ],
+          "isActive": true,
+          "effective": [
+            "employee.manage",
+            "floor.view",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint"
+          ],
+          "overrides": {
+            "denies": [],
+            "grants": [
+              "employee.manage"
+            ]
+          },
+          "pinChangeRequired": false,
+          "permissionRevision": 1
+        }
+      ]
+    },
+    "authorityAfterGrant": {
+      "ok": true,
+      "data": {
+        "catalog": {
+          "roles": [
+            {
+              "code": "cashier",
+              "enabled": true,
+              "labelVi": "Thu ngân",
+              "selectable": true
+            },
+            {
+              "code": "kitchen",
+              "enabled": false,
+              "labelVi": "Bếp",
+              "selectable": false
+            },
+            {
+              "code": "manager",
+              "enabled": true,
+              "labelVi": "Quản lý",
+              "selectable": true
+            },
+            {
+              "code": "owner",
+              "enabled": true,
+              "labelVi": "Chủ quán",
+              "selectable": false
+            },
+            {
+              "code": "waiter",
+              "enabled": true,
+              "labelVi": "Phục vụ",
+              "selectable": true
+            }
+          ],
+          "defaults": [
+            {
+              "roleCode": "cashier",
+              "permissionCode": "floor.view"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "order.create"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "order.update"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "order.voidOpen"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "orderHistory.view"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "payment.take"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "receipt.reprint"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "employee.manage"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "floor.manage"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "floor.view"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "menu.manage"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "order.create"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "order.update"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "order.voidOpen"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "order.voidPaid"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "orderHistory.view"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "payment.take"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "receipt.reprint"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "report.view"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "data.clearDemo"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "employee.manage"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "employee.permission.edit"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "floor.manage"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "floor.view"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "menu.manage"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "order.create"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "order.update"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "order.voidOpen"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "order.voidPaid"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "orderHistory.view"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "payment.take"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "receipt.reprint"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "report.view"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "settings.manage"
+            },
+            {
+              "roleCode": "waiter",
+              "permissionCode": "floor.view"
+            },
+            {
+              "roleCode": "waiter",
+              "permissionCode": "order.create"
+            },
+            {
+              "roleCode": "waiter",
+              "permissionCode": "order.update"
+            }
+          ],
+          "revision": 0,
+          "permissions": [
+            {
+              "code": "data.clearDemo",
+              "module": "clearDemo",
+              "labelVi": "Xóa dữ liệu mẫu",
+              "baseline": false,
+              "ownerOnly": true
+            },
+            {
+              "code": "employee.manage",
+              "module": "employees",
+              "labelVi": "Quản lý nhân viên",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "employee.permission.edit",
+              "module": "employees",
+              "labelVi": "Chỉnh quyền nhân viên",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "floor.manage",
+              "module": "floorEditor",
+              "labelVi": "Điều chỉnh sơ đồ bàn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "floor.view",
+              "module": "floor",
+              "labelVi": "Xem sơ đồ bàn",
+              "baseline": true,
+              "ownerOnly": false
+            },
+            {
+              "code": "menu.manage",
+              "module": "menuEditor",
+              "labelVi": "Quản lý thực đơn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "order.create",
+              "module": "order",
+              "labelVi": "Tạo đơn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "order.update",
+              "module": "order",
+              "labelVi": "Sửa đơn mở",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "order.voidOpen",
+              "module": "order",
+              "labelVi": "Hủy đơn mở",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "order.voidPaid",
+              "module": "orderHistory",
+              "labelVi": "Hủy đơn đã thanh toán",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "orderHistory.view",
+              "module": "orderHistory",
+              "labelVi": "Xem lịch sử đơn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "payment.take",
+              "module": "payment",
+              "labelVi": "Thu tiền",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "receipt.reprint",
+              "module": "receipt",
+              "labelVi": "In lại hóa đơn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "report.view",
+              "module": "report",
+              "labelVi": "Xem báo cáo",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "settings.manage",
+              "module": "settings",
+              "labelVi": "Quản lý thiết lập",
+              "baseline": false,
+              "ownerOnly": false
+            }
+          ],
+          "contractVersion": 1
+        },
+        "snapshot": {
+          "role": "cashier",
+          "active": true,
+          "sources": [
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "data.clearDemo"
+            },
+            {
+              "sources": [
+                "grant"
+              ],
+              "effective": true,
+              "permission": "employee.manage"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "employee.permission.edit"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "floor.manage"
+            },
+            {
+              "sources": [
+                "default",
+                "baseline"
+              ],
+              "effective": true,
+              "permission": "floor.view"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "menu.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.create"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.update"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidOpen"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "order.voidPaid"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "orderHistory.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "payment.take"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "receipt.reprint"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "report.view"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "settings.manage"
+            }
+          ],
+          "storeId": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf",
+          "employeeId": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+          "permissions": [
+            "employee.manage",
+            "floor.view",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint"
+          ],
+          "catalogRevision": 0,
+          "employeeRevision": 1
+        }
+      }
+    },
+    "revokeResponse": {
+      "ok": true,
+      "data": {
+        "id": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+        "name": "TEST-20261023-cashier",
+        "role": "cashier",
+        "sources": [
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "data.clearDemo"
+          },
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "employee.manage"
+          },
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "employee.permission.edit"
+          },
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "floor.manage"
+          },
+          {
+            "sources": [
+              "default",
+              "baseline"
+            ],
+            "effective": true,
+            "permission": "floor.view"
+          },
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "menu.manage"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "order.create"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "order.update"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "order.voidOpen"
+          },
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "order.voidPaid"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "orderHistory.view"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "payment.take"
+          },
+          {
+            "sources": [
+              "default"
+            ],
+            "effective": true,
+            "permission": "receipt.reprint"
+          },
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "report.view"
+          },
+          {
+            "sources": [],
+            "effective": false,
+            "permission": "settings.manage"
+          }
+        ],
+        "isActive": true,
+        "effective": [
+          "floor.view",
+          "order.create",
+          "order.update",
+          "order.voidOpen",
+          "orderHistory.view",
+          "payment.take",
+          "receipt.reprint"
+        ],
+        "overrides": null,
+        "pinChangeRequired": false,
+        "permissionRevision": 2
+      },
+      "outcome": "applied"
+    },
+    "readAfterRevoke": {
+      "ok": false,
+      "error": {
+        "code": "FORBIDDEN",
+        "details": null,
+        "message": "Bạn không có quyền thực hiện thao tác này."
+      }
+    },
+    "authorityAfterRevoke": {
+      "ok": true,
+      "data": {
+        "catalog": {
+          "roles": [
+            {
+              "code": "cashier",
+              "enabled": true,
+              "labelVi": "Thu ngân",
+              "selectable": true
+            },
+            {
+              "code": "kitchen",
+              "enabled": false,
+              "labelVi": "Bếp",
+              "selectable": false
+            },
+            {
+              "code": "manager",
+              "enabled": true,
+              "labelVi": "Quản lý",
+              "selectable": true
+            },
+            {
+              "code": "owner",
+              "enabled": true,
+              "labelVi": "Chủ quán",
+              "selectable": false
+            },
+            {
+              "code": "waiter",
+              "enabled": true,
+              "labelVi": "Phục vụ",
+              "selectable": true
+            }
+          ],
+          "defaults": [
+            {
+              "roleCode": "cashier",
+              "permissionCode": "floor.view"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "order.create"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "order.update"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "order.voidOpen"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "orderHistory.view"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "payment.take"
+            },
+            {
+              "roleCode": "cashier",
+              "permissionCode": "receipt.reprint"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "employee.manage"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "floor.manage"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "floor.view"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "menu.manage"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "order.create"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "order.update"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "order.voidOpen"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "order.voidPaid"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "orderHistory.view"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "payment.take"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "receipt.reprint"
+            },
+            {
+              "roleCode": "manager",
+              "permissionCode": "report.view"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "data.clearDemo"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "employee.manage"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "employee.permission.edit"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "floor.manage"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "floor.view"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "menu.manage"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "order.create"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "order.update"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "order.voidOpen"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "order.voidPaid"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "orderHistory.view"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "payment.take"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "receipt.reprint"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "report.view"
+            },
+            {
+              "roleCode": "owner",
+              "permissionCode": "settings.manage"
+            },
+            {
+              "roleCode": "waiter",
+              "permissionCode": "floor.view"
+            },
+            {
+              "roleCode": "waiter",
+              "permissionCode": "order.create"
+            },
+            {
+              "roleCode": "waiter",
+              "permissionCode": "order.update"
+            }
+          ],
+          "revision": 0,
+          "permissions": [
+            {
+              "code": "data.clearDemo",
+              "module": "clearDemo",
+              "labelVi": "Xóa dữ liệu mẫu",
+              "baseline": false,
+              "ownerOnly": true
+            },
+            {
+              "code": "employee.manage",
+              "module": "employees",
+              "labelVi": "Quản lý nhân viên",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "employee.permission.edit",
+              "module": "employees",
+              "labelVi": "Chỉnh quyền nhân viên",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "floor.manage",
+              "module": "floorEditor",
+              "labelVi": "Điều chỉnh sơ đồ bàn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "floor.view",
+              "module": "floor",
+              "labelVi": "Xem sơ đồ bàn",
+              "baseline": true,
+              "ownerOnly": false
+            },
+            {
+              "code": "menu.manage",
+              "module": "menuEditor",
+              "labelVi": "Quản lý thực đơn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "order.create",
+              "module": "order",
+              "labelVi": "Tạo đơn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "order.update",
+              "module": "order",
+              "labelVi": "Sửa đơn mở",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "order.voidOpen",
+              "module": "order",
+              "labelVi": "Hủy đơn mở",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "order.voidPaid",
+              "module": "orderHistory",
+              "labelVi": "Hủy đơn đã thanh toán",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "orderHistory.view",
+              "module": "orderHistory",
+              "labelVi": "Xem lịch sử đơn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "payment.take",
+              "module": "payment",
+              "labelVi": "Thu tiền",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "receipt.reprint",
+              "module": "receipt",
+              "labelVi": "In lại hóa đơn",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "report.view",
+              "module": "report",
+              "labelVi": "Xem báo cáo",
+              "baseline": false,
+              "ownerOnly": false
+            },
+            {
+              "code": "settings.manage",
+              "module": "settings",
+              "labelVi": "Quản lý thiết lập",
+              "baseline": false,
+              "ownerOnly": false
+            }
+          ],
+          "contractVersion": 1
+        },
+        "snapshot": {
+          "role": "cashier",
+          "active": true,
+          "sources": [
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "data.clearDemo"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "employee.manage"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "employee.permission.edit"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "floor.manage"
+            },
+            {
+              "sources": [
+                "default",
+                "baseline"
+              ],
+              "effective": true,
+              "permission": "floor.view"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "menu.manage"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.create"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.update"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "order.voidOpen"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "order.voidPaid"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "orderHistory.view"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "payment.take"
+            },
+            {
+              "sources": [
+                "default"
+              ],
+              "effective": true,
+              "permission": "receipt.reprint"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "report.view"
+            },
+            {
+              "sources": [],
+              "effective": false,
+              "permission": "settings.manage"
+            }
+          ],
+          "storeId": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf",
+          "employeeId": "ed8c51e5-ee26-4273-bacf-fd42458f1261",
+          "permissions": [
+            "floor.view",
+            "order.create",
+            "order.update",
+            "order.voidOpen",
+            "orderHistory.view",
+            "payment.take",
+            "receipt.reprint"
+          ],
+          "catalogRevision": 0,
+          "employeeRevision": 2
+        }
+      }
+    }
+  },
+  "H10": {
+    "requestCodeReference": "executed-api-cells01.json projectionProof loop",
+    "sameArgumentsForEachActor": true,
+    "rawResponseLimitation": "Per-route response variables were overwritten by later loop iterations and final objects were not retained; original executed loop, assertions, status/code log and four result records are retained.",
+    "allFourResults": [
+      {
+        "rpc": "permission_get_menu_admin",
+        "owner": "ALLOW",
+        "cashier": "FORBIDDEN"
+      },
+      {
+        "rpc": "permission_get_floor_admin",
+        "owner": "ALLOW",
+        "cashier": "FORBIDDEN"
+      },
+      {
+        "rpc": "permission_get_settings_admin",
+        "owner": "ALLOW",
+        "cashier": "FORBIDDEN"
+      },
+      {
+        "rpc": "permission_get_sales_report",
+        "owner": "ALLOW",
+        "cashier": "FORBIDDEN"
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": "permission-staging-grant-v1",
+  "grantId": "REST_PROBE_REMEDIATION_01",
+  "workstream": "permission-staging-20261021",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "predecessorClaimSha256": "3cd550a64bf676090ea3be7d277287173dbd4063f545a46577a5b3068957f766",
+  "additionalAttempts": 1,
+  "maxRequests": 2,
+  "deadlineUtc": "2026-10-21T16:00:00.000Z",
+  "testCutoffUtc": "2026-10-21T15:45:00.000Z",
+  "scope": "READ_ONLY_ROUTING_PREFLIGHT",
+  "authorization": "USER_REPLY_call_273da3df6f9f4595b0eb472cb27063ba_APPROVED"
+}

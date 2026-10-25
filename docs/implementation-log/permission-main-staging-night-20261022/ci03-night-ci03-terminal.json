@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "permission-batch-terminal-v1",
+  "reservationId": "c590ae5dd348f08fa62815b3873a8d8210b26464301f0ba384450ad33bafc632",
+  "kind": "publication",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "profile": null,
+  "runId": "39811728040",
+  "attempt": 1,
+  "conclusion": "success",
+  "metadata": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-api.json",
+    "sha256": "e306af9723319c7c71c5120074dfd7fa2dc6d40b3341aed5ec01138cfe2a2387"
+  },
+  "observation": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-summary.json",
+    "sha256": "e8daa086c7776fdb5d6928222069593546318cf1ebd171858e00da5c844139b8"
+  },
+  "reclaim": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-native-cleanup.json",
+    "sha256": "d9aa607211dd8077fe7bbb7a0a4a4a794e9fb235bf741f0bde8006f7c1e47f5e"
+  }
+}

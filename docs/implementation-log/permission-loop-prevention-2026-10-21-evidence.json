@@ -1,0 +1,152 @@
+{
+  "scope": "Analysis of parent response usage only; not billing or all-child total; no encrypted reasoning read. No app/DB/CI execution. One pure exported-function counterexample executed on existing Node.",
+  "parentThreadId": "01a1535e-9160-7200-bfa0-f71bdec8abec",
+  "transcriptSHA256": "2e9d713a8462b7232a70ac756d5fd2cffff5ddeda57b9d41842dcab3e2ac38c5",
+  "uniqueResponses": 2423,
+  "sumUniqueResponseUsage": {
+    "input_tokens": 434112063,
+    "cached_input_tokens": 426342144,
+    "output_tokens": 2265463,
+    "reasoning_output_tokens": 1052876,
+    "total_tokens": 436377526
+  },
+  "uncachedInput": 7769919,
+  "inputMedian": 176926,
+  "inputMax": 341377,
+  "lastThreadCounter": {
+    "input_tokens": 434112063,
+    "cached_input_tokens": 426342144,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2265463,
+    "reasoning_output_tokens": 1052876,
+    "total_tokens": 436377526
+  },
+  "lastTokenCountCounter": {
+    "input_tokens": 427888566,
+    "cached_input_tokens": 420187392,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2073735,
+    "reasoning_output_tokens": 1052876,
+    "total_tokens": 429962301
+  },
+  "countsAgree": "Sum of 2423 unique per-response usage records exactly matches final thread_token_usage; event token_count total differs and is not added. Child union not computed. Reasoning subset of output; cached subset of input.",
+  "pureFunctionProbe": {
+    "file": "code/scripts/permission-runtime-error-facts.mjs",
+    "function": "runtimeRunnerFailureFacts",
+    "execution": "Existing Node24, module import, synthetic data; no files/runtime/network/DB writes",
+    "input": "one required synthetic case, codeOrdinal31,line68,attempt1; state varied; runner-only error case top-level metadata",
+    "cases": [
+      {
+        "state": "failed",
+        "firstFailedRequired": 1,
+        "failedTests": 1,
+        "testErrorCodeOrdinal": 31,
+        "firstFailedLine": 68
+      },
+      {
+        "state": "timedOut",
+        "firstFailedRequired": 0,
+        "failedTests": 0,
+        "codeLineExported": false
+      },
+      {
+        "state": "interrupted",
+        "firstFailedRequired": 0,
+        "failedTests": 0,
+        "codeLineExported": false
+      },
+      {
+        "state": "passed with runner error",
+        "firstFailedRequired": 0,
+        "failedTests": 0,
+        "runnerErrors": 1,
+        "codeLineExported": false
+      }
+    ],
+    "limits": "Actual pure function only, not full browser/reporter/parser/export/collector proof or actual past timeout root cause."
+  },
+  "sourcePins": [
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\runtime-preflight13.mjs",
+      "bytes": 5949,
+      "sha256": "07f7d4369b61f4c308c5a266ffb1af2a70ba6faa70c8b62335543e4fd96a2b89"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\prepare-preflight12.mjs",
+      "bytes": 1558,
+      "sha256": "9d98720ef8b2b744f5b8b4131c04841ca05831581c5c1c1bb460ca23c725ebf3"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\prepare-preflight13.mjs",
+      "bytes": 841,
+      "sha256": "fbf052354ae4a7012e56b4f88deeac812e71dd1954c30ef543b07e27a5e6b28c"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\prepare-publication24.mjs",
+      "bytes": 2312,
+      "sha256": "5a8646796b0f9e92dfb946869dd5116f7e7ee448b39bd8b878bf0a4723f54ec1"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\watch-runtime-api.mjs",
+      "bytes": 2235,
+      "sha256": "7a3e0384169fdef3a1e956186c5268ddf7298edebc339d030b15e1ae8eaf3c7a"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\scripts\\permission-runtime-error-facts.mjs",
+      "bytes": 8361,
+      "sha256": "5f72608279ff0cb69e1c536cfaf2b98bcbc2470df75810f84ff872f5edd31b3b"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\scripts\\permission-runtime-playwright-reporter.mjs",
+      "bytes": 1696,
+      "sha256": "8918bc63c7b54c30126fb01305a21682d97cabd1c1060dba441584e269cf4d04"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\scripts\\permission-runtime-t04.mjs",
+      "bytes": 17913,
+      "sha256": "cbfee33e66c4075cd9fcd33e6d6ea1fa63521c5063251dd267fb6b164785cd96"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\scripts\\permission-runtime-service-diagnostic.mjs",
+      "bytes": 4330,
+      "sha256": "2df0116ee81c72bb54ae42ae79e1290f42c67c52c6128432a531f91e667da250"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\scripts\\permission-runtime-reporter-selftest.mjs",
+      "bytes": 7250,
+      "sha256": "df25cc57dca5b9e22d143b98497781d44ce069de5a877c787fb7a580b6ab48f3"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\scripts\\permission-runtime-stage.mjs",
+      "bytes": 4248,
+      "sha256": "bfcede0b296d329ab22fe1eabaacb7ece8f12413add07fc1527d2b96a8295119"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\scripts\\permission-runtime-t04-worker.mjs",
+      "bytes": 61269,
+      "sha256": "c0af49e82e022cbdbbf94653c30bed800d6c8be4f86a94c126ce3e3da59366a7"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\.github\\workflows\\backend.yml",
+      "bytes": 6046,
+      "sha256": "d1a5ae1f1fa72e24570fd437f8267137ec4841e73b80ceffaa84d02c317ed971"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "rethink_failure_cycles",
+      "scope": "failure loop counterexamples",
+      "status": "completed read-only"
+    },
+    {
+      "name": "rethink_plan_execution",
+      "scope": "actual gates and feasible execution",
+      "status": "completed read-only"
+    },
+    {
+      "name": "rethink_token_control",
+      "scope": "token/context costs",
+      "status": "partial findings then model at capacity; root completed unique-response calculation, no retry or model switch"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "permission-bp4a-countdiag-raw-copy-v1",
+  "copiedAtUtc": "2026-10-23T07:02:53.8971465Z",
+  "files": [
+    {
+      "file": "bp04a-countdiag02-admission.json",
+      "bytes": 1146,
+      "sha256": "9e93a6bdbd3b4514abc603b5e291aa92db57e6b0f1c49261fff9dabc6446ffe7"
+    },
+    {
+      "file": "bp04a-countdiag02-owner-grant.json",
+      "bytes": 2714,
+      "sha256": "742173b8a5372cbf46e908df6cc0ea23d4eb476ba9601d01eb0a42103238e04b"
+    },
+    {
+      "file": "bp04a-countdiag02-post-observation.json",
+      "bytes": 1763,
+      "sha256": "d1742824d1520407b6fe8f2c39b1f08936ca8715482b3955d93b24aa88bb5172"
+    },
+    {
+      "file": "bp04a-countdiag02-readiness-observation.json",
+      "bytes": 2046,
+      "sha256": "ae50b1b931b3d5f39983f854feb00dbd77bd1f4a1875c9323d0fdc77a5bffa39"
+    },
+    {
+      "file": "bp04a-countdiag02.json",
+      "bytes": 3268,
+      "sha256": "90e6441f084f9f9c5d294ff021634e7c290d7e0bdb24cbabd3a9ffce10cfd86d"
+    },
+    {
+      "file": "bp04a-countdiag02.started.json",
+      "bytes": 257,
+      "sha256": "f3f35c56f61ca01d32724307a708b38fae12629b749760170999595ad0bff425"
+    },
+    {
+      "file": "bp04a-countdiag02.tgz",
+      "bytes": 5484,
+      "sha256": "f8e5fab1d222a3475d6c481ae85446d165b28f24f2ce05b170e7edc880b34ddc"
+    }
+  ],
+  "sourceCopiesByteExact": true,
+  "sourceOperationsPin": "e2c1aadf6da3219131a4c4c2ea8586c0f2f41c4a36a747daf352a611be8e8dbd",
+  "reusedControlPins": {
+    "controls": "90a3c3b442599ffea41de8efa61c9d97c64ea51766d4a8d51b3327f3a33b7173",
+    "report": "6b16c4818a9395370b06269e6de31b4eb668a10a1ecdb7764cb96bc1c0db17a6"
+  },
+  "note": "Raw tgz retained for source-bound future reuse; no extraction; no executable app source copied into docs"
+}

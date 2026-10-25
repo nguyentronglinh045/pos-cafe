@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "permission-task-checkpoint-v1",
+  "recordedAtUtc": "2026-10-22T16:30:51.765Z",
+  "status": "AUTHORIZED_CANDIDATE_CI_COMPLETE_MAIN_FULLGATE_PENDING",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "treeSHA": "95013ef246608c96239b8ac31e8e5ea3fa744cef",
+  "sourceFingerprint": "ad15201c0371bff8082cbb212e3e23485200ae4c759cbb095ad8b73d8acbefa7",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "localBranch": "fix/operator-indexeddb-evidence-20261022",
+  "remoteBranch": "run/permissions-20261020",
+  "local": {
+    "node": "938/938 PASS",
+    "realChromeReaderControls": "6/6 PASS; original empty-IndexedDB mutant rejected",
+    "review": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/operator-indexeddb-local-review01.json",
+      "sha256": "d3e5ee77bc50aeb41198e29a747c428c2ff8fa115e85b81c447ed7add2c88e81"
+    }
+  },
+  "ci": {
+    "runId": "39811728040",
+    "attempt": 1,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "whole18Phases": true,
+    "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39811728040/attempts/1",
+    "collection": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-collection.json",
+      "sha256": "e9be1f85c6a26260388548ba2dd9b2ab7f965114d529c06a53748e098fb67b11"
+    },
+    "summary": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-summary.json",
+      "sha256": "e8daa086c7776fdb5d6928222069593546318cf1ebd171858e00da5c844139b8"
+    },
+    "terminal": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-terminal.json",
+      "sha256": "232396de36585040eaf7147754e9d0aaed8234f7c17229c7ecdc12b1cb4f87bc"
+    },
+    "settlement": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-settlement.json",
+      "sha256": "aa488118abbca263600c48e635b638862cc42ded6233eeb2becede018e74943a"
+    },
+    "cleanup": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-native-cleanup.json",
+      "sha256": "d9aa607211dd8077fe7bbb7a0a4a4a794e9fb235bf741f0bde8006f7c1e47f5e"
+    },
+    "pg16": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-pg16.json",
+      "sha256": "d9dab71e199eb32f467f78abab2ffcca352da2e594ee2b2185f23bb928198b3e"
+    },
+    "runtimeVisualReview": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-runtime-visual-review01.json",
+      "sha256": "9eb812c2f61e748c6d1f0e1fa0acd921fcfc1a753850ff18c60bbeaa699e5d73"
+    },
+    "lightJoin": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/light-fullgate-join03.json",
+      "sha256": "5bba651c5b7131e96169bd62419e8824c3f8e194f66b176f12d584d7b37ceafc"
+    },
+    "jobSeconds": 841,
+    "queueSeconds": 3,
+    "peakOwnedBytes": 1284198400
+  },
+  "verification": {
+    "lightStages": 6,
+    "lightRequiredIdentities": 343,
+    "lightActualTests": 510,
+    "wholeBackendProfiles": "0/8 NOT_RUN_FOR_THIS_SOURCE",
+    "fullGate": "PENDING_35_STAGES_760_REQUIRED_12_OBLIGATIONS_PLUS_D19_R0_R1",
+    "exemptions": "Tooling1manualDeferred and smoke37 viewport-applicability skips outside PERM760 unchanged; no zero-all-skips or full gate claim.",
+    "oldSource": "4d1 observed30stages706required historically, operator-oracle gap and five profiles absent. No old runtime PASS inherited."
+  },
+  "budget": {
+    "policy": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03.json",
+      "sha256": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142"
+    },
+    "grant": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/owner-operator-idb-ci-grant03.json",
+      "sha256": "9d9278f0d11660e2a7865e5766185f3810797ff8e10c765eec56ff3d019dc3f6"
+    },
+    "state": "CLOSED",
+    "pending": [],
+    "phaseCounts": {
+      "publication": 1,
+      "ci": 1,
+      "heavy": 0,
+      "reviewRounds": 0
+    },
+    "lifetimeCounts": {
+      "publication": 7,
+      "ci": 7,
+      "heavy": 5,
+      "reviewRounds": 10
+    },
+    "blockedSources": [
+      "ad265321144521c0669500fea9be0f96ebacb769"
+    ],
+    "closedLedger": {
+      ".anchor.json": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03.json.anchor.json",
+        "sha256": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f"
+      },
+      ".journal.jsonl": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03.json.journal.jsonl",
+        "sha256": "5390f85e8fb7c01d6a037724ba1f8c2b00a8666ed5603094a3bbeb876ffbb694"
+      },
+      ".head.json": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03.json.head.json",
+        "sha256": "adfec165ec85f3d4fd9f69db229249ba743845a5561799f295ae8590a5f6e527"
+      }
+    },
+    "closeReceipt": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03-close.json",
+      "sha256": "0eb116c8b4016d54d0b0d90474545bd8012625bdcb0d924e1aca22e3754ce05b"
+    },
+    "deferred": "Five older unused heavy and2PR/mainCI preserved only in history, not executable. New phase03 allowance spent1publication1CI; heavy0/postGate0."
+  },
+  "remote": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/remote-ref-checkpoint06.json",
+    "sha256": "b84d8304e64ad1c3d22566c567e8c2b2c99b474b435e0a83fbd9adaef56ee9f1"
+  },
+  "mainSHA": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "hosted": {
+    "staging": "No new read/write this CI continuation; AuthDEFER/EdgeBLOCKED unchanged",
+    "originalDB": "NOT_ACCESSED",
+    "VercelProduction": "NO_ACTION"
+  },
+  "storage": {
+    "receipt": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/storage-checkpoint-ci03.json",
+      "sha256": "40053ee0d2bd47c92e80aaaa15dcf922ce3f8d0d683b09c7db7a37605540be02"
+    },
+    "totalLogicalRetainedBytes": 331355265,
+    "disks": [
+      {
+        "path": "C:/",
+        "freeBytes": 193103831040
+      },
+      {
+        "path": "D:/",
+        "freeBytes": 98523754496
+      }
+    ],
+    "noNewLocalInstall": true
+  },
+  "custody": {
+    "publication": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-publication-custody.json",
+      "sha256": "8f74b5a4d8069a00e64e70fdebf5a759fbadd493a8f22da03324465e5ff801fb"
+    },
+    "terminal": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-terminal-custody.json",
+      "sha256": "41204379b58616b5632f11c360a5f9700156a6459e9e3286aca80cb0b00f1c46"
+    },
+    "earlierLocal": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/compact-evidence-custody03.json",
+      "sha256": "5887fd65e0e1a44f0e5abbaa47589edd88ad29ca0265ea4166eeadeb18242fb0"
+    }
+  },
+  "attributionErratum": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/review-attribution-errata03.json",
+    "sha256": "64472e88c1f11694e1bd4edb182f0407cae5686992c9c57bb831ae2e3d9b2fce"
+  },
+  "deadlineUtc": "2026-10-22T17:00:00Z",
+  "continuation": "Do not reopen CLOSED phases or reuse expired windows. Preserve4f clean/source/fingerprint/lock/CI03; fresh source+remote+ledger+disk+clock check first. Obtain actual owner decision on next deadline and executable8backend/PR-main budget before heavy. Do not rerun candidateCI solely because the chat resumed when source/config/lock unchanged and existing acceptance permits reuse. One backend at a time, no same-source retry; errors/UNKNOWN stop. Main requires full unchanged gate and final reviews; delete only verified merged task branches. Auth/Edge hosted scope needs its own current authorization.",
+  "docsReview": "FINAL_PACKAGE_REVIEW_PENDING; this checkpoint is a factual bounded result, not full task completion."
+}

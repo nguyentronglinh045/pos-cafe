@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "permission-night-candidate-ci-collection-v1",
+  "recordedAtUtc": "2026-10-22T16:24:50.881Z",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "runId": "39811728040",
+  "attempt": 1,
+  "conclusion": "success",
+  "wholeCi18": true,
+  "summary": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-summary.json",
+    "sha256": "e8daa086c7776fdb5d6928222069593546318cf1ebd171858e00da5c844139b8"
+  },
+  "native": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-native-cleanup.json",
+    "sha256": "d9aa607211dd8077fe7bbb7a0a4a4a794e9fb235bf741f0bde8006f7c1e47f5e"
+  },
+  "metadata": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-api.json",
+    "sha256": "e306af9723319c7c71c5120074dfd7fa2dc6d40b3341aed5ec01138cfe2a2387"
+  },
+  "log": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-workflow.log",
+    "sha256": "b81568098434fd4cccfeadd5e7c4dd04fde5a87bb69320062fd914e63c232272"
+  }
+}

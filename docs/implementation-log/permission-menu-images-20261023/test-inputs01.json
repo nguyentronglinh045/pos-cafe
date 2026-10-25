@@ -1,0 +1,19 @@
+{
+  "storeId": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf",
+  "itemId": "442499a3-0950-4b6f-a2f4-3ad664897141",
+  "fixtures": [
+    {
+      "name": "candidate-menu.png",
+      "source": "tests/supabase/permissionCandidate.spec.ts:11",
+      "bytes": 68,
+      "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460"
+    },
+    {
+      "name": "deco-fixtures-04.png",
+      "source": "public/floor-assets/decor/deco-fixtures-04.png",
+      "bytes": 10109,
+      "sha256": "b2d8dd937d462ac74224246553d9ffbc84e23924dc66ed0f265e6a5f49c42ae2"
+    }
+  ],
+  "scope": "Two existing valid PNG fixtures; no new image generation/edit, no new data tenant"
+}

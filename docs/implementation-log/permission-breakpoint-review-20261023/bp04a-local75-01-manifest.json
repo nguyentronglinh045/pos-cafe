@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "permission-bp4a-local75-raw-copy-manifest-v1",
+  "recordedAtUtc": "2026-10-23T08:02:44.304Z",
+  "count": 29,
+  "bytes": 3451155,
+  "files": [
+    {
+      "file": "bp4a-local75-01-archive-admission01.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-archive-admission01.json",
+      "bytes": 31535,
+      "sha256": "6ec735c645193d9bd20d0646deaeb0725fbf8f4b090353922a3db8fad0a13282"
+    },
+    {
+      "file": "bp4a-local75-01-archivePreflight.started.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-archivePreflight.started.json",
+      "bytes": 310,
+      "sha256": "816bac6243618837bf4b42771d37f24d7e00838ebc2c9e4b15822d0df844048d"
+    },
+    {
+      "file": "bp4a-local75-01-build.child.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-build.child.json",
+      "bytes": 300,
+      "sha256": "86c299a1aed7afca3a08ae42826c077623e5aeb65f289cecccf70cd16e608ecc"
+    },
+    {
+      "file": "bp4a-local75-01-build.release.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-build.release.json",
+      "bytes": 423,
+      "sha256": "d68ea9e6c66609979ec4a5a6bdc798f29785281d98ff23f02885e0f03cf712e7"
+    },
+    {
+      "file": "bp4a-local75-01-build.started.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-build.started.json",
+      "bytes": 299,
+      "sha256": "4f44daa6a2095dde1bfa53f5fe996b596f986b582e24d671177a765f37228ac3"
+    },
+    {
+      "file": "bp4a-local75-01-build.stderr.log",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-build.stderr.log",
+      "bytes": 94,
+      "sha256": "9aa621a287f43ce021cd4d4e17e5e8c04923c1f3f23ab4ecb8e1d2d228c85595"
+    },
+    {
+      "file": "bp4a-local75-01-build.stdout.log",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-build.stdout.log",
+      "bytes": 48,
+      "sha256": "65431c4d7565143f24b7b167eee663f86cebaa374329a6bb6c23d7d93761ca0e"
+    },
+    {
+      "file": "bp4a-local75-01-dependency-snapshot.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-dependency-snapshot.json",
+      "bytes": 3324074,
+      "sha256": "1589438b4344c922690cbe1f84cf75b9250e22950032f23c37d82a68da6a409f"
+    },
+    {
+      "file": "bp4a-local75-01-install.child.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-install.child.json",
+      "bytes": 393,
+      "sha256": "38f59608e250f07d45fd39d9b5587c948a731a047c9bcc18856d540b3f2db4d4"
+    },
+    {
+      "file": "bp4a-local75-01-install.release.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-install.release.json",
+      "bytes": 421,
+      "sha256": "8abe0c040caa3044807063685d25053c96b877cbdc77f713a5c5e62059023ba4"
+    },
+    {
+      "file": "bp4a-local75-01-install.started.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-install.started.json",
+      "bytes": 301,
+      "sha256": "fbf3389a3725acb18f55fb259556a169941c54d523c37f881ef60b9f6f516a06"
+    },
+    {
+      "file": "bp4a-local75-01-install.stderr.log",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-install.stderr.log",
+      "bytes": 538,
+      "sha256": "2785a1f68019607581048677c6e9312fe4de95b34b800a4a3d9560b3a998b2e0"
+    },
+    {
+      "file": "bp4a-local75-01-install.stdout.log",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-install.stdout.log",
+      "bytes": 27,
+      "sha256": "214b7567110fc7b0396bde838c07805d2f3a54f5111ed83300674f2ec90e3c06"
+    },
+    {
+      "file": "bp4a-local75-01-local01.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-local01.json",
+      "bytes": 76381,
+      "sha256": "6113b5da8866bc1b11cb53cb4afb3bf00ec9e33b5de6d46590b6a903cc1143df"
+    },
+    {
+      "file": "bp4a-local75-01-local01.started.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-local01.started.json",
+      "bytes": 283,
+      "sha256": "0f3ea18386cc267b1ea610a45edd870c8383db5eac80a3b161cf2d8b34364b2f"
+    },
+    {
+      "file": "bp4a-local75-01-nativeProbe.child.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-nativeProbe.child.json",
+      "bytes": 345,
+      "sha256": "7998f5b99a5c139c1ce1c35b231290d515f27bf4e4820499300edeb4736b56cb"
+    },
+    {
+      "file": "bp4a-local75-01-nativeProbe.release.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-nativeProbe.release.json",
+      "bytes": 422,
+      "sha256": "7d98e8da48dcc854a7ef644e267c219a5295c24564c2e23aa3c653eea8cb10e2"
+    },
+    {
+      "file": "bp4a-local75-01-nativeProbe.started.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-nativeProbe.started.json",
+      "bytes": 305,
+      "sha256": "39ed76a91aa326421e500285f92547da9f0400c500c60b19e658d9e33e10abc1"
+    },
+    {
+      "file": "bp4a-local75-01-nativeProbe.stderr.log",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-nativeProbe.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "bp4a-local75-01-nativeProbe.stdout.log",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-nativeProbe.stdout.log",
+      "bytes": 339,
+      "sha256": "dd0e748ef09953927711292610d050790bb03034cb1f9dedd75314e52c455832"
+    },
+    {
+      "file": "bp4a-local75-01-owner-grant.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-owner-grant.json",
+      "bytes": 2880,
+      "sha256": "3a6751f1b022247dcac9c66514a908cf0ff91dcc0194de59ddcc994a5982f660"
+    },
+    {
+      "file": "bp4a-local75-01-post-stop-observation.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-post-stop-observation.json",
+      "bytes": 1608,
+      "sha256": "88f1be359cdfdf255db6231ce310b21a7392ee79d67c1923d2d8199a2117d81a"
+    },
+    {
+      "file": "bp4a-local75-01-r0-controls01-failure.tgz",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-r0-controls01-failure.tgz",
+      "bytes": 183,
+      "sha256": "4cb3e37abe3777bcb37318c09f4155f31cdbc3d0792d3e4ac0548cd3cfb1e7ea"
+    },
+    {
+      "file": "bp4a-local75-01-r0-controls01.child.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-r0-controls01.child.json",
+      "bytes": 605,
+      "sha256": "2627e23cc1977acb6dc45eba6352c5a4358fef6ddfa1626dccb0c3645a18e46b"
+    },
+    {
+      "file": "bp4a-local75-01-r0-controls01.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-r0-controls01.json",
+      "bytes": 3380,
+      "sha256": "c3b53b3c6e9873bd47f854374bec867d044799f54df45bed220da5898602bc4c"
+    },
+    {
+      "file": "bp4a-local75-01-r0-controls01.json.started.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-r0-controls01.json.started.json",
+      "bytes": 125,
+      "sha256": "918700d9cf23f10b311c0b4f5b7a864de1d505fc842405b535710de5e3b47261"
+    },
+    {
+      "file": "bp4a-local75-01-r0-controls01.release.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-r0-controls01.release.json",
+      "bytes": 422,
+      "sha256": "cfb55971099e2c8f727dfdc33c4c03fcbeff4e050ba3beadda32c79a18245bc7"
+    },
+    {
+      "file": "bp4a-local75-01-readiness-observation.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-readiness-observation.json",
+      "bytes": 2046,
+      "sha256": "4793ed06bdda3b79167a3b7f235ea47363b0ba8b4b4b189bbb0f676b66158155"
+    },
+    {
+      "file": "bp4a-local75-01-source-admission.json",
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-source-admission.json",
+      "bytes": 3068,
+      "sha256": "522e501b3ac16882973bdb99ac605bb8ea56dec0219f02728912959d26f7af51"
+    }
+  ]
+}

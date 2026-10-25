@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 12543647506,
+      "node_id": "MDg6QXJ0aWZhY3QxMjU0MzY0NzUwNg==",
+      "name": "permission-pin-ui-40051559979-1",
+      "size_in_bytes": 66520,
+      "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/actions/artifacts/12543647506",
+      "archive_download_url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/actions/artifacts/12543647506/zip",
+      "expired": false,
+      "digest": "sha256:b82b3d1a6380065cf726d621f4cad72dcf5e9163dce62ba830b79e8df70b8f20",
+      "created_at": "2026-10-24T02:04:18Z",
+      "updated_at": "2026-10-24T02:04:18Z",
+      "expires_at": "2026-10-25T02:04:18Z",
+      "workflow_run": {
+        "id": 40051559979,
+        "repository_id": 1263057386,
+        "head_repository_id": 1263057386,
+        "head_branch": "review/permission-staging-20261023",
+        "head_sha": "90824f7cb81660818ab247f7dccf55b8a111d471"
+      }
+    }
+  ]
+}

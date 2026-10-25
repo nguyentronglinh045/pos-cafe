@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "permission-postgate-collector-review-v1",
+  "recordedUtc": "2026-10-23T17:25:01.492Z",
+  "scope": "PREPARED_NOT_USED_OPS_ONLY",
+  "validation": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/postgate-collector-validation01.json",
+    "sha256": "9f0b5ad79cd136dc5abb1bee66f022a262d00ec70813650d99d9a1ea8bac7d9a"
+  },
+  "collector": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-postgate-ci.mjs",
+    "sha256": "75e95efdb6a4cd8c90fb8c89c92f19ab7beaeb33ba6b5c72bcdeb214c3404620"
+  },
+  "test": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-postgate-ci.test.mjs",
+    "sha256": "18d6e849fc4692e269cc81ea821e666ef7170e80d23a6e9c501fad89322cd969"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/audit_technical_review",
+      "verdict": "APPROVE",
+      "scope": "exactbranch guard/backcompat/unchangedCI and source-parent-tree-native constraints"
+    },
+    {
+      "reviewer": "/root/audit_process_review",
+      "verdict": "APPROVE",
+      "scope": "rawprovenance/privacy/exclusive boundedwriter/no new action or admission authority"
+    }
+  ],
+  "blockingFindings": 0,
+  "offline": {
+    "run": 18,
+    "pass": 18,
+    "skip": 0
+  },
+  "actualTransport": "NOT_RUN",
+  "ledgerOrAdmission": "NO_CHANGE_OR_CLAIM",
+  "merge": "NOT_APPROVED"
+}

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "permission-night-checkpoint-v1",
+  "recordedAtUtc": "2026-10-22T14:34:59.045Z",
+  "supersedesForCurrentState": "checkpoint-publication03.json",
+  "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+  "treeSHA": "55d70f701b9b173da53c8f91a752a8050e340f3c",
+  "candidateCi": {
+    "runId": "39792208893",
+    "status": "PASS_SETTLED",
+    "summary": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci02-summary.json",
+      "sha256": "c4e4d113c1d476c9f6dc1647ef7071ce37e3e17a0535ad8f17b92c28d0e0c201"
+    },
+    "terminal": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci02-terminal.json",
+      "sha256": "8713ce5d8d36c6db8532fd5be7af525fb5ecfa4e80c779bcebfac84c272c2a8b"
+    },
+    "closeoutTiming": {
+      "jobCompletedAtUtc": "2026-10-22T14:16:05Z",
+      "terminalRunUpdatedAtUtc": "2026-10-22T14:25:39Z",
+      "differenceSeconds": 574,
+      "meaning": "Difference between actual job completion and terminal run updated_at; not additional test runtime or proof of root cause of delayed metadata."
+    }
+  },
+  "t04": {
+    "runId": "39795876982",
+    "attempt": 1,
+    "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39795876982",
+    "reservationId": "bc9e65ee4636e190ebb16283b062ac5ebf6ff58a998945244dff65c850d554ff",
+    "profile": "SUPABASE_T04",
+    "status": "PENDING",
+    "progress": {
+      "source": "Actual REST jobs endpoint observed21:33:41local",
+      "jobId": "119882939459",
+      "jobStatus": "in_progress",
+      "startedAtUtc": "2026-10-22T14:27:56Z",
+      "boundary": "Parent run/gh run view queued snapshot lagged detail; do not infer actual runner waiting from that stale parent status."
+    },
+    "admission": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/heavy-t04-admission02.json",
+      "sha256": "5df6da6aa7345fbb04b1ff11af81741a72edd7a3eaf7c2e43e1738d80e088a4f"
+    }
+  },
+  "activePolicy": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase01.json",
+    "sha256": "86a7ed053fbebcfad314ef985834fb4d70017d61548b15f2d4ad61d7f3390dcc"
+  },
+  "phaseCounts": {
+    "publication": 2,
+    "ci": 2,
+    "heavy": 2,
+    "reviewRounds": 4
+  },
+  "extraHeavy": {
+    "ownerDecision": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/owner-extra-heavy-decision01.json",
+      "sha256": "c61352fd7292b75c5dc22fff0b0cf25418a57f1598c378f8597487283c73ac8c"
+    },
+    "netAdditional": 1,
+    "status": "AUTHORIZED_NOT_INITIALIZED",
+    "plan": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-extra-heavy-successor-2026-10-22.md",
+      "sha256": "f179653027d0dbde7d600e4ead383566f5af282945f7260e144a61909a58ebf0"
+    },
+    "expectedReplacementHeavyIfNoMoreParentActions": 7,
+    "condition": "Actual terminal PASS/reclaim/settle, pending[], then close old parent, record fresh data and two independent data reviews before init."
+  },
+  "auth": "DEFERRED_NO_MUTATION",
+  "main": "UNCHANGED_FULL_GATE_PENDING",
+  "deadlineUtc": "2026-10-22T17:00:00Z",
+  "next": "Wait exact T04 terminal; collect+settle actual receipts. On failure stop source dependencies, no retry/phase escape. On PASS prepare/approve successor without replaying T04. Full35/760/12 still required."
+}

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "permission-staging-introspection-execution-v1",
+  "status": "STARTED",
+  "startedAtUtc": "2026-10-22T01:25:37.543Z",
+  "deadlineUtc": "2026-10-22T04:00:00.000Z",
+  "targetProjectRef": "ineckiashpwloncxnbqx",
+  "forbiddenProjectRef": "kfqjdfwxhkdwihjobpny",
+  "browser": "OWNER_SELECTED_IAB",
+  "editorUrl": "https://supabase.com/dashboard/project/ineckiashpwloncxnbqx/sql/3765a94e-33a4-44c2-9580-289823e94a38",
+  "database": "Primary database",
+  "role": "postgres",
+  "sourceSHA256": "a5097677e0f2c27e764b10768061b5d0cd368ee643b282eca6826caa13fb284b",
+  "manifestSHA256": "796d0073885dafaada5b852675227742c584f6ad4cd8a0020dbefca6c6f1fcaa",
+  "sourceBytes": 9030,
+  "uiClipboardSHA256": "ab5dc5589947832bf61e0720a14f0f21e629f35c38db15dc418f63dc96f18b53",
+  "uiClipboardBytes": 9183,
+  "newlinePairs": 153,
+  "normalization": "CRLF_TO_LF",
+  "normalizedExact": true,
+  "reviewers": [
+    {
+      "name": "release_code_inventory_20261022",
+      "scope": "source",
+      "verdict": "APPROVE",
+      "newlineDelta": "APPROVE"
+    },
+    {
+      "name": "continuation_operations_review",
+      "scope": "operations",
+      "verdict": "APPROVE",
+      "newlineDelta": "APPROVE"
+    }
+  ],
+  "maxRunClicks": 1,
+  "documentedRequestTimeoutSeconds": 60,
+  "retries": 0,
+  "mutation": false,
+  "businessTestsRun": false
+}

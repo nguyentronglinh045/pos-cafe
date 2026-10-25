@@ -1,0 +1,20 @@
+# Phương án dừng retry và thay thế phần đo T04 — 24/10/2026
+
+Tài liệu chuẩn bị trong lúc CI mới của source `4e78a8c11d2d895ccebaccd2b2f7d3b2c69bcb3e` đang chạy. Đây là kế hoạch có điều kiện, chưa triển khai và không phải bằng chứng runtime PASS.
+
+Lượt hiện tại chỉ xác nhận một diagnostic segment cố định: full sáu Candidate tests → image measurement → observe/restore/verify trên cùng backend. Nếu không đạt, không chạy lại whole hoặc lặp segment trên cùng giả thuyết. Whole trước đó vẫn FAIL; kết quả đoạn riêng không đóng acceptance whole.
+
+| Điểm dừng mới | Bằng chứng dùng kết luận | Hành động tiếp theo |
+| --- | --- | --- |
+| Warm predicate 65 | Ba operand hữu hạn status/cache/hash, local opaque-origin và stable-origin controls | Phân biệt HTTP/body/CDP-cache; nếu cache vẫn false trên origin đúng, khảo sát header, partition/cache policy của actual Edge response trong control hẹp, không sửa app theo suy đoán. |
+| Fresh-after-unlink 66 | Stage29, receipt/cleanup và existing exact oracle | Kiểm publish/unlink và response404/no-store; phân biệt lỗi nghiệp vụ với harness trước khi đổi code. |
+| Timing predicate67 | Target ordinal, actual elapsed integer, observed/capped bits, observation mask | Nếu request thật ra ngoài cửa sổ750ms, tách browser measurement khỏi event loop của synchronous full guard. Không tăng750ms, không dùng thời gian target giả cho elapsed. |
+| Transport/cleanup/admission | Typed finite failure + original first-failure + separate cleanup bit | Sửa đúng tầng admission/receipt hoặc cleanup; không nhận partial receipt thành PASS. |
+
+Phương án ưu tiên khi timing bị chặn: browser worker riêng, controller giữ toàn bộ full guard/physical checks và quyền DB. Cùng source/run/backend/checkpoint/deadline; parent phát lệnh đo một lần, child ghi thời điểm thực `performance.now` trong trang, chụp đúng59/60/61 với cùng semantics CDP/hash/status. Guard failure phải lập tức hủy child và luôn từ chối PASS; vẫn giữ lỗi measurement đầu tiên đã ghi nhận, ghi lỗi guard/cleanup về sau riêng biệt, và ghi UNKNOWN nếu không xác định được thứ tự nhân quả. Dừng mọi measurement/business effect mới; chỉ tiếp tục owned cleanup/restore trong deadline hiện hữu, sau khi child đã hủy và settled hoặc tiến trình thuộc task đã được xác minh kết thúc, để child không chạy đua với restore. Giữ đủ45s cleanup, một owner đóng browser, một owner restore DB/storage. Child chỉ nhận đầu vào browser hữu hạn và URL asset cần đo; credentials DB và quyền orchestration/write giữ ở controller, không tạo backend mới hoặc reset deadline. Elapsed phải lấy requestAt trừ cold.completedAt trong cùng renderer, tuyệt đối không trừ clock Node với clock renderer. Transport giữ bounds/privacy hiện hữu và đủ source/run/attempt/backend binding. Chỉ kết quả đầy đủ có source/run/backend binding mới qua validator hiện hữu. Không dùng đoạn ngủ62s không giám sát.
+
+Gate trước khi dùng phương án đó: positive/cold/warm/no-store/unlink control qua HTTP/browser thật; guard chậm trong controller không làm lệch measurement; guard failure giữa các mốc phải hủy đo và từ chối PASS; lỗi body, page/context/browser close treo vẫn giữ nguyên nguyên nhân và cleanup failure; IPC/receipt sai source/backend/thiếu mốc/duplicate/out-of-order bị từ chối. Cần hai review độc lập lại phần lifecycle và acceptance trước runtime. Không xây framework tổng quát hoặc đổi acceptance để rút ngắn thời gian.
+
+Nếu thời gian dự án không đủ cho thay đổi worker và xác nhận: giữ T04 **BLOCKED**, giữ nhánh review chưa merge/deploy; dùng các đoạn đã thực chạy làm bằng chứng chẩn đoán có giới hạn. Không gọi việc hoãn đó là PASS, không ghép các backend thành một whole PASS. Phần này là phương án báo người dùng, không tự nhận quyền bỏ acceptance.
+
+Điểm code: `scripts/permission-t04-image-measurement.mjs:145` full gate, `:300` browserGet gate, `:389` timing loop, `:395` actual browser elapsed; `scripts/permission-runtime-t04.mjs:187` full Linux envelope guard, `:251` image helper integration. Đây là rủi ro suy từ source; actual backend timing của bản sửa đang chờ diagnostic.

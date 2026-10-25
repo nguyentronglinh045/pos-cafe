@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "pos-public-readonly-readiness-v1",
+  "recordedUtc": "2026-10-23T15:52:20.835Z",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "frontendCandidateSHA": "eac4359d28b20b52309c20af7aa272362043c6c0",
+  "calls": [
+    {
+      "path": "/auth/v1/settings",
+      "method": "GET",
+      "status": 200,
+      "bytes": 610
+    },
+    {
+      "path": "/rest/v1/rpc/permission_get_contract",
+      "method": "POST",
+      "status": 200,
+      "bytes": 59
+    }
+  ],
+  "auth": {
+    "emailEnabled": true,
+    "signupEnabled": true,
+    "autoConfirm": true
+  },
+  "contract": {
+    "permissionContractVersion": 2,
+    "writeProtocolVersion": 1
+  },
+  "credentials": "Only public apikey to pinned target; no Auth session or GitHub/Vercel token",
+  "mutation": false,
+  "applicationSmoke": "NOT_RUN",
+  "deployment": "NOT_RUN",
+  "status": "PASS"
+}

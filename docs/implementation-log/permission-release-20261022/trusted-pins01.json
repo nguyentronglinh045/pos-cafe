@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "permission-trusted-pins-check-v1",
+  "atUtc": "2026-10-22T01:53:35.101Z",
+  "sourceSHA": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+  "source": "EXACT_COMMITTED_GIT_BLOBS",
+  "trustedFiles": 43,
+  "mismatches": [],
+  "productionEnabled": false
+}

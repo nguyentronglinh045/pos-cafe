@@ -1,0 +1,27 @@
+{
+  "observedAt": "2026-10-22T07:46:09.194994+00:00",
+  "command": "codex mcp list --json (output sanitized to Supabase enabled/URL/auth only)",
+  "servers": [
+    {
+      "name": "pos_cafe_supabase_ro",
+      "enabled": false,
+      "url": "https://mcp.supabase.com/mcp?project_ref=kfqjdfwxhkdwihjobpny&read_only=true&features=database,docs",
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "supabase",
+      "enabled": false,
+      "url": "https://mcp.supabase.com/mcp?project_ref=kfqjdfwxhkdwihjobpny",
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "supabase_pos_cafe",
+      "enabled": true,
+      "url": "https://mcp.supabase.com/mcp?project_ref=ineckiashpwloncxnbqx&read_only=true&features=database,docs",
+      "authStatus": "not_logged_in"
+    }
+  ],
+  "databaseRequestsSent": 0,
+  "readOnlySqlProbe": "NOT_RUN_AUTHENTICATION_REQUIRED",
+  "loadedConversationTransport": "NOT_RELOADED; do not use cached database tools yet"
+}

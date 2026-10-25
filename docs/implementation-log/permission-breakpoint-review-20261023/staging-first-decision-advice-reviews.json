@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "permission-staging-first-advice-review-v1",
+  "recordedAtUtc": "2026-10-23T08:49:20.850Z",
+  "candidates": {
+    "docs/implementation-log/permission-breakpoint-review-20261023/staging-first-decision-advice.md": "1b9cdc56be5eeabd84ede5294d819d52966a58c87ce4192764efac50bfe25bc6",
+    "docs/implementation-log/permission-breakpoint-review-20261023/paused-root-cause-audit.md": "7ff611e9593573c01104a6ffbb5e47834b4ff9e5da55bf5e4ed6fd9713f2013b"
+  },
+  "scope": "Advice only; execution PAUSED, no acceptance/coverage/main/originalDB/deployment permission changed",
+  "reviewers": [
+    {
+      "id": "/root/pause_process_audit",
+      "verdict": "APPROVE",
+      "scope": "process/coverage/authority/realism"
+    },
+    {
+      "id": "/root/pause_critical_path_audit",
+      "verdict": "APPROVE",
+      "scope": "technical staging path/source/identity/Auth/Edge/gate limits"
+    }
+  ],
+  "findings": [
+    {
+      "id": "ADVICE_AUTHORITY_WORDING",
+      "candidateBefore": "a652e01fa8713bc2d755f350e406fc8c9dee5d1add3d8d1960bc448e1ace7cb2",
+      "finding": "Ambiguous Auth/RPC before authorization wording",
+      "resolution": "After new authorization, core Auth/RPC may precede Edge completion; image remains PENDING",
+      "status": "CLOSED_BOTH_FINAL_REVIEWERS_APPROVE"
+    }
+  ],
+  "sources": "Local docs/code and official Supabase changelog/RLS/testing; no live project query or test",
+  "metadataOnly": true
+}

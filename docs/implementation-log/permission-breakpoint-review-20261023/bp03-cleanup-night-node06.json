@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "permission-fixture-cleanup-v1",
+  "status": "NOT_REMOVED_POLICY_REJECTED",
+  "authorization": "Owner reply call_8bc73d1b047d445c979304655c7964ae: Xóa riêng fixture night-node06",
+  "target": "D:/Workspace/pos-cafe-permission-timeonly-20261022/temp/night-node06",
+  "atUTC": "2026-10-23T03:00:45.217Z",
+  "inventoryAfter": {
+    "files": 45,
+    "dirsIncludingRoot": 21,
+    "junctions": 2,
+    "logicalFileBytes": 40919
+  },
+  "evidenceVerifiedBefore": true,
+  "originalEvidenceKept": true,
+  "codeUnchanged": true,
+  "deletionAttempts": [
+    {
+      "scope": "Remove exact junctions then recursive owned fixture",
+      "result": "EXEC_COMMAND_REJECTED_BEFORE_PROCESS_START",
+      "reason": "blocked by policy"
+    },
+    {
+      "scope": "Remove only two literal-path junctions without recursion",
+      "result": "EXEC_COMMAND_REJECTED_BEFORE_PROCESS_START",
+      "reason": "blocked by policy"
+    }
+  ],
+  "confirmedBytesReclaimed": 0,
+  "limitations": "No detailed rejection reason supplied. No escalation or alternate deletion mechanism attempted after the narrower action was also rejected."
+}

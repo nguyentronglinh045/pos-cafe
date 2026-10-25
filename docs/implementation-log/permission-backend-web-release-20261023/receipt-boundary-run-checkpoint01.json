@@ -1,0 +1,240 @@
+{
+  "schemaVersion": "permission-receipt-boundary-terminal-v1",
+  "recordedUtc": "2026-10-24T03:41:54.301Z",
+  "sourceSHA": "f8ee03c195127bb440b0ede3142622ed21c3cc96",
+  "sourceTree": "feea4c8694f180f5e4a452214e1d68305c3bc55a",
+  "fingerprint": "f3705ab28ce370b6589ecf628a03685598aaba81494ac1ed6581beb685e3d10a",
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "sourceClean": true,
+  "ciRun": "40056801014",
+  "ci": "PASS18_LIGHT6_343",
+  "t04Run": "40058110136",
+  "attempt": 1,
+  "t04": "FAIL",
+  "collection": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0406.json",
+    "sha256": "a69b1729ba54c61c1e06c81986d14f70992ffbf1983df3028c2f53f25ef29e2a"
+  },
+  "workflowLog": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0406.log",
+    "sha256": "123032c2999d9450c3b596ba7687eba0428c78583823ebdeb5a73617f185f8e2"
+  },
+  "terminalApi": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-terminal-api04.json",
+    "sha256": "f10eab909b707af08a4825a3082a1529d4f1e2ede1335a9b0df765d337c7118d"
+  },
+  "transport": {
+    "status": "VERIFIED_FIXED_ON_CURRENT_REAL_RUN",
+    "readOrdinal": 1,
+    "bytes": 34207,
+    "oldCapBytes": 8192,
+    "newCapBytes": 131072,
+    "capped": false,
+    "publicFailureFacts": 773,
+    "profileDiagnostics": 768,
+    "innerFailureRecovered": true,
+    "actualFailureOperation": "PILOT_HARNESS",
+    "actualFailureCommand": "node",
+    "actualExitCode": 1
+  },
+  "business": {
+    "passedStages": 9,
+    "requiredInPassedStages": 275,
+    "failedStage": "candidate-e2e",
+    "notRunStages": [
+      "candidate-seed-recovery-database",
+      "candidate-roles-e2e",
+      "realtime-e2e",
+      "rollback-additive-database",
+      "rollback-preflight-database",
+      "rollback-recovery-database",
+      "transition-database",
+      "transition-e2e",
+      "transition-compatibility-database"
+    ],
+    "candidate": {
+      "inventoryComplete": true,
+      "discovered": 6,
+      "attemptsEach": 1,
+      "passedTests": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "failedTests": [
+        4,
+        6
+      ],
+      "runnerErrors": 0,
+      "hookErrors": 0
+    },
+    "full35Acceptance": "BLOCKED",
+    "supplemental12Context34Closure": "PENDING"
+  },
+  "cleanup": {
+    "outer": true,
+    "outerFailure": null,
+    "innerFailed": 0,
+    "d12": true,
+    "reclaim": {
+      "schemaVersion": "permission-ci1-reclaim-v1",
+      "status": "RECLAIMED",
+      "imageUnlinked": true,
+      "imageLogicalBytes": 19327352832,
+      "imageAllocatedBytes": 19327389696,
+      "hostFreeBeforeBytes": 72226492416,
+      "hostFreeAfterBytes": 91553886208,
+      "measuredHostFreeDeltaBytes": 19327393792,
+      "remaining": "compact control/status/safe export only; ephemeral runner"
+    }
+  },
+  "outside": [
+    {
+      "measuredBytes": 568758272,
+      "budgetBytes": 1073741824,
+      "reservedFutureBytes": 16777216,
+      "technicalQuota": false
+    }
+  ],
+  "remote": {
+    "recordedUtc": "2026-10-24T03:40:20.200Z",
+    "main": {
+      "ref": "refs/heads/main",
+      "node_id": "REF_kwDOS0i56q9yZWZzL2hlYWRzL21haW4",
+      "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/git/refs/heads/main",
+      "object": {
+        "sha": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+        "type": "commit",
+        "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/git/commits/2da0d7e10d65ed4e79c8628d65220582a6cbd32b"
+      }
+    },
+    "review": {
+      "ref": "refs/heads/review/permission-staging-20261023",
+      "node_id": "REF_kwDOS0i56toALXJlZnMvaGVhZHMvcmV2aWV3L3Blcm1pc3Npb24tc3RhZ2luZy0yMDI2MTAyMw",
+      "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/git/refs/heads/review/permission-staging-20261023",
+      "object": {
+        "sha": "f8ee03c195127bb440b0ede3142622ed21c3cc96",
+        "type": "commit",
+        "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/git/commits/f8ee03c195127bb440b0ede3142622ed21c3cc96"
+      }
+    },
+    "in_progress": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "queued": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "waiting": {
+      "total_count": 0,
+      "workflow_runs": []
+    }
+  },
+  "capacity": {
+    "retainedLogicalBytes": 612878237,
+    "capBytes": 805306368,
+    "retained": [
+      {
+        "path": "D:/Workspace/pos-cafe-permission-run-20261020",
+        "logicalBytes": 218509891
+      },
+      {
+        "path": "D:/Workspace/pos-cafe/.git",
+        "logicalBytes": 48840929
+      },
+      {
+        "path": "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+        "logicalBytes": 4981266
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+        "logicalBytes": 327792389
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+        "logicalBytes": 1597957
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+        "logicalBytes": 5135304
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022",
+        "logicalBytes": 1405939
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-final-push-20261023",
+        "logicalBytes": 516026
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023",
+        "logicalBytes": 4098536
+      }
+    ],
+    "linksFollowed": false,
+    "disks": [
+      {
+        "path": "C:/",
+        "freeBytes": 189345144832
+      },
+      {
+        "path": "D:/",
+        "freeBytes": 98847608832
+      }
+    ],
+    "allocatedBytes": "NOT_MEASURED; logical inventory only"
+  },
+  "localControls": {
+    "newGroup": 27,
+    "previousGroup": 2,
+    "remaining": 29,
+    "paths": [
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-8Msuj1",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-9PTnGC",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-ClgGQQ",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-dkQWAY",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-Dv90RV",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-gHLufw",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-gib758",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-hbmL5g",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-HSOaq8",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-Jhrif8",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-K2Qqoy",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-kmkLdD",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-MEKR5S",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-pNoNVw",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-SrxPdq",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-svVnZD",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-uzIWKh",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-vb23yf",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-Vju01H",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-WjVjFX",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-xdsfmC",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-xJpGg8",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-xkyqKF",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-yMFRuJ",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\receipt-reporter-control-72PBho",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\receipt-reporter-control-NxaC2q",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\receipt-reporter-control-ZYp6za",
+      "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/candidate-diagnostic-control-I5Zvys",
+      "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/candidate-diagnostic-control-B7roIZ"
+    ],
+    "deleteExecution": false,
+    "reason": "Automatic approval policy rejected Remove-Item; no workaround attempted",
+    "pathsFile": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/unremoved-control-paths01.txt",
+      "sha256": "e26ab8b32d1dcbe036587d42189b770a566794b5bfbe1408deffd4b1658a236d"
+    }
+  },
+  "consumed": {
+    "publication": 4,
+    "automaticLightCi": 4,
+    "T04": 4
+  },
+  "remainingRuns": 0,
+  "otherSevenProfiles": "HELD",
+  "prMergeDeploy": "NOT_AUTHORIZED",
+  "historicalPriorT04Cause": "UNKNOWN; not inferred from current-run fix"
+}

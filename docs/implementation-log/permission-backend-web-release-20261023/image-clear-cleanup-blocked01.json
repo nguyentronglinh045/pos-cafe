@@ -1,0 +1,26 @@
+{
+  "recordedUtc": "2026-10-24T04:14:25.723Z",
+  "status": "AUTOMATIC_APPROVAL_REVIEW_REJECTED_BEFORE_PROCESS_CREATION",
+  "action": "PowerShell Remove-Item -LiteralPath of exactly seven user-authorized new control directories after verification",
+  "reason": "blocked by policy",
+  "userAuthorized": true,
+  "removalExecuted": false,
+  "reclaimedBytesClaimed": 0,
+  "paths": [
+    "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\candidate-image-clear-reporters-cj5cOP",
+    "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-34c0MU",
+    "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-o3gPhA",
+    "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-Ruc35d",
+    "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-uOZEux",
+    "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-w37AUk",
+    "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-ZayeQx"
+  ],
+  "inventory": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/candidate-image-clear-temp-inventory01.json",
+    "sha256": "642594f7762f747bb7d8691c3d509a953f13f25a8804cd5f32930815fb42bde8"
+  },
+  "logicalBytes": 278493,
+  "files": 30,
+  "allocatedBytes": "NOT_MEASURED",
+  "noAlternativeDeletionAttempt": true
+}

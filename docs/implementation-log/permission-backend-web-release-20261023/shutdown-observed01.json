@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "permission-owner-shutdown-observed-v1",
+  "requestedUtc": "2026-10-23T17:25:37.753Z",
+  "delaySeconds": 20,
+  "estimatedShutdownUtc": "2026-10-23T17:25:57.753Z",
+  "command": "C:/Windows/System32/shutdown.exe",
+  "args": [
+    "/s",
+    "/t",
+    "20",
+    "/d",
+    "p:0:0",
+    "/c",
+    "Codex da luu ban giao va bang chung kiem thu theo yeu cau cua chu may."
+  ],
+  "exitCode": 0,
+  "errorCode": null,
+  "accepted": true,
+  "readyReceiptSHA256": "8b86773310bd8992c646c7fc53e70103a72d0cb92acebe5a75cea2493c072262",
+  "handoff": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-backend-web-release-2026-10-23.md",
+    "sha256": "cbec6095b1dce3b686211874cbcc6f20cc890ef6cc80e3fb18234cbb96e39e6f"
+  },
+  "workStatus": "T04_FAIL_REVIEWED_AND_RECLAIMED; full gate incomplete, main/deployment unchanged"
+}

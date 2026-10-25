@@ -1,0 +1,427 @@
+{
+  "schemaVersion": "permission-evidence-file-index-v1",
+  "atUtc": "2026-10-22T03:23:29.754Z",
+  "scope": "EXCLUDES_THIS_INDEX_FILE",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 88,
+      "sha256": "f747e6118c551097fafbbc51b38cc1916152431ec0a779f78c975fd28c165769"
+    },
+    {
+      "path": "blocked-old-waiting-run01.json",
+      "bytes": 1057,
+      "sha256": "0ade7b59bd7ff676d09a5bb3f7e147ba4d111fb1f7cd3dd16bc2cfae0ce11f0c"
+    },
+    {
+      "path": "bootstrap-awaiting-confirmation01.png",
+      "bytes": 91513,
+      "sha256": "f7898fca2b23b98ee3dd80ae6205dcd5fa4f8b79ef4ebaff261dc17ae6f5df83"
+    },
+    {
+      "path": "bootstrap-editor-proof01.json",
+      "bytes": 737,
+      "sha256": "1d37a9b6c5808fbf552d4572f99557e57720c282d0919d4782b04583f0fe55d4"
+    },
+    {
+      "path": "bootstrap-input01.json",
+      "bytes": 691,
+      "sha256": "fb37ee6d3ce1561815b4499891af2df603e9e613ca30cf5a641714a177cbb777"
+    },
+    {
+      "path": "bootstrap01/bootstrap.manifest.json",
+      "bytes": 225333,
+      "sha256": "789ca2430e6c38dc1d31f6ee165022a2f537d8a1550941fffb24d74872373204"
+    },
+    {
+      "path": "bootstrap01/bootstrap.sql",
+      "bytes": 541589,
+      "sha256": "0094140c55dfe0ab1f7d8e4b32862e3a50318dc743a15a7e2cf9234a69b2073e"
+    },
+    {
+      "path": "bootstrap01/reconcile.sql",
+      "bytes": 2648,
+      "sha256": "83dc76b580566d119a334af6c070ae8dde1b598a4fc89251b85e3c6b5541153a"
+    },
+    {
+      "path": "chrome-signin-required.png",
+      "bytes": 47421,
+      "sha256": "b9cd22dea9cb1500cb2a9e81e887d74a6f4b6202574ecca8ab6ef39c4548b2a0"
+    },
+    {
+      "path": "ci-portability/admission-pregrant-refusal01.json",
+      "bytes": 499,
+      "sha256": "226e000a6dc9058d434c29cb4dade9e0ac537c3d023ce9e0c0c4a5984864863a"
+    },
+    {
+      "path": "ci-portability/admission-remediation01-dispatch.json",
+      "bytes": 1511,
+      "sha256": "b0f896b23eaeedfa03485972f4194810e0a7c844b484ff769c168dc04eb23273"
+    },
+    {
+      "path": "ci-portability/admission-remediation01-dryrun.json",
+      "bytes": 1358,
+      "sha256": "f2366b5b04a62b236382a73293acff88f4110d0cdcfcd141b55225fad996da4a"
+    },
+    {
+      "path": "ci-portability/candidate-commit01.json",
+      "bytes": 2166,
+      "sha256": "81df46fa8cede953098709f1f9705b114d3509f1993b3302d51e23d79bd43e7e"
+    },
+    {
+      "path": "ci-portability/candidate-source01.json",
+      "bytes": 2813,
+      "sha256": "b260122b9485c841df120eeee5c4184a71f92fa0c2bf6f1d3a26f411d91235de"
+    },
+    {
+      "path": "ci-portability/candidate-source01.patch",
+      "bytes": 62194,
+      "sha256": "43bb7309f50033ffa99a536ae5747faa2f86079b2f943810bf72c7159e2e8510"
+    },
+    {
+      "path": "ci-portability/ci02-native-cleanup.json",
+      "bytes": 365,
+      "sha256": "c45296de0decbfee3a2e46f8aacc1d3b3a305e351f716e050f9076e25b171f81"
+    },
+    {
+      "path": "ci-portability/ci02-pg16-runtime.json",
+      "bytes": 1261,
+      "sha256": "12f22b83802c43c6e9357d5ff6dbbdeb1fb3a1dda354329fc31121f15d48dd80"
+    },
+    {
+      "path": "ci-portability/ci02-result.json",
+      "bytes": 1748,
+      "sha256": "56855d401f075429a9347fa2ee053c69e6ea271f5701bef5c4642512db8b038b"
+    },
+    {
+      "path": "ci-portability/ci02-status01.json",
+      "bytes": 408,
+      "sha256": "90fb568e242e8dc4aa284d42f73793cce2f1d0044da4b95e3afc2c93099e1110"
+    },
+    {
+      "path": "ci-portability/ci02-status02.json",
+      "bytes": 226,
+      "sha256": "c1f70efb8b41f6ba27cd80267747bc743a94572ae135f1f4773a77b090fbba16"
+    },
+    {
+      "path": "ci-portability/ci02-status03.json",
+      "bytes": 226,
+      "sha256": "555d0627e6bc1416e0eaef44327820cd5351009d804203b801281ebbed0024d4"
+    },
+    {
+      "path": "ci-portability/ci02-status04.json",
+      "bytes": 226,
+      "sha256": "4e2cd28d2fe7136d935664b06cbf44004bd5f542dcb760c90a207e90e8a900a5"
+    },
+    {
+      "path": "ci-portability/ci02-summary.json",
+      "bytes": 9728,
+      "sha256": "488dfb3016d5a4404b50db010db859702839e3883abd85b480ab257c4b30f823"
+    },
+    {
+      "path": "ci-portability/ci02-terminal-metadata.json",
+      "bytes": 524,
+      "sha256": "cd69cb5166324bf98788f3c9bf94bd33b764df8f97e40df00cc0a46cfe1a75f0"
+    },
+    {
+      "path": "ci-portability/ci02-workflow.log",
+      "bytes": 88689,
+      "sha256": "49fad6090482462ef5850aba941cf631189d8bb6eed4e9dcc94b7d4c1deb8c6b"
+    },
+    {
+      "path": "ci-portability/index-stat-refresh01.json",
+      "bytes": 508,
+      "sha256": "52f29ad169816fce8240431819f2a4801682a3cb7dd659f9a659a2b05b75fc06"
+    },
+    {
+      "path": "ci-portability/local-canonical-bytes01.json",
+      "bytes": 179199,
+      "sha256": "5d2f15704c26c4bfa0cf105c226df89372d425279805446f76b912219d69d65d"
+    },
+    {
+      "path": "ci-portability/local-node-tools-remediation01.json",
+      "bytes": 4555,
+      "sha256": "5b78d6ec8929ea0993cf977b9f64026ba0e76c7669557f7705b0040c237d3fa2"
+    },
+    {
+      "path": "ci-portability/local-node-tools-remediation01.log",
+      "bytes": 778350,
+      "sha256": "48471b2c5a6675fb72e5108121c48c868c6b1eb743441acf7f2103480f9617bf"
+    },
+    {
+      "path": "ci-portability/local-node-tools-remediation02.json",
+      "bytes": 4634,
+      "sha256": "5dceec2ec710272643ce2581d2cd0462d0044d0d34ff4f76b242804f3c931b02"
+    },
+    {
+      "path": "ci-portability/local-node-tools-remediation02.log",
+      "bytes": 883856,
+      "sha256": "0cb13e6764b91a6acce337deb44353a2c97e390a18959ba2081cf0dac6ba3a96"
+    },
+    {
+      "path": "ci-portability/local-node-tools-remediation03.json",
+      "bytes": 4657,
+      "sha256": "eaf4e6239b452cf937b27c0391415c933dab1aa27edc59c7f2ab0b596fbb185b"
+    },
+    {
+      "path": "ci-portability/local-node-tools-remediation03.log",
+      "bytes": 839545,
+      "sha256": "53353abaabff106e4992e994f2bb87f1dd7d15bdd7ce087279d90f048db3e792"
+    },
+    {
+      "path": "ci-portability/local-setup-correction01.json",
+      "bytes": 2046,
+      "sha256": "e6045d46d816f300085db3da30eae170e8aa6234dbcc66b139d4029731df41a3"
+    },
+    {
+      "path": "ci-portability/local-staging-helper-20261022T0219455571516Z.log",
+      "bytes": 1355,
+      "sha256": "bbe5f64daef4057223bf093fe98c5e43b20798a2b5850a5efabaa2760bfd841b"
+    },
+    {
+      "path": "ci-portability/node-tap-diagnostics-targeted-01.log",
+      "bytes": 16140,
+      "sha256": "55e77e39ee830ead71fb386aa88e4a5e9d04f59ea122d6f2f9fa699220d59f51"
+    },
+    {
+      "path": "ci-portability/node-tap-diagnostics-targeted-02.log",
+      "bytes": 15176,
+      "sha256": "c89628715e4d4c70753a85fb9e94206ab55b5143e15e420529640299255a2b61"
+    },
+    {
+      "path": "ci-portability/owner-authorization-remediation01.json",
+      "bytes": 591,
+      "sha256": "93613436b1442f118b131c4d8b256ef801cb8f47c43e19a2ce8ad54b38d6cb25"
+    },
+    {
+      "path": "ci-portability/pin-ui02-inspection.json",
+      "bytes": 2066,
+      "sha256": "d2f1190a0d10ca1c17f57e71e14fc72d9dae6a630d7090fd4af103f2eb39cf16"
+    },
+    {
+      "path": "ci-portability/pin-ui02-validation.json",
+      "bytes": 580,
+      "sha256": "c2ab1fdd1c0e1c10539bced962e776b474000302d7ea99da114d6dd678b9076f"
+    },
+    {
+      "path": "ci-portability/pin-ui02.zip",
+      "bytes": 66520,
+      "sha256": "5ad1de5f3d5b03b3af84fcbd1b11d4a2455666f9a3d444e82f1259f7d586ec2a"
+    },
+    {
+      "path": "ci-portability/pin-ui02/manifest.json",
+      "bytes": 2591,
+      "sha256": "529176903d3f631ec1af999ab200e0386bf6880f6f686319c4a20f8077aca6af"
+    },
+    {
+      "path": "ci-portability/pin-ui02/required_pin_change__desktop.png",
+      "bytes": 23395,
+      "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e"
+    },
+    {
+      "path": "ci-portability/pin-ui02/required_pin_change__mobile.png",
+      "bytes": 18520,
+      "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f"
+    },
+    {
+      "path": "ci-portability/pin-ui02/required_pin_change__tablet.png",
+      "bytes": 21410,
+      "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca"
+    },
+    {
+      "path": "ci-portability/publication-autoci-remediation01.claim.json",
+      "bytes": 1441,
+      "sha256": "d5fb2f7205a1651f68223d70b4a1f21e68c580149c4e98ff63fe02903d1be99c"
+    },
+    {
+      "path": "ci-portability/publication-packet-remediation01.json",
+      "bytes": 3480,
+      "sha256": "88cdaef84606ad227ac15cb41a8940da4672cd3da803bbc4e787f71f32a1eea2"
+    },
+    {
+      "path": "ci-portability/publication-packet-remediation01.proposed.json",
+      "bytes": 3416,
+      "sha256": "2f2c7da12cf9ae7a47ca95098001e005205f7ebfc3d4a5c0419b11b6f0a3615a"
+    },
+    {
+      "path": "ci-portability/publication-policy-remediation01.draft.json",
+      "bytes": 2337,
+      "sha256": "dee69a29a8b2e89e47480dda3d24ae08fbe1d99041635a974711f89608d6dfca"
+    },
+    {
+      "path": "ci-portability/publication-policy-remediation01.json",
+      "bytes": 2337,
+      "sha256": "18325065527ac125f670932e4cbdee3846466cf7045b36790438dac6bf04ab55"
+    },
+    {
+      "path": "ci-portability/publication-policy-remediation01.proposed.json",
+      "bytes": 2291,
+      "sha256": "68071f2edde0465678481f2313374e82c50680d5d5563055e48ab133ed53dd03"
+    },
+    {
+      "path": "ci-portability/publication-readback01.json",
+      "bytes": 900,
+      "sha256": "ff83e5f1959b61c7f21cdb6a5086c7669a8b33109030d5d9f05ad4bcdfbaccc2"
+    },
+    {
+      "path": "ci-portability/publication-reviews-remediation01.json",
+      "bytes": 350,
+      "sha256": "685fb6c398c214968527184a9b778e5db1ac5672a0e44e7dba4c499fb9b75c0f"
+    },
+    {
+      "path": "ci-portability/publication-reviews-remediation01.pending.json",
+      "bytes": 350,
+      "sha256": "246390534551ce0163c5c9139951d58e7f8a5e7d24e34f5e61d20d7cfbcf0752"
+    },
+    {
+      "path": "ci-portability/publication-reviews-remediation01.proposed.json",
+      "bytes": 156,
+      "sha256": "09dd0c30e3b45f17dc89fbe2f2812ccc4fa20c4f2d8e9c96e8fed81d8cc15643"
+    },
+    {
+      "path": "ci-portability/review-closure01.json",
+      "bytes": 952,
+      "sha256": "acd0cf4643fd20d417c715b787ec49376af4c0a49eba33bf95c8bbbd79603d0b"
+    },
+    {
+      "path": "ci01-summary.json",
+      "bytes": 3736,
+      "sha256": "b8d9ad5718e8b9dfe2181bb34fedbc29a7bbd440be688d82238e8cf5a597c74a"
+    },
+    {
+      "path": "ci01-workflow.log",
+      "bytes": 50433,
+      "sha256": "7d6b1a899256a71c1a154658943ba1e3bdd0a0c8da4b0dff98c57a6ce1625c0a"
+    },
+    {
+      "path": "cutoff1015-checkpoint.json",
+      "bytes": 778,
+      "sha256": "1f3f9b482f2742e9f6884df789fbd6a3bcd7c263df147d7b9f6117c7901c54b6"
+    },
+    {
+      "path": "docs-review-closure01.json",
+      "bytes": 1591,
+      "sha256": "ad3b3230073d9a564a3b614547ba1768e027ebfbb207ebad05e6dccb7302dde2"
+    },
+    {
+      "path": "final-readback01.json",
+      "bytes": 724,
+      "sha256": "e5c3b218b4ff15baaf8a26133d7625836133ebc23a7c9c200f324bd2de9a5944"
+    },
+    {
+      "path": "fullgate-obligation-map01-status.json",
+      "bytes": 895,
+      "sha256": "f91ab8b46887c884079593ae7b3dda53f03ceadd58e85e0204d4cf7b754e9e30"
+    },
+    {
+      "path": "fullgate-obligation-map01.json",
+      "bytes": 35715,
+      "sha256": "2851f3ece8e27aeb98a6119d622b0eb25008a16c0543634ee1ad0d879a4f7c74"
+    },
+    {
+      "path": "introspection01-export.json",
+      "bytes": 14900,
+      "sha256": "7fe96a229056901d16aeee6a68f0faec62fde8bc5ab59a746faf567255802550"
+    },
+    {
+      "path": "introspection01-result.json",
+      "bytes": 692,
+      "sha256": "a27b8b0b87c6646e44e7758ff3949e3e5a85aa045e7ca39739544b58accc6b85"
+    },
+    {
+      "path": "introspection01-result.png",
+      "bytes": 80565,
+      "sha256": "140274b915b73bf18249dd2286f1974ceb98f99e51b44a5b08d1d0bc3197b635"
+    },
+    {
+      "path": "introspection01.claim.json",
+      "bytes": 1335,
+      "sha256": "f4564e5eeb2f7455b2ed9ae0babcf0956cd2004472c28d1ed6d27a6a2eb9f82a"
+    },
+    {
+      "path": "local-edge-staging-guards01.json",
+      "bytes": 1508,
+      "sha256": "b07654c4a5972d70f63c72c300c9b2e38e9da9b6ef66b5eea408f5a0cb3866d2"
+    },
+    {
+      "path": "local-edge-staging-guards01.log",
+      "bytes": 4784,
+      "sha256": "6b050bd725db8b5c22bf37c49ba1761b8c408d62d624eae5572b8d5e5b5b3b47"
+    },
+    {
+      "path": "local-node-tools01.json",
+      "bytes": 4338,
+      "sha256": "32483e8dc3573840fef8cfed8f56ed0d61db3767c1fdf03e6765253b3eebf7c1"
+    },
+    {
+      "path": "local-node-tools01.log",
+      "bytes": 835783,
+      "sha256": "bcb8c1c545fdc4e17782568b5bbf6288bdd0c49c6923a5af7d72711deeb88aa4"
+    },
+    {
+      "path": "old-waiting-run-cancel-authorization01.json",
+      "bytes": 519,
+      "sha256": "6a686c95eafaecc534710f0f799b55a5a1467c61ab7bd568eec36d41ab553619"
+    },
+    {
+      "path": "old-waiting-run-cancel-result01.json",
+      "bytes": 204,
+      "sha256": "5d4a5fe99f1a24c8e6499f24fc6f9f2e33bb9432a8af086d34b7e3c48aff94de"
+    },
+    {
+      "path": "provider-allowlist01.json",
+      "bytes": 14176,
+      "sha256": "1b4fe8bc65a9e516a3aa7d41176d47bc4c6e065b46035f38be2a589aaf7d63f7"
+    },
+    {
+      "path": "provider-observation01.json",
+      "bytes": 13285,
+      "sha256": "b7e1defe89c76d85a0aa7c3d529bb424bc8b5369b0462ec404d10014dff70d8b"
+    },
+    {
+      "path": "publication-autoci.claim.json",
+      "bytes": 783,
+      "sha256": "74fd7017a497ddc2da4658798f68756edca3ac637e04ecf0b9009f7282e5a598"
+    },
+    {
+      "path": "publication-dispatch01.log",
+      "bytes": 403,
+      "sha256": "e76d339d033f5e0f04c1b9762dd1da5377f0168efa012e0bf75e1b42473f046c"
+    },
+    {
+      "path": "publication-dryrun01.log",
+      "bytes": 91,
+      "sha256": "970afb0fdfe469f975bc5746d7026bff2d778954d61ac0d0543e2b2ed65a6710"
+    },
+    {
+      "path": "publication-dryrun02.log",
+      "bytes": 334,
+      "sha256": "a14f036274cd80385c6ce9e6f8000509530ff1e8ae5c4ee8e14510315fb291e8"
+    },
+    {
+      "path": "publication-packet01.json",
+      "bytes": 3887,
+      "sha256": "2b26ca93d9c3b8994eb60afee6ece36c728c4aa841d7913088d13fcad73eaae7"
+    },
+    {
+      "path": "publication-policy01.json",
+      "bytes": 1440,
+      "sha256": "aaf7d7a943927218c1773eb93ba69f308b0e09ec82f9ecff30c87cd4358d6658"
+    },
+    {
+      "path": "publication-result01.json",
+      "bytes": 746,
+      "sha256": "0a10d6d9192050ceaa709005e732eb61bc8282fed5f1754dc033475c3ef78678"
+    },
+    {
+      "path": "publication-reviews01.json",
+      "bytes": 351,
+      "sha256": "f8d5d4a6de68f1b796b1bda693823c45244eb19f6ae51a259cd06e5193c717e5"
+    },
+    {
+      "path": "trusted-pins01.json",
+      "bytes": 269,
+      "sha256": "d64517130a3f5bfdd82efbb1621b899b2df6e3bb9171366b8160b180a6a52e1d"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-23T12:03:58.791Z",
+  "checks": [
+    {
+      "label": "A-owner-api",
+      "revoked": true,
+      "oldToken": "EMPLOYEE_SESSION_REQUIRED"
+    },
+    {
+      "label": "A-cashier-api",
+      "revoked": true,
+      "oldToken": "EMPLOYEE_SESSION_REQUIRED"
+    },
+    {
+      "label": "B-owner-api",
+      "revoked": true,
+      "oldToken": "EMPLOYEE_SESSION_REQUIRED"
+    }
+  ],
+  "uiDemoSession": "retained separately for user",
+  "credentialsFilesContainTokens": false
+}

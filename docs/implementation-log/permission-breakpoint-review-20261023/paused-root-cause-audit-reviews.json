@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "permission-paused-root-cause-review-v1",
+  "recordedAtUtc": "2026-10-23T08:37:39.698Z",
+  "candidateSHA256": "7357da0c9aa3fc219c841a9d46dec6f1c3bf58b84d315dc3d5dc2a9e0c350585",
+  "indexCandidateSHA256": "7afc0949e7e7994677709d6a8f0886af543a66ba42ec4fe4d3d656ca8aea8419",
+  "ownerDecision": {
+    "source": "request_user_input_async call_2adafb006b9248ff8d489420b20f1997 item0",
+    "state": "PAUSED_IMPLEMENTATION_ANALYSIS_ONLY",
+    "new60MinuteGrant": "NOT_AUTHORIZED"
+  },
+  "reviewers": [
+    {
+      "id": "/root/pause_process_audit",
+      "verdict": "APPROVE",
+      "scope": "process/evidence/fair attribution/limits/next60 critique",
+      "workingChangesCaveat": "Reviewer approved staged index candidate only; root must separately preserve actual working bytes"
+    },
+    {
+      "id": "/root/pause_critical_path_audit",
+      "verdict": "APPROVE",
+      "scope": "critical path/source/CI/backend/staging/paused authority"
+    }
+  ],
+  "rootPreservationCheck": {
+    "beforeWorkingSHA256": "8255d828c5d9804f167b3101811062048e7aa86ec04252cf3df9d4c88ff6a2ad",
+    "currentWorkingSHA256": "c3201452aaa63a84074822af28ad85e62171356d82aee6a2c431d5e53c42038c",
+    "removeExactOwnSuffixMatchesBefore": true,
+    "stageStrategy": "HEAD+own reviewed paragraph blob only; no worktree overwrite; 195preexisting added lines retained unstaged"
+  },
+  "scope": "Metadata transcription only; no new execution or source/coverage/DB change"
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "permission-independent-plan-review-v1",
+  "recordedAtUtc": "2026-10-22T14:07:45.735Z",
+  "plan": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-t04-fixture-remediation-2026-10-22.md",
+    "sha256": "52c312264af66d4f5566a45a8b37445bcbc5d87352ddac4f3f999f95c7f01ab8"
+  },
+  "author": "/root/mcp_staging_evidence_review",
+  "reviewers": [
+    {
+      "reviewer": "/root",
+      "scope": "operations-and-budget",
+      "verdict": "APPROVE",
+      "closedFinding": "PLAN-01: removed stale future publication/CI allowances; only actual net+1heavy may be requested, no reset/refund.",
+      "basis": "Read final bytes and actual current publication reservation/ledger, local04 PASS, preserved local03/T04 failures and unchanged full gate."
+    },
+    {
+      "reviewer": "/root/mcp_staging_scope_review",
+      "scope": "source-and-evidence",
+      "verdict": "APPROVE",
+      "basis": "Actual final reviewer message bound exact52c312...; five raw refs, seven426/finite diagnostics, actual17m45 job, current ledger2/2/1 publication pending and Auth zero-count/ConfirmON readback."
+    }
+  ],
+  "scopeLimit": "Plan review does not grant more actions or attest fresh CI/backend/fullgate PASS."
+}

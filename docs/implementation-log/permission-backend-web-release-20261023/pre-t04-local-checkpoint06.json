@@ -1,0 +1,84 @@
+{
+  "recordedUtc": "2026-10-24T06:04:13.016Z",
+  "sourceSHA": "34db1b13ab707bab114fe1d83642d021ff324c93",
+  "sourceTree": "cb6f69c67f70d9391877ab492dd25935b05c428f",
+  "clean": true,
+  "canonicalFingerprint": "fa38fc2ffbfcb7aab99d5b61b69b36d25c936bcdc7b7d98e9f15f7e1570066ab",
+  "sourceIdentityBasis": "Exact frozen Git commit/tree and clean checkout; all 56 trusted canonical blob pins reverified",
+  "trustedPins": 56,
+  "localDisks": [
+    {
+      "DeviceID": "C:",
+      "FreeSpace": 189441200128
+    },
+    {
+      "DeviceID": "D:",
+      "FreeSpace": 98717720576
+    }
+  ],
+  "retained": [
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020",
+      "logicalBytes": 218509891
+    },
+    {
+      "path": "D:/Workspace/pos-cafe/.git",
+      "logicalBytes": 49036364
+    },
+    {
+      "path": "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+      "logicalBytes": 4981266
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+      "logicalBytes": 329094039
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+      "logicalBytes": 1597957
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+      "logicalBytes": 5135304
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022",
+      "logicalBytes": 1405939
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-final-push-20261023",
+      "logicalBytes": 516026
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023",
+      "logicalBytes": 7367554
+    }
+  ],
+  "retainedLogicalBytes": 617644340,
+  "retainedLogicalCapBytes": 805306368,
+  "linksNotFollowed": [
+    "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-0096b055-d65e-4184-b94a-d37a2d493804",
+    "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-e384a654-8af5-47d2-9a7e-e68c5432519a",
+    "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\dangling-docs\\docs-link",
+    "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\present-docs\\docs-alias"
+  ],
+  "allocatedBytes": "NOT_MEASURED",
+  "noLocalInstall": true,
+  "noWslDocker": true,
+  "previousRuntime": {
+    "runId": "40063022066",
+    "sourceSHA": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+    "reclaim": {
+      "schemaVersion": "permission-ci1-reclaim-v1",
+      "status": "RECLAIMED",
+      "imageUnlinked": true,
+      "imageLogicalBytes": 19327352832,
+      "imageAllocatedBytes": 19327397888,
+      "hostFreeBeforeBytes": 72227069952,
+      "hostFreeAfterBytes": 91554471936,
+      "measuredHostFreeDeltaBytes": 19327401984,
+      "remaining": "compact control/status/safe export only; ephemeral runner"
+    }
+  },
+  "newControlsCleanup": "Five controls awaiting answer; 36 earlier authorized controls retained after automatic approval denial, not retried"
+}

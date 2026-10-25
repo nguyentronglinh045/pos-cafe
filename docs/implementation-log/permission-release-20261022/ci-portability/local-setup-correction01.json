@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "permission-ci-local-setup-correction-v1",
+  "atUtc": "2026-10-22T02:30:42.965Z",
+  "sourceRoot": "D:\\Workspace\\pos-cafe-permission-ci-fix-20261022\\code",
+  "operation": "CANONICAL_GIT_BYTES_ONLY_ON_PREVIOUSLY_UNMODIFIED_TRACKED_FILES",
+  "fileCount": 1098,
+  "authorPinsPreserved": [
+    {
+      "path": "ci/release-policy.json",
+      "sha256": "9ec9b5fd12a2abc4c11f4aa77dbe103a1b0d8cb939455672bb2456f79c04f06d"
+    },
+    {
+      "path": "scripts/permission-release-phase-admission.README.md",
+      "sha256": "55e1154d4adc798b9f21db255d0edb73332bceff6bbbd774c06b51e9771af55a"
+    },
+    {
+      "path": "scripts/permission-release-phase-admission.mjs",
+      "sha256": "dfce8e7bf8013a4a5a0bf2e60b3df28409f5ee714e7d9ea08e5da2c93fee1065"
+    },
+    {
+      "path": "scripts/permission-release-phase-admission.test.mjs",
+      "sha256": "918600f4abc8c24a9ee29b9153a597c1894778119656765671bf8c80c905c25e"
+    },
+    {
+      "path": "scripts/permission-staging-cli.mjs",
+      "sha256": "8dfce38ecbaa7fdb373523fa7bb353ca6cd3fe7d90c0192edba26ca29869f1fa"
+    },
+    {
+      "path": "scripts/permission-staging.test.mjs",
+      "sha256": "d5945badbf50634da020e328b1d17f8eb5b3709c445bb853d1ce3e6d2283cc1b"
+    },
+    {
+      "path": "scripts/project-ci-results.mjs",
+      "sha256": "9cbf117e0c296675bdf73ee7fe2a697609851ed41444935a5e034491ac1b1978"
+    },
+    {
+      "path": "scripts/project-ci-results.test.mjs",
+      "sha256": "d5e1426428cb2a9dafeae02dbcc39a527395435a0c28b4cc964c5af4c438bebf"
+    }
+  ],
+  "originalSourceModified": false,
+  "previousRun": "local-node-tools-remediation01.json",
+  "previousSpecCounts": {
+    "tests": 904,
+    "pass": 868,
+    "fail": 36,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "nextRequiredSetup": {
+    "reporter": "tap",
+    "PERMISSION_STATIC_TEST_TMP": "D:/Workspace/pos-cafe-permission-ci-fix-20261022/temp"
+  },
+  "estimatedPeakBytes": 60000000,
+  "startFreeBytes": {
+    "C": 195530481664,
+    "D": 98681294848
+  },
+  "noNetwork": true,
+  "noInstall": true
+}

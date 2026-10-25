@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "permission-staging-setup-apply-claim-v1",
+  "phase": "permission-staging-setup-20261022-1700",
+  "admittedAtUtc": "2026-10-22T09:26:18.9594961+00:00",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "sqlSha256": "5c5c40dd5a0c3e98000a041da34446370fa539f47bd423fbe6196ba682c4e7f5",
+  "manifestSha256": "b404504fd723fe2df25e471f97d9c11eef5431caac23c1f453f4fa3121f082d3",
+  "nonce": "c439a96e8e0a4088865f74185b9a121d",
+  "sourceHead": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "sourceFingerprint": "b966736214d772b33ebcc37bf6d5ad8e8df79c861d09d877dc6db13ffd6758dd",
+  "reviewReceipt": "bootstrap-review01.json",
+  "attemptOrdinal": 1,
+  "maximumAttempts": 1,
+  "state": "CLAIMED_BEFORE_SINGLE_MCP_APPLY",
+  "tool": "supabase_pos_cafe.apply_migration",
+  "migrationName": "permission_staging_bootstrap_b2e3122_20261022_1700",
+  "mutationCutoffUtc": "2026-10-22T09:45:00Z",
+  "deadlineUtc": "2026-10-22T10:00:00Z",
+  "onAmbiguousOutcome": "ONE_PINNED_READ_ONLY_RECONCILE_ONLY_NEVER_REPLAY",
+  "originalProfilesDisabled": true,
+  "businessTestsRun": false
+}

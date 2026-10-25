@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sơ đồ bàn — bản thiết kế lại</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/tokens.css">
+<style>
+  .mock-bar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-4);
+    padding: 10px var(--sp-4); background: var(--nt-900); color: var(--nt-0); font-size: 12px;
+  }
+  .mock-bar b { font-weight: 600; }
+  .mock-bar span { color: #AAB4C4; }
+  .mock-bar a { color: var(--teal-300); }
+
+  /* Khung app: rail điều hướng + vùng làm việc */
+  /* Rail điều hướng rộng 208px: ở 176px tên nhân viên bị cắt mất. */
+  .shell { display: grid; grid-template-columns: 208px minmax(0,1fr); height: calc(100dvh - 40px); min-height: 560px; }
+  @media (max-width: 899px) { .shell { grid-template-columns: 68px minmax(0,1fr); } }
+
+  .nav { display: flex; flex-direction: column; gap: var(--sp-3); padding: var(--sp-3) var(--sp-2);
+         background: var(--surface-2); border-right: 1px solid var(--line); overflow-y: auto; }
+  .nav__session { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2);
+                  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-control); }
+  .nav__avatar { display: grid; place-items: center; width: 32px; height: 32px; flex: none;
+                 background: var(--primary-soft); color: var(--primary); border-radius: var(--radius-control);
+                 font-size: var(--fs-small); font-weight: var(--fw-semibold); }
+  .nav__who { display: flex; flex-direction: column; min-width: 0; }
+  .nav__who b { font-size: var(--fs-small); font-weight: var(--fw-semibold); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .nav__who span { font-size: var(--fs-label); font-weight: var(--fw-medium); letter-spacing: .06em; text-transform: uppercase; color: var(--primary); }
+  .nav__group { display: flex; flex-direction: column; gap: var(--sp-1); }
+  .nav__label { padding-inline: var(--sp-2); font-size: var(--fs-label); letter-spacing: .08em;
+                text-transform: uppercase; color: var(--muted); font-weight: var(--fw-medium); }
+  .nav__item { display: flex; align-items: center; gap: var(--sp-2); min-height: var(--ctl-md);
+               padding-inline: var(--sp-2); border: 1px solid transparent; border-radius: var(--radius-control);
+               background: none; color: var(--muted); font-size: var(--fs-small); font-weight: var(--fw-medium);
+               cursor: pointer; text-align: left; }
+  .nav__item:hover { background: var(--surface); border-color: var(--line); }
+  .nav__item.is-active { background: var(--primary-soft); border-color: var(--primary-line); color: var(--primary); font-weight: var(--fw-semibold); }
+  .nav__dot { width: 8px; height: 8px; border-radius: var(--radius-pill); background: currentColor; flex: none; }
+  @media (max-width: 899px) {
+    .nav__session { justify-content: center; }
+    .nav__who, .nav__label, .nav__text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .nav__item { justify-content: center; }
+  }
+
+  .work { display: grid; grid-template-rows: auto minmax(0,1fr); min-width: 0; background: var(--bg); }
+
+  /* Thanh công cụ: khu vực · lọc · làm mới */
+  .floorbar { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-2) var(--page-pad);
+              background: var(--surface); border-bottom: 1px solid var(--line); overflow-x: auto; }
+  .floorbar__group { display: flex; gap: var(--sp-2); }
+  .floorbar__sep { width: 1px; height: 28px; align-self: center; background: var(--line-control); flex: none; }
+  .floorbar__spacer { margin-left: auto; }
+  /* Ở bậc compact, thanh công cụ xuống dòng thay vì cuộn ngang — nếu cuộn thì
+     nút Làm mới bị đẩy ra ngoài mép và không ai thấy. */
+  @media (max-width: 899px) {
+    .floorbar { flex-wrap: wrap; overflow-x: visible; }
+    .floorbar__spacer { display: none; }
+  }
+
+  /* Rail đơn đang mở chỉ hiện từ 1440px. Dưới mức đó sơ đồ bàn được ưu tiên
+     toàn bộ bề ngang — đơn đang mở vẫn tới được qua mục Mang đi và Lịch sử
+     ở rail điều hướng, nên rail này là lối tắt chứ không phải lối duy nhất. */
+  .floor { display: grid; grid-template-columns: minmax(0,1fr);
+           gap: var(--pane-gap); padding: var(--page-pad); min-height: 0; }
+  .rail { display: none; }
+  @media (min-width: 1440px) {
+    .floor { grid-template-columns: minmax(0,1fr) clamp(240px, 20%, 300px); }
+    .rail { display: flex; }
+  }
+
+  /* Sân khấu sơ đồ — bàn đặt theo toạ độ, giống ScaledFloorStage hiện hành */
+  .stage-wrap { display: flex; flex-direction: column; min-height: 0; background: var(--surface);
+                border: 1px solid var(--line); border-radius: var(--radius-surface); overflow: hidden; }
+  .stage { position: relative; flex: 1; min-height: 340px; margin: var(--sp-3);
+           background: var(--surface-2);
+           background-image: linear-gradient(var(--nt-100) 1px, transparent 1px), linear-gradient(90deg, var(--nt-100) 1px, transparent 1px);
+           background-size: 32px 32px;
+           border: 1px solid var(--line); border-radius: var(--radius-control); }
+
+  .node { position: absolute; transform: translate(-50%, -50%); }
+  /* Mọi bàn cùng kích thước để sơ đồ đọc được như một khối.
+     Nhãn trạng thái không ngắt dòng, nếu không bàn đang phục vụ sẽ cao hơn bàn trống. */
+  .table {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+    width: 104px; height: 76px; padding: var(--sp-2) 6px;
+    background: var(--surface); border: 1px solid var(--line-control);
+    border-radius: var(--radius-control); cursor: pointer; text-align: center;
+  }
+  .table--round { border-radius: var(--radius-pill); width: 96px; height: 96px; }
+  .table__no { font-size: var(--fs-body); font-weight: var(--fw-semibold); }
+  .table__state { font-size: 10px; line-height: 1.3; font-weight: var(--fw-medium); letter-spacing: .04em;
+                  text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .table__amt { font-size: var(--fs-small); font-weight: var(--fw-bold); font-variant-numeric: tabular-nums; }
+  .table.is-busy { background: var(--primary-soft); border-color: var(--primary); }
+  .table.is-busy .table__state { color: var(--primary); }
+  .table:hover { border-color: var(--primary); }
+
+  .decor { display: grid; place-items: center; padding: var(--sp-2);
+           border: 1px dashed var(--line-control); border-radius: var(--radius-control);
+           background: var(--surface-sunk); color: var(--muted);
+           font-size: var(--fs-label); letter-spacing: .06em; text-transform: uppercase; font-weight: var(--fw-medium); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-4); padding: 0 var(--sp-3) var(--sp-3);
+            font-size: var(--fs-small); color: var(--muted); margin: 0; }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  /* Ô mẫu dạng chữ nhật rộng, không phải ô vuông — ô vuông bị đọc nhầm thành ô đánh dấu. */
+  .legend i { width: 30px; height: 16px; border-radius: 3px; display: inline-block; flex: none; }
+
+  /* Rail đơn đang mở */
+  /* Hiện/ẩn do truy vấn ở trên quyết định — rule này không đặt display. */
+  .rail { flex-direction: column; gap: var(--sp-2); min-height: 0;
+          background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-surface);
+          padding: var(--sp-3); overflow: auto; }
+  .rail__head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
+  .rail__title { font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase;
+                 color: var(--muted); font-weight: var(--fw-medium); margin: 0; }
+  .ticket { display: flex; flex-direction: column; gap: 2px; padding: 10px;
+            background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-control);
+            cursor: pointer; text-align: left; width: 100%; }
+  .ticket:hover { border-color: var(--primary); background: var(--primary-soft); }
+  .ticket__top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-2); }
+  .ticket__no { font-size: var(--fs-small); font-weight: var(--fw-semibold); }
+  .ticket__amt { font-size: var(--fs-small); font-weight: var(--fw-bold); font-variant-numeric: tabular-nums; }
+  .ticket__meta { font-size: var(--fs-label); color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="mock-bar">
+  <b>Bản mẫu 03 · Sơ đồ bàn</b>
+  <span>Hướng A — Teal Chuẩn Hoá</span>
+  <span>Sơ đồ không gian, giữ đúng dạng hiện hành</span>
+  <span>Thu nhỏ cửa sổ để xem bậc compact (&lt; 900px)</span>
+  <a href="spec.md">Thông số</a>
+</div>
+
+<div class="shell" data-testid="app-shell">
+
+  <!-- Rail điều hướng -->
+  <nav class="nav" aria-label="Điều hướng chính">
+    <div class="nav__session" data-testid="left-nav-session">
+      <span class="nav__avatar" aria-hidden="true">N</span>
+      <span class="nav__who"><b>Nguyễn Trọng Linh</b><span>Thu ngân</span></span>
+    </div>
+
+    <div class="nav__group">
+      <span class="nav__label">Vận hành</span>
+      <button type="button" class="nav__item is-active" data-testid="nav-floor"><span class="nav__dot"></span><span class="nav__text">Bàn</span></button>
+      <button type="button" class="nav__item" data-testid="nav-takeaway"><span class="nav__dot"></span><span class="nav__text">Mang đi</span></button>
+      <button type="button" class="nav__item" data-testid="nav-order-history"><span class="nav__dot"></span><span class="nav__text">Lịch sử</span></button>
+      <button type="button" class="nav__item" data-testid="nav-write-recovery"><span class="nav__dot"></span><span class="nav__text">Tra cứu thao tác</span></button>
+    </div>
+
+    <div class="nav__group">
+      <span class="nav__label">Quản trị</span>
+      <button type="button" class="nav__item" data-testid="nav-employees"><span class="nav__dot"></span><span class="nav__text">Nhân viên</span></button>
+      <button type="button" class="nav__item" data-testid="nav-menu-editor"><span class="nav__dot"></span><span class="nav__text">Thực đơn</span></button>
+      <button type="button" class="nav__item" data-testid="nav-floor-editor"><span class="nav__dot"></span><span class="nav__text">Sơ đồ</span></button>
+      <button type="button" class="nav__item" data-testid="nav-report"><span class="nav__dot"></span><span class="nav__text">Báo cáo</span></button>
+      <button type="button" class="nav__item" data-testid="nav-settings"><span class="nav__dot"></span><span class="nav__text">Cài đặt</span></button>
+    </div>
+  </nav>
+
+  <!-- Vùng làm việc -->
+  <div class="work">
+    <div class="floorbar">
+      <div class="floorbar__group" role="group" aria-label="Khu vực">
+        <button type="button" class="chip is-active" aria-pressed="true">Trong nhà</button>
+        <button type="button" class="chip" aria-pressed="false">Sân vườn</button>
+        <button type="button" class="chip" aria-pressed="false">Tầng 2</button>
+      </div>
+      <span class="floorbar__sep" aria-hidden="true"></span>
+      <div class="floorbar__group" role="group" aria-label="Lọc bàn">
+        <button type="button" class="chip is-active" aria-pressed="true">Tất cả</button>
+        <button type="button" class="chip" aria-pressed="false">Trống</button>
+        <button type="button" class="chip" aria-pressed="false">Đang phục vụ</button>
+      </div>
+      <span class="floorbar__spacer"></span>
+      <button type="button" class="btn btn--quiet" data-testid="floor-refresh-button">Làm mới</button>
+    </div>
+
+    <div class="floor">
+      <section class="stage-wrap" aria-labelledby="stage-title">
+        <h1 class="visually-hidden" id="stage-title">Sơ đồ bàn khu vực Trong nhà</h1>
+
+        <div class="stage" data-testid="floor-stage">
+          <!-- Vật trang trí -->
+          <div class="node decor" style="left:50%; top:6%; width:46%; height:40px;">Quầy pha chế</div>
+          <div class="node decor" style="left:6%; top:52%; width:52px; height:110px;">Cửa</div>
+          <div class="node decor" style="left:92%; top:30%; width:44px; height:44px; border-radius:var(--radius-pill);">Cây</div>
+
+          <!-- Bàn -->
+          <button type="button" class="node table is-busy" style="left:26%; top:32%;" data-testid="table-12">
+            <span class="table__no">Bàn 12</span>
+            <span class="table__state">Đang phục vụ</span>
+            <span class="table__amt">185.000</span>
+          </button>
+          <button type="button" class="node table" style="left:50%; top:32%;" data-testid="table-13">
+            <span class="table__no">Bàn 13</span>
+            <span class="table__state">Trống</span>
+          </button>
+          <button type="button" class="node table is-busy" style="left:74%; top:32%;" data-testid="table-14">
+            <span class="table__no">Bàn 14</span>
+            <span class="table__state">Đang phục vụ</span>
+            <span class="table__amt">92.000</span>
+          </button>
+          <button type="button" class="node table table--round" style="left:28%; top:66%;" data-testid="table-15">
+            <span class="table__no">Bàn 15</span>
+            <span class="table__state">Trống</span>
+          </button>
+          <button type="button" class="node table table--round is-busy" style="left:52%; top:66%;" data-testid="table-16">
+            <span class="table__no">Bàn 16</span>
+            <span class="table__state">Phục vụ</span>
+            <span class="table__amt">240.000</span>
+          </button>
+          <button type="button" class="node table" style="left:76%; top:66%;" data-testid="table-17">
+            <span class="table__no">Bàn 17</span>
+            <span class="table__state">Trống</span>
+          </button>
+        </div>
+
+        <p class="legend">
+          <span><i style="background:var(--primary-soft); border:1px solid var(--primary);"></i> Đang phục vụ — có nhãn chữ và số tiền</span>
+          <span><i style="background:var(--surface); border:1px solid var(--line-control);"></i> Trống — có nhãn chữ “Trống”</span>
+          <span>Trạng thái không truyền bằng riêng màu.</span>
+        </p>
+      </section>
+
+      <aside class="rail" aria-labelledby="rail-title">
+        <div class="rail__head">
+          <h2 class="rail__title" id="rail-title">Đơn đang mở</h2>
+          <span class="badge badge--primary">5</span>
+        </div>
+
+        <span class="rail__title" style="margin-top:var(--sp-1)">Mang đi · 2</span>
+        <button type="button" class="ticket">
+          <span class="ticket__top"><span class="ticket__no">MĐ-018</span><span class="ticket__amt">115.000</span></span>
+          <span class="ticket__meta">3 món · 14:28</span>
+        </button>
+        <button type="button" class="ticket">
+          <span class="ticket__top"><span class="ticket__no">MĐ-019</span><span class="ticket__amt">35.000</span></span>
+          <span class="ticket__meta">1 món · 14:31</span>
+        </button>
+
+        <span class="rail__title" style="margin-top:var(--sp-2)">Tại bàn · 3</span>
+        <button type="button" class="ticket">
+          <span class="ticket__top"><span class="ticket__no">Bàn 12</span><span class="ticket__amt">185.000</span></span>
+          <span class="ticket__meta">5 món · 14:12</span>
+        </button>
+        <button type="button" class="ticket">
+          <span class="ticket__top"><span class="ticket__no">Bàn 14</span><span class="ticket__amt">92.000</span></span>
+          <span class="ticket__meta">2 món · 14:22</span>
+        </button>
+        <button type="button" class="ticket">
+          <span class="ticket__top"><span class="ticket__no">Bàn 16</span><span class="ticket__amt">240.000</span></span>
+          <span class="ticket__meta">6 món · 13:58</span>
+        </button>
+      </aside>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

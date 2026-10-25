@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-23T12:03:10.352Z",
+  "sameInputsPerRole": true,
+  "checks": [
+    {
+      "rpc": "permission_get_menu_admin",
+      "owner": "ALLOW",
+      "cashier": "FORBIDDEN"
+    },
+    {
+      "rpc": "permission_get_floor_admin",
+      "owner": "ALLOW",
+      "cashier": "FORBIDDEN"
+    },
+    {
+      "rpc": "permission_get_settings_admin",
+      "owner": "ALLOW",
+      "cashier": "FORBIDDEN"
+    },
+    {
+      "rpc": "permission_get_sales_report",
+      "owner": "ALLOW",
+      "cashier": "FORBIDDEN"
+    }
+  ]
+}

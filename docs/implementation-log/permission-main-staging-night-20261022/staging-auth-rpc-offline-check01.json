@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "permission-staging-auth-rpc-offline-check-v1",
+  "author": "/root/mcp_staging_evidence_review",
+  "source": "ad265321144521c0669500fea9be0f96ebacb769",
+  "artifacts": {
+    "consumer": "f3cd2fc88a52e573f91da8414ca8ece0fa4d2f426c65eda355f9ca030fc6c3dc",
+    "observer": "d79cd0cd1d4176c6a864d2221bfabb1c55df4607d4b1133c4c8d0a04112d3e8f",
+    "recipe": "5f98dcfa1b76e2620fec4e98021d89eb3908037fca01e249b9690b123a904dbb"
+  },
+  "nodeVersion": "24.16.0",
+  "syntax": {
+    "command": "node --check D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/staging-auth-rpc-consumer01.mjs",
+    "exitCode": 0,
+    "stdout": ""
+  },
+  "pureAssertions": {
+    "execution": "Inline ES module piped to existing Node24 --input-type=module; imported named pure functions only, never run().",
+    "stdout": "PURE_CHECKS_25_PASS_NO_NETWORK_NO_FIXTURES",
+    "exitCode": 0,
+    "count": 25,
+    "coverage": [
+      "Stable SHA256 UUID derivation has version/variant bits and deterministic output.",
+      "Wrong project and secret-key class rejected without any real credential input.",
+      "21:00/21:02 admission with full25m45 reserve accepted; after21:02,21:30 and insufficient closure margin rejected.",
+      "Observer single-token substitution accepted; duplicate tokens and non-UUID injection rejected.",
+      "Synthetic known MCP envelope yields its sole observation; wrong query/project/tool, multiple rows, extra row fields and tool error rejected.",
+      "Synthetic Dashboard AX derives Confirm1 and0; wrong project, duplicate Confirm, enabled Save and changed manual-link setting rejected."
+    ],
+    "networkRequests": 0,
+    "filesystemFixturesCreated": 0,
+    "realPrivateClientRead": false,
+    "hostedConsumerRun": false
+  },
+  "limits": [
+    "Pure/syntax checks only; no live Auth/RPC/SQL, PostgreSQL parser execution or Dashboard mutation.",
+    "These are author checks, not independent review approval or hosted PASS.",
+    "Earlier WIP syntax failure and malformed inline test command were corrected before these final checks; no hosted effect occurred."
+  ]
+}

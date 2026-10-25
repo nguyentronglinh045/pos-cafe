@@ -11,6 +11,10 @@ Folder này ghi nhật ký implement theo phase. Mục tiêu là track nhanh nh�
 - Không đổi chữ “pass/fail” lịch sử thành current truth. Khi cần làm rõ, thêm ghi chú “đã được phase sau supersede”.
 - Tên file, symbol, commit, migration và lệnh trong phase log chỉ phục vụ truy vết kỹ thuật. AI viết báo cáo phải chuyển chúng thành mô tả mục tiêu, cách tiếp cận, quyết định và kết quả; không sao chép artefact triển khai vào nội dung chính.
 
+## Hồ sơ permission/CI khôi phục từ WIP
+
+[Handoff xuất bản25/10](../workflow/tasks/docs-wip-publication-2026-10-25.md) và [catalog lịch sử](../workflow/evidence/docs-wip-publication-20261025/catalog.md#implementationevidence) dẫn các kết quả15/09–24/10, review và package nguyên byte. Đọc source/môi trường của từng kết quả; không cộng các PASS ở nhiều SHA thành full acceptance trên main hiện tại.
+
 ## Khi Nào Nên Đọc
 
 - Khi cần biết phase nào đã xong, phase nào còn gap.

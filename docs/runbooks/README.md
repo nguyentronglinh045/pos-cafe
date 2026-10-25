@@ -1,0 +1,7 @@
+# Runbook snapshot và thiết kế vận hành
+
+Mười hồ sơ ngày08–14/10 được giữ để đọc quyết định, điều kiện khôi phục, nguồn và kết quả review. Chúng là snapshot của ngày lập; không phải hướng dẫn vận hành hiện hành hoặc quyền thực thi. [Hồ sơ xuất bản](../workflow/tasks/docs-wip-publication-2026-10-25.md) và [catalog](../workflow/evidence/docs-wip-publication-20261025/catalog.md#runbook-snapshot) ghi đầy đủ đường dẫn.
+
+Hướng dẫn được duy trì cùng công cụ trên main: [release admission](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/scripts/permission-release-phase-admission.README.md), [staging](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/scripts/permission-staging.README.md), [staging bootstrap](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/scripts/permission-staging-bootstrap.README.md), [Preview](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/scripts/project-preview.README.md).
+
+Owner recovery/backup/hosted recipe cần kiểm với phiên bản công cụ và quyền đích trước khi dùng; chưa tạo một operator guide mới hoặc sửa công cụ trong lượt docs này. Tuyệt đối không dựng lại WSL/Docker, reset DB, cấp quyền hay chạy cleanup theo lệnh trong snapshot. Hồ sơ gốc vẫn giữ nguyên ở worktree nguồn; banner xuất bản không thay đổi bằng chứng lịch sử.

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "t04-hardening-temp-precheck-v1",
+  "recordedUtc": "2026-10-24T05:31:25.9348920Z",
+  "scope": "READ_ONLY_NO_DELETION",
+  "identityAndCountsVerified": true,
+  "files": 89,
+  "logicalBytes": 393476,
+  "allocatedBytes": "NOT_MEASURED",
+  "directories": [
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\candidate-t04-hardening-reporters-RKEXK8",
+      "files": 31,
+      "logicalBytes": 154320
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\candidate-t04-hardening-reporters-XBoEko",
+      "files": 56,
+      "logicalBytes": 169854
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-n9i2CA",
+      "files": 0,
+      "logicalBytes": 0
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-pBbIJM",
+      "files": 1,
+      "logicalBytes": 34651
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\artifacts\\isolated-receipt-control-rsuGy6",
+      "files": 1,
+      "logicalBytes": 34651
+    }
+  ],
+  "lockedFiles": [],
+  "matchingRuntimeProcesses": [],
+  "priorCheckpointProcess40980Present": false,
+  "approval": "NOT_YET_REQUESTED",
+  "deletionPerformed": false
+}

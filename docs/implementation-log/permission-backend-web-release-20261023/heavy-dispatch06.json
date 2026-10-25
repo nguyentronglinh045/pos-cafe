@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "permission-heavy-dispatch-result-v6",
+  "startedUtc": "2026-10-24T06:05:30.740Z",
+  "endedUtc": "2026-10-24T06:05:32.669Z",
+  "command": [
+    "gh",
+    "workflow",
+    "run",
+    "backend.yml",
+    "--repo",
+    "nguyentronglinh045/pos-cafe",
+    "--ref",
+    "review/permission-staging-20261023",
+    "-f",
+    "confirmation=RUN_T04_PROFILE",
+    "-f",
+    "expected_source_sha=34db1b13ab707bab114fe1d83642d021ff324c93"
+  ],
+  "status": 0,
+  "signal": null,
+  "errorCode": null,
+  "stdout": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/40068845295\n",
+  "stderr": "",
+  "noRetry": true
+}

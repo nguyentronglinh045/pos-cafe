@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "permission-staging-bootstrap-input-v1",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "sourceFingerprint": "48663a5427cd4ba57791f8d7f0a0bfff6d356027002419a6dcec82394bbbd488",
+  "observation": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022/provider-observation01.json",
+    "sha256": "b7e1defe89c76d85a0aa7c3d529bb424bc8b5369b0462ec404d10014dff70d8b"
+  },
+  "allowlist": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022/provider-allowlist01.json",
+    "sha256": "1b4fe8bc65a9e516a3aa7d41176d47bc4c6e065b46035f38be2a589aaf7d63f7"
+  },
+  "nonce": "50ae5f7b0959bdf8fc5c3c0720048c88"
+}

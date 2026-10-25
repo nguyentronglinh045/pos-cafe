@@ -1,0 +1,1244 @@
+{
+  "method": "Strict Markdown parser; secondary resolver strips historical :line and /D: or resolves unique same-name snapshot targets. Resolution is file existence only, never current line semantics/source equivalence. Original bytes retained. No HTTP crawl.",
+  "markdown": 854,
+  "links": 7945,
+  "strict_missing": 175,
+  "anchors": 0,
+  "source_pin_errors": 0,
+  "old_raw_blob_drift": 0,
+  "absolute_local_links": 3156,
+  "legacy_parser_local_unresolved": 1704,
+  "classification_counts": {
+    "unresolved-historical": 26,
+    "line-reference": 102,
+    "local-reference": 35,
+    "snapshot-relative-context": 12
+  },
+  "references": [
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/01-landing.md",
+      "line": 3,
+      "original": "screenshots/01-landing.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/02-store-pairing.md",
+      "line": 3,
+      "original": "screenshots/02-store-pairing.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/03-create-store-form.md",
+      "line": 3,
+      "original": "screenshots/03-create-store-form.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/04-create-store-success.md",
+      "line": 3,
+      "original": "screenshots/04-create-store-success.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/05-passcode.md",
+      "line": 3,
+      "original": "screenshots/05-passcode.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/06-pos-floor.md",
+      "line": 3,
+      "original": "screenshots/06-pos-floor.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/07-order-drawer-new-draft.md",
+      "line": 3,
+      "original": "screenshots/07-order-drawer-new-draft.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/08-order-dirty-close-confirm.md",
+      "line": 3,
+      "original": "screenshots/08-order-dirty-close-confirm.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/09-order-drawer-existing.md",
+      "line": 3,
+      "original": "screenshots/09-order-drawer-existing.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/10-payment-drawer-normal.md",
+      "line": 3,
+      "original": "screenshots/10-payment-drawer-normal.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/11-payment-drawer-insufficient.md",
+      "line": 3,
+      "original": "screenshots/11-payment-drawer-insufficient.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/12-takeaway-drawer.md",
+      "line": 3,
+      "original": "screenshots/12-takeaway-drawer.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/13-order-history-drawer.md",
+      "line": 3,
+      "original": "screenshots/13-order-history-drawer.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/14-employees-drawer.md",
+      "line": 3,
+      "original": "screenshots/14-employees-drawer.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/15-menu-editor-drawer.md",
+      "line": 3,
+      "original": "screenshots/15-menu-editor-drawer.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/16-menu-editor-dirty-new-item.md",
+      "line": 3,
+      "original": "screenshots/16-menu-editor-dirty-new-item.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/17-menu-editor-dirty-confirm.md",
+      "line": 3,
+      "original": "screenshots/17-menu-editor-dirty-confirm.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/18-floor-editor-drawer.md",
+      "line": 3,
+      "original": "screenshots/18-floor-editor-drawer.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/19-floor-editor-dirty-new-table.md",
+      "line": 3,
+      "original": "screenshots/19-floor-editor-dirty-new-table.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/20-floor-editor-dirty-confirm.md",
+      "line": 3,
+      "original": "screenshots/20-floor-editor-dirty-confirm.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/21-report-drawer.md",
+      "line": 3,
+      "original": "screenshots/21-report-drawer.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/22-general-settings-drawer.md",
+      "line": 3,
+      "original": "screenshots/22-general-settings-drawer.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/23-clear-demo-dialog-blocked.md",
+      "line": 3,
+      "original": "screenshots/23-clear-demo-dialog-blocked.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/24-kitchen-queue-drawer.md",
+      "line": 3,
+      "original": "screenshots/24-kitchen-queue-drawer.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/25-payment-settings-drawer.md",
+      "line": 3,
+      "original": "screenshots/25-payment-settings-drawer.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/archive/superpowers/ui-audit/2026-06-16-desktop/README.md",
+      "line": 8,
+      "original": "screenshots/_contact-sheet.png",
+      "classification": "unresolved-historical",
+      "resolved": null
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/permission-main-integration-readiness-20261024.md",
+      "line": 20,
+      "original": "../../../openspec/changes/redesign-permission-model/proposal.md:168",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\proposal.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/permission-main-integration-readiness-20261024.md",
+      "line": 20,
+      "original": "../../workflow/tasks/permission-release-2026-10-22.md:13",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-release-2026-10-22.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 10,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/scripts/project-ci.mjs:57",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\scripts\\project-ci.mjs"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 20,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/scripts/permission-runtime-error-facts.mjs:101",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\scripts\\permission-runtime-error-facts.mjs"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 20,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/tests/supabase/permissionCandidate.spec.ts:391",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\tests\\supabase\\permissionCandidate.spec.ts"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 20,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0404.json:35",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\evidence\\cloud-t0404.json"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 21,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/scripts/permission-runtime-catalog.mjs:17",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\scripts\\permission-runtime-catalog.mjs"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 21,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/scripts/permission-runtime-service-profile.mjs:6",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\scripts\\permission-runtime-service-profile.mjs"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 21,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0404.json:101",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\evidence\\cloud-t0404.json"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 22,
+      "original": "/D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/integration-source-reviews01.json:12",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-backend-web-release-20261023\\integration-source-reviews01.json"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 22,
+      "original": "/D:/Workspace/pos-cafe-docs/openspec/changes/setup-project-ci-cd/design.md:20",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-docs\\openspec\\changes\\setup-project-ci-cd\\design.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 24,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/scripts/permission-runtime-playwright-reporter.mjs:20",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\scripts\\permission-runtime-playwright-reporter.mjs"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 28,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/scripts/permission-runtime-error-facts.mjs:170",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\scripts\\permission-runtime-error-facts.mjs"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 28,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/scripts/permission-runtime-playwright-reporter.mjs:14",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\scripts\\permission-runtime-playwright-reporter.mjs"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 32,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/playwright.permission-candidate.config.ts:6",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\playwright.permission-candidate.config.ts"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 36,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/tests/supabase/permissionCandidate.spec.ts:47",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\tests\\supabase\\permissionCandidate.spec.ts"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 37,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/tests/supabase/permissionCandidate.spec.ts:223",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\tests\\supabase\\permissionCandidate.spec.ts"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 37,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/tests/supabase/permissionCandidate.spec.ts:391",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\tests\\supabase\\permissionCandidate.spec.ts"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 38,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/src/app/drawers/admin/GeneralSettingsDrawer.tsx:43",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\src\\app\\drawers\\admin\\GeneralSettingsDrawer.tsx"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 38,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/tests/supabase/permissionCandidate.spec.ts:389",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\tests\\supabase\\permissionCandidate.spec.ts"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 39,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/src/app/drawers/admin/GeneralSettingsDrawer.tsx:83",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\src\\app\\drawers\\admin\\GeneralSettingsDrawer.tsx"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 39,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/src/features/admin/useAdminMutations.ts:54",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\src\\features\\admin\\useAdminMutations.ts"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 39,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/tests/supabase/permissionCandidate.spec.ts:55",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\tests\\supabase\\permissionCandidate.spec.ts"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 65,
+      "original": "/D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping03.json:7438",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-backend-web-release-20261023\\supplemental-source-mapping03.json"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 89,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/scripts/permission-runtime-t04.mjs:56",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\scripts\\permission-runtime-t04.mjs"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 91,
+      "original": "/D:/Workspace/pos-cafe-docs/openspec/changes/redesign-permission-model/proposal.md:172",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-docs\\openspec\\changes\\redesign-permission-model\\proposal.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 93,
+      "original": "/D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping03.json:1045",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-backend-web-release-20261023\\supplemental-source-mapping03.json"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 93,
+      "original": "/D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping03.json:4102",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-backend-web-release-20261023\\supplemental-source-mapping03.json"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 93,
+      "original": "/D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping03.json:7463",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-backend-web-release-20261023\\supplemental-source-mapping03.json"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 95,
+      "original": "/D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/light-reviews02.json:18",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-backend-web-release-20261023\\light-reviews02.json"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 97,
+      "original": "/D:/Workspace/pos-cafe-docs/openspec/changes/redesign-permission-model/proposal.md:166",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-docs\\openspec\\changes\\redesign-permission-model\\proposal.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 102,
+      "original": "/D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/final-failed-phase-checkpoint01.json:78",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-backend-web-release-20261023\\final-failed-phase-checkpoint01.json"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 106,
+      "original": "/D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/integration-source-reviews01.json:12",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-backend-web-release-20261023\\integration-source-reviews01.json"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 107,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/code/scripts/project-ci-results.mjs:593",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code\\scripts\\project-ci-results.mjs"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 109,
+      "original": "/D:/Workspace/pos-cafe-docs/openspec/changes/setup-project-ci-cd/specs/project-pipeline/spec.md:12",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-docs\\openspec\\changes\\setup-project-ci-cd\\specs\\project-pipeline\\spec.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 111,
+      "original": "/D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/postgate-collector-reviews01.json:35",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-backend-web-release-20261023\\postgate-collector-reviews01.json"
+    },
+    {
+      "file": "docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+      "line": 111,
+      "original": "/D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-postgate-ci.mjs:85",
+      "classification": "local-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\operations\\collect-postgate-ci.mjs"
+    },
+    {
+      "file": "docs/implementation-log/permission-breakpoint-review-20261023/bp01-review-and-remediation.md",
+      "line": 63,
+      "original": "../../../openspec/changes/force-default-pin-change/testplan.md:78",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\force-default-pin-change\\testplan.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-breakpoint-review-20261023/bp01b-preparation.md",
+      "line": 9,
+      "original": "../../../openspec/changes/force-default-pin-change/testplan.md:151",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\force-default-pin-change\\testplan.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-completion-2026-09-22.md",
+      "line": 21,
+      "original": "../../openspec/changes/redesign-permission-model/testplan.md:483",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\testplan.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-completion-2026-09-22.md",
+      "line": 96,
+      "original": "../../openspec/changes/redesign-permission-model/specs/write-idempotency/spec.md:35",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\specs\\write-idempotency\\spec.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-main-staging-night-20261022/handoff-snapshot-publication03.md",
+      "line": 6,
+      "original": "permission-timeonly-budget-v4-2026-10-22.md",
+      "classification": "snapshot-relative-context",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-timeonly-budget-v4-2026-10-22.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-main-staging-night-20261022/handoff-snapshot-publication03.md",
+      "line": 6,
+      "original": "permission-timeonly-budget-v4-postgate-ci-2026-10-22.md",
+      "classification": "snapshot-relative-context",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-timeonly-budget-v4-postgate-ci-2026-10-22.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-main-staging-night-20261022/handoff-snapshot-publication03.md",
+      "line": 10,
+      "original": "permission-t04-fixture-remediation-2026-10-22.md",
+      "classification": "snapshot-relative-context",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-t04-fixture-remediation-2026-10-22.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-main-staging-night-20261022/handoff-snapshot-publication03.md",
+      "line": 19,
+      "original": "permission-staging-auth-edge-proposal-2026-10-22.md",
+      "classification": "snapshot-relative-context",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-staging-auth-edge-proposal-2026-10-22.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-main-staging-night-20261022/handoff-snapshot-t04-pending-draft01.md",
+      "line": 6,
+      "original": "permission-timeonly-budget-v4-2026-10-22.md",
+      "classification": "snapshot-relative-context",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-timeonly-budget-v4-2026-10-22.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-main-staging-night-20261022/handoff-snapshot-t04-pending-draft01.md",
+      "line": 6,
+      "original": "permission-timeonly-budget-v4-postgate-ci-2026-10-22.md",
+      "classification": "snapshot-relative-context",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-timeonly-budget-v4-postgate-ci-2026-10-22.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-main-staging-night-20261022/handoff-snapshot-t04-pending-draft01.md",
+      "line": 10,
+      "original": "permission-t04-fixture-remediation-2026-10-22.md",
+      "classification": "snapshot-relative-context",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-t04-fixture-remediation-2026-10-22.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-main-staging-night-20261022/handoff-snapshot-t04-pending-draft01.md",
+      "line": 12,
+      "original": "permission-extra-heavy-successor-2026-10-22.md",
+      "classification": "snapshot-relative-context",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-extra-heavy-successor-2026-10-22.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-main-staging-night-20261022/handoff-snapshot-t04-pending-draft01.md",
+      "line": 20,
+      "original": "permission-staging-auth-edge-proposal-2026-10-22.md",
+      "classification": "snapshot-relative-context",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-staging-auth-edge-proposal-2026-10-22.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-push-report-readiness-2026-10-16.md",
+      "line": 13,
+      "original": "../workflow/tasks/permission-vercel-readiness-plan-2026-10-15.md:17",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-vercel-readiness-plan-2026-10-15.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-realtime-preparation-2026-10-08.md",
+      "line": 17,
+      "original": "../../openspec/changes/force-default-pin-change/tasks.md:10",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\force-default-pin-change\\tasks.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-realtime-preparation-2026-10-08.md",
+      "line": 17,
+      "original": "../../openspec/changes/force-default-pin-change/testplan.md:3",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\force-default-pin-change\\testplan.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-realtime-preparation-2026-10-08.md",
+      "line": 22,
+      "original": "../../openspec/changes/redesign-permission-model/testplan.md:917",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\testplan.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-runbook-readiness-2026-10-08.md",
+      "line": 14,
+      "original": "../../../pos-cafe/src/app/drawers/pos/OrderDrawer.tsx:278",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\src\\app\\drawers\\pos\\OrderDrawer.tsx"
+    },
+    {
+      "file": "docs/implementation-log/permission-runbook-readiness-2026-10-08.md",
+      "line": 16,
+      "original": "../../../pos-cafe/src/adapters/supabase/permissionMenuImagePort.ts:91",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\src\\adapters\\supabase\\permissionMenuImagePort.ts"
+    },
+    {
+      "file": "docs/implementation-log/permission-runbook-readiness-2026-10-08.md",
+      "line": 16,
+      "original": "../../openspec/changes/redesign-permission-model/specs/access-control/spec.md:228",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\specs\\access-control\\spec.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-runbook-readiness-2026-10-08.md",
+      "line": 18,
+      "original": "../../../pos-cafe/src/adapters/mock/permissionIdentityRepo.ts:73",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\src\\adapters\\mock\\permissionIdentityRepo.ts"
+    },
+    {
+      "file": "docs/implementation-log/permission-runbook-readiness-2026-10-08.md",
+      "line": 18,
+      "original": "../../../pos-cafe/src/adapters/mock/permissionRuntime.ts:163",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\src\\adapters\\mock\\permissionRuntime.ts"
+    },
+    {
+      "file": "docs/implementation-log/permission-runbook-readiness-2026-10-08.md",
+      "line": 22,
+      "original": "../../../pos-cafe/src/adapters/mock/permissionRuntime.test.ts:46",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\src\\adapters\\mock\\permissionRuntime.test.ts"
+    },
+    {
+      "file": "docs/implementation-log/permission-staging-setup-20261022/reviewed-plan01.md",
+      "line": 48,
+      "original": "permission-mcp-staging-readonly-2026-10-22.md",
+      "classification": "snapshot-relative-context",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-mcp-staging-readonly-2026-10-22.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-staging-setup-20261022/reviewed-plan01.md",
+      "line": 48,
+      "original": "permission-next-release-session-2026-10-22.md",
+      "classification": "snapshot-relative-context",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-next-release-session-2026-10-22.md"
+    },
+    {
+      "file": "docs/implementation-log/permission-ui-audit-triage-2026-10-08.md",
+      "line": 16,
+      "original": "../../../pos-cafe/src/app/drawers/pos/PaymentSummaryPane.tsx:117",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\src\\app\\drawers\\pos\\PaymentSummaryPane.tsx"
+    },
+    {
+      "file": "docs/implementation-log/permission-windows-verification-2026-10-15.md",
+      "line": 33,
+      "original": "../ui-redesign-context.md:17",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\ui-redesign-context.md"
+    },
+    {
+      "file": "docs/implementation-log/session-loop-independent-audit-2026-10-23.md",
+      "line": 23,
+      "original": "permission-breakpoint-review-20261023/paused-root-cause-audit.md:30",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\implementation-log\\permission-breakpoint-review-20261023\\paused-root-cause-audit.md"
+    },
+    {
+      "file": "docs/implementation-log/session-loop-independent-audit-2026-10-23.md",
+      "line": 24,
+      "original": "permission-breakpoint-review-20261023/bp04a-countdiag02-outcome.md:25",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\implementation-log\\permission-breakpoint-review-20261023\\bp04a-countdiag02-outcome.md"
+    },
+    {
+      "file": "docs/implementation-log/session-loop-independent-audit-2026-10-23.md",
+      "line": 25,
+      "original": "permission-breakpoint-review-20261023/bp04a-local75-01-outcome.md:43",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\implementation-log\\permission-breakpoint-review-20261023\\bp04a-local75-01-outcome.md"
+    },
+    {
+      "file": "docs/implementation-log/session-loop-independent-audit-2026-10-23.md",
+      "line": 26,
+      "original": "permission-breakpoint-review-20261023/paused-root-cause-audit.md:36",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\implementation-log\\permission-breakpoint-review-20261023\\paused-root-cause-audit.md"
+    },
+    {
+      "file": "docs/implementation-log/session-loop-independent-audit-2026-10-23.md",
+      "line": 27,
+      "original": "permission-breakpoint-review-20261023/bp03-outcome.md:44",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\implementation-log\\permission-breakpoint-review-20261023\\bp03-outcome.md"
+    },
+    {
+      "file": "docs/implementation-log/session-loop-independent-audit-2026-10-23.md",
+      "line": 27,
+      "original": "permission-breakpoint-review-20261023/paused-root-cause-audit.md:22",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\implementation-log\\permission-breakpoint-review-20261023\\paused-root-cause-audit.md"
+    },
+    {
+      "file": "docs/implementation-log/session-loop-independent-audit-2026-10-23.md",
+      "line": 29,
+      "original": "permission-breakpoint-review-20261023/bp04a-local75-01-outcome.md:47",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\implementation-log\\permission-breakpoint-review-20261023\\bp04a-local75-01-outcome.md"
+    },
+    {
+      "file": "docs/implementation-log/session-loop-independent-audit-2026-10-23.md",
+      "line": 29,
+      "original": "permission-breakpoint-review-20261023/bp04a-next01-outcome.md:22",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\implementation-log\\permission-breakpoint-review-20261023\\bp04a-next01-outcome.md"
+    },
+    {
+      "file": "docs/implementation-log/session-loop-independent-audit-2026-10-23.md",
+      "line": 35,
+      "original": "permission-breakpoint-review-20261023/bp03-outcome.md:34",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\implementation-log\\permission-breakpoint-review-20261023\\bp03-outcome.md"
+    },
+    {
+      "file": "docs/implementation-log/session-loop-independent-audit-2026-10-23.md",
+      "line": 35,
+      "original": "permission-breakpoint-review-20261023/bp04a-local75-01-outcome.md:18",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\implementation-log\\permission-breakpoint-review-20261023\\bp04a-local75-01-outcome.md"
+    },
+    {
+      "file": "docs/implementation-log/session-loop-independent-audit-2026-10-23.md",
+      "line": 36,
+      "original": "permission-breakpoint-review-20261023/bp03-outcome.md:34",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\implementation-log\\permission-breakpoint-review-20261023\\bp03-outcome.md"
+    },
+    {
+      "file": "docs/implementation-log/session-loop-independent-audit-2026-10-23.md",
+      "line": 36,
+      "original": "permission-main-staging-night-20261022/continuation03.md:3",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\implementation-log\\permission-main-staging-night-20261022\\continuation03.md"
+    },
+    {
+      "file": "docs/implementation-log/session-loop-independent-audit-2026-10-23.md",
+      "line": 37,
+      "original": "../workflow/tasks/permission-staging-setup-2026-10-22.md:19",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\workflow\\tasks\\permission-staging-setup-2026-10-22.md"
+    },
+    {
+      "file": "docs/implementation-log/supabase-edge-storage-inventory-2026-10-07.md",
+      "line": 41,
+      "original": "../../openspec/changes/redesign-permission-model/design.md:195",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\design.md"
+    },
+    {
+      "file": "docs/implementation-log/supabase-edge-storage-inventory-2026-10-07.md",
+      "line": 42,
+      "original": "../../openspec/changes/redesign-permission-model/tasks.md:148",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\tasks.md"
+    },
+    {
+      "file": "docs/implementation-log/supabase-edge-storage-inventory-2026-10-07.md",
+      "line": 61,
+      "original": "../../openspec/changes/redesign-permission-model/design.md:195",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\design.md"
+    },
+    {
+      "file": "docs/implementation-log/supabase-edge-storage-inventory-2026-10-07.md",
+      "line": 61,
+      "original": "../../openspec/changes/redesign-permission-model/tasks.md:148",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\tasks.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-07-idempotency/evidence/2026-09-09-proposal-truoc-bo-spec.md",
+      "line": 5,
+      "original": "../../../docs/reviews/2026-09-07-idempotency/12-chuan-bi-ra-cuoi-truoc-code.md",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\reviews\\2026-09-07-idempotency\\12-chuan-bi-ra-cuoi-truoc-code.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-07-idempotency/evidence/2026-09-09-proposal-truoc-bo-spec.md",
+      "line": 20,
+      "original": "../../../docs/reviews/2026-09-07-idempotency/10-quyet-dinh-sau-review-va-chinh-sach-gia.md",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\reviews\\2026-09-07-idempotency\\10-quyet-dinh-sau-review-va-chinh-sach-gia.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-07-idempotency/evidence/2026-09-09-proposal-truoc-bo-spec.md",
+      "line": 22,
+      "original": "../../../docs/reviews/2026-09-07-idempotency/07-uu-tien-online-va-khoi-phuc-tren-server.md",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\reviews\\2026-09-07-idempotency\\07-uu-tien-online-va-khoi-phuc-tren-server.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-07-idempotency/evidence/2026-09-09-proposal-truoc-bo-spec.md",
+      "line": 22,
+      "original": "../../../docs/reviews/2026-09-07-idempotency/08-review-doc-lap-plan-07.md",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\reviews\\2026-09-07-idempotency\\08-review-doc-lap-plan-07.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-07-idempotency/evidence/2026-09-09-proposal-truoc-bo-spec.md",
+      "line": 24,
+      "original": "../../../docs/reviews/2026-09-07-idempotency/12-chuan-bi-ra-cuoi-truoc-code.md",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\reviews\\2026-09-07-idempotency\\12-chuan-bi-ra-cuoi-truoc-code.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-07-idempotency/evidence/2026-09-09-proposal-truoc-bo-spec.md",
+      "line": 185,
+      "original": "../../../docs/reviews/2026-09-07-idempotency/12-chuan-bi-ra-cuoi-truoc-code.md",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\reviews\\2026-09-07-idempotency\\12-chuan-bi-ra-cuoi-truoc-code.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-07-idempotency/evidence/2026-09-09-proposal-truoc-bo-spec.md",
+      "line": 200,
+      "original": "../../../docs/reviews/2026-09-07-idempotency/11-thuong-mai-dien-tu-va-kiem-chung-test.md",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\reviews\\2026-09-07-idempotency\\11-thuong-mai-dien-tu-va-kiem-chung-test.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-07-idempotency/evidence/2026-09-09-proposal-truoc-bo-spec.md",
+      "line": 202,
+      "original": "../../../docs/test-strategy.md",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\test-strategy.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-07-idempotency/evidence/2026-09-09-proposal-truoc-bo-spec.md",
+      "line": 373,
+      "original": "../../../docs/reviews/2026-09-07-idempotency/10-quyet-dinh-sau-review-va-chinh-sach-gia.md",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\reviews\\2026-09-07-idempotency\\10-quyet-dinh-sau-review-va-chinh-sach-gia.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-07-idempotency/evidence/2026-09-09-proposal-truoc-bo-spec.md",
+      "line": 445,
+      "original": "../../../docs/reviews/2026-09-07-idempotency/08-review-doc-lap-plan-07.md#e1--mutation-co-the-tu-chay-khi-mang-tro-lai",
+      "classification": "snapshot-relative-context",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\reviews\\2026-09-07-idempotency\\08-review-doc-lap-plan-07.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/02-doi-chieu-q2-q5-2026-09-15.md",
+      "line": 15,
+      "original": "../../../openspec/changes/redesign-permission-model/specs/employee-management/spec.md:66",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\specs\\employee-management\\spec.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/03-cap-nhat-quyen-va-nhap-2026-09-15.md",
+      "line": 44,
+      "original": "../../../openspec/changes/redesign-permission-model/specs/access-control/spec.md:92",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\specs\\access-control\\spec.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/03-cap-nhat-quyen-va-nhap-2026-09-15.md",
+      "line": 50,
+      "original": "../../../openspec/changes/redesign-permission-model/specs/access-control/spec.md:20",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\specs\\access-control\\spec.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 15,
+      "original": "../../../openspec/changes/redesign-permission-model/tasks.md:145",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\tasks.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 15,
+      "original": "../../../openspec/changes/redesign-permission-model/tasks.md:9",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\tasks.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 16,
+      "original": "../../../openspec/changes/redesign-permission-model/tasks.md:175",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\tasks.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 16,
+      "original": "../../../openspec/changes/redesign-permission-model/tasks.md:19",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\tasks.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 17,
+      "original": "../../../openspec/changes/add-idempotent-write-operations/testplan.md:115",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\add-idempotent-write-operations\\testplan.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 17,
+      "original": "../../../openspec/changes/redesign-permission-model/testplan.md:189",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\testplan.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 21,
+      "original": "../../../openspec/changes/redesign-permission-model/design.md:157",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\design.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 22,
+      "original": "../../../openspec/changes/redesign-permission-model/design.md:169",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\design.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 24,
+      "original": "../../../openspec/changes/add-owner-account-and-store-provisioning/proposal.md:282",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\add-owner-account-and-store-provisioning\\proposal.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 24,
+      "original": "../../roadmap.md:157",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\roadmap.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 24,
+      "original": "../../roadmap.md:54",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\roadmap.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 25,
+      "original": "../../../openspec/changes/redesign-permission-model/specs/employee-management/spec.md:115",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\specs\\employee-management\\spec.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 25,
+      "original": "../../../openspec/changes/redesign-permission-model/specs/employee-management/spec.md:98",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\specs\\employee-management\\spec.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 25,
+      "original": "../../../openspec/changes/redesign-permission-model/specs/receipt-printing/spec.md:69",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\specs\\receipt-printing\\spec.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 25,
+      "original": "../../../openspec/changes/redesign-permission-model/specs/receipt-printing/spec.md:79",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\specs\\receipt-printing\\spec.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 26,
+      "original": "../../../openspec/changes/redesign-permission-model/design.md:205",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\design.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 27,
+      "original": "../../../openspec/specs/multi-device-sync/spec.md:20",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\specs\\multi-device-sync\\spec.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 28,
+      "original": "../../../openspec/changes/redesign-permission-model/design.md:185",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\design.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 28,
+      "original": "../../../openspec/changes/redesign-permission-model/specs/multi-device-sync/spec.md:30",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\specs\\multi-device-sync\\spec.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 28,
+      "original": "../../../openspec/changes/redesign-permission-model/specs/receipt-printing/spec.md:50",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\specs\\receipt-printing\\spec.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 29,
+      "original": "../../../openspec/changes/redesign-permission-model/proposal.md:7",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\redesign-permission-model\\proposal.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 86,
+      "original": "../../implementation-log/phase-27-test-runtime-wsl.md:75",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\implementation-log\\phase-27-test-runtime-wsl.md"
+    },
+    {
+      "file": "docs/reviews/2026-09-14-permission-model/07-doi-chieu-review-doc-lap-2026-09-15.md",
+      "line": 103,
+      "original": "../../../openspec/changes/force-default-pin-change/proposal.md:60",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\force-default-pin-change\\proposal.md"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 29,
+      "original": "../../../pos-cafe/scripts/permission-identity-runtime.mjs:45",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-identity-runtime.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 48,
+      "original": "../../../pos-cafe/scripts/permission-activation-steps.mjs:39",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-activation-steps.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 48,
+      "original": "../../../pos-cafe/scripts/permission-release-cutover.mjs:417",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-release-cutover.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 48,
+      "original": "../../../pos-cafe/scripts/permission-release-cutover.mjs:427",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-release-cutover.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 48,
+      "original": "../../../pos-cafe/scripts/permission-release-cutover.mjs:577",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-release-cutover.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 48,
+      "original": "../../../pos-cafe/scripts/permission-release-cutover.mjs:629",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-release-cutover.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 74,
+      "original": "../../../pos-cafe/playwright.permission-candidate.config.ts:1",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\playwright.permission-candidate.config.ts"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 74,
+      "original": "../../../pos-cafe/scripts/permission-aggregate-verify.mjs:149",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-aggregate-verify.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 74,
+      "original": "../../../pos-cafe/vitest.permission-identity.config.ts:1",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\vitest.permission-identity.config.ts"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 74,
+      "original": "../../../pos-cafe/vitest.permission-images-runtime.config.ts:1",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\vitest.permission-images-runtime.config.ts"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 89,
+      "original": "../../../pos-cafe/scripts/permission-provider-capability-rehearsal.mjs:172",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-provider-capability-rehearsal.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 89,
+      "original": "../../../pos-cafe/scripts/permission-release-cutover.mjs:75",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-release-cutover.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 89,
+      "original": "../../../pos-cafe/scripts/permission-release-rehearsal.mjs:479",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-release-rehearsal.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 101,
+      "original": "../../../pos-cafe/scripts/permission-release-cutover.mjs:81",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-release-cutover.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 101,
+      "original": "../../../pos-cafe/scripts/permission-release-preflight.mjs:17",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-release-preflight.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 103,
+      "original": "../../../pos-cafe/supabase/functions/menu-image-public/index.ts:10",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\supabase\\functions\\menu-image-public\\index.ts"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 103,
+      "original": "../../../pos-cafe/tests/contracts/permissionImagesRuntime.contract.test.ts:57",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\tests\\contracts\\permissionImagesRuntime.contract.test.ts"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 117,
+      "original": "../../../pos-cafe/scripts/permission-release-cutover.mjs:319",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-release-cutover.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 117,
+      "original": "../../../pos-cafe/scripts/permission-release-cutover.mjs:581",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-release-cutover.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 117,
+      "original": "../../../pos-cafe/scripts/permission-release-cutover.mjs:658",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-release-cutover.mjs"
+    },
+    {
+      "file": "docs/runbooks/permission-release-runbook-2026-10-08.md",
+      "line": 117,
+      "original": "../../../pos-cafe/scripts/permission-release-cutover.mjs:690",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe\\scripts\\permission-release-cutover.mjs"
+    },
+    {
+      "file": "docs/workflow/tasks/permission-final-push-2026-10-23.md",
+      "line": 31,
+      "original": "../../../openspec/changes/add-owner-account-and-store-provisioning/proposal.md:9",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\add-owner-account-and-store-provisioning\\proposal.md"
+    },
+    {
+      "file": "docs/workflow/tasks/permission-pin-completion-loss-2026-10-09.md",
+      "line": 7,
+      "original": "../../../openspec/changes/force-default-pin-change/testplan.md:58",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\force-default-pin-change\\testplan.md"
+    },
+    {
+      "file": "docs/workflow/tasks/permission-pin-completion-loss-2026-10-09.md",
+      "line": 7,
+      "original": "../../../openspec/changes/force-default-pin-change/testplan.md:85",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\force-default-pin-change\\testplan.md"
+    },
+    {
+      "file": "docs/workflow/tasks/permission-pin-completion-race-2026-10-09.md",
+      "line": 9,
+      "original": "../../../openspec/changes/force-default-pin-change/testplan.md:76",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\force-default-pin-change\\testplan.md"
+    },
+    {
+      "file": "docs/workflow/tasks/permission-pin-expiry-wait-2026-10-09.md",
+      "line": 15,
+      "original": "../../../openspec/changes/force-default-pin-change/specs/employee-session/spec.md:15",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\force-default-pin-change\\specs\\employee-session\\spec.md"
+    },
+    {
+      "file": "docs/workflow/tasks/permission-pin-expiry-wait-2026-10-09.md",
+      "line": 15,
+      "original": "../../../openspec/changes/force-default-pin-change/testplan.md:76",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\force-default-pin-change\\testplan.md"
+    },
+    {
+      "file": "docs/workflow/tasks/stitch-ui-remake-workflow-2026-10-19-history.md",
+      "line": 20,
+      "original": "../../ui-redesign/2026-09-15-huong-a/assets/tokens.css:7",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\ui-redesign\\2026-09-15-huong-a\\assets\\tokens.css"
+    },
+    {
+      "file": "docs/workflow/tasks/stitch-ui-remake-workflow-2026-10-19-history.md",
+      "line": 20,
+      "original": "../../ui-redesign/2026-09-15-huong-a/spec.md:3",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\ui-redesign\\2026-09-15-huong-a\\spec.md"
+    },
+    {
+      "file": "docs/workflow/tasks/thesis-rubric-gap-review-2026-10-04.md",
+      "line": 18,
+      "original": "../../../openspec/changes/enforce-permissions-at-database/proposal.md:3",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\enforce-permissions-at-database\\proposal.md"
+    },
+    {
+      "file": "docs/workflow/tasks/thesis-rubric-gap-review-2026-10-04.md",
+      "line": 20,
+      "original": "../../../openspec/changes/add-owner-account-and-store-provisioning/proposal.md:21",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\openspec\\changes\\add-owner-account-and-store-provisioning\\proposal.md"
+    },
+    {
+      "file": "docs/workflow/tasks/thesis-rubric-gap-review-2026-10-04.md",
+      "line": 25,
+      "original": "../../references.md:1",
+      "classification": "line-reference",
+      "resolved": "D:\\Workspace\\pos-cafe-ui-integration-docs-20261025\\docs\\references.md"
+    }
+  ]
+}

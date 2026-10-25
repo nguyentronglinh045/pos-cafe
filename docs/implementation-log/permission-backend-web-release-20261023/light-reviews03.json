@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "permission-actual-light-photo-reviews-v3",
+  "recordedUtc": "2026-10-24T02:08:15.363Z",
+  "sourceSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "ciRun": "40051559979",
+  "attempt": 1,
+  "collection": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci06-collection.json",
+    "sha256": "f7cd75b48c70ae4227016aeba5e21b653271c099f3e10163b80146223e5e91c6"
+  },
+  "summary": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci06-summary.json",
+    "sha256": "274f1e70a7815d8eb578e53b1fc3a063d580878a173fe2e8fdb9f054e5264e17"
+  },
+  "nativeCleanup": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci06-native-cleanup.json",
+    "sha256": "df0ffca0c6a5f6d182563c1050925b3c982866f8727b30fd0c6269711000487b"
+  },
+  "workflowLog": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci06-workflow.log",
+    "sha256": "703fe158f14734ffc4b36028b4f0c4f21896d19da1840c2fd3e0da3ec05caec9"
+  },
+  "integrity": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-integrity03.json",
+    "sha256": "8ea41baa9949c4e8de8ee9d1abdcb92008be385aa0dc87abd3139d36cca9056b"
+  },
+  "manualVisual": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-visual-review03.json",
+    "sha256": "76eef52b8789f88fbeb8ded73c05941127428f7ddba9b1090b230db2dbb6962e"
+  },
+  "manifest": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-40051559979-1/manifest.json",
+    "sha256": "a945d989b6820beaf20d2ce5a583f765a732bb12f297592afb9ce2c4c272b072"
+  },
+  "artifactMetadata": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-artifact-metadata03.json",
+    "sha256": "d61bdd67bfc9b46b16079fcc857cc90fbb87264eda596cba3ebaa6ce54e294e2"
+  },
+  "zip": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-40051559979-1.zip",
+    "sha256": "b82b3d1a6380065cf726d621f4cad72dcf5e9163dce62ba830b79e8df70b8f20"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "scope": "Actual LIGHT6/343, CI18, source/strict producer/native cleanup, opened all3fresh photos and native validator",
+      "verdict": "APPROVE",
+      "findings": [],
+      "details": "Fresh GitHub metadata and unique log objects/hash joins; STATIC5/313required actual480PASS + PG16T01 30/30; native cleanup measured50741248B. Mobilefullpage844x419/viewport844x390; masked inputs excluded."
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "scope": "Actual API/log/artifact/privacy/provenance/native cleanup and opened all3freshphotos",
+      "verdict": "APPROVE",
+      "findings": [],
+      "details": "Exact ZIP4allowlistedfiles/native CRC/hash validator/source binding; reporter4/4 diagnostics7/7+20mutations; no old PASS imported; producer visualReviewNOT_RUN preserved."
+    }
+  ],
+  "blockingFindings": 0,
+  "ci18": "PASS",
+  "light": {
+    "stages": 6,
+    "requiredIdentities": 343,
+    "actualPassed": 510
+  },
+  "limits": [
+    "Mock PIN UI only; no hosted app proof",
+    "Static per-identity validation by trusted producer; no public individual static case report",
+    "Tooling/smoke policy skips are not LIGHT required skips"
+  ],
+  "fullBackend": "PENDING",
+  "production": "HELD"
+}

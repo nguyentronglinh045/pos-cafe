@@ -1,0 +1,889 @@
+{
+  "schemaVersion": "permission-fullgate-obligation-map-v1",
+  "reviewStatus": "PENDING_ROOT_REVIEW",
+  "scope": "DOCS_ONLY_SOURCE_MAPPING_NO_RUNTIME_OBSERVATION",
+  "language": "vi",
+  "source": {
+    "root": "D:/Workspace/pos-cafe-permission-ci-fix-20261022/code",
+    "sha": "b2e3122866f5b6108f026f381f4f12614c98027c",
+    "localBranch": "fix/permissions-ci-portability-20261022",
+    "observedTrackedStatus": "CLEAN_AT_READ",
+    "lineConvention": "One-based source lines at the pinned SHA; paths with root=code resolve under source.root."
+  },
+  "docsRoot": "D:/Workspace/pos-cafe-docs",
+  "observationBoundary": {
+    "sourceReadOnly": true,
+    "testsRun": false,
+    "sqlRun": false,
+    "networkUsed": false,
+    "executionStatusForEveryRow": "NOT_EXECUTED_BY_THIS_AUDIT",
+    "currentLight": {
+      "runId": "39713372721",
+      "status": "NOT_TERMINAL_REPORTED_BY_COORDINATOR",
+      "provenance": "Parent task assignment and follow-up, 2026-10-22; this audit did not query GitHub.",
+      "refreshRequiredBeforeExecutionClaim": true
+    },
+    "heavyGrant": "NOT_GRANTED_IN_CURRENT_TASK",
+    "noPassFromSourceOrCounts": true
+  },
+  "activeAcceptance": [
+    {
+      "root": "docs",
+      "path": "openspec/changes/redesign-permission-model/proposal.md",
+      "line": 172,
+      "meaning": "D19 keeps PIN19/183 subvariants, PERM60/726 occurrences/27 stages/three base TC53, core/build/tooling/mock/UI and real services at the same source/config/lock/profile."
+    },
+    {
+      "root": "docs",
+      "path": "openspec/changes/redesign-permission-model/proposal.md",
+      "line": 174,
+      "meaning": "D19 replaces whole-D1/D2 automation/canonical graph closure with recoverable source manifest, actual locked dependencies, complete discovery/report and preservation. Safe summary without raw private archive does not require GPG/GitHub ACK."
+    },
+    {
+      "root": "docs",
+      "path": "docs/workflow/tasks/permission-delivery-r0-r1-2026-10-19.md",
+      "line": 21,
+      "meaning": "The twelve supplemental PIN security obligations remain required actual observations, not pure declarations."
+    },
+    {
+      "root": "docs",
+      "path": "docs/workflow/tasks/permission-delivery-r0-r1-2026-10-19.md",
+      "line": 39,
+      "meaning": "Bind existing obligations to actual tests/observers and source/config/run/profile. Missing meaningful assertions must be added only after their gap is established."
+    },
+    {
+      "root": "docs",
+      "path": "openspec/changes/force-default-pin-change/testplan.md",
+      "line": 200,
+      "meaning": "Each design message context needs a concrete trigger and assertion; codes alone are insufficient."
+    },
+    {
+      "root": "docs",
+      "path": "openspec/changes/force-default-pin-change/testplan.md",
+      "line": 202,
+      "meaning": "Same-candidate required gates and two independent final reviews; missing runtime is not PASS."
+    }
+  ],
+  "preservedInventory": {
+    "stages": 35,
+    "requiredRuntimeIdentities": 760,
+    "permissionCases": 60,
+    "permissionOccurrences": 726,
+    "permissionStages": 27,
+    "pinCases": 19,
+    "pinSubvariants": 183,
+    "pinMappings": 111,
+    "countsHaveDifferentMeanings": true,
+    "lanes": [
+      {
+        "lane": "LIGHT_STATIC_AND_PG16",
+        "stages": 6,
+        "identities": 343
+      },
+      {
+        "lane": "SUPABASE_T04",
+        "stages": 19,
+        "identities": 291
+      },
+      {
+        "lane": "SEVEN_SERVICE_ENVELOPES",
+        "stages": 10,
+        "identities": 126
+      }
+    ],
+    "citations": [
+      {
+        "root": "code",
+        "path": "scripts/permission-runtime-catalog.mjs",
+        "line": 18
+      },
+      {
+        "root": "code",
+        "path": "scripts/permission-runtime-catalog.mjs",
+        "line": 35
+      },
+      {
+        "root": "code",
+        "path": "scripts/permission-runtime-service-profile.mjs",
+        "line": 6
+      },
+      {
+        "root": "docs",
+        "path": "docs/workflow/tasks/permission-delivery-r0-r1-2026-10-19.md",
+        "line": 18
+      }
+    ],
+    "meaning": "Baseline counts and source mapping only. These are not observed discovery/results for b2."
+  },
+  "historicalD1": {
+    "obligationIdSource": "tests/permissions/full-oracle-contracts.json:gaps",
+    "reasonsAreHistorical": true,
+    "meaning": "Keep the exact twelve field IDs for traceability. Their historical reason text is neither a current defect report nor proof that a hook remains absent in b2. This map checks current assertions separately.",
+    "prototypeBoundary": [
+      {
+        "root": "code",
+        "path": "scripts/permission-full-oracle-port.mjs",
+        "line": 6,
+        "meaning": "Pure declaration composition, no commands."
+      },
+      {
+        "root": "code",
+        "path": "scripts/permission-full-d1-data.mjs",
+        "line": 17,
+        "meaning": "Model output deliberately valid=false/fullGate=NOT_RUN."
+      },
+      {
+        "root": "code",
+        "path": "scripts/permission-full-d1-data.mjs",
+        "line": 19,
+        "meaning": "Frozen historical D1 context pins base567/target2da; not the execution source selection used by current backend/light entrypoints."
+      },
+      {
+        "root": "code",
+        "path": "scripts/permission-full-evidence-stream.mjs",
+        "line": 18,
+        "meaning": "One-workflow aggregate is a prototype contract. D19 safe-summary route need not relabel separate real run IDs to satisfy it."
+      }
+    ],
+    "currentEntryPoints": "project-ci.mjs and project-backend-{t04,service}.mjs use runtime-stage reporters/profile receipts. No call to D1 controller execution, supplemental declaration collector, custody or aggregate receiver was identified in these execution entrypoints. Catalog imports FULL_STAGE_PLAN as metadata.",
+    "noNewFrameworkRequirementInThisMap": true
+  },
+  "statusMeaning": {
+    "SOURCE_MAPPED_NOT_EXECUTED": "Concrete assertion/guard and its route were located. This is not an exhaustive independent acceptance approval and is never execution PASS.",
+    "NEEDS_VERIFICATION": "Only partial mapping was established, or the obligation requires a manual/runtime observation still missing. Follow gapOrUnknown rather than treating all historical reason text as current."
+  },
+  "obligations": [
+    {
+      "id": "TC-PIN-02.no-skip-control",
+      "requirement": "PIN-02/03/05; màn restricted chỉ có form bắt buộc, logout, đổi quán; không bypass.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 34
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 526,
+          "meaning": "Enumerates button/input/select/textarea/link/role-button/contenteditable controls; exact count and three allowed families."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1331,
+          "meaning": "Calls the control assertion in actual restricted browser test; retry branch calls it at1367."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1375,
+          "meaning": "No protected RPC calls across restricted proof/deep-link probes."
+        }
+      ],
+      "executionRoutes": [
+        {
+          "stage": "pin-onboard-closeout",
+          "logicalProfile": "PIN_ONBOARD",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-onboard-closeout.config.ts"
+        }
+      ],
+      "status": "SOURCE_MAPPED_NOT_EXECUTED",
+      "gapOrUnknown": "Need successful own-source ordinary closeout discovery/result and profile receipt. Source enumeration is not observed DOM proof."
+    },
+    {
+      "id": "TC-PIN-03.exact-three-allowed-routes",
+      "requirement": "PIN-02/03/05; restricted surface/projections deny authority and business effects while accepted metadata/prelogin lifecycle remain precisely bounded.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 42
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 44
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1595,
+          "meaning": "Reads actual EXECUTE inventory and compares exact protected plus named nonBusiness functions."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1631,
+          "meaning": "Exact contract/store metadata projections and unchanged tenant snapshot."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1645,
+          "meaning": "Restricted/missing-token protected RPC denial loop."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1726,
+          "meaning": "Real Storage upload/delete denials plus payload/catalog preservation checks."
+        }
+      ],
+      "executionRoutes": [
+        {
+          "stage": "pin-onboard-closeout",
+          "logicalProfile": "PIN_ONBOARD",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-onboard-closeout.config.ts"
+        }
+      ],
+      "status": "NEEDS_VERIFICATION",
+      "gapOrUnknown": "Full allowed projection/prelogin lifecycle mapping was not exhaustively checked here. Enumerate each accepted metadata/roster/session/bootstrap operation and its exact projection/effect assertion; reconcile the historical three-route shorthand without deleting legitimate metadata routes. Do not infer this obligation solely from denials/counts."
+    },
+    {
+      "id": "TC-PIN-05.exact-messages-no-effects",
+      "requirement": "PIN-01/04/06/07; recovery refusals use exact contextual messages and preserve identity/evidence state.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 59
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 61
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 704,
+          "meaning": "Independent expected recovery message literals."
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 733,
+          "meaning": "Finite malformed refs/PIN/missing/nonowner/foreign-target cases."
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 757,
+          "meaning": "After real DB refusal checks exact projected message, no data and unchanged snapshot."
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 764,
+          "meaning": "Owner/manager/cashier/foreign owner cannot assume operator recovery."
+        }
+      ],
+      "executionRoutes": [
+        {
+          "stage": "pin-identity-server",
+          "logicalProfile": "PIN_IDENTITY",
+          "executionProfile": "PIN_IDENTITY_SERVER",
+          "config": "vitest.owner-pin-server.config.ts"
+        },
+        {
+          "phase": "tooling",
+          "logicalProfile": "STATIC",
+          "file": "tests/contracts/ownerRecoveryOperator.tool.test.mjs"
+        }
+      ],
+      "status": "NEEDS_VERIFICATION",
+      "gapOrUnknown": "Concrete current matrix located; complete correspondence to every accepted target/ref/caller context was not certified. Check inactive-owner target and elevated-override/service caller variants, exact messages and no-effects assertions, then bind successful discovery/results. Do not call missing merely because the historical D1 reason says so."
+    },
+    {
+      "id": "TC-PIN-11.exact-error-contexts",
+      "requirement": "PIN-05/07; reserve/signup/bootstrap failures and uncertain ACK retain one canonical creation context and exact context text.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 114
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 115
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2336,
+          "meaning": "Real browser transport failure before execute for reserve/signup/bootstrap."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2346,
+          "meaning": "Independent exact contextual UI message; signup failure snapshot unchanged."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2149,
+          "meaning": "Actual bootstrap conflict mapped to specific safe context sentence."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 1287,
+          "meaning": "Authentically signed expired Auth JWT yields actual REST rejection; adapter maps AUTH_REQUIRED."
+        }
+      ],
+      "executionRoutes": [
+        {
+          "stage": "pin-onboard-closeout",
+          "logicalProfile": "PIN_ONBOARD",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-onboard-closeout.config.ts"
+        },
+        {
+          "phase": "unit",
+          "logicalProfile": "STATIC",
+          "files": [
+            "src/adapters/supabase/ownerPinOnboardingCloseout.test.ts",
+            "src/app/requiredPinChange.test.tsx"
+          ]
+        }
+      ],
+      "status": "NEEDS_VERIFICATION",
+      "gapOrUnknown": "Need complete AUTH_REQUIRED/PERMISSION_UPDATE_UNAVAILABLE/BOOTSTRAP_CONFLICT trigger-to-exact-UI-message table, including component links and no automatic replay. The expired-token test proves adapter code mapping, not by itself every UI sentence."
+    },
+    {
+      "id": "TC-PIN-12.no-persistence-URL-log-or-marker",
+      "requirement": "PIN-03/05; Key stays in memory only, absent from persistence/URL/log and no new ACK/reload marker.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 123
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 124
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 544,
+          "meaning": "Enumerates local/session/cookie/IndexedDB marker names and keys."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 569,
+          "meaning": "Key exposure watcher covers console/pageerror/request URLs/current URL/local/session/cookies/IndexedDB contents."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2675,
+          "meaning": "Separates legitimate Auth token marker; exact marker equality before/after create and reload, plus Key absence."
+        }
+      ],
+      "executionRoutes": [
+        {
+          "stage": "pin-onboard-closeout",
+          "logicalProfile": "PIN_ONBOARD",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-onboard-closeout.config.ts"
+        }
+      ],
+      "status": "SOURCE_MAPPED_NOT_EXECUTED",
+      "gapOrUnknown": "Need successful current-source TC12 browser variants, including pre/post ACK and hard reload. Actual observations have not been collected by this audit."
+    },
+    {
+      "id": "TC-PIN-17.unit-build-permission-regression",
+      "requirement": "PIN-02/03/04; full current unit/build/tooling and permission regression at the accepted source.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 168
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 202
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/redesign-permission-model/proposal.md",
+          "line": 172
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "scripts/project-ci.mjs",
+          "line": 294,
+          "meaning": "Actual install/build/unit coverage/tooling/node-tools phases; phase validators stop failure."
+        },
+        {
+          "root": "code",
+          "path": "scripts/project-ci.mjs",
+          "line": 323,
+          "meaning": "Runs source-bound permission STATIC stages; PG16 follows at330."
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-static.mjs",
+          "line": 20,
+          "meaning": "Checks each required stage identity/counts/source hashes with zero required skip/retry."
+        },
+        {
+          "root": "code",
+          "path": "scripts/project-ci.mjs",
+          "line": 378,
+          "meaning": "Explicitly leaves PERMISSION_FULL deferred; verifies tracked source preservation."
+        }
+      ],
+      "executionRoutes": [
+        {
+          "phases": [
+            "build",
+            "unit",
+            "tooling",
+            "node-tools",
+            "permission-static",
+            "permission-pg16"
+          ],
+          "logicalProfile": "STATIC_AND_PG16",
+          "workflow": ".github/workflows/ci.yml"
+        },
+        {
+          "stages": [
+            "candidate-unit",
+            "foundation-unit",
+            "legacy-t01-tools",
+            "candidate-seed-tools"
+          ],
+          "logicalProfile": "STATIC",
+          "executionProfile": "LIGHT"
+        }
+      ],
+      "status": "SOURCE_MAPPED_NOT_EXECUTED",
+      "gapOrUnknown": "Wait for run39713372721 terminal and inspect full phase receipts. Full permission service regression additionally requires the remaining backend stages; light success alone is not full PERM/PIN PASS. Preserve existing declared applicability/manual rules rather than inventing a new count interpretation."
+    },
+    {
+      "id": "TC-PIN-17.ui-selftest-23",
+      "requirement": "PIN-02/03/04; detector selftest must find exactly23 and selftest OK before audit.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 168
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "scripts/project-ci.mjs",
+          "line": 367,
+          "meaning": "Invokes actual selftest and requires selftest OK plus23 findings."
+        },
+        {
+          "root": "code",
+          "path": "scripts/project-ci.mjs",
+          "line": 372,
+          "meaning": "PIN audit runs only after preceding selftest phase succeeds."
+        }
+      ],
+      "executionRoutes": [
+        {
+          "phase": "ui-selftest",
+          "logicalProfile": "STATIC",
+          "executionProfile": "LIGHT",
+          "workflow": ".github/workflows/ci.yml"
+        }
+      ],
+      "status": "SOURCE_MAPPED_NOT_EXECUTED",
+      "gapOrUnknown": "Need own-source terminal selftest phase receipt; synthetic pure oracle declarations do not establish detector calibration."
+    },
+    {
+      "id": "TC-PIN-17.PIN-3-viewports-photos-classified",
+      "requirement": "PIN-02/03/04; inspect masked PIN photos at desktop/tablet/mobile; classify findings and verify no overflow/overlay/zero-size.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 168
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 169
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-pin-ui.mjs",
+          "line": 8,
+          "meaning": "Three fixed viewports."
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-pin-ui.mjs",
+          "line": 29,
+          "meaning": "Validates photo/source/masking/dimensions and emits photoInspected=false with PENDING_VISUAL_REVIEW."
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-pin-ui.mjs",
+          "line": 108,
+          "meaning": "Actual required-pin-change audit; validates three completed pairs and source preservation."
+        },
+        {
+          "root": "code",
+          "path": ".github/workflows/ci.yml",
+          "line": 38,
+          "meaning": "Uploads only allowlisted safe manifest and three synthetic PNGs, retention1day."
+        }
+      ],
+      "executionRoutes": [
+        {
+          "phase": "ui-audit",
+          "logicalProfile": "STATIC",
+          "executionProfile": "LIGHT",
+          "workflow": ".github/workflows/ci.yml"
+        },
+        {
+          "action": "POST_RUN_VISUAL_CLASSIFICATION",
+          "profile": "REVIEWER",
+          "automatedStage": null
+        }
+      ],
+      "status": "NEEDS_VERIFICATION",
+      "gapOrUnknown": "Manual image inspection/classification is deliberately not performed by producer. After actual export, verify source/run/image hashes, inspect all three images, classify each finding against accepted baseline and record reviewer/evidence. CI-only PASS cannot close this row."
+    },
+    {
+      "id": "TC-PIN-17.no-ui-baseline-update",
+      "requirement": "PIN-02/03/04; never update UI baseline merely to make the gate green.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 169
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-pin-ui.mjs",
+          "line": 108,
+          "meaning": "Captures baseline hash; targeted audit command has no --update."
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-pin-ui.mjs",
+          "line": 111,
+          "meaning": "Asserts baseline hash unchanged after targeted audit."
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-pin-ui.mjs",
+          "line": 125,
+          "meaning": "Runs actual full audit without update and rechecks baseline hash after child."
+        },
+        {
+          "root": "code",
+          "path": "scripts/project-ci.mjs",
+          "line": 378,
+          "meaning": "Final tracked source fingerprint equality."
+        }
+      ],
+      "executionRoutes": [
+        {
+          "phase": "ui-audit",
+          "logicalProfile": "STATIC",
+          "executionProfile": "LIGHT",
+          "workflow": ".github/workflows/ci.yml"
+        }
+      ],
+      "status": "SOURCE_MAPPED_NOT_EXECUTED",
+      "gapOrUnknown": "Need actual successful audit/source-preservation receipts and reviewed baseline source pin. This operational constraint does not create an extra synthetic test identity."
+    },
+    {
+      "id": "TC-PIN-18.MAC-no-secret-audit-projection",
+      "requirement": "PIN-07; keyed MAC for secret payload, no plaintext/unkeyed PIN hash leakage, exact safe audit/registry/receipt/signal semantics.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 181
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 182
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 117,
+          "meaning": "Reads real registry/key only privately; independently computes request-bound HMAC and rejects unkeyed SHA expectation."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 140,
+          "meaning": "Exact field sets for audit/signals/registry/bootstrap/workflow/stage receipts."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 246,
+          "meaning": "Checks11 actual capture sinks for canary leakage."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4026,
+          "meaning": "Recovery audit actor/target/request/outcome/credential state and signal binding assertions."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4548,
+          "meaning": "Completion audit/registry and changed credential assertions after committed lost ACK."
+        }
+      ],
+      "executionRoutes": [
+        {
+          "stage": "pin-tc18-wrapper",
+          "logicalProfile": "PIN_ONBOARD",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-tc18.config.ts",
+          "wrapper": "scripts/permission-pin-canary-run.mjs"
+        },
+        {
+          "stage": "pin-identity-server",
+          "logicalProfile": "PIN_IDENTITY",
+          "executionProfile": "PIN_IDENTITY_SERVER",
+          "config": "vitest.owner-pin-server.config.ts"
+        }
+      ],
+      "status": "NEEDS_VERIFICATION",
+      "gapOrUnknown": "Current meaningful assertions exist; exhaustive operation/outcome coverage was not certified in this bounded audit. Map complete/recovery/bootstrap/seed success/denied/fault/lost-ACK/replay semantics and prove wrapper post-exit artifact scan/required matrix with actual receipt. Pure32-row audit model is not substitute runtime evidence."
+    },
+    {
+      "id": "TC-PIN-18.exact-error-context-triggers",
+      "requirement": "PIN-07; every accepted design message needs the correct runtime trigger, exact text and safe state/effects.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 181
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 182
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 200
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerRecoveryOperator.tool.test.mjs",
+          "line": 86,
+          "meaning": "Independent exact recovery message literals and rejection of raw SQL text."
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerPinServerRuntime.contract.test.ts",
+          "line": 757,
+          "meaning": "Actual DB refusals connected to exact recovery context and unchanged state."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 2346,
+          "meaning": "Exact create transport failure sentences."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4531,
+          "meaning": "Committed completion ACK-loss sentence; explicit request count and later login verification."
+        },
+        {
+          "root": "code",
+          "path": "tests/operator/ownerRecoveryOperator.spec.ts",
+          "line": 62,
+          "meaning": "Operator browser exact error sentences for additional recovery contexts."
+        }
+      ],
+      "executionRoutes": [
+        {
+          "stage": "pin-tc18-wrapper",
+          "logicalProfile": "PIN_ONBOARD",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-tc18.config.ts"
+        },
+        {
+          "stage": "pin-onboard-closeout",
+          "logicalProfile": "PIN_ONBOARD",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-onboard-closeout.config.ts"
+        },
+        {
+          "stage": "pin-identity-server",
+          "logicalProfile": "PIN_IDENTITY",
+          "executionProfile": "PIN_IDENTITY_SERVER",
+          "config": "vitest.owner-pin-server.config.ts"
+        },
+        {
+          "stage": "pin-static-operator",
+          "logicalProfile": "STATIC",
+          "executionProfile": "LIGHT",
+          "config": "playwright.owner-recovery-operator.config.ts"
+        },
+        {
+          "phase": "tooling",
+          "logicalProfile": "STATIC",
+          "file": "tests/contracts/ownerRecoveryOperator.tool.test.mjs"
+        }
+      ],
+      "status": "NEEDS_VERIFICATION",
+      "gapOrUnknown": "Need finite design-context->trigger->independent-text->effects->actual-result matrix. This audit only located representative current assertions; it has not established all contexts or that a message-literal test actually triggers each intended runtime error. Do not replace this with canary absence or a total PASS count."
+    },
+    {
+      "id": "TC-PIN-18.operator-loopback-unlock-CSRF-Origin-body-role",
+      "requirement": "PIN-07; local-only operator unlock/session/CSRF/Origin/body limit and dedicated DB role, without POS recovery authority.",
+      "activeAcceptance": [
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 181
+        },
+        {
+          "root": "docs",
+          "path": "openspec/changes/force-default-pin-change/testplan.md",
+          "line": 182
+        }
+      ],
+      "assertions": [
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerRecoveryOperator.tool.test.mjs",
+          "line": 35,
+          "meaning": "Actual loopback HTTP server tests lock/unlock/session/Origin/CSRF and safe projection."
+        },
+        {
+          "root": "code",
+          "path": "tests/contracts/ownerRecoveryOperator.tool.test.mjs",
+          "line": 55,
+          "meaning": "Valid JSON/code/Origin oversized body isolates16KiB limit; no recovery calls."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4576,
+          "meaning": "Checks exact PG17 role grantor, rejects initial SET-role capability, then adds fixture-only grant and verifies permitted role."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4625,
+          "meaning": "Actual DB commit/lost HTTP ACK with explicit-only replay, unchanged post-commit snapshot and audit binding."
+        },
+        {
+          "root": "code",
+          "path": "tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+          "line": 4660,
+          "meaning": "Ten actual private operator capture sinks checked for canary leakage."
+        }
+      ],
+      "executionRoutes": [
+        {
+          "phase": "tooling",
+          "logicalProfile": "STATIC",
+          "file": "tests/contracts/ownerRecoveryOperator.tool.test.mjs"
+        },
+        {
+          "stage": "pin-static-operator",
+          "logicalProfile": "STATIC",
+          "executionProfile": "LIGHT",
+          "config": "playwright.owner-recovery-operator.config.ts"
+        },
+        {
+          "stage": "pin-tc18-wrapper",
+          "logicalProfile": "PIN_ONBOARD",
+          "executionProfile": "PIN_ONBOARD",
+          "config": "playwright.pin-tc18.config.ts"
+        }
+      ],
+      "status": "SOURCE_MAPPED_NOT_EXECUTED",
+      "gapOrUnknown": "Need successful current-source tooling/operator-browser/TC18 wrapper evidence and final permission/fixture restoration checks. Pure operatorPolicy() negative tests alone do not prove this boundary."
+    }
+  ],
+  "executionAndAdmissionNotes": [
+    {
+      "kind": "CORRECTION_TO_PRIOR_AUDIT_MESSAGE",
+      "meaning": "Local fix branch does not itself make runtimeAdmission fail MANIFEST. permission-runtime-admission.mjs:8 and43 constrain manifest.branch, which selects the remote dispatch ref; line54 compares local HEAD and tracked diff, not the local branch name. If manifest.branch=run/permissions-20261020, its remote ref is the candidate SHA, and the new sourceRoot/retainedRoots are reviewed, local checkout branch may differ. Do not change guard solely for this reason. No remote state was queried by this audit.",
+      "citations": [
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-admission.mjs",
+          "line": 8
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-admission.mjs",
+          "line": 43
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-admission.mjs",
+          "line": 54
+        },
+        {
+          "root": "code",
+          "path": "scripts/permission-runtime-admission.mjs",
+          "line": 56
+        }
+      ]
+    },
+    {
+      "kind": "HEAVY_SCOPE",
+      "meaning": "Existing CLOSED V3 budgets/claims do not reopen. Light remediation grant is not a heavy grant. Future heavy work needs its concrete source/operation/retained scope, actual own-source light/native-cleanup evidence, current budget/authority and independent review; no heavy action was performed here."
+    },
+    {
+      "kind": "LEAST_CHANGE_ROUTE",
+      "meaning": "Use current isolated runners/reporters and a reviewed sequential runbook plus source-bound safe local summary retaining every actual run ID. Do not build a hosted adapter, one-run orchestrator, D1 aggregate or generic custody framework merely to close this map. Supplement specific assertions only if independent mapping review establishes a real acceptance gap."
+    }
+  ],
+  "remainingEvidence": [
+    "Terminal actual light39713372721 at pinned source, including reporter/Edge/native/static/PG16/UI phases and cleanup.",
+    "Actual required backend profile receipts at the same candidate, zero required skip/retry, T04 physical/preservation/readback success and exact coverage union.",
+    "Resolve NEEDS_VERIFICATION rows by targeted source mapping; no presumed defect or automatic new implementation scope.",
+    "Inspect and classify all three current-source PIN photos and record reviewer, artifact/image/source/run bindings.",
+    "Final recoverable source/spec/config/lock manifest and two independent reviews on the exact final candidate; original DB and production remain outside this artifact."
+  ],
+  "authorization": "Parent delegated creation of exactly this new docs artifact; no source/runtime/network/SQL/test/CI/commit changes."
+}

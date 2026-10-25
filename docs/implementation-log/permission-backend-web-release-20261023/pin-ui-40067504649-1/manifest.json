@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "permission-pin-ui-photos-v1",
+  "scope": "CREDENTIAL_FREE_MOCK_PIN_UI_ONLY",
+  "sourceSHA": "34db1b13ab707bab114fe1d83642d021ff324c93",
+  "sourceFingerprint": "fa38fc2ffbfcb7aab99d5b61b69b36d25c936bcdc7b7d98e9f15f7e1570066ab",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "runId": "40067504649",
+  "attempt": 1,
+  "auditStatus": "PASS",
+  "visualReview": "NOT_RUN",
+  "canonicalArgv": [
+    "node",
+    "ui-audit/run.mjs",
+    "--state",
+    "required-pin-change"
+  ],
+  "invocationSHA256": "6978d62210955b14847f0df4142dc69cbbd248818d8a42818b33d7141f058b40",
+  "baselineSHA256": "79fe315c36c21db23a66724939b085e5ac4065d16780e2a0d26e1f9da5c87080",
+  "sourceFiles": {
+    "runnerSHA256": "489f6b5eea4153af814e2a560e615cddd372bc45706a5e2d49264aa5530badfd",
+    "fixtureSHA256": "8ae36b6c25b987f3090c6222c99fd52653f70788974699cb3e14a883d37f40b9",
+    "configSHA256": "83ad64e8498511c3360d2874859ef7211a142601883ab8d743455ab32ab5428b",
+    "detectorSHA256": "cb775fb2b9ff0517d4fd9137870f9192457b1695ba9dda5858af57647ec9d7e6"
+  },
+  "credentialFreeMock": true,
+  "photos": [
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "height": 900,
+      "filename": "required_pin_change__desktop.png",
+      "bytes": 23395,
+      "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e",
+      "imageWidth": 1440,
+      "imageHeight": 900,
+      "passwordInputsEmpty": true,
+      "maskedPasswordInputs": 2,
+      "photoInspected": false,
+      "classifications": "PENDING_VISUAL_REVIEW",
+      "findingIds": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 1024,
+      "height": 768,
+      "filename": "required_pin_change__tablet.png",
+      "bytes": 21410,
+      "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca",
+      "imageWidth": 1024,
+      "imageHeight": 768,
+      "passwordInputsEmpty": true,
+      "maskedPasswordInputs": 2,
+      "photoInspected": false,
+      "classifications": "PENDING_VISUAL_REVIEW",
+      "findingIds": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 844,
+      "height": 390,
+      "filename": "required_pin_change__mobile.png",
+      "bytes": 18520,
+      "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f",
+      "imageWidth": 844,
+      "imageHeight": 419,
+      "passwordInputsEmpty": true,
+      "maskedPasswordInputs": 2,
+      "photoInspected": false,
+      "classifications": "PENDING_VISUAL_REVIEW",
+      "findingIds": []
+    }
+  ],
+  "findings": [],
+  "rawLogsOrPrivateTC18Exported": false
+}

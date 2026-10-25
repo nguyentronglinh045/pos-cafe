@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "permission-heavy-dispatch-intent-v5",
+  "recordedUtc": "2026-10-24T04:35:55.727Z",
+  "sourceSHA": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+  "branch": "review/permission-staging-20261023",
+  "main": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-packet05.json",
+    "sha256": "43eb89e4e8b933486da162e3a3c1b3046e11d4041d0eeb4fc59dc38f080957a8"
+  },
+  "reviews": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-reviews05.json",
+    "sha256": "a11f43f91103dadbae4d3b32e0599d14d5797cac601175177685670859c5fb2e"
+  },
+  "mapping": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping06.json",
+    "sha256": "577a3a380c7f4413a92e39b650e020b93b7ad606c6c40fb20d7706113cdaefcf"
+  },
+  "mappingReviews": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-mapping-reviews05.json",
+    "sha256": "7a765c1c58b7f407965906370c3a43be162d8d02c225432b07d27670fb875ffd"
+  },
+  "actualLightReviews": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/light-reviews05.json",
+    "sha256": "8e0fe49072f777de24a640bcf3568f620656500265bc9cbf76db3ef43c6bf64b"
+  },
+  "profile": "SUPABASE_T04",
+  "currentAuthorizationOrdinal": 5,
+  "globalRetainedT04Tag": "cloud-t0407",
+  "consumedBefore": {
+    "publication": 5,
+    "automaticLightCi": 5,
+    "T04": 4
+  },
+  "reservedAfter": {
+    "publication": 5,
+    "automaticLightCi": 5,
+    "T04": 5
+  },
+  "noAutomaticRetry": true,
+  "exactExpectedSourceSha": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+  "remoteActiveBefore": 0,
+  "remoteCheckpoint": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pre-t04-remote05.json",
+    "sha256": "8087c98a85a6dcf533e4a70fcfed30016cc453fb2f244a91921b6c152717b10c"
+  },
+  "localCheckpoint": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pre-t04-local-checkpoint05.json",
+    "sha256": "5a4ee8d36d062daf31d3dd6e4827bdebe7f4a4e606093e22a2757a6df3da0352"
+  },
+  "localDisksImmediatelyBefore": [
+    {
+      "DeviceID": "C:",
+      "FreeSpace": 189565898752
+    },
+    {
+      "DeviceID": "D:",
+      "FreeSpace": 98730766336
+    }
+  ],
+  "priorFailedRun": "40058110136",
+  "priorMeasuredReclaim": {
+    "schemaVersion": "permission-ci1-reclaim-v1",
+    "status": "RECLAIMED",
+    "imageUnlinked": true,
+    "imageLogicalBytes": 19327352832,
+    "imageAllocatedBytes": 19327389696,
+    "hostFreeBeforeBytes": 72226492416,
+    "hostFreeAfterBytes": 91553886208,
+    "measuredHostFreeDeltaBytes": 19327393792,
+    "remaining": "compact control/status/safe export only; ephemeral runner"
+  },
+  "workerCapacityQuota": "MUST_RECHECK_IN_NEW_JOB; no extra probe",
+  "otherSevenProfiles": "HELD_UNSPENT",
+  "prMergeDeploy": "NOT_AUTHORIZED",
+  "reservedBeforePost": true
+}

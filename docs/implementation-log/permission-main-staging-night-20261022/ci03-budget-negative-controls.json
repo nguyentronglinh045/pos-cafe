@@ -1,0 +1,34 @@
+{
+  "recordedAtUtc": "2026-10-22T16:03:04.174Z",
+  "policySHA256": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+  "controls": [
+    {
+      "kind": "heavy",
+      "expected": "ALLOWANCE_EXHAUSTED",
+      "observed": "ALLOWANCE_EXHAUSTED",
+      "status": "PASS"
+    },
+    {
+      "kind": "postgate",
+      "expected": "POST_GATE_GRANT_REQUIRED",
+      "observed": "POST_GATE_GRANT_REQUIRED",
+      "status": "PASS"
+    }
+  ],
+  "before": {
+    "policy": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+    ".anchor.json": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f",
+    ".journal.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".head.json": "4ceb55cae108ac77be73fd37fa29166f0871e42bbc764d7236a801def7c4d568"
+  },
+  "after": {
+    "policy": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+    ".anchor.json": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f",
+    ".journal.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".head.json": "4ceb55cae108ac77be73fd37fa29166f0871e42bbc764d7236a801def7c4d568"
+  },
+  "noJournalChange": true,
+  "noReservation": true,
+  "noRemoteAction": true,
+  "status": "PASS"
+}

@@ -1,0 +1,53 @@
+{
+  "recordedUtc": "2026-10-24T06:47:58.579Z",
+  "sourceSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-image-diagnostic-packet01.json",
+    "bytes": 331650,
+    "sha256": "2db1ecf3fd562a26cf1830933b95b08868d2c5effa97ef0c231ef087427b02c7"
+  },
+  "reviews": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-image-diagnostic-source-reviews01.json",
+    "bytes": 1682,
+    "sha256": "64707ab9d86690de864ac27adf1d52bf923ee128b99e7c84ae07a666d948fcd2"
+  },
+  "mapping": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-image-diagnostic-mapping01.json",
+    "bytes": 4109,
+    "sha256": "477c68fab06da96fd50d12edd87ad0109cced4eb54f5e93acb46ce14e07b967a"
+  },
+  "remoteCheckpoint": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-image-diagnostic-prepublication-remote01.json",
+    "bytes": 174,
+    "sha256": "af774edc488673d4055ee2441db3b535cbe5d03bd78c359715bef7c22714cc94"
+  },
+  "localDisks": [
+    {
+      "DeviceID": "C:",
+      "FreeSpace": 189420118016
+    },
+    {
+      "DeviceID": "D:",
+      "FreeSpace": 98711420928
+    }
+  ],
+  "normalPush": true,
+  "branch": "review/permission-staging-20261023",
+  "expectedRemoteSHA": "34db1b13ab707bab114fe1d83642d021ff324c93",
+  "expectedMain": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "fallbackConsumedBefore": {
+    "publication": 0,
+    "ci": 0,
+    "segment": 0
+  },
+  "fallbackReservedAfter": {
+    "publication": 1,
+    "ci": 1,
+    "segment": 0
+  },
+  "additionalWhole": 0,
+  "noRetry": true,
+  "held": "PR/merge/deploy/other7profiles",
+  "ciTag": "night-ci10",
+  "diagnosticTag": "cloud-t04-image01"
+}

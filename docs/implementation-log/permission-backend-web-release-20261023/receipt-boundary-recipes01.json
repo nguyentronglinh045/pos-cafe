@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "permission-receipt-boundary-recipes-v1",
+  "recordedUtc": "2026-10-24T02:58:26.787Z",
+  "sourceSHA": "f8ee03c195127bb440b0ede3142622ed21c3cc96",
+  "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+  "node": "D:/tools/nodejs/node.exe",
+  "testInputBinding": "Executed over parent90824 metadata with final7author working files; author and frozen Git hashes verified equal. Policy eighthfile checked separately.",
+  "nodeArguments": [
+    "--test",
+    "scripts/permission-runtime-isolated-receipt.test.mjs",
+    "scripts/permission-runtime-candidate-diagnostic.test.mjs",
+    "scripts/permission-runtime-error-facts.test.mjs",
+    "scripts/permission-runtime-diagnostic-transport.test.mjs",
+    "scripts/permission-runtime-t04.test.mjs",
+    "scripts/permission-runtime-service-diagnostic.test.mjs",
+    "scripts/permission-runtime-results.test.mjs",
+    "scripts/permission-runtime-catalog.test.mjs",
+    "scripts/permission-runtime-admission.test.mjs",
+    "scripts/permission-ci1-worker.test.mjs"
+  ],
+  "nodeLog": "../evidence/receipt-boundary-node-20261024-06.log",
+  "reporterArguments": [
+    "--input-type=module",
+    "-e"
+  ],
+  "reporterScript": "import{mkdtempSync,readFileSync}from'node:fs';import{resolve}from'node:path';import{execFileSync}from'node:child_process';import{createHash}from'node:crypto';import{candidateInventoryReporterControl}from'./scripts/permission-runtime-diagnostic-selftest.mjs';const root=process.cwd(),parent=mkdtempSync(resolve('artifacts/receipt-reporter-control-')),sourceSHA=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),lockSHA=createHash('sha256').update(readFileSync('package-lock.json')).digest('hex');candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA});console.log(JSON.stringify({controls:3,pass:3,coverage:'WINDOWS_REFUSAL_ONLY',path:parent,sourceSHA,lockSHA}));",
+  "reporterLog": "../evidence/receipt-boundary-real-reporter-20261024-03.log",
+  "policyArguments": [
+    "--test",
+    "scripts/permission-full-target-policy.test.mjs"
+  ],
+  "outputHandling": "Capture stdout+stderr to exclusive new log names; retain actual process exit. Existing named logs are immutable and must not be overwritten for reproduction.",
+  "effects": "No install/backend/database/network dispatch; small synthetic local fixtures retained. Linux realfile checks execute only on new authorized CI."
+}

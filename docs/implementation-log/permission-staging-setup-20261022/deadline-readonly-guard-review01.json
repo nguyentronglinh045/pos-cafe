@@ -1,0 +1,31 @@
+{
+  "observedAtUtc": "2026-10-22T09:02:06.8883378+00:00",
+  "source": "deadline-readonly-guard-source01.ps1",
+  "sourceSha256": "9c3aaff3f3e979c6b45387dee2dbfceb6190106b34ac69f344876568d1673061",
+  "launch": "deadline-readonly-guard-launch01.json",
+  "coordination": "deadline-readonly-coordination01.json",
+  "coordinationSha256": "d862f1233b82fab15c93fdedb84a097c14253ce77beb36e7eb7a146ebef46ad2",
+  "scopeReview": {
+    "initialVerdict": "CHANGES_REQUESTED",
+    "finding": "Lines90-92: hash/ACL checks followed by File.Replace are not CAS; concurrent uncoordinated config replacement can be overwritten.",
+    "disposition": "Explicit operational SINGLE WRITER contract, no absolute CAS/race-proof/no-unrelated-overwrite claim. Root does not mutate config while watcher alive; early restoration only after watcher identity verification, stop and exit. Other agents read-only.",
+    "reviewer": "/root/mcp_staging_scope_review",
+    "finalVerdict": "APPROVE exact source under coordination contract"
+  },
+  "operationsReview": {
+    "verdict": "APPROVE source, launch and coordination contract",
+    "checks": "Verified exact PID34152 bundled pwsh/source/hash argument, priorPID31232 stopped, parse0, actual config/snapshot hashes and no restore receipt.",
+    "reviewer": "/root/mcp_staging_evidence_review",
+    "limits": "Not yet observed across Codex restart or deadline restoration; no absolute time guarantee, no MCP reload or OAuth revocation."
+  },
+  "rootCheck": {
+    "liveWriteConfigHashMatched": true,
+    "pid": 34152,
+    "alive": true,
+    "finalRestoreReceiptExists": false,
+    "sourceHashMatched": true,
+    "observedAtUtc": "2026-10-22T08:58:20.3551006+00:00"
+  },
+  "databaseCalls": 0,
+  "configMutationInReview": 0
+}

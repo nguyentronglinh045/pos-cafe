@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "permission-staging-auth-test-grant-v1",
+  "reference": "call_c39dea82af0141a4a7b517f1e32f33d9 item0",
+  "answer": "Cho phép Auth và TEST theo giới hạn trên",
+  "recordingBasis": "Actual user reply in this conversation; no click timestamp was supplied.",
+  "proposal": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-staging-auth-edge-proposal-2026-10-22.md",
+    "sha256": "cf17b62666d0e757aa190a970fd4e5f43a43f36150274855a7824ac0362c4d0d"
+  },
+  "projectRef": "ineckiashpwloncxnbqx",
+  "window": {
+    "startUtc": "2026-10-22T14:00:00Z",
+    "newWritesStopUtc": "2026-10-22T14:30:00Z",
+    "allActionsStopUtc": "2026-10-22T14:45:00Z"
+  },
+  "auth": {
+    "confirmEmailOnToOff": 1,
+    "restorativeOffToOnBeforeStopIfVerificationFails": 1,
+    "keepOffOnSuccess": true,
+    "otherAuthSettings": "UNCHANGED"
+  },
+  "caps": {"testStores": 2, "authUsers": 2, "employeesIncludingOwners": 6},
+  "dataRetention": "Keep owned TEST data for review; this grant does not authorize deletion.",
+  "edge": "NOT AUTHORIZED by this reply; remains BLOCKED pending separately reviewed exact dependency-preserving payload and authenticated transport.",
+  "originalDb": "FORBIDDEN",
+  "acceptanceBoundary": "Supplemental hosted Auth/RPC checks; unchanged full35/760 and 12 obligations remain required for main."
+}

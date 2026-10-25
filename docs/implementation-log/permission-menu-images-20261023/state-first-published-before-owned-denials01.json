@@ -1,0 +1,46 @@
+{
+  "projectRef": "ineckiashpwloncxnbqx",
+  "query": "select jsonb_build_object('checked_at',now(),'storage_total',(select count(*) from storage.objects),'uploads_total',(select count(*) from private.menu_image_uploads),'assets_total',(select count(*) from private.menu_image_assets),'storage_owned',(select coalesce(jsonb_agg(jsonb_build_object('id',id,'bucket',bucket_id,'name',name,'metadata',metadata) order by name),'[]'::jsonb) from storage.objects where name like 'b4e6bfcd-21fb-41a8-8718-6fe26430a2cf/%'),'uploads_owned',(select coalesce(jsonb_agg(jsonb_build_object('handle',upload_handle,'itemId',item_id,'state',state,'bytes',byte_size) order by upload_handle),'[]'::jsonb) from private.menu_image_uploads where store_id='b4e6bfcd-21fb-41a8-8718-6fe26430a2cf'),'assets_owned',(select coalesce(jsonb_agg(jsonb_build_object('assetKey',asset_key,'itemId',item_id,'published',published) order by asset_key),'[]'::jsonb) from private.menu_image_assets where store_id='b4e6bfcd-21fb-41a8-8718-6fe26430a2cf'),'target_item',(select jsonb_build_object('id',id,'name',name,'imageAssetKey',image_asset_key) from public.menu_items where store_id='b4e6bfcd-21fb-41a8-8718-6fe26430a2cf' and id='442499a3-0950-4b6f-a2f4-3ad664897141')) as image_state;",
+  "result": {
+    "checked_at": "2026-10-23T13:14:34.416219+00:00",
+    "target_item": {
+      "id": "442499a3-0950-4b6f-a2f4-3ad664897141",
+      "name": "TEST - Cà phê",
+      "imageAssetKey": "9d759f09-5c90-445c-ad7a-706f34f3ba87"
+    },
+    "assets_owned": [
+      {
+        "itemId": "442499a3-0950-4b6f-a2f4-3ad664897141",
+        "assetKey": "9d759f09-5c90-445c-ad7a-706f34f3ba87",
+        "published": true
+      }
+    ],
+    "assets_total": 1,
+    "storage_owned": [
+      {
+        "id": "49007d9a-5f10-485c-ba74-60494e130f1c",
+        "name": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf/menu-items/442499a3-0950-4b6f-a2f4-3ad664897141/9d759f09-5c90-445c-ad7a-706f34f3ba87.png",
+        "bucket": "menu-item-image-staging",
+        "metadata": {
+          "eTag": "\"e44e7ecfec99356632c13cd3eaa3e250\"",
+          "size": 68,
+          "mimetype": "image/png",
+          "cacheControl": "max-age=0",
+          "lastModified": "2026-10-23T13:13:56.000Z",
+          "contentLength": 68,
+          "httpStatusCode": 200
+        }
+      }
+    ],
+    "storage_total": 1,
+    "uploads_owned": [
+      {
+        "bytes": 68,
+        "state": "published",
+        "handle": "9d759f09-5c90-445c-ad7a-706f34f3ba87",
+        "itemId": "442499a3-0950-4b6f-a2f4-3ad664897141"
+      }
+    ],
+    "uploads_total": 1
+  }
+}

@@ -1,0 +1,319 @@
+{
+  "schemaVersion": "pos-cafe-light-ci-v1",
+  "verificationScope": "LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY",
+  "repository": "nguyentronglinh045/pos-cafe",
+  "repositoryID": 1263057386,
+  "event": "push",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "prHeadSHA": null,
+  "workflowSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "runId": "39811728040",
+  "attempt": 1,
+  "sourceFingerprint": "ad15201c0371bff8082cbb212e3e23485200ae4c759cbb095ad8b73d8acbefa7",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "overallStatus": "PASS",
+  "runURL": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39811728040/attempts/1",
+  "phases": [
+    {
+      "id": "install",
+      "status": "PASS",
+      "elapsedMs": 8593,
+      "exitCode": 0,
+      "invocationSHA": "ace69acbc50eef082b8e965604d485350869d1defda79231a2d4af37ef45807d",
+      "reportSHA": "5b332926c93cc263e1aeac88ee2a25531daac45649e9ffe5366e33e948975b98",
+      "counts": null,
+      "diagnostic": null
+    },
+    {
+      "id": "build",
+      "status": "PASS",
+      "elapsedMs": 13946,
+      "exitCode": 0,
+      "invocationSHA": "53b71882c317b1bd42ed6151f43140cb4cacd2e6057bc67c7d25a5bdf1ff9372",
+      "reportSHA": "4472e10490f5f776d64886f1dda14e5cf6c73bd94c60c0ce4bf8071216ac7429",
+      "counts": null,
+      "diagnostic": null
+    },
+    {
+      "id": "unit",
+      "status": "PASS",
+      "elapsedMs": 163811,
+      "exitCode": 0,
+      "invocationSHA": "260a916057980e9a3e8b4fd90d97d883131987418c2cef530d053254bbc07e9f",
+      "reportSHA": "6263a4bc57adab3c9defdd953b6ccf2c082a3133bbb20d7f03a91a12318e1e30",
+      "counts": {
+        "discovered": 1175,
+        "run": 1175,
+        "pass": 1175,
+        "fail": 0,
+        "skip": 0,
+        "manualDeferred": 0
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "tooling",
+      "status": "PASS",
+      "elapsedMs": 36521,
+      "exitCode": 0,
+      "invocationSHA": "9b2e63a42aae4934a5771aa28e3d8bfac413a3092b2a35de1568ee517a32735d",
+      "reportSHA": "65f9672445d55759001c4ed613d7813bf70ee6fcfc38712ea8a1e4f8d989b8e5",
+      "counts": {
+        "discovered": 568,
+        "run": 567,
+        "pass": 567,
+        "fail": 0,
+        "skip": 1,
+        "manualDeferred": 1
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "node-tools",
+      "status": "PASS",
+      "elapsedMs": 23627,
+      "exitCode": 0,
+      "invocationSHA": "5fd1b274baa015c66edb29835f94acf8bfd730a047ac1f200bfa45acd6d35323",
+      "reportSHA": "e7c5e5fddb4e300ad03b1e6121c01adfffb7dce8d68b1d2d659a469b92d629fe",
+      "counts": {
+        "run": 938,
+        "pass": 938,
+        "fail": 0,
+        "skip": 0
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "browser",
+      "status": "PASS",
+      "elapsedMs": 10825,
+      "exitCode": 0,
+      "invocationSHA": "91b4fb3a2ba41c087a6d7632196bc8573843306cd77e472ec13f94807ec8b01d",
+      "reportSHA": "21e174b68155b875beb25d17a4e0afff8b4493f5c91cafb9b97441ccd95cfd4d",
+      "counts": null,
+      "diagnostic": null
+    },
+    {
+      "id": "runtime-reporters",
+      "status": "PASS",
+      "elapsedMs": 14572,
+      "exitCode": 0,
+      "invocationSHA": "c6da48accbfca1bd4f48fa9a202f73dfed88ea76f834314dae215b6cd99a751f",
+      "reportSHA": "eb52ac81d7807b8b5ecbbeed7ca441759b1798dca4a9f09a63692092e6bfc276",
+      "counts": {
+        "run": 4,
+        "pass": 4,
+        "fail": 0,
+        "skip": 0,
+        "positiveControls": 2,
+        "negativeControls": 2,
+        "diagnosticControls": {
+          "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+          "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+          "run": 7,
+          "pass": 7,
+          "fullPipeline": true,
+          "mutationChecks": 20,
+          "states": [
+            "failed",
+            "timedOut",
+            "interrupted",
+            "runner-error",
+            "metadata-absent",
+            "wrapper-failure",
+            "transport-refusal"
+          ]
+        }
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "edge-resolution",
+      "status": "PASS",
+      "elapsedMs": 5592,
+      "exitCode": 0,
+      "invocationSHA": "3fee101727bed8de382e723e61ade6c885cbcc1f2d68ba903807381309d1cc17",
+      "reportSHA": "cac33bf07d133e38ce60579d35842b231d028806a25691e0c25acc39dfbfe800",
+      "counts": {
+        "run": 3,
+        "pass": 3,
+        "fail": 0,
+        "skip": 0,
+        "positiveControls": 2,
+        "negativeControls": 1,
+        "edgeResolution": {
+          "cacheSHA256": "17e02e939c51fb4708f7caf9421dd397b3f07af458d26884ca5f5981fa73de41",
+          "configSHA256": "5025713c1c4444d4bbf4994ec1aed8b8d4995c489ff84d8142c2cec706b06201",
+          "lockSHA256": "391857845b8f8174e4abf59a6f04efefc61423ade4db0334efbfa9bc74148e93",
+          "metadataOnly": 3,
+          "observed": 17,
+          "packages": 20,
+          "processReleased": true,
+          "rootRemoved": true,
+          "runtimeBadSRIControls": 1,
+          "schemaVersion": "permission-edge-resolution-v1",
+          "scope": "NATIVE_RESOLVER_ONLY",
+          "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+          "warmBundles": 2
+        }
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "permission-static",
+      "status": "PASS",
+      "elapsedMs": 34387,
+      "exitCode": 0,
+      "invocationSHA": "424542f77a0fb72f060696bda154c5c1fdbe7bbaff7a794226d371d2e7133290",
+      "reportSHA": "f877f55f100c3c09f369def3caa5896dd71dac51f273f73e917e44cf812f1501",
+      "counts": {
+        "run": 480,
+        "pass": 480,
+        "fail": 0,
+        "skip": 0
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "permission-pg16",
+      "status": "PASS",
+      "elapsedMs": 55103,
+      "exitCode": 0,
+      "invocationSHA": "2b53eb7b3743e98f8408b84526ae792bdd35e3bcc99951196ce373ca37a0d90d",
+      "reportSHA": "2777782ebb8a53695a937390578f1ce8d91f5973e285df0f77e4631624c79129",
+      "counts": {
+        "run": 30,
+        "pass": 30,
+        "fail": 0,
+        "skip": 0
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "ui-tools",
+      "status": "PASS",
+      "elapsedMs": 25358,
+      "exitCode": 0,
+      "invocationSHA": "6139824f81f6c945ac478b3b26cddc787454dbfc72ac4b1518e33f9e5e5cc792",
+      "reportSHA": "1b0a4b4c01d54683b94137cc4533f43f5ebb89538d7ed6da552e7feb494ee54c",
+      "counts": {
+        "run": 100,
+        "pass": 100,
+        "fail": 0,
+        "skip": 0
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "ui-remake-selftest",
+      "status": "PASS",
+      "elapsedMs": 10867,
+      "exitCode": 0,
+      "invocationSHA": "8d16a0dddda22c0d71a9abf024ddc314373bfc604ca7d4d6ec23d831c216d444",
+      "reportSHA": "7b080f4bb5ac8546d44913ad1dee3ca276cbe086a485e030b91db3e097ac624b",
+      "counts": {
+        "run": 11,
+        "pass": 11,
+        "fail": 0,
+        "skip": 0,
+        "positiveControls": 5,
+        "negativeControls": 6
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "ui-audit-selftest",
+      "status": "PASS",
+      "elapsedMs": 1675,
+      "exitCode": 0,
+      "invocationSHA": "f66d5c9c5591aa1ff696862f6fb228466b6a497ff50e2fc153345da5298c4ea7",
+      "reportSHA": "6de3f21010593f9c7443ec339f109790e17c2941abf095a01a123d1c2512731c",
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0,
+        "detectedFindings": 23,
+        "targetControls": 16
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "smoke-discovery",
+      "status": "PASS",
+      "elapsedMs": 1430,
+      "exitCode": 0,
+      "invocationSHA": "c48463b11e988df8da4e76840eda173cd966af5f54c867172e7b916ece02b451",
+      "reportSHA": "c72971b56a0eb05fb6a008104c5eaad9aeebafca2db283b905150ce0956664a5",
+      "counts": null,
+      "diagnostic": null
+    },
+    {
+      "id": "smoke-preflight",
+      "status": "PASS",
+      "elapsedMs": 7586,
+      "exitCode": 0,
+      "invocationSHA": "35c53814cb9867ce3694fa31b49b1396c43e9beab3ee75a4d6c094695f50ad7f",
+      "reportSHA": "7e128f16a072175ab7919a005f033cc66ef1d6880ecbceb5717dc217fa0e1799",
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "smoke",
+      "status": "PASS",
+      "elapsedMs": 135667,
+      "exitCode": 0,
+      "invocationSHA": "ebe7fd3b05c41eb22eb2db11187400dbadaa7db29f5b29f4e5d5fd81cd87a956",
+      "reportSHA": "eecac25c067740c7a7341fa96675b4cb0c91e3902c4d37e887ada22766006faf",
+      "counts": {
+        "run": 81,
+        "pass": 44,
+        "fail": 0,
+        "skip": 37
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "ui-selftest",
+      "status": "PASS",
+      "elapsedMs": 1618,
+      "exitCode": 0,
+      "invocationSHA": "933e5440b240df7c4a3adcf0b3fbbbcdf3b47c71beac635a3e244e98f17e450b",
+      "reportSHA": "6de3f21010593f9c7443ec339f109790e17c2941abf095a01a123d1c2512731c",
+      "counts": {
+        "detectedFindings": 23
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "ui-audit",
+      "status": "PASS",
+      "elapsedMs": 276677,
+      "exitCode": 0,
+      "invocationSHA": "50b7748bcf1d5b5e253b9f5d7c291cfca5035945bb6bb343d4d51ceaf3979d0b",
+      "reportSHA": "a21022638e275ce741c225518eb2471ab749cc3e3ead985b005f3fb9e72e6614",
+      "counts": {
+        "run": 48,
+        "pass": 48,
+        "fail": 0,
+        "skip": 0,
+        "acceptedFindings": 6
+      },
+      "diagnostic": null
+    }
+  ],
+  "sourceProfile": "PERMISSION_APP_LIGHT",
+  "deferredFeatureGates": [
+    "PERMISSION_FULL"
+  ],
+  "hp1Execution": "RETIRED",
+  "sourcePreserved": true,
+  "peakOwnedBytes": 1284198400,
+  "operatingCapBytes": 5368709120,
+  "minimumFreeBytes": 32212254720
+}

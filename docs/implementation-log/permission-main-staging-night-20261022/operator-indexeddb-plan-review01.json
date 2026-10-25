@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "permission-operator-indexeddb-remediation-plan-review-v1",
+  "recordedAtUtc": "2026-10-22T15:51:39.207Z",
+  "author": "/root",
+  "plan": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-operator-indexeddb-oracle-remediation-2026-10-22.md",
+    "sha256": "5801a583c63a34d74a943f9355bb70a178b589d5ed14cf8e228c5b4da6b09c4a"
+  },
+  "reviews": [
+    {
+      "name": "/root/final_security_join_review",
+      "scope": "source/coverage",
+      "verdict": "APPROVE",
+      "evidence": "Exact plan5801, actualNode05/69files, currentold30stage706required bounded; local/remote/newsource distinctions and unchanged fullgate."
+    },
+    {
+      "name": "/root/mcp_staging_evidence_review",
+      "scope": "operations/authorization",
+      "verdict": "APPROVE",
+      "evidence": "Exact plan5801, closedledger2/7pendingempty andpreserved5heavy/2postgateCI, actuallocal05/TAP, no automatic newgrant or main,42min/deadline preserved."
+    }
+  ],
+  "ownerRemoteDecision": "PENDING_NOT_AUTHORIZED_BY_THIS_REVIEW"
+}

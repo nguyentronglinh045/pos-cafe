@@ -1,0 +1,23 @@
+{
+  "observedAt": "2026-10-22T07:45:04.556194+00:00",
+  "authorization": "User: switch MCP to staging ineckiashpwloncxnbqx and test read-only; do not touch original DB",
+  "configPath": "D:\\Workspace\\pos-cafe\\.codex\\config.toml",
+  "scope": "project-scoped only; global config unchanged",
+  "beforeSha256": "6409f5d2e31c8af98000cc03c135481fb92b63145488472b2316d1e64d3b850f",
+  "afterSha256": "c7fcf77795264691cccf0c84190c1281f4ed632e9bee6f8ed44180249aa8f231",
+  "stagingProject": "ineckiashpwloncxnbqx",
+  "serverReadOnly": true,
+  "enabledTools": [
+    "execute_sql",
+    "list_tables",
+    "list_extensions",
+    "list_migrations",
+    "search_docs"
+  ],
+  "disabledTools": [
+    "apply_migration"
+  ],
+  "inheritedPatProfileDisabled": true,
+  "databaseRequestsSent": 0,
+  "liveTransport": "NOT_YET_RELOADED_OR_VERIFIED"
+}

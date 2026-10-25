@@ -1,0 +1,48 @@
+{
+  "recordedUtc": "2026-10-24T07:27:28.566Z",
+  "sourceSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "clean": true,
+  "disks": [
+    {
+      "DriveLetter": "D",
+      "SizeRemaining": 98708291584
+    },
+    {
+      "DriveLetter": "C",
+      "SizeRemaining": 189411725312
+    }
+  ],
+  "localProbes": [
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\evidence\\t04-image-warm-cache-probe01.mjs",
+      "bytes": 6298,
+      "sha256": "7c5ac324414538efb80c7c901a38fc9c37ba476400bf7af94167513573c08389"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\evidence\\t04-image-warm-cache-probe01.json",
+      "bytes": 4640,
+      "sha256": "9474d111eba7f8a5f1478ff2ddb2a9170e42d2f11c1c693c8984fe5913812362"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\evidence\\t04-image-warm-cache-probe02.mjs",
+      "bytes": 7445,
+      "sha256": "41aed420e47f9eedbd0df88794c00f0fbc857c656e6a6c722e648218944a79a1"
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\evidence\\t04-image-warm-cache-probe02.json",
+      "bytes": 6239,
+      "sha256": "443887ece00e51b0a1e0cdff29c176e1cb88fcee8a6f56a5ee6cbff3123ad0c7"
+    }
+  ],
+  "localProbeTotalLogicalBytes": 24622,
+  "probe02Cleanup": {
+    "browserClosed": true,
+    "serverClosed": true,
+    "pageServerClosed": true
+  },
+  "noLocalInstall": true,
+  "noFurtherCloudDispatch": true,
+  "fixImplementation": "NOT_STARTED",
+  "merge": "NOT_RUN",
+  "deploy": "NOT_RUN"
+}

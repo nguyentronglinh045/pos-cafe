@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "t04-hardening-independent-source-reviews-v1",
+  "recordedUtc": "2026-10-24T05:29:02.486Z",
+  "candidate": {
+    "manifest": "t04-hardening-source01.json",
+    "manifestSHA256": "952a33aeccef0134c0e544c22c9f43ef763466aa6435a8e39ebd3ac953540796",
+    "sourceFingerprint": "fa38fc2ffbfcb7aab99d5b61b69b36d25c936bcdc7b7d98e9f15f7e1570066ab",
+    "baseline": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+    "changedPaths": 18,
+    "trustedPins": 56
+  },
+  "authors": {
+    "root": [
+      "ci/release-policy.json",
+      "scripts/permission-runtime-t04.test.mjs",
+      "docs and source/evidence records"
+    ],
+    "backend_acceptance": "remaining16sourcepaths"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "scope": "integration,acceptance,promise/cleanup,CI phase/source/proof binding",
+      "verdict": "APPROVE",
+      "candidate": {
+        "manifest": "t04-hardening-source01.json",
+        "manifestSHA256": "952a33aeccef0134c0e544c22c9f43ef763466aa6435a8e39ebd3ac953540796",
+        "sourceFingerprint": "fa38fc2ffbfcb7aab99d5b61b69b36d25c936bcdc7b7d98e9f15f7e1570066ab",
+        "baseline": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+        "changedPaths": 18,
+        "trustedPins": 56
+      },
+      "verified": [
+        "1119 canonical/raw file hashes and Git blob hashes;41923864bytes;exact18delta",
+        "56pins;onlytrustedFileschanged;productionfalse",
+        "recoverablesnapshot18files and15authorartifactreferences",
+        "182node,2policy,typecheck0,3browser,7diagnosticgroups20mutations,3candidate1compatcontrols"
+      ],
+      "blockingFindings": [],
+      "limitations": [
+        "node02precededfinalcontrol-onlymatcherexpectation;reporters02coversfinalbytes",
+        "WindowsownershipREFUSAL_ONLY",
+        "freshCI/Linuxaccepted-file/wholeT04NOT_RUN"
+      ]
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "scope": "diagnostics,privacy,UNKNOWN,transport,bounds,evidence integrity",
+      "verdict": "APPROVE",
+      "candidate": {
+        "manifest": "t04-hardening-source01.json",
+        "manifestSHA256": "952a33aeccef0134c0e544c22c9f43ef763466aa6435a8e39ebd3ac953540796",
+        "sourceFingerprint": "fa38fc2ffbfcb7aab99d5b61b69b36d25c936bcdc7b7d98e9f15f7e1570066ab",
+        "baseline": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+        "changedPaths": 18,
+        "trustedPins": 56
+      },
+      "verified": [
+        "1119canonicalblobs;18raw/canonicalsnapshot/workingpaths;56pins;17evidencerefs",
+        "actual4nestedreports/filecontrols;candidatefallbackmatcher10;Vitestline5AssertionErrornamematcherUNKNOWN0",
+        "primaryfailurepreserved;all8parentphases;stickycleanupflags",
+        "shared131072/16384caps;max102713/107891dual-failure",
+        "5tempdirs89files393476logicalbytesretained"
+      ],
+      "blockingFindings": [],
+      "limitations": [
+        "WindowsREFUSAL_ONLYnotLinuxacceptedfile",
+        "notbusinessPASS",
+        "noadditionalcloudpermission"
+      ]
+    }
+  ],
+  "closedRollingFindings": [
+    {
+      "finding": "Image receipt construction could be mislabeled phase4 after cleanup",
+      "resolution": "Move phase5 before receipt construction; null-result regression added and passed"
+    },
+    {
+      "finding": "Negative browser controls accepted any thrown error",
+      "resolution": "Require exacttoHaveCount/toBeVisiblematcher;realbrowsercontrolsPASS"
+    },
+    {
+      "finding": "Vitest extra control expectedmatcher1withoutmetadata",
+      "resolution": "RetainproductionUNKNOWN0;correctonlycontrol;initialfailurekept;finalactualreporterPASS"
+    }
+  ],
+  "businessAcceptance": "NOT_ACHIEVED",
+  "newCloudRuns": 0,
+  "cloudRemaining": 0,
+  "mergeDeploy": false
+}

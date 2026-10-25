@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "permission-final-failed-phase-checkpoint-v1",
+  "recordedUtc": "2026-10-23T17:20:38.065Z",
+  "sourceRoot": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\code",
+  "localHead": "49e543d49176692bb2cdabc044cbc69e21054469",
+  "trackedStatus": "",
+  "refs": {
+    "review": "49e543d49176692bb2cdabc044cbc69e21054469",
+    "main": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b"
+  },
+  "runs": [
+    {
+      "id": "39988537874",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "49e543d49176692bb2cdabc044cbc69e21054469",
+      "attempt": 1,
+      "branch": "review/permission-staging-20261023"
+    },
+    {
+      "id": "39991210829",
+      "status": "completed",
+      "conclusion": "failure",
+      "source": "49e543d49176692bb2cdabc044cbc69e21054469",
+      "attempt": 1,
+      "branch": "review/permission-staging-20261023"
+    }
+  ],
+  "disks": [
+    {
+      "path": "C:/",
+      "freeBytes": 195089141760
+    },
+    {
+      "path": "D:/",
+      "freeBytes": 98885787648
+    }
+  ],
+  "t04ReceiptSHA256": "e3adb72ea226d50631b7fbc4bb8f5fe27543692d6a530d158c9280a547a96751",
+  "t04LogSHA256": "81059082524126212a4e3995ac41deed85543677e7e4b4650baf924a050bf469",
+  "t04MetadataSHA256": "13db04d9dcbfb3e8838b03e7c2560820d4d3767ba3400b37326728c794444e54",
+  "cleanup": true,
+  "cleanupFailure": null,
+  "reclaim": [
+    {
+      "schemaVersion": "permission-ci1-reclaim-v1",
+      "status": "RECLAIMED",
+      "imageUnlinked": true,
+      "imageLogicalBytes": 19327352832,
+      "imageAllocatedBytes": 19327377408,
+      "hostFreeBeforeBytes": 72227393536,
+      "hostFreeAfterBytes": 91554775040,
+      "measuredHostFreeDeltaBytes": 19327381504,
+      "remaining": "compact control/status/safe export only; ephemeral runner"
+    }
+  ],
+  "gateStatus": "FAIL_NOT_ACCEPTED",
+  "passedT04StageCount": 9,
+  "passedRequiredInThoseStages": 275,
+  "failedStage": "candidate-e2e",
+  "laterT04NotRun": 9,
+  "actualFullFileTests": 6,
+  "catalogRequiredIdentities": 2,
+  "failedFullFileTests": 2,
+  "confirmedFailingRequired": {
+    "ordinal": 1,
+    "file": "tests/supabase/permissionCandidate.spec.ts",
+    "line": 391,
+    "oracle": "settings-name-input toHaveValue(/E2E$/)"
+  },
+  "secondFailureIdentity": "UNKNOWN_NOT_EXPORTED",
+  "sourceFindings": [
+    "closeDrawerFromNav awaits always-visible floor, not actual drawer hidden/unmount",
+    "clear-demo settings suffix depends on previous persist-test reaching settings after new image assertions"
+  ],
+  "rootCause": "UNDETERMINED; source-backed candidates, no actual DOM/valuecategory or second failure identity",
+  "businessAuthDbChangesThisRepair": "NONE",
+  "spentCurrentAuthorization": {
+    "publication": 2,
+    "pushCi": 2,
+    "T04": 2
+  },
+  "heldUnspentProfiles": [
+    "PIN_ONBOARD",
+    "SUPABASE_T02",
+    "PIN_RACE",
+    "PIN_EXPIRY",
+    "PIN_IDENTITY_SERVER",
+    "PIN_IDENTITY_ONBOARDING",
+    "PIN_CANARY"
+  ],
+  "postgate": "NOT_STARTED",
+  "production": "HELD",
+  "nextStep": "Review minimal synchronization hardening and bounded first actual failed full-file test diagnostics + clear-demo precondition/DOM flags; keep all6tests/actualassertions and refresh exactsource CI/T04 only via new reviewed cumulative extension; do not rerun packet02",
+  "shutdown": "OWNER_REQUESTED_AFTER_DURABLE_HANDOFF; not yet scheduled"
+}

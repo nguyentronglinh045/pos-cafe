@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "permission-premerge-rehearsal-v1",
+  "recordedUtc": "2026-10-23T17:00:10.019Z",
+  "base": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "head": "49e543d49176692bb2cdabc044cbc69e21054469",
+  "baseIsAncestor": true,
+  "computedMergeTree": "b4e30d5a0ba574e2a8ab92c6f938430321277609",
+  "headTree": "b4e30d5a0ba574e2a8ab92c6f938430321277609",
+  "equal": true,
+  "mode": "READ_ONLY_CHECKOUT; merge-tree object computation only",
+  "actualMerge": false,
+  "actualGitHubPr": "NOT_CREATED",
+  "expectedFutureOrderedParents": [
+    "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "49e543d49176692bb2cdabc044cbc69e21054469"
+  ],
+  "sourceUnchanged": true,
+  "deltaFileCount": 687,
+  "fullGate": "PENDING; no merge authorization consumed"
+}

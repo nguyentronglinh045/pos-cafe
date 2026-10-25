@@ -30,7 +30,7 @@
 - **Đã nghiệm thu:** cần quyết định chấp nhận đúng phạm vi; không suy từ merge hay một bộ test xanh.
 - **Đã phát hành:** cần version và môi trường đích được xác minh riêng. Backend acceptance, migration và live activation của đợt phân quyền/UI vẫn HOLD.
 
-Khi nguồn mâu thuẫn: yêu cầu/quyết định đã duyệt xác định điều phải làm; source xác định điều đã hiện thực; evidence xác định điều đã kiểm. Không dùng một loại thay cho loại khác. WIP local chưa xuất bản được ghi tại [hồ sơ chỉnh lý](workflow/tasks/docs-normalization-2026-10-25.md), không mặc nhiên là bản chuẩn.
+Khi nguồn mâu thuẫn: yêu cầu/quyết định đã duyệt xác định điều phải làm; source xác định điều đã hiện thực; evidence xác định điều đã kiểm. Không dùng một loại thay cho loại khác. Bộ spec/evidence WIP được hòa giải tại [hồ sơ xuất bản](workflow/tasks/docs-wip-publication-2026-10-25.md); catalog lịch sử giữ source và giới hạn riêng. Bản local gốc vẫn giữ để chờ quyết định dọn, không tự coi là bản chuẩn mới hơn.
 
 ## Quy tắc duy trì
 

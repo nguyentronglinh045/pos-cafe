@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "permission-loop-closeout-v1",
+  "atUtc": "2026-10-21T09:31:56.292Z",
+  "status": "LOCAL_IMPLEMENTATION_APPROVED_CI_BACKEND_PENDING_TIME_ADMISSION_REFUSED",
+  "sourceSHA": "315a31e08591580772b151d6374feb07b90d70b1",
+  "remoteSHA": "31693d704fc3a7341d15e2843d4d12220883577a",
+  "sourceBranch": "run/permissions-20261020",
+  "sourcePreserved": true,
+  "reviewCandidateSHA256": "23df868f25781596df1406603f965c0df7688663280082ced9be1d309efbc667",
+  "reviews": [
+    "source APPROVE",
+    "operations APPROVE"
+  ],
+  "ownSourceCI": "NOT_RUN",
+  "backend": "NOT_RUN",
+  "newRunIds": [],
+  "cumulativeCounts": {
+    "publication": 0,
+    "ci": 0,
+    "heavy": 0,
+    "reviewRounds": 2
+  },
+  "continuationLedgerClosed": true,
+  "merge": false,
+  "supabaseWrites": false,
+  "coverageReduced": false,
+  "localVerification": {
+    "node": {
+      "run": 805,
+      "pass": 805,
+      "fail": 0,
+      "skip": 0
+    },
+    "actualPinnedDiagnosticControls": 7,
+    "mutationChecks": 20,
+    "playwrightVersion": "1.60.0"
+  },
+  "retained": [
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020",
+      "logicalBytes": 207024574
+    },
+    {
+      "path": "D:/Workspace/pos-cafe/.git",
+      "logicalBytes": 45894906
+    },
+    {
+      "path": "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+      "logicalBytes": 4981266
+    }
+  ],
+  "retainedLogicalBytes": 257900746,
+  "disks": [
+    {
+      "path": "C:/",
+      "freeBytes": 191690366976
+    },
+    {
+      "path": "D:/",
+      "freeBytes": 98564714496
+    }
+  ],
+  "activeRuns": 0,
+  "lastCompletedRun": {
+    "conclusion": "success",
+    "databaseId": 39479038742,
+    "headSha": "31693d704fc3a7341d15e2843d4d12220883577a",
+    "status": "completed"
+  },
+  "refs": [
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/candidate02/packet.json",
+      "sha256": "23df868f25781596df1406603f965c0df7688663280082ced9be1d309efbc667"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/candidate02/reviews.json",
+      "sha256": "d079bb8ba4bd33a37a317b414fe904e6e0399b315e59a9565fe59d324816fcb7"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/candidate02/publish-manifest.json",
+      "sha256": "baa96b1bb027443447ed037c8ff50867bbec2dcadbe83c18009b5b8175f8435d"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/admission-refusal-1700.json",
+      "sha256": "5a3d5b033aa8beebc043d5e6c9bfd1aaf10fc025f44d7ff3a1fa4aa366a4abf7"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/pinned-diagnostic-controls-315a31e0.json",
+      "sha256": "c2c169cb0ad187b5a6e94b226efdea778e49a473a1c22e08cdddaa14dd673fd2"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/budget-final-state.json",
+      "sha256": "66038ef40fabc87931a3ad569b446b44b705ffd2e9d4096307336cf3a0e3be05"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/budget.json",
+      "sha256": "3a68770256a7dde1666c835b594a0e8a0b95111ff49af0d5c98adfe49252854b"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/budget.json.anchor.json",
+      "sha256": "ff05c0d4e4d6c5c87824c375000f536264dc85252c397e7689c57ca8ae033892"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/budget.json.journal.jsonl",
+      "sha256": "44b8283fd7fb7f49a2b528ec6be73c6e0ff68f0479150fef01bf80f62fbdc7bb"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/budget-continuation-1700.json",
+      "sha256": "76ae697a048ddd7b4fcec40fa95ae1fb9ab4b628260fba178b935fee14be34b1"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/budget-continuation-1700.json.anchor.json",
+      "sha256": "3f64864654a777c5dbec333e97e1c27eb72c27a917fd13de5e1bf349be78fce7"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/budget-continuation-1700.json.journal.jsonl",
+      "sha256": "9f41d9a4ed5849677b50badbe9eaad401d41b116374063036bea162324b21ade"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/budget-continuation-1700.json.head.json",
+      "sha256": "930c5db2eb6f1db79f16c3defa568f3a52d3554e8cbb57fdb15833d3c9996160"
+    }
+  ],
+  "docs": [
+    {
+      "path": "openspec/changes/bound-permission-test-iterations/proposal.md",
+      "snapshot": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/closeout-docs/openspec/changes/bound-permission-test-iterations/proposal.md",
+      "sha256": "9de2b51c5f613cfb53edb7c63a6ffe3d7bfe08aaafb8085d4151f6b1a693060a"
+    },
+    {
+      "path": "openspec/changes/bound-permission-test-iterations/design.md",
+      "snapshot": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/closeout-docs/openspec/changes/bound-permission-test-iterations/design.md",
+      "sha256": "f29fee84aada2ed4dd14cbf14e4bd2d62caa47b11b39935007b3f4926df34642"
+    },
+    {
+      "path": "openspec/changes/bound-permission-test-iterations/testplan.md",
+      "snapshot": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/closeout-docs/openspec/changes/bound-permission-test-iterations/testplan.md",
+      "sha256": "4c28233ef4e03adf3a0b5c184e653e31d4532973b3f1a2bb730fa63da875d920"
+    },
+    {
+      "path": "openspec/changes/bound-permission-test-iterations/traceability.md",
+      "snapshot": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/closeout-docs/openspec/changes/bound-permission-test-iterations/traceability.md",
+      "sha256": "bc191eaa87ef5e4b6e11cd0da2c6919c08f96000e7d564278a71b26b87b42afa"
+    },
+    {
+      "path": "openspec/changes/bound-permission-test-iterations/tasks.md",
+      "snapshot": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/closeout-docs/openspec/changes/bound-permission-test-iterations/tasks.md",
+      "sha256": "9bb71ec8341b371a2d75c548a5e3a7f832edab164569dba5d21d4fece05cc024"
+    },
+    {
+      "path": "openspec/changes/bound-permission-test-iterations/specs/execution-budget/spec.md",
+      "snapshot": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/closeout-docs/openspec/changes/bound-permission-test-iterations/specs/execution-budget/spec.md",
+      "sha256": "17c7b8df23131b8da02397133a73165b02eec799a8332585d85f1b3f2e9949a7"
+    },
+    {
+      "path": "docs/workflow/tasks/permission-loop-prevention-implementation-2026-10-21.md",
+      "snapshot": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/closeout-docs/docs/workflow/tasks/permission-loop-prevention-implementation-2026-10-21.md",
+      "sha256": "130ce9f61d4b2adae0fe00de4e95140c2b1ce03297d4107c74c461dcaddab840"
+    },
+    {
+      "path": "docs/reviews/2026-10-21-permission-loop-prevention-implementation.md",
+      "snapshot": "D:/Workspace/pos-cafe-permission-run-20261020/evidence/loop-prevention-20261021/closeout-docs/docs/reviews/2026-10-21-permission-loop-prevention-implementation.md",
+      "sha256": "a19337194c0a89e0adfe43054a14480fee70f54a67144af65ed3c8051be70921"
+    }
+  ],
+  "cleanup": {
+    "authorization": "Owner: retain data useful next time; remove data without further purpose",
+    "deleted": [
+      {
+        "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\loop-prevention-20261021\\playwright-test-1.60.0.tgz",
+        "logicalBytes": 8744,
+        "absent": true
+      },
+      {
+        "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\loop-prevention-20261021\\playwright-1.60.0.tgz",
+        "logicalBytes": 876769,
+        "absent": true
+      },
+      {
+        "path": "D:\\Workspace\\pos-cafe-permission-run-20261020\\evidence\\loop-prevention-20261021\\playwright-core-1.60.0.tgz",
+        "logicalBytes": 2814257,
+        "absent": true
+      }
+    ],
+    "retainedInstalledBytes": 17410590,
+    "reclaimedPhysicalBytes": null,
+    "measurementLimit": "Three exact archive files removed; no reliable recorded before/after host-free pair, so no physical reclamation claim. Current Windows free space recorded separately."
+  },
+  "next": "Fresh owner deadline/allocation; successor carries spent and CLOSED predecessor hashes. Update reviewed packet budget ref; do not use expired publish manifest, reinitialize ledger, bypass helper or rerun full heavy before own-sourceCI17+reclaim."
+}

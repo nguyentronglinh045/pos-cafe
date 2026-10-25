@@ -1,0 +1,154 @@
+{
+  "capturedUtc": "2026-10-23T14:27:23.191Z",
+  "storeId": "6b2e76fd-b8f8-4fa9-b784-faee8eb4af36",
+  "ownerId": "0feee792-8784-54d0-bc2f-ef944e95b2a4",
+  "completion": {
+    "ok": true,
+    "data": {
+      "employeeRevision": 1,
+      "credentialChanged": true,
+      "pinChangeRequired": false
+    },
+    "outcome": "applied"
+  },
+  "oldRestrictedTokenError": "EMPLOYEE_SESSION_REQUIRED",
+  "normal": {
+    "kind": "normal",
+    "pinChangeRequired": false,
+    "ttlMs": 43200000,
+    "snapshot": {
+      "role": "owner",
+      "active": true,
+      "sources": [
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "data.clearDemo"
+        },
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "employee.manage"
+        },
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "employee.permission.edit"
+        },
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "floor.manage"
+        },
+        {
+          "sources": [
+            "default",
+            "baseline"
+          ],
+          "effective": true,
+          "permission": "floor.view"
+        },
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "menu.manage"
+        },
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "order.create"
+        },
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "order.update"
+        },
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "order.voidOpen"
+        },
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "order.voidPaid"
+        },
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "orderHistory.view"
+        },
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "payment.take"
+        },
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "receipt.reprint"
+        },
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "report.view"
+        },
+        {
+          "sources": [
+            "default"
+          ],
+          "effective": true,
+          "permission": "settings.manage"
+        }
+      ],
+      "storeId": "6b2e76fd-b8f8-4fa9-b784-faee8eb4af36",
+      "employeeId": "0feee792-8784-54d0-bc2f-ef944e95b2a4",
+      "permissions": [
+        "data.clearDemo",
+        "employee.manage",
+        "employee.permission.edit",
+        "floor.manage",
+        "floor.view",
+        "menu.manage",
+        "order.create",
+        "order.update",
+        "order.voidOpen",
+        "order.voidPaid",
+        "orderHistory.view",
+        "payment.take",
+        "receipt.reprint",
+        "report.view",
+        "settings.manage"
+      ],
+      "catalogRevision": 0,
+      "employeeRevision": 1
+    }
+  },
+  "normalAuthorityMatches": true
+}

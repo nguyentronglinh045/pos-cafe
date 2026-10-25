@@ -1,0 +1,91 @@
+{
+  "observedAtUtc": "2026-10-22T09:12:41.8747756+00:00",
+  "guardPid": 10588,
+  "executable": "C:\\Users\\nguye\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+  "arguments": [
+    "-NoProfile",
+    "-NonInteractive",
+    "-File",
+    "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\deadline-readonly-guard-source01.ps1",
+    "-ExpectedSourceSha256",
+    "9c3aaff3f3e979c6b45387dee2dbfceb6190106b34ac69f344876568d1673061"
+  ],
+  "windowStyle": "Hidden",
+  "sourcePath": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\deadline-readonly-guard-source01.ps1",
+  "sourceSha256": "9c3aaff3f3e979c6b45387dee2dbfceb6190106b34ac69f344876568d1673061",
+  "sourceModified": false,
+  "expectedWriteSha256": "b666027bc770a46c70149b83b8a704bdfff1343dae5e6447a1ae543681b9547c",
+  "actualLiveConfigSha256": "b666027bc770a46c70149b83b8a704bdfff1343dae5e6447a1ae543681b9547c",
+  "expectedReadonlySha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+  "actualReadonlySnapshotSha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+  "targetPath": "D:\\Workspace\\pos-cafe\\.codex\\config.toml",
+  "snapshotPath": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\current-readonly-config.toml",
+  "receiptPath": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\deadline-readonly-restore.json",
+  "oldGuardPid": 34152,
+  "oldGuardAbsent": true,
+  "priorInitialGuardPid": 31232,
+  "priorInitialGuardAbsent": true,
+  "oldWatcherSurvivedCodexRestart": false,
+  "duplicateExactSourceWatchersBeforeLaunch": 0,
+  "restartPersistenceGuarantee": false,
+  "deadlineUtc": "2026-10-22T10:00:00Z",
+  "intervalSeconds": 30,
+  "coordination": "Operational SINGLEWRITER: root does not mutate project config while this exact watcher is active; early restore requires exact identity verification, stop and exit confirmation. File.Replace is atomic but is not CAS; external uncoordinated writers remain a race.",
+  "validatedPaths": [
+    {
+      "path": "D:\\Workspace",
+      "attributes": "Directory",
+      "linkType": null
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe",
+      "attributes": "Directory, Archive",
+      "linkType": null
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe\\.codex",
+      "attributes": "Directory",
+      "linkType": null
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe\\.codex\\config.toml",
+      "attributes": "Archive",
+      "linkType": null
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs",
+      "attributes": "Directory, Archive",
+      "linkType": null
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs",
+      "attributes": "Directory, Archive",
+      "linkType": null
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log",
+      "attributes": "Directory, Archive",
+      "linkType": null
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022",
+      "attributes": "Directory",
+      "linkType": null
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\current-readonly-config.toml",
+      "attributes": "Archive",
+      "linkType": null
+    },
+    {
+      "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\deadline-readonly-guard-source01.ps1",
+      "attributes": "Archive",
+      "linkType": null
+    }
+  ],
+  "configMutationPerformed": false,
+  "scheduledTaskOrServiceCreated": false,
+  "globalConfigChanged": false,
+  "liveConnectionReloaded": false,
+  "oauthRevoked": false
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "permission-pin-ui-download-binding-v1",
+  "recordedAtUtc": "2026-10-22T16:25:46.763Z",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "sourceFingerprint": "ad15201c0371bff8082cbb212e3e23485200ae4c759cbb095ad8b73d8acbefa7",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "runId": "39811728040",
+  "attempt": 1,
+  "artifact": {
+    "id": 12440209104,
+    "name": "permission-pin-ui-39811728040-1",
+    "sizeBytes": 66520,
+    "metadata": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-artifacts-api.json",
+      "sha256": "3fbdc805d0d17ef8a5b6299969ebe797411efa2897590f7db94cae051a807704"
+    }
+  },
+  "jobs": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-jobs-api.json",
+    "sha256": "012c4895177505f0b01ddc8f05d020391665bcfe031eab15704b152c59b8051b"
+  },
+  "timing": {
+    "jobStartedAt": "2026-10-22T16:10:43Z",
+    "jobCompletedAt": "2026-10-22T16:24:44Z",
+    "jobSeconds": 841,
+    "queueSeconds": 3
+  },
+  "validation": "PASS_PRODUCTION_VALIDATE_PIN_UI_MANIFEST",
+  "manifest": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/pin-ui03/manifest.json",
+    "sha256": "ad3516790c30ce03875d165ec9910742a9a878f5ac9186b5980a95fa73b337a0"
+  },
+  "images": [
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/pin-ui03/required_pin_change__desktop.png",
+      "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e",
+      "bytes": 23395
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/pin-ui03/required_pin_change__tablet.png",
+      "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca",
+      "bytes": 21410
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/pin-ui03/required_pin_change__mobile.png",
+      "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f",
+      "bytes": 18520
+    }
+  ],
+  "visualReview": "PENDING_ACTUAL_VIEW",
+  "fullGate": "NOT_PROVEN"
+}

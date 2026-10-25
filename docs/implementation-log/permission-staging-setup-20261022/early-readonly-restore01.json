@@ -1,0 +1,17 @@
+{
+  "status": "early_restore_failed_no_further_action",
+  "observedAtUtc": "2026-10-22T09:29:40.8608583+00:00",
+  "guardStoppedAtUtc": "2026-10-22T09:29:40.3348228+00:00",
+  "stoppedWatcherPid": 10588,
+  "ownSourceSha256": "feb8c23bf116d099524dc1194d8c27d8883f48a84d94b68d029103d36a7dc47c",
+  "beforeSha256": "b666027bc770a46c70149b83b8a704bdfff1343dae5e6447a1ae543681b9547c",
+  "afterSha256": null,
+  "mutationPerformed": false,
+  "error": "Exception calling \"Replace\" with \"4\" argument(s): \"The path is empty. (Parameter 'path')\"",
+  "temporaryPathIfCreated": "D:\\Workspace\\pos-cafe\\.codex\\config.early-readonly-85a6cd99b8144ae08d59fa0b982b9427.tmp",
+  "scope": "stored_project_config_only",
+  "databaseCallsByThisAction": 0,
+  "apiCallsByThisAction": 0,
+  "liveConnectionReloaded": false,
+  "oauthRevoked": false
+}

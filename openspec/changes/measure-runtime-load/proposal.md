@@ -1,3 +1,5 @@
+> **Đối chiếu xuất bản 25/10/2026.** Đây là kế hoạch đo, chưa có số đo mới trong lượt xuất bản. Không dùng ước lượng legacy hoặc PASS chức năng làm chứng nhận tải/hội tụ trên main711a22e. [Nguồn, trạng thái và giới hạn](../../../docs/workflow/tasks/docs-wip-publication-2026-10-25.md). Các yêu cầu SHALL/expected bên dưới được giữ; không đổi để hợp thức hóa code.
+
 # Đo tải và độ trễ lúc chạy thật
 
 ## Why
@@ -25,6 +27,7 @@ Toàn bộ các con số trên là **ước lượng suy ra từ mã, không ph�
 - Đếm tải polling thật trong một phiên vận hành mô phỏng, tách riêng phần tab đang hiện và tab đang ẩn.
 - Đo thời gian giữ `pg_advisory_xact_lock` để suy ra trần ghi trong một quán.
 - Đo chi phí của chính sách bảo mật mức dòng: so sánh cùng một truy vấn khi có và không có policy.
+- **Đo độ trễ hội tụ giữa hai thiết bị**: từ lúc thiết bị A ghi xong tới lúc thiết bị B hiển thị trạng thái mới, đo riêng cho đường sự kiện thời gian thực và cho đường tải lại theo chu kỳ, và đo cả trường hợp kênh thời gian thực vừa nối lại sau khi rớt. Thêm ngày 2026-09-12 sau nhận xét phản biện: báo cáo hiện nói khoảng tải lại 5 giây không phải cam kết độ trễ, nhưng chưa có số đo nào cho biết độ trễ thật là bao nhiêu.
 - Rà hạn mức của gói Supabase đang dùng: trần kết nối, trần compute, chính sách tạm ngưng project.
 - Ghi toàn bộ số đo vào `docs/testing.md` kèm baseline, ngày và cấu hình máy.
 - Kết luận bằng một bảng: với cấu hình hiện tại, hệ chịu được khoảng bao nhiêu quán và bao nhiêu thiết bị trước khi chạm trần nào.
@@ -58,6 +61,7 @@ Không có.
 - Không phụ thuộc change nào để bắt đầu.
 - **Bắt buộc làm trước `optimize-runtime-load`.**
 - Nên có sau `setup-test-data-environment` nếu muốn đo trên dữ liệu có quy mô thật thay vì dữ liệu demo.
+- Nên có **sau** `add-modifier-link-realtime-subscription`, để số đo độ trễ hội tụ phản ánh hệ đã đăng ký đủ bảng.
 
 ## Câu hỏi phải chốt trước khi làm
 
@@ -67,6 +71,8 @@ Không có.
 4. Kết quả đo dùng để làm gì nếu nó xấu? Đây là câu quan trọng nhất: nếu số đo cho thấy hệ chỉ chịu được 3 quán thì có đổi kiến trúc không, hay chỉ ghi vào phần hạn chế và giữ nguyên phạm vi đồ án?
 5. Có đo cả kịch bản mạng kém không, ví dụ độ trễ cao hoặc mất gói? Môi trường quán cà phê vốn có mạng chập chờn, nhưng đo được điều này cần thêm công cụ.
 6. Số đo cần chi tiết tới đâu để đưa vào báo cáo? Trung vị và phân vị 95 là đủ, hay cần biểu đồ phân bố?
+7. Độ trễ hội tụ đo bằng đồng hồ nào? Hai thiết bị có đồng hồ lệch nhau, nên đo bằng chênh lệch thời gian trên cùng một máy điều phối thì chính xác hơn nhưng phải dựng thêm công cụ; đọc mốc thời gian của máy chủ thì tiện hơn nhưng chỉ đo được phần tới cơ sở dữ liệu, không đo được phần hiển thị trên màn hình.
+8. Số đo độ trễ hội tụ xấu thì xử lý ra sao? Ghi vào hạn chế, hay kéo `optimize-runtime-load` lên sớm?
 
 ## Quyết định đã chốt
 

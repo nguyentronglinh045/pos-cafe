@@ -1,0 +1,2 @@
+# Preserve receipt/log bytes so recorded SHA256 pins survive Git checkout.
+* -text

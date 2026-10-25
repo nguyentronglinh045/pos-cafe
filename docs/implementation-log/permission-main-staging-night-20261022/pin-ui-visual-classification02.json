@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "permission-pin-ui-visual-classification-v1",
+  "recordedAtUtc": "2026-10-22T14:30:34.992Z",
+  "author": "/root",
+  "reviewStatus": "PENDING_TWO_NON_AUTHOR_REVIEWS",
+  "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+  "sourceFingerprint": "75baa948ab715401052d032dbc58b957d24ee35896ae6a3beea2c748b4c34552",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "runId": "39792208893",
+  "attempt": 1,
+  "scope": "CREDENTIAL_FREE_MOCK_PIN_UI_ONLY",
+  "artifact": {
+    "id": "12431429519",
+    "name": "permission-pin-ui-39792208893-1",
+    "compressedBytes": 66520,
+    "downloadMethod": "gh run download exactrun/exactname into new pin-ui02 directory"
+  },
+  "manifest": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/pin-ui02/manifest.json",
+    "sha256": "76ba07ee7ffd6adaadd86ddf0b3dc8206784065ea550a15f9f4993e7a720d169"
+  },
+  "summary": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci02-summary.json",
+    "sha256": "c4e4d113c1d476c9f6dc1647ef7071ce37e3e17a0535ad8f17b92c28d0e0c201"
+  },
+  "schemaAndByteValidation": "Actual validatePinUiManifest PASS; recomputed trackedFingerprint from all tracked files, raw source/config/baseline/lock hashes, exact four-file allowlist and PNG hashes/dimensions.",
+  "inspections": [
+    {
+      "reviewer": "/root",
+      "method": "Actual view_image of all three downloaded current-run files in this conversation",
+      "verdict": "APPROVE_VISIBLE_LAYOUT_WITH_MASK_LIMITATION"
+    }
+  ],
+  "photos": [
+    {
+      "viewport": "desktop",
+      "filename": "required_pin_change__desktop.png",
+      "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e",
+      "width": 1440,
+      "height": 900,
+      "photoInspected": true,
+      "visibleFindings": [],
+      "classification": "Centered card with readable title/help/synthetic account and three separated actions. No visible overlap/clipping outside masks."
+    },
+    {
+      "viewport": "tablet",
+      "filename": "required_pin_change__tablet.png",
+      "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca",
+      "width": 1024,
+      "height": 768,
+      "photoInspected": true,
+      "visibleFindings": [],
+      "classification": "Centered card and three actions visible; no visible overlap/clipping outside masks."
+    },
+    {
+      "viewport": "mobile",
+      "filename": "required_pin_change__mobile.png",
+      "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f",
+      "width": 844,
+      "height": 419,
+      "viewportHeight": 390,
+      "photoInspected": true,
+      "visibleFindings": [],
+      "classification": "Full-page844x419 at viewport844x390; all three actions end before390, with29px lower card/page padding/border. Vertical extension exists; no zero-scroll claim."
+    }
+  ],
+  "detectorFindings": [],
+  "limitations": [
+    "Two deliberate black PIN masks in each photo prevent judging labels, input interiors/text/caret/borders/contrast beneath them.",
+    "Producer validates exactly two empty password inputs; this is producer proof, not visual inspection beneath masks.",
+    "Mock state only; no hosted Auth/all screens/full permission gate claim. Pixel hashes equal prior screenshots because app/UI source is unchanged, but this manifest/artifact and actual views bind the new run/source."
+  ],
+  "producerManifestPreserved": true,
+  "baselineUpdated": false
+}

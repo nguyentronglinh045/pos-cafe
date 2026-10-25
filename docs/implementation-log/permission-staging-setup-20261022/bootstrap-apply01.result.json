@@ -1,0 +1,25 @@
+{
+  "admission": {
+    "status": "ADMITTED_ONE_APPLY",
+    "claimPath": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\bootstrap-apply01.claim.json",
+    "admittedAtUtc": "2026-10-22T09:26:18.9594961+00:00",
+    "sourceFingerprint": "b966736214d772b33ebcc37bf6d5ad8e8df79c861d09d877dc6db13ffd6758dd",
+    "originalProfilesDisabled": true,
+    "configSha256": "b666027bc770a46c70149b83b8a704bdfff1343dae5e6447a1ae543681b9547c"
+  },
+  "invokedAt": "2026-10-22 09:26:19 UTC",
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"success\":true}"
+      }
+    ]
+  },
+  "attempts": 1,
+  "sqlSha256": "5c5c40dd5a0c3e98000a041da34446370fa539f47bd423fbe6196ba682c4e7f5",
+  "returnedObservedAt": "2026-10-22 09:26:59 UTC",
+  "originalDbCalled": false,
+  "businessTestsRun": false,
+  "ready": false
+}

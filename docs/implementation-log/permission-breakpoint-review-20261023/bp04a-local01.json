@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "permission-bp4a-local-v1",
+  "status": "FAIL_OR_UNKNOWN",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "grantPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-owner-grant01.json",
+  "grantSHA256": "a833cc5eb0236879307c9a957194d274f4c73bc78992ca588d621d78382076d2",
+  "runnerSHA256": "5be26766ccca112d28c7341939d1febc4c8253fa727530e4c23c8bb2f8d47361",
+  "startedAtUtc": "2026-10-23T04:05:41.669Z",
+  "deadlineUtc": "2026-10-23T04:30:43Z",
+  "nodeVersion": "v24.16.0",
+  "retainedRoots": [
+    "D:/Workspace/pos-cafe-permission-run-20261020",
+    "D:/Workspace/pos-cafe/.git",
+    "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022"
+  ],
+  "oldLedgers": {
+    "budget-phase03-close.json": "0eb116c8b4016d54d0b0d90474545bd8012625bdcb0d924e1aca22e3754ce05b",
+    "budget-phase03-negative-controls.json": "ae2a8c9f1380400fba90c2b17c656a8ffe630b71fdd841679a986606f9abeb04",
+    "budget-phase03.json": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+    "budget-phase03.json.anchor.json": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f",
+    "budget-phase03.json.head.json": "adfec165ec85f3d4fd9f69db229249ba743845a5561799f295ae8590a5f6e527",
+    "budget-phase03.json.journal.jsonl": "5390f85e8fb7c01d6a037724ba1f8c2b00a8666ed5603094a3bbeb876ffbb694"
+  },
+  "steps": [],
+  "phases": {
+    "archivePreflight": "FAIL_OR_UNKNOWN",
+    "install": "NOT_RUN",
+    "build": "NOT_RUN",
+    "unitCoverage": "NOT_RUN"
+  },
+  "notRun": [
+    "publication",
+    "CI",
+    "backend",
+    "database",
+    "browser",
+    "runtime TS scoped typecheck",
+    "full gate"
+  ],
+  "lastStorage": {
+    "atUtc": "2026-10-23T04:05:42.320Z",
+    "currentRootBytes": 51362175,
+    "newGeneratedBytes": 53045,
+    "retainedBytes": 333107983,
+    "freeBytes": {
+      "C:/": 192689225728,
+      "D:/": 98505895936
+    },
+    "links": [
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\dangling-docs\\docs-link",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\present-docs\\docs-alias",
+      "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-0096b055-d65e-4184-b94a-d37a2d493804",
+      "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-e384a654-8af5-47d2-9a7e-e68c5432519a"
+    ],
+    "linksAreNotAdmission": true
+  },
+  "archivePartial": {
+    "completed": [],
+    "downloadedBytes": 5484
+  },
+  "error": "BP4A_STOP: inspect phase state and bounded logs; no retry authorized.",
+  "completedAtUtc": "2026-10-23T04:05:42.674Z",
+  "oldLedgersUnchanged": true
+}

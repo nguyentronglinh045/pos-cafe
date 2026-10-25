@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "permission-operator-indexeddb-local-candidate-review-v1",
+  "recordedAtUtc": "2026-10-22T15:51:39.206Z",
+  "author": "/root",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "parentSourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+  "candidateTreeSHA": "95013ef246608c96239b8ac31e8e5ea3fa744cef",
+  "file": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/tests/supabase/ownerPinOnboardingCloseout.spec.ts",
+    "sha256": "c58ffe1c607ccc9a27f4c5c4ba7a417f20d8d58fc4001b81581b772736dc9e15"
+  },
+  "probe": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/operator-indexeddb-local-probe01.json",
+    "sha256": "cd3bb500d95923f0d134bbb3acb8e905083ad967ef8dc54223fa86b80b8dde67"
+  },
+  "node": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-node05.json",
+    "sha256": "8a2025b8dddace0d053f1efd735cbfcf8567e9948689e79111b59d5751a91ce9"
+  },
+  "reviews": [
+    {
+      "name": "/root/final_security_join_review",
+      "scope": "source/security",
+      "verdict": "APPROVE",
+      "evidence": "Exact local commit/source/probe reviewed; all12/34 old source semantic audit complete with only operator IndexedDB gap; actual new shared reader/control closes source defect, no runtime closure claimed."
+    },
+    {
+      "name": "/root/mcp_staging_evidence_review",
+      "scope": "operations/privacy/authorization",
+      "verdict": "APPROVE",
+      "evidence": "Exact local commit/file/probe extraction/oracle and6realcontrols checked;42testdeclarations unchanged, source/appSQL unaffected, owned cleanup and privacy/scoped proof accurate."
+    }
+  ],
+  "knownFinding": {
+    "id": "SOURCE-OP-IDB-01",
+    "oldSourceStatus": "CHANGES_REQUESTED_REQUIRED_OPERATOR_INDEXEDDB_OBSERVATION_MISSING",
+    "newLocalSourceStatus": "SOURCE_FIX_APPROVED_PENDING_WHOLE_RUNTIME"
+  },
+  "limits": "Local approval only. No new candidate CI, whole eight backend profiles,12runtime obligation closure or main approval. No old4d1 PASS inherited."
+}

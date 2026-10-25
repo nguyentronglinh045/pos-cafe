@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "permission-pin-ui-integrity-v2",
+  "recordedUtc": "2026-10-23T16:53:58.656Z",
+  "binding": {
+    "sourceSHA": "49e543d49176692bb2cdabc044cbc69e21054469",
+    "sourceFingerprint": "b9bcb5163d7279fe96c8a398bebf84c359fc2ad185ad2fba2418f43d2bbd9a4e",
+    "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+    "runId": "39988537874",
+    "attempt": 1
+  },
+  "status": "PASS",
+  "artifactId": "12516788860",
+  "artifactZipBytes": 66520,
+  "manifestSHA256": "bc9c746b0f4cfa89e4c5916621102e23e45ec515fb70a7874dde158f21d5428a",
+  "photos": [
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "height": 900,
+      "filename": "required_pin_change__desktop.png",
+      "bytes": 23395,
+      "sha256": "cbf19f4b525fea81efd9b2e91dec784cc2d54a2526bbdbee9786012292edca9e",
+      "imageWidth": 1440,
+      "imageHeight": 900,
+      "passwordInputsEmpty": true,
+      "maskedPasswordInputs": 2,
+      "photoInspected": false,
+      "classifications": "PENDING_VISUAL_REVIEW",
+      "findingIds": [],
+      "sameBytesAsPriorSource": true
+    },
+    {
+      "viewport": "tablet",
+      "width": 1024,
+      "height": 768,
+      "filename": "required_pin_change__tablet.png",
+      "bytes": 21410,
+      "sha256": "161e8889da6db8af3b5573df333f4106c6c8e69ee49aefbfc1d60797440059ca",
+      "imageWidth": 1024,
+      "imageHeight": 768,
+      "passwordInputsEmpty": true,
+      "maskedPasswordInputs": 2,
+      "photoInspected": false,
+      "classifications": "PENDING_VISUAL_REVIEW",
+      "findingIds": [],
+      "sameBytesAsPriorSource": true
+    },
+    {
+      "viewport": "mobile",
+      "width": 844,
+      "height": 390,
+      "filename": "required_pin_change__mobile.png",
+      "bytes": 18520,
+      "sha256": "67a5c75e326f220c0c4137bdf9ce6294c2a8e0f397fe5f7b76994b198ea0ba1f",
+      "imageWidth": 844,
+      "imageHeight": 419,
+      "passwordInputsEmpty": true,
+      "maskedPasswordInputs": 2,
+      "photoInspected": false,
+      "classifications": "PENDING_VISUAL_REVIEW",
+      "findingIds": [],
+      "sameBytesAsPriorSource": true
+    }
+  ],
+  "nativeValidator": "validatePinUiManifest/pinPngFacts (schema, CRC, dimensions, hashes, source/lock/run binding)",
+  "visualReview": "PENDING_FRESH_INSPECTION"
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "permission-pre-t04-local-checkpoint-v4",
+  "recordedUtc": "2026-10-24T03:20:46.400Z",
+  "sourceSHA": "f8ee03c195127bb440b0ede3142622ed21c3cc96",
+  "clean": true,
+  "sourceTree": "feea4c8694f180f5e4a452214e1d68305c3bc55a",
+  "canonicalFingerprint": "f3705ab28ce370b6589ecf628a03685598aaba81494ac1ed6581beb685e3d10a",
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "trackedFilesVerified": 1118,
+  "trustedPinsVerified": 50,
+  "retainedLogicalBytes": 612640348,
+  "retainedLogicalCapBytes": 805306368,
+  "retained": [
+    {
+      "path": "D:/Workspace/pos-cafe-permission-run-20261020",
+      "logicalBytes": 218509891
+    },
+    {
+      "path": "D:/Workspace/pos-cafe/.git",
+      "logicalBytes": 48840929
+    },
+    {
+      "path": "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+      "logicalBytes": 4981266
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+      "logicalBytes": 327603389
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+      "logicalBytes": 1597957
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+      "logicalBytes": 5135304
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022",
+      "logicalBytes": 1405939
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-final-push-20261023",
+      "logicalBytes": 516026
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023",
+      "logicalBytes": 4049647
+    }
+  ],
+  "linksFollowed": false,
+  "allocatedBytes": "NOT_MEASURED; logical inventory only",
+  "disks": [
+    {
+      "path": "C:/",
+      "freeBytes": 190041309184
+    },
+    {
+      "path": "D:/",
+      "freeBytes": 98854326272
+    }
+  ],
+  "priorT04Run": "40052956373",
+  "priorReclaim": {
+    "schemaVersion": "permission-ci1-reclaim-v1",
+    "status": "RECLAIMED",
+    "imageUnlinked": true,
+    "imageLogicalBytes": 19327352832,
+    "imageAllocatedBytes": 19327381504,
+    "hostFreeBeforeBytes": 72227282944,
+    "hostFreeAfterBytes": 91554672640,
+    "measuredHostFreeDeltaBytes": 19327389696,
+    "remaining": "compact control/status/safe export only; ephemeral runner"
+  },
+  "localHeavyRuntimeCreated": false,
+  "newLocalInstallations": 0,
+  "remoteNewJobAdmission": "Must enforce host>=50GiB, loop18GiB and task20GiB budget; outside1GiB admission not OSquota",
+  "cleanupControlStatus": "Policy rejected deletion;27new+2prior retained, approximately1.02MBlogical; no reclaim claimed"
+}

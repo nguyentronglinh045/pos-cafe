@@ -1,0 +1,1 @@
+MCP unavailable: no `supabase_pos_cafe.execute_sql` tool is configured in this session. Project ref: `ineckiashpwloncxnbqx` (requested; unverified). No SQL executed.

@@ -1,0 +1,9 @@
+{
+  "capturedUtc": "2026-10-23T14:14:22.7700297Z",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "endpoint": "/auth/v1/settings",
+  "mailer_autoconfirm": false,
+  "disable_signup": false,
+  "emailProvider": true,
+  "readOnly": true
+}

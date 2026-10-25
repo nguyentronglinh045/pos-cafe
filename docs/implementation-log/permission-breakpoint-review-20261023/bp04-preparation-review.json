@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "permission-breakpoint-review-v1",
+  "breakpoint": "BP4_PREPARATION",
+  "status": "APPROVE_PLAN_EXECUTION_PENDING_OWNER",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "reviewedFiles": {
+    "bp04-readiness-and-plan.md": "21d5c5d43718aef70c8de45460b35c1e856f716c6e59b9e19627c27509ceb485",
+    "bp04-restoration.json": "830ebd1b9dabd6eb14ce07f77832eaed4f13bdbc0dc4fbe1587c37f5d5c10911",
+    "bp04-package-size-facts01.json": "1c00b0b0a3fb3279cad9ddb072cef74d8508a01215b46a92c2f4f3171a7c21f9",
+    "bp04-pg-int8-size-fact01.json": "eb0a5b4c8c7d50ae56b4c2d712e101cc009ba4114597c2375ef0b02d5c65b28f"
+  },
+  "requiredReviewers": [
+    {"agent":"/root/bp1_authority_final_review","nonAuthorOfPlan":true,"scope":"authority, limits, storage and independent audit of supporting facts","verdict":"APPROVE","planSHA256":"21d5c5d43718aef70c8de45460b35c1e856f716c6e59b9e19627c27509ceb485"},
+    {"agent":"/root/bp1_evidence_final_review","nonAuthorOfPlan":true,"scope":"local build/unit scope, restoration and evidence accuracy; excludes independent approval of own package-facts collection","verdict":"APPROVE","planSHA256":"21d5c5d43718aef70c8de45460b35c1e856f716c6e59b9e19627c27509ceb485"}
+  ],
+  "restoration": "Owner-authorized exact Recycle Bin item restored; source clean and seven pins plus original Node evidence hashes verified",
+  "execution": {"installation":"PENDING_OWNER","build":"NOT_RUN","unitCoverage":"NOT_RUN","push":0,"ci":0,"heavy":0,"databaseAccess":"NONE"},
+  "proposedWindow": "60 minutes after coordinator records a new owner approval; no BP3 deadline carry",
+  "storageAdmission": "Archive preflight and reviewed recipe still required before installation; 1-2 GiB is planning allowance, not quota",
+  "predecessor": {
+    "state":"CLOSED",
+    "pending":[],
+    "lifetime":{"publication":7,"ci":7,"heavy":5,"reviewRounds":10},
+    "preservedSHA256":{
+      "budget-phase03.json":"b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+      "budget-phase03.json.anchor.json":"ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f",
+      "budget-phase03.json.journal.jsonl":"5390f85e8fb7c01d6a037724ba1f8c2b00a8666ed5603094a3bbeb876ffbb694",
+      "budget-phase03.json.head.json":"adfec165ec85f3d4fd9f69db229249ba743845a5561799f295ae8590a5f6e527"
+    }
+  },
+  "transcriptionNote":"Records explicit final plan verdicts; creates no execution grant. This file is excluded from its own hash list."
+}

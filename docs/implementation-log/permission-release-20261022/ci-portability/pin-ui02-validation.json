@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "permission-pin-ui-local-validation-v1",
+  "atUtc": "2026-10-22T03:05:24.985Z",
+  "sourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "runId": "39713372721",
+  "attempt": 1,
+  "manifestSHA256": "529176903d3f631ec1af999ab200e0386bf6880f6f686319c4a20f8077aca6af",
+  "imageCount": 3,
+  "sourceAndRunBindingsMatch": true,
+  "committedSourceAndBaselinePinsMatch": true,
+  "pngCRCAndDimensionsVerified": true,
+  "totalImageBytes": 63325,
+  "automatedFindingCount": 0,
+  "visualReview": "PENDING_ACTUAL_IMAGE_INSPECTION",
+  "runtimeBusinessTestsRun": false
+}

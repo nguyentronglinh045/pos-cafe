@@ -1,0 +1,2031 @@
+{
+  "schemaVersion": "permission-bp4a-local-v1",
+  "status": "FAIL_OR_UNKNOWN",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "grantPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-owner-grant.json",
+  "grantSHA256": "3a6751f1b022247dcac9c66514a908cf0ff91dcc0194de59ddcc994a5982f660",
+  "runnerSHA256": "5a420869dadf4a91bc21c25f1474853f99907625084375afaa35f9d6c48a8e46",
+  "startedAtUtc": "2026-10-23T07:54:46.089Z",
+  "deadlineUtc": "2026-10-23T08:51:32Z",
+  "nodeVersion": "v24.16.0",
+  "retainedRoots": [
+    "D:/Workspace/pos-cafe-permission-run-20261020",
+    "D:/Workspace/pos-cafe/.git",
+    "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+    "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022"
+  ],
+  "oldLedgers": {
+    "budget-phase03-close.json": "0eb116c8b4016d54d0b0d90474545bd8012625bdcb0d924e1aca22e3754ce05b",
+    "budget-phase03-negative-controls.json": "ae2a8c9f1380400fba90c2b17c656a8ffe630b71fdd841679a986606f9abeb04",
+    "budget-phase03.json": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+    "budget-phase03.json.anchor.json": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f",
+    "budget-phase03.json.head.json": "adfec165ec85f3d4fd9f69db229249ba743845a5561799f295ae8590a5f6e527",
+    "budget-phase03.json.journal.jsonl": "5390f85e8fb7c01d6a037724ba1f8c2b00a8666ed5603094a3bbeb876ffbb694"
+  },
+  "steps": [
+    {
+      "phase": "install",
+      "startedAtUtc": "2026-10-23T07:54:48.809Z",
+      "completedAtUtc": "2026-10-23T07:55:04.353Z",
+      "executable": "D:/tools/nodejs/node.exe",
+      "args": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund",
+        "--prefer-offline",
+        "--include=dev",
+        "--include=optional"
+      ],
+      "wrapper": "C:/Users/nguye/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell/pwsh.exe",
+      "helperSHA": "794b81dfc28b798bc8341765f58403c4e3d8acf3aada8f6098c114fe81c4315f",
+      "proofPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-install.release.json",
+      "release": {
+        "schemaVersion": "permission-bp4a-child-release-v1",
+        "startedAtUtc": "2026-10-23T07:54:49.7485877Z",
+        "completedAtUtc": "2026-10-23T07:55:03.4231084Z",
+        "rootExitCode": 0,
+        "rootPid": 6940,
+        "activeProcesses": 0,
+        "timedOut": false,
+        "orphanDetected": false,
+        "nativeFailure": false,
+        "nativeErrorCode": 0,
+        "releaseVerified": true,
+        "assigned": true,
+        "resumed": true,
+        "passed": true
+      },
+      "exitCode": 0,
+      "spawnError": false,
+      "commandError": false,
+      "logs": {
+        "stdout": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-install.stdout.log",
+        "stderr": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-install.stderr.log"
+      },
+      "logBytes": [
+        27,
+        538
+      ],
+      "logSHA256": {
+        "stdout": "214b7567110fc7b0396bde838c07805d2f3a54f5111ed83300674f2ec90e3c06",
+        "stderr": "2785a1f68019607581048677c6e9312fe4de95b34b800a4a3d9560b3a998b2e0"
+      }
+    },
+    {
+      "phase": "nativeProbe",
+      "startedAtUtc": "2026-10-23T07:55:07.118Z",
+      "completedAtUtc": "2026-10-23T07:55:10.562Z",
+      "executable": "D:/tools/nodejs/node.exe",
+      "args": [
+        "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/bp4-native-probe-local75-01.mjs",
+        "--run"
+      ],
+      "wrapper": "C:/Users/nguye/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell/pwsh.exe",
+      "helperSHA": "794b81dfc28b798bc8341765f58403c4e3d8acf3aada8f6098c114fe81c4315f",
+      "proofPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-nativeProbe.release.json",
+      "release": {
+        "schemaVersion": "permission-bp4a-child-release-v1",
+        "startedAtUtc": "2026-10-23T07:55:07.8002308Z",
+        "completedAtUtc": "2026-10-23T07:55:10.0127341Z",
+        "rootExitCode": 0,
+        "rootPid": 37408,
+        "activeProcesses": 0,
+        "timedOut": false,
+        "orphanDetected": false,
+        "nativeFailure": false,
+        "nativeErrorCode": 0,
+        "releaseVerified": true,
+        "assigned": true,
+        "resumed": true,
+        "passed": true
+      },
+      "exitCode": 0,
+      "spawnError": false,
+      "commandError": false,
+      "logs": {
+        "stdout": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-nativeProbe.stdout.log",
+        "stderr": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-nativeProbe.stderr.log"
+      },
+      "logBytes": [
+        339,
+        0
+      ],
+      "logSHA256": {
+        "stdout": "dd0e748ef09953927711292610d050790bb03034cb1f9dedd75314e52c455832",
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "phase": "build",
+      "startedAtUtc": "2026-10-23T07:55:13.230Z",
+      "completedAtUtc": "2026-10-23T07:55:14.738Z",
+      "executable": "D:/tools/nodejs/node.exe",
+      "args": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "build"
+      ],
+      "wrapper": "C:/Users/nguye/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell/pwsh.exe",
+      "helperSHA": "794b81dfc28b798bc8341765f58403c4e3d8acf3aada8f6098c114fe81c4315f",
+      "proofPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-build.release.json",
+      "release": {
+        "schemaVersion": "permission-bp4a-child-release-v1",
+        "startedAtUtc": "2026-10-23T07:55:13.9168948Z",
+        "completedAtUtc": "2026-10-23T07:55:14.2741264Z",
+        "rootExitCode": 1,
+        "rootPid": 32520,
+        "activeProcesses": 0,
+        "timedOut": false,
+        "orphanDetected": false,
+        "nativeFailure": false,
+        "nativeErrorCode": 0,
+        "releaseVerified": true,
+        "assigned": true,
+        "resumed": true,
+        "passed": false
+      },
+      "exitCode": 1,
+      "spawnError": false,
+      "commandError": false,
+      "logs": {
+        "stdout": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-build.stdout.log",
+        "stderr": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-build.stderr.log"
+      },
+      "logBytes": [
+        48,
+        94
+      ],
+      "logSHA256": {
+        "stdout": "65431c4d7565143f24b7b167eee663f86cebaa374329a6bb6c23d7d93761ca0e",
+        "stderr": "9aa621a287f43ce021cd4d4e17e5e8c04923c1f3f23ab4ecb8e1d2d228c85595"
+      }
+    }
+  ],
+  "phases": {
+    "nativeProbe": "PASS",
+    "archivePreflight": "PASS",
+    "install": "PASS",
+    "build": "FAIL_OR_UNKNOWN",
+    "unitCoverage": "NOT_RUN"
+  },
+  "notRun": [
+    "publication",
+    "CI",
+    "backend",
+    "database",
+    "browser",
+    "runtime TS scoped typecheck",
+    "full gate"
+  ],
+  "lastStorage": {
+    "atUtc": "2026-10-23T07:55:14.656Z",
+    "currentRootBytes": 299429092,
+    "newGeneratedBytes": 248119962,
+    "retainedBytes": 581377552,
+    "freeBytes": {
+      "C:/": 193205387264,
+      "D:/": 98197757952
+    },
+    "links": [
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\dangling-docs\\docs-link",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\present-docs\\docs-alias",
+      "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-0096b055-d65e-4184-b94a-d37a2d493804",
+      "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-e384a654-8af5-47d2-9a7e-e68c5432519a"
+    ],
+    "linksAreNotAdmission": true,
+    "mainLogBytes": 565,
+    "reportBytes": 0,
+    "metaBytes": 1958549,
+    "moduleMetaBytes": 202667
+  },
+  "archivePartial": {
+    "ok": true,
+    "results": [
+      {
+        "lockPath": "node_modules/@bcoe/v8-coverage",
+        "resolved": "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-1.0.2.tgz",
+        "integrity": "sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==",
+        "httpStatus": 200,
+        "compressedBytes": 7184,
+        "tarBytes": 35328,
+        "entries": 11,
+        "regularFiles": 11,
+        "regularFileBytes": 25764,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 11,
+          "expectedRegularFiles": 11,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@types/pg",
+        "resolved": "https://registry.npmjs.org/@types/pg/-/pg-8.23.1.tgz",
+        "integrity": "sha512-fKVHpikPdg4GKks3JuLEhvwSyvwzF23hnabPy6DD8ljVbC7+6J5dQzdv4arV6jqq57djnMgs1HKBxX4P8aBI3A==",
+        "httpStatus": null,
+        "source": "RETAINED_SRI_ARCHIVE",
+        "compressedBytes": 5484,
+        "tarBytes": 27648,
+        "entries": 9,
+        "regularFiles": 7,
+        "regularFileBytes": 19802,
+        "root": "pg",
+        "countExpectation": {
+          "metadataFileCount": 9,
+          "expectedRegularFiles": 7,
+          "metric": "regularFiles",
+          "source": "CERTIFIED_EXACT_SRI_BODY",
+          "certifiedFactCompactSHA256": "4aebff07e02453c7f5bd1939c03f78c502aa265cb24ce387d68284b4d6a3d5bc"
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/coverage-v8",
+        "resolved": "https://registry.npmjs.org/@vitest/coverage-v8/-/coverage-v8-4.1.11.tgz",
+        "integrity": "sha512-8MVGEFnJIcdGjcbfKmeq8z0pZHH0JlVtoVZH9Q/qwUp6wyFnEJUBMrw9DCaj+ra3vShGmhavjalMIhPNxZAUcw==",
+        "httpStatus": 200,
+        "compressedBytes": 7520,
+        "tarBytes": 33280,
+        "entries": 11,
+        "regularFiles": 11,
+        "regularFileBytes": 23647,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 11,
+          "expectedRegularFiles": 11,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/expect",
+        "resolved": "https://registry.npmjs.org/@vitest/expect/-/expect-4.1.11.tgz",
+        "integrity": "sha512-VX2x5vNJXET47KAFzwERI+KRMtTTCSWTfSMKsW7JsUsXV4psq++e3DvZpuTDOpHcxytiDs6p2nhVb2tVDiiUYw==",
+        "httpStatus": 200,
+        "compressedBytes": 24924,
+        "tarBytes": 112128,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 106756,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/mocker",
+        "resolved": "https://registry.npmjs.org/@vitest/mocker/-/mocker-4.1.11.tgz",
+        "integrity": "sha512-2XJVD55d1o5AZous5CCGKS74g/riOj9odEt2bQpCVZeblHyHdnMeFl4jl0XjU21stf4mbjUkew2eXQZt65g5CQ==",
+        "httpStatus": 200,
+        "compressedBytes": 56516,
+        "tarBytes": 213504,
+        "entries": 31,
+        "regularFiles": 31,
+        "regularFileBytes": 188057,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 31,
+          "expectedRegularFiles": 31,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/pretty-format",
+        "resolved": "https://registry.npmjs.org/@vitest/pretty-format/-/pretty-format-4.1.11.tgz",
+        "integrity": "sha512-yiZzPbGTS9Sr/JpFl8zHrcIkAofNbFV6k21vIgQN/cY/oxZeXhJv5sc/MBJ5jFKWmWs+oJHw0UXLZjmf931+Vw==",
+        "httpStatus": 200,
+        "compressedBytes": 12888,
+        "tarBytes": 55296,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 49831,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/runner",
+        "resolved": "https://registry.npmjs.org/@vitest/runner/-/runner-4.1.11.tgz",
+        "integrity": "sha512-LztvUgdwMNJMIkj3hQnnxiC2Xy1zNxq928W/xhjCLaNCzqTZOudjwbQf6v9IntZGPw132i2Lq2rgTRZHD3JHNw==",
+        "httpStatus": 200,
+        "compressedBytes": 48456,
+        "tarBytes": 205824,
+        "entries": 13,
+        "regularFiles": 13,
+        "regularFileBytes": 194011,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 13,
+          "expectedRegularFiles": 13,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/snapshot",
+        "resolved": "https://registry.npmjs.org/@vitest/snapshot/-/snapshot-4.1.11.tgz",
+        "integrity": "sha512-pN7ikn1ON7h8ee4gIAp4AzyK+zBtJPzVbqOgu5LCEh4VaJVbPQcgYQYJIMGQPXVeJJq1fnfazis7a5pFNPahog==",
+        "httpStatus": 200,
+        "compressedBytes": 17411,
+        "tarBytes": 70656,
+        "entries": 13,
+        "regularFiles": 13,
+        "regularFileBytes": 59314,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 13,
+          "expectedRegularFiles": 13,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/spy",
+        "resolved": "https://registry.npmjs.org/@vitest/spy/-/spy-4.1.11.tgz",
+        "integrity": "sha512-apNa/prQy2qCeywhnixOHPRCgGNhvg7T4Dapfl1GahLp/R+uhBm5cPyFoNVyqsNd2h1nJxL6BqqdIjiABL60YA==",
+        "httpStatus": 200,
+        "compressedBytes": 9566,
+        "tarBytes": 43008,
+        "entries": 6,
+        "regularFiles": 6,
+        "regularFileBytes": 37389,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 6,
+          "expectedRegularFiles": 6,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/utils",
+        "resolved": "https://registry.npmjs.org/@vitest/utils/-/utils-4.1.11.tgz",
+        "integrity": "sha512-zTCVGpyFsGWBhllOyKlTw/vnr6D9qxsfSDyfbyZmTyjHw5N/VuvzHpHoQjm2ZJzn4RJgx5w4r7V0er69CmLgPQ==",
+        "httpStatus": 200,
+        "compressedBytes": 45447,
+        "tarBytes": 195584,
+        "entries": 34,
+        "regularFiles": 34,
+        "regularFileBytes": 168248,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 34,
+          "expectedRegularFiles": 34,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/ast-v8-to-istanbul",
+        "resolved": "https://registry.npmjs.org/ast-v8-to-istanbul/-/ast-v8-to-istanbul-1.0.5.tgz",
+        "integrity": "sha512-UPAgKJFSEGMWSDr3LX4tqnAb4f7KGT8O40Tyx8wbYmmZ/yn58lNCm8h3svs3eXgiGd5AXxz8NDOvXWvicq+rJA==",
+        "httpStatus": 200,
+        "compressedBytes": 14659,
+        "tarBytes": 56832,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 52000,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/ast-v8-to-istanbul/node_modules/js-tokens",
+        "resolved": "https://registry.npmjs.org/js-tokens/-/js-tokens-10.0.0.tgz",
+        "integrity": "sha512-lM/UBzQmfJRo9ABXbPWemivdCW8V2G8FHaHdypQaIy523snUjog0W71ayWXTjiR+ixeMyVHN2XcpnTd/liPg/Q==",
+        "httpStatus": 200,
+        "compressedBytes": 4360,
+        "tarBytes": 20480,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 15993,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/baseline-browser-mapping",
+        "resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.11.28.tgz",
+        "integrity": "sha512-br0LOmjJqr6Rt4AEkadbcNf67Zpo7EPwKsWbjnRrJIa1QYFHQBqM4C7F2WTbV8ahTEcg1Eo+Y0aWjjORInYFyA==",
+        "httpStatus": 200,
+        "compressedBytes": 41866,
+        "tarBytes": 144384,
+        "entries": 9,
+        "regularFiles": 9,
+        "regularFileBytes": 135944,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 9,
+          "expectedRegularFiles": 9,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/browserslist",
+        "resolved": "https://registry.npmjs.org/browserslist/-/browserslist-4.29.3.tgz",
+        "integrity": "sha512-1R4kiYKXGViqEN0CnoDrXc1StD9niAwu+j2dukWzrD4bJgsD4lDmEp0CRbc6E/vYJIfTHwPmwyaKtVSudICdPA==",
+        "httpStatus": 200,
+        "compressedBytes": 18718,
+        "tarBytes": 80384,
+        "entries": 11,
+        "regularFiles": 11,
+        "regularFileBytes": 70780,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 11,
+          "expectedRegularFiles": 11,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/caniuse-lite",
+        "resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001815.tgz",
+        "integrity": "sha512-uDybUEyfgbyJJ93J1vikTylBX31AkdVYeVPeffMQpf8XN7hSfr0oZOn4VFOIMNvtU5+rHvC5Udg2TgtJKHm23Q==",
+        "httpStatus": 200,
+        "compressedBytes": 349241,
+        "tarBytes": 2127872,
+        "entries": 841,
+        "regularFiles": 841,
+        "regularFileBytes": 1546386,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 841,
+          "expectedRegularFiles": 841,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/electron-to-chromium",
+        "resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.452.tgz",
+        "integrity": "sha512-cVvk1YBSj6571VmV6hdJTqj94Y79xSu8cj6Y9t6ae4Y4431z8/7EJFvu3rVp90xhfuv9BpPKUmaLfTo4+FOGBg==",
+        "httpStatus": 200,
+        "compressedBytes": 35718,
+        "tarBytes": 214016,
+        "entries": 12,
+        "regularFiles": 12,
+        "regularFileBytes": 204381,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 12,
+          "expectedRegularFiles": 12,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/form-data",
+        "resolved": "https://registry.npmjs.org/form-data/-/form-data-4.0.6.tgz",
+        "integrity": "sha512-vKatAh4SlVfgbv+YtmhiRjhEMJsYpsG1Y2rMQtR+SVSbytsSD1YGzDIcrAJmdFec88u/+VoGmxnl+80gL1tRCQ==",
+        "httpStatus": 200,
+        "compressedBytes": 24198,
+        "tarBytes": 91136,
+        "entries": 8,
+        "regularFiles": 8,
+        "regularFileBytes": 83901,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 8,
+          "expectedRegularFiles": 8,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/has-flag",
+        "resolved": "https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz",
+        "integrity": "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==",
+        "httpStatus": 200,
+        "compressedBytes": 2206,
+        "tarBytes": 9728,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 4419,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/html-escaper",
+        "resolved": "https://registry.npmjs.org/html-escaper/-/html-escaper-2.0.2.tgz",
+        "integrity": "sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==",
+        "httpStatus": 200,
+        "compressedBytes": 4282,
+        "tarBytes": 22016,
+        "entries": 10,
+        "regularFiles": 10,
+        "regularFileBytes": 13092,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 10,
+          "expectedRegularFiles": 10,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/istanbul-lib-coverage",
+        "resolved": "https://registry.npmjs.org/istanbul-lib-coverage/-/istanbul-lib-coverage-3.2.2.tgz",
+        "integrity": "sha512-O8dpsF+r0WV/8MNRKfnmrtCWhuKjxrq2w+jpzBL5UZKTi2LeVWnWOmWRxFlesJONmc+wLAGvKQZEOanko0LFTg==",
+        "httpStatus": 200,
+        "compressedBytes": 9351,
+        "tarBytes": 42496,
+        "entries": 10,
+        "regularFiles": 10,
+        "regularFileBytes": 34367,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 10,
+          "expectedRegularFiles": 10,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/istanbul-lib-report",
+        "resolved": "https://registry.npmjs.org/istanbul-lib-report/-/istanbul-lib-report-3.0.1.tgz",
+        "integrity": "sha512-GCfE1mtsHGOELCU8e/Z7YWzpmybrx/+dSTfLrvY8qRmaY6zXTKWn6WQIjaAFw069icm6GVMNkgu0NzI4iPZUNw==",
+        "httpStatus": 200,
+        "compressedBytes": 10551,
+        "tarBytes": 47616,
+        "entries": 13,
+        "regularFiles": 13,
+        "regularFileBytes": 37641,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 13,
+          "expectedRegularFiles": 13,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/istanbul-reports",
+        "resolved": "https://registry.npmjs.org/istanbul-reports/-/istanbul-reports-3.2.0.tgz",
+        "integrity": "sha512-HGYWWS/ehqTV3xN10i23tkPkpH46MLCIMFNCaaKNavAXTF1RkqxawEPtnjnGZ6XKSInBKkiOA5BKS+aZiY3AvA==",
+        "httpStatus": 200,
+        "compressedBytes": 83428,
+        "tarBytes": 327168,
+        "entries": 41,
+        "regularFiles": 41,
+        "regularFileBytes": 294714,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 41,
+          "expectedRegularFiles": 41,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/magicast",
+        "resolved": "https://registry.npmjs.org/magicast/-/magicast-0.5.4.tgz",
+        "integrity": "sha512-llBEhWm1SacoRwgHUoQJYtwp4PBLF4faQi5TCpIGyGs9n4y5+juI0tDgyKIfpqxckRHaHzouUEph3THklWh03w==",
+        "httpStatus": 200,
+        "compressedBytes": 79586,
+        "tarBytes": 391168,
+        "entries": 11,
+        "regularFiles": 11,
+        "regularFileBytes": 381378,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 11,
+          "expectedRegularFiles": 11,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/make-dir",
+        "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-4.0.0.tgz",
+        "integrity": "sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==",
+        "httpStatus": 200,
+        "compressedBytes": 3743,
+        "tarBytes": 14848,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 9913,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/nanoid",
+        "resolved": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.20.tgz",
+        "integrity": "sha512-uKdg2G3GNCKQn9byYOpxbGqrT2fGO5KRt5J/8b3pok8rT6qxGWF6hxMyJiEYtAf+FVyYuD9hRaDqX5uPFYJ4ZQ==",
+        "httpStatus": 200,
+        "compressedBytes": 5721,
+        "tarBytes": 48640,
+        "entries": 26,
+        "regularFiles": 26,
+        "regularFileBytes": 26808,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 26,
+          "expectedRegularFiles": 26,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/node-releases",
+        "resolved": "https://registry.npmjs.org/node-releases/-/node-releases-2.0.58.tgz",
+        "integrity": "sha512-BdiKAgbfRlvfMq/XzO/AF9NPmaA8a+YpLAyAFTVFBj3gARrAIfWvNq7Q7NE4se3KgFu0KkrvQMxTS0XVnsGzHg==",
+        "httpStatus": 200,
+        "compressedBytes": 6094,
+        "tarBytes": 67584,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 62180,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pg",
+        "resolved": "https://registry.npmjs.org/pg/-/pg-8.23.0.tgz",
+        "integrity": "sha512-Ip2EQCngowJLGOfCwkFhPXU7/ljlhn6Rxlmy4XYfL2Y+vyRM59+8uR2xqRWKdYmbXmxCFOAmKxBuSUCdF34qLg==",
+        "httpStatus": 200,
+        "compressedBytes": 27821,
+        "tarBytes": 117248,
+        "entries": 20,
+        "regularFiles": 20,
+        "regularFileBytes": 100044,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 20,
+          "expectedRegularFiles": 20,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pg-cloudflare",
+        "resolved": "https://registry.npmjs.org/pg-cloudflare/-/pg-cloudflare-1.4.0.tgz",
+        "integrity": "sha512-Vo7z/6rrQYxpNRylp4Tlob2elzbh+N/MOQbxFVWCxS7oEx6jF53GTJFxK2WWpKuBRkmiin4Mt+xofFDjx09R0A==",
+        "httpStatus": 200,
+        "compressedBytes": 6938,
+        "tarBytes": 34816,
+        "entries": 13,
+        "regularFiles": 13,
+        "regularFileBytes": 23542,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 13,
+          "expectedRegularFiles": 13,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pg-connection-string",
+        "resolved": "https://registry.npmjs.org/pg-connection-string/-/pg-connection-string-2.14.0.tgz",
+        "integrity": "sha512-XwWDGcLRGCXAR8F/AM5bG7Q+A3Wm2s6QeEjlOKZLlH3UYcguiqCWKyWXVag5TLTIjR7oOJUY8kcADaZgWPyLeg==",
+        "httpStatus": 200,
+        "compressedBytes": 5825,
+        "tarBytes": 21504,
+        "entries": 6,
+        "regularFiles": 6,
+        "regularFileBytes": 16144,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 6,
+          "expectedRegularFiles": 6,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pg-pool",
+        "resolved": "https://registry.npmjs.org/pg-pool/-/pg-pool-3.14.0.tgz",
+        "integrity": "sha512-gKtPkFdQPU3DksooVLi9LsjZxrsBUZIpa+7aVx+LV5pNh0KzP4Zleud2po+ConrxbuXGBJ6Hfer6hdgpIBpBaw==",
+        "httpStatus": 200,
+        "compressedBytes": 9579,
+        "tarBytes": 35328,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 29835,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pg-protocol",
+        "resolved": "https://registry.npmjs.org/pg-protocol/-/pg-protocol-1.16.0.tgz",
+        "integrity": "sha512-sILXutLVjCLjcDuOmvhX5e2Z4cS5qG/6Bu3VkpFwdf/633ElGLpEh9bgmuI5I4sqKqkifQiGyiCcx1HdtrK7tg==",
+        "httpStatus": 200,
+        "compressedBytes": 39412,
+        "tarBytes": 234496,
+        "entries": 42,
+        "regularFiles": 42,
+        "regularFileBytes": 200886,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 42,
+          "expectedRegularFiles": 42,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pg-types",
+        "resolved": "https://registry.npmjs.org/pg-types/-/pg-types-2.2.0.tgz",
+        "integrity": "sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==",
+        "httpStatus": 200,
+        "compressedBytes": 10344,
+        "tarBytes": 46592,
+        "entries": 13,
+        "regularFiles": 13,
+        "regularFileBytes": 35296,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 13,
+          "expectedRegularFiles": 13,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pgpass",
+        "resolved": "https://registry.npmjs.org/pgpass/-/pgpass-1.0.5.tgz",
+        "integrity": "sha512-FdW9r/jQZhSeohs1Z3sI1yxFQNFvMcnmfuj4WBMUTxOrAyLMaTcE1aAMBiTlbMNaXvBCQuVi0R7hd8udDSP7ug==",
+        "httpStatus": 200,
+        "compressedBytes": 4280,
+        "tarBytes": 14336,
+        "entries": 4,
+        "regularFiles": 4,
+        "regularFileBytes": 10323,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 4,
+          "expectedRegularFiles": 4,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/postcss",
+        "resolved": "https://registry.npmjs.org/postcss/-/postcss-8.5.29.tgz",
+        "integrity": "sha512-49cGhUbXj8Qenv0iTMxA1cFBzxXoctpC9Ujd77t1WcbJIr6nF/eI7g/8MgxrYldFRuAXvja7xQRwavoW7kgrxQ==",
+        "httpStatus": 200,
+        "compressedBytes": 52828,
+        "tarBytes": 264704,
+        "entries": 55,
+        "regularFiles": 55,
+        "regularFileBytes": 220365,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 55,
+          "expectedRegularFiles": 55,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/postcss-selector-parser",
+        "resolved": "https://registry.npmjs.org/postcss-selector-parser/-/postcss-selector-parser-6.1.4.tgz",
+        "integrity": "sha512-bIoJLOmjCO1S9XdY/DcnR5hJxvrDir1PbGChrzXG3vw0/FOliy/fA3dmdhQ441kah4gKv+TwckGzex6wNS5cnQ==",
+        "httpStatus": 200,
+        "compressedBytes": 45101,
+        "tarBytes": 221184,
+        "entries": 37,
+        "regularFiles": 37,
+        "regularFileBytes": 192118,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 37,
+          "expectedRegularFiles": 37,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/postgres-array",
+        "resolved": "https://registry.npmjs.org/postgres-array/-/postgres-array-2.0.0.tgz",
+        "integrity": "sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==",
+        "httpStatus": 200,
+        "compressedBytes": 2213,
+        "tarBytes": 10240,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 4903,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/postgres-bytea",
+        "resolved": "https://registry.npmjs.org/postgres-bytea/-/postgres-bytea-1.0.1.tgz",
+        "integrity": "sha512-5+5HqXnsZPE65IJZSMkZtURARZelel2oXUEO8rH83VS/hxH5vv1uHquPg5wZs8yMAfdv971IU+kcPUczi7NVBQ==",
+        "httpStatus": 200,
+        "compressedBytes": 1724,
+        "tarBytes": 7168,
+        "entries": 4,
+        "regularFiles": 4,
+        "regularFileBytes": 3095,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 4,
+          "expectedRegularFiles": 4,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/postgres-date",
+        "resolved": "https://registry.npmjs.org/postgres-date/-/postgres-date-1.0.7.tgz",
+        "integrity": "sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q==",
+        "httpStatus": 200,
+        "compressedBytes": 2836,
+        "tarBytes": 10240,
+        "entries": 4,
+        "regularFiles": 4,
+        "regularFileBytes": 5915,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 4,
+          "expectedRegularFiles": 4,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/postgres-interval",
+        "resolved": "https://registry.npmjs.org/postgres-interval/-/postgres-interval-1.2.0.tgz",
+        "integrity": "sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==",
+        "httpStatus": 200,
+        "compressedBytes": 2926,
+        "tarBytes": 11776,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 6727,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/semver",
+        "resolved": "https://registry.npmjs.org/semver/-/semver-7.8.5.tgz",
+        "integrity": "sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA==",
+        "httpStatus": 200,
+        "compressedBytes": 29399,
+        "tarBytes": 144384,
+        "entries": 53,
+        "regularFiles": 53,
+        "regularFileBytes": 101065,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 53,
+          "expectedRegularFiles": 53,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/source-map-js",
+        "resolved": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.2.tgz",
+        "integrity": "sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==",
+        "httpStatus": 200,
+        "compressedBytes": 36349,
+        "tarBytes": 158208,
+        "entries": 18,
+        "regularFiles": 18,
+        "regularFileBytes": 142723,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 18,
+          "expectedRegularFiles": 18,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/split2",
+        "resolved": "https://registry.npmjs.org/split2/-/split2-4.2.0.tgz",
+        "integrity": "sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg==",
+        "httpStatus": 200,
+        "compressedBytes": 4668,
+        "tarBytes": 23040,
+        "entries": 6,
+        "regularFiles": 6,
+        "regularFileBytes": 17419,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 6,
+          "expectedRegularFiles": 6,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/supports-color",
+        "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz",
+        "integrity": "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==",
+        "httpStatus": 200,
+        "compressedBytes": 3210,
+        "tarBytes": 12288,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 7035,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/update-browserslist-db",
+        "resolved": "https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.3.4.tgz",
+        "integrity": "sha512-t8wonIOdQyOjtPd2VktlBu6QjTVTks6v8bSi7kd0r2Vll8TK1JYDZtRRdbmCHOAMphkZgrzK+L+vXK4pyZ8t4A==",
+        "httpStatus": 200,
+        "compressedBytes": 8585,
+        "tarBytes": 33792,
+        "entries": 8,
+        "regularFiles": 8,
+        "regularFileBytes": 26505,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 8,
+          "expectedRegularFiles": 8,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/vitest",
+        "resolved": "https://registry.npmjs.org/vitest/-/vitest-4.1.11.tgz",
+        "integrity": "sha512-fhACrNXUidIbGSBr5FlbuBkO7VWC1ZyLl0DO4CU2DrQoAPxX84Ysxs+HeGQpii5lZWV1Q4gBZTTu49mF+A6Edw==",
+        "httpStatus": 200,
+        "compressedBytes": 475397,
+        "tarBytes": 2000896,
+        "entries": 114,
+        "regularFiles": 114,
+        "regularFileBytes": 1909160,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 114,
+          "expectedRegularFiles": 114,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/xtend",
+        "resolved": "https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz",
+        "integrity": "sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==",
+        "httpStatus": 200,
+        "compressedBytes": 2529,
+        "tarBytes": 13312,
+        "entries": 7,
+        "regularFiles": 7,
+        "regularFileBytes": 6465,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 7,
+          "expectedRegularFiles": 7,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      }
+    ],
+    "firstFailure": null,
+    "peerAborted": [],
+    "globalFailure": null,
+    "abortCause": null,
+    "downloadedBytes": 1695598,
+    "startedAtMs": 1792742086719,
+    "completedAtMs": 1792742088245,
+    "retainedResult": {
+      "lockPath": "node_modules/@types/pg",
+      "resolved": "https://registry.npmjs.org/@types/pg/-/pg-8.23.1.tgz",
+      "integrity": "sha512-fKVHpikPdg4GKks3JuLEhvwSyvwzF23hnabPy6DD8ljVbC7+6J5dQzdv4arV6jqq57djnMgs1HKBxX4P8aBI3A==",
+      "httpStatus": null,
+      "source": "RETAINED_SRI_ARCHIVE",
+      "compressedBytes": 5484,
+      "tarBytes": 27648,
+      "entries": 9,
+      "regularFiles": 7,
+      "regularFileBytes": 19802,
+      "root": "pg",
+      "countExpectation": {
+        "metadataFileCount": 9,
+        "expectedRegularFiles": 7,
+        "metric": "regularFiles",
+        "source": "CERTIFIED_EXACT_SRI_BODY",
+        "certifiedFactCompactSHA256": "4aebff07e02453c7f5bd1939c03f78c502aa265cb24ce387d68284b4d6a3d5bc"
+      }
+    },
+    "derived": {
+      "metadataTotal": 1579,
+      "expectedRegularTotal": 1577,
+      "expectedRegularBytes": 6906281
+    },
+    "remoteItemCount": 45,
+    "archivePaths": 46
+  },
+  "archive": {
+    "cached309Facts": "bp4-package-size-facts01.json",
+    "pgFact": "bp4-pg-int8-size-fact01.json",
+    "downloaded": 1695598,
+    "compressedBytes": 44152888,
+    "regularFileBytes": 212512248,
+    "archivePaths": 356,
+    "results": [
+      {
+        "lockPath": "node_modules/@bcoe/v8-coverage",
+        "resolved": "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-1.0.2.tgz",
+        "integrity": "sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==",
+        "httpStatus": 200,
+        "compressedBytes": 7184,
+        "tarBytes": 35328,
+        "entries": 11,
+        "regularFiles": 11,
+        "regularFileBytes": 25764,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 11,
+          "expectedRegularFiles": 11,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@types/pg",
+        "resolved": "https://registry.npmjs.org/@types/pg/-/pg-8.23.1.tgz",
+        "integrity": "sha512-fKVHpikPdg4GKks3JuLEhvwSyvwzF23hnabPy6DD8ljVbC7+6J5dQzdv4arV6jqq57djnMgs1HKBxX4P8aBI3A==",
+        "httpStatus": null,
+        "source": "RETAINED_SRI_ARCHIVE",
+        "compressedBytes": 5484,
+        "tarBytes": 27648,
+        "entries": 9,
+        "regularFiles": 7,
+        "regularFileBytes": 19802,
+        "root": "pg",
+        "countExpectation": {
+          "metadataFileCount": 9,
+          "expectedRegularFiles": 7,
+          "metric": "regularFiles",
+          "source": "CERTIFIED_EXACT_SRI_BODY",
+          "certifiedFactCompactSHA256": "4aebff07e02453c7f5bd1939c03f78c502aa265cb24ce387d68284b4d6a3d5bc"
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/coverage-v8",
+        "resolved": "https://registry.npmjs.org/@vitest/coverage-v8/-/coverage-v8-4.1.11.tgz",
+        "integrity": "sha512-8MVGEFnJIcdGjcbfKmeq8z0pZHH0JlVtoVZH9Q/qwUp6wyFnEJUBMrw9DCaj+ra3vShGmhavjalMIhPNxZAUcw==",
+        "httpStatus": 200,
+        "compressedBytes": 7520,
+        "tarBytes": 33280,
+        "entries": 11,
+        "regularFiles": 11,
+        "regularFileBytes": 23647,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 11,
+          "expectedRegularFiles": 11,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/expect",
+        "resolved": "https://registry.npmjs.org/@vitest/expect/-/expect-4.1.11.tgz",
+        "integrity": "sha512-VX2x5vNJXET47KAFzwERI+KRMtTTCSWTfSMKsW7JsUsXV4psq++e3DvZpuTDOpHcxytiDs6p2nhVb2tVDiiUYw==",
+        "httpStatus": 200,
+        "compressedBytes": 24924,
+        "tarBytes": 112128,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 106756,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/mocker",
+        "resolved": "https://registry.npmjs.org/@vitest/mocker/-/mocker-4.1.11.tgz",
+        "integrity": "sha512-2XJVD55d1o5AZous5CCGKS74g/riOj9odEt2bQpCVZeblHyHdnMeFl4jl0XjU21stf4mbjUkew2eXQZt65g5CQ==",
+        "httpStatus": 200,
+        "compressedBytes": 56516,
+        "tarBytes": 213504,
+        "entries": 31,
+        "regularFiles": 31,
+        "regularFileBytes": 188057,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 31,
+          "expectedRegularFiles": 31,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/pretty-format",
+        "resolved": "https://registry.npmjs.org/@vitest/pretty-format/-/pretty-format-4.1.11.tgz",
+        "integrity": "sha512-yiZzPbGTS9Sr/JpFl8zHrcIkAofNbFV6k21vIgQN/cY/oxZeXhJv5sc/MBJ5jFKWmWs+oJHw0UXLZjmf931+Vw==",
+        "httpStatus": 200,
+        "compressedBytes": 12888,
+        "tarBytes": 55296,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 49831,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/runner",
+        "resolved": "https://registry.npmjs.org/@vitest/runner/-/runner-4.1.11.tgz",
+        "integrity": "sha512-LztvUgdwMNJMIkj3hQnnxiC2Xy1zNxq928W/xhjCLaNCzqTZOudjwbQf6v9IntZGPw132i2Lq2rgTRZHD3JHNw==",
+        "httpStatus": 200,
+        "compressedBytes": 48456,
+        "tarBytes": 205824,
+        "entries": 13,
+        "regularFiles": 13,
+        "regularFileBytes": 194011,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 13,
+          "expectedRegularFiles": 13,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/snapshot",
+        "resolved": "https://registry.npmjs.org/@vitest/snapshot/-/snapshot-4.1.11.tgz",
+        "integrity": "sha512-pN7ikn1ON7h8ee4gIAp4AzyK+zBtJPzVbqOgu5LCEh4VaJVbPQcgYQYJIMGQPXVeJJq1fnfazis7a5pFNPahog==",
+        "httpStatus": 200,
+        "compressedBytes": 17411,
+        "tarBytes": 70656,
+        "entries": 13,
+        "regularFiles": 13,
+        "regularFileBytes": 59314,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 13,
+          "expectedRegularFiles": 13,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/spy",
+        "resolved": "https://registry.npmjs.org/@vitest/spy/-/spy-4.1.11.tgz",
+        "integrity": "sha512-apNa/prQy2qCeywhnixOHPRCgGNhvg7T4Dapfl1GahLp/R+uhBm5cPyFoNVyqsNd2h1nJxL6BqqdIjiABL60YA==",
+        "httpStatus": 200,
+        "compressedBytes": 9566,
+        "tarBytes": 43008,
+        "entries": 6,
+        "regularFiles": 6,
+        "regularFileBytes": 37389,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 6,
+          "expectedRegularFiles": 6,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/@vitest/utils",
+        "resolved": "https://registry.npmjs.org/@vitest/utils/-/utils-4.1.11.tgz",
+        "integrity": "sha512-zTCVGpyFsGWBhllOyKlTw/vnr6D9qxsfSDyfbyZmTyjHw5N/VuvzHpHoQjm2ZJzn4RJgx5w4r7V0er69CmLgPQ==",
+        "httpStatus": 200,
+        "compressedBytes": 45447,
+        "tarBytes": 195584,
+        "entries": 34,
+        "regularFiles": 34,
+        "regularFileBytes": 168248,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 34,
+          "expectedRegularFiles": 34,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/ast-v8-to-istanbul",
+        "resolved": "https://registry.npmjs.org/ast-v8-to-istanbul/-/ast-v8-to-istanbul-1.0.5.tgz",
+        "integrity": "sha512-UPAgKJFSEGMWSDr3LX4tqnAb4f7KGT8O40Tyx8wbYmmZ/yn58lNCm8h3svs3eXgiGd5AXxz8NDOvXWvicq+rJA==",
+        "httpStatus": 200,
+        "compressedBytes": 14659,
+        "tarBytes": 56832,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 52000,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/ast-v8-to-istanbul/node_modules/js-tokens",
+        "resolved": "https://registry.npmjs.org/js-tokens/-/js-tokens-10.0.0.tgz",
+        "integrity": "sha512-lM/UBzQmfJRo9ABXbPWemivdCW8V2G8FHaHdypQaIy523snUjog0W71ayWXTjiR+ixeMyVHN2XcpnTd/liPg/Q==",
+        "httpStatus": 200,
+        "compressedBytes": 4360,
+        "tarBytes": 20480,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 15993,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/baseline-browser-mapping",
+        "resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.11.28.tgz",
+        "integrity": "sha512-br0LOmjJqr6Rt4AEkadbcNf67Zpo7EPwKsWbjnRrJIa1QYFHQBqM4C7F2WTbV8ahTEcg1Eo+Y0aWjjORInYFyA==",
+        "httpStatus": 200,
+        "compressedBytes": 41866,
+        "tarBytes": 144384,
+        "entries": 9,
+        "regularFiles": 9,
+        "regularFileBytes": 135944,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 9,
+          "expectedRegularFiles": 9,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/browserslist",
+        "resolved": "https://registry.npmjs.org/browserslist/-/browserslist-4.29.3.tgz",
+        "integrity": "sha512-1R4kiYKXGViqEN0CnoDrXc1StD9niAwu+j2dukWzrD4bJgsD4lDmEp0CRbc6E/vYJIfTHwPmwyaKtVSudICdPA==",
+        "httpStatus": 200,
+        "compressedBytes": 18718,
+        "tarBytes": 80384,
+        "entries": 11,
+        "regularFiles": 11,
+        "regularFileBytes": 70780,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 11,
+          "expectedRegularFiles": 11,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/caniuse-lite",
+        "resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001815.tgz",
+        "integrity": "sha512-uDybUEyfgbyJJ93J1vikTylBX31AkdVYeVPeffMQpf8XN7hSfr0oZOn4VFOIMNvtU5+rHvC5Udg2TgtJKHm23Q==",
+        "httpStatus": 200,
+        "compressedBytes": 349241,
+        "tarBytes": 2127872,
+        "entries": 841,
+        "regularFiles": 841,
+        "regularFileBytes": 1546386,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 841,
+          "expectedRegularFiles": 841,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/electron-to-chromium",
+        "resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.452.tgz",
+        "integrity": "sha512-cVvk1YBSj6571VmV6hdJTqj94Y79xSu8cj6Y9t6ae4Y4431z8/7EJFvu3rVp90xhfuv9BpPKUmaLfTo4+FOGBg==",
+        "httpStatus": 200,
+        "compressedBytes": 35718,
+        "tarBytes": 214016,
+        "entries": 12,
+        "regularFiles": 12,
+        "regularFileBytes": 204381,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 12,
+          "expectedRegularFiles": 12,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/form-data",
+        "resolved": "https://registry.npmjs.org/form-data/-/form-data-4.0.6.tgz",
+        "integrity": "sha512-vKatAh4SlVfgbv+YtmhiRjhEMJsYpsG1Y2rMQtR+SVSbytsSD1YGzDIcrAJmdFec88u/+VoGmxnl+80gL1tRCQ==",
+        "httpStatus": 200,
+        "compressedBytes": 24198,
+        "tarBytes": 91136,
+        "entries": 8,
+        "regularFiles": 8,
+        "regularFileBytes": 83901,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 8,
+          "expectedRegularFiles": 8,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/has-flag",
+        "resolved": "https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz",
+        "integrity": "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==",
+        "httpStatus": 200,
+        "compressedBytes": 2206,
+        "tarBytes": 9728,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 4419,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/html-escaper",
+        "resolved": "https://registry.npmjs.org/html-escaper/-/html-escaper-2.0.2.tgz",
+        "integrity": "sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==",
+        "httpStatus": 200,
+        "compressedBytes": 4282,
+        "tarBytes": 22016,
+        "entries": 10,
+        "regularFiles": 10,
+        "regularFileBytes": 13092,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 10,
+          "expectedRegularFiles": 10,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/istanbul-lib-coverage",
+        "resolved": "https://registry.npmjs.org/istanbul-lib-coverage/-/istanbul-lib-coverage-3.2.2.tgz",
+        "integrity": "sha512-O8dpsF+r0WV/8MNRKfnmrtCWhuKjxrq2w+jpzBL5UZKTi2LeVWnWOmWRxFlesJONmc+wLAGvKQZEOanko0LFTg==",
+        "httpStatus": 200,
+        "compressedBytes": 9351,
+        "tarBytes": 42496,
+        "entries": 10,
+        "regularFiles": 10,
+        "regularFileBytes": 34367,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 10,
+          "expectedRegularFiles": 10,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/istanbul-lib-report",
+        "resolved": "https://registry.npmjs.org/istanbul-lib-report/-/istanbul-lib-report-3.0.1.tgz",
+        "integrity": "sha512-GCfE1mtsHGOELCU8e/Z7YWzpmybrx/+dSTfLrvY8qRmaY6zXTKWn6WQIjaAFw069icm6GVMNkgu0NzI4iPZUNw==",
+        "httpStatus": 200,
+        "compressedBytes": 10551,
+        "tarBytes": 47616,
+        "entries": 13,
+        "regularFiles": 13,
+        "regularFileBytes": 37641,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 13,
+          "expectedRegularFiles": 13,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/istanbul-reports",
+        "resolved": "https://registry.npmjs.org/istanbul-reports/-/istanbul-reports-3.2.0.tgz",
+        "integrity": "sha512-HGYWWS/ehqTV3xN10i23tkPkpH46MLCIMFNCaaKNavAXTF1RkqxawEPtnjnGZ6XKSInBKkiOA5BKS+aZiY3AvA==",
+        "httpStatus": 200,
+        "compressedBytes": 83428,
+        "tarBytes": 327168,
+        "entries": 41,
+        "regularFiles": 41,
+        "regularFileBytes": 294714,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 41,
+          "expectedRegularFiles": 41,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/magicast",
+        "resolved": "https://registry.npmjs.org/magicast/-/magicast-0.5.4.tgz",
+        "integrity": "sha512-llBEhWm1SacoRwgHUoQJYtwp4PBLF4faQi5TCpIGyGs9n4y5+juI0tDgyKIfpqxckRHaHzouUEph3THklWh03w==",
+        "httpStatus": 200,
+        "compressedBytes": 79586,
+        "tarBytes": 391168,
+        "entries": 11,
+        "regularFiles": 11,
+        "regularFileBytes": 381378,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 11,
+          "expectedRegularFiles": 11,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/make-dir",
+        "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-4.0.0.tgz",
+        "integrity": "sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==",
+        "httpStatus": 200,
+        "compressedBytes": 3743,
+        "tarBytes": 14848,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 9913,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/nanoid",
+        "resolved": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.20.tgz",
+        "integrity": "sha512-uKdg2G3GNCKQn9byYOpxbGqrT2fGO5KRt5J/8b3pok8rT6qxGWF6hxMyJiEYtAf+FVyYuD9hRaDqX5uPFYJ4ZQ==",
+        "httpStatus": 200,
+        "compressedBytes": 5721,
+        "tarBytes": 48640,
+        "entries": 26,
+        "regularFiles": 26,
+        "regularFileBytes": 26808,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 26,
+          "expectedRegularFiles": 26,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/node-releases",
+        "resolved": "https://registry.npmjs.org/node-releases/-/node-releases-2.0.58.tgz",
+        "integrity": "sha512-BdiKAgbfRlvfMq/XzO/AF9NPmaA8a+YpLAyAFTVFBj3gARrAIfWvNq7Q7NE4se3KgFu0KkrvQMxTS0XVnsGzHg==",
+        "httpStatus": 200,
+        "compressedBytes": 6094,
+        "tarBytes": 67584,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 62180,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pg",
+        "resolved": "https://registry.npmjs.org/pg/-/pg-8.23.0.tgz",
+        "integrity": "sha512-Ip2EQCngowJLGOfCwkFhPXU7/ljlhn6Rxlmy4XYfL2Y+vyRM59+8uR2xqRWKdYmbXmxCFOAmKxBuSUCdF34qLg==",
+        "httpStatus": 200,
+        "compressedBytes": 27821,
+        "tarBytes": 117248,
+        "entries": 20,
+        "regularFiles": 20,
+        "regularFileBytes": 100044,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 20,
+          "expectedRegularFiles": 20,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pg-cloudflare",
+        "resolved": "https://registry.npmjs.org/pg-cloudflare/-/pg-cloudflare-1.4.0.tgz",
+        "integrity": "sha512-Vo7z/6rrQYxpNRylp4Tlob2elzbh+N/MOQbxFVWCxS7oEx6jF53GTJFxK2WWpKuBRkmiin4Mt+xofFDjx09R0A==",
+        "httpStatus": 200,
+        "compressedBytes": 6938,
+        "tarBytes": 34816,
+        "entries": 13,
+        "regularFiles": 13,
+        "regularFileBytes": 23542,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 13,
+          "expectedRegularFiles": 13,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pg-connection-string",
+        "resolved": "https://registry.npmjs.org/pg-connection-string/-/pg-connection-string-2.14.0.tgz",
+        "integrity": "sha512-XwWDGcLRGCXAR8F/AM5bG7Q+A3Wm2s6QeEjlOKZLlH3UYcguiqCWKyWXVag5TLTIjR7oOJUY8kcADaZgWPyLeg==",
+        "httpStatus": 200,
+        "compressedBytes": 5825,
+        "tarBytes": 21504,
+        "entries": 6,
+        "regularFiles": 6,
+        "regularFileBytes": 16144,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 6,
+          "expectedRegularFiles": 6,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pg-pool",
+        "resolved": "https://registry.npmjs.org/pg-pool/-/pg-pool-3.14.0.tgz",
+        "integrity": "sha512-gKtPkFdQPU3DksooVLi9LsjZxrsBUZIpa+7aVx+LV5pNh0KzP4Zleud2po+ConrxbuXGBJ6Hfer6hdgpIBpBaw==",
+        "httpStatus": 200,
+        "compressedBytes": 9579,
+        "tarBytes": 35328,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 29835,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pg-protocol",
+        "resolved": "https://registry.npmjs.org/pg-protocol/-/pg-protocol-1.16.0.tgz",
+        "integrity": "sha512-sILXutLVjCLjcDuOmvhX5e2Z4cS5qG/6Bu3VkpFwdf/633ElGLpEh9bgmuI5I4sqKqkifQiGyiCcx1HdtrK7tg==",
+        "httpStatus": 200,
+        "compressedBytes": 39412,
+        "tarBytes": 234496,
+        "entries": 42,
+        "regularFiles": 42,
+        "regularFileBytes": 200886,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 42,
+          "expectedRegularFiles": 42,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pg-types",
+        "resolved": "https://registry.npmjs.org/pg-types/-/pg-types-2.2.0.tgz",
+        "integrity": "sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==",
+        "httpStatus": 200,
+        "compressedBytes": 10344,
+        "tarBytes": 46592,
+        "entries": 13,
+        "regularFiles": 13,
+        "regularFileBytes": 35296,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 13,
+          "expectedRegularFiles": 13,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/pgpass",
+        "resolved": "https://registry.npmjs.org/pgpass/-/pgpass-1.0.5.tgz",
+        "integrity": "sha512-FdW9r/jQZhSeohs1Z3sI1yxFQNFvMcnmfuj4WBMUTxOrAyLMaTcE1aAMBiTlbMNaXvBCQuVi0R7hd8udDSP7ug==",
+        "httpStatus": 200,
+        "compressedBytes": 4280,
+        "tarBytes": 14336,
+        "entries": 4,
+        "regularFiles": 4,
+        "regularFileBytes": 10323,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 4,
+          "expectedRegularFiles": 4,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/postcss",
+        "resolved": "https://registry.npmjs.org/postcss/-/postcss-8.5.29.tgz",
+        "integrity": "sha512-49cGhUbXj8Qenv0iTMxA1cFBzxXoctpC9Ujd77t1WcbJIr6nF/eI7g/8MgxrYldFRuAXvja7xQRwavoW7kgrxQ==",
+        "httpStatus": 200,
+        "compressedBytes": 52828,
+        "tarBytes": 264704,
+        "entries": 55,
+        "regularFiles": 55,
+        "regularFileBytes": 220365,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 55,
+          "expectedRegularFiles": 55,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/postcss-selector-parser",
+        "resolved": "https://registry.npmjs.org/postcss-selector-parser/-/postcss-selector-parser-6.1.4.tgz",
+        "integrity": "sha512-bIoJLOmjCO1S9XdY/DcnR5hJxvrDir1PbGChrzXG3vw0/FOliy/fA3dmdhQ441kah4gKv+TwckGzex6wNS5cnQ==",
+        "httpStatus": 200,
+        "compressedBytes": 45101,
+        "tarBytes": 221184,
+        "entries": 37,
+        "regularFiles": 37,
+        "regularFileBytes": 192118,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 37,
+          "expectedRegularFiles": 37,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/postgres-array",
+        "resolved": "https://registry.npmjs.org/postgres-array/-/postgres-array-2.0.0.tgz",
+        "integrity": "sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==",
+        "httpStatus": 200,
+        "compressedBytes": 2213,
+        "tarBytes": 10240,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 4903,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/postgres-bytea",
+        "resolved": "https://registry.npmjs.org/postgres-bytea/-/postgres-bytea-1.0.1.tgz",
+        "integrity": "sha512-5+5HqXnsZPE65IJZSMkZtURARZelel2oXUEO8rH83VS/hxH5vv1uHquPg5wZs8yMAfdv971IU+kcPUczi7NVBQ==",
+        "httpStatus": 200,
+        "compressedBytes": 1724,
+        "tarBytes": 7168,
+        "entries": 4,
+        "regularFiles": 4,
+        "regularFileBytes": 3095,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 4,
+          "expectedRegularFiles": 4,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/postgres-date",
+        "resolved": "https://registry.npmjs.org/postgres-date/-/postgres-date-1.0.7.tgz",
+        "integrity": "sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q==",
+        "httpStatus": 200,
+        "compressedBytes": 2836,
+        "tarBytes": 10240,
+        "entries": 4,
+        "regularFiles": 4,
+        "regularFileBytes": 5915,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 4,
+          "expectedRegularFiles": 4,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/postgres-interval",
+        "resolved": "https://registry.npmjs.org/postgres-interval/-/postgres-interval-1.2.0.tgz",
+        "integrity": "sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==",
+        "httpStatus": 200,
+        "compressedBytes": 2926,
+        "tarBytes": 11776,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 6727,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/semver",
+        "resolved": "https://registry.npmjs.org/semver/-/semver-7.8.5.tgz",
+        "integrity": "sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA==",
+        "httpStatus": 200,
+        "compressedBytes": 29399,
+        "tarBytes": 144384,
+        "entries": 53,
+        "regularFiles": 53,
+        "regularFileBytes": 101065,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 53,
+          "expectedRegularFiles": 53,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/source-map-js",
+        "resolved": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.2.tgz",
+        "integrity": "sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==",
+        "httpStatus": 200,
+        "compressedBytes": 36349,
+        "tarBytes": 158208,
+        "entries": 18,
+        "regularFiles": 18,
+        "regularFileBytes": 142723,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 18,
+          "expectedRegularFiles": 18,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/split2",
+        "resolved": "https://registry.npmjs.org/split2/-/split2-4.2.0.tgz",
+        "integrity": "sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg==",
+        "httpStatus": 200,
+        "compressedBytes": 4668,
+        "tarBytes": 23040,
+        "entries": 6,
+        "regularFiles": 6,
+        "regularFileBytes": 17419,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 6,
+          "expectedRegularFiles": 6,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/supports-color",
+        "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz",
+        "integrity": "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==",
+        "httpStatus": 200,
+        "compressedBytes": 3210,
+        "tarBytes": 12288,
+        "entries": 5,
+        "regularFiles": 5,
+        "regularFileBytes": 7035,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 5,
+          "expectedRegularFiles": 5,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/update-browserslist-db",
+        "resolved": "https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.3.4.tgz",
+        "integrity": "sha512-t8wonIOdQyOjtPd2VktlBu6QjTVTks6v8bSi7kd0r2Vll8TK1JYDZtRRdbmCHOAMphkZgrzK+L+vXK4pyZ8t4A==",
+        "httpStatus": 200,
+        "compressedBytes": 8585,
+        "tarBytes": 33792,
+        "entries": 8,
+        "regularFiles": 8,
+        "regularFileBytes": 26505,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 8,
+          "expectedRegularFiles": 8,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/vitest",
+        "resolved": "https://registry.npmjs.org/vitest/-/vitest-4.1.11.tgz",
+        "integrity": "sha512-fhACrNXUidIbGSBr5FlbuBkO7VWC1ZyLl0DO4CU2DrQoAPxX84Ysxs+HeGQpii5lZWV1Q4gBZTTu49mF+A6Edw==",
+        "httpStatus": 200,
+        "compressedBytes": 475397,
+        "tarBytes": 2000896,
+        "entries": 114,
+        "regularFiles": 114,
+        "regularFileBytes": 1909160,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 114,
+          "expectedRegularFiles": 114,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      },
+      {
+        "lockPath": "node_modules/xtend",
+        "resolved": "https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz",
+        "integrity": "sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==",
+        "httpStatus": 200,
+        "compressedBytes": 2529,
+        "tarBytes": 13312,
+        "entries": 7,
+        "regularFiles": 7,
+        "regularFileBytes": 6465,
+        "root": "package",
+        "countExpectation": {
+          "metadataFileCount": 7,
+          "expectedRegularFiles": 7,
+          "metric": "regularFiles",
+          "source": "REGISTRY_METADATA",
+          "certifiedFactCompactSHA256": null
+        }
+      }
+    ],
+    "remoteArchivePaths": 45,
+    "retainedTargetPaths": 1,
+    "metadataFileTotal": 1579,
+    "expectedRegularFileTotal": 1577,
+    "storage": "RAM_REMOTE_PLUS_RETAINED_TARGET_FIRST_FAILURE_ONLY",
+    "forecastRetainedBytes": 682644652,
+    "forecastOverheadBytes": 92274688
+  },
+  "dependencyVersions": {
+    "vite": "8.0.16",
+    "vitest": "4.1.11",
+    "typescript": "5.9.3",
+    "@vitest/coverage-v8": "4.1.11",
+    "@supabase/supabase-js": "2.108.1",
+    "@supabase/functions-js": "2.108.1",
+    "@playwright/test": "1.60.0",
+    "playwright": "1.60.0",
+    "playwright-core": "1.60.0",
+    "pg": "8.23.0"
+  },
+  "stopReason": {
+    "code": "BP4_UNCLASSIFIED_STOP"
+  },
+  "error": "BP4A_STOP: inspect phase state and bounded logs; no retry authorized.",
+  "completedAtUtc": "2026-10-23T07:55:14.738Z",
+  "oldLedgersUnchanged": true
+}

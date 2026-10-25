@@ -1,0 +1,41 @@
+{
+  "id": 39028263852,
+  "workflowName": "Frontend release approval (held)",
+  "event": "workflow_dispatch",
+  "branch": "main",
+  "source": "f9c566999c4367a5ca54a879fe3b06b5870f26f2",
+  "status": "waiting",
+  "conclusion": null,
+  "createdAt": "2026-10-17T11:19:36Z",
+  "updatedAt": "2026-10-17T11:19:56Z",
+  "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39028263852",
+  "runAttempt": 1,
+  "jobs": [
+    {
+      "id": 117383454382,
+      "name": "preflight",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-17T11:19:39Z",
+      "completedAt": "2026-10-17T11:19:55Z",
+      "runnerId": 1000000169,
+      "runnerName": "GitHub Actions 1000000169",
+      "labels": [
+        "ubuntu-24.04"
+      ]
+    },
+    {
+      "id": 117383507170,
+      "name": "approval",
+      "status": "waiting",
+      "conclusion": null,
+      "startedAt": "2026-10-17T11:19:55Z",
+      "completedAt": null,
+      "runnerId": null,
+      "runnerName": null,
+      "labels": [
+        "ubuntu-24.04"
+      ]
+    }
+  ]
+}

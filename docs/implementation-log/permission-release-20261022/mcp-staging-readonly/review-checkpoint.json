@@ -1,0 +1,24 @@
+{
+  "observedAt": "2026-10-22T07:49:46.531705+00:00",
+  "reviewedConfigSha256": "c7fcf77795264691cccf0c84190c1281f4ed632e9bee6f8ed44180249aa8f231",
+  "reviewedHandoffSha256BeforeReviewMetadata": "8950e024a3f6ef5cd46378fb5900483db9d74e23bbdff01edb3c23b4ec70a83f",
+  "reviewedIndexEntrySha256": "d3c115e9db34241b0dca378db7aa226c925b726a7abb1cc8c0486e43901d81d6",
+  "reviews": [
+    {
+      "reviewer": "/root/mcp_staging_scope_review",
+      "scope": "project config, effective original DB disablement, scope/handoff/index",
+      "verdict": "APPROVE",
+      "blockingFindings": 0,
+      "limit": "No historical global byte baseline; no DB calls"
+    },
+    {
+      "reviewer": "/root/mcp_staging_evidence_review",
+      "scope": "hashes, independent CLI effective config, evidence/handoff/index/claim accuracy",
+      "verdict": "APPROVE",
+      "blockingFindings": 0,
+      "limit": "Config PASS; actual DB connection NOT_TESTED; 0 requests is author action record, not network capture"
+    }
+  ],
+  "userAuthentication": "USER_WILL_AUTHENTICATE_NOT_YET_CONFIRMED",
+  "databaseProbe": "NOT_RUN"
+}

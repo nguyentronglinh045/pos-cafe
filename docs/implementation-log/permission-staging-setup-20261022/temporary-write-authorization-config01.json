@@ -1,0 +1,25 @@
+{
+  "observedAt": "2026-10-22T08:40:55.462273+00:00",
+  "userAuthorization": "call_f1764eba4eef4958b23d3c87a285418a item0: Mở MCP ghi tạm trên staging, rồi trả về chỉ đọc",
+  "deadlineAuthorization": "call_72a24f794f9941cab522370806009e17 item0:17h",
+  "planReviewedSha256": "578d011590fd48d240b7223a55a217bfd98ea42dc8a5898be26f27905ceefdc9",
+  "beforeConfigSha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+  "afterConfigSha256": "b666027bc770a46c70149b83b8a704bdfff1343dae5e6447a1ae543681b9547c",
+  "target": "ineckiashpwloncxnbqx",
+  "originalProfilesDisabled": true,
+  "ddlDmlExecuted": false,
+  "restoreReadonlyRequired": true,
+  "mutationCutoffUtc": "2026-10-22T09:45:00Z",
+  "deadlineUtc": "2026-10-22T10:00:00Z",
+  "exactBootstrapSql": "NOT_YET_CREATED_OR_REVIEWED",
+  "planReviewers": [
+    {
+      "id": "/root/mcp_staging_scope_review",
+      "verdict": "APPROVE"
+    },
+    {
+      "id": "/root/mcp_staging_evidence_review",
+      "verdict": "APPROVE"
+    }
+  ]
+}

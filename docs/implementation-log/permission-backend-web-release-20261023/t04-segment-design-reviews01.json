@@ -1,0 +1,31 @@
+{
+  "recordedUtc": "2026-10-24T06:25:47.956Z",
+  "scope": "DESIGN_SCOPE_ONLY_NOT_SOURCE_OR_EXECUTION_APPROVAL",
+  "brief": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-segment-diagnostic-brief-20261024.md",
+    "sha256": "97d70421fd207525c84258faba9c46ca13bcb1bb833774bdd0b568116c784625"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "DESIGN_SCOPE_READY",
+      "conditions": [
+        "Fixed confirmation, entry, worker, renderer and collector bind same source/run/attempt and distinct scope",
+        "Fallback publication1/CI1/segment1 separate from spent whole6/6/6; actual new CI18/Linux/LIGHT/three-PNG two reviews before dispatch",
+        "Receipt distinguishes runner, helper, restore and cleanup; no partial acceptance"
+      ]
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "DESIGN_SCOPE_READY",
+      "conditions": [
+        "Diagnostic success and failure rejected by whole success/failure gates",
+        "Freeze first failure before cleanup, 24bit mask means completed observations only",
+        "Recompute T04 and service dual failure maxima under unchanged131072 cap",
+        "Actual fresh CI/photo gate and separate bounded fallback counters"
+      ]
+    }
+  ],
+  "sourceVerdict": "PENDING",
+  "diagnosticRuns": 0
+}

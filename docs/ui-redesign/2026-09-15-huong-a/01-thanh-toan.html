@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thanh toán — bản thiết kế lại</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/tokens.css">
+<style>
+  /* Chrome của trang mẫu — không thuộc hệ thiết kế, chỉ để xem bản mẫu */
+  .mock-bar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-4);
+    padding: 10px var(--sp-4); background: var(--nt-900); color: var(--nt-0);
+    font-size: 12px;
+  }
+  .mock-bar b { font-weight: 600; }
+  .mock-bar span { color: #AAB4C4; }
+  .mock-bar a { color: var(--teal-300); }
+  .stage { padding: var(--page-pad); }
+
+  /* --- Màn thanh toán --- */
+  .pay { height: calc(100dvh - 92px); min-height: 520px; }
+  .pay__body { display: grid; grid-template-columns: minmax(0,1fr) var(--pane-side); gap: var(--pane-gap); min-height: 0; }
+  @media (max-width: 899px) { .pay__body { grid-template-columns: minmax(0,1fr); } .pay { height: auto; } }
+
+  .lines { list-style: none; margin: 0; padding: 0; }
+  .line {
+    display: grid; grid-template-columns: auto minmax(0,1fr) auto auto;
+    align-items: center; gap: var(--sp-3);
+    padding: 10px var(--sp-3);
+    border-bottom: 1px solid var(--line);
+  }
+  .line:last-child { border-bottom: 0; }
+  .line.is-off { background: var(--surface-2); }
+  .line.is-off .line__name, .line.is-off .line__amt { color: var(--ink-3); }
+  .line__check { width: 24px; height: 24px; accent-color: var(--primary); cursor: pointer; }
+  .line__name { font-size: var(--fs-body); min-width: 0; }
+  .line__note { display: block; font-size: var(--fs-small); color: var(--muted); }
+  .qty { display: flex; align-items: center; gap: 2px; }
+  .qty__btn {
+    width: var(--ctl-md); height: var(--ctl-md);
+    border: 1px solid var(--line-control); background: var(--surface);
+    border-radius: var(--radius-control); color: var(--muted);
+    font-size: var(--fs-subtitle); font-weight: var(--fw-medium); cursor: pointer;
+  }
+  .qty__val { min-width: 40px; text-align: center; font-size: var(--fs-body); font-weight: var(--fw-semibold); font-variant-numeric: tabular-nums; }
+  .line__amt { font-size: var(--fs-body); font-weight: var(--fw-medium); font-variant-numeric: tabular-nums; text-align: right; min-width: 78px; }
+
+  .print-block { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); }
+  .check-row { display: flex; align-items: center; gap: var(--sp-2); min-height: var(--ctl-md); font-size: var(--fs-small); cursor: pointer; }
+  .check-row input { width: 22px; height: 22px; accent-color: var(--primary); }
+
+  /* Khối tiền gọn lại: nhãn và số nằm cùng dòng, nhường chiều cao cho
+     danh sách phương thức và ô nhập tiền. */
+  .cashier__due {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 10px var(--sp-3);
+    background: var(--primary-soft);
+    border-bottom: 1px solid var(--primary-line);
+  }
+  .cashier__due .row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-2); }
+  .cashier__due .k { font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase; font-weight: var(--fw-medium); color: var(--primary); }
+  .cashier__due .v { font-size: var(--fs-display); line-height: var(--lh-display); font-weight: var(--fw-bold); letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--ink); }
+
+  /* Cột thu ngân cao bằng panel; bàn phím nhận phần cao còn lại và co giãn,
+     nhưng không bao giờ xuống dưới sàn chạm 44px. */
+  .cashier__stack { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-3); height: 100%; min-height: 0; }
+
+  /* Danh sách phương thức: xếp dọc và cuộn được, nên thêm bao nhiêu loại
+     cũng không vỡ bố cục. Xem được 2 dòng, phần còn lại cuộn. */
+  .methods {
+    display: flex; flex-direction: column; gap: var(--sp-1);
+    max-height: 96px; overflow-y: auto; flex: none;
+    border: 1px solid var(--line); border-radius: var(--radius-control);
+    padding: var(--sp-1); background: var(--surface-2);
+    scrollbar-width: thin;
+  }
+  .method {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2);
+    min-height: var(--ctl-md); padding-inline: var(--sp-3); flex: none;
+    border: 1px solid transparent; border-radius: var(--radius-control);
+    background: transparent; color: var(--ink);
+    font-size: var(--fs-small); font-weight: var(--fw-medium);
+    cursor: pointer; text-align: left; width: 100%;
+  }
+  .method:hover { background: var(--surface); border-color: var(--line); }
+  .method[aria-pressed="true"] {
+    background: var(--primary-soft); border-color: var(--primary);
+    color: var(--primary); font-weight: var(--fw-semibold);
+  }
+  .method__tick { font-size: var(--fs-body); }
+  .method[aria-pressed="false"] .method__tick { visibility: hidden; }
+  /* 4 cột × 3 hàng thay vì 3 × 4: cột thu ngân rộng 300–380px nên phím vẫn
+     rộng trên 70px, mà tiết kiệm được nguyên một hàng chiều cao. */
+  .keypad {
+    display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
+    grid-auto-rows: minmax(var(--ctl-md), 1fr);
+    gap: var(--sp-2); flex: 1; min-height: 0;
+  }
+  .key {
+    min-height: var(--ctl-md);
+    border: 1px solid var(--line-control); border-radius: var(--radius-control);
+    background: var(--surface); font-size: var(--fs-subtitle); font-weight: var(--fw-semibold);
+    font-variant-numeric: tabular-nums; cursor: pointer;
+  }
+  .key--util { color: var(--muted); font-weight: var(--fw-medium); font-size: var(--fs-body); }
+  .quick { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--sp-2); }
+
+  .cashier__settle { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-3); border-top: 1px solid var(--line); background: var(--surface-2); }
+</style>
+</head>
+<body>
+
+<div class="mock-bar">
+  <b>Bản mẫu 01 · Thanh toán</b>
+  <span>Hướng A — Teal Chuẩn Hoá</span>
+  <span>Giữ nguyên số bước nghiệp vụ, chỉ sắp xếp lại</span>
+  <span>Thu nhỏ cửa sổ để xem bậc compact (&lt; 900px)</span>
+  <a href="spec.md">Thông số</a>
+</div>
+
+<div class="stage">
+<section class="drawer pay" data-testid="payment-drawer">
+
+  <header class="drawer__header">
+    <div class="drawer__heading">
+      <span class="drawer__eyebrow">Thanh toán</span>
+      <h1 class="drawer__title">Đơn #A-041</h1>
+      <span class="drawer__meta">Bàn 12 · Trong nhà · Thu ngân Nguyễn Trọng Linh · Trực tuyến</span>
+    </div>
+    <div class="drawer__actions">
+      <button type="button" class="btn btn--quiet" data-testid="payment-close-button">Đóng</button>
+      <button type="button" class="btn btn--primary" data-testid="pay-button">Thanh toán phần chọn</button>
+    </div>
+  </header>
+
+  <div class="drawer__body pay__body">
+
+    <!-- Vùng chính: chọn món để thanh toán -->
+    <section class="pane" aria-labelledby="pane-items">
+      <div class="pane__header">
+        <h2 class="pane__title" id="pane-items">Món trong đơn</h2>
+        <label class="check-row" data-testid="pay-select-all">
+          <input type="checkbox" id="select-all">
+          <span>Chọn tất cả</span>
+        </label>
+      </div>
+
+      <div class="pane__body" data-testid="payment-order-items">
+        <ul class="lines">
+          <li class="line" data-testid="pay-item-line">
+            <input class="line__check" type="checkbox" checked id="it-1" data-testid="pay-item-checkbox" aria-label="Chọn Cà phê sữa đá">
+            <label class="line__name" for="it-1">Cà phê sữa đá</label>
+            <span class="qty">
+              <button type="button" class="qty__btn" aria-label="Giảm số lượng">−</button>
+              <span class="qty__val" data-testid="pay-item-quantity">2</span>
+              <button type="button" class="qty__btn" data-testid="pay-item-plus" aria-label="Tăng số lượng">+</button>
+            </span>
+            <span class="line__amt">70.000</span>
+          </li>
+          <li class="line" data-testid="pay-item-line">
+            <input class="line__check" type="checkbox" checked id="it-2" data-testid="pay-item-checkbox" aria-label="Chọn Bạc xỉu">
+            <label class="line__name" for="it-2">Bạc xỉu <span class="line__note">Ít đường</span></label>
+            <span class="qty">
+              <button type="button" class="qty__btn" aria-label="Giảm số lượng">−</button>
+              <span class="qty__val" data-testid="pay-item-quantity">1</span>
+              <button type="button" class="qty__btn" data-testid="pay-item-plus" aria-label="Tăng số lượng">+</button>
+            </span>
+            <span class="line__amt">35.000</span>
+          </li>
+          <li class="line is-off" data-testid="pay-item-line">
+            <input class="line__check" type="checkbox" id="it-3" data-testid="pay-item-checkbox" aria-label="Chọn Trà đào cam sả">
+            <label class="line__name" for="it-3">Trà đào cam sả</label>
+            <span class="qty">
+              <button type="button" class="qty__btn" aria-label="Giảm số lượng">−</button>
+              <span class="qty__val" data-testid="pay-item-quantity">2</span>
+              <button type="button" class="qty__btn" data-testid="pay-item-plus" aria-label="Tăng số lượng">+</button>
+            </span>
+            <span class="line__amt">80.000</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pane__footer" data-testid="payment-order-summary">
+        <div class="money-row">
+          <span class="money-row__key">Tổng đơn · 3 món</span>
+          <span class="money-row__val">185.000</span>
+        </div>
+        <div class="money-row">
+          <span class="money-row__key">Phần chưa thanh toán còn lại</span>
+          <span class="money-row__val">80.000</span>
+        </div>
+        <div class="print-block">
+          <label class="check-row" data-testid="print-receipt-checkbox">
+            <input type="checkbox" checked id="print-after">
+            <span>In hóa đơn sau khi thanh toán</span>
+          </label>
+          <button type="button" class="btn btn--secondary" data-testid="print-provisional-button">In lại hóa đơn</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vùng phụ: quầy thu ngân -->
+    <section class="pane" aria-labelledby="pane-cashier" data-testid="payment-cashier-console">
+      <h2 class="visually-hidden" id="pane-cashier">Quầy thu ngân</h2>
+
+      <div class="cashier__due">
+        <span class="k">Thanh toán lần này</span>
+        <span class="v" data-testid="payment-amount-due-value">105.000 ₫</span>
+        <div class="row money-row money-row--change">
+          <span class="money-row__key">Tiền thối</span>
+          <span class="money-row__val">45.000 ₫</span>
+        </div>
+      </div>
+
+      <div class="pane__body">
+        <div class="cashier__stack">
+          <div class="methods" data-testid="payment-method-list" role="group" aria-label="Phương thức thanh toán">
+            <button type="button" class="method" aria-pressed="true">Tiền mặt<span class="method__tick" aria-hidden="true">✓</span></button>
+            <button type="button" class="method" aria-pressed="false">Chuyển khoản<span class="method__tick" aria-hidden="true">✓</span></button>
+            <button type="button" class="method" aria-pressed="false">Thẻ ngân hàng<span class="method__tick" aria-hidden="true">✓</span></button>
+            <button type="button" class="method" aria-pressed="false">Ví MoMo<span class="method__tick" aria-hidden="true">✓</span></button>
+            <button type="button" class="method" aria-pressed="false">ZaloPay<span class="method__tick" aria-hidden="true">✓</span></button>
+            <button type="button" class="method" aria-pressed="false">VNPay<span class="method__tick" aria-hidden="true">✓</span></button>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="received">Tiền khách đưa</label>
+            <input class="input input--money" id="received" inputmode="numeric" value="150.000" data-testid="payment-received-amount">
+          </div>
+
+          <div class="quick">
+            <button type="button" class="chip" style="justify-content:center">110.000</button>
+            <button type="button" class="chip" style="justify-content:center">150.000</button>
+            <button type="button" class="chip" style="justify-content:center">200.000</button>
+          </div>
+
+          <div class="keypad" data-testid="payment-keypad" role="group" aria-label="Bàn phím số">
+            <button type="button" class="key">1</button>
+            <button type="button" class="key">2</button>
+            <button type="button" class="key">3</button>
+            <button type="button" class="key key--util" data-testid="payment-key-delete" aria-label="Xoá một chữ số">Xoá</button>
+            <button type="button" class="key">4</button>
+            <button type="button" class="key">5</button>
+            <button type="button" class="key">6</button>
+            <button type="button" class="key key--util">000</button>
+            <button type="button" class="key">7</button>
+            <button type="button" class="key">8</button>
+            <button type="button" class="key">9</button>
+            <button type="button" class="key">0</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cashier__settle">
+        <button type="button" class="btn btn--xl btn--primary btn--block" data-testid="pay-button-footer">
+          Thanh toán phần chọn
+        </button>
+      </div>
+    </section>
+
+  </div>
+</section>
+</div>
+
+</body>
+</html>

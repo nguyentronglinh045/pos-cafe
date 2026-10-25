@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "permission-bp4-local75-source-admission-v1",
+  "recordedAtUtc": "2026-10-23T07:54:45.7750735Z",
+  "grantSHA256": "3a6751f1b022247dcac9c66514a908cf0ff91dcc0194de59ddcc994a5982f660",
+  "recipeSHA256": "5a420869dadf4a91bc21c25f1474853f99907625084375afaa35f9d6c48a8e46",
+  "artifactPins": {
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/bp4-archive-collector-local75-01.mjs": "f49e55338185ff4cfb776d78d3777afd236dcebce4422046d497f7f8945fe7d7",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/bp4-local75-archive-phase.mjs": "4ca8503fd24a056dffdd6948b96d4564f5e1c71b5ab8127639050b429a3b5a6c",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/bp4-native-probe-local75-01.mjs": "790be83bcb2fa2070abde4d6e27b6a4f40c94c8b15a7f2f27b38bf49e0d9e44c",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/check-bp4-local75-01.mjs": "e20a314c6f8cc71df9c2420f64260129bd1b664d75331b31929a973cd391a846",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/bp4-regular-count-facts01.mjs": "6230b753ccbdb1f71cd748c99f4732c2b5816cc69ce132ce60745dc5d7537311",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-countfix01-certified-fact.json": "3fae28db2709013b7aef24a77bafe413310ff64381f635ecb5ae3c99a219ad23",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4-package-size-facts01.json": "1c00b0b0a3fb3279cad9ddb072cef74d8508a01215b46a92c2f4f3171a7c21f9",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-countdiag02.tgz": "f8e5fab1d222a3475d6c481ae85446d165b28f24f2ce05b170e7edc880b34ddc",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-r0-controls01.json": "c3b53b3c6e9873bd47f854374bec867d044799f54df45bed220da5898602bc4c",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-r0-controls01.release.json": "cfb55971099e2c8f727dfdc33c4c03fcbeff4e050ba3beadda32c79a18245bc7",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-readiness-observation.json": "4793ed06bdda3b79167a3b7f235ea47363b0ba8b4b4b189bbb0f676b66158155"
+  },
+  "controlsReportPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-local75-01-r0-controls01.json",
+  "controlsReportSHA256": "c3b53b3c6e9873bd47f854374bec867d044799f54df45bed220da5898602bc4c",
+  "reviewers": [
+    {
+      "id": "/root/bp1_authority_final_review",
+      "verdict": "APPROVE",
+      "scope": "authority/storage/time/phaseadmission/Jobproof/namespace/grant"
+    },
+    {
+      "id": "/root/bp1_evidence_final_review",
+      "verdict": "APPROVE",
+      "scope": "collector/phase/consumer/probe/source/oracles/actualR0proof"
+    }
+  ],
+  "r0": "20/20 fake controlsPASS; unchanged26countfix/13transport/Jobcontrols reusedscoped, noapplicationPASS",
+  "deadlineUtc": "2026-10-23T08:51:32Z",
+  "scope": "One actualfull46preflight thenoneinstall/build/fullunit ifPASS; no retry afterR1FAIL/UNKNOWN;0pushCIbackendDBdeploycleanup"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "permission-publication-observed-v2",
+  "observedUtc": "2026-10-23T16:39:05.054Z",
+  "sourceSHA": "49e543d49176692bb2cdabc044cbc69e21054469",
+  "branch": "review/permission-staging-20261023",
+  "runId": "39988537874",
+  "attempt": 1,
+  "event": "push",
+  "createdUtc": "2026-10-23T16:39:03Z",
+  "status": "in_progress",
+  "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39988537874",
+  "mainUnchanged": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "publicationOrdinalCurrentAuthorization": 2,
+  "automaticCiOrdinalCurrentAuthorization": 2,
+  "deploy": false
+}

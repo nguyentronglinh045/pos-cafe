@@ -1,0 +1,35 @@
+✔ complete inventory retains 35 stages, 760 identities, original counting meanings and all source hashes (14.0958ms)
+✔ full source binding includes SQL, fixtures, app and lock, and detects a memory-only SQL change (406.6505ms)
+✔ valid target sends exactly two bounded GETs, explicit anon key, no redirects and no mutation proof (1287.9535ms)
+✔ invalid production ref is rejected with zero network calls (199.0259ms)
+✔ invalid production origin is rejected with zero network calls (192.6703ms)
+✔ invalid origin variant 0 is rejected with zero network calls (194.6723ms)
+✔ invalid origin variant 1 is rejected with zero network calls (203.6072ms)
+✔ invalid origin variant 2 is rejected with zero network calls (208.9007ms)
+✔ invalid origin variant 3 is rejected with zero network calls (208.5252ms)
+✔ invalid origin variant 4 is rejected with zero network calls (197.9582ms)
+✔ invalid origin variant 5 is rejected with zero network calls (219.5192ms)
+✔ invalid origin variant 6 is rejected with zero network calls (219.7456ms)
+✔ invalid hostname suffix is rejected with zero network calls (210.6644ms)
+✔ invalid unknown operation is rejected with zero network calls (200.5819ms)
+✔ invalid unexpected field is rejected with zero network calls (200.6876ms)
+✔ manifest hash binding and coverage changes cannot silently select a new inventory (672.7081ms)
+✔ private configuration never falls back to ambient values or accepts service credentials (3313.3569ms)
+✔ deadline boundaries fail closed and a slow first GET cannot start a second (1795.9919ms)
+✔ HTTP 301 stops after one request without leaking body (619.2447ms)
+✔ HTTP 302 stops after one request without leaking body (622.7565ms)
+✔ HTTP 401 stops after one request without leaking body (607.6819ms)
+✔ HTTP 403 stops after one request without leaking body (617.7391ms)
+✔ HTTP 500 stops after one request without leaking body (640.5043ms)
+✔ network exception and real timeout keep finite errors and do not retry (1232.2948ms)
+✔ disabled TLS validation is refused before any network request (3.849ms)
+✔ actual HTTP cannot use an injected attempt store and synthetic HTTP must declare its store (6.9134ms)
+✔ CLI reserves parseable evidence before network, refuses repeat path and invalid output without network (2617.785ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17306.3038

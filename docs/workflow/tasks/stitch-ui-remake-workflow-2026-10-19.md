@@ -7,3 +7,5 @@ Code và hướng dẫn vận hành ở [PR #7, base main](https://github.com/ng
 Candidate lần đầu `340c903` có 76 tests PASS và 11/11 calibration controls đúng; hai reviewer độc lập APPROVE phạm vi đó. Sau D5–D6, phải kiểm và review candidate mới trước merge. [Biên bản](../../implementation-log/stitch-ui-workflow-2026-10-19.md) giữ fingerprint, môi trường, findings và giới hạn từng checkpoint. [Change OpenSpec](../../../openspec/changes/add-stitch-ui-remake-workflow/proposal.md) ghi D1–D6 và traceability.
 
 Không có app screen được remake hoặc nghiệm thu trong task này. Task tiếp theo cần màn/slice được giao, intake/mapping, normalized reference/deviations/threshold được duyệt, rồi triển khai và chạy đủ gate của sản phẩm; một PASS fixture không thay các điều kiện đó.
+
+[Hồ sơ nguồn chi tiết ngày19/10](stitch-ui-remake-workflow-2026-10-19-history.md) giữ nguyên bằng chứng truy hồi palette, nguồn quyết định và các checkpoint; đây là snapshot lịch sử, không thay hướng dẫn trên main.

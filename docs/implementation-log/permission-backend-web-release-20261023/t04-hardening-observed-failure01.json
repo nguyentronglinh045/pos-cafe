@@ -1,0 +1,247 @@
+{
+  "schemaVersion": "t04-hardening-observed-failure-v1",
+  "recordedUtc": "2026-10-24T06:21:59.890Z",
+  "sourceSHA": "34db1b13ab707bab114fe1d83642d021ff324c93",
+  "runId": "40068845295",
+  "attempt": 1,
+  "conclusion": "failure",
+  "receipt": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0408.json",
+    "sha256": "542848f421d3381345b4354d420a9420b2755e1fc9fba69517c3f299741a9968"
+  },
+  "workflowLog": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0408.log",
+    "bytes": 92468,
+    "sha256": "80d2b698ed8d3d3dc0315d1e894309ccdf094cfd4f4741ab79c3f0a0d61d6091"
+  },
+  "stageStatus": [
+    {
+      "stage": "identity-database",
+      "status": "PASS",
+      "required": 42,
+      "pass": 42
+    },
+    {
+      "stage": "candidate-images-service",
+      "status": "PASS",
+      "required": 1,
+      "pass": 1
+    },
+    {
+      "stage": "administration-database",
+      "status": "PASS",
+      "required": 55,
+      "pass": 55
+    },
+    {
+      "stage": "read-database",
+      "status": "PASS",
+      "required": 120,
+      "pass": 120
+    },
+    {
+      "stage": "clear-demo-database",
+      "status": "PASS",
+      "required": 9,
+      "pass": 9
+    },
+    {
+      "stage": "candidate-signals-database",
+      "status": "PASS",
+      "required": 3,
+      "pass": 3
+    },
+    {
+      "stage": "financial-database",
+      "status": "PASS",
+      "required": 37,
+      "pass": 37
+    },
+    {
+      "stage": "candidate-print-database",
+      "status": "PASS",
+      "required": 4,
+      "pass": 4
+    },
+    {
+      "stage": "candidate-bulk-concurrency-database",
+      "status": "PASS",
+      "required": 4,
+      "pass": 4
+    },
+    {
+      "stage": "candidate-e2e",
+      "status": "FAIL",
+      "required": null,
+      "pass": null
+    },
+    {
+      "stage": "candidate-seed-recovery-database",
+      "status": "NOT_RUN",
+      "required": null,
+      "pass": null
+    },
+    {
+      "stage": "candidate-roles-e2e",
+      "status": "NOT_RUN",
+      "required": null,
+      "pass": null
+    },
+    {
+      "stage": "realtime-e2e",
+      "status": "NOT_RUN",
+      "required": null,
+      "pass": null
+    },
+    {
+      "stage": "rollback-additive-database",
+      "status": "NOT_RUN",
+      "required": null,
+      "pass": null
+    },
+    {
+      "stage": "rollback-preflight-database",
+      "status": "NOT_RUN",
+      "required": null,
+      "pass": null
+    },
+    {
+      "stage": "rollback-recovery-database",
+      "status": "NOT_RUN",
+      "required": null,
+      "pass": null
+    },
+    {
+      "stage": "transition-database",
+      "status": "NOT_RUN",
+      "required": null,
+      "pass": null
+    },
+    {
+      "stage": "transition-e2e",
+      "status": "NOT_RUN",
+      "required": null,
+      "pass": null
+    },
+    {
+      "stage": "transition-compatibility-database",
+      "status": "NOT_RUN",
+      "required": null,
+      "pass": null
+    }
+  ],
+  "candidate": [
+    {
+      "ordinal": 1,
+      "discovered": 1,
+      "state": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 2,
+      "discovered": 1,
+      "state": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 3,
+      "discovered": 1,
+      "state": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 4,
+      "discovered": 1,
+      "state": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 5,
+      "discovered": 1,
+      "state": 1,
+      "attempts": 1
+    },
+    {
+      "ordinal": 6,
+      "discovered": 1,
+      "state": 1,
+      "attempts": 1
+    }
+  ],
+  "failureFacts": {
+    "t04StageOrdinal": 10,
+    "t04FailureOrdinal": 0,
+    "t04ReportObserved": 1,
+    "t04PhaseOrdinal": 5,
+    "t04RuntimeStageBoundaryOrdinal": 0,
+    "t04RuntimeResultFailureOrdinal": 0,
+    "t04RuntimeStageChildExitOrdinal": 0,
+    "t04ImageMeasurementPhaseOrdinal": 3,
+    "t04ImageMeasurementCleanupAttempted": 1,
+    "t04ImageMeasurementCleanupFailed": 0,
+    "t04MissingRequired": 0,
+    "t04FirstFailedRequired": 0,
+    "t04FailedTests": 0,
+    "t04NonPassedTests": 0,
+    "t04FirstNonPassedRequired": 0,
+    "t04DiagnosticRequired": 0,
+    "t04OutcomeOrdinal": 0,
+    "t04FailureOriginOrdinal": 0,
+    "t04RunnerErrors": 0,
+    "t04HookErrors": 0,
+    "t04CandidateInventoryStatus": 1,
+    "t04CandidateUnknownDiscovery": 0,
+    "t04CandidateUnknownResults": 0,
+    "t04CandidateDuplicateDiscovery": 0,
+    "t04CandidateDuplicateResults": 0,
+    "t04CandidateMissingDiscovery": 0,
+    "t04CandidateMissingResults": 0,
+    "isolatedFailureSeen": 1,
+    "isolatedCleanupFailed": 0,
+    "isolatedReceiptReadOrdinal": 1,
+    "isolatedReceiptBytes": 34824,
+    "isolatedReceiptBytesCapped": 0
+  },
+  "factCounts": {
+    "inner": 790,
+    "collectorObjects": 1,
+    "collectorFacts": 785
+  },
+  "runnerPreflight": "PASS",
+  "imageMeasurement": null,
+  "resets": [],
+  "cleanup": {
+    "inner": true,
+    "outer": true,
+    "outerFailure": null
+  },
+  "outside": [
+    {
+      "measuredBytes": 568832000,
+      "budgetBytes": 1073741824,
+      "reservedFutureBytes": 16777216,
+      "technicalQuota": false
+    }
+  ],
+  "reclaim": [
+    {
+      "schemaVersion": "permission-ci1-reclaim-v1",
+      "status": "RECLAIMED",
+      "imageUnlinked": true,
+      "imageLogicalBytes": 19327352832,
+      "imageAllocatedBytes": 19327389696,
+      "hostFreeBeforeBytes": 72226947072,
+      "hostFreeAfterBytes": 91554340864,
+      "measuredHostFreeDeltaBytes": 19327393792,
+      "remaining": "compact control/status/safe export only; ephemeral runner"
+    }
+  ],
+  "interpretation": {
+    "observed": "Candidate six tests PASS; stage10 failed in parentphase5/helperphase3 runtime.measure",
+    "internalCause": "UNKNOWN_FROM_EXPORTED_FACTS",
+    "afterStages": "Nine NOT_RUN",
+    "wholeT04": "FAIL",
+    "fallback": "ACTIVATED_FOR_SMALL_DIAGNOSTIC_SEGMENT; NOT_YET_IMPLEMENTED_OR_RUN"
+  },
+  "noAutomaticWholeRetry": true
+}

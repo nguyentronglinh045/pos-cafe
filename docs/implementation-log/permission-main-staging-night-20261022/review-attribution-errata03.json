@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "permission-review-attribution-errata-v1",
+  "recordedAtUtc": "2026-10-22T16:20:44.448Z",
+  "author": "/root",
+  "finding": "DOC-ATTR-01",
+  "original": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/operator-indexeddb-policy03-review.json",
+    "sha256": "f3bcb9318c2cc86be2225b3153192b2aad183d3f09408dcda1322cd460edc01c"
+  },
+  "location": "reviewers[source].evidence phrase all22refs valid",
+  "correction": "Withdraw the attribution that SOURCE policy reviewer reported an all22refs audit. Actual SOURCE final approval verified the exact grant/policy hashes, owner answer, start/deadline/scope/storage, four parent CLOSED pins and chronology, allocation1publication1CI0heavy, absent postGateCi and local/probe binding. No22ref count is attributed to SOURCE. This correction makes no claim about who performed22checks.",
+  "preservation": "Original frozen metadata and references retained unchanged; read this erratum with that record.",
+  "effect": "Documentation attribution correction only. Exact policy/grant SOURCE and OPS approvals remain valid; no change to source, authorization, ledger or execution. Final docs reviewers must check this correction.",
+  "status": "CORRECTED_PENDING_FINAL_DOCS_REVIEW"
+}

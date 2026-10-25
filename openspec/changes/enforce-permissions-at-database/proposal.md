@@ -1,4 +1,10 @@
+> **Đối chiếu xuất bản 25/10/2026.** Phần server enforcement thuộc catalog15 đã được chuyển vào redesign-permission-model. Source hiện có không chứng minh activation/full backend acceptance; phần ngoài inventory vẫn cần khảo sát riêng. [Nguồn, trạng thái và giới hạn](../../../docs/workflow/tasks/docs-wip-publication-2026-10-25.md). Các yêu cầu SHALL/expected bên dưới được giữ; không đổi để hợp thức hóa code.
+
 # Siết ranh giới bảo mật quyền nhân viên xuống tầng database
+
+## Ranh giới cập nhật ngày 2026-09-15
+
+Q1 của [permission model](../redesign-permission-model/proposal.md) đã chuyển bảo vệ đọc và ghi cho toàn bộ catalog của change đó (15 quyền sau Q12) vào cùng change: gồm RPC/projection, direct SELECT/DML, Storage ghi ảnh và Realtime liên quan. Phase 27 đã có phiên nhân viên và guard tài chính sau chờ khóa tại [016:56](D:/Workspace/pos-cafe/supabase/migrations/016_activate_write_protocol.sql:56). Không triển khai lại hai phần này trong change hiện tại; khi mở lại, kiểm inventory còn ngoài phạm vi và chốt các câu hỏi chỉ cho phần còn lại. Nội dung 08/09 dưới đây là nguồn gốc đề xuất, không phải kết luận rằng code sau phase 27 vẫn nhận employeeId tự khai làm danh tính. Task tài liệu 15/09 chỉ cập nhật dependency này, chưa hoàn thiện hay triển khai change.
 
 ## Liên quan quyết định chống trùng 08/09/2026
 

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "permission-source-mapping-independent-review-v1",
+  "candidate": {"path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/fullgate-source-mapping-wip01.json", "sha256": "96d4a87d5ed29dfa8638b19949a1180e3feea73473f53da60c42ef76c8827113"},
+  "author": "/root/mcp_staging_scope_review",
+  "sourceSHA": "ad265321144521c0669500fea9be0f96ebacb769",
+  "reviewers": [
+    {"name": "/root/budget_time_guard_fix", "scope": "Source anchors, oracle and catalog identity correctness", "verdict": "APPROVE", "basis": "Explicit final-hash approval after read-only verification of all31 raw Git pins,35 stages/760 required identities,149 selector occurrences,12 obligations and34 contextual chains."},
+    {"name": "/root/mcp_staging_evidence_review", "scope": "Safe receipt selectors, runtime join and proof boundaries", "verdict": "APPROVE", "basis": "Explicit final-hash approval after independent source/catalog/config and alias checks; no fabricated public stage artifacts."}
+  ],
+  "findings": [
+    {"id": "LIGHT-PHASE-STAGE-01", "status": "CLOSED", "description": "Clarified that public phase reportSHA/invocationSHA and four counts exist, while private per-stage row hashes are validated by the pinned producer and not exported. Added project-ci-results.mjs:743 raw Git pin."}
+  ],
+  "runtimeVerdict": "NOT_EXECUTED",
+  "approvalBoundary": "Source mapping and join recipe only; this record does not prove any runtime obligation or full gate. Actual source-bound receipts and final independent reviews remain required."
+}

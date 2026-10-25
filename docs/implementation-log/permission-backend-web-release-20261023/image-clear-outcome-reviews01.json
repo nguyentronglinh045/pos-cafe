@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "permission-image-clear-outcome-reviews-v1",
+  "recordedUtc": "2026-10-24T05:02:11.275Z",
+  "sourceSHA": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+  "scope": "FINAL_REPORT_AND_EVIDENCE_INTEGRITY_NOT_BUSINESS_ACCEPTANCE",
+  "outcome": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/image-clear-outcome-20261024.md",
+    "bytes": 10806,
+    "sha256": "509fa003018ed979b79e9f98a41b1c652aeef299806c8e88f43afa5f44c69496"
+  },
+  "walkthrough": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/image-clear-walkthrough-20261024.md",
+    "bytes": 3483,
+    "sha256": "aaf376ee355e24e56db291f9ff087ca84abaa4ac65c7b6b7bb9c05b2e9df3988"
+  },
+  "task": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-candidate-image-clear-2026-10-24.md",
+    "bytes": 2970,
+    "sha256": "4c233ccf954a19d610bb0aba0961ae87e8f423ea597c48abd70b9cc020a7fdf2"
+  },
+  "checkpoint": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/image-clear-final-checkpoint01.json",
+    "bytes": 6591,
+    "sha256": "25c2e617c56900c5c58a9e64aaaec8f5320148d5d6c2b58e804db47a534c6cac"
+  },
+  "indexScope": "Only own task navigation row242; unrelated dirty docs not covered",
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "Final source-bound CI/T04 facts, stage/test boundaries, new SVG oracle conflict/localprobe provenance, nextscope, resource/reclaim/36retainedcontrols, budget5/5/5, correctedindexrow",
+      "findings": []
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Final diagnostic UNKNOWN/privacy/receipt lineage, source-run-actualfacts binding, localSVGproof vs actualprivateDOMunknown, failure-only lifecycle/cleanup/refusals, unchangedacceptance and noextraexecution",
+      "findings": []
+    }
+  ],
+  "blockingReportFindings": 0,
+  "ciStatus": "PASS18",
+  "t04Status": "FAIL",
+  "businessAcceptance": "BLOCKED_CHANGES_REQUESTED",
+  "oldTargetedImageChecks": "REACHED_PASSED_BEFORE_LATER_TC47_FAILURE",
+  "clearDemoTest6": "PASS",
+  "currentFailure": "TEST4_LINE293_ROLE_IMG_COUNTS_COFFEE_SVG_PLACEHOLDER; ACTUAL_PRIVATE_T04_MATCHED_COUNT_UNKNOWN",
+  "remainingAuthorizedExecutions": 0,
+  "consumed": {
+    "publication": 5,
+    "automaticLightCi": 5,
+    "T04": 5
+  },
+  "proposedNativeImgRepair": "NOT_IMPLEMENTED_ON_FROZEN_SOURCE",
+  "remoteAtFinalRecord": {
+    "recordedUtc": "2026-10-24T05:02:10.688Z",
+    "main": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "review": "7dbd6dd4b8abb8d8b614b5957559952372905529",
+    "in_progress": 0,
+    "queued": 0,
+    "waiting": 0
+  },
+  "sourceCleanAtFinalRecord": true,
+  "mergeDeploy": "NOT_AUTHORIZED_NOT_PERFORMED",
+  "temporaryControlDeletion": "AUTOMATIC_APPROVAL_REVIEW_REJECTED_BLOCKED_BY_POLICY;36DIRS_RETAINED_NO_RECLAIM_CLAIM"
+}

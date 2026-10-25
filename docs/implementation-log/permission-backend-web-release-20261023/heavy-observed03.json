@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "permission-heavy-dispatch-observed-v3",
+  "recordedUtc": "2026-10-24 02:08:49 UTC",
+  "sourceSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "runId": "40052956373",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "workflow": ".github/workflows/backend.yml",
+  "branch": "review/permission-staging-20261023",
+  "repository": "nguyentronglinh045/pos-cafe",
+  "repositoryId": 1263057386,
+  "createdAt": "2026-10-24T02:09:00Z",
+  "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/40052956373",
+  "status": "in_progress",
+  "conclusion": null,
+  "profile": "SUPABASE_T04",
+  "evidenceTag": "cloud-t0405",
+  "consumed": {
+    "publication": 3,
+    "automaticLightCi": 3,
+    "T04": 3
+  },
+  "remaining": {
+    "publication": 0,
+    "automaticLightCi": 0,
+    "T04": 0,
+    "otherProfiles": []
+  },
+  "retryAuthorized": false,
+  "mergeDeployAuthorized": false
+}

@@ -1,4 +1,8 @@
+> **Đối chiếu xuất bản 25/10/2026.** Giữ quyết định owner-account đã ghi; các artifact còn placeholder chưa được điền trong lượt này. Role owner/forced-PIN hiện có không chứng minh email provisioning/recovery đã được thực hiện. [Nguồn, trạng thái và giới hạn](../../../docs/workflow/tasks/docs-wip-publication-2026-10-25.md). Các yêu cầu SHALL/expected bên dưới được giữ; không đổi để hợp thức hóa code.
+
 # Tài khoản chủ cửa hàng và kiểm soát việc tạo cửa hàng
+
+**Liên kết quyết định ngày 22/09/2026:** [force-default-pin-change](../force-default-pin-change/proposal.md) là dependency được chủ dự án giao trước phát hành permission model, chỉ owner tạo quán và operator recovery. Đây là biện pháp chuyển tiếp, chưa phải implementation của email owner/provisioning trong proposal này. Khi owner tự đặt PIN lúc tạo quán ở giai đoạn sau, có thể bỏ PIN tạm bootstrap; nếu recovery còn cấp PIN tạm thì phải giữ cờ bắt buộc đổi trước quyền vận hành. Các mô tả hiện trạng lịch sử bên dưới cần được khảo sát lại khi change email/provisioning bắt đầu, không dùng để khẳng định candidate ngày 22/09.
 
 ## Why
 
@@ -279,7 +283,7 @@ Ghi ngày 2026-08-28, theo trao đổi với người dùng.
 
     Nút cấp lại chỉ hiện trên mặt web của tài khoản chủ, sau khi chủ đã đăng nhập bằng mã một lần gửi tới email đã xác thực. Ứng dụng POS tại quán không có lối vào nào cho chức năng này, kể cả với nhân viên vai trò `owner`.
 
-    Hệ quả: **không thêm quyền nào vào danh mục quyền hành động.** Danh mục giữ đúng mười bốn quyền của `redesign-permission-model`, và `access-control` không nằm trong danh sách capability bị change này sửa.
+    Hệ quả: **không thêm quyền nào vào danh mục quyền hành động.** `access-control` không nằm trong danh sách capability bị change này sửa. **Đính chính15/09:** danh mục của `redesign-permission-model` hiện là mười lăm quyền do Q12/Q12a thêm receipt.reprint; quyết định19 ở đây vẫn không thêm quyền Store Key rotation.
 
     Điều này cũng giải quyết một mâu thuẫn giữa hai tài liệu: proposal của `redesign-permission-model` liệt kê cấp lại Store Key vào nhóm quyền dành riêng cho chủ quán, trong khi `specs/access-control/spec.md` của chính change đó chỉ ghi `data.wipe`. Spec đúng, proposal sai; proposal đã được sửa lại cho khớp.
 

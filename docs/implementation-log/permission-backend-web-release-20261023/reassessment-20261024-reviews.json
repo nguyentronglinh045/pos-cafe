@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "permission-three-items-reassessment-reviews-v1",
+  "dateLocal": "2026-10-24",
+  "timezone": "Asia/Bangkok",
+  "author": "/root",
+  "scope": "Analysis report and proposals only",
+  "report": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024.md",
+    "sha256": "7722395e3fc3e93d63bd16338e076f6846bcffa31477583c38151b6fbbfcf75f"
+  },
+  "observations": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/reassessment-20261024-observations.json",
+    "sha256": "ae9c3ddc64a9625ec7946a6b703b435d46003079213754c26d194dafca44bd91"
+  },
+  "firstReviewCandidateSHA256": "71c4b6c0bcb765942402229eb36e441bf6a67fec8048eae71abbb4e6a9e9a122",
+  "history": [
+    {
+      "reviewer": "/root/e2e_diagnosis",
+      "verdict": "CHANGES_REQUESTED",
+      "finding": "E2E-OBS-01",
+      "blocking": true,
+      "location": "report line45, diagnostic checkpoint plan",
+      "reason": "Only pre/post-clear DB state cannot distinguish failed persistence from seed or another writer changing settings before clear",
+      "resolution": "Four DB/API boundaries: after persist settled, pre-initial-seed, post-seed/pre-clear, post-clear; NOT_REACHED with UNKNOWN values; seed/writer branch and conditional source locations",
+      "finalState": "RESOLVED_AND_REVIEWER_APPROVED"
+    },
+    {
+      "reviewer": "/root/backend_acceptance",
+      "verdict": "APPROVE",
+      "blocking": false,
+      "suggestions": ["State all discovered tests must PASS with attempts1", "Option A promises sufficient facts if reproduced, not historical cause certainty"],
+      "resolution": "Both suggestions incorporated and final delta approved"
+    },
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "blocking": false,
+      "suggestions": ["Clarify sufficient failure facts if reproduced and preserve NOT_REPRODUCED"],
+      "resolution": "Clarified and final delta approved"
+    }
+  ],
+  "finalReviews": [
+    {
+      "reviewer": "/root/e2e_diagnosis",
+      "scope": "E2E observed facts, projection loss, causal discrimination, conditional fixes, privacy",
+      "verdict": "APPROVE",
+      "candidateSHA256": "7722395e3fc3e93d63bd16338e076f6846bcffa31477583c38151b6fbbfcf75f",
+      "observationsSHA256": "ae9c3ddc64a9625ec7946a6b703b435d46003079213754c26d194dafca44bd91",
+      "blockingFindings": 0,
+      "confirmation": "Four checkpoints and seed/writer branch close blocker; source citations verified; UNKNOWN and NOT_REPRODUCED preserved"
+    },
+    {
+      "reviewer": "/root/backend_acceptance",
+      "scope": "Catalog counts, A18/D19, supplemental join, ordered testing, source binding, capacity and no acceptance weakening",
+      "verdict": "APPROVE",
+      "candidateSHA256": "7722395e3fc3e93d63bd16338e076f6846bcffa31477583c38151b6fbbfcf75f",
+      "observationsSHA256": "ae9c3ddc64a9625ec7946a6b703b435d46003079213754c26d194dafca44bd91",
+      "blockingFindings": 0,
+      "confirmation": "Final delta strengthens diagnostic clarity without weakening acceptance, Auth/ACL, source binding or budget"
+    },
+    {
+      "reviewer": "/root/main_integration",
+      "scope": "Source review coverage, remote metadata, H/P/M pre/postmerge gates, collector boundaries, authorization, privacy and resources",
+      "verdict": "APPROVE",
+      "candidateSHA256": "7722395e3fc3e93d63bd16338e076f6846bcffa31477583c38151b6fbbfcf75f",
+      "observationsSHA256": "ae9c3ddc64a9625ec7946a6b703b435d46003079213754c26d194dafca44bd91",
+      "blockingFindings": 0,
+      "confirmation": "Hash and delta verified; no integration gate or execution authorization changed"
+    }
+  ],
+  "rootVerification": {
+    "originalSourceAndEvidenceHashesVerified": true,
+    "pureProjectionInformationLossIndependentlyConfirmed": true,
+    "localMarkdownLinksChecked": 36,
+    "brokenLocalLinks": 0,
+    "candidateCodeRemainedClean": true,
+    "endCheckpointWindowsFreeBytes": { "C": 193281249280, "D": 98882719744 },
+    "addedArtifacts": "Three analysis/review text files only; no temp cleanup needed or performed"
+  },
+  "analysisDeliverableStatus": "COMPLETE_REVIEWED",
+  "backendAcceptance": "FAIL_NOT_ACCEPTED",
+  "runtimeRootCause": "UNDETERMINED",
+  "implementationAuthorization": "NOT_GRANTED_BY_THIS_REPORT",
+  "mergeAuthorization": "NOT_GRANTED_BY_THIS_REPORT",
+  "deploymentAuthorization": "NOT_GRANTED_BY_THIS_REPORT",
+  "production": "HELD",
+  "walkthrough": "Proposed in report; owner participation not claimed"
+}

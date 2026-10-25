@@ -1,0 +1,17 @@
+{
+  "observedAtUtc": "2026-10-22T09:29:39.5210682+00:00",
+  "executable": "C:\\Users\\nguye\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+  "arguments": [
+    "-NoProfile",
+    "-NonInteractive",
+    "-File",
+    "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\early-readonly-restore-source01.ps1",
+    "-ExpectedSourceSha256",
+    "feb8c23bf116d099524dc1194d8c27d8883f48a84d94b68d029103d36a7dc47c"
+  ],
+  "sourcePath": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\early-readonly-restore-source01.ps1",
+  "sourceSha256": "feb8c23bf116d099524dc1194d8c27d8883f48a84d94b68d029103d36a7dc47c",
+  "parseErrors": 0,
+  "parentInstruction": "Restore stored readonly now after owner-authorized apply/reconcile; verify exact watcher identity, stop only watcher and confirm exit before replacement",
+  "scope": "stored_project_config_only"
+}

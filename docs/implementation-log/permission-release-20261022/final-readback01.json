@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "permission-release-final-readback-v1",
+  "atUtc": "2026-10-22T03:18:36.503Z",
+  "candidateHead": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "candidateStatus": "",
+  "originalBootstrapHead": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+  "originalBootstrapTrackedDiff": "",
+  "ownerCheckoutHead": "5156820f7d6679cd6f8051bdc38419737ffa0c7e",
+  "remoteMainSHA": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "remoteCandidateSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "evidenceRegularFilesChecked": 81,
+  "secretPatternFlags": [],
+  "freeBytes": {
+    "C": 195077705728,
+    "D": 98677641216
+  },
+  "noOriginalDBToolCalls": true,
+  "noSQLRun": true,
+  "noMainPush": true,
+  "noHeavyRun": true
+}

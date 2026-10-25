@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "permission-publication-intent-v4",
+  "recordedUtc": "2026-10-24T03:03:58.454Z",
+  "state": "INTENT_BEFORE_PUSH",
+  "sourceSHA": "f8ee03c195127bb440b0ede3142622ed21c3cc96",
+  "expectedMain": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "expectedReviewBefore": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "targetBranch": "review/permission-staging-20261023",
+  "pushMode": "NORMAL_NONFORCE_HEAD_TO_REVIEW",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-packet04.json",
+    "sha256": "cc216c8e6b4b1056fe8139695b633ee98f206b824d986f4b80adec398ab93798"
+  },
+  "reviewRecord": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/execution-reviews04.json",
+    "sha256": "d0eed11a2efa1e7dc7b6ecb0c42af2afc6342f45ff32304d9e79410eb2935265"
+  },
+  "mapping": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping05.json",
+    "sha256": "606ea8f34d1fb1918c806d73668241c138557c704ce85579fc9d8aa8dae4a550"
+  },
+  "mappingReview": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-mapping-reviews04.json",
+    "sha256": "9d117eb6b5dc4a02b73ebd15d6d9bd9cdf6c79341159ee76b63b10da3eb817dd"
+  },
+  "remoteSnapshot": {
+    "recordedUtc": "2026-10-24T03:03:25.740Z",
+    "main": {
+      "ref": "refs/heads/main",
+      "node_id": "REF_kwDOS0i56q9yZWZzL2hlYWRzL21haW4",
+      "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/git/refs/heads/main",
+      "object": {
+        "sha": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+        "type": "commit",
+        "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/git/commits/2da0d7e10d65ed4e79c8628d65220582a6cbd32b"
+      }
+    },
+    "review": {
+      "ref": "refs/heads/review/permission-staging-20261023",
+      "node_id": "REF_kwDOS0i56toALXJlZnMvaGVhZHMvcmV2aWV3L3Blcm1pc3Npb24tc3RhZ2luZy0yMDI2MTAyMw",
+      "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/git/refs/heads/review/permission-staging-20261023",
+      "object": {
+        "sha": "90824f7cb81660818ab247f7dccf55b8a111d471",
+        "type": "commit",
+        "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/git/commits/90824f7cb81660818ab247f7dccf55b8a111d471"
+      }
+    },
+    "in_progress": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "queued": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "waiting": {
+      "total_count": 0,
+      "workflow_runs": []
+    }
+  },
+  "localDisks": [
+    {
+      "path": "C:/",
+      "freeBytes": 190177710080
+    },
+    {
+      "path": "D:/",
+      "freeBytes": 98858663936
+    }
+  ],
+  "retainedLogicalBytesAtPacket": 611613116,
+  "consumedBefore": {
+    "publication": 3,
+    "automaticLightCi": 3,
+    "T04": 3
+  },
+  "authorizedMax": {
+    "publication": 4,
+    "automaticLightCi": 4,
+    "T04": 4
+  },
+  "noMergeDeploy": true,
+  "noAutoRetry": true
+}

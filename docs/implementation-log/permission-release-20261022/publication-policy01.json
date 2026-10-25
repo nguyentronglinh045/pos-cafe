@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "permission-release-phase-admission-v1",
+  "phaseId": "permission-release-20261022",
+  "repository": "nguyentronglinh045/pos-cafe",
+  "branch": "run/permissions-20261020",
+  "sourceRoot": "D:/Workspace/pos-cafe-permission-run-20261020/code",
+  "sourceSHA": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+  "expectedRemoteSHA": "90e30f2b2b0f046c549b268b32f1840ad99c2409",
+  "deadlineUtc": "2026-10-22T04:00:00.000Z",
+  "publicationCutoffUtc": "2026-10-22T03:15:00.000Z",
+  "predecessor": {
+    "policySHA256": "3c222cb3a5b66a37107522ddce08c2fc8f68e99777f4a921aeb0eba2c936797c",
+    "journalSHA256": "583f336dafa025e3088e0afc1dad23be68b2324c6e5f37facc11ca230d372880",
+    "counts": {
+      "publication": 2,
+      "ci": 2,
+      "heavy": 1,
+      "reviewRounds": 6
+    }
+  },
+  "storage": {
+    "baselineFreeBytes": {
+      "C": 195837095936,
+      "D": 98732089344
+    },
+    "taskMaximumBytes": 21474836480,
+    "reserveBytes": 32212254720,
+    "ciMaximumBytes": 5368709120
+  },
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022/publication-packet01.json",
+    "sha256": "2b26ca93d9c3b8994eb60afee6ece36c728c4aa841d7913088d13fcad73eaae7"
+  },
+  "reviews": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022/publication-reviews01.json",
+    "sha256": "f8d5d4a6de68f1b796b1bda693823c45244eb19f6ae51a259cd06e5193c717e5"
+  }
+}

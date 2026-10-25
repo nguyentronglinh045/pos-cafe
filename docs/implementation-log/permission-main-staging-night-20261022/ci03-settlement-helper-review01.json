@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "permission-independent-helper-review-v1",
+  "recordedAtUtc": "2026-10-22T16:14:53.929Z",
+  "authors": [
+    "/root/budget_time_guard_fix"
+  ],
+  "candidate": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/settle-candidate-ci03.mjs",
+    "sha256": "190503b63dfab8601025ff55c0baa87f45020b13af2a0fd1910fbd71c5027677"
+  },
+  "offlineChecks": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/ci03-settlement-helper-offline-check02.json",
+    "sha256": "a786a9a9c74ca95076bd28914092267fbda92899a07eb94595a2a5d42bdf6189"
+  },
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "runId": "39811728040",
+  "policy": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03.json",
+    "sha256": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142"
+  },
+  "priorCandidate": {
+    "sha256": "531681249745c8c702c120cc32c1ce95f8611f14d92f828824b954bf2b30f0a2",
+    "verdict": "CHANGES_REQUESTED",
+    "findings": [
+      {
+        "id": "CI03-ATTEMPT-URL",
+        "scope": "source",
+        "cause": "Helper expected base run URL while actual producer summary uses /attempts/1.",
+        "status": "CLOSED_ON_FINAL_HASH"
+      },
+      {
+        "id": "CI03-SETTLE-DEADLINE",
+        "scope": "operations",
+        "cause": "Helper checked CLOSED but did not require own-reservation admitted status at hard deadline.",
+        "status": "CLOSED_ON_FINAL_HASH"
+      }
+    ],
+    "execution": "NOT_EXECUTED; caught during independent review before settlement"
+  },
+  "reviewers": [
+    {
+      "name": "/root/final_security_join_review",
+      "scope": "source/evidence binding",
+      "verdict": "APPROVE",
+      "evidence": "Actual final message approves190503...: producer attemptURL, ownreservationdeadlinefailclosed, rawpins/log/native/wx unchanged; receipt58checks hash matches; fourledgerpins unchanged; no execution."
+    },
+    {
+      "name": "/root/mcp_staging_evidence_review",
+      "scope": "operations/deadline/partial-state custody",
+      "verdict": "APPROVE",
+      "evidence": "Actual message approves190503...: inspectownc590 reserve0 admitted allows after16:18 but refuses>=17UTC; actualproducer+CI02summary attemptURL checked;58authorcontrols/fourledgerpins verified; no execution. Terminal actualcollection still required."
+    }
+  ],
+  "scope": "Settlement preparation only; no CI rerun, reserve, dispatch or remote action."
+}

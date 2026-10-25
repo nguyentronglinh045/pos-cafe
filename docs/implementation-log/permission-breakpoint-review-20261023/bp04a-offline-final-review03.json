@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "permission-breakpoint-review-v1",
+  "breakpoint": "BP4A_OFFLINE_REMEDIATION03",
+  "recordedAtUtc": "2026-10-23T04:30:03.417Z",
+  "status": "APPROVE_OFFLINE_RESULT_AND_PREPARATION_ONLY_CANDIDATE",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "reviewedFiles": {
+    "bp04a-offline-grant03.json": "f9e429b9f32d66a826c37ee8e97caf39988a9bcb9f918dc7ce522c45d9be3c9f",
+    "bp04a-offline-controls03.json": "3a2d078aee8b71c4f8be6b2388d7f23ff74b5d7fa13f610fcd9478eb81e2c8ad",
+    "bp04a-offline-controls03.started.json": "ef96f15715abe354beebfe744ac1b99db93066be73276b5342cf6e728a8fb254",
+    "bp04a-offline-controls04.json": "5d12862cf0186732dfd580f86475a5a41185eca90d3b6e148ed50d9dbf1a668f",
+    "bp04a-offline-controls04.started.json": "4fee2fb56b6c1dcc0c8ba9b2bb52fa70b988f5300e6f6bdd3566822e96843c29",
+    "bp04a-offline-outcome03.md": "73faf3f034880317ed5c8f366166170046f210e311cd61b13390145a786b4399",
+    "bp04a-offline-outcome03.json": "ce7fa231bf29bf324b7be4b966f5f88155967613945e1a17bec85cf81f8660b6"
+  },
+  "requiredReviewers": [
+    {
+      "agent": "/root/bp1_authority_final_review",
+      "nonAuthor": true,
+      "scope": "authority history/deadline/no external effect, raw evidence and accurate offline result",
+      "verdict": "APPROVE"
+    },
+    {
+      "agent": "/root/bp1_evidence_final_review",
+      "nonAuthor": true,
+      "scope": "parser/controls source review and cache/SRI/counts/security evidence, actual result limits and copy integrity",
+      "verdict": "APPROVE"
+    }
+  ],
+  "actual": {
+    "offline03": "FAIL_OR_UNKNOWN after93 cache entries; original snapshot and receipt retained",
+    "offline04": "PASS309cache +23controls (5positive18negative)",
+    "network": 0,
+    "extraArchivePreflight": 0,
+    "install": 0,
+    "applicationBuild": 0,
+    "applicationUnit": 0,
+    "push": 0,
+    "ci": 0,
+    "backend": 0,
+    "db": 0
+  },
+  "resolved": "Legacy/version root and harmless dot compatibility; reject root regular file; structured per-item diagnostics prepared",
+  "limits": "Main02 still hard-refuses execution;46 archives NOT_SUCCESSFULLY_VERIFIED; HTTP/abort runtime and full permission gate remain open; original archive attempt1/1 spent; no extension or reset",
+  "transcriptionNote": "Records both explicit final verdicts on exact MD/JSON. Metadata creates no execution grant."
+}

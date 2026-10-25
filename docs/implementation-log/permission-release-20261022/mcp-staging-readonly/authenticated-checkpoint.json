@@ -1,0 +1,82 @@
+{
+  "observedAt": "2026-10-22T08:09:42.270993+00:00",
+  "userConfirmation": "User clicked Authorize Codex and requested staging read-only check; no original DB",
+  "oauthCallbackExchange": "PASS; installed CLI reported Successfully logged in; callback code/URL not written to evidence files",
+  "projectConfigSha256": "0afb3ee78fa7f75786bb2d7345d51a2ef64afe26c7a0be032c8a1e726156a8a9",
+  "oauthScopes": [
+    "database:read",
+    "projects:read"
+  ],
+  "mcpDiscovery": {
+    "status": "MCP_DISCOVERY_PASS_SQL_NOT_TESTED",
+    "file": "staging-fresh-discovery01.json",
+    "sha256": "bb55b8f651a969b4c4d38ec0cc47d7f0de06d3dcd182585239a6e4d4a6ec3b33",
+    "freshConfigVerified": true,
+    "tools": [
+      "execute_sql",
+      "list_extensions",
+      "list_migrations",
+      "list_tables",
+      "search_docs"
+    ]
+  },
+  "localProbeHistory": [
+    {
+      "file": "staging-connection-probe01.json",
+      "sha256": "8e51cc1a893b2179627dc2b8d49e1c2754aa0f9e3c34eb60c210140a687937a1",
+      "status": "PROBE_STOPPED",
+      "databaseToolCalls": 0,
+      "steps": [
+        {
+          "method": "initialize",
+          "status": "SENT"
+        }
+      ]
+    },
+    {
+      "file": "staging-connection-probe02.json",
+      "sha256": "f8e2bd791c68eb4c9f07349350d1a571e1bf63280df6be68a9605675eaa0db11",
+      "status": "PROBE_STOPPED",
+      "databaseToolCalls": 0,
+      "steps": [
+        {
+          "method": "initialize",
+          "status": "SENT"
+        }
+      ]
+    },
+    {
+      "file": "staging-connection-probe03.json",
+      "sha256": "53a39fd1277c3b467ba2040774d1c9bb633118aaeddb70ecd0aff959ce0cc9e3",
+      "status": "PROBE_STOPPED",
+      "databaseToolCalls": 0,
+      "steps": [
+        {
+          "method": "initialize",
+          "status": "PASS"
+        },
+        {
+          "method": "config/read",
+          "status": "PASS"
+        },
+        {
+          "method": "thread/resume",
+          "status": "RPC_ERROR",
+          "code": -32600
+        }
+      ]
+    }
+  ],
+  "localProbeFailureFacts": [
+    "Probe01: CLI temporary config contained plugin-discovered entry without standalone transport; diagnostic: invalid transport mcp_servers quoted code-review",
+    "Probe02: CLI dotted key overrides retained quote characters as key text; corrected to validated unquoted bare keys, then flagged codex mcp list preflight PASS",
+    "Probe03: initialize/config-read PASS; thread/resume RPC rejected code -32600, no error message retained; exact rejection reason not established"
+  ],
+  "sqlProbe": "NOT_RUN",
+  "databaseToolCallsTotal": 0,
+  "originalDatabaseToolCallsTotal": 0,
+  "ddlDmlMigrations": 0,
+  "cachedConversationCatalog": "Still exposes old six-tool catalog with apply_migration; deliberately not used for DB calls",
+  "nextStep": "Reload/Restart MCP or Codex to refresh the conversation catalog, verify staging read_only effective configuration again, then one SELECT if tools are freshly bound. Do not retry local thread/resume probe.",
+  "cleanup": "OAuth callback tab closed; all fresh app-server clients exited; no new model turn/thread/runtime/package installation"
+}

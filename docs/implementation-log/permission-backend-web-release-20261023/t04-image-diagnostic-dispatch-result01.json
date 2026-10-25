@@ -1,0 +1,11 @@
+{
+  "startedUtc": "2026-10-24T07:10:00.813Z",
+  "endedUtc": "2026-10-24T07:10:02.841Z",
+  "sourceSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "status": 0,
+  "signal": null,
+  "stdout": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/40073087518\n",
+  "stderr": "",
+  "error": null,
+  "noAutomaticRetry": true
+}

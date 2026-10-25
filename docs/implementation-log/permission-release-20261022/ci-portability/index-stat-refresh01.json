@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "permission-ci-index-stat-refresh-v1",
+  "atUtc": "2026-10-22T02:39:05.268Z",
+  "head": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "operation": "RENORMALIZE_ALREADY_CANONICAL_TRACKED_BYTES_TO_REFRESH_INDEX_ONLY",
+  "beforeStatusEntries": 858,
+  "beforeContentDiffEntries": 0,
+  "afterStatusEntries": 0,
+  "stagedContentDiffEntries": 0,
+  "sourceRawPreserved": true,
+  "rawFingerprint": "b975bb44c79aae23b8c971777046111200f1e89e1ef59009c283c713f03e6b87",
+  "newCommitCreated": false
+}

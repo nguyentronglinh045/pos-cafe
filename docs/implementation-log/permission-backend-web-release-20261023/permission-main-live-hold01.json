@@ -1,0 +1,88 @@
+{
+  "recordedAtUtc": "2026-10-24T10:51:05.6643136Z",
+  "sourceSHA": "4e78a8c11d2d895ccebaccd2b2f7d3b2c69bcb3e",
+  "mainSHA": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "production": {
+    "can_admins_bypass": false,
+    "deployment_branch_policy": {
+      "custom_branch_policies": true,
+      "protected_branches": false
+    },
+    "name": "Production",
+    "protection_rules": [
+      {
+        "prevent_self_review": false,
+        "reviewers": [
+          "nguyentronglinh045"
+        ],
+        "type": "required_reviewers"
+      },
+      {
+        "prevent_self_review": null,
+        "reviewers": [],
+        "type": "branch_policy"
+      }
+    ]
+  },
+  "productionBranches": {
+    "name": "main",
+    "type": "branch"
+  },
+  "preview": {
+    "can_admins_bypass": false,
+    "deployment_branch_policy": {
+      "custom_branch_policies": true,
+      "protected_branches": false
+    },
+    "name": "Preview",
+    "protection_rules": [
+      {
+        "prevent_self_review": false,
+        "reviewers": [
+          "nguyentronglinh045"
+        ],
+        "type": "required_reviewers"
+      },
+      {
+        "prevent_self_review": null,
+        "reviewers": [],
+        "type": "branch_policy"
+      }
+    ]
+  },
+  "previewBranches": {
+    "name": "main",
+    "type": "branch"
+  },
+  "mainProtection": {
+    "enforce_admins": {
+      "enabled": true,
+      "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/branches/main/protection/enforce_admins"
+    },
+    "required_pull_request_reviews": {
+      "dismiss_stale_reviews": true,
+      "require_code_owner_reviews": false,
+      "require_last_push_approval": false,
+      "required_approving_review_count": 0,
+      "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/branches/main/protection/required_pull_request_reviews"
+    },
+    "required_status_checks": {
+      "checks": [
+        {
+          "app_id": 15368,
+          "context": "Build, unit, tooling and mock UI"
+        }
+      ],
+      "contexts": [
+        "Build, unit, tooling and mock UI"
+      ],
+      "contexts_url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/branches/main/protection/required_status_checks/contexts",
+      "strict": true,
+      "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/branches/main/protection/required_status_checks"
+    },
+    "restrictions": null
+  },
+  "settingsChanged": false,
+  "deployTriggered": false,
+  "dbMutation": false
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "permission-bp4a-local75-documentation-review-v1",
+  "recordedAtUtc": "2026-10-23T08:15:23.319Z",
+  "kind": "Metadata transcription of explicit reviewer verdicts; no new substantive candidate changes",
+  "candidates": {
+    "docs/implementation-log/permission-breakpoint-review-20261023/bp04a-local75-01-outcome.md": "5cdfa15dc7259a8da106d1cbd9ffeb9c84f40bae5f46ae7207ab83a6cadc8678",
+    "docs/workflow/tasks/permission-bp4a-windows-command-resolution-2026-10-23.md": "0c43499846a2c10ed1ef40a96f52a30383168f13606068bfcad1def5eb841d6b",
+    "docs/implementation-log/permission-breakpoint-review-20261023/bp04a-local75-01-manifest.json": "1f00737579fd12ad068d6c69e8c829d547e60c755b5fd38b326a7f68853f69fe"
+  },
+  "indexCandidateSHA256": "ba2b01540380fb51d1b98572dd8057d13cd77ce28f58f5e4670a433e210e03e4",
+  "reviewers": [
+    {
+      "id": "/root/bp1_authority_final_review",
+      "verdict": "APPROVE",
+      "scope": "authority/history/STOP/time/storage/proposal limits; all29 raw copies hash/size checked",
+      "finalPlanSHA256": "0c43499846a2c10ed1ef40a96f52a30383168f13606068bfcad1def5eb841d6b"
+    },
+    {
+      "id": "/root/bp1_evidence_final_review",
+      "verdict": "APPROVE",
+      "scope": "evidence/source/oracles/causal precision/reuse/coverage and index candidate; all29 raw copies hash/size checked",
+      "finalPlanSHA256": "0c43499846a2c10ed1ef40a96f52a30383168f13606068bfcad1def5eb841d6b"
+    }
+  ],
+  "scopeLimit": "Documentation and PLAN only. No execution authorization; no approval of future recipe. Existing STOP remains.",
+  "supersededPlanSHA256": [
+    "63d991d31ae0adef168271ef334480bbf6b06f37e8d1760dea041677c8b6684e",
+    "57007a48b15e07b9ad075c718e066ce41810c59f1849a537cd8e558345a7c414"
+  ],
+  "preservation": {
+    "indexStage": "HEAD plus exact reviewed own paragraph only",
+    "preexistingWorkingIndexBytesSHA256": "410fd09d2813ddfcf52361594f39812bdf773c578f01fac1f21187762339c77a",
+    "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+    "mainOrDatabaseChanged": false
+  },
+  "localDocumentationVerification": {
+    "rawEvidence": "All29copies size/SHA checked; original bytes retained",
+    "wholeStageWhitespaceCheck": "One expected raw-log finding: bp4a-local75-01-build.stdout.log:4 new blank line at EOF; not trimmed because raw-byte preservation is mandatory",
+    "scopedWhitespaceCheck": "Apply git diff --cached --check to authored documentation/manifest/review/index only; raw logs validated by hash instead",
+    "verificationReaderCorrection": {
+      "observed": "git show dependency snapshot exceeded execFileSync default1MiB; ENOBUFS before commit",
+      "correction": "Use bounded8MiB binary reader for exact3.3MB manifest; no application command or phase rerun"
+    }
+  }
+}

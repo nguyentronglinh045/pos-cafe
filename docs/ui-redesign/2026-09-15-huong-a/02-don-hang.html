@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Đơn hàng — bản thiết kế lại</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/tokens.css">
+<style>
+  .mock-bar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-4);
+    padding: 10px var(--sp-4); background: var(--nt-900); color: var(--nt-0); font-size: 12px;
+  }
+  .mock-bar b { font-weight: 600; }
+  .mock-bar span { color: #AAB4C4; }
+  .mock-bar a { color: var(--teal-300); }
+  .stage { padding: var(--page-pad); }
+
+  /* Đầu màn gọn lại: bỏ dòng nhãn nhóm và mã đơn, gộp khu vực vào tiêu đề.
+     Bồi bàn cần biết bàn nào và khu vực nào; mã đơn để dành cho màn thanh
+     toán và màn lịch sử, nơi nó thật sự được dùng để tra cứu. */
+  .order .drawer__header { padding-block: var(--sp-2); }
+  .order .drawer__title { font-size: var(--fs-subtitle); }
+  .order { height: calc(100dvh - 92px); min-height: 520px; }
+  .order__body { display: grid; grid-template-columns: minmax(0,1fr) var(--pane-side); gap: var(--pane-gap); min-height: 0; }
+  @media (max-width: 899px) { .order__body { grid-template-columns: minmax(0,1fr); } .order { height: auto; } }
+
+  .cats { display: flex; gap: var(--sp-2); padding: var(--sp-3); border-bottom: 1px solid var(--line); overflow-x: auto; }
+
+  .menu-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--sp-2); padding: var(--sp-3);
+  }
+  @media (max-width: 899px) { .menu-grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); } }
+  .item {
+    display: flex; flex-direction: column; justify-content: space-between; gap: var(--sp-2);
+    min-height: 76px; padding: 10px var(--sp-3); text-align: left;
+    background: var(--surface); border: 1px solid var(--line-control);
+    border-radius: var(--radius-control); cursor: pointer;
+  }
+  .item:hover { border-color: var(--primary); background: var(--primary-soft); }
+  .item__name { font-size: var(--fs-body); font-weight: var(--fw-medium); }
+  .item__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
+  .item__price { font-size: var(--fs-small); font-variant-numeric: tabular-nums; color: var(--muted); }
+  .item__opt { font-size: var(--fs-label); letter-spacing: .06em; text-transform: uppercase; color: var(--primary); font-weight: var(--fw-medium); }
+  .item[aria-disabled="true"] { background: var(--surface-sunk); border-color: var(--line); cursor: not-allowed; }
+  .item[aria-disabled="true"] .item__name, .item[aria-disabled="true"] .item__price { color: var(--ink-3); }
+
+  .cart-lines { list-style: none; margin: 0; padding: 0; }
+  .cart-line {
+    display: grid; grid-template-columns: minmax(0,1fr) auto;
+    gap: var(--sp-2) var(--sp-3); align-items: start;
+    padding: 10px var(--sp-3); border-bottom: 1px solid var(--line);
+  }
+  .cart-line:last-child { border-bottom: 0; }
+  .cart-line__name { font-size: var(--fs-body); font-weight: var(--fw-medium); }
+  .cart-line__note { display: block; font-size: var(--fs-small); color: var(--muted); font-weight: var(--fw-regular); }
+  .cart-line__amt { font-size: var(--fs-body); font-weight: var(--fw-medium); font-variant-numeric: tabular-nums; text-align: right; }
+  .cart-line__ctl { grid-column: 1 / -1; display: flex; align-items: center; gap: var(--sp-2); }
+  .qty { display: flex; align-items: center; gap: 2px; }
+  .qty__btn {
+    width: var(--ctl-md); height: var(--ctl-md);
+    border: 1px solid var(--line-control); background: var(--surface);
+    border-radius: var(--radius-control); color: var(--muted);
+    font-size: var(--fs-subtitle); font-weight: var(--fw-medium); cursor: pointer;
+  }
+  .qty__val { min-width: 40px; text-align: center; font-size: var(--fs-body); font-weight: var(--fw-semibold); font-variant-numeric: tabular-nums; }
+  .cart-line__drop { margin-left: auto; font-size: var(--fs-small); color: var(--danger); background: none; border: 0; cursor: pointer; min-height: var(--ctl-md); padding-inline: var(--sp-2); }
+</style>
+</head>
+<body>
+
+<div class="mock-bar">
+  <b>Bản mẫu 02 · Đơn hàng</b>
+  <span>Hướng A — Teal Chuẩn Hoá</span>
+  <span>Giữ nguyên số bước nghiệp vụ, chỉ sắp xếp lại</span>
+  <span>Thu nhỏ cửa sổ để xem bậc compact (&lt; 900px)</span>
+  <a href="spec.md">Thông số</a>
+</div>
+
+<div class="stage">
+<section class="drawer order" data-testid="order-drawer">
+
+  <header class="drawer__header">
+    <div class="drawer__heading">
+      <h1 class="drawer__title">Bàn 12 · Trong nhà</h1>
+      <span class="drawer__meta">Chưa gửi · Trực tuyến</span>
+    </div>
+    <div class="drawer__actions">
+      <button type="button" class="btn btn--quiet" data-testid="order-close-button">Đóng</button>
+      <button type="button" class="btn btn--secondary" disabled>Thanh toán</button>
+      <button type="button" class="btn btn--primary" data-testid="submit-order-button">Gửi đơn</button>
+    </div>
+  </header>
+
+  <div class="drawer__body order__body">
+
+    <!-- Vùng chính: menu -->
+    <section class="pane" aria-labelledby="pane-menu">
+      <div class="pane__header">
+        <h2 class="pane__title" id="pane-menu">Thực đơn</h2>
+        <span class="badge badge--neutral">24 món đang bán</span>
+      </div>
+
+      <div class="cats" role="group" aria-label="Nhóm món">
+        <button type="button" class="chip is-active" aria-pressed="true">Cà phê</button>
+        <button type="button" class="chip" aria-pressed="false">Trà</button>
+        <button type="button" class="chip" aria-pressed="false">Đá xay</button>
+        <button type="button" class="chip" aria-pressed="false">Bánh</button>
+        <button type="button" class="chip" aria-pressed="false">Món thêm</button>
+      </div>
+
+      <div class="pane__body">
+        <div class="menu-grid" data-testid="order-menu-items">
+          <button type="button" class="item">
+            <span class="item__name">Cà phê sữa đá</span>
+            <span class="item__foot"><span class="item__price">35.000</span><span class="item__opt">Tuỳ chọn</span></span>
+          </button>
+          <button type="button" class="item">
+            <span class="item__name">Cà phê đen đá</span>
+            <span class="item__foot"><span class="item__price">30.000</span><span class="item__opt">Tuỳ chọn</span></span>
+          </button>
+          <button type="button" class="item">
+            <span class="item__name">Bạc xỉu</span>
+            <span class="item__foot"><span class="item__price">35.000</span><span class="item__opt">Tuỳ chọn</span></span>
+          </button>
+          <button type="button" class="item">
+            <span class="item__name">Cà phê muối</span>
+            <span class="item__foot"><span class="item__price">39.000</span><span class="item__opt">Tuỳ chọn</span></span>
+          </button>
+          <button type="button" class="item">
+            <span class="item__name">Cold brew</span>
+            <span class="item__foot"><span class="item__price">45.000</span></span>
+          </button>
+          <button type="button" class="item">
+            <span class="item__name">Espresso</span>
+            <span class="item__foot"><span class="item__price">32.000</span></span>
+          </button>
+          <button type="button" class="item">
+            <span class="item__name">Cappuccino</span>
+            <span class="item__foot"><span class="item__price">45.000</span></span>
+          </button>
+          <button type="button" class="item" aria-disabled="true">
+            <span class="item__name">Cà phê dừa</span>
+            <span class="item__foot"><span class="item__price">Tạm hết</span></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vùng phụ: giỏ hàng -->
+    <section class="pane" aria-labelledby="pane-cart">
+      <div class="pane__header">
+        <h2 class="pane__title" id="pane-cart">Giỏ hàng</h2>
+        <span class="badge badge--primary">5 món</span>
+      </div>
+
+      <div class="pane__body">
+        <ul class="cart-lines">
+          <li class="cart-line" data-testid="order-cart-line">
+            <span class="cart-line__name">Cà phê sữa đá</span>
+            <span class="cart-line__amt">70.000</span>
+            <span class="cart-line__ctl">
+              <span class="qty">
+                <button type="button" class="qty__btn" data-testid="order-cart-decrease" aria-label="Giảm số lượng">−</button>
+                <span class="qty__val" data-testid="order-cart-quantity">2</span>
+                <button type="button" class="qty__btn" data-testid="order-cart-increase" aria-label="Tăng số lượng">+</button>
+              </span>
+              <button type="button" class="cart-line__drop">Bỏ món</button>
+            </span>
+          </li>
+          <li class="cart-line" data-testid="order-cart-line">
+            <span class="cart-line__name">Bạc xỉu<span class="cart-line__note">Ít đường · Thêm shot</span></span>
+            <span class="cart-line__amt">35.000</span>
+            <span class="cart-line__ctl">
+              <span class="qty">
+                <button type="button" class="qty__btn" data-testid="order-cart-decrease" aria-label="Giảm số lượng">−</button>
+                <span class="qty__val" data-testid="order-cart-quantity">1</span>
+                <button type="button" class="qty__btn" data-testid="order-cart-increase" aria-label="Tăng số lượng">+</button>
+              </span>
+              <button type="button" class="cart-line__drop">Bỏ món</button>
+            </span>
+          </li>
+          <li class="cart-line" data-testid="order-cart-line">
+            <span class="cart-line__name">Trà đào cam sả</span>
+            <span class="cart-line__amt">80.000</span>
+            <span class="cart-line__ctl">
+              <span class="qty">
+                <button type="button" class="qty__btn" data-testid="order-cart-decrease" aria-label="Giảm số lượng">−</button>
+                <span class="qty__val" data-testid="order-cart-quantity">2</span>
+                <button type="button" class="qty__btn" data-testid="order-cart-increase" aria-label="Tăng số lượng">+</button>
+              </span>
+              <button type="button" class="cart-line__drop">Bỏ món</button>
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pane__footer">
+        <p class="banner banner--warning" style="margin:0">
+          <strong>Chưa lưu.</strong>&nbsp;Gửi đơn để lưu thay đổi trước khi thanh toán.
+        </p>
+        <div class="money-row">
+          <span class="money-row__key">Tạm tính</span>
+          <span class="money-row__val" data-testid="order-total-amount">185.000</span>
+        </div>
+        <div class="money-row money-row--grand">
+          <span class="money-row__key">Tổng</span>
+          <span class="money-row__val">185.000 ₫</span>
+        </div>
+        <button type="button" class="btn btn--xl btn--primary btn--block" data-testid="submit-order-button-footer">
+          Gửi đơn
+        </button>
+      </div>
+    </section>
+
+  </div>
+</section>
+</div>
+
+</body>
+</html>

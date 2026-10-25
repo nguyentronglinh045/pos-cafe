@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "permission-independent-runtime-visual-review-v1",
+  "recordedAtUtc": "2026-10-22T16:29:55.659Z",
+  "authors": [
+    "/root",
+    "/root/budget_time_guard_fix"
+  ],
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "runId": "39811728040",
+  "attempt": 1,
+  "actual": {
+    "collection": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-collection.json",
+      "sha256": "e9be1f85c6a26260388548ba2dd9b2ab7f965114d529c06a53748e098fb67b11"
+    },
+    "summary": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-summary.json",
+      "sha256": "e8daa086c7776fdb5d6928222069593546318cf1ebd171858e00da5c844139b8"
+    },
+    "terminal": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-terminal.json",
+      "sha256": "232396de36585040eaf7147754e9d0aaed8234f7c17229c7ecdc12b1cb4f87bc"
+    },
+    "settlement": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-settlement.json",
+      "sha256": "aa488118abbca263600c48e635b638862cc42ded6233eeb2becede018e74943a"
+    },
+    "pg16": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-pg16.json",
+      "sha256": "d9dab71e199eb32f467f78abab2ffcca352da2e594ee2b2185f23bb928198b3e"
+    },
+    "download": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci03-pin-ui-download.json",
+      "sha256": "2f7d891e029e39f97e9171da8fe1bde96c1addf397beeb7ec081ed4be19903eb"
+    },
+    "manifest": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/pin-ui03/manifest.json",
+      "sha256": "ad3516790c30ce03875d165ec9910742a9a878f5ac9186b5980a95fa73b337a0"
+    }
+  },
+  "reviewers": [
+    {
+      "name": "/root/final_security_join_review",
+      "scope": "source/runtime bindings and actual visual classification",
+      "verdict": "APPROVE",
+      "evidence": "Actual final messages:18 refs rehashed; pure actualcollection validator wholeCi18 true; unique rawPG16/render30/30 zero skip/retry, source/fingerprint/lock match; ledger c590 settled once then CLOSED/pending[]. Bounded LIGHT6/343 producer based, no8backend/12closure. ACTUALLY VIEWED ALL3 PNGs/hash/dimensions; no visible unmasked overlap/overflow/controltext defect."
+    },
+    {
+      "name": "/root/mcp_staging_evidence_review",
+      "scope": "operations/cleanup/custody and actual visual classification",
+      "verdict": "APPROVE",
+      "evidence": "Actual messages:25refs hash match; completed/push/source4f/attempt1+18phases+rawlog summary/cleanup/native derivation strictPASS. PG16.15/30required PASS0skipretry, cleanup actual50741248B; one c590settle, CLOSED16:26:24.048Z/pending[]/phase1pub1CI0heavy/lifetime7/7/5/10. ACTUALLY VIEWED ALL3 PNGs and independentproductionmanifestvalidation; artifact66520B/extracted65916B distinct; jobs841s/queue3s match."
+    }
+  ],
+  "rootActualView": "Opened desktop/tablet/mobile originals; all visible actions readable and intact outside two black input masks. No new unmasked defect observed.",
+  "visualLimits": {
+    "credentialFreeMockOnly": true,
+    "passwordAreasMasked": 2,
+    "maskedInputTextLabelsCaretContrast": "NOT_VISUALLY_ASSESSED",
+    "mobileViewport": {
+      "width": 844,
+      "height": 390
+    },
+    "mobileImage": {
+      "width": 844,
+      "height": 419
+    },
+    "extraFullPagePixels": 29,
+    "noHostedRuntimeClaim": true
+  },
+  "producerManifest": "Immutable original photoInspected=false and visualReview=NOT_RUN retained. This separate record documents actual manual classification; no producer rewrite.",
+  "scope": "Bounded CI18/PG16/visual review only; no fullgate/main approval. LIGHT03 aggregate record additionally goes through finaldocs review; no private per-stage evidence claimed."
+}

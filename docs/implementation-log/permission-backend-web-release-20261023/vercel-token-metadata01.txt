@@ -1,0 +1,3 @@
+Browser tab: 9, Title: "Tokens", URL: "https://vercel.com/account/settings/tokens".
+There has been no change in the accessibility tree.
+The focused UI element is 1 AXWebArea Tokens, URL: vercel.com/account/settings/tokens

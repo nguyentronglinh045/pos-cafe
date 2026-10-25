@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "permission-actual-light-photo-reviews-v2",
+  "recordedUtc": "2026-10-23T16:58:02.102Z",
+  "sourceSHA": "49e543d49176692bb2cdabc044cbc69e21054469",
+  "ciRun": "39988537874",
+  "collection": {
+    "path": "../evidence/night-ci05-collection.json",
+    "sha256": "207ea3cac3334c4af942863de51e80c86b2ba6ee584459f28153c204ed1c3d00"
+  },
+  "manualVisual": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-visual-review02.json",
+    "sha256": "a91f7a8803778b870bdc430f989303f3bf6a946a23fe14dbc1b9509910ed8352"
+  },
+  "manifest": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-39988537874-1/manifest.json",
+    "sha256": "bc9c746b0f4cfa89e4c5916621102e23e45ec515fb70a7874dde158f21d5428a"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/audit_technical_review",
+      "scope": "actualLIGHT6/343/source/strictproducer/native/reclaim and opened3freshphotos",
+      "verdict": "APPROVE"
+    },
+    {
+      "reviewer": "/root/audit_process_review",
+      "scope": "actualAPI/log/artifact/privacy/provenance/nativecleanup/fresh3photos",
+      "verdict": "APPROVE"
+    }
+  ],
+  "blockingFindings": 0,
+  "fullBackend": "PENDING",
+  "hostedApp": "NOT_PROVEN",
+  "production": "HELD"
+}

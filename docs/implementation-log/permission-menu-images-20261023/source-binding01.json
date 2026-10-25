@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-23T13:30:02.934Z",
+  "checkout": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+  "gitHead": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "gitStatusShort": "",
+  "verification": "Root exec git status --short/rev-parse at closeout; no tracked changes",
+  "packageLockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "payloadSHA256": "63fd1b75056e9db7b3ad452ab484a6af5fb8a7c4d8806ae7d69c8064acb69c8a"
+}

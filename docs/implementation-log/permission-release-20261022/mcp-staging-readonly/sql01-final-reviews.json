@@ -1,0 +1,30 @@
+{
+  "observedAt": "2026-10-22T08:23:08.870741+00:00",
+  "reviewedHandoffSha256BeforeReviewMetadata": "01a7cf9b63b99ff2845a44fdf5d40be36e7249c6ebc908e5b73921e60667a21b",
+  "sqlEvidenceSha256": "c59385cb3da589321ba1bbee8005b2a2ea214aec6d769d998f7e110c5284da3e",
+  "postConfigCheckSha256": "737188c0adf183f037b36a82171f3f9efe0b0c9585737bd52449ebfad5032bce",
+  "reviewers": [
+    {
+      "id": "/root/mcp_staging_scope_review",
+      "scope": "config isolation, current catalog, final read-only result/handoff",
+      "verdict": "APPROVE",
+      "blockingFindings": 0
+    },
+    {
+      "id": "/root/mcp_staging_evidence_review",
+      "scope": "independent raw JSON parse, exact hashes/time/values, history and claim accuracy",
+      "verdict": "APPROVE",
+      "blockingFindings": 0
+    }
+  ],
+  "reviewMode": "Offline only; no additional DB/API calls",
+  "approvedClaim": "Staging connection and observed read-only role/transaction SELECT PASS",
+  "notClaimed": [
+    "negative write blocking test",
+    "business data or permission logic tests",
+    "full backend/PIN coverage"
+  ],
+  "sqlToolCallsTotal": 1,
+  "originalDatabaseToolCallsTotal": 0,
+  "writeCalls": 0
+}

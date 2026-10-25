@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "permission-heavy-observed-v2",
+  "recordedUtc": "2026-10-23T16:58:29.053Z",
+  "sourceSHA": "49e543d49176692bb2cdabc044cbc69e21054469",
+  "runId": "39991210829",
+  "attempt": 1,
+  "branch": "review/permission-staging-20261023",
+  "createdAtUtc": "2026-10-23T16:58:29Z",
+  "status": "in_progress",
+  "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39991210829",
+  "profile": "SUPABASE_T04",
+  "ordinalCurrentAuthorization": 2,
+  "globalRetainedTag": "cloud-t0404",
+  "jobs": [
+    {
+      "id": 120543136924,
+      "name": "t04-profile",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39991210829/job/120543136924"
+    },
+    {
+      "id": 120543138784,
+      "name": "namespace-probe",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39991210829/job/120543138784"
+    },
+    {
+      "id": 120543139021,
+      "name": "pilot",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39991210829/job/120543139021"
+    },
+    {
+      "id": 120543139403,
+      "name": "capacity-probe",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39991210829/job/120543139403"
+    },
+    {
+      "id": 120543139962,
+      "name": "service-profile",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39991210829/job/120543139962"
+    }
+  ],
+  "otherSeven": "HELD_UNSPENT",
+  "fullBackend": "PENDING"
+}

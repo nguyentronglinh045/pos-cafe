@@ -1,0 +1,45 @@
+{
+  "recordedUtc": "2026-10-24T07:29:24.611Z",
+  "sourceSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+  "scope": "FINAL_REPORT_LOCAL_PROBE_AND_FIX_PLAN_ONLY",
+  "files": [
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-image-diagnostic-outcome-20261024.md",
+      "sha256": "78b3e5f07147a6ba9ba18ad6d8a0bbeb4c7d93beebfc9fe17e66e0a74660476b"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-hardening-cloud-outcome-20261024.md",
+      "sha256": "6052190f41553a7227645c601dbc28608cdaf2da09637322b83951c467df81ac"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-t04-oracle-hardening-2026-10-24.md",
+      "sha256": "8edd0925c03c4ef11a60ae6a354d7a362d71ef52ba162ad1cf0675d6c42954a1"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-image-diagnostic-local-probe-checkpoint01.json",
+      "sha256": "3dc621b4029e935747a1f3ead65da5396f3767519147fbed3baa40e57e86e8f1"
+    }
+  ],
+  "indexScope": "docs/workflow/tasks/README.md row244 only",
+  "reviewers": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE_REPORT_ONLY",
+      "provenanceCorrectionReapproved": true
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "provenanceCorrectionReapproved": true
+    }
+  ],
+  "localMechanism": "Opaque-origin warm fetch does not hit cache in observed local Chromium control; stable HTTP does; no-store negative preserved",
+  "actualCloudOperand": "UNKNOWN_COMPOUND_PREDICATE65",
+  "fixPlanImplementation": "NOT_IMPLEMENTED",
+  "wholeStatus": "FAIL",
+  "diagnosticStatus": "DIAGNOSTIC_FAIL",
+  "acceptanceChanged": false,
+  "noFurtherCloudRun": true,
+  "merge": "NOT_RUN",
+  "deploy": "NOT_RUN"
+}

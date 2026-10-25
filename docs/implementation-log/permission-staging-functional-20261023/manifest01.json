@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-10-23T12:22:42.356Z",
+  "source": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "coverageSummaryBoundInUnitSummary": true,
+  "topLevelEvidenceAndHandoff": [
+    {
+      "path": "api-session-closeout01.json",
+      "bytes": 488,
+      "sha256": "4cf9d50f5a86c8f1ac4bc406042e01332cacc98c4553f13a5b911edb59a8a088"
+    },
+    {
+      "path": "auth-off-dashboard.png",
+      "bytes": 45994,
+      "sha256": "5e3fb784c8b3979836be92ee8b6dc9581cf8724fbf4a5c9be1487a215544d578"
+    },
+    {
+      "path": "auth-restored-on-dashboard.png",
+      "bytes": 46163,
+      "sha256": "42646fab9c59dbe044cfdebf3a4786e316181597eacbd8508b1136c99c8e0aea"
+    },
+    {
+      "path": "auth-settings-off01.json",
+      "bytes": 157,
+      "sha256": "560e53781462c698a8998d29294451cb8ffd95507a22f2f3c4681a15148ca50b"
+    },
+    {
+      "path": "auth-settings-restored01.json",
+      "bytes": 199,
+      "sha256": "62e571f3eaa5c02fb7ba04d4bf0987963ea4cdb77a0993132fb3791b37662b29"
+    },
+    {
+      "path": "build01.log",
+      "bytes": 791,
+      "sha256": "0a2ab1ac59824762368c541cc78ba378deb7936ce8f71df0c9ce4aebbe3afb9e"
+    },
+    {
+      "path": "cashier-denial-proof01.json",
+      "bytes": 9955,
+      "sha256": "4bfb47ed8c34b2cb439351835d65fcf96fd21734cfa4cc47781f1f5805888aa0"
+    },
+    {
+      "path": "cashier-pos-A.png",
+      "bytes": 25469,
+      "sha256": "391be2bbba232ddb300e5863b717ba1951c0d1430fc58f58bbbf6dc30498c464"
+    },
+    {
+      "path": "credential-custody-acl01.json",
+      "bytes": 2207,
+      "sha256": "70b34fb561a6a72fa13f49030bd788416a9e8d55ec6ffe63486202c27c05ec6b"
+    },
+    {
+      "path": "evidence-secret-scan-final01.json",
+      "bytes": 211,
+      "sha256": "c67f043300602eaa6f972ca49fd3a5e58db9ca77c4342b514f596b9d04c5ae74"
+    },
+    {
+      "path": "evidence-secret-scan01.json",
+      "bytes": 215,
+      "sha256": "7add5f6936ad9bcbf5a9f28510c82d36ed70f56dfe929a0f9343f455122e8fd6"
+    },
+    {
+      "path": "executed-api-cells01.json",
+      "bytes": 29432,
+      "sha256": "9e8e80fe9d509c261600ccab4439e03d59b999016dea852c81ac19bbb6f955ea"
+    },
+    {
+      "path": "functional-results01.json",
+      "bytes": 9730,
+      "sha256": "156c3d0d6203e6f5b972d172d3e577af6f0282103994c219aa3b9b01e1006e30"
+    },
+    {
+      "path": "functional-summary01.json",
+      "bytes": 2710,
+      "sha256": "ec4e4b18acf0f0e91d1d275f3e550043fb26f1ca3ae029a537155cd56a1b3e70"
+    },
+    {
+      "path": "kitchen-ticket-order1.png",
+      "bytes": 37492,
+      "sha256": "595138f273daa340130d926d03543ae5f2fc46a96a1d051a3b92faf417bc515e"
+    },
+    {
+      "path": "legacy-direct-order-read-denial01.json",
+      "bytes": 238,
+      "sha256": "a2bd41b21be9d3b164bd3c5729e7e5443f902dc7f6eb7a502e572aecbb337699"
+    },
+    {
+      "path": "mcp-readback01.txt",
+      "bytes": 165,
+      "sha256": "f837d8f7bc596d93489ade4695f79d6f8512d61b234ac45711c390190c8bbefc"
+    },
+    {
+      "path": "mcp-readback02.txt",
+      "bytes": 61,
+      "sha256": "a8911a0883a411e505f687198309c6e16df0657188456422dceac5ad3a384e9d"
+    },
+    {
+      "path": "owner-authorization-extract01.json",
+      "bytes": 1839,
+      "sha256": "3577309c04d92601aafb4959c1cc6bd214353c93b3dbc26e72038db2df87050d"
+    },
+    {
+      "path": "owner-created-cashier-A.png",
+      "bytes": 62887,
+      "sha256": "01c693d0a02b005278c08e64fc5f42a05680aceea8c335281d93e68807016ae6"
+    },
+    {
+      "path": "owner-pos-A.png",
+      "bytes": 29416,
+      "sha256": "ce89344550e46d3ac441e21bc8f2b05fbde89cb45c3c197746073a3dddfd0c9d"
+    },
+    {
+      "path": "owner-repaired-A.png",
+      "bytes": 29478,
+      "sha256": "14b813952bcf0d7eceb051c9fa3ed2a016736c9fdbd17ff15d7ddd63253b369c"
+    },
+    {
+      "path": "paid-receipt-order1.png",
+      "bytes": 45327,
+      "sha256": "56df8592947eb75c1362388adda6ac324ba81f58112a16683ffdf471d63b4b6d"
+    },
+    {
+      "path": "permission-live-revocation-proof01.json",
+      "bytes": 412,
+      "sha256": "724ec6dd2504f42d3c5ccb7bb16f2d48c5cc35e58bef31d34da63bf7cd8f3cf1"
+    },
+    {
+      "path": "required-pin-change-A.png",
+      "bytes": 21535,
+      "sha256": "c430fb25fb6513de573c6bafb1a16296ca5bc14f91b437252b307786eaee1b32"
+    },
+    {
+      "path": "response-projections01.json",
+      "bytes": 74582,
+      "sha256": "e0585cb6fa7a820360e1e2446af7f5aaa18e259a4f25f6544f093add28422c65"
+    },
+    {
+      "path": "role-read-projections-proof01.json",
+      "bytes": 525,
+      "sha256": "61263ba8be3c71c5faa1baaefb8267d688fce1a50abcf43055dd2040cf375b1e"
+    },
+    {
+      "path": "sale-payment-proof01.json",
+      "bytes": 3519,
+      "sha256": "f6d9700b1325a5b528e812b79e550476085f00696541f11b056283d26a596020"
+    },
+    {
+      "path": "session-revocation-proof01.json",
+      "bytes": 155,
+      "sha256": "739da0c3496fcaa6d0372f6b4c4025ff9c78dd95ff3f3b2adc07c67846eb6ef5"
+    },
+    {
+      "path": "source-test-binding01.json",
+      "bytes": 365,
+      "sha256": "e18ecb1e61c5deca9b505bcfe2c06812ca14f9cb7b4c7ebe636c5ad85d218ea3"
+    },
+    {
+      "path": "tenant-isolation-proof01.json",
+      "bytes": 409,
+      "sha256": "48d2d37dbf5f9099971518de1f688c17c4116f066b012b196faefd07d18f9776"
+    },
+    {
+      "path": "unit-summary01.json",
+      "bytes": 372,
+      "sha256": "6ef3d83d3315d8887086182e1b6e1f14bdd6cf89e60a3cb7c1ba8a3c66e1642c"
+    },
+    {
+      "path": "unit01.json",
+      "bytes": 911049,
+      "sha256": "e322abaffd69024c30b6c9a1762f5bec1286f7dad6035f5529f6e98a98f06a40"
+    },
+    {
+      "path": "unit01.log",
+      "bytes": 4139,
+      "sha256": "ed14808de6f459d1f16140bce68b7948eb9d45c9c555164884ad3958a777ee47"
+    },
+    {
+      "path": "coverage01/coverage-summary.json",
+      "bytes": 13888,
+      "sha256": "e805eff96da4f8f91eaaa3832430a3a171987f52332b6b92aa437d73f54f57d4"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-staging-functional-2026-10-23.md",
+      "bytes": 16820,
+      "sha256": "d8b5616db8be811b5d896fe6728069f402b75b378fdc814e12f9a2d990324723"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/README.md",
+      "bytes": 50050,
+      "sha256": "7a6a20c45f057041e8bd48c8a2f3af9dadd075a0eaca9d982f829dba49d36485"
+    }
+  ]
+}

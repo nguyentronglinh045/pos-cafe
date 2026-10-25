@@ -1,0 +1,6 @@
+{
+  "schemaVersion": "permission-pg16-reclaim-v1",
+  "status": "NOT_PRESENT",
+  "rootRemoved": true,
+  "processReleased": true
+}

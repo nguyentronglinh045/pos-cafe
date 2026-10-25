@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "permission-bp4-restoration-v1",
+  "status": "RESTORED_AND_VERIFIED",
+  "authorization": "Owner reply call_22d0d089d59943ce876be5140ea1615e: Cho phép bạn khôi phục đúng thư mục task từ Recycle Bin, rồi tiếp tục BP4 (khuyến nghị)",
+  "target": "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+  "method": "Windows Recycle Bin Restore of exactly one matching Name+DeletedFrom item",
+  "verifiedAtUTC": "2026-10-23T03:18:32.237Z",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "sourceClean": true,
+  "preRestoreInventory": {
+    "files": 1346,
+    "directories": 90,
+    "junctions": 2,
+    "logicalFileBytes": 51278927
+  },
+  "restoredWithinSameVolume": "D",
+  "sourcePinsVerified": 7,
+  "nodeEvidenceOriginalHashesVerified": true,
+  "oldLedger": "phase03 CLOSED and pending empty; no reset",
+  "fixture": "Restoring the parent also restores night-node06; two test junctions remain and must be removed before publication admission. Earlier deletion authorization exists but exec policy rejected removal.",
+  "externalExecution": "NONE",
+  "databaseAccess": "NONE"
+}

@@ -1,0 +1,34 @@
+27 receipt boundary control directories (961434 logical bytes); automatic policy rejected deletion:
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-8Msuj1
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-9PTnGC
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-ClgGQQ
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-dkQWAY
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-Dv90RV
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-gHLufw
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-gib758
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-hbmL5g
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-HSOaq8
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-Jhrif8
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-K2Qqoy
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-kmkLdD
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-MEKR5S
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-pNoNVw
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-SrxPdq
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-svVnZD
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-uzIWKh
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-vb23yf
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-Vju01H
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-WjVjFX
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-xdsfmC
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-xJpGg8
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-xkyqKF
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\isolated-receipt-control-yMFRuJ
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\receipt-reporter-control-72PBho
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\receipt-reporter-control-NxaC2q
+D:\Workspace\pos-cafe-permission-timeonly-20261022\code\artifacts\receipt-reporter-control-ZYp6za
+
+2 previously authorized diagnostic controls (57032 logical bytes); prior automatic policy rejection:
+D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/candidate-diagnostic-control-I5Zvys
+D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/candidate-diagnostic-control-B7roIZ
+
+No deletion executed. Source and durable evidence retained.

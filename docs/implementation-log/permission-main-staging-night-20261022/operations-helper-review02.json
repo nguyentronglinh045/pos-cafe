@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "permission-independent-helper-review-v1",
+  "recordedAtUtc": "2026-10-22T14:18:38.185Z",
+  "slices": [
+    {
+      "artifact": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/settle-candidate-ci02.mjs",
+        "sha256": "0eb9525da1aa0269f0e3858384120ad60a5e76285431975a8d048f3524228807"
+      },
+      "author": "/root",
+      "reviewers": [
+        {
+          "name": "/root/mcp_staging_scope_review",
+          "scope": "source",
+          "verdict": "APPROVE"
+        },
+        {
+          "name": "/root/mcp_staging_evidence_review",
+          "scope": "operations",
+          "verdict": "APPROVE"
+        }
+      ],
+      "basis": "Actual reviewer messages: exact three constant replacements of reviewed01, source4d1/run39792208893/tag02; actual terminal/raw refs and exact own pending before wx terminal+validated API settlement. No execution by reviewers; missing/unknown proof cannot settle or refund. If ledger update succeeds but final receipt write fails, reconcile rather than replay."
+    },
+    {
+      "artifact": {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-postgate-ci.mjs",
+        "sha256": "769e66c5bedbd8b65cfa5a5e70da4c3fef085152af4b10fe581eab15f8ddd3be"
+      },
+      "author": "/root/budget_time_guard_fix",
+      "reviewers": [
+        {
+          "name": "/root/mcp_staging_scope_review",
+          "scope": "source",
+          "verdict": "APPROVE"
+        },
+        {
+          "name": "/root",
+          "scope": "operations",
+          "verdict": "APPROVE"
+        }
+      ],
+      "basis": "Independent static source/guard contract review: synthetic tested merge vs candidate role mapping; PR/base/head/parents/tree/repository IDs; raw bounded metadata/log and canonical workflow blob SHA1+SHA256; wx preservation. Collection only, no reserve/settle/PR/merge. Actual fullgate/two reviewed packet/ownpending/fresh base guard remain mandatory. Author43pure checks are not actual PR/main proof."
+    }
+  ],
+  "limit": "Helper preparation only. Actual CI terminal/native proof and all existing gates required; no additional grant or runtime PASS."
+}

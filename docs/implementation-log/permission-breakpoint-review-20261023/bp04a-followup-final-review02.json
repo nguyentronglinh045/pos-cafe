@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "permission-breakpoint-review-v1",
+  "breakpoint": "BP4A_FOLLOWUP_ARCHIVE_STOP02",
+  "recordedAtUtc": "2026-10-23T04:13:18.310Z",
+  "status": "APPROVE_ACCURATE_OUTCOME_AND_OFFLINE_REMEDIATION_PROPOSAL",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "reviewedFiles": {
+    "bp04a-guard-amendment02.json": "ff0f426347c85b5f9e7e9809bc5144d0d79c904e35dccaabfbd68268e1d052f8",
+    "bp04a-guard-orphan02.json": "ee6207124b9f324061765a9e4d56c1ac54a56ff6f24c6140db30662ebf570920",
+    "bp04a-guard-orphan02.proof.json": "e762b154deabeacd6fcccec2cfa437c8da0480164082c0a53754b8a68f47dfa4",
+    "bp04a-guard-orphan02.config.json": "13af58371a91a75d2f416a2576119bcfb8449758c608349844b8b0bc60a78828",
+    "bp04a-guard-orphan02.started.json": "699e8d13eb6a3e1d30c4f5fd72da9a23fb9a2f6052c88ca2744a9c5bd0db0812",
+    "bp04a-guard-worker-ready02.json": "c2f442edd55216d5a54268f96282ffa2da14254ee6a729f02da019e6f0d2382e",
+    "bp04a-guard-parent-ack02.json": "86dd9b5eed063f94fdae094e02ce42ea4c1ca149ee8c0c39fd5636deccabed65",
+    "bp04a-local01.json": "7f60f226c1dc938d619f15f0bbedccfa0eba2c1c234cb77231ac02f5cdd812fb",
+    "bp04a-local01.started.json": "3326f0d35f72ae4c9555f09bb45ad689a5ea497e9f8bfb4d68019155e24ccca6",
+    "bp04a-archivePreflight01.started.json": "d6b93661b1f4e4ad6d33159140bf6f5c8c3a6695d5501e94b1fdda304fe619ef",
+    "bp04a-cache-root-observation02.json": "9f2c0652d085de52ded0fc657a12b21ce6c7ceaaa0eb4e6489b8130d0b6d1e94",
+    "bp04a-cache-root-version-observation02.json": "d2e4f9b8e273b8bf95e122eb6be0501f50c0811609d0cb1f4fa19be3f2542ad5",
+    "bp04a-followup-observation02.json": "8010177f43c6fe80498bb9d6a70282d5401062604d693994b4c1e668e3c739a5",
+    "bp04a-archive-stop-and-remediation02.md": "125cf8be15e48d96e71562a790837c979d0c23c8ee86000a869373341c624fe9"
+  },
+  "requiredReviewers": [
+    {
+      "agent": "/root/bp1_authority_final_review",
+      "nonAuthor": true,
+      "scope": "owner amendment, exact actual results/quota, deadline, no retry and bounded offline proposal",
+      "verdict": "APPROVE"
+    },
+    {
+      "agent": "/root/bp1_evidence_final_review",
+      "nonAuthor": true,
+      "scope": "raw-copy hashes, READY/ACK/Job release oracle, nine existing-cache SRI samples, diagnosis limits and offline proposal",
+      "verdict": "APPROVE"
+    }
+  ],
+  "guard02RecipeReview": {
+    "sha256": "7cacc8dd1eb3574b5597660462538993fc1bc4119a1ee1cd638ddae16365a564",
+    "authority": "APPROVE_BEFORE_EXECUTION",
+    "evidence": "APPROVE_BEFORE_EXECUTION",
+    "readyPartialReadRace": "RESOLVED_BEFORE_EXECUTION"
+  },
+  "actual": {
+    "guard02": "PASS",
+    "archivePreflight": "FAIL_OR_UNKNOWN",
+    "archiveAttemptsSpent": 1,
+    "archiveAttemptsGranted": 1,
+    "archiveItemsVerified": 0,
+    "downloadedBodyBytes": 5484,
+    "install": 0,
+    "build": 0,
+    "unitCoverage": 0,
+    "push": 0,
+    "ci": 0,
+    "backend": 0,
+    "databaseAccess": "NONE"
+  },
+  "brokenMainRecipeVerdict": "CHANGES_REQUESTED before any new run: archive-root compatibility and missing per-item error diagnostics",
+  "nextPermission": "PENDING_OWNER for recipe fix and offline controls only; no new network attempt, install, build or unit. Existing deadline remains 2026-10-23T04:30:43Z.",
+  "transcriptionNote": "Final approvals concern accurate outcome and proposal, not the failing recipe or full runtime gate. This metadata records explicit verdicts only."
+}

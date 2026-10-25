@@ -1,0 +1,52 @@
+{
+  "version": "permission-staging-preflight-v2",
+  "assurance": "ACTUAL_HTTP",
+  "operation": "READ_ONLY_PREFLIGHT",
+  "baselineSource": "90e30f2b2b0f046c549b268b32f1840ad99c2409",
+  "manifestSha256": "75461dda2633adbb981a414964d1bde0a72c62d702e9d92afc82c59bdd01f9a4",
+  "coverageSha256": "0943976f676dcfcecfd76f79c117c81a3ab8cb8d016320484b4593602cbd0e7e",
+  "sourceFingerprintSha256": "59b611459df5ec751528f27a675bbe32740971eaf52d0dd039ac7a74eda7e849",
+  "gitHead": "dd8efd4908c14f851fb56623761ca0e5abd26af8",
+  "sourceScope": "ALL_TRACKED_FILES_PLUS_FOUR_STAGING_FILES",
+  "sourceFileCount": 1097,
+  "workstream": "permission-staging-20261021",
+  "attemptConsumed": true,
+  "grantId": "REST_PROBE_REMEDIATION_01",
+  "runtimeNode": "v24.16.0",
+  "privateConfigSha256": "0841011f5e6f37c678e6de5b7408e598e5ed6d835ed18f35f843a92cb29c51c7",
+  "tools": [
+    {
+      "path": "scripts/permission-staging.mjs",
+      "sha256": "f23543a4db92eef39e9b557db748b71efeae008164a335e07b05a64504b46ed9"
+    },
+    {
+      "path": "scripts/permission-staging-cli.mjs",
+      "sha256": "b7e59ba19fa2b4c3eddac56767dcbd27cedaada69dad9a5d39cb99892780bd99"
+    }
+  ],
+  "projectRef": "ineckiashpwloncxnbqx",
+  "apiOrigin": "https://ineckiashpwloncxnbqx.supabase.co",
+  "startedUtc": "2026-10-21T15:25:21.485Z",
+  "endedUtc": "2026-10-21T15:25:24.053Z",
+  "elapsedMs": 2940,
+  "status": "PASS",
+  "errorCode": null,
+  "requests": [
+    {
+      "path": "/auth/v1/settings",
+      "status": "PASS",
+      "httpStatus": 200,
+      "classification": "AUTH_SETTINGS_REACHABLE"
+    },
+    {
+      "path": "/rest/v1/__permission_staging_probe_20261021__?select=*&limit=0",
+      "status": "PASS",
+      "httpStatus": 404,
+      "postgrestCode": "PGRST205",
+      "classification": "REST_ROUTER_MISSING_RESOURCE"
+    }
+  ],
+  "restDataAccessVerified": false,
+  "mutationReady": false,
+  "businessTestsRun": false
+}

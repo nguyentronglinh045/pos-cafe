@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "permission-release-publication-receipt-v1",
+  "atUtc": "2026-10-22T02:07:22.697Z",
+  "sourceSHA": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+  "branch": "run/permissions-20261020",
+  "remoteSHA": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+  "claimSHA256": "74fd7017a497ddc2da4658798f68756edca3ac637e04ecf0b9009f7282e5a598",
+  "runs": [
+    {
+      "conclusion": "failure",
+      "databaseId": 39709124524,
+      "event": "push",
+      "headSha": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+      "status": "completed",
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39709124524",
+      "workflowName": "POS light CI"
+    }
+  ],
+  "observedRunCount": 1,
+  "mainPushed": false,
+  "dbRun": false
+}

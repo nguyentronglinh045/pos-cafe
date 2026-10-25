@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "permission-compact-evidence-custody-v1",
+  "recordedAtUtc": "2026-10-22T16:00:36.199Z",
+  "author": "/root",
+  "copies": [
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-node05.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/node05-local-evidence.json",
+      "bytes": 8461,
+      "sha256": "8a2025b8dddace0d053f1efd735cbfcf8567e9948689e79111b59d5751a91ce9"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/operator-indexeddb-local-probe01.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/operator-indexeddb-probe-evidence01.json",
+      "bytes": 2330,
+      "sha256": "cd3bb500d95923f0d134bbb3acb8e905083ad967ef8dc54223fa86b80b8dde67"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0402.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/observed-4d1-t0402.json",
+      "bytes": 18383,
+      "sha256": "eeeb8489bc9ff9902e3ef9dc5d3f56ce258b942ba9773983033f80e0d32f8162"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-service01.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/observed-4d1-pin01.json",
+      "bytes": 3952,
+      "sha256": "bd194cd3f012d20629fe46b73c0dae67d63fe54d2243e8f5bfc1e0c5cc277175"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-service02.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/observed-4d1-t0202.json",
+      "bytes": 4532,
+      "sha256": "f8929fd23d2aeb2be7bf272e589d566eb44f4b98e4d4c10dd80faaf384d530b4"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/probe-operator-indexeddb01.mjs",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/operator-indexeddb-probe01.executed.mjs.txt",
+      "bytes": 7563,
+      "sha256": "a8f05a2cc7b271c81314e8f24582118f85656a26149298ece279f05cd0eff1cb"
+    }
+  ],
+  "holder": "Owner of this Windows workspace",
+  "retention": "Keep until owner explicitly authorizes task evidence cleanup.",
+  "rawPrivateArtifacts": "No private canary/key/captured rows or raw private archives transferred. Runtime snapshots are previously safe-exported producer observations. Node TAP/stderr remain in original evidence with hashes in the archived receipt.",
+  "pathInterpretation": "Copies preserve original raw bytes and absolute references. To relocate, map each archivedPath to its original source path and verify SHA256; never reinterpret an old-source runtime as new-source PASS.",
+  "scope": "Local docs archive only; no push, source, workflow, DB or provider action."
+}

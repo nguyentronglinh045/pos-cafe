@@ -1,0 +1,13 @@
+{
+  "recordedUtc": "2026-10-24T09:36:15.242Z",
+  "runId": "40082616309",
+  "sourceSHA": "4e78a8c11d2d895ccebaccd2b2f7d3b2c69bcb3e",
+  "attempt": 1,
+  "confirmation": "RUN_T04_IMAGE_DIAGNOSTIC",
+  "scope": "CANDIDATE_IMAGE_DIAGNOSTIC_ONLY",
+  "tag": "cloud-t04-image02",
+  "diagnosticCount": 1,
+  "maxDiagnosticCount": 1,
+  "wholeT04": "NOT_RUN",
+  "mergeDeploy": "NOT_AUTHORIZED"
+}

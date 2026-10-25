@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "permission-supplemental-mapping-reviews-v3",
+  "recordedUtc": "2026-10-24T01:50:00.416Z",
+  "sourceSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "mapping": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping04.json",
+    "sha256": "80a2ebc348c6634fdab9b78657f1a4ef4908771a33a2289f294021adb8a67e5b"
+  },
+  "validationSHA256": "a25e6603572492b57113f49109794a3d596cb16e3fd35f22fb58c8dbf4b6544f",
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "Source pins/147anchors/119+3/149selectors/catalog35/760/context34/rulepins and no oldPASS import"
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Independent fullpins/120AST+27lineScopes/249references/7effectranges/6rulefiles/149selectors"
+    }
+  ],
+  "runtimeStatus": "PENDING",
+  "acceptanceChanged": false,
+  "olderMapsPreserved": true
+}

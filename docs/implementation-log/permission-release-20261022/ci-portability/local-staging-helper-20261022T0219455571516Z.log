@@ -1,0 +1,23 @@
+Scope: syntax plus four filesystem helper cases; remaining staging cases intentionally not run while other source authors are active.
+Checkout: D:/Workspace/pos-cafe-permission-ci-fix-20261022/code
+HEAD: 38a55aab775e1d70dba4b62d6658f41e28f8aef1
+SHA256 8dfce38ecbaa7fdb373523fa7bb353ca6cd3fe7d90c0192edba26ca29869f1fa scripts/permission-staging-cli.mjs
+COMMAND node --check scripts/permission-staging-cli.mjs
+EXIT 0
+SHA256 d5945badbf50634da020e328b1d17f8eb5b3709c445bb853d1ce3e6d2283cc1b scripts/permission-staging.test.mjs
+COMMAND node --check scripts/permission-staging.test.mjs
+EXIT 0
+COMMAND node --test --test-name-pattern=private config is accepted outside|existing canonical code/docs boundaries|dangling docs links or ancestors|permission and non-directory errors scripts/permission-staging.test.mjs
+✔ private config is accepted outside a code-only checkout with a genuinely absent docs boundary (3.8618ms)
+✔ existing canonical code/docs boundaries reject inside and symlink-aliased private configs (8.6732ms)
+✔ dangling docs links or ancestors never become an absent-directory fallback (2.5121ms)
+✔ permission and non-directory errors are propagated without canonical-boundary fallback (0.9362ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 304.404
+EXIT 0

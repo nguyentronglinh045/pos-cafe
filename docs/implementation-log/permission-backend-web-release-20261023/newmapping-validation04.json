@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "permission-source-mapping-rebind-validation-v1",
+  "author": "/root/e2e_diagnosis",
+  "recordedAtUtc": "2026-10-24T01:45:59.433Z",
+  "input": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping03.json",
+    "sha256": "8ca1d763a8dfacce31dfc5771330aa6eb8400c301a5c4f92ac53a7f9561d223a"
+  },
+  "output": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping04.json",
+    "sha256": "80a2ebc348c6634fdab9b78657f1a4ef4908771a33a2289f294021adb8a67e5b",
+    "bytes": 425233
+  },
+  "source": {
+    "sha": "90824f7cb81660818ab247f7dccf55b8a111d471",
+    "tree": "7f33dd64e2a17b56277698840a4e43bb39f2f844",
+    "trackedFiles": 1115,
+    "trackedBytes": 41827016,
+    "fingerprint": "bd50735607395b09db1c0da701df193d6b2e180da946016d0b44a0d62abe1d74",
+    "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+    "clean": true
+  },
+  "commandRecipe": {
+    "reused": "operations/prepare-fullgate-source-mapping02.mjs Git-blob pin/line/catalog/selector comparison approach",
+    "adaptation": "One-off data-only supplemental-v3 to v4 derivation via existing Node24 stdin; historical hardcoded generator not executed/edited; no executable or framework persisted.",
+    "canonical": "git ls-tree -rz --full-tree H_final; ASCII-sort paths; git cat-file --batch exact blob bytes; SHA256(concat(path,NUL,SHA256(blob),NUL)).",
+    "anchors": "Code lines: exact Git text split LF. 120 scopes: TypeScript AST getStart/getEnd exact substring. 27 scopes +7 effect ranges: Git lines joined LF without trailing LF. Docs23 anchors and6 rule-file ranges: declared current working bytes / normalized CRLF-to-LF line representation.",
+    "selectors": "Compare every149 full file/name/project receipt selector to current runtimeStageCatalog required identities; compare35 summarized stages/config hashes/execution profiles and unchanged12 obligations/34 contexts."
+  },
+  "actualCounts": {
+    "scope": "PURE_METADATA_COMPARISON_NOT_RUNTIME",
+    "trackedGitFilesVerified": 1115,
+    "selectedAcceptancePinsVerified": 119,
+    "supportingToolingPinsVerified": 3,
+    "stages": 35,
+    "requiredIdentities": 760,
+    "supplementalObligations": 12,
+    "errorContextChains": 34,
+    "anchorReferences": 147,
+    "uniqueAnchorReferences": 108,
+    "assertionScopesVerified": 147,
+    "astScopesVerified": 120,
+    "lineScopesVerified": 27,
+    "independentTextSitesVerified": 79,
+    "docsAcceptanceAnchorsVerified": 23,
+    "effectAssertionRangesVerified": 7,
+    "exactRecipeSelectorsVerified": 149,
+    "allConfigAndLockPinsChecked": true,
+    "threeCorrectedEffectPoliciesPreserved": true,
+    "A18D19RulesUnchanged": true,
+    "testsRun": false,
+    "networkCalls": 0,
+    "databaseCalls": 0,
+    "dispatches": 0,
+    "deployments": 0,
+    "oldRuntimeEvidenceInherited": false
+  },
+  "pinChanges": {
+    "selected": [
+      {
+        "path": "ci/release-policy.json",
+        "fromSHA256": "6c493a501c4e239c78ed4f4ea9c2c2508367ef5643243ff675e91f3175331403",
+        "toSHA256": "70322063e22763e180c4dcbec0a3fb3ac67f83fbd93d24fb81f82e8642e6455f"
+      },
+      {
+        "path": "scripts/permission-runtime-t04.mjs",
+        "fromSHA256": "d74ce1ad1853cbe399c9c49e744ad792e15201442816380b2fdca560251e9004",
+        "toSHA256": "5f669485cfdb7285681d8533fc90dc1d2df8d34793b3502899acb971560c3cbb"
+      },
+      {
+        "path": "tests/supabase/permissionCandidate.spec.ts",
+        "fromSHA256": "570a6aafdb94f4250f698065dcda7a10ee601b4ec0c559f7d9bef90ed71457d1",
+        "toSHA256": "efd1add90a56d83e0586df7ebde294282e86a93ee1fcec701a6f80abcface636"
+      }
+    ],
+    "supporting": [
+      {
+        "path": "scripts/permission-runtime-error-facts.mjs",
+        "fromSHA256": "c0039225e22b63c0dda63d73a7b233ce5885a1d480a6c8a87b272b160d285b76",
+        "toSHA256": "1a3a8efbabeba152e72c2f542f51f6a63422ad30f87468d6ba0a2fcaf83601e5"
+      }
+    ],
+    "sourceDeltaFiles": 14,
+    "addedFiles": 5,
+    "acceptanceLineShifts": 0,
+    "assertionScopeChanges": 0
+  },
+  "semantics": {
+    "businessTestNamesPreserved": 6,
+    "candidateRequiredIdentities": 2,
+    "catalogUnchanged": true,
+    "allowedEffectsPoliciesUnchanged": 3,
+    "noOldPassInherited": true,
+    "allRuntimePending": true
+  },
+  "reviewStatus": "PENDING_TWO_NON_AUTHOR_REVIEWS",
+  "effects": {
+    "applicationEdits": 0,
+    "databaseCalls": 0,
+    "networkCalls": 0,
+    "testsRun": 0,
+    "dispatches": 0,
+    "deployments": 0,
+    "sourceFilesWritten": 0,
+    "newDocsFilesWritten": 2,
+    "predecessorUntouched": true
+  }
+}

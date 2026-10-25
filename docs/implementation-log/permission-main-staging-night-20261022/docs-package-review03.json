@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "permission-docs-package-two-scope-review-v1",
+  "recordedAtUtc": "2026-10-22T16:35:50.172Z",
+  "author": "/root",
+  "candidate": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/docs-package-manifest03.json",
+    "sha256": "9c2bbdbb8908fcf6a5b337be97bfa33a42b025e1bc8bb81b0ca26f5d6d559a56"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/final_security_join_review",
+      "scope": "SOURCE/docs accuracy and evidence bindings",
+      "verdict": "APPROVE",
+      "basis": "Actual final message explicitly approves exact9c2b...: independently verified61payload637277B,75prior unchanged,80direct refs and20terminalcopies110244B0mismatch; read-only photo validator PASS, actually viewed3images; conclusions/exemptions/privateSTATICboundary/erratum/chronology correct. No fullgate/main approval."
+    },
+    {
+      "reviewer": "/root/mcp_staging_evidence_review",
+      "scope": "OPS/custody/privacy/authorization",
+      "verdict": "APPROVE",
+      "basis": "Actual final message explicitly approves exact9c2b...: all61sizes/SHA/regularfiles,162rawrefoccurrences0mismatch, all75prior unchanged; custody9+6+20copies byte-equal; photos actually viewed; owned scope/noREADME/indexempty/baseHEAD537e verified; no credential-format hit; exactcounts/CLOSED/pending[]/deferred budget and future gate limits accurate. Local docs commit only."
+    }
+  ],
+  "resolvesCheckpointDocsReviewPending": true,
+  "scope": "Exact61payloadfiles plus manifest and this actual review metadata, local docs commit only. No README/unrelated paths/docs push/main/DB/Vercel action. CI03 bounded scope completed; overall main/full35/760/12+D19/R0/R1 remains PENDING."
+}

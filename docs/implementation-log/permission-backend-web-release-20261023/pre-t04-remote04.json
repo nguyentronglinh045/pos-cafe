@@ -1,0 +1,35 @@
+{
+  "recordedUtc": "2026-10-24T03:22:09.245Z",
+  "main": {
+    "ref": "refs/heads/main",
+    "node_id": "REF_kwDOS0i56q9yZWZzL2hlYWRzL21haW4",
+    "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/git/refs/heads/main",
+    "object": {
+      "sha": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+      "type": "commit",
+      "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/git/commits/2da0d7e10d65ed4e79c8628d65220582a6cbd32b"
+    }
+  },
+  "review": {
+    "ref": "refs/heads/review/permission-staging-20261023",
+    "node_id": "REF_kwDOS0i56toALXJlZnMvaGVhZHMvcmV2aWV3L3Blcm1pc3Npb24tc3RhZ2luZy0yMDI2MTAyMw",
+    "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/git/refs/heads/review/permission-staging-20261023",
+    "object": {
+      "sha": "f8ee03c195127bb440b0ede3142622ed21c3cc96",
+      "type": "commit",
+      "url": "https://api.github.com/repos/nguyentronglinh045/pos-cafe/git/commits/f8ee03c195127bb440b0ede3142622ed21c3cc96"
+    }
+  },
+  "in_progress": {
+    "total_count": 0,
+    "workflow_runs": []
+  },
+  "queued": {
+    "total_count": 0,
+    "workflow_runs": []
+  },
+  "waiting": {
+    "total_count": 0,
+    "workflow_runs": []
+  }
+}

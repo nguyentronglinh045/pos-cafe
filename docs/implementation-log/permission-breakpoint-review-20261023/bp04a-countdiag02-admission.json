@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "permission-bp4-countdiag-admission-v1",
+  "recordedAtUtc": "2026-10-23T06:58:44.3659529Z",
+  "grantSHA256": "742173b8a5372cbf46e908df6cc0ea23d4eb476ba9601d01eb0a42103238e04b",
+  "scriptSHA256": "e2c1aadf6da3219131a4c4c2ea8586c0f2f41c4a36a747daf352a611be8e8dbd",
+  "controlsSHA256": "90a3c3b442599ffea41de8efa61c9d97c64ea51766d4a8d51b3327f3a33b7173",
+  "controlsReportSHA256": "6b16c4818a9395370b06269e6de31b4eb668a10a1ecdb7764cb96bc1c0db17a6",
+  "observationSHA256": "ae50b1b931b3d5f39983f854feb00dbd77bd1f4a1875c9323d0fdc77a5bffa39",
+  "reviewers": [
+    {
+      "id": "/root/bp1_authority_final_review",
+      "verdict": "APPROVE",
+      "scope": "binding diff/owner grant/time/history"
+    },
+    {
+      "id": "/root/bp1_evidence_final_review",
+      "verdict": "APPROVE",
+      "scope": "binding diff/source/pins/unchangedlogic reuse"
+    }
+  ],
+  "controlsReuse": "11fake controls02 reused strictly for unchanged functions; wrapper02 syntax+independent source review only, no wrapper execution PASS claimed",
+  "readinessDeadlineUtc": "2026-10-23T07:04:34Z",
+  "noApplicationAdmission": true
+}

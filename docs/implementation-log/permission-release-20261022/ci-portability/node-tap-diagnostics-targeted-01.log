@@ -1,0 +1,383 @@
+TAP version 13
+# Subtest: watch worker diagnostics publish only bounded numeric observations without worker errors, paths or arbitrary JSON
+ok 1 - watch worker diagnostics publish only bounded numeric observations without worker errors, paths or arbitrary JSON
+  ---
+  duration_ms: 4.8759
+  type: 'test'
+  ...
+# Subtest: trace observes browser JS errors without exporting messages, URLs, secrets or unmapped paths
+ok 2 - trace observes browser JS errors without exporting messages, URLs, secrets or unmapped paths
+  ---
+  duration_ms: 1.1926
+  type: 'test'
+  ...
+# Subtest: trace snapshot counts resolve post-order references and expose only fixed screen observations
+ok 3 - trace snapshot counts resolve post-order references and expose only fixed screen observations
+  ---
+  duration_ms: 27.9576
+  type: 'test'
+  ...
+# Subtest: fixed selector and browser protocol errors never reflect error text
+ok 4 - fixed selector and browser protocol errors never reflect error text
+  ---
+  duration_ms: 0.4627
+  type: 'test'
+  ...
+# Subtest: trace distinguishes configured timeout from observed fixed-locator expect results without raw values
+ok 5 - trace distinguishes configured timeout from observed fixed-locator expect results without raw values
+  ---
+  duration_ms: 0.5518
+  type: 'test'
+  ...
+# Subtest: renderer crash protocol signals stay finite and never expose captured protocol content
+ok 6 - renderer crash protocol signals stay finite and never expose captured protocol content
+  ---
+  duration_ms: 0.5564
+  type: 'test'
+  ...
+# Subtest: protocol source strings do not become application errors and only top-level crash facts survive
+ok 7 - protocol source strings do not become application errors and only top-level crash facts survive
+  ---
+  duration_ms: 0.8326
+  type: 'test'
+  ...
+# Subtest: static browser runtime control has strict finite facts and cannot replace failed application acceptance
+ok 8 - static browser runtime control has strict finite facts and cannot replace failed application acceptance
+  ---
+  duration_ms: 1.1829
+  type: 'test'
+  ...
+# Subtest: static browser control refuses attribution while previous cgroup processes or descendants remain
+ok 9 - static browser control refuses attribution while previous cgroup processes or descendants remain
+  ---
+  duration_ms: 0.2387
+  type: 'test'
+  ...
+# Subtest: actual debug formatter CR prefixes and colored duration suffixes preserve crash facts without source-string errors
+ok 10 - actual debug formatter CR prefixes and colored duration suffixes preserve crash facts without source-string errors
+  ---
+  duration_ms: 0.4946
+  type: 'test'
+  ...
+# Subtest: partial browser control progress survives forced timeout without inventing completion or cleanup
+ok 11 - partial browser control progress survives forced timeout without inventing completion or cleanup
+  ---
+  duration_ms: 1.6927
+  type: 'test'
+  ...
+# Subtest: native browser fatal diagnostics export known source ordinals and numeric facts without paths or messages
+ok 12 - native browser fatal diagnostics export known source ordinals and numeric facts without paths or messages
+  ---
+  duration_ms: 0.604
+  type: 'test'
+  ...
+# Subtest: target crash markers expose only finite status and exit code for the static control
+ok 13 - target crash markers expose only finite status and exit code for the static control
+  ---
+  duration_ms: 0.2774
+  type: 'test'
+  ...
+# Subtest: real unzip streams only owned failed trace JSONL and never extracts resource files
+ok 14 - real unzip streams only owned failed trace JSONL and never extracts resource files
+  ---
+  duration_ms: 57.3821
+  type: 'test'
+  ...
+# Subtest: real unzip preserves JSONL boundaries after Playwright test.trace without a final newline
+ok 15 - real unzip preserves JSONL boundaries after Playwright test.trace without a final newline
+  ---
+  duration_ms: 82.025
+  type: 'test'
+  ...
+# Subtest: separate trace members retain aggregate decoded bounds and reject malformed member JSON
+ok 16 - separate trace members retain aggregate decoded bounds and reject malformed member JSON
+  ---
+  duration_ms: 8.3173
+  type: 'test'
+  ...
+# Subtest: missing, outside, duplicate, corrupt or oversized trace data remains unavailable and cannot change failure
+ok 17 - missing, outside, duplicate, corrupt or oversized trace data remains unavailable and cannot change failure
+  ---
+  duration_ms: 28.2444
+  type: 'test'
+  ...
+# Subtest: trace refusal stages and known locator outcomes stay finite in public diagnostics
+ok 18 - trace refusal stages and known locator outcomes stay finite in public diagnostics
+  ---
+  duration_ms: 2.0596
+  type: 'test'
+  ...
+# Subtest: temporary core handler is restored after success, action failure and failed setup; unsafe cleanup keeps it disabled
+ok 19 - temporary core handler is restored after success, action failure and failed setup; unsafe cleanup keeps it disabled
+  ---
+  duration_ms: 0.5385
+  type: 'test'
+  ...
+# Subtest: browser setup signatures become finite diagnostics without exporting private output
+ok 20 - browser setup signatures become finite diagnostics without exporting private output
+  ---
+  duration_ms: 0.204
+  type: 'test'
+  ...
+# Subtest: smoke timeout exposes only finite API stage and a known failing source location
+ok 21 - smoke timeout exposes only finite API stage and a known failing source location
+  ---
+  duration_ms: 0.9504
+  type: 'test'
+  ...
+# Subtest: shared core adapter rejects arbitrary units and requires zero limits plus non-piped pattern
+ok 22 - shared core adapter rejects arbitrary units and requires zero limits plus non-piped pattern
+  ---
+  duration_ms: 0.3725
+  type: 'test'
+  ...
+# Subtest: failure reporter retains the actual failed step location and finite locator while removing raw data
+ok 23 - failure reporter retains the actual failed step location and finite locator while removing raw data
+  ---
+  duration_ms: 1.2673
+  type: 'test'
+  ...
+# Subtest: core restore requires stopped unit plus recursively empty or confirmed absent cgroup
+ok 24 - core restore requires stopped unit plus recursively empty or confirmed absent cgroup
+  ---
+  duration_ms: 0.3236
+  type: 'test'
+  ...
+# Subtest: source binding distinguishes tested PR merge from head and refuses mismatched SHA/event/repo
+ok 25 - source binding distinguishes tested PR merge from head and refuses mismatched SHA/event/repo
+  ---
+  duration_ms: 0.1852
+  type: 'test'
+  ...
+# Subtest: Vitest requires exact discovered file set, totals and zero pending/fail/hook errors
+ok 26 - Vitest requires exact discovered file set, totals and zero pending/fail/hook errors
+  ---
+  duration_ms: 0.2934
+  type: 'test'
+  ...
+# Subtest: light tooling accounts for exactly the declared real-backend case without accepting any other skip or failure
+ok 27 - light tooling accounts for exactly the declared real-backend case without accepting any other skip or failure
+  ---
+  duration_ms: 0.3773
+  type: 'test'
+  ...
+# Subtest: Node TAP pending/cancelled/malformed counts cannot become a pass
+ok 28 - Node TAP pending/cancelled/malformed counts cannot become a pass
+  ---
+  duration_ms: 0.4518
+  type: 'test'
+  ...
+# Subtest: Node TAP failures expose only tracked script location and direct finite errno, never message signatures
+ok 29 - Node TAP failures expose only tracked script location and direct finite errno, never message signatures
+  ---
+  duration_ms: 0.7902
+  type: 'test'
+  ...
+# Subtest: passing TAP fixture strings and nested fake failure records cannot label a real failure
+ok 30 - passing TAP fixture strings and nested fake failure records cannot label a real failure
+  ---
+  duration_ms: 0.1752
+  type: 'test'
+  ...
+# Subtest: truncated, malformed and untrusted TAP locations publish no failure facts
+ok 31 - truncated, malformed and untrusted TAP locations publish no failure facts
+  ---
+  duration_ms: 0.4298
+  type: 'test'
+  ...
+# Subtest: nested TAP, file URLs and completed records before truncation preserve only observed source facts
+ok 32 - nested TAP, file URLs and completed records before truncation preserve only observed source facts
+  ---
+  duration_ms: 0.1951
+  type: 'test'
+  ...
+# Subtest: public TAP export requires parser source provenance, finite bounds and the node-tools phase
+ok 33 - public TAP export requires parser source provenance, finite bounds and the node-tools phase
+  ---
+  duration_ms: 0.6751
+  type: 'test'
+  ...
+# Subtest: TAP diagnostics bound output, YAML bodies and the number of exported source files
+ok 34 - TAP diagnostics bound output, YAML bodies and the number of exported source files
+  ---
+  duration_ms: 4.1528
+  type: 'test'
+  ...
+# Subtest: a real failing Node child produces the supported TAP metadata without exporting its error or title
+not ok 35 - a real failing Node child produces the supported TAP metadata without exporting its error or title
+  ---
+  duration_ms: 115.996
+  type: 'test'
+  location: 'D:\\Workspace\\pos-cafe-permission-ci-fix-20261022\\code\\scripts\\project-ci-results.test.mjs:595:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + []
+    - [
+    -   'scripts/a.test.mjs'
+    - ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'scripts/a.test.mjs'
+  actual:
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///D:/Workspace/pos-cafe-permission-ci-fix-20261022/code/scripts/project-ci-results.test.mjs:605:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1306:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+    Test.postRun (node:internal/test_runner/test:1447:19)
+    Test.run (node:internal/test_runner/test:1372:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: smoke requires every project/case and exact applicability skips without retries or expected failures
+ok 36 - smoke requires every project/case and exact applicability skips without retries or expected failures
+  ---
+  duration_ms: 0.4879
+  type: 'test'
+  ...
+# Subtest: smoke preflight requires the one original desktop case and never substitutes for full matrix
+ok 37 - smoke preflight requires the one original desktop case and never substitutes for full matrix
+  ---
+  duration_ms: 0.4232
+  type: 'test'
+  ...
+# Subtest: failed Playwright diagnostics expose known source locations and counts without raw errors or titles
+ok 38 - failed Playwright diagnostics expose known source locations and counts without raw errors or titles
+  ---
+  duration_ms: 0.3056
+  type: 'test'
+  ...
+# Subtest: permission light profile requires all seventeen phases, including UI calibration, without app acceptance substitutions
+ok 39 - permission light profile requires all seventeen phases, including UI calibration, without app acceptance substitutions
+  ---
+  duration_ms: 0.5618
+  type: 'test'
+  ...
+# Subtest: public evidence excludes arbitrary binding/count/raw fields and incomplete phase sets fail
+ok 40 - public evidence excludes arbitrary binding/count/raw fields and incomplete phase sets fail
+  ---
+  duration_ms: 0.3177
+  type: 'test'
+  ...
+# Subtest: public native diagnostics independently reject out-of-domain numbers even without private parser
+ok 41 - public native diagnostics independently reject out-of-domain numbers even without private parser
+  ---
+  duration_ms: 0.5015
+  type: 'test'
+  ...
+# Subtest: public UI calibration counts stay finite, numeric and separate from product acceptance
+ok 42 - public UI calibration counts stay finite, numeric and separate from product acceptance
+  ---
+  duration_ms: 0.4619
+  type: 'test'
+  ...
+# Subtest: failed Vitest diagnostics retain known counters and source paths without raw messages or credentials
+ok 43 - failed Vitest diagnostics retain known counters and source paths without raw messages or credentials
+  ---
+  duration_ms: 0.4258
+  type: 'test'
+  ...
+# Subtest: fresh capture retains output privately; guard refusal stops dependent process and never echoes output
+ok 44 - fresh capture retains output privately; guard refusal stops dependent process and never echoes output
+  ---
+  duration_ms: 46.1347
+  type: 'test'
+  ...
+# Subtest: light supervisor constrains descendants and passes no credential environment
+ok 45 - light supervisor constrains descendants and passes no credential environment
+  ---
+  duration_ms: 0.3348
+  type: 'test'
+  ...
+# Subtest: allocation facts deduplicate overlapping roots and hardlinks without treating logical bytes as allocated bytes
+ok 46 - allocation facts deduplicate overlapping roots and hardlinks without treating logical bytes as allocated bytes
+  ---
+  duration_ms: 1.2481
+  type: 'test'
+  ...
+# Subtest: light npm loads two separate empty configs and ignores inherited credentials
+ok 47 - light npm loads two separate empty configs and ignores inherited credentials
+  ---
+  duration_ms: 149.8652
+  type: 'test'
+  ...
+# Subtest: checkout Git trusts only its exact directory and captures command errors
+ok 48 - checkout Git trusts only its exact directory and captures command errors
+  ---
+  duration_ms: 113.7757
+  type: 'test'
+  ...
+# Subtest: output overflow terminates the owned child and reusing an old capture cannot pass
+ok 49 - output overflow terminates the owned child and reusing an old capture cannot pass
+  ---
+  duration_ms: 45.1448
+  type: 'test'
+  ...
+# Subtest: monitor failure and timeout remain distinct finite signals without reflecting arbitrary errors
+ok 50 - monitor failure and timeout remain distinct finite signals without reflecting arbitrary errors
+  ---
+  duration_ms: 95.1798
+  type: 'test'
+  ...
+# Subtest: CD rejects PR/fork/failing/wrong-attempt runs and checker changes even with the same source SHA
+ok 51 - CD rejects PR/fork/failing/wrong-attempt runs and checker changes even with the same source SHA
+  ---
+  duration_ms: 0.5587
+  type: 'test'
+  ...
+# Subtest: CD requires the exact owner, branch restrictions and no admin bypass; production cannot be enabled by input/env
+ok 52 - CD requires the exact owner, branch restrictions and no admin bypass; production cannot be enabled by input/env
+  ---
+  duration_ms: 0.2164
+  type: 'test'
+  ...
+# Subtest: CD verifies canonical Git bytes across CRLF checkouts and rejects checker/config drift
+ok 53 - CD verifies canonical Git bytes across CRLF checkouts and rejects checker/config drift
+  ---
+  duration_ms: 103.9307
+  type: 'test'
+  ...
+# Subtest: binding refusal reports only a finite guard and never copies private event fields
+ok 54 - binding refusal reports only a finite guard and never copies private event fields
+  ---
+  duration_ms: 0.2002
+  type: 'test'
+  ...
+# Subtest: PR admission binds actual Git parents even when webhook merge SHA is stale
+ok 55 - PR admission binds actual Git parents even when webhook merge SHA is stale
+  ---
+  duration_ms: 0.2553
+  type: 'test'
+  ...
+# Subtest: commit parent parser reads only canonical headers, never message or signature lines
+ok 56 - commit parent parser reads only canonical headers, never message or signature lines
+  ---
+  duration_ms: 0.2808
+  type: 'test'
+  ...
+# Subtest: UI gate requires every target/viewport and rejects fresh or incomplete findings
+ok 57 - UI gate requires every target/viewport and rejects fresh or incomplete findings
+  ---
+  duration_ms: 0.2707
+  type: 'test'
+  ...
+# Subtest: backend manual guard requires confirmation, immutable workflow/source and exact allowed repositories
+ok 58 - backend manual guard requires confirmation, immutable workflow/source and exact allowed repositories
+  ---
+  duration_ms: 0.2965
+  type: 'test'
+  ...
+1..58
+# tests 58
+# suites 0
+# pass 57
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 991.4252

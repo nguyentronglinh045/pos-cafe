@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "permission-bp4a-countfix-source-admission-v1",
+  "admittedAtUtc": "2026-10-23T07:22:31.5890605Z",
+  "pins": {
+    "helper": "6230b753ccbdb1f71cd748c99f4732c2b5816cc69ce132ce60745dc5d7537311",
+    "harness": "c518e6eec98b83f1341fa3ac22d4d838f17bad72bc9eae9cb2d333db8c8dd032",
+    "collector": "8091a91f64fda093a733fbf8ed079282a6fb4c95b5d9a9b8ab16db0d525acca5",
+    "fact": "3fae28db2709013b7aef24a77bafe413310ff64381f635ecb5ae3c99a219ad23",
+    "grant": "fd5aaf16be50e24269862bc1fccbc6e64f172734e32458b3345dd9c5d475b479",
+    "jobHelper": "794b81dfc28b798bc8341765f58403c4e3d8acf3aada8f6098c114fe81c4315f",
+    "observation": "383281e812193cdb7ce2982a67c7558bdb246601b05256506e0750ca734dfbda"
+  },
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "reviewers": [
+    {
+      "id": "/root/bp1_authority_final_review",
+      "verdict": "APPROVE",
+      "scope": "authority/source/time/storage/history/finalHEADdelta"
+    },
+    {
+      "id": "/root/bp1_evidence_final_review",
+      "verdict": "APPROVE",
+      "scope": "adapter/cert/collector/oracles/source/finalHEADdelta"
+    }
+  ],
+  "scope": "One offline batch only; no full46preflight/install/application admission",
+  "timeoutMs": 60000,
+  "releaseAllowanceMs": 30000,
+  "executionDeadlineUtc": "2026-10-23T07:32:21Z"
+}

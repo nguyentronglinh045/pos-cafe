@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "permission-diagnostics-terminal-checkpoint-v1",
+  "recordedUtc": "2026-10-24T02:23:00.123Z",
+  "sourceSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "checkoutClean": true,
+  "ciRun": "40051559979",
+  "ci": "PASS18/LIGHT6/343",
+  "t04Run": "40052956373",
+  "t04": "FAIL_WITH_INNER_PROGRESS_UNOBSERVED",
+  "receipt": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0405.json",
+    "sha256": "f9c8305a09b07991884bd6cb8b5f1af63b4e3001f8a4a6cefc3f7b21aba6f4d7"
+  },
+  "log": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0405.log",
+    "sha256": "16e2a6fcdb028db645b3ed002aeff97f9419bc8e23d7b5d652c5766d091fd4ba"
+  },
+  "metadata": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-t0405-metadata.json",
+    "sha256": "4cce20bc1e482aba4b801d33c6740681cebe31b84cec5a3e434de186620abc90"
+  },
+  "terminalApi": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-terminal-api03.json",
+    "sha256": "1d3b957cf48eacc4f8039072ffb92b536262a1d1c8aa2293cd94812bfdf3ba03"
+  },
+  "reclaim": [
+    {
+      "schemaVersion": "permission-ci1-reclaim-v1",
+      "status": "RECLAIMED",
+      "imageUnlinked": true,
+      "imageLogicalBytes": 19327352832,
+      "imageAllocatedBytes": 19327381504,
+      "hostFreeBeforeBytes": 72227282944,
+      "hostFreeAfterBytes": 91554672640,
+      "measuredHostFreeDeltaBytes": 19327389696,
+      "remaining": "compact control/status/safe export only; ephemeral runner"
+    }
+  ],
+  "cleanup": true,
+  "cleanupFailure": null,
+  "consumed": {
+    "publication": 3,
+    "automaticLightCi": 3,
+    "T04": 3
+  },
+  "remaining": {
+    "publication": 0,
+    "automaticLightCi": 0,
+    "T04": 0,
+    "otherProfiles": []
+  },
+  "businessStageStatuses": "UNKNOWN_NOT_ACCEPTED; no source-bound T04 business receipt; do not infer NOT_RUN per stage",
+  "currentSourceReview": "CHANGES_REQUESTED: candidate diagnostics envelope exceeds worker8KiB reader cap",
+  "mergeDeploy": "NOT_AUTHORIZED",
+  "localDisks": [
+    {
+      "path": "C:/",
+      "freeBytes": 193058217984
+    },
+    {
+      "path": "D:/",
+      "freeBytes": 98871734272
+    }
+  ],
+  "localCleanup": "AUTHORIZED_BUT_AUTOMATIC_POLICY_BLOCKED; two controls retained"
+}

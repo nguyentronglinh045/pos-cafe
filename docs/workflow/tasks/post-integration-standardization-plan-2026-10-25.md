@@ -4,6 +4,8 @@
 
 Ngày25/10/2026, sau tích hợp UI, chủ dự án giao **kiểm tra và chỉnh lý nhánh docs**, không chỉ lập kế hoạch. [Handoff docs-first](docs-normalization-2026-10-25.md) ghi source, phạm vi, kết quả và phần WIP/evidence cần giữ. Quyết định này đưa NC-10 và **phần kiểm kê tài liệu của NC-02** lên trước refactor. Không mở NC-04…08, deploy, backend acceptance hoặc cleanup worktree.
 
+Phần spec/evidence WIP được xử lý tiếp tại [handoff xuất bản](docs-wip-publication-2026-10-25.md); có inventory/hash và đề nghị dọn bản lặp chờ duyệt. Không mở refactor hoặc cho xóa worktree từ kết quả tài liệu này.
+
 Trình tự hiện hành: nguồn UI đã merge711a22e → docs-first (NC-10 + docs inventory NC-02) → NC-02 bản đồ code/NC-03 chốt slice khi được giao → refactor có gate. NC-01 và NC-11 toàn hệ thống vẫn chưa đóng. NC-10 tiếp tục đồng bộ theo từng slice sau này; hoàn tất chỉnh lý docs không có nghĩa toàn NC-02/NC-10 của chương trình đã hoàn tất.
 
 Các phần quyết định NC-UI và kế hoạch cũ dưới đây được giữ làm lịch sử/phạm vi tham chiếu; ưu tiên mới ở mục này thay thứ tự khởi đầu cũ.
@@ -24,9 +26,9 @@ Dependency đang áp dụng: NC-00 bảo toàn nguồn UI → NC-UI-B (#11/#12) 
 - Trạng thái: **kế hoạch đề xuất để giao việc**, chưa phải spec triển khai được duyệt hay quyền thực hiện các task dưới đây. Tất cả task NC-00…NC-11 và nhóm bổ sung **NC-UI** đều **CHƯA THỰC HIỆN**. Khảo sát sơ bộ của phiên này chỉ cung cấp đầu vào.
 - Bổ sung theo yêu cầu tiếp ngày 25/10/2026: kiểm kê PR UI đang mở và xếp việc review chúng vào kế hoạch; vẫn chỉ lập kế hoạch, chưa review đầy đủ code, sửa/merge/retarget PR hoặc gửi nhận xét lên GitHub.
 - Phân mức: chương trình có phần nhạy cảm về tiền, quyền và bảo toàn dữ liệu; mỗi slice xác định mức riêng. Kế hoạch dùng hai reviewer độc lập trước bàn giao. Không tạo chat, nhánh hoặc worktree mới trong phiên lập kế hoạch.
-- Quy trình: [workflow](../README.md), [mẫu task](D:/Workspace/pos-cafe-docs/docs/workflow/templates.md), [chuẩn spec](../../../openspec/SPEC-STANDARD.md). Đây là hồ sơ kế hoạch/bàn giao, không mở một change OpenSpec giả đủ bảy file. NC-03 chọn change hiện hữu hoặc change chính thức cần bổ sung trước mỗi phần triển khai.
+- Quy trình: [workflow](../README.md), [mẫu task](../templates.md), [chuẩn spec](../../../openspec/SPEC-STANDARD.md). Đây là hồ sơ kế hoạch/bàn giao, không mở một change OpenSpec giả đủ bảy file. NC-03 chọn change hiện hữu hoặc change chính thức cần bổ sung trước mỗi phần triển khai.
 
-Các liên kết tuyệt đối tới `D:/Workspace/pos-cafe-docs` là nguồn WIP local của phiên kế hoạch, chưa được gom vào commit này. Không hiểu các liên kết local đó là tài liệu đã xuất bản trong remote docs.
+Các liên kết tài liệu của phiên kế hoạch đã được chuyển sang bản xuất bản khi nhập WIP25/10; đường code/evidence ngoài repo vẫn giữ nguồn lịch sử. Không suy trạng thái tại ngày lập thành kết quả kiểm lại source hiện hành.
 
 ## Hiện trạng đã khảo sát và giới hạn
 
@@ -50,10 +52,10 @@ Các điểm vào đã đọc, đều thuộc tree `12e8…` tại checkout `tim
 - `src/app/drawers/pos/PaymentDrawer.tsx:53`, `:184` và `src/features/pos/useOrderPaymentFlow.ts:38` là đường UI → hook → flow cần lập bản đồ ownership của selection, validation, submit, invalidation và in.
 - `vitest.config.ts:10` chỉ include tests dưới `src`; `package.json` có các runner riêng idempotency và permission T01–T07. Không suy `npm test` phủ contracts/backend/browser.
 - `scripts/project-ci.mjs:363` chạy smoke với retries=0; `:367`/`:372` là các bước UI sau smoke. `tests/smoke/permission-ui-closeout.spec.ts:40` kiểm thao tác selection/quantity, **không thực hiện giao dịch thanh toán**.
-- [Handoff tích hợp](D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-main-integration-2026-10-24.md), dòng 3, và [chẩn đoán main CI](D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/permission-main-main01-diagnosis.md) ghi main CI `40089941679` FAIL trên phone-landscape; nguyên nhân ứng dụng UNKNOWN và diagnostics có lỗi attribution. Đây là kết quả lịch sử, chưa rerun trong phiên này.
+- [Handoff tích hợp](permission-main-integration-2026-10-24.md), dòng 3, và [chẩn đoán main CI](../../implementation-log/permission-backend-web-release-20261023/permission-main-main01-diagnosis.md) ghi main CI `40089941679` FAIL trên phone-landscape; nguyên nhân ứng dụng UNKNOWN và diagnostics có lỗi attribution. Đây là kết quả lịch sử, chưa rerun trong phiên này.
 - Handoff trên giữ T04/backend acceptance DEFERRED/NOT_ACCEPTED, bảy service profiles và supplemental obligations chưa đóng; không deploy/migration/live activation. Không biến việc merge thành nghiệm thu backend.
 - [CLAUDE.md](../../../CLAUDE.md), dòng 88, vẫn mô tả `AppPorts` kiểu cũ, trong khi source đã tách legacy; [architecture](../../architecture.md), dòng 3, có ghi candidate mới nhưng các đoạn baseline vẫn cần đối chiếu. Đây là chênh lệch tài liệu đã thấy, không phải kết luận toàn bộ tài liệu sai.
-- [Dọn worktree 23/10](D:/Workspace/pos-cafe-docs/docs/workflow/tasks/worktree-cleanup-2026-10-23.md) đã loại chín checkout và giữ 15 vì WIP/evidence. Bản lưu 84 file ở `D:/Workspace/pos-cafe-worktree-cleanup-20261023` là đầu ra cần giữ, không tự phân loại temp.
+- [Dọn worktree 23/10](worktree-cleanup-2026-10-23.md) đã loại chín checkout và giữ 15 vì WIP/evidence. Bản lưu 84 file ở `D:/Workspace/pos-cafe-worktree-cleanup-20261023` là đầu ra cần giữ, không tự phân loại temp.
 
 ## Thứ tự và cách chia người/phần việc
 

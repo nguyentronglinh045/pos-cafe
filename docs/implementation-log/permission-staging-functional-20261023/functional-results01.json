@@ -1,0 +1,506 @@
+[
+  {
+    "id": "H0",
+    "at": "2026-10-23T11:42:28.313Z",
+    "status": 200,
+    "hook": "strict",
+    "body": {
+      "writeProtocolVersion": 1,
+      "permissionContractVersion": 2
+    }
+  },
+  {
+    "step": 2,
+    "rpc": "get_store_session",
+    "at": "2026-10-23T11:43:40.825Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 3,
+    "rpc": "list_roster",
+    "at": "2026-10-23T11:43:41.078Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 4,
+    "rpc": "start_session",
+    "at": "2026-10-23T11:44:47.040Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 5,
+    "rpc": "check_required_pin_session",
+    "at": "2026-10-23T11:44:47.330Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 6,
+    "rpc": "complete_required_pin_change",
+    "at": "2026-10-23T11:44:49.864Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 7,
+    "rpc": "get_authority",
+    "at": "2026-10-23T11:44:51.433Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "EMPLOYEE_SESSION_REQUIRED"
+  },
+  {
+    "step": 8,
+    "rpc": "start_session",
+    "at": "2026-10-23T11:44:51.854Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 9,
+    "rpc": "get_authority",
+    "at": "2026-10-23T11:46:00.134Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 10,
+    "rpc": "admin_list",
+    "at": "2026-10-23T11:46:00.364Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 11,
+    "rpc": "admin_list",
+    "at": "2026-10-23T11:46:56.834Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 12,
+    "rpc": "admin_get",
+    "at": "2026-10-23T11:47:21.034Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 13,
+    "rpc": "start_session",
+    "at": "2026-10-23T11:47:21.671Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 14,
+    "rpc": "admin_list",
+    "at": "2026-10-23T11:47:22.230Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "FORBIDDEN"
+  },
+  {
+    "step": 15,
+    "rpc": "admin_update",
+    "at": "2026-10-23T11:47:23.462Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "FORBIDDEN"
+  },
+  {
+    "step": 16,
+    "rpc": "admin_get",
+    "at": "2026-10-23T11:47:23.975Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 17,
+    "rpc": "admin_audit",
+    "at": "2026-10-23T11:47:24.274Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 18,
+    "rpc": "reserve_store_no",
+    "at": "2026-10-23T11:49:53.308Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 19,
+    "rpc": "bootstrap_store",
+    "at": "2026-10-23T11:49:55.181Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 20,
+    "rpc": "start_session",
+    "at": "2026-10-23T11:49:55.405Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 21,
+    "rpc": "complete_required_pin_change",
+    "at": "2026-10-23T11:49:55.948Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 22,
+    "rpc": "start_session",
+    "at": "2026-10-23T11:49:56.567Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 23,
+    "rpc": "admin_list",
+    "at": "2026-10-23T11:50:23.294Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 24,
+    "rpc": "admin_list",
+    "at": "2026-10-23T11:50:23.589Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 25,
+    "rpc": "admin_get",
+    "at": "2026-10-23T11:50:24.177Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 26,
+    "rpc": "admin_get",
+    "at": "2026-10-23T11:50:24.491Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "NOT_FOUND"
+  },
+  {
+    "step": 27,
+    "rpc": "admin_get",
+    "at": "2026-10-23T11:50:25.299Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "NOT_FOUND"
+  },
+  {
+    "step": 28,
+    "rpc": "get_authority",
+    "at": "2026-10-23T11:50:25.842Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "EMPLOYEE_SESSION_REQUIRED"
+  },
+  {
+    "step": 29,
+    "rpc": "admin_list",
+    "at": "2026-10-23T11:50:26.392Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 30,
+    "rpc": "admin_list",
+    "at": "2026-10-23T11:50:26.622Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 31,
+    "rpc": "revoke_session",
+    "at": "2026-10-23T11:50:26.878Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 32,
+    "rpc": "get_authority",
+    "at": "2026-10-23T11:50:27.432Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "EMPLOYEE_SESSION_REQUIRED"
+  },
+  {
+    "step": 33,
+    "rpc": "start_session",
+    "at": "2026-10-23T11:51:36.873Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 34,
+    "rpc": "admin_update",
+    "at": "2026-10-23T11:51:37.549Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 35,
+    "rpc": "admin_list",
+    "at": "2026-10-23T11:51:37.769Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 36,
+    "rpc": "get_authority",
+    "at": "2026-10-23T11:51:37.991Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 37,
+    "rpc": "admin_update",
+    "at": "2026-10-23T11:51:38.302Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 38,
+    "rpc": "admin_list",
+    "at": "2026-10-23T11:51:39.267Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "FORBIDDEN"
+  },
+  {
+    "step": 39,
+    "rpc": "get_authority",
+    "at": "2026-10-23T11:51:39.514Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 40,
+    "rpc": "list_order_history",
+    "at": "2026-10-23T11:59:26.844Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 41,
+    "rpc": "get_order_history_detail",
+    "at": "2026-10-23T11:59:42.857Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "rpc": "get_payment_receipt",
+    "at": "2026-10-23T12:00:23.700Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 42,
+    "rpc": "get_menu_admin",
+    "at": "2026-10-23T12:03:05.441Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 43,
+    "rpc": "get_menu_admin",
+    "at": "2026-10-23T12:03:06.357Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "FORBIDDEN"
+  },
+  {
+    "step": 44,
+    "rpc": "get_floor_admin",
+    "at": "2026-10-23T12:03:07.272Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 45,
+    "rpc": "get_floor_admin",
+    "at": "2026-10-23T12:03:07.575Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "FORBIDDEN"
+  },
+  {
+    "step": 46,
+    "rpc": "get_settings_admin",
+    "at": "2026-10-23T12:03:08.122Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 47,
+    "rpc": "get_settings_admin",
+    "at": "2026-10-23T12:03:08.673Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "FORBIDDEN"
+  },
+  {
+    "step": 48,
+    "rpc": "get_sales_report",
+    "at": "2026-10-23T12:03:10.059Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 49,
+    "rpc": "get_sales_report",
+    "at": "2026-10-23T12:03:10.352Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "FORBIDDEN"
+  },
+  {
+    "step": 50,
+    "rpc": "revoke_session",
+    "at": "2026-10-23T12:03:57.261Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 51,
+    "rpc": "get_authority",
+    "at": "2026-10-23T12:03:57.505Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "EMPLOYEE_SESSION_REQUIRED"
+  },
+  {
+    "step": 52,
+    "rpc": "revoke_session",
+    "at": "2026-10-23T12:03:57.753Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 53,
+    "rpc": "get_authority",
+    "at": "2026-10-23T12:03:58.345Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "EMPLOYEE_SESSION_REQUIRED"
+  },
+  {
+    "step": 54,
+    "rpc": "revoke_session",
+    "at": "2026-10-23T12:03:58.575Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": true,
+    "code": null
+  },
+  {
+    "step": 55,
+    "rpc": "get_authority",
+    "at": "2026-10-23T12:03:58.790Z",
+    "httpStatus": 200,
+    "hook": "strict",
+    "ok": false,
+    "code": "EMPLOYEE_SESSION_REQUIRED"
+  }
+]

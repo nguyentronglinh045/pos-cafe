@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "permission-profile-dispatch-intent-v1",
+  "recordedUtc": "2026-10-23T15:58:02.692Z",
+  "sourceSHA": "eac4359d28b20b52309c20af7aa272362043c6c0",
+  "branch": "review/permission-staging-20261023",
+  "profile": "SUPABASE_T04",
+  "profileDispatchOrdinal": 1,
+  "heavyDispatchOrdinal": 1,
+  "automaticRetry": false,
+  "lightRunId": "39980641660",
+  "light18": "PASS",
+  "nativeCleanup": "NOT_PRESENT/rootRemoved/processReleased",
+  "priorReclaimRunId": "39804303097",
+  "priorReclaimStatus": "RECLAIMED",
+  "activeHeavy": [],
+  "retainedLogicalBytes": 607892874,
+  "disks": [
+    {
+      "path": "C:/",
+      "freeBytes": 195491094528
+    },
+    {
+      "path": "D:/",
+      "freeBytes": 98890600448
+    }
+  ],
+  "packetSHA256": "5ddeb9e462422ae4051705e91a9dce8aae585143a1d428806a113f6946942ea3"
+}

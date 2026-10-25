@@ -1,0 +1,27 @@
+{
+  "recordedUtc": "2026-10-24T09:35:59.004Z",
+  "sourceSHA": "4e78a8c11d2d895ccebaccd2b2f7d3b2c69bcb3e",
+  "ciRunId": "40081353958",
+  "prerequisiteReviews": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-final-origin-light-reviews01.json",
+    "bytes": 3147,
+    "sha256": "51f1e68d53c57e90ec94a93a3de4f217012e3b0c3633262e18f9cca10b236716"
+  },
+  "confirmation": "RUN_T04_IMAGE_DIAGNOSTIC",
+  "job": "t04-image-diagnostic",
+  "branch": "review/permission-staging-20261023",
+  "maxDiagnosticRuns": 1,
+  "tag": "cloud-t04-image02",
+  "localDisks": [
+    {
+      "DeviceID": "C:",
+      "FreeSpace": 188985491456
+    },
+    {
+      "DeviceID": "D:",
+      "FreeSpace": 98703888384
+    }
+  ],
+  "wholeT04": "NOT_RUN",
+  "mergeDeploy": "NOT_AUTHORIZED"
+}

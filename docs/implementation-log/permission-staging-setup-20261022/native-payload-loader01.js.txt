@@ -1,0 +1,47 @@
+// functions.exec recipe: LOCAL READS ONLY. No database call or apply.
+async function loadPinnedSql(path, expectedSha, expectedBytes) {
+  const quotedPath = "'" + path.replaceAll("'", "''") + "'";
+  async function readPart(offset, count) {
+    const cmd = "$ErrorActionPreference='Stop'; $payloadBytes=[IO.File]::ReadAllBytes(" + quotedPath + ");"
+      + "$sha=[Security.Cryptography.SHA256]::Create(); try{$payloadSha=([BitConverter]::ToString($sha.ComputeHash($payloadBytes))).Replace('-','').ToLowerInvariant()}finally{$sha.Dispose()};"
+      + "$payloadText=[Text.UTF8Encoding]::new($false,$true).GetString($payloadBytes);"
+      + "$partCount=[Math]::Min(" + count + ",[Math]::Max(0,$payloadText.Length-" + offset + "));"
+      + "[pscustomobject]@{sha256=$payloadSha;bytes=$payloadBytes.Length;totalChars=$payloadText.Length;offset=" + offset
+      + ";count=$partCount;text=$payloadText.Substring(" + offset + ",$partCount)}|ConvertTo-Json -Compress";
+    const result = await tools.exec_command({cmd,max_output_tokens:12000});
+    if(result.exit_code !== 0) throw Error("LOCAL_PAYLOAD_READ_FAILED");
+    const part = JSON.parse(result.output);
+    if(part.sha256 !== expectedSha || part.bytes !== expectedBytes
+      || !Number.isSafeInteger(part.totalChars) || part.totalChars < 1
+      || part.offset !== offset || part.count !== part.text.length
+      || part.count !== Math.min(count, Math.max(0,part.totalChars-offset))) throw Error("LOCAL_PAYLOAD_PIN_OR_SLICE_MISMATCH");
+    return part;
+  }
+  const metadata=await readPart(0,0);
+  const size=16384;
+  const offsets=Array.from({length:Math.ceil(metadata.totalChars/size)},(_,i)=>i*size);
+  const parts=[];
+  for(let i=0;i<offsets.length;i+=6){
+    const settled=await Promise.allSettled(offsets.slice(i,i+6).map(offset=>readPart(offset,size)));
+    for(const item of settled){
+      if(item.status!=="fulfilled") throw item.reason;
+      if(item.value.totalChars!==metadata.totalChars) throw Error("LOCAL_PAYLOAD_LENGTH_DRIFT");
+      parts.push(item.value);
+    }
+  }
+  const final=await readPart(0,0);
+  if(final.totalChars!==metadata.totalChars) throw Error("LOCAL_PAYLOAD_LENGTH_DRIFT");
+  parts.sort((a,b)=>a.offset-b.offset);
+  const query=parts.map(part=>part.text).join("");
+  if(query.length!==metadata.totalChars || query.includes("\r")) throw Error("LOCAL_PAYLOAD_ASSEMBLY_REFUSED");
+  return {path,sha256:expectedSha,bytes:expectedBytes,chars:query.length,chunkCount:parts.length,query};
+}
+const payload=await loadPinnedSql(
+ "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022/bootstrap01/bootstrap.sql",
+ "5c5c40dd5a0c3e98000a041da34446370fa539f47bd423fbe6196ba682c4e7f5",543149);
+if(!payload.query.startsWith("-- GENERATED OFFLINE.") || !payload.query.endsWith("end $permission_staging_bootstrap$;\n")) throw Error("LOCAL_PAYLOAD_ENVELOPE_REFUSED");
+store("staging_bootstrap_payload01",payload);
+text({payloadLoaded:true,sha256:payload.sha256,bytes:payload.bytes,chars:payload.chars,chunkCount:payload.chunkCount,databaseCalls:0});
+// JSON transport preserves exact decoded strings; source-byte SHA is verified on
+// every complete file byte buffer used for each slice and before/after assembly.
+// This does not claim an independent JavaScript digest of the assembled string.

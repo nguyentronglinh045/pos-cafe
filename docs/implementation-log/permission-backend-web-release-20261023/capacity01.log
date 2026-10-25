@@ -1,0 +1,171 @@
+capacity-probe	Set up job	﻿2026-10-23T14:50:02.3502082Z Current runner version: '2.338.0'
+capacity-probe	Set up job	2026-10-23T14:50:02.3523167Z ##[group]Runner Image Provisioner
+capacity-probe	Set up job	2026-10-23T14:50:02.3523818Z Hosted Compute Agent
+capacity-probe	Set up job	2026-10-23T14:50:02.3524233Z Version: 20261012.601
+capacity-probe	Set up job	2026-10-23T14:50:02.3524643Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+capacity-probe	Set up job	2026-10-23T14:50:02.3525126Z Build Date: 2026-10-12T17:48:21Z
+capacity-probe	Set up job	2026-10-23T14:50:02.3525586Z Worker ID: {63479979-7f00-46fd-bf3b-0b294f35668b}
+capacity-probe	Set up job	2026-10-23T14:50:02.3526057Z Region: westus2
+capacity-probe	Set up job	2026-10-23T14:50:02.3526432Z Cloud: Azure
+capacity-probe	Set up job	2026-10-23T14:50:02.3526788Z ##[endgroup]
+capacity-probe	Set up job	2026-10-23T14:50:02.3527914Z ##[group]Operating System
+capacity-probe	Set up job	2026-10-23T14:50:02.3528408Z Ubuntu
+capacity-probe	Set up job	2026-10-23T14:50:02.3528747Z 24.04.5
+capacity-probe	Set up job	2026-10-23T14:50:02.3529099Z LTS
+capacity-probe	Set up job	2026-10-23T14:50:02.3529477Z ##[endgroup]
+capacity-probe	Set up job	2026-10-23T14:50:02.3529865Z ##[group]Runner Image
+capacity-probe	Set up job	2026-10-23T14:50:02.3530298Z Image: ubuntu-24.04
+capacity-probe	Set up job	2026-10-23T14:50:02.3530715Z Version: 20261012.334.1
+capacity-probe	Set up job	2026-10-23T14:50:02.3531376Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+capacity-probe	Set up job	2026-10-23T14:50:02.3532570Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+capacity-probe	Set up job	2026-10-23T14:50:02.3533208Z ##[endgroup]
+capacity-probe	Set up job	2026-10-23T14:50:02.3533995Z ##[group]GITHUB_TOKEN Permissions
+capacity-probe	Set up job	2026-10-23T14:50:02.3535372Z Contents: read
+capacity-probe	Set up job	2026-10-23T14:50:02.3535787Z Metadata: read
+capacity-probe	Set up job	2026-10-23T14:50:02.3536127Z ##[endgroup]
+capacity-probe	Set up job	2026-10-23T14:50:02.3537882Z Secret source: Actions
+capacity-probe	Set up job	2026-10-23T14:50:02.3538445Z Cache mode: write
+capacity-probe	Set up job	2026-10-23T14:50:02.3539341Z Prepare workflow directory
+capacity-probe	Set up job	2026-10-23T14:50:02.3830653Z Prepare all required actions
+capacity-probe	Set up job	2026-10-23T14:50:02.3866473Z Getting action download info
+capacity-probe	Set up job	2026-10-23T14:50:02.7500751Z Download action repository 'actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+capacity-probe	Set up job	2026-10-23T14:50:02.8925467Z Complete job name: capacity-probe
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	﻿2026-10-23T14:50:02.9578017Z ##[group]Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9578661Z with:
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9578937Z   persist-credentials: false
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9579217Z   fetch-depth: 1
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9579483Z   repository: nguyentronglinh045/pos-cafe
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9581567Z   token: ***
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9581807Z   ssh-strict: true
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9582059Z   ssh-user: git
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9582447Z   clean: true
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9582803Z   sparse-checkout-cone-mode: true
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9583167Z   fetch-tags: false
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9583416Z   show-progress: true
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9583671Z   lfs: false
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9583906Z   submodules: false
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9584162Z   set-safe-directory: true
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9584446Z   allow-unsafe-pr-checkout: false
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:02.9584834Z ##[endgroup]
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0291945Z Syncing repository: nguyentronglinh045/pos-cafe
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0293709Z ##[group]Getting Git version info
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0294462Z Working directory is '/home/runner/work/pos-cafe/pos-cafe'
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0295426Z [command]/usr/bin/git version
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0346897Z git version 2.55.0
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0363286Z ##[endgroup]
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0374982Z Temporarily overriding HOME='/home/runner/work/_temp/e31a99df-5295-43ea-8100-b700f6dc563a' before making global git config changes
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0376484Z Adding repository directory to the temporary git global config as a safe directory
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0379037Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/pos-cafe/pos-cafe
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0428686Z Deleting the contents of '/home/runner/work/pos-cafe/pos-cafe'
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0436950Z ##[group]Determining repository object format
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0437883Z ##[endgroup]
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0448551Z ##[group]Initializing the repository
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0449256Z [command]/usr/bin/git init /home/runner/work/pos-cafe/pos-cafe
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0563815Z hint: Using 'master' as the name for the initial branch. This default branch name
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0564664Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0566141Z hint: to use in all of your new repositories, which will suppress this warning,
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0566550Z hint: call:
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0566776Z hint:
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0567082Z hint: 	git config --global init.defaultBranch <name>
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0567634Z hint:
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0567955Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0568461Z hint: 'development'. The just-created branch can be renamed via this command:
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0568861Z hint:
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0569093Z hint: 	git branch -m <name>
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0569475Z hint:
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0570219Z hint: Disable this message with "git config set advice.defaultBranchName false"
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0570850Z Initialized empty Git repository in /home/runner/work/pos-cafe/pos-cafe/.git/
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0572179Z [command]/usr/bin/git remote add origin https://github.com/nguyentronglinh045/pos-cafe
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0649562Z ##[endgroup]
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0650385Z ##[group]Disabling automatic garbage collection
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0651049Z [command]/usr/bin/git config --local gc.auto 0
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0698545Z ##[endgroup]
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0699087Z ##[group]Setting up auth
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0699426Z Removing SSH command configuration
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0699857Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.0738491Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1043832Z Removing HTTP extra header
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1050053Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1082004Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1261964Z Removing includeIf entries pointing to credentials config files
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1267022Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1300325Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1498586Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1539460Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git.path /home/runner/work/_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1600153Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1636301Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1669294Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1737112Z ##[endgroup]
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1737922Z ##[group]Fetching the repository
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:03.1744057Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +e42215044b4faf7e90f787ae8e975937ad3e4479:refs/remotes/origin/review/permission-staging-20261023
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.5688656Z From https://github.com/nguyentronglinh045/pos-cafe
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.5690611Z  * [new ref]         e42215044b4faf7e90f787ae8e975937ad3e4479 -> origin/review/permission-staging-20261023
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.5698953Z [command]/usr/bin/git branch --list --remote origin/review/permission-staging-20261023
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.5730105Z   origin/review/permission-staging-20261023
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.5737306Z [command]/usr/bin/git rev-parse refs/remotes/origin/review/permission-staging-20261023
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.5759276Z e42215044b4faf7e90f787ae8e975937ad3e4479
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.5763943Z ##[endgroup]
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.5765314Z ##[group]Determining the checkout info
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.5766859Z ##[endgroup]
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.5768151Z [command]/usr/bin/git sparse-checkout disable
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.5813587Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.5841027Z ##[group]Checking out the ref
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.5843147Z [command]/usr/bin/git checkout --progress --force -B review/permission-staging-20261023 refs/remotes/origin/review/permission-staging-20261023
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7322279Z Switched to a new branch 'review/permission-staging-20261023'
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7325621Z branch 'review/permission-staging-20261023' set up to track 'origin/review/permission-staging-20261023'.
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7336243Z ##[endgroup]
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7376330Z [command]/usr/bin/git log -1 --format=%H
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7400667Z e42215044b4faf7e90f787ae8e975937ad3e4479
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7408833Z ##[group]Removing auth
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7409866Z Removing SSH command configuration
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7411320Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7439353Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7617038Z Removing HTTP extra header
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7619522Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7647141Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7834258Z Removing includeIf entries pointing to credentials config files
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7835969Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7866947Z includeif.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git.path
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7875224Z includeif.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git/worktrees/*.path
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7875997Z includeif.gitdir:/github/workspace/.git.path
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7876640Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7878482Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git.path
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7901140Z /home/runner/work/_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7911051Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git.path /home/runner/work/_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7947952Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git/worktrees/*.path
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7969069Z /home/runner/work/_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.7976088Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/pos-cafe/pos-cafe/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.8007571Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.8031369Z /github/runner_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.8036150Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.8064930Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.8084946Z /github/runner_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.8090834Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.8120191Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.8292977Z Removing credentials config '/home/runner/work/_temp/git-credentials-68ad0af8-427d-49ec-8378-31c00342fa83.config'
+capacity-probe	Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:04.8301147Z ##[endgroup]
+capacity-probe	Measure host capacity before any package or image download	﻿2026-10-23T14:50:04.8463430Z ##[group]Run ulimit -c 0
+capacity-probe	Measure host capacity before any package or image download	2026-10-23T14:50:04.8463712Z ^[[36;1mulimit -c 0^[[0m
+capacity-probe	Measure host capacity before any package or image download	2026-10-23T14:50:04.8464033Z ^[[36;1m/usr/local/n/versions/node/22.23.3/bin/node scripts/permission-capacity-probe.mjs^[[0m
+capacity-probe	Measure host capacity before any package or image download	2026-10-23T14:50:04.8685973Z shell: /usr/bin/bash -e {0}
+capacity-probe	Measure host capacity before any package or image download	2026-10-23T14:50:04.8686576Z env:
+capacity-probe	Measure host capacity before any package or image download	2026-10-23T14:50:04.8686958Z   PERMISSION_CAPACITY_CONFIRMATION: RUN_CAPACITY_PROBE
+capacity-probe	Measure host capacity before any package or image download	2026-10-23T14:50:04.8687465Z   PERMISSION_CAPACITY_EXPECTED_SHA: e42215044b4faf7e90f787ae8e975937ad3e4479
+capacity-probe	Measure host capacity before any package or image download	2026-10-23T14:50:04.8687728Z ##[endgroup]
+capacity-probe	Measure host capacity before any package or image download	2026-10-23T14:50:08.3345040Z {"schemaVersion":"permission-host-capacity-v1","hostFreeBytes":92046118912,"memoryBytes":16766414848,"cpus":4,"requiredHostFreeBytes":53687091200,"taskBudgetBytes":21474836480,"hostReserveBytes":32212254720,"status":"CAPACITY_AVAILABLE","fullExecution":"NOT_RUN","quotaEnforced":false,"note":"Capacity observation only; unpack bounds, namespace, writer placement and full test dispatch remain required","sourceSHA":"e42215044b4faf7e90f787ae8e975937ad3e4479","workflowSHA":"e42215044b4faf7e90f787ae8e975937ad3e4479","runId":"39972994240","attempt":1,"node":"v22.23.3","observedUtc":"2026-10-23T14:50:08.132Z"}
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	﻿2026-10-23T14:50:08.3498427Z Post job cleanup.
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4098086Z [command]/usr/bin/git version
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4127952Z git version 2.55.0
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4191323Z Temporarily overriding HOME='/home/runner/work/_temp/efb521a8-090b-4053-ab5e-4b725691a2c9' before making global git config changes
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4192292Z Adding repository directory to the temporary git global config as a safe directory
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4193161Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/pos-cafe/pos-cafe
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4195490Z Removing SSH command configuration
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4201253Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4241063Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4458227Z Removing HTTP extra header
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4463643Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4495078Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4719340Z Removing includeIf entries pointing to credentials config files
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4725068Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+capacity-probe	Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803	2026-10-23T14:50:08.4756331Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+capacity-probe	Complete job	﻿2026-10-23T14:50:08.5081336Z Cleaning up orphan processes

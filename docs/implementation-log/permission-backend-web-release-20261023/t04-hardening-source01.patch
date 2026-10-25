@@ -1,0 +1,1131 @@
+diff --git a/ci/release-policy.json b/ci/release-policy.json
+index 2eb6439..650bd6e 100644
+--- a/ci/release-policy.json
++++ b/ci/release-policy.json
+@@ -34,7 +34,7 @@
+     "ui-audit/demo-buggy.html": "4c1424232be357167b1cf643ff1baa602d2987856317d40460d95f6358662cce",
+     "scripts/permission-runtime-pg16.mjs": "c13578f465b7c39421e93e5a90ab29d6b1e1ad42be6f24062637c38316d45f32",
+     "scripts/permission-runtime-pg16-cleanup.mjs": "3a47c5a59c08411a702d4622b74dd514395072be9878630f3dc6a1f54109efa8",
+-    "scripts/permission-runtime-error-facts.mjs": "1a3a8efbabeba152e72c2f542f51f6a63422ad30f87468d6ba0a2fcaf83601e5",
++    "scripts/permission-runtime-error-facts.mjs": "bf41daf43254aa36eef59c4fb0fbfaf9e92725a01606074be87192b7f1fb71b6",
+     "scripts/permission-runtime-vitest-reporter.mjs": "aff12fd7758d63f83b22608e47a906feb363455e5472b8de4b2661cfe6f478f4",
+     "scripts/project-ci-results.test.mjs": "cc44627aeca3f6d42b66d14bddeff4ba20848fa4e1609cce07aff2f3ef8ee1a7",
+     "scripts/permission-runtime-stage.mjs": "bfcede0b296d329ab22fe1eabaacb7ece8f12413add07fc1527d2b96a8295119",
+@@ -52,12 +52,18 @@
+     "tests/permissions/runtime/edge-resolution/deno.lock": "6f9fc5dd3b6e81d9468c712bfbf3fc423e6ea28d49e8fe44915abca50740ab41",
+     "scripts/permission-full-target-policy.test.mjs": "a41194753179f25315eb0639609302a3cc652673fea3276a833f2af19101f917",
+     "scripts/project-preview.README.md": "8ef8984c2d4cbe40204ea6c6b62af63902ebe937b9ba8e0cc6d0427df2177b5c",
+-    "scripts/permission-runtime-candidate-diagnostic.mjs": "80be42e33514989bb000fb67208c9ea0e7028868d75c40da95f61e408c1dae07",
++    "scripts/permission-runtime-candidate-diagnostic.mjs": "36e488f19e4e5e27656339a1d8e9bf8d904febc0ac8c36e7d6076435e0615f67",
+     "scripts/permission-runtime-service-worker.mjs": "e377f42893ada170fe6e4152f943c77a09e95ee431570191cb5f74bc735ac426",
+-    "scripts/permission-runtime-diagnostic-selftest.mjs": "e020f8def55ae3005a0f75f3a690db2e141e625b4571b2f2534aac41c2af01f8",
++    "scripts/permission-runtime-diagnostic-selftest.mjs": "19075a3144f1af1a99f3661af3403570fef8cae6b8d91b5eb86e277d375e55e4",
+     "scripts/permission-runtime-isolated-receipt.mjs": "3d22da9bbdd39e48ad5cc87ffb0151dfb27847e85b1de5aeecad40ff4f3a6752",
+     "scripts/permission-runtime-isolated-receipt-control.mjs": "4d957e51141181e3162f084a2077b4886716692dd7dce131265d37febb070c88",
+-    "scripts/permission-runtime-isolated-receipt.test.mjs": "5b721acd8115af5ed8f9640023b11a55f9854e6e0810ab0aee0a9954d43b13c4"
++    "scripts/permission-runtime-isolated-receipt.test.mjs": "be41d97d1b75f1093044af2296f5272e4611d69a26461b0c1023dd48e152c451",
++    "scripts/permission-runtime-reporter-selftest.mjs": "6f61df0eedfdf862d4af5f14c2ccc6b121f55f9e3cb11447dd9667894156f265",
++    "scripts/permission-candidate-browser-control.mjs": "1e7c31100839603b9eb6839f8d0c27d40c8a2c8adade12556e5bab124f0b8b3d",
++    "tests/supabase/permissionCandidateUi.ts": "833bd07efd50c6eb257613a635fffd24419cf9f69d860630bf99b08ec8ceca6a",
++    "tests/supabase/permissionCandidateDiagnostics.ts": "3847aaebbb409953c6c893fd9d3c012ace19954890f15ccf547b6bba6ce5ef55",
++    "scripts/permission-runtime-t04.mjs": "ab10015b492bfb3824e2589be4a38394a3b83b91ae020effc0aaaaa09d7b176d",
++    "scripts/permission-t04-image-measurement.mjs": "48b70f2f81820b33623665ac2f36d062de1de2398ce77ab14e5a44ca7f75eff4"
+   },
+   "preview": {
+     "projectId": "prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en",
+diff --git a/scripts/permission-candidate-ui.test.mjs b/scripts/permission-candidate-ui.test.mjs
+index 3faf77c..73a1e08 100644
+--- a/scripts/permission-candidate-ui.test.mjs
++++ b/scripts/permission-candidate-ui.test.mjs
+@@ -4,9 +4,9 @@ import {EventEmitter} from 'node:events';
+ import {setImmediate as nextTurn} from 'node:timers/promises';
+ import {readFileSync} from 'node:fs';
+ import {JSDOM} from 'jsdom';
+-import {closeCandidateDrawer,waitForCandidateSave,establishCandidateClearSettings} from '../tests/supabase/permissionCandidateUi.ts';
+-import {CandidateDiagnostics,diagnosticFields,imageDiagnosticFields,readCandidateDom,readCandidateImageDom} from '../tests/supabase/permissionCandidateDiagnostics.ts';
+-import {CANDIDATE_CHECKPOINT_BOUNDS,CANDIDATE_IMAGE_BOUNDS,CANDIDATE_TEST_NAMES,safeCandidateDiagnostic} from './permission-runtime-candidate-diagnostic.mjs';
++import {closeCandidateDrawer,waitForCandidateSave,establishCandidateClearSettings,candidateActionResponse,withCandidateCleanup} from '../tests/supabase/permissionCandidateUi.ts';
++import {CandidateDiagnostics,diagnosticFields,imageDiagnosticFields,consumerDiagnosticFields,readCandidateDom,readCandidateImageDom,readCandidateConsumerDom} from '../tests/supabase/permissionCandidateDiagnostics.ts';
++import {CANDIDATE_CHECKPOINT_BOUNDS,CANDIDATE_IMAGE_BOUNDS,CANDIDATE_CONSUMER_BOUNDS,CANDIDATE_TEST_NAMES,safeCandidateDiagnostic} from './permission-runtime-candidate-diagnostic.mjs';
+ 
+ test('visible floor cannot finish close before the selected drawer is hidden',async()=>{
+  let release;const hidden=new Promise(resolve=>{release=resolve;});const calls=[];let completed=false;
+@@ -32,6 +32,24 @@ test('pending-disabled Save is insufficient; callback must clear the dirty draft
+  assert.equal(calls.at(-1),'settings-dirty-badge');completeDraft();await saving;assert.equal(completed,true);assert.equal(calls.at(-1),'disabled');
+ });
+ 
++test('UI action and response failures are owned immediately without replacing the first error',async()=>{
++ const actionError=Error('ACTION_FAILED'),responseError=Error('RESPONSE_FAILED');let rejectResponse;
++ const response=new Promise((_,reject)=>{rejectResponse=reject;});
++ await assert.rejects(candidateActionResponse(response,async()=>{throw actionError;}),e=>e===actionError);
++ rejectResponse(responseError);await nextTurn(); // node:test also rejects any unhandled rejection.
++ let rejectAction;const action=new Promise((_,reject)=>{rejectAction=reject;});
++ await assert.rejects(candidateActionResponse(Promise.reject(responseError),()=>action),e=>e===responseError);
++ rejectAction(actionError);await nextTurn();
++ assert.equal(await candidateActionResponse(Promise.resolve(23),async()=>{}),23);
++});
++
++test('cleanup always executes and cannot mask the primary body failure',async()=>{
++ const primary=Error('BODY_FAILED'),cleanup=Error('CLEANUP_FAILED');let calls=0;
++ await assert.rejects(withCandidateCleanup(async()=>{throw primary;},async()=>{calls++;throw cleanup;}),e=>e===primary);
++ await assert.rejects(withCandidateCleanup(async()=>23,async()=>{calls++;throw cleanup;}),e=>e===cleanup);
++ assert.equal(await withCandidateCleanup(async()=>23,async()=>{calls++;}),23);assert.equal(calls,3);
++});
++
+ class FakePage extends EventEmitter {
+  mainFrame(){return this;}
+  async evaluate(){return {drawerCount:2,inputCount:2,drawerVisible:2,inputVisible:2,inputSuffix:2,inputEqualsPreclear:0,
+@@ -45,6 +63,7 @@ const response=(request,name)=>({url:request.url,request:()=>request,ok:()=>true
+ test('checkpoint producer and reporter agree on every finite field',()=>{
+  assert.deepEqual([...diagnosticFields].sort(),Object.keys(CANDIDATE_CHECKPOINT_BOUNDS).sort());
+  assert.deepEqual([...imageDiagnosticFields].sort(),Object.keys(CANDIDATE_IMAGE_BOUNDS).sort());
++ assert.deepEqual([...consumerDiagnosticFields].sort(),Object.keys(CANDIDATE_CONSUMER_BOUNDS).sort());
+ });
+ 
+ test('rendered section marker, pending Save and missing input remain distinct in DOM projection',()=>{
+@@ -165,3 +184,46 @@ test('probe failures and absent milestones remain unknown, original failed test
+  assert.equal(value.observations[0].dbReadState,2);assert.equal(value.observations[0].dbSuffix,0);assert.equal(value.observations[1].drawerCount,0);
+  assert(!out.attachments[0].body.toString().includes('PRIVATE_'));assert.equal(page.listenerCount('request'),0);
+ });
++
++const consumerPage=(counts={card:1,native:0,role:1,placeholder:1})=>{
++ const page=new FakePage();let calls=0;
++ page.getByTestId=id=>{assert.equal(id,'menu-item-PRIVATE_ITEM');calls++;return{
++  count:async()=>counts.card,locator:selector=>{assert.equal(selector,'img');return{count:async()=>counts.native};},
++  getByRole:role=>{assert.equal(role,'img');return{count:async()=>counts.role};},
++  getByTestId:id=>{assert.equal(id,'menu-image-placeholder');return{count:async()=>counts.placeholder,isVisible:async()=>true};}};};
++ return{page,calls:()=>calls};
++};
++test('consumer projection distinguishes missing/nonunique card, native image and actual role probe',async()=>{
++ for(const card of[0,1,2]){
++  const f=consumerPage({card,native:0,role:1,placeholder:1});
++  const row=await readCandidateConsumerDom(f.page,'PRIVATE_ITEM',2);
++  assert.equal(row.observed,1);assert.equal(row.cardCount,card+1);
++  assert.equal(row.nativeImgCount,card===1?1:0);assert.equal(row.roleImgCount,card===1?2:0);
++  assert.equal(row.placeholderVisible,card===1?2:0);
++ }
++ const f=consumerPage({card:1,native:1,role:2,placeholder:1}),diag=new CandidateDiagnostics(f.page,async()=>''),out=capture(4);
++ diag.expectConsumerImage(2,'PRIVATE_ITEM');await diag.finish(out.info);
++ assert(safeCandidateDiagnostic(decoded(out),4));assert.equal(decoded(out).consumer.nativeImgCount,2);
++ assert.equal(decoded(out).consumer.roleImgCount,3);assert(!out.attachments[0].body.toString().includes('PRIVATE'));
++});
++test('unavailable and hanging probes stay UNKNOWN; late results cannot mutate exported facts',async()=>{
++ for(const kind of['consumer-reject','consumer-hang','image-hang']){
++  const f=consumerPage(),page=f.page,diag=new CandidateDiagnostics(page,async()=>''),out=capture(4);let release;
++  const hanging=new Promise(resolve=>{release=resolve;});
++  if(kind==='image-hang'){
++   const evaluate=page.evaluate.bind(page);page.evaluate=(fn)=>fn===readCandidateImageDom?hanging:evaluate();diag.expectMenuImage(1,'PRIVATE_ITEM','PRIVATE_URL');
++  }else{page.getByTestId=()=>({count:()=>kind==='consumer-reject'?Promise.reject(Error('PRIVATE_PROBE')):hanging});diag.expectConsumerImage(2,'PRIVATE_ITEM');}
++  await diag.finish(out.info);const value=decoded(out),before=out.attachments[0].body.toString();
++  assert(safeCandidateDiagnostic(value,4));assert.equal((kind==='image-hang'?value.image:value.consumer).observed,0);
++  release(kind==='image-hang'?{phaseOrdinal:1,observed:1,selectionCount:2,selectionMatches:2,imageCount:2,srcMatches:2,decoded:2}:0);
++  await nextTurn();assert.equal(out.attachments[0].body.toString(),before);assert.equal(diag.consumerTarget,undefined);assert.equal(diag.imageTarget,undefined);
++ }
++});
++test('passed cases do not probe/attach consumer facts; attachment refusal never masks the test',async()=>{
++ for(const status of['passed','failed']){
++  const f=consumerPage(),diag=new CandidateDiagnostics(f.page,async()=>''),out=capture(4,status);let attachments=0;
++  out.info.attach=async()=>{attachments++;throw Error('PRIVATE_ATTACHMENT_FAILURE');};diag.expectConsumerImage(2,'PRIVATE_ITEM');
++  await diag.finish(out.info);assert.equal(attachments,status==='passed'?0:1);assert.equal(f.calls(),status==='passed'?0:1);
++  assert.equal(f.page.listenerCount('response'),0);assert.equal(diag.consumerTarget,undefined);
++ }
++});
+diff --git a/scripts/permission-runtime-candidate-diagnostic.mjs b/scripts/permission-runtime-candidate-diagnostic.mjs
+index 2844b1a..024eaea 100644
+--- a/scripts/permission-runtime-candidate-diagnostic.mjs
++++ b/scripts/permission-runtime-candidate-diagnostic.mjs
+@@ -1,7 +1,7 @@
+ // Candidate-only, source-fixed diagnostic projection. This is not an acceptance
+ // catalog: all six full-file tests still pass through validateRuntimeStage.
+ export const CANDIDATE_DIAGNOSTIC_ATTACHMENT='candidate-e2e-diagnostics';
+-export const CANDIDATE_DIAGNOSTIC_SCHEMA='candidate-e2e-diagnostics-v2';
++export const CANDIDATE_DIAGNOSTIC_SCHEMA='candidate-e2e-diagnostics-v3';
+ export const CANDIDATE_DIAGNOSTIC_MAX_BYTES=16384;
+ export const CANDIDATE_TEST_FILE='tests/supabase/permissionCandidate.spec.ts';
+ export const CANDIDATE_TEST_PROJECT='permission-candidate-isolated';
+@@ -25,6 +25,8 @@ export const CANDIDATE_CHECKPOINT_BOUNDS=Object.freeze({
+ // One optional test4 image observation, never multiplied across settings rows.
+ export const CANDIDATE_IMAGE_BOUNDS=Object.freeze({phaseOrdinal:2,observed:1,selectionCount:3,
+  selectionMatches:2,imageCount:3,srcMatches:2,decoded:2});
++export const CANDIDATE_CONSUMER_BOUNDS=Object.freeze({phaseOrdinal:7,observed:1,cardCount:3,
++ nativeImgCount:3,roleImgCount:3,placeholderCount:3,placeholderVisible:2});
+ const ordinal=(value,max)=>Number.isSafeInteger(value)&&value>=0&&value<=max;
+ const exact=(value,keys)=>value!==null&&typeof value==='object'&&!Array.isArray(value)
+  &&Object.keys(value).sort().join(',')===[...keys].sort().join(',');
+@@ -34,7 +36,7 @@ export function candidateTestOrdinal(identity){
+   ?CANDIDATE_TEST_NAMES.indexOf(identity.name)+1:0;
+ }
+ export function safeCandidateDiagnostic(value,testOrdinal){
+- if(!exact(value,['schemaVersion','testOrdinal','milestoneOrdinal','observations','image'])
++ if(!exact(value,['schemaVersion','testOrdinal','milestoneOrdinal','observations','image','consumer'])
+   ||value.schemaVersion!==CANDIDATE_DIAGNOSTIC_SCHEMA||value.testOrdinal!==testOrdinal
+   ||!ordinal(testOrdinal,6)||testOrdinal===0||!ordinal(value.milestoneOrdinal,31)
+   ||!Array.isArray(value.observations)||value.observations.length>5)return null;
+@@ -55,7 +57,17 @@ export function safeCandidateDiagnostic(value,testOrdinal){
+    ||value.image.observed===1&&value.image.imageCount===2&&(value.image.srcMatches===0||value.image.decoded===0)
+    ||value.image.imageCount!==2&&(value.image.srcMatches!==0||value.image.decoded!==0))return null;
+  }
+- return {schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal,milestoneOrdinal:value.milestoneOrdinal,observations,image:value.image};
++ if(value.consumer!==null){const c=value.consumer;
++  if(testOrdinal!==4||!exact(c,Object.keys(CANDIDATE_CONSUMER_BOUNDS))
++   ||!Object.entries(CANDIDATE_CONSUMER_BOUNDS).every(([k,max])=>ordinal(c[k],max))||c.phaseOrdinal===0
++   ||c.observed===0&&Object.entries(c).some(([k,v])=>!['phaseOrdinal','observed'].includes(k)&&v!==0)
++   ||c.observed===1&&c.cardCount===0
++   ||c.cardCount!==2&&['nativeImgCount','roleImgCount','placeholderCount','placeholderVisible'].some(k=>c[k]!==0)
++   ||c.observed===1&&c.cardCount===2&&['nativeImgCount','roleImgCount','placeholderCount'].some(k=>c[k]===0)
++   ||c.placeholderCount!==2&&c.placeholderVisible!==0
++   ||c.placeholderCount===2&&c.placeholderVisible===0)return null;
++ }
++ return {schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal,milestoneOrdinal:value.milestoneOrdinal,observations,image:value.image,consumer:value.consumer};
+ }
+ // Missing/invalid never becomes an observed false. No file attachment is opened.
+ export function candidateDiagnosticAttachment(identity,attachments){
+@@ -75,6 +87,7 @@ export function candidateDiagnosticBounds(errorCodeMax,errorMatcherMax){
+  const out={candidateInventoryStatus:3,candidateUnknownDiscovery:10000,candidateUnknownResults:10000,
+   candidateDuplicateDiscovery:10000,candidateDuplicateResults:10000,candidateMissingDiscovery:6,candidateMissingResults:6};
+  for(const[key,max]of Object.entries(CANDIDATE_IMAGE_BOUNDS))out['candidateImage'+upper(key)]=max;
++ for(const[key,max]of Object.entries(CANDIDATE_CONSUMER_BOUNDS))out['candidateConsumer'+upper(key)]=max;
+  for(let i=1;i<=6;i++){
+   const p='candidateTest'+i;
+   Object.assign(out,{[p+'Discovered']:1,[p+'State']:6,[p+'Attempts']:10000,[p+'FailureLine']:100000,
+@@ -100,6 +113,7 @@ export function candidateRuntimeFailureFacts(report,{errorCodeMax,errorMatcherMa
+   candidateDuplicateDiscovery:duplicates(ds),candidateDuplicateResults:duplicates(rs),
+   candidateMissingDiscovery:missing(ds),candidateMissingResults:missing(rs)};
+  for(const key of Object.keys(CANDIDATE_IMAGE_BOUNDS))out['candidateImage'+upper(key)]=0;
++ for(const key of Object.keys(CANDIDATE_CONSUMER_BOUNDS))out['candidateConsumer'+upper(key)]=0;
+  for(let i=1;i<=6;i++){
+   const p='candidateTest'+i,row=rs[i-1].length===1?rs[i-1][0]:null;
+   out[p+'Discovered']=ds[i-1].length===1?1:0;
+@@ -114,6 +128,7 @@ export function candidateRuntimeFailureFacts(report,{errorCodeMax,errorMatcherMa
+   out[p+'DiagnosticStatus']=validEnvelope?1:attachment===undefined||exact(attachment,['status'])&&attachment.status===0?0:2;
+   out[p+'MilestoneOrdinal']=validEnvelope?value.milestoneOrdinal:0;
+   if(i===4&&validEnvelope&&value.image)for(const key of Object.keys(CANDIDATE_IMAGE_BOUNDS))out['candidateImage'+upper(key)]=value.image[key];
++  if(i===4&&validEnvelope&&value.consumer)for(const key of Object.keys(CANDIDATE_CONSUMER_BOUNDS))out['candidateConsumer'+upper(key)]=value.consumer[key];
+   for(let j=1;j<=5;j++){
+    const checkpoint=validEnvelope?value.observations.find(x=>x.checkpointOrdinal===j):null;
+    out[p+'Checkpoint'+j+'Reached']=checkpoint?1:0;
+diff --git a/scripts/permission-runtime-candidate-diagnostic.test.mjs b/scripts/permission-runtime-candidate-diagnostic.test.mjs
+index 46564c5..b5f2e16 100644
+--- a/scripts/permission-runtime-candidate-diagnostic.test.mjs
++++ b/scripts/permission-runtime-candidate-diagnostic.test.mjs
+@@ -2,7 +2,7 @@ import test from'node:test';
+ import assert from'node:assert/strict';
+ import{readFileSync}from'node:fs';
+ import{runInNewContext}from'node:vm';
+-import{CANDIDATE_TEST_FILE,CANDIDATE_TEST_PROJECT,CANDIDATE_TEST_NAMES,CANDIDATE_CHECKPOINT_BOUNDS,CANDIDATE_IMAGE_BOUNDS,
++import{CANDIDATE_TEST_FILE,CANDIDATE_TEST_PROJECT,CANDIDATE_TEST_NAMES,CANDIDATE_CHECKPOINT_BOUNDS,CANDIDATE_IMAGE_BOUNDS,CANDIDATE_CONSUMER_BOUNDS,
+  CANDIDATE_DIAGNOSTIC_SCHEMA,CANDIDATE_DIAGNOSTIC_ATTACHMENT,CANDIDATE_DIAGNOSTIC_MAX_BYTES,
+  candidateTestOrdinal,candidateDiagnosticAttachment,safeCandidateDiagnostic}from'./permission-runtime-candidate-diagnostic.mjs';
+ import{runtimePlaywrightFailureFacts,runtimeRunnerFailureFacts,assertRuntimeDiagnosticBinding,
+@@ -19,8 +19,9 @@ const context={sourceSHA:'a'.repeat(40),sourceFingerprint:'b'.repeat(64),lockSHA
+  configSHA:stage.configSHA,runId:'123',invocationSHA:runtimeHash(argv),argv};
+ const observation=(checkpointOrdinal,delta={})=>({checkpointOrdinal,...Object.fromEntries(Object.keys(CANDIDATE_CHECKPOINT_BOUNDS).map(key=>[key,0])),...delta});
+ const diagnostic=(testOrdinal=6,delta={})=>({schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal,milestoneOrdinal:17,
+- observations:[observation(3,{dbReadState:1,dbSuffix:2,drawerCount:2,inputCount:1}),observation(4,{dbReadState:1,dbEqualsPreclear:2})],image:null,...delta});
++ observations:[observation(3,{dbReadState:1,dbSuffix:2,drawerCount:2,inputCount:1}),observation(4,{dbReadState:1,dbEqualsPreclear:2})],image:null,consumer:null,...delta});
+ const imageFacts={phaseOrdinal:2,observed:1,selectionCount:2,selectionMatches:2,imageCount:2,srcMatches:1,decoded:1};
++const consumerFacts={phaseOrdinal:2,observed:1,cardCount:2,nativeImgCount:2,roleImgCount:3,placeholderCount:2,placeholderVisible:2};
+ const attachment=value=>({name:CANDIDATE_DIAGNOSTIC_ATTACHMENT,contentType:'application/json',body:Buffer.from(JSON.stringify(value))});
+ function reporterFixture(failures=[4,6],options={}){
+  let captured;
+@@ -35,7 +36,7 @@ function reporterFixture(failures=[4,6],options={}){
+  reporter.onBegin({repeatEach:1},{allTests:()=>tests});
+  for(let i=1;i<=6;i++){
+   const fail=failures.includes(i),line=i===6?391:200;
+-  reporter.onTestEnd(tests[i-1],{status:fail?'failed':'passed',attachments:options.attachments?.[i]??(fail&&i===6?[attachment(diagnostic())]:fail&&i===4?[attachment(diagnostic(4,{image:imageFacts}))]:[]),
++  reporter.onTestEnd(tests[i-1],{status:fail?'failed':'passed',attachments:options.attachments?.[i]??(fail&&i===6?[attachment(diagnostic())]:fail&&i===4?[attachment(diagnostic(4,{image:imageFacts,consumer:consumerFacts}))]:[]),
+    ...(fail?{error:{message:'expect(locator).toHaveValue(expected)\nExpected: PRIVATE_DIAGNOSTIC_SENTINEL\nReceived: PRIVATE_DIAGNOSTIC_SENTINEL',
+     location:{file:tests[i-1].location.file,line}}}:{})});
+  }
+@@ -88,6 +89,7 @@ test('actual reporter, stage rejection, T04, isolated and outer exporters and co
+   assert.equal(first[metric],value);assert.equal(second[metric],0);
+  }
+  assert.equal(second.t04CandidateTest4DiagnosticStatus,0);
++ for(const[key,value]of Object.entries(consumerFacts)){const metric='t04CandidateConsumer'+key[0].toUpperCase()+key.slice(1);assert.equal(first[metric],value);assert.equal(second[metric],0);}
+  assert.notDeepEqual(first,second);
+ });
+ test('missing, unknown and duplicate identities are explicit and never mislabel another failure',()=>{
+@@ -159,8 +161,18 @@ test('all discovered tests, retries, hooks and source guards retain fail-closed
+   assert.throws(()=>assertRuntimeDiagnosticBinding(expected,changed,context));
+  }
+ });
++test('consumer snapshot refuses private fields and impossible certainty for absent or duplicate cards',()=>{
++ assert(safeCandidateDiagnostic(diagnostic(4,{consumer:consumerFacts}),4));
++ for(const consumer of[{...consumerFacts,url:'PRIVATE_DIAGNOSTIC_SENTINEL'}, {...consumerFacts,observed:0},
++  ...[0,1,3].map(cardCount=>({...consumerFacts,cardCount})), {...consumerFacts,placeholderCount:1},
++  {...consumerFacts,placeholderVisible:0},...Object.entries(CANDIDATE_CONSUMER_BOUNDS).map(([k,max])=>({...consumerFacts,[k]:max+1}))])
++  assert.equal(safeCandidateDiagnostic(diagnostic(4,{consumer}),4),null);
++ assert.equal(safeCandidateDiagnostic(diagnostic(6,{consumer:consumerFacts}),6),null);
++ for(const cardCount of[1,3])assert(safeCandidateDiagnostic(diagnostic(4,{consumer:{phaseOrdinal:3,observed:1,cardCount,nativeImgCount:0,roleImgCount:0,placeholderCount:0,placeholderVisible:0}}),4));
++ const missing=diagnostic(4);delete missing.consumer;assert.equal(safeCandidateDiagnostic(missing,4),null);
++});
+ test('toHaveValue appends matcher9 without interpreting private input values as Auth error codes',()=>{
+- assert.equal(RUNTIME_ERROR_MATCHERS.length,9);
++ assert.equal(RUNTIME_ERROR_MATCHERS.length,10);
+  const facts=runtimePlaywrightFailureFacts({message:'expect(locator).toHaveValue(expected)\nReceived: "PIN_CHANGE_REQUIRED"'}).failureFacts;
+  assert.equal(facts.errorMatcherOrdinal,9);assert.equal(facts.errorCodeOrdinal,0);
+  assert.equal(RUNTIME_ERROR_CODES.length,40);
+diff --git a/scripts/permission-runtime-diagnostic-selftest.mjs b/scripts/permission-runtime-diagnostic-selftest.mjs
+index 04fb9d9..5862f59 100644
+--- a/scripts/permission-runtime-diagnostic-selftest.mjs
++++ b/scripts/permission-runtime-diagnostic-selftest.mjs
+@@ -1,7 +1,8 @@
+ import{mkdirSync,writeFileSync,readFileSync}from'node:fs';import{join,resolve,relative}from'node:path';import{spawnSync}from'node:child_process';
++import{pathToFileURL}from'node:url';
+ import{runtimeHash,validateRuntimeStage}from'./permission-runtime-results.mjs';
+-import{assertRuntimeDiagnosticBinding}from'./permission-runtime-error-facts.mjs';
+-import{t04RunnerFailureFacts,t04FailureFacts,t04SafeFailureMetric}from'./permission-runtime-t04.mjs';
++import{assertRuntimeDiagnosticBinding,COMPATIBILITY_EXTRA_IDENTITY}from'./permission-runtime-error-facts.mjs';
++import{t04RunnerFailureFacts,t04FailureFacts,t04SafeFailureMetric,t04ParentFailureFacts}from'./permission-runtime-t04.mjs';
+ import{serviceRunnerFailureFacts,serviceSafeFailureMetric}from'./permission-runtime-service-diagnostic.mjs';import{serviceFailureFacts}from'./permission-runtime-service.mjs';
+ import{diagnosticMarker,finiteDiagnosticFacts,collectRuntimeDiagnosticFacts}from'./permission-runtime-diagnostic-transport.mjs';
+ import{projectTc18WrapperReceipt}from'./permission-runtime-tc18-diagnostic.mjs';
+@@ -50,7 +51,7 @@ export function verifyDiagnosticMutationControls(expected,report,context,mode){
+  for(const adapters of mutations){let refused=false;try{verifyDiagnosticPipeline(expected,report,context,mode,adapters);}catch{refused=true;}check(refused);}
+  return mutations.length;
+ }
+-// Nested controls in the existing failed diagnostic group. No browser/backend,
++// Nested controls in the existing post-browser failed diagnostic group. No backend,
+ // added acceptance group or relaxed exact-count guard. Exercise real attachment
+ // transport through the installed Playwright runner before a costly T04.
+ export function candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA}){
+@@ -59,15 +60,16 @@ export function candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA
+   const dir=join(parent,'candidate-'+kind),tests=join(dir,'tests','supabase');mkdirSync(tests,{recursive:true});
+   const file=join(tests,'permissionCandidate.spec.ts'),config=join(dir,'config.mjs');
+   const snapshot={schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal:6,milestoneOrdinal:17,
+-   observations:[{checkpointOrdinal:3,...Object.fromEntries(Object.keys(CANDIDATE_CHECKPOINT_BOUNDS).map(k=>[k,0])),dbReadState:1,dbSuffix:2}],image:null};
++   observations:[{checkpointOrdinal:3,...Object.fromEntries(Object.keys(CANDIDATE_CHECKPOINT_BOUNDS).map(k=>[k,0])),dbReadState:1,dbSuffix:2}],image:null,consumer:null};
+   const image={phaseOrdinal:2,observed:1,selectionCount:2,selectionMatches:2,imageCount:2,srcMatches:1,decoded:1};
+-  const imageSnapshot={schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal:4,milestoneOrdinal:6,observations:[],image};
++  const consumer={phaseOrdinal:2,observed:1,cardCount:2,nativeImgCount:2,roleImgCount:3,placeholderCount:2,placeholderVisible:2};
++  const imageSnapshot={schemaVersion:CANDIDATE_DIAGNOSTIC_SCHEMA,testOrdinal:4,milestoneOrdinal:6,observations:[],image,consumer:null};
+   const failing=kind==='persist-clear'?[4,6]:[5,6];
+-  writeFileSync(file,"import{test,expect}from'@playwright/test';\n"
++  writeFileSync(file,`import{test,expect}from'@playwright/test';import{readCandidateConsumerDom}from${JSON.stringify(pathToFileURL(resolve(root,'tests/supabase/permissionCandidateDiagnostics.ts')).href)};import{expectCandidateImageFallback}from${JSON.stringify(pathToFileURL(resolve(root,'tests/supabase/permissionCandidateUi.ts')).href)};\n`
+    +(kind==='beforeall-hook'?"test.beforeAll(()=>{throw Error('PRIVATE_DIAGNOSTIC_SENTINEL');});\n":'')
+-   +CANDIDATE_TEST_NAMES.map((name,i)=>`test(${JSON.stringify(name)},async({},info)=>{${i===5||i===3&&kind==='persist-clear'?`await info.attach(${JSON.stringify(CANDIDATE_DIAGNOSTIC_ATTACHMENT)},{contentType:'application/json',body:JSON.stringify(${JSON.stringify(i===3?imageSnapshot:snapshot)})});`:''}${failing.includes(i+1)?"expect('PRIVATE_DIAGNOSTIC_SENTINEL').toBe('different');":''}});`).join('\n'));
++   +CANDIDATE_TEST_NAMES.map((name,i)=>{const imageCase=i===3&&kind==='persist-clear';return `test(${JSON.stringify(name)},async(${imageCase?'{page}':'{}'},info)=>{${imageCase?`await page.setContent('<button data-testid="menu-item-synthetic"><svg data-testid="menu-image-placeholder"></svg><img alt="Synthetic item"></button>');const value={...${JSON.stringify(imageSnapshot)},consumer:await readCandidateConsumerDom(page,'synthetic',2)};await info.attach(${JSON.stringify(CANDIDATE_DIAGNOSTIC_ATTACHMENT)},{contentType:'application/json',body:JSON.stringify(value)});await expectCandidateImageFallback(page.getByTestId('menu-item-synthetic'),expect.configure({timeout:100}));`:i===5?`await info.attach(${JSON.stringify(CANDIDATE_DIAGNOSTIC_ATTACHMENT)},{contentType:'application/json',body:JSON.stringify(${JSON.stringify(snapshot)})});`:''}${!imageCase&&failing.includes(i+1)?"expect('PRIVATE_DIAGNOSTIC_SENTINEL').toBe('different');":''}});`;}).join('\n'));
+   writeFileSync(config,`export default ${JSON.stringify({testDir:tests,testMatch:'permissionCandidate.spec.ts',outputDir:join(dir,'browser'),workers:1,retries:0,repeatEach:1,
+-   forbidOnly:true,timeout:3000,globalTimeout:20000,use:{trace:'off',screenshot:'off',video:'off'},projects:[{name:CANDIDATE_TEST_PROJECT}]})};\n`);
++   forbidOnly:true,timeout:3000,globalTimeout:20000,use:{channel:'chromium',trace:'off',screenshot:'off',video:'off'},projects:[{name:CANDIDATE_TEST_PROJECT}]})};\n`);
+   const argv=[resolve(root,'node_modules/@playwright/test/cli.js'),'test','--config',config,
+    '--reporter',resolve(root,'scripts/permission-runtime-playwright-reporter.mjs')];
+   const context={stage:'candidate-e2e',runner:'playwright',sourceSHA,sourceFingerprint:runtimeHash('candidate-inventory-control:'+sourceSHA),lockSHA,
+@@ -80,7 +82,7 @@ export function candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA
+   check(report.discovery.length===6&&report.results.length===6&&report.discovery.every(x=>x.file===CANDIDATE_TEST_FILE));
+   let refused=false;try{validateRuntimeStage(expected,report,context,child.status);}catch{refused=true;}check(refused);
+   assertRuntimeDiagnosticBinding(expected,report,{...context,argv});
+-  const facts={t04StageOrdinal:10,...t04RunnerFailureFacts(expected,report)};
++  const facts={t04StageOrdinal:10,...t04ParentFailureFacts({runtimeStageBoundaryOrdinal:7,runtimeResultFailureOrdinal:16,runtimeStageChildExitCode:1,t04ImageMeasurementPhaseOrdinal:3,t04ImageMeasurementCleanupAttempted:1,t04ImageMeasurementCleanupFailed:1},{phaseOrdinal:3}),...t04RunnerFailureFacts(expected,report)};
+   const marker=diagnosticMarker('T04_FAILURE_FACTS',facts,t04SafeFailureMetric);check(Buffer.byteLength(marker)<65536);
+   const failure=t04FailureExport({stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:child.status,facts:t04FailureFacts(marker)});
+   const fileControl=reporterReceiptFileControl(root,dir,{schemaVersion:'permission-ci1-isolated-failure-v1',runId:context.runId,
+@@ -96,16 +98,51 @@ export function candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA
+     &&out.t04CandidateTest6Checkpoint3Reached===1&&out.t04CandidateTest6Checkpoint3DbSuffix===2);
+    check(out['t04CandidateTest'+failing[0]+'State']===2&&out['t04CandidateTest'+(failing[0]===4?5:4)+'State']===1);
+    for(const[key,value]of Object.entries(image))check(out['t04CandidateImage'+key[0].toUpperCase()+key.slice(1)]===(kind==='persist-clear'?value:0));
++   for(const[key,value]of Object.entries(consumer))check(out['t04CandidateConsumer'+key[0].toUpperCase()+key.slice(1)]===(kind==='persist-clear'?value:0));
++   if(kind==='persist-clear')check(out.t04CandidateTest4ErrorMatcherOrdinal===10&&out.t04CandidateTest4ErrorCodeOrdinal===0&&out.t04CandidateTest4FailureLine>0);
+    check(out.t04CandidateTest4DiagnosticStatus===(kind==='persist-clear'?1:0));
+    outputs.push(out);
+   }
+  }
+  check(outputs.length===2&&JSON.stringify(outputs[0])!==JSON.stringify(outputs[1]));
+ }
++// A full-file failure outside the three catalog-required identities still fails
++// acceptance. Only this one fixed extra identity receives diagnostic projection.
++export function compatibilityExtraReporterControl(root,parent,{sourceSHA,lockSHA}){
++ const dir=join(parent,'compatibility-extra'),stage=runtimeStage('transition-compatibility-database');
++ const file=join(dir,COMPATIBILITY_EXTRA_IDENTITY.file),config=join(dir,'config.mjs');mkdirSync(join(dir,'tests','contracts'),{recursive:true});
++ const source="import{test,expect}from'vitest';\n"+stage.required.map(row=>`test(${JSON.stringify(row.name)},()=>expect(true).toBe(true));`).join('\n')
++  +`\ntest(${JSON.stringify(COMPATIBILITY_EXTRA_IDENTITY.name)},()=>expect('PRIVATE_DIAGNOSTIC_SENTINEL').toBe('different'));\n`;
++ writeFileSync(file,source);
++ writeFileSync(config,`export default {root:${JSON.stringify(dir)},test:{include:[${JSON.stringify(COMPATIBILITY_EXTRA_IDENTITY.file)}],environment:'node',allowOnly:false,retry:0,maxWorkers:1,fileParallelism:false,passWithNoTests:false}};\n`);
++ const argv=[resolve(root,'node_modules/vitest/vitest.mjs'),'run','--config',config,'--reporter',resolve(root,'scripts/permission-runtime-vitest-reporter.mjs')];
++ const context={stage:stage.stage,runner:'vitest',sourceSHA,sourceFingerprint:runtimeHash('compatibility-extra-control:'+sourceSHA),lockSHA,
++  configSHA:runtimeHash(readFileSync(config)),runId:process.env.GITHUB_RUN_ID??'1',invocationSHA:runtimeHash(argv),sourceRoot:dir,outputRoot:dir};
++ const cp=join(dir,'context.json');writeFileSync(cp,JSON.stringify(context));
++ const child=spawnSync(process.execPath,argv,{cwd:root,env:{...process.env,PERMISSION_RUNTIME_CONTEXT:cp},encoding:'utf8',timeout:45000,maxBuffer:128*1024,windowsHide:true});
++ check(!child.error&&!child.signal&&child.status!==0);
++ const raw=readFileSync(join(dir,stage.stage+'-runner.json'),'utf8');check(!raw.includes('PRIVATE_DIAGNOSTIC_SENTINEL'));
++ const report=JSON.parse(raw),expected={...stage,configSHA:context.configSHA,argv};assertRuntimeDiagnosticBinding(expected,report,{...context,argv});
++ check(report.discovery.length===4&&report.results.length===4&&report.results.filter(row=>row.state==='passed'&&row.attempts===1).length===3);
++ let refused=false;try{validateRuntimeStage(expected,report,context,child.status);}catch{refused=true;}check(refused);
++ const facts={t04StageOrdinal:19,...t04RunnerFailureFacts(expected,report)};
++ check(facts.t04FirstFailedRequired===0&&facts.t04FailedTests===1&&facts.t04CompatibilityExtraStatus===1
++  &&facts.t04CompatibilityExtraState===2&&facts.t04CompatibilityExtraAttempts===1&&facts.t04CompatibilityExtraFailureLine===5
++  // Installed Vitest serializes AssertionError without matcherResult: UNKNOWN
++  // is intentional, not a guessed matcher derived from private assertion text.
++  &&facts.t04CompatibilityExtraErrorMatcherOrdinal===0&&facts.t04CompatibilityExtraErrorNameOrdinal===4);
++ const marker=diagnosticMarker('T04_FAILURE_FACTS',facts,t04SafeFailureMetric);
++ const failure=t04FailureExport({stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:child.status,facts:t04FailureFacts(marker)});
++ const control=reporterReceiptFileControl(root,dir,{schemaVersion:'permission-ci1-isolated-failure-v1',runId:context.runId,
++  attempt:Number(process.env.GITHUB_RUN_ATTEMPT??1),sourceSHA,failure,cleanupFailure:null});
++ writeFileSync(join(dir,'isolated-receipt-control.json'),JSON.stringify({...control,failure:undefined}));
++ const out=collectRuntimeDiagnosticFacts([{failure:control.failure??failure}],'t04',t04SafeFailureMetric)[0];
++ check(JSON.stringify(out)===JSON.stringify(facts));return{required:3,extraFailed:1,fullFileRefused:1};
++}
+ export function diagnosticReporterSelftest(root,parent,{sourceSHA,lockSHA}){
+  const summary={run:7,pass:0,states:[...DIAGNOSTIC_CONTROL_STATES],sourceSHA,lockSHA,fullPipeline:true,mutationChecks:0};
+  for(const mode of DIAGNOSTIC_CONTROL_STATES.slice(0,5)){
+-  if(mode==='failed')candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA});
++  if(mode==='failed'){candidateInventoryReporterControl(root,parent,{sourceSHA,lockSHA});compatibilityExtraReporterControl(root,parent,{sourceSHA,lockSHA});}
+   const dir=join(parent,'diagnostic-'+mode);mkdirSync(dir);const file=join(dir,'case.spec.mjs'),config=join(dir,'config.mjs');
+   const ready=join(dir,'ready');
+   const body=mode==='failed'?"throw new Error('UNEXPECTED_LEGACY_FINANCIAL_GRANT');":mode==='metadata-absent'?"throw new Error('PRIVATE_DIAGNOSTIC_SENTINEL');":mode==='interrupted'?`(await import('node:fs')).writeFileSync(${JSON.stringify(ready)},'ready');await new Promise(()=>{});`:mode==='timedOut'?"await new Promise(()=>{});":"";
+diff --git a/scripts/permission-runtime-error-facts.mjs b/scripts/permission-runtime-error-facts.mjs
+index 61da8d7..3e140bf 100644
+--- a/scripts/permission-runtime-error-facts.mjs
++++ b/scripts/permission-runtime-error-facts.mjs
+@@ -24,7 +24,21 @@ export const RUNTIME_ERROR_CODES=Object.freeze(['ERR_MODULE_NOT_FOUND','ERR_UNSU
+  'ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING','ENOENT','EACCES','ECONNREFUSED','ETIMEDOUT',
+  '23502','23503','23505','23514','42501','42601','42703','42883','42P01','42P07','3F000','57P03','57014','53300','PIN_CHANGE_REQUIRED','EMPLOYEE_SESSION_REQUIRED','INVALID_EMPLOYEE_REQUEST','AUTH_REQUIRED','WRITE_PROTOCOL_UNSUPPORTED','FORBIDDEN',...LEGACY_BROWSER_GUARD_CODES,...COMPATIBILITY_ROUTE_GUARD_CODES]);
+ // Append only: existing producer/receipt ordinal meanings remain unchanged.
+-export const RUNTIME_ERROR_MATCHERS=Object.freeze(['toBe','toEqual','toStrictEqual','toBeTruthy','toBeFalsy','toContain','toThrow','toBeGreaterThan','toHaveValue']);
++export const RUNTIME_ERROR_MATCHERS=Object.freeze(['toBe','toEqual','toStrictEqual','toBeTruthy','toBeFalsy','toContain','toThrow','toBeGreaterThan','toHaveValue','toHaveCount']);
++// This discovered full-file case is diagnostic-only, not a new required ID.
++export const COMPATIBILITY_EXTRA_IDENTITY=Object.freeze({file:'tests/contracts/permissionCompatibility.contract.test.ts',
++ name:'TC-PIN-17 preparation and activation reject an older permission marker without changing the gate',project:null});
++export function compatibilityExtraFailureFacts(report){
++ const matches=row=>row?.file===COMPATIBILITY_EXTRA_IDENTITY.file&&row.name===COMPATIBILITY_EXTRA_IDENTITY.name&&row.project===null;
++ const discovery=report.discovery.filter(matches),results=report.results.filter(matches),unique=discovery.length===1&&results.length===1;
++ const row=unique?results[0]:undefined,finite=(value,max)=>Number.isSafeInteger(value)&&value>=0&&value<=max?value:0;
++ return{compatibilityExtraStatus:unique?1:discovery.length===0&&results.length===0?0:2,
++  compatibilityExtraState:['passed','failed','timedOut','interrupted','skipped','pending'].indexOf(row?.state)+1,
++  compatibilityExtraAttempts:finite(row?.attempts,10000),compatibilityExtraFailureLine:finite(row?.failureLine,100000),
++  compatibilityExtraErrorCodeOrdinal:finite(row?.failureFacts?.errorCodeOrdinal,RUNTIME_ERROR_CODES.length),
++  compatibilityExtraErrorNameOrdinal:finite(row?.failureFacts?.errorNameOrdinal,5),
++  compatibilityExtraErrorMatcherOrdinal:finite(row?.failureFacts?.errorMatcherOrdinal,RUNTIME_ERROR_MATCHERS.length)};
++}
+ export function runtimeErrorFacts(error){
+  const codeOrdinal=RUNTIME_ERROR_CODES.indexOf(error?.code)+1;
+  const guardOrdinal=LEGACY_BROWSER_GUARD_CODES.indexOf(error?.message);
+@@ -92,6 +106,8 @@ export const RUNTIME_FAILURE_BOUNDS=Object.freeze({missingRequired:10000,firstFa
+  firstFailedLine:100000,testErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,testErrorNameOrdinal:5,testErrorMatcherOrdinal:RUNTIME_ERROR_MATCHERS.length,
+  runnerFirstErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,runnerFirstErrorNameOrdinal:5,runnerFirstErrorMatcherOrdinal:RUNTIME_ERROR_MATCHERS.length,
+  runnerFirstErrorFileOrdinal:RUNTIME_ERROR_FILES.length,runnerFirstErrorLine:100000,runnerErrors:10000,hookErrors:10000,
++ compatibilityExtraStatus:2,compatibilityExtraState:6,compatibilityExtraAttempts:10000,compatibilityExtraFailureLine:100000,
++ compatibilityExtraErrorCodeOrdinal:RUNTIME_ERROR_CODES.length,compatibilityExtraErrorNameOrdinal:5,compatibilityExtraErrorMatcherOrdinal:RUNTIME_ERROR_MATCHERS.length,
+  ...IMAGE_HOOK_DIAGNOSTIC_BOUNDS,...candidateDiagnosticBounds(RUNTIME_ERROR_CODES.length,RUNTIME_ERROR_MATCHERS.length)});
+ export function assertRuntimeDiagnosticBinding(expected,report,context){
+  if(!report||report.schemaVersion!=='permission-runtime-stage-v1'||report.stage!==expected.stage||report.runner!==expected.runner
+@@ -143,6 +159,7 @@ export function runtimeRunnerFailureFacts(expected,r){
+  }
+  for(const[k,v]of[['runnerErrors',r.errorCount],['hookErrors',r.hookErrorCount]])if(Number.isSafeInteger(v)&&v>=0&&v<=10000)facts[k]=v;
+  if(expected.stage==='candidate-e2e')Object.assign(facts,candidateRuntimeFailureFacts(r,{errorCodeMax:RUNTIME_ERROR_CODES.length,errorMatcherMax:RUNTIME_ERROR_MATCHERS.length}));
++ if(expected.stage==='transition-compatibility-database')Object.assign(facts,compatibilityExtraFailureFacts(r));
+  return facts;
+ }
+ 
+@@ -171,11 +188,11 @@ export function runtimePlaywrightFailureFacts(error,file){
+   // Classify exactly one complete Received scalar after a single matcher
+   // header. Count every Received field before whitelisting: unknown values,
+   // duplicate fields and trailing payloads must never select a header code.
+-  const matchers=[...message.matchAll(/\bexpect\((?:received|locator)\)(?:\.not)?\.(toBe|toEqual|toStrictEqual|toBeTruthy|toBeFalsy|toContain|toThrow|toBeGreaterThan|toHaveValue)\(expected\)/g)];
++   const matchers=[...message.matchAll(/\bexpect\((?:received|locator)\)(?:\.not)?\.(toBe|toEqual|toStrictEqual|toBeTruthy|toBeFalsy|toContain|toThrow|toBeGreaterThan|toHaveValue|toHaveCount)\(expected\)/g)];
+   const matcher=matchers.length===1?matchers[0]:null;
+   const received=matcher?message.slice(matcher.index+matcher[0].length).split(/\r?\n/).filter(line=>/^[\t ]*Received:/.test(line)):[];
+   const scalar=received.length===1?/^[\t ]*Received:[\t ]*"([A-Z][A-Z0-9_]{0,63})"[\t ]*$/.exec(received[0]):null;
+-  if(failureFacts.errorCodeOrdinal===0&&scalar&&matcher[1]!=='toHaveValue')failureFacts.errorCodeOrdinal=RUNTIME_ERROR_CODES.slice(0,27).indexOf(scalar[1])+1;
++   if(failureFacts.errorCodeOrdinal===0&&scalar&&!['toHaveValue','toHaveCount'].includes(matcher[1]))failureFacts.errorCodeOrdinal=RUNTIME_ERROR_CODES.slice(0,27).indexOf(scalar[1])+1;
+   if(failureFacts.errorMatcherOrdinal===0&&matcher)failureFacts.errorMatcherOrdinal=RUNTIME_ERROR_MATCHERS.indexOf(matcher[1])+1;
+   for(const m of message.matchAll(/REALTIME_TIMING_ORACLE_FAILED:([a-z0-9-]{1,64})(?=$|[\s'"\],.])/g)){
+    const ordinal=REALTIME_FAILURE_ORACLES.indexOf(m[1]);if(ordinal>=0)realtimeFailureMask|=2**ordinal;
+diff --git a/scripts/permission-runtime-error-facts.test.mjs b/scripts/permission-runtime-error-facts.test.mjs
+index 1936657..f29fbf2 100644
+--- a/scripts/permission-runtime-error-facts.test.mjs
++++ b/scripts/permission-runtime-error-facts.test.mjs
+@@ -68,7 +68,34 @@ test('actual Playwright reporter adapter preserves statuses/attempts/discovery w
+  assert(!Object.hasOwn(report,'failureFacts'));assert(!Object.hasOwn(report.results[0],'failureLine'));
+ });
+ 
+-import{RUNTIME_ERROR_CODES}from'./permission-runtime-error-facts.mjs';
++import{RUNTIME_ERROR_CODES,COMPATIBILITY_EXTRA_IDENTITY,compatibilityExtraFailureFacts}from'./permission-runtime-error-facts.mjs';
++
++test('count matcher remains finite and cannot infer authorization codes from received values',()=>{
++ const header='expect(locator).toHaveCount(expected)';
++ for(const actual of['PRIVATE_ACTUAL','EMPLOYEE_SESSION_REQUIRED','3']){
++  const out=runtimePlaywrightFailureFacts({message:header+'\nExpected: "PRIVATE_EXPECTED"\nReceived: "'+actual+'"'});
++  assert.equal(out.failureFacts.errorMatcherOrdinal,10);assert.equal(out.failureFacts.errorCodeOrdinal,0);assert(!JSON.stringify(out).includes('PRIVATE'));
++ }
++ assert.equal(runtimeErrorFacts({matcherResult:{name:'toHaveCount',actual:'PRIVATE',expected:'PRIVATE'}}).errorMatcherOrdinal,10);
++ for(const message of[header+'\n'+header,header.replace('(expected)','(private)'),header+'x'.repeat(65537),'PRIVATE'])
++  assert.equal(runtimePlaywrightFailureFacts({message}).failureFacts.errorMatcherOrdinal,0);
++});
++
++test('only the unique fixed extra compatibility identity exposes its failure, never changes required aggregate',()=>{
++ const item=COMPATIBILITY_EXTRA_IDENTITY,row={...item,state:'failed',attempts:1,failureLine:132,failureFacts:{errorCodeOrdinal:1,errorNameOrdinal:4,errorMatcherOrdinal:1}};
++ const report={discovery:[item],results:[row],errorCount:0,hookErrorCount:0};
++ const valid=compatibilityExtraFailureFacts(report);assert.equal(valid.compatibilityExtraStatus,1);assert.equal(valid.compatibilityExtraFailureLine,132);
++ for(const r of[{discovery:[item,item],results:[row]},{discovery:[item],results:[row,row]},{discovery:[],results:[row]}]){
++  const facts=compatibilityExtraFailureFacts(r);assert.equal(facts.compatibilityExtraStatus,2);
++  assert(Object.entries(facts).every(([key,value])=>key==='compatibilityExtraStatus'||value===0));
++ }
++ for(const change of[{file:'other.ts'},{project:'private'},{name:item.name+' extra'}]){
++  const facts=compatibilityExtraFailureFacts({discovery:[{...item,...change}],results:[{...row,...change}]});assert(Object.values(facts).every(x=>x===0));
++ }
++ const projected=runtimeRunnerFailureFacts({stage:'transition-compatibility-database',required:[]},report);
++ assert.equal(projected.firstFailedRequired,0);assert.equal(projected.compatibilityExtraState,2);
++ assert(!Object.hasOwn(runtimeRunnerFailureFacts({stage:'other',required:[]},report),'compatibilityExtraStatus'));
++});
+ test('serialized Playwright Received code and matcher project only existing finite categories, never Expected or raw values',()=>{
+  const out=runtimePlaywrightFailureFacts({message:'SECRET\nexpect(received).toBe(expected)\nExpected: "PIN_CHANGE_REQUIRED"\nReceived: "EMPLOYEE_SESSION_REQUIRED"'});
+  assert.equal(out.failureFacts.errorCodeOrdinal,RUNTIME_ERROR_CODES.indexOf('EMPLOYEE_SESSION_REQUIRED')+1);assert.equal(out.failureFacts.errorMatcherOrdinal,1);assert(!JSON.stringify(out).includes('SECRET'));
+diff --git a/scripts/permission-runtime-isolated-receipt.test.mjs b/scripts/permission-runtime-isolated-receipt.test.mjs
+index cda5495..b306267 100644
+--- a/scripts/permission-runtime-isolated-receipt.test.mjs
++++ b/scripts/permission-runtime-isolated-receipt.test.mjs
+@@ -23,7 +23,7 @@ const rows = CANDIDATE_TEST_NAMES.map((name, i) => ({ file: CANDIDATE_TEST_FILE,
+   state: [3, 5].includes(i) ? 'failed' : 'passed', attempts: 1,
+   ...(i === 3 ? { candidateDiagnostic: { status: 1, value: { schemaVersion: CANDIDATE_DIAGNOSTIC_SCHEMA, testOrdinal: 4,
+     milestoneOrdinal: 6, observations: [], image: { phaseOrdinal: 1, observed: 1, selectionCount: 2, selectionMatches: 2,
+-      imageCount: 2, srcMatches: 1, decoded: 1 } } } } : {}),
++      imageCount: 2, srcMatches: 1, decoded: 1 }, consumer: {phaseOrdinal:2,observed:1,cardCount:2,nativeImgCount:2,roleImgCount:3,placeholderCount:2,placeholderVisible:2} } } } : {}),
+   ...([3, 5].includes(i) ? { failureLine: 391, failureFacts: { errorCodeOrdinal: 0, errorNameOrdinal: 4, errorMatcherOrdinal: 9 } } : {}) }));
+ const facts = { t04StageOrdinal: 10, ...t04RunnerFailureFacts(runtimeStage('candidate-e2e'), {
+   discovery: rows.map(({ file, name, project }) => ({ file, name, project })), results: rows, errorCount: 0, hookErrorCount: 0 }) };
+@@ -137,9 +137,9 @@ if (process.argv[2] === '--native-filesystem') {
+   catch { console.error('ISOLATED_RECEIPT_NATIVE_CONTROL_FAILED'); process.exitCode = 1; }
+ } else {
+   test('complete fixed-schema maxima include both branches and remain inside the shared 128KiB bound', () => {
+-    assert.equal(t04Maximum, 100551); assert.equal(serviceMaximum, 106305);
++    assert.equal(t04Maximum, 102713); assert.equal(serviceMaximum, 107891);
+     assert(t04Maximum < CAP && serviceMaximum < CAP);
+-    assert.equal(Object.keys(facts).length, 773);
++    assert.equal(Object.keys(facts).length, 780);
+     const largeMetrics = Array.from({ length: 3000 }, (_, n) => 'metric' + n.toString().padStart(4, '0') + 'X'.repeat(60));
+     assert.throws(() => isolatedReceiptMaximumBytes({ metrics: largeMetrics, operations: ['OP'], codes: ['CODE'], commands: ['node'] }));
+   });
+diff --git a/scripts/permission-runtime-iteration.md b/scripts/permission-runtime-iteration.md
+index ab635be..687acb6 100644
+--- a/scripts/permission-runtime-iteration.md
++++ b/scripts/permission-runtime-iteration.md
+@@ -183,7 +183,7 @@ validator; skipped, retried, expected-failure, hook or runner errors fail closed
+ Playwright hook errors are observed from `onStepEnd` hook steps, not assumed zero.
+ 
+ Only the body of the exact `candidate-e2e-diagnostics` JSON attachment, schema
+-`candidate-e2e-diagnostics-v2`, is read,
++`candidate-e2e-diagnostics-v3`, is read,
+ up to16KiB. A defined file path is refused (the runner may include `path:undefined`
+ for an in-memory body). Duplicate attachments, wrong source identity, extra keys,
+ unknown schema or out-of-range fields produce diagnosticStatus2 INVALID; absent
+@@ -241,8 +241,7 @@ Milestone ordinals: 1 test-start, 2 owner-login, 3 image-selected,
+ numeric time sequence (clear setup30/31 precedes18). Check the exact source.
+ 
+ The existing failed diagnostic selftest group includes real Playwright controls
+-for persist+clear failure, roles+clear failure and beforeAll-hook failure, without
+-a browser/backend. It verifies actual attachment transport, source binding,
++for persist+clear failure, roles+clear failure and beforeAll-hook failure, with the installed browser and no backend. It verifies actual attachment transport, source binding,
+ failure-stage rejection, public projection and collector output. Original4
+ reporter groups and7 diagnostic groups/20 transport mutations remain exact;
+ these nested controls must also pass. Fixed candidate facts remain below64KiB,
+@@ -255,7 +254,7 @@ T04 and service workers use the same 128KiB UTF-8 serialized receipt limit at
+ both writer and reader. The source-derived conservative maxima include both a
+ primary and a cleanup failure, every allowlisted numeric fact at MAX_SAFE_INTEGER,
+ the longest fixed enums, a20-digit run ID, attempt1000 and source SHA40. Current
+-bounds are100,551 bytes for T04 and106,305 for service; changing the allowlists
++bounds are102,713 bytes for T04 and107,891 for service; changing the allowlists
+ beyond the shared cap refuses at module load. Actual per-field bounds remain
+ independently enforced. This diagnostic limit does not alter stage acceptance,
+ retries, timeouts, the32KiB D12 counts receipt or the1MiB report/marker limits.
+@@ -314,3 +313,55 @@ the public finite outcome survives in the safe failure log. These failure-only
+ guards remain; no temporary raw logging, secret export or continuous probe is
+ needed after the defect is verified fixed. A successful run emits no receipt
+ failure trace.
++
++## Candidate fallback and post-run boundary diagnostics
++
++TC47 shares its fallback assertion with a real installed-Chromium control in the
++existing post-browser playwright-pass reporter group. Actual Lucide Coffee SVG
++has Playwright img role; fallback acceptance therefore checks the visible
++placeholder and zero native HTML img elements. Negative controls require the
++expected toHaveCount or toBeVisible matcher, not merely any thrown error. All
++following geometry, name, price, action, order and receipt oracles remain intact.
++
++Candidate attachment v3 adds one optional test4 consumer observation, separate
++from settings checkpoints: t04CandidateConsumerPhaseOrdinal1 request setup,
++2 fallback assertion after503/no-store,3 geometry/name/price,4 cart/submit,
++5 kitchen receipt,6 reopen/payment,7 payment receipt. Observed0 means unavailable;
++card/native-img/role-img/placeholder counts use0 UNKNOWN,1 zero,2 one,3 many.
++PlaceholderVisible is0 UNKNOWN,1 false,2 true. Role count uses Playwright role
++semantics. Missing/nonunique cards keep dependent facts UNKNOWN. Failed tests
++probe at teardown with a bounded1s wait; success drops in-memory targets and
++emits no attachment. Failed attachment/probe cannot replace the original error,
++and late results cannot mutate serialized facts. Matcher ordinal10 is
++toHaveCount; previous ordinals stay fixed, and Received text for this matcher
++cannot become an authorization error code. No item ID, URL or DOM is exported.
++
++t04PhaseOrdinal identifies the parent operation:0 UNKNOWN/bootstrap,1 pre-stage
++guard/physical/baseline,2 prepare,3 runner,4 post-run physical guard,5 image
++measurement/validation,6 afterStage observation,7 restore/receipt validation,
++8 final physical/baseline check. It does not assert that a prior runner failed.
++Existing child error metadata is preserved as t04RuntimeStageBoundaryOrdinal
++0..7 and t04RuntimeResultFailureOrdinal0..16; consult the source-fixed maps.
++t04RuntimeStageChildExitOrdinal0 is UNKNOWN;1..256 encode actual exit0..255.
++Null or absent exit never becomes a successful zero exit.
++
++t04ImageMeasurementPhaseOrdinal1 admission/source/token/physical checks,
++2 effect-adapter creation,3 measure,4 explicit close,5 receipt construction and
++validation. CleanupAttempted and CleanupFailed suffixes are0/1; failed is sticky
++across the existing final close, while the phase retains the first failure.
++Attempted0 is unobserved cleanup, not successful cleanup. Sanitized error text
++stays fixed. No new runtime operation, cleanup retry or deadline is added.
++
++Stage19 has one diagnostic-only fixed extra identity: TC-PIN-17 preparation and
++activation reject an older permission marker without changing the gate, in
++tests/contracts/permissionCompatibility.contract.test.ts with null project.
++t04CompatibilityExtraStatus0 absent in both discovery/results,1 unique in both,
++2 missing-one or duplicate; nonunique row facts remain UNKNOWN. State uses the
++existing1..6 result states, Attempts/FailureLine and finite error ordinals retain
++their existing bounds. The three required catalog identities are unchanged;
++any full-file failure still rejects acceptance. A real Vitest extra-only failure
++control verifies this projection through T04, the shared receipt reader and
++collector alongside the existing failed diagnostic group. Candidate controls
++also use the production fallback helper and consumer probe before that same
++transport. Windows explicitly proves refusal only at Unix ownership boundaries;
++Linux CI must execute accepted file/accounting/handback proof.
+diff --git a/scripts/permission-runtime-reporter-selftest.mjs b/scripts/permission-runtime-reporter-selftest.mjs
+index 154ee91..d62bd86 100644
+--- a/scripts/permission-runtime-reporter-selftest.mjs
++++ b/scripts/permission-runtime-reporter-selftest.mjs
+@@ -52,12 +52,20 @@ export function reporterSelftest(root=process.cwd()){
+       const expiryCases=[['expiry-minus-1ms','2026-09-22T00:04:59.999Z',true],
+         ['expiry','2026-09-22T00:05:00.000Z',false],['expiry-plus-1ms','2026-09-22T00:05:00.001Z',false]];
+       const canonicalTitle=offset=>'TC-PIN-08 completion rechecks '+offset+' after waiting for identity lock';
++      // Runs in the existing post-browser positive control, never node-tools.
++      // Real Lucide SVG + real Playwright semantics exercise the same helper
++      // used by TC47, including native-image-present and missing-fallback refusals.
++      const imageFallbackImports=!vitest&&!negative
++        ?`import{candidateImageFallbackBrowserControl}from${JSON.stringify(pathToFileURL(resolve(root,'scripts/permission-candidate-browser-control.mjs')).href)};`:'';
++      const imageFallbackControl=!vitest&&!negative?`
++        expect(await candidateImageFallbackBrowserControl(page)).toEqual({svgPlaceholder:1,nativeImageRefused:1,missingPlaceholderRefused:1});
++      `:'';
+       const titleControls=vitest&&!negative
+         ?`test.each(${JSON.stringify(expiryCases)})('TC-PIN-08 completion rechecks %s after waiting for identity lock',()=>expect(true).toBe(true));
+           test.each(${JSON.stringify(expiryCases.map(([offset])=>({offset})))})('object-v4 TC-PIN-08 completion rechecks $offset after waiting for identity lock',()=>expect(true).toBe(true));`:'';
+       writeFileSync(testFile,vitest
+         ?`import {test,expect,afterAll,describe} from 'vitest';describe('suite',()=>{test('required',()=>expect(2+2).toBe(4));${titleControls}${negative?"afterAll(()=>{throw Error('SELFTEST_PRIVATE_ERROR_MUST_NOT_LEAK');});":''}});\n`
+-        :`import {test,expect} from '@playwright/test';test.describe('suite',()=>{test('required',async(${negative?'{}':'{page}'},info)=>{${negative?"if(info.retry===0)expect('EMPLOYEE_SESSION_REQUIRED','SELFTEST_PRIVATE_ERROR_MUST_NOT_LEAK cycle-1-grant/device0: REALTIME_TIMING_ORACLE_FAILED:signal-arrival').toBe('PIN_CHANGE_REQUIRED');expect(info.retry).toBe(1);":"await page.goto('data:text/html,<button>OK</button>');await expect(page.getByRole('button',{name:'OK'})).toBeVisible();"}});});\n`);
++        :`import {test,expect} from '@playwright/test';${imageFallbackImports}test.describe('suite',()=>{test('required',async(${negative?'{}':'{page}'},info)=>{${negative?"if(info.retry===0)expect('EMPLOYEE_SESSION_REQUIRED','SELFTEST_PRIVATE_ERROR_MUST_NOT_LEAK cycle-1-grant/device0: REALTIME_TIMING_ORACLE_FAILED:signal-arrival').toBe('PIN_CHANGE_REQUIRED');expect(info.retry).toBe(1);":"await page.goto('data:text/html,<button>OK</button>');await expect(page.getByRole('button',{name:'OK'})).toBeVisible();"}${imageFallbackControl}});});\n`);
+       const file=relative(root,testFile).replaceAll('\\','/');
+       writeFileSync(configFile,vitest
+         ?`export default {test:{include:[${JSON.stringify(file)}],environment:'node',allowOnly:false,retry:0,maxWorkers:1,fileParallelism:false,passWithNoTests:false}};\n`
+diff --git a/scripts/permission-runtime-t04.mjs b/scripts/permission-runtime-t04.mjs
+index 68091e2..525d9bf 100644
+--- a/scripts/permission-runtime-t04.mjs
++++ b/scripts/permission-runtime-t04.mjs
+@@ -26,12 +26,23 @@ export function t04TimeBudget(startedAtEpochMs,now){
+   return{deadline,harnessTimeoutMs};
+ }
+ export const T04_FAILURE_BOUNDS=Object.freeze({...Object.fromEntries(Object.entries(RUNTIME_FAILURE_BOUNDS).map(([k,v])=>['t04'+k[0].toUpperCase()+k.slice(1),[0,v]])),t04ReportObserved:[0,3],t04StageOrdinal:[0,19],t04FailureOrdinal:[0,4],t04RunnerErrors:[0,10000],t04HookErrors:[0,10000],
++ t04PhaseOrdinal:[0,8],t04RuntimeStageBoundaryOrdinal:[0,7],t04RuntimeResultFailureOrdinal:[0,16],t04RuntimeStageChildExitOrdinal:[0,256],
++ t04ImageMeasurementPhaseOrdinal:[0,5],t04ImageMeasurementCleanupAttempted:[0,1],t04ImageMeasurementCleanupFailed:[0,1],
+  t04MissingRequired:[0,10000],t04FirstFailedRequired:[0,10000],t04BoundaryOrdinal:[1,19],t04BoundaryExit:[0,255],
+  t04RestoreErrorOrdinal:[0,15],t04RestoreCommandOrdinal:[0,24],
+  ...T04_DIAGNOSTIC_BOUNDS,
+  t04RealtimeFailureMask:[0,1023],t04RealtimeFirstFailureOrdinal:[0,480],t04FailedTests:[0,10000],t04FirstFailedLine:[0,100000],t04TestErrorCodeOrdinal:[0,RUNTIME_ERROR_CODES.length],
+   t04TestErrorNameOrdinal:[0,5],t04TestErrorMatcherOrdinal:[0,RUNTIME_ERROR_MATCHERS.length]});
+ export function t04SafeFailureMetric(key,value){const bounds=T04_FAILURE_BOUNDS[key];return!!bounds&&Number.isSafeInteger(value)&&value>=bounds[0]&&value<=bounds[1];}
++export function t04ParentFailureFacts(error,context={}){
++ const finite=(key,value)=>t04SafeFailureMetric(key,value)?value:0;
++ const exit=error?.runtimeStageChildExitCode;
++ return{t04PhaseOrdinal:finite('t04PhaseOrdinal',context.phaseOrdinal),
++  t04RuntimeStageBoundaryOrdinal:finite('t04RuntimeStageBoundaryOrdinal',error?.runtimeStageBoundaryOrdinal),
++  t04RuntimeResultFailureOrdinal:finite('t04RuntimeResultFailureOrdinal',error?.runtimeResultFailureOrdinal),
++  t04RuntimeStageChildExitOrdinal:Number.isInteger(exit)&&exit>=0&&exit<=255?exit+1:0,
++  ...Object.fromEntries(['t04ImageMeasurementPhaseOrdinal','t04ImageMeasurementCleanupAttempted','t04ImageMeasurementCleanupFailed'].map(key=>[key,finite(key,error?.[key])]))};
++}
+ export function t04RunnerFailureFacts(expected,r){
+  return Object.fromEntries(Object.entries(runtimeRunnerFailureFacts(expected,r)).map(([k,v])=>['t04'+k[0].toUpperCase()+k.slice(1),v]));
+ }
+@@ -55,30 +66,35 @@ export async function runT04Profile(adapter){
+     runnerPreflight='PASS';
+     for(const stage of ids){
+       if(failure){rows.push({stage,status:'NOT_RUN'});continue;}
++      let phaseOrdinal=1;
+       try{
+         adapter.guard();if(await adapter.physical()!==physical||!await adapter.preserved(baseline))refuse();
++        phaseOrdinal=2;
+         await adapter.prepare(stage);
++        phaseOrdinal=3;
+         const r=await adapter.stage(stage),expected=catalog.find(s=>s.stage===stage);
+         if(r?.stage!==stage||r.status!=='PASS'||r.required!==expected.required.length||!Number.isSafeInteger(r.run)
+           ||r.run<r.required||r.pass!==r.run||r.fail!==0||r.skip!==0||r.retry!==0)refuse();
+-        adapter.guard();if(await adapter.physical()!==physical)refuse();
++        phaseOrdinal=4;adapter.guard();if(await adapter.physical()!==physical)refuse();
+         if(stage==='candidate-e2e'){
++          phaseOrdinal=5;
+           const measured=await adapter.imageMeasurement();
+           validateT04ImageMeasurement(measured,{physicalBackendSHA:physical});
+           imageMeasurement=measured;
+           adapter.guard();if(await adapter.physical()!==physical)refuse();
+         }
+-        const beforeResetSHA=await adapter.afterStage(stage);
++        phaseOrdinal=6;const beforeResetSHA=await adapter.afterStage(stage);
+         if(!/^[a-f0-9]{64}$/.test(beforeResetSHA))refuse();
+         if(t04Lifecycle(stage).reset){
++          phaseOrdinal=7;
+           const restored=await adapter.restore(stage,beforeResetSHA);
+           if(restored?.stage!==stage||restored.status!=='RESTORED_ORIGINAL'||restored.archiveSHA!==checkpoint.archiveSHA
+             ||restored.beforeResetSHA!==beforeResetSHA||restored.baselineSHA!==baseline||restored.physicalSHA!==physical)refuse();
+           resets.push(restored);
+         }
+-        if(await adapter.physical()!==physical||!await adapter.preserved(baseline))refuse();
++        phaseOrdinal=8;if(await adapter.physical()!==physical||!await adapter.preserved(baseline))refuse();
+         rows.push(r);
+-      }catch(error){failure=stage;rows.push({stage,status:'FAIL'});try{adapter.diagnostic?.(stage,error);}catch{}}
++      }catch(error){failure=stage;rows.push({stage,status:'FAIL'});try{adapter.diagnostic?.(stage,error,{phaseOrdinal});}catch{}}
+     }
+   }catch(error){failure??='bootstrap';try{adapter.diagnostic?.('bootstrap',error);}catch{}
+     for(const stage of ids)if(!rows.some(r=>r.stage===stage))rows.push({stage,status:'NOT_RUN'});}
+@@ -181,8 +197,8 @@ async function main(){
+     return runtimeHash({system_identifier:row.system_identifier,database_oid:row.database_oid,data_directory:row.data_directory,container:container.Id,
+       mountDevice:s.dev,mountInode:s.ino,api:status.API_URL});
+   };
+-  const diagnostic=(stage,error)=>{
+-    const facts={t04StageOrdinal:ids.indexOf(stage)+1,t04FailureOrdinal:({42501:1,42883:2,ECONNREFUSED:3,ETIMEDOUT:4})[error?.code]??0,t04ReportObserved:0};
++  const diagnostic=(stage,error,context)=>{
++    const facts={t04StageOrdinal:ids.indexOf(stage)+1,t04FailureOrdinal:({42501:1,42883:2,ECONNREFUSED:3,ETIMEDOUT:4})[error?.code]??0,t04ReportObserved:0,...t04ParentFailureFacts(error,context)};
+     if(Number.isInteger(error?.t04BoundaryOrdinal)&&error.t04BoundaryOrdinal>=1&&error.t04BoundaryOrdinal<=19){
+       facts.t04BoundaryOrdinal=error.t04BoundaryOrdinal;
+       if(Number.isInteger(error?.status)&&error.status>=0&&error.status<=255)facts.t04BoundaryExit=error.status;
+diff --git a/scripts/permission-runtime-t04.test.mjs b/scripts/permission-runtime-t04.test.mjs
+index 170bdb1..2ae868d 100644
+--- a/scripts/permission-runtime-t04.test.mjs
++++ b/scripts/permission-runtime-t04.test.mjs
+@@ -1,6 +1,6 @@
+ import test from'node:test';
+ import assert from'node:assert/strict';
+-import{runT04Profile,renderT04Evidence,t04FailureFacts,t04TimeBudget,t04RunnerFailureFacts}from'./permission-runtime-t04.mjs';
++import{runT04Profile,renderT04Evidence,t04FailureFacts,t04TimeBudget,t04RunnerFailureFacts,t04ParentFailureFacts,T04_FAILURE_BOUNDS}from'./permission-runtime-t04.mjs';
+ import{runtimeStageCatalog}from'./permission-runtime-catalog.mjs';
+ import{backendInvocation}from'./project-backend-t04.mjs';
+ import{reclaimUnitState}from'./permission-runtime-t04-reclaim.mjs';
+@@ -65,7 +65,7 @@ test('T04 assertion diagnostic parser and final exporter independently reject ou
+  const receipt=f=>({schemaVersion:'permission-ci1-isolated-failure-v1',runId:'123',attempt:1,sourceSHA:sha,failure:f,cleanupFailure:null});
+  assert(ci1IsolatedFailure(receipt(failure),ci1Identity('123',1),sha));
+  for(const delta of[{t04FirstFailedLine:100001},{t04FirstFailedLine:-1},{t04TestErrorCodeOrdinal:999},
+-   {t04TestErrorNameOrdinal:6},{t04TestErrorMatcherOrdinal:10},{t04FailedTests:10001},{t04StageOrdinal:20},{raw:'SECRET'}]){
++   {t04TestErrorNameOrdinal:6},{t04TestErrorMatcherOrdinal:11},{t04FailedTests:10001},{t04StageOrdinal:20},{raw:'SECRET'}]){
+   const invalid={...failure,facts:{...facts,...delta}};assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(invalid.facts)),{});
+   assert.notDeepEqual(ci1FailureExport(invalid),invalid);assert.throws(()=>ci1IsolatedFailure(receipt(invalid),ci1Identity('123',1),sha));
+  }
+@@ -183,6 +183,67 @@ test('image measurement runs once after candidate browser success and before sto
+  assert.deepEqual(r.imageMeasurement,imageReceipt());assert.equal(f.closed.length,1);
+ });
+ 
++test('parent failure facts distinguish an observed zero exit from UNKNOWN and project only finite categories',()=>{
++ const unknown={t04PhaseOrdinal:0,t04RuntimeStageBoundaryOrdinal:0,t04RuntimeResultFailureOrdinal:0,t04RuntimeStageChildExitOrdinal:0,
++  t04ImageMeasurementPhaseOrdinal:0,t04ImageMeasurementCleanupAttempted:0,t04ImageMeasurementCleanupFailed:0};
++ assert.deepEqual(t04ParentFailureFacts(undefined),unknown);assert.deepEqual(t04ParentFailureFacts(null),unknown);
++ const error={runtimeStageBoundaryOrdinal:7,runtimeResultFailureOrdinal:16,runtimeStageChildExitCode:255,
++  t04ImageMeasurementPhaseOrdinal:5,t04ImageMeasurementCleanupAttempted:1,t04ImageMeasurementCleanupFailed:1,
++  message:'PRIVATE_PARENT_ERROR',stderr:'PRIVATE_PARENT_ERROR',url:'https://PRIVATE_PARENT_ERROR'};
++ const projected=t04ParentFailureFacts(error,{phaseOrdinal:8});
++ assert.deepEqual(projected,{t04PhaseOrdinal:8,t04RuntimeStageBoundaryOrdinal:7,t04RuntimeResultFailureOrdinal:16,
++  t04RuntimeStageChildExitOrdinal:256,t04ImageMeasurementPhaseOrdinal:5,t04ImageMeasurementCleanupAttempted:1,t04ImageMeasurementCleanupFailed:1});
++ assert(!JSON.stringify(projected).includes('PRIVATE_PARENT_ERROR'));
++ assert.equal(t04ParentFailureFacts({runtimeStageChildExitCode:0}).t04RuntimeStageChildExitOrdinal,1);
++ for(const value of[undefined,null,-1,256,1.5,NaN,Infinity,'0'])
++  assert.equal(t04ParentFailureFacts({runtimeStageChildExitCode:value}).t04RuntimeStageChildExitOrdinal,0);
++ for(const [input,output,max] of[['runtimeStageBoundaryOrdinal','t04RuntimeStageBoundaryOrdinal',7],
++  ['runtimeResultFailureOrdinal','t04RuntimeResultFailureOrdinal',16],['t04ImageMeasurementPhaseOrdinal','t04ImageMeasurementPhaseOrdinal',5],
++  ['t04ImageMeasurementCleanupAttempted','t04ImageMeasurementCleanupAttempted',1],['t04ImageMeasurementCleanupFailed','t04ImageMeasurementCleanupFailed',1]])
++  for(const value of[-1,max+1,0.5,'1',null])assert.equal(t04ParentFailureFacts({[input]:value})[output],0);
++ for(const phaseOrdinal of[-1,9,0.5,'1',null])assert.equal(t04ParentFailureFacts({}, {phaseOrdinal}).t04PhaseOrdinal,0);
++ const facts={t04StageOrdinal:10,...projected},base={stage:'offline-edge',operation:'PILOT_HARNESS',code:'COMMAND_FAILED',command:'node',exitCode:1};
++ const receipt=failure=>({schemaVersion:'permission-ci1-isolated-failure-v1',runId:'123',attempt:1,sourceSHA:sha,failure,cleanupFailure:null});
++ assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(facts)),facts);
++ assert.deepEqual(ci1FailureExport({...base,facts}),{...base,facts});
++ assert(ci1IsolatedFailure(receipt({...base,facts}),ci1Identity('123',1),sha));
++ for(const key of Object.keys(projected))for(const value of[-1,T04_FAILURE_BOUNDS[key][1]+1,'1']){
++  const invalid={...base,facts:{...facts,[key]:value}};
++  assert.deepEqual(t04FailureFacts('T04_FAILURE_FACTS '+JSON.stringify(invalid.facts)),{});
++  assert.notDeepEqual(ci1FailureExport(invalid),invalid);
++  assert.throws(()=>ci1IsolatedFailure(receipt(invalid),ci1Identity('123',1),sha));
++ }
++});
++
++test('each parent execution boundary reports its own phase and keeps later stages NOT_RUN',async()=>{
++ for(const phaseOrdinal of[1,2,3,4,5,6,7,8]){
++  let guards=0,observed=false;const diagnostics=[],primary=Object.assign(Error('PRIVATE_PHASE_FAILURE'),
++   {runtimeStageBoundaryOrdinal:6,runtimeResultFailureOrdinal:9,runtimeStageChildExitCode:0});
++  const change={diagnostic(stage,error,context){diagnostics.push({stage,error,facts:t04ParentFailureFacts(error,context)});},
++   ...(phaseOrdinal===1||phaseOrdinal===4?{guard(){if(++guards===(phaseOrdinal===1?2:3))throw primary;}}:{}),
++   ...(phaseOrdinal===2?{async prepare(){throw primary;}}:{}),
++   ...(phaseOrdinal===3?{async stage(){throw primary;}}:{}),
++   ...(phaseOrdinal===5?{async imageMeasurement(){throw primary;}}:{}),
++   ...(phaseOrdinal===6?{async afterStage(){throw primary;}}:{}),
++   ...(phaseOrdinal===7?{async restore(){throw primary;}}:{}),
++   ...(phaseOrdinal===8?{async afterStage(){observed=true;return digest;},async preserved(){return !observed;}}:{})};
++  const f=fixture(change),r=await runT04Profile(f.adapter),index=[5,7].includes(phaseOrdinal)?ids.indexOf('candidate-e2e'):0;
++  assert.equal(r.status,'FAIL');assert.equal(r.failure,ids[index]);assert.equal(r.stages[index].status,'FAIL');
++  assert(r.stages.slice(index+1).every(stage=>stage.status==='NOT_RUN'));assert.equal(f.closed.length,1);
++  assert.equal(diagnostics.length,1);assert.equal(diagnostics[0].stage,ids[index]);
++  assert.equal(diagnostics[0].facts.t04PhaseOrdinal,phaseOrdinal);
++  if(phaseOrdinal!==8){assert.equal(diagnostics[0].error,primary);assert.equal(diagnostics[0].facts.t04RuntimeStageChildExitOrdinal,1);}
++  else assert.equal(diagnostics[0].facts.t04RuntimeStageChildExitOrdinal,0);
++  // A browser PASS alone cannot certify candidate-e2e when measurement or reset fails.
++  if([5,7].includes(phaseOrdinal)){assert.deepEqual(f.seen,ids.slice(0,index+1));assert(r.stages.slice(0,index).every(stage=>stage.status==='PASS'));}
++  assert.equal(JSON.parse(renderT04Evidence({...r,...metadata}).json).status,'FAIL');
++ }
++ const diagnostics=[],f=fixture({async stage(id){return{...row(id),pass:0};},
++  diagnostic(stage,error,context){diagnostics.push(t04ParentFailureFacts(error,context));}}),r=await runT04Profile(f.adapter);
++ assert.equal(r.status,'FAIL');assert.equal(diagnostics[0].t04PhaseOrdinal,3);
++ assert.equal(diagnostics[0].t04RuntimeStageChildExitOrdinal,0);
++});
++
+ test('missing, simulated, unbound or incomplete image measurement fails candidate stage and blocks every later stage',async()=>{
+  const wrong=change=>({...imageReceipt(),...change});
+  for(const measure of[undefined,async()=>{throw Error('controlled measurement failure');},
+diff --git a/scripts/permission-t04-image-measurement.mjs b/scripts/permission-t04-image-measurement.mjs
+index d11fe09..4d2e3b5 100644
+--- a/scripts/permission-t04-image-measurement.mjs
++++ b/scripts/permission-t04-image-measurement.mjs
+@@ -79,7 +79,7 @@ const emptyMenu=()=>Object.fromEntries(['categories','menuItems','optionGroups',
+ /** Overrides exist for unit fault/guard controls only. They cannot produce a runtime receipt. */
+ export async function runT04ImageMeasurement(options,overrides){
+  const now=overrides?.now??Date.now,mono=overrides?.monotonic??(()=>performance.now());
+- let admitted=false,cleanup,receipt;
++ let admitted=false,cleanup,receipt,failure,phase=1,cleanupAttempted=0,cleanupFailed=0;
+  try{
+   check(options&&typeof options.guard==='function'&&typeof options.physical==='function'&&typeof options.db?.query==='function');
+   check(options.api===API&&equal(options.storeIds,STORES)&&options.employeeId===EMPLOYEE);
+@@ -99,18 +99,22 @@ export async function runT04ImageMeasurement(options,overrides){
+    check(await options.physical()===options.binding.physicalBackendSHA);
+    check(now()<(cleaning?options.deadline:measurementEnd));};
+   const effects=overrides?.effects??createRuntimeEffects;
+-  const runtime=await effects(options,{now,mono,gate,measurementEnd});cleanup=runtime.close;admitted=true;
++  phase=2;const runtime=await effects(options,{now,mono,gate,measurementEnd});cleanup=runtime.close;admitted=true;
++  phase=3;
+   const result=await runtime.measure();
+-  const restored=await runtime.close();cleanup=undefined;
+-  receipt={schemaVersion:'permission-t04-image-measurement-v1',scope:'SYNTHETIC_T04_IMAGE_ONLY',status:'PASS',
++  phase=4;cleanupAttempted=1;let restored;
++  try{restored=await runtime.close();}catch(error){cleanupFailed=1;throw error;}cleanup=undefined;
++  phase=5;receipt={schemaVersion:'permission-t04-image-measurement-v1',scope:'SYNTHETIC_T04_IMAGE_ONLY',status:'PASS',
+    execution:overrides?'UNIT_SIMULATION':'RUNTIME',binding:{...options.binding},observations:result.observations,timing:result.timing,
+    restoration:restored,uploadOrphanStatus:'QUEUE_CLEANUP_UNCERTAIN'};
+   validateT04ImageMeasurement({...receipt,execution:'RUNTIME'},options.binding);
+   // The public validator always rejects simulated receipts.
+   if(!overrides)validateT04ImageMeasurement(receipt,options.binding);
+   return receipt;
+- }catch{throw Error(admitted?'PERMISSION_T04_IMAGE_MEASUREMENT_FAILED':'PERMISSION_T04_IMAGE_MEASUREMENT_REFUSED');}
+- finally{if(cleanup){try{await cleanup();}catch{ /* Parent must fail, never upgrade cleanup uncertainty. */ }}}
++ }catch{failure=Object.assign(Error(admitted?'PERMISSION_T04_IMAGE_MEASUREMENT_FAILED':'PERMISSION_T04_IMAGE_MEASUREMENT_REFUSED'),
++  {t04ImageMeasurementPhaseOrdinal:phase});throw failure;}
++ finally{if(cleanup){cleanupAttempted=1;try{await cleanup();}catch{cleanupFailed=1;}}
++  if(failure)Object.assign(failure,{t04ImageMeasurementCleanupAttempted:cleanupAttempted,t04ImageMeasurementCleanupFailed:cleanupFailed});}
+ }
+ 
+ async function createRuntimeEffects(o,{now,mono,gate,measurementEnd}){
+diff --git a/scripts/permission-t04-image-measurement.test.mjs b/scripts/permission-t04-image-measurement.test.mjs
+index dbd5028..3fae4eb 100644
+--- a/scripts/permission-t04-image-measurement.test.mjs
++++ b/scripts/permission-t04-image-measurement.test.mjs
+@@ -122,3 +122,24 @@ test('guard denial has zero DB/network/browser adapter effects and no raw error
+  await assert.rejects(runT04ImageMeasurement(f.options,f.overrides),error=>error.message==='PERMISSION_T04_IMAGE_MEASUREMENT_REFUSED');
+  assert.deepEqual(f.effects,[]);
+ });
++
++test('measurement phase and sticky cleanup facts preserve the first failure without raw causes',async()=>{
++ for(const kind of['admission','adapter','measure-cleanup','close-recovered','null-result','invalid-receipt']){
++  const f=fixture();let closes=0;
++  if(kind==='admission')f.options.guard=()=>{throw Error('PRIVATE_ADMISSION');};
++  f.overrides.effects=async()=>{
++   if(kind==='adapter')throw Error('PRIVATE_ADAPTER');
++   return{measure:async()=>{if(kind==='measure-cleanup')throw Error('PRIVATE_MEASURE');
++    if(kind==='null-result')return null;const r=parsedShape();if(kind==='invalid-receipt')r.observations.publication=false;return r;},
++    close:async()=>{closes++;if(kind==='measure-cleanup'||kind==='close-recovered'&&closes===1)throw Error('PRIVATE_CLEANUP');return yes(IMAGE_RESTORATION_KEYS);}};
++  };
++  const phase={admission:1,adapter:2,'measure-cleanup':3,'close-recovered':4,'null-result':5,'invalid-receipt':5}[kind];
++  await assert.rejects(runT04ImageMeasurement(f.options,f.overrides),error=>{
++   assert.equal(error.t04ImageMeasurementPhaseOrdinal,phase);
++   assert.equal(error.t04ImageMeasurementCleanupAttempted,phase>2?1:0);
++   assert.equal(error.t04ImageMeasurementCleanupFailed,['measure-cleanup','close-recovered'].includes(kind)?1:0);
++   assert(!error.message.includes('PRIVATE'));return true;
++  });
++  assert.equal(closes,phase<3?0:kind==='close-recovered'?2:1);
++ }
++});
+diff --git a/tests/supabase/permissionCandidate.spec.ts b/tests/supabase/permissionCandidate.spec.ts
+index e8514bd..10f61d8 100644
+--- a/tests/supabase/permissionCandidate.spec.ts
++++ b/tests/supabase/permissionCandidate.spec.ts
+@@ -5,7 +5,7 @@ import pg from "pg";
+ import { EMPLOYEE_IDS, STORE_IDS, runtimeProof } from "../../scripts/permission-identity-runtime.mjs";
+ import { candidateEnvironment, installStoreSession } from "./permissionCandidateEnvironment.ts";
+ import { CandidateDiagnostics } from "./permissionCandidateDiagnostics.ts";
+-import { closeCandidateDrawerFromPage, waitForCandidateSaveFromPage, establishCandidateClearSettings } from "./permissionCandidateUi.ts";
++import { closeCandidateDrawerFromPage, waitForCandidateSaveFromPage, establishCandidateClearSettings, expectCandidateImageFallback, candidateActionResponse, withCandidateCleanup } from "./permissionCandidateUi.ts";
+ 
+ const test = baseTest.extend<{ candidateDiagnostics: CandidateDiagnostics }>({
+   candidateDiagnostics: [async ({ page }, use, testInfo) => {
+@@ -60,9 +60,7 @@ async function closeDrawerFromNav(page: Page) {
+ }
+ 
+ async function expectSavedRpc(page: Page, name: string, action: () => Promise<void>) {
+-  const response = page.waitForResponse(r => r.url().includes(`/rpc/${name}`));
+-  await action();
+-  const saved = await response;
++  const saved = await candidateActionResponse(page.waitForResponse(r => r.url().includes(`/rpc/${name}`)), action);
+   expect(saved.ok()).toBeTruthy();
+   expect(await saved.json()).toMatchObject({ ok: true });
+   await waitForCandidateSaveFromPage(page, name);
+@@ -101,7 +99,7 @@ test("owner permission change reaches a live cashier context within five seconds
+     }), { timeout: 15_000 }).toBe(true);
+     await owner.getByTestId("nav-employees").click(); await owner.getByTestId(`employee-row-${EMPLOYEE_IDS[2]}`).click();
+     const payment = owner.getByTestId("permission-payment.take");
+-    if (!(await payment.isChecked())) { await payment.check(); const saved = owner.waitForResponse(r => r.url().includes("/rpc/permission_admin_update")); await owner.getByTestId("save-employee-button").click(); await expect((await saved).ok()).toBeTruthy(); }
++    if (!(await payment.isChecked())) { await payment.check(); const saved = await candidateActionResponse(owner.waitForResponse(r => r.url().includes("/rpc/permission_admin_update")), () => owner.getByTestId("save-employee-button").click()); await expect(saved.ok()).toBeTruthy(); }
+     const cashierTable = cashier.locator('[data-testid^="table-"]').first(), occupied = await cashierTable.locator('[data-floor-label="price"]').count() > 0; await cashierTable.click();
+     if (!occupied) {
+       await cashier.getByTestId("order-drawer").locator('[data-testid^="menu-item-"]').first().click();
+@@ -133,7 +131,7 @@ test("owner creates waiter and real UI hides protected administration and report
+   await page.getByTestId("nav-employees").click(); await page.getByTestId("add-employee-button").click();
+   await page.getByTestId("employee-name-input").fill("Waiter E2E"); await page.getByTestId("employee-role-select").selectOption("waiter");
+   await page.getByTestId("employee-pin-input").fill("456789"); await page.getByTestId("employee-confirm-pin-input").fill("456789");
+-  const created = page.waitForResponse(r => r.url().includes("/rpc/permission_admin_create")); await page.getByTestId("save-employee-button").click(); expect((await created).ok()).toBeTruthy();
++  const created = await candidateActionResponse(page.waitForResponse(r => r.url().includes("/rpc/permission_admin_create")), () => page.getByTestId("save-employee-button").click()); expect(created.ok()).toBeTruthy();
+   const row = page.locator('[data-testid^="employee-row-"]').filter({ hasText: "Waiter E2E" }); await expect(row).toBeVisible();
+   const waiterId = (await row.getAttribute("data-testid"))!.slice("employee-row-".length);
+   const context = await browser.newContext(); try {
+@@ -279,19 +277,21 @@ test("owner persists menu, floor and store settings changes through real candida
+       body: JSON.stringify({ ok: false, error: { code: "PERMISSION_UPDATE_UNAVAILABLE" } }) });
+   };
+   await page.route(publicUrl, failImage);
+-  try {
+-    const failedImage = page.waitForResponse(response => response.url() === publicUrl && response.request().method() === "GET");
++  diagnostic.expectConsumerImage(1, itemId);
++  await withCandidateCleanup(async () => {
+     // Keep the existing occupied dine-in order: the later clear-demo case
+     // relies on it to prove OPEN_ORDERS_BLOCK_CLEAR_DEMO. Pay only this new order.
+-    await page.getByTestId("nav-takeaway").click();
+-    await page.getByTestId("takeaway-drawer").locator("header").getByRole("button", { name: "Tạo đơn mang đi", exact: true }).click();
+-    await page.getByPlaceholder("Tìm món...").fill(changedName);
+-    const failed = await failedImage;
++    const failed = await candidateActionResponse(page.waitForResponse(response => response.url() === publicUrl && response.request().method() === "GET"), async () => {
++      await page.getByTestId("nav-takeaway").click();
++      await page.getByTestId("takeaway-drawer").locator("header").getByRole("button", { name: "Tạo đơn mang đi", exact: true }).click();
++      await page.getByPlaceholder("Tìm món...").fill(changedName);
++    });
+     expect(failed.status()).toBe(503);
+     expect((await failed.allHeaders())["cache-control"]).toBe("no-store");
+-    await expect(orderCard.getByTestId("menu-image-placeholder")).toBeVisible();
+-    await expect(orderCard.getByRole("img")).toHaveCount(0);
++    diagnostic.expectConsumerImage(2, itemId);
++    await expectCandidateImageFallback(orderCard);
+     diagnostic.mark(16);
++    diagnostic.expectConsumerImage(3, itemId);
+     const imageBoxAfter = await imageBox.boundingBox(), cardAfter = await orderCard.boundingBox();
+     expect(imageBoxAfter).not.toBeNull(); expect(cardAfter).not.toBeNull();
+     for (const dimension of ["width", "height"] as const) {
+@@ -301,10 +301,12 @@ test("owner persists menu, floor and store settings changes through real candida
+     await expect(orderCard.locator("strong")).toHaveText(changedName);
+     await expect(orderCard).toContainText(priceText);
+     await expect(orderCard).toBeEnabled();
++    diagnostic.expectConsumerImage(4, itemId);
+     await orderCard.click();
+     const modifier = page.getByTestId("modifier-confirm"); if (await modifier.isVisible()) await modifier.click();
+     await expect(page.getByTestId("order-cart-line").filter({ hasText: changedName })).toBeVisible();
+     await page.getByTestId("submit-order-button-footer").click();
++    diagnostic.expectConsumerImage(5, itemId);
+     await expect(page.getByTestId("receipt-preview")).toBeVisible();
+     await expect(page.getByTestId("receipt-preview")).toContainText(changedName);
+     await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-variant", "kitchen");
+@@ -315,28 +317,32 @@ test("owner persists menu, floor and store settings changes through real candida
+     const takeawayOrder = page.getByRole("button").filter({ has: page.getByText(`#${orderNo}`, { exact: true }) });
+     await expect(takeawayOrder).toHaveCount(1);
+     await takeawayOrder.click();
++    diagnostic.expectConsumerImage(6, itemId);
+     await page.getByTestId("submit-order-button-footer").click();
+     await expect(page.getByTestId("payment-drawer")).toBeVisible();
+     await page.getByTestId("payment-received-amount").fill("1000000");
+     await page.getByTestId("print-receipt-checkbox").check();
+     await page.getByTestId("pay-button-footer").click();
++    diagnostic.expectConsumerImage(7, itemId);
+     await expect(page.getByTestId("receipt-preview")).toBeVisible();
+     await expect(page.getByTestId("receipt-preview")).toContainText(changedName);
+     await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-variant", "receipt");
+     await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-order-no", orderNo);
+     await expect(page.getByTestId("receipt-document")).toHaveAttribute("data-total", String(price));
+     diagnostic.mark(17);
+-  } finally { await page.unroute(publicUrl, failImage); }
++  }, () => page.unroute(publicUrl, failImage));
++  diagnostic.clearConsumerImage();
+ });
+ 
+ test("four active roles have protected navigation parity with server authorization", async ({ browser }) => {
+   const rosterContext = await browser.newContext();
+-  const rosterPage = await rosterContext.newPage();
+-  await installStoreSession(rosterPage); await rosterPage.goto("/");
+-  const waiterButton = rosterPage.locator('[data-testid^="employee-"]').filter({ hasText: "Waiter E2E" });
+-  await expect(waiterButton).toBeVisible();
+-  const waiterId = (await waiterButton.getAttribute("data-testid"))!.slice("employee-".length);
+-  await rosterContext.close();
++  const waiterId = await withCandidateCleanup(async () => {
++    const rosterPage = await rosterContext.newPage();
++    await installStoreSession(rosterPage); await rosterPage.goto("/");
++    const waiterButton = rosterPage.locator('[data-testid^="employee-"]').filter({ hasText: "Waiter E2E" });
++    await expect(waiterButton).toBeVisible();
++    return (await waiterButton.getAttribute("data-testid"))!.slice("employee-".length);
++  }, () => rosterContext.close());
+   const cases = [
+     { id: EMPLOYEE_IDS[0], allowed: ["nav-employees", "nav-menu-editor", "nav-floor-editor", "nav-report", "nav-settings"] },
+     { id: EMPLOYEE_IDS[1], allowed: ["nav-employees", "nav-menu-editor", "nav-floor-editor", "nav-report"] },
+@@ -349,7 +355,7 @@ test("four active roles have protected navigation parity with server authorizati
+   ] as const;
+   for (const role of cases) {
+     const context = await browser.newContext();
+-    try {
++    await withCandidateCleanup(async () => {
+       const page = await context.newPage();
+       let employeeToken = "";
+       page.on("request", request => { const token = request.headers()["x-pos-employee-token"]; if (token) employeeToken = token; });
+@@ -371,7 +377,7 @@ test("four active roles have protected navigation parity with server authorizati
+         const allowed = role.allowed.includes(nav); expect(results[index].body.ok).toBe(allowed);
+         if (!allowed) expect(results[index].body.error.code).toBe("FORBIDDEN");
+       }
+-    } finally { await context.close(); }
++    }, () => context.close());
+   }
+ });
+ 
+@@ -394,13 +400,20 @@ test("owner clears demo data through UI and refetch preserves custom records", a
+   await prepareInitialDemoFixture();
+   diagnostic.mark(19);
+   const seeded: Array<Promise<{ stage: string; ok: boolean }>> = [];
+-  page.on('response', response => {
+-    if (response.url().includes('/rpc/permission_run_initial_seed_stage') && response.ok())
+-      seeded.push(response.json().then(body => ({ stage: response.request().postDataJSON().p_request.stage, ok: body.ok })));
+-  });
+-  await login(page, EMPLOYEE_IDS[0]);
+-  await expect.poll(() => seeded.length).toBe(3);
+-  expect(await Promise.all(seeded)).toEqual(['employee', 'menu', 'floor'].map(stage => ({ stage, ok: true })));
++  const observeSeed = (response: Response) => {
++    if (response.url().includes('/rpc/permission_run_initial_seed_stage') && response.ok()) {
++      const task = response.json().then(body => ({ stage: response.request().postDataJSON().p_request.stage, ok: body.ok }));
++      // Own a rejection immediately while preserving the original promise for
++      // the eventual exact three-result assertion, which must still fail.
++      void task.catch(() => {}); seeded.push(task);
++    }
++  };
++  page.on('response', observeSeed);
++  await withCandidateCleanup(async () => {
++    await login(page, EMPLOYEE_IDS[0]);
++    await expect.poll(() => seeded.length).toBe(3);
++    expect(await Promise.all(seeded)).toEqual(['employee', 'menu', 'floor'].map(stage => ({ stage, ok: true })));
++  }, async () => { page.off('response', observeSeed); });
+   diagnostic.mark(20);
+   await page.getByTestId("nav-settings").click();
+   await expect(page.getByTestId("settings-name-input")).toHaveValue(customStoreName);
+diff --git a/tests/supabase/permissionCandidateDiagnostics.ts b/tests/supabase/permissionCandidateDiagnostics.ts
+index 2076f66..fd12ba3 100644
+--- a/tests/supabase/permissionCandidateDiagnostics.ts
++++ b/tests/supabase/permissionCandidateDiagnostics.ts
+@@ -15,6 +15,20 @@ const blank = (checkpointOrdinal: number) => Object.assign(Object.fromEntries(di
+ type ImageTarget = { phaseOrdinal: 1 | 2; itemId: string; url: string };
+ export const imageDiagnosticFields = ["phaseOrdinal", "observed", "selectionCount", "selectionMatches", "imageCount", "srcMatches", "decoded"] as const;
+ const unknownImage = (phaseOrdinal: number) => ({ phaseOrdinal, observed: 0, selectionCount: 0, selectionMatches: 0, imageCount: 0, srcMatches: 0, decoded: 0 });
++export const consumerDiagnosticFields = ["phaseOrdinal", "observed", "cardCount", "nativeImgCount", "roleImgCount", "placeholderCount", "placeholderVisible"] as const;
++const unknownConsumer = (phaseOrdinal: number) => ({ phaseOrdinal, observed: 0, cardCount: 0, nativeImgCount: 0, roleImgCount: 0, placeholderCount: 0, placeholderVisible: 0 });
++export async function readCandidateConsumerDom(page: Page, itemId: string, phaseOrdinal: number) {
++  const card = page.getByTestId(`menu-item-${itemId}`), n = await card.count();
++  const row = { ...unknownConsumer(phaseOrdinal), observed: 1, cardCount: Math.min(n, 2) + 1 };
++  if (n !== 1) return row;
++  const placeholder = card.getByTestId("menu-image-placeholder");
++  const [native, role, fallback] = await Promise.all([card.locator("img").count(), card.getByRole("img").count(), placeholder.count()]);
++  row.nativeImgCount = Math.min(native, 2) + 1; row.roleImgCount = Math.min(role, 2) + 1;
++  row.placeholderCount = Math.min(fallback, 2) + 1;
++  if (fallback === 1) row.placeholderVisible = await placeholder.isVisible() ? 2 : 1;
++  if (await card.count() !== 1) throw new Error("CANDIDATE_CONSUMER_CARD_CHANGED");
++  return row;
++}
+ 
+ export function readCandidateImageDom(target: ImageTarget) {
+   const cards = [...document.querySelectorAll('[data-testid^="menu-edit-card-"]')];
+@@ -86,6 +100,7 @@ export class CandidateDiagnostics {
+   private preclearName: string | undefined;
+   private persistedName: string | undefined;
+   private imageTarget: ImageTarget | undefined;
++  private consumerTarget: { phaseOrdinal: number; itemId: string } | undefined;
+   private page: Page;
+   private readSettings: () => Promise<string>;
+   constructor(page: Page, readSettings: () => Promise<string> = readOwnedSettings) {
+@@ -99,6 +114,10 @@ export class CandidateDiagnostics {
+   mark(ordinal: number) { if (Number.isInteger(ordinal) && ordinal >= 1 && ordinal <= 31) this.milestoneOrdinal = ordinal; }
+   expectMenuImage(phaseOrdinal: 1 | 2, itemId: string, url: string) { this.imageTarget = { phaseOrdinal, itemId, url }; }
+   clearMenuImage() { this.imageTarget = undefined; }
++  expectConsumerImage(phaseOrdinal: number, itemId: string) {
++    if (Number.isInteger(phaseOrdinal) && phaseOrdinal >= 1 && phaseOrdinal <= 7) this.consumerTarget = { phaseOrdinal, itemId };
++  }
++  clearConsumerImage() { this.consumerTarget = undefined; }
+   private onFrameNavigated = (frame: Frame) => {
+     if (frame !== this.page.mainFrame()) return;
+     this.generation++; this.apiState = 0; this.apiName = undefined; this.observedSettingsRead = false;
+@@ -184,12 +203,22 @@ export class CandidateDiagnostics {
+         catch { /* Closed/unavailable DOM stays UNKNOWN, never an observed zero. */ }
+         finally { clearTimeout(timer); }
+       }
++      let consumer: ReturnType<typeof unknownConsumer> | null = null;
++      if (this.consumerTarget) {
++        const target = this.consumerTarget;
++        consumer = unknownConsumer(target.phaseOrdinal);
++        let timer: ReturnType<typeof setTimeout> | undefined;
++        try { consumer = await Promise.race([readCandidateConsumerDom(this.page, target.itemId, target.phaseOrdinal),
++          new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error("CANDIDATE_CONSUMER_DIAGNOSTIC_UNAVAILABLE")), 1_000); })]); }
++        catch { /* Unavailable or nonsettling probes keep UNKNOWN. */ }
++        finally { clearTimeout(timer); }
++      }
+       const ordinals = ["candidate activation supports owner roster, floor, payment and first receipt preview",
+         "owner permission change reaches a live cashier context within five seconds", "owner creates waiter and real UI hides protected administration and reporting",
+         "owner persists menu, floor and store settings changes through real candidate RPCs", "four active roles have protected navigation parity with server authorization",
+         "owner clears demo data through UI and refetch preserves custom records"];
+-      await testInfo.attach("candidate-e2e-diagnostics", { body: Buffer.from(JSON.stringify({ schemaVersion: "candidate-e2e-diagnostics-v2",
+-        testOrdinal: ordinals.indexOf(testInfo.title) + 1, milestoneOrdinal: this.milestoneOrdinal, observations: this.observations, image })), contentType: "application/json" });
++      await testInfo.attach("candidate-e2e-diagnostics", { body: Buffer.from(JSON.stringify({ schemaVersion: "candidate-e2e-diagnostics-v3",
++        testOrdinal: ordinals.indexOf(testInfo.title) + 1, milestoneOrdinal: this.milestoneOrdinal, observations: this.observations, image, consumer })), contentType: "application/json" });
+     } catch { /* Probe/attachment failures must never mask the original test. */ }
+     finally {
+       this.page.off("request", this.onRequest); this.page.off("requestfailed", this.onRequestFailed); this.page.off("response", this.onResponse);
+@@ -197,7 +226,7 @@ export class CandidateDiagnostics {
+       // A response body can still be pending after its listener is removed.
+       // Invalidate its captured generation before clearing private state.
+       this.generation++; this.apiState = 0; this.observedSettingsRead = false; this.failedRequests = 0;
+-      this.apiName = undefined; this.preclearName = undefined; this.persistedName = undefined; this.imageTarget = undefined;
++      this.apiName = undefined; this.preclearName = undefined; this.persistedName = undefined; this.imageTarget = undefined; this.consumerTarget = undefined;
+       this.observations = []; this.pendingReads.clear(); this.readGenerations.clear(); this.responseTasks.clear();
+     }
+   }
+diff --git a/tests/supabase/permissionCandidateUi.ts b/tests/supabase/permissionCandidateUi.ts
+index 6293033..aa5c2f3 100644
+--- a/tests/supabase/permissionCandidateUi.ts
++++ b/tests/supabase/permissionCandidateUi.ts
+@@ -1,4 +1,26 @@
+-import { expect, type Page } from "@playwright/test";
++import { expect, type Page, type Locator } from "@playwright/test";
++
++// A visible SVG placeholder also has Playwright's implicit img role. The
++// unavailable published bitmap must be absent; the fallback remains visible.
++export async function expectCandidateImageFallback(card: Locator, assertion = expect) {
++  await assertion(card.getByTestId("menu-image-placeholder")).toBeVisible();
++  await assertion(card.locator("img")).toHaveCount(0);
++}
++
++// Own both promises before either can reject. A failed UI action must not leave
++// a response timeout unhandled; the original action/response error still fails.
++export async function candidateActionResponse<T>(response: Promise<T>, action: () => Promise<unknown>): Promise<T> {
++  const [value] = await Promise.all([response, Promise.resolve().then(action)]);
++  return value;
++}
++
++// Cleanup failure fails a successful body, but cannot replace its primary error.
++export async function withCandidateCleanup<T>(body: () => Promise<T>, cleanup: () => Promise<void>): Promise<T> {
++  let failed = false;
++  try { return await body(); }
++  catch (error) { failed = true; throw error; }
++  finally { try { await cleanup(); } catch (error) { if (!failed) throw error; } }
++}
+ 
+ export interface CandidateDrawerDriver {
+   visible(id: string): Promise<boolean>;

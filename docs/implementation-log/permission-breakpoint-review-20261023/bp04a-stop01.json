@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "permission-bp4a-local-stop-v1",
+  "status": "STOPPED_GUARD_CALIBRATION_FAIL",
+  "recordedAtUtc": "2026-10-23T03:52:40.826Z",
+  "grant": "request_user_input_async call_2e42cfdf45f74910ba94b30c0d5ca07e item0",
+  "grantSHA256": "a833cc5eb0236879307c9a957194d274f4c73bc78992ca588d621d78382076d2",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "sourceClean": true,
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "deadlineUtc": "2026-10-23T04:30:43Z",
+  "recipes": {
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/run-bp4-local.mjs": "5be26766ccca112d28c7341939d1febc4c8253fa727530e4c23c8bb2f8d47361",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/bp4-child-job.ps1": "794b81dfc28b798bc8341765f58403c4e3d8acf3aada8f6098c114fe81c4315f",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/check-bp4-job-guard.mjs": "fed1ec858c09e46da3fdc00d9432507b80dad47e229b63d14036c7027fbbaf2f"
+  },
+  "recipeReviews": [
+    {
+      "agent": "/root/bp1_authority_final_review",
+      "verdict": "APPROVE",
+      "scope": "authority deadline storage native child-tree source review"
+    },
+    {
+      "agent": "/root/bp1_evidence_final_review",
+      "verdict": "APPROVE",
+      "scope": "evidence archive unit oracle native calibration source review"
+    }
+  ],
+  "recipeReviewsAreNotRuntimePass": true,
+  "syntax": {
+    "nodeCheck": "PASS for both mjs files",
+    "powershellParse": "PASS"
+  },
+  "actualControl": {
+    "attempts": 1,
+    "startedAtUtc": "2026-10-23T03:50:11.043Z",
+    "completedAtUtc": "2026-10-23T03:50:14.554Z",
+    "exitCode": 1,
+    "normal": "PASS",
+    "nonzero": "PASS_EXPECTED_REJECTION",
+    "orphan": "FAIL_EXPECTED_REJECTION_NOT_OBSERVED"
+  },
+  "execution": {
+    "archivePreflight": 0,
+    "install": 0,
+    "build": 0,
+    "unitCoverage": 0,
+    "push": 0,
+    "ci": 0,
+    "backend": 0,
+    "databaseAccess": "NONE",
+    "sourceOrLockChanges": 0,
+    "retry": 0
+  },
+  "markers": {
+    "wholeRunExists": false,
+    "archiveExists": false,
+    "nodeModulesExists": false,
+    "npmCacheExists": false
+  },
+  "storage": {
+    "rootBytes": 51344330,
+    "newGeneratedBytes": 35200,
+    "retainedBytes": 333072824,
+    "statisticsSkipLinksOnly": true,
+    "links": [
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\dangling-docs\\docs-link",
+      "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\present-docs\\docs-alias",
+      "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-0096b055-d65e-4184-b94a-d37a2d493804",
+      "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\test-junction-e384a654-8af5-47d2-9a7e-e68c5432519a"
+    ],
+    "freeBytes": {
+      "C:/": 192712986624,
+      "D:/": 98506088448
+    }
+  },
+  "processRelease": {
+    "proofsAllActiveZero": true,
+    "schemaVersion": "permission-bp4a-process-observation-v1",
+    "observedAtUtc": "2026-10-23T03:54:01.1113754Z",
+    "rootPids": [
+      43340,
+      2612,
+      17208
+    ],
+    "matchingOwnedProcessCount": 0,
+    "matches": [],
+    "scope": "Read-only CIM; original leaf PID was not captured; proof files additionally report job activeProcesses=0",
+    "observationSHA256": "ac2d4bab1a677740ac0c0981aef0f0baba30bdb9c14195a90de8d4ab257bab5d"
+  },
+  "predecessorPins": {
+    "budget-phase03.json": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+    "budget-phase03.json.anchor.json": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f",
+    "budget-phase03.json.journal.jsonl": "5390f85e8fb7c01d6a037724ba1f8c2b00a8666ed5603094a3bbeb876ffbb694",
+    "budget-phase03.json.head.json": "adfec165ec85f3d4fd9f69db229249ba743845a5561799f295ae8590a5f6e527"
+  },
+  "preserved": {
+    "bp04a-guard-controls01.json": {
+      "original": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-guard-controls01.json",
+      "sha256": "d93af40247ad9d4bd5728d74a5fa31e7f0d83bc9974a107543c5f657f48cb085",
+      "bytes": 1541
+    },
+    "bp04a-guard-normal01.config.json": {
+      "original": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-guard-normal01.config.json",
+      "sha256": "d10e7c178373b9615ff59fc56a42a46b82257505affdfd2e82f3a48a1de2eab2",
+      "bytes": 253
+    },
+    "bp04a-guard-normal01.proof.json": {
+      "original": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-guard-normal01.proof.json",
+      "sha256": "077c45dab96f4af39182b7f8b3182e0d9de11ce91676a9b4e07eb71a926c7e6e",
+      "bytes": 422
+    },
+    "bp04a-guard-nonzero01.config.json": {
+      "original": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-guard-nonzero01.config.json",
+      "sha256": "e3afae95a6ca1f1c82d167a43ab60ad0abec7ef99818d3cf9e8222823e946d20",
+      "bytes": 254
+    },
+    "bp04a-guard-nonzero01.proof.json": {
+      "original": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-guard-nonzero01.proof.json",
+      "sha256": "5c7ab6715d0db346c0e8c9023b1508317852a8b5a0a0082c942155abe1dd46ec",
+      "bytes": 422
+    },
+    "bp04a-guard-orphan01.config.json": {
+      "original": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-guard-orphan01.config.json",
+      "sha256": "057e559c445448dbf648c26560438fa5ce7e5cc7f4f65751754727533197a6b7",
+      "bytes": 366
+    },
+    "bp04a-guard-orphan01.proof.json": {
+      "original": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-guard-orphan01.proof.json",
+      "sha256": "16aaa5d1afd47c6e0bcdb7dd9a8e4b7c7c171ae6649f1750e389569735b91f82",
+      "bytes": 422
+    }
+  },
+  "diagnosis": {
+    "confirmed": "Original orphan fixture did not establish the required orphan condition; no child readiness/PID was captured.",
+    "sourceSupportedInference": "Non-detached child can be killed by Node libuv own kill-on-close Job at parent exit, before outer Job orphan check.",
+    "notExcluded": "Child startup/spawn failure before forced parent exit; actual leaf lifecycle was not captured.",
+    "helperOrphanSafety": "NOT_PROVEN_BY_THIS_CONTROL"
+  },
+  "next": "No automatic fix or retry; owner decision needed for new corrected guard control and resumption of unused local phases."
+}

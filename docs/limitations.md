@@ -1,19 +1,21 @@
 # Giới hạn và phần chưa nghiệm thu
 
-Đối chiếu source `main@711a22e`, ngày 25/10/2026. Trang này phân biệt giới hạn sản phẩm, giới hạn kiểm chứng và hồ sơ chưa xuất bản; không biến một gate bắt buộc còn thiếu thành “đã xong có hạn chế”.
+Đối chiếu source `main@711a22e`, ngày 25/10/2026. Trang này phân biệt giới hạn sản phẩm, giới hạn kiểm chứng và hồ sơ lịch sử; không biến một gate bắt buộc còn thiếu thành “đã xong có hạn chế”.
 
 ## Kiểm Thử, Triển Khai Và Artefact
 
 - B01/B02/B03 đã merge và có kết quả UI/local theo [testing](testing.md). Backend acceptance/toàn hệ thống vẫn DEFERRED/NOT_ACCEPTED; T04, bảy service profiles và supplemental obligations chưa được đóng bởi lần merge UI.
 - Chưa deploy, migration hoặc live activation trong đợt tích hợp/chỉnh lý này. Bằng chứng phát hành phase 27 tháng 9 là lịch sử, không xác nhận main hiện tại đang chạy ở đích.
 - Hardware tablet/phone, máy in và browser zoom thật chưa được kiểm trong gói UI; headless viewport không thay thiết bị vật lý.
-- Spec phân quyền bản đầy đủ và nhiều hồ sơ backend hiện còn WIP local chưa xuất bản. [Hồ sơ chỉnh lý](workflow/tasks/docs-normalization-2026-10-25.md) ghi nơi giữ và phạm vi; không lấy proposal cũ trên remote làm hợp đồng mới đã đủ.
+- Bộ spec15 quyền, forced-PIN và hồ sơ backend đã được hòa giải trong [gói xuất bản WIP](workflow/tasks/docs-wip-publication-2026-10-25.md). Có đầy đủ file/kết quả lịch sử không chứng minh backend hiện hành đã đạt; baseline capability vẫn chưa apply/archive đầy đủ delta.
 
 ## Bảo Mật Và Phân Quyền
 
 Main đã có catalog 15 quyền, projections, phiên và refresh authority. Không còn mô tả runtime là “5 quyền và phải đăng nhập lại mới cập nhật UI”. Tuy nhiên code/mock không chứng minh direct API deny, Storage/Realtime hay mọi profile backend đã đạt.
 
 Owner trong mô hình quyền không đồng nghĩa đã có tài khoản chủ bằng email xác thực hoặc recovery tự phục vụ. Luồng bắt đổi PIN tạm có trong source; không giữ nhận định cũ “chưa có cờ/luồng đổi PIN”. Chống brute-force, recovery và quy trình operator phải được nghiệm thu theo phạm vi riêng. Nguồn: [identity types:1](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/domain/permissions.ts#L1), [candidate identity:13](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L13).
+
+Các quyết định Q5/Q6 yêu cầu xác minh owner qua hồ sơ hỗ trợ ngoài app và audit operator; không coi Store Key/contact tự khai là bằng chứng sở hữu. [Spec recovery](../openspec/changes/redesign-permission-model/design.md) và [runbook snapshot](runbooks/README.md) giữ điều kiện lịch sử; không cấp quyền recovery live. N01–N03 giữ giới hạn ảnh/gateway và phép đo: private orphan do Storage/DB không cùng transaction, byte cached không thu hồi ngay, origin/revalidate có chi phí chưa đo và chưa có rate limit riêng cho public GET. Đây là rủi ro/điều kiện thiết kế, không chứng nhận sự cố hoặc số đo mới; [nguồn quyết định](../openspec/changes/redesign-permission-model/proposal.md).
 
 ## Online Và Realtime
 

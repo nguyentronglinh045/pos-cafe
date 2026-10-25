@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "permission-extra-heavy-actual-data-review-v1",
+  "recordedAtUtc": "2026-10-22T15:04:13.284Z",
+  "author": "/root",
+  "artifacts": [
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/owner-extra-heavy-grant02.json",
+      "sha256": "ac0645babb7e917e3317324b9f7e81ee4a0a18ac6e571ca56c2904b7f8f538b6"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/owner-pr-main-preserved-grant02.json",
+      "sha256": "f989f1d9b950809e5cc19208fdb0f3637ea9293d02c687aabeaf37bbb3628648"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase02.json",
+      "sha256": "3b7dc2bf87b49ac1a61b5aed33484493f223401ef894cae11612f33e154a9419"
+    }
+  ],
+  "reviewers": [
+    {
+      "name": "/root/mcp_staging_scope_review",
+      "scope": "source/owner-allocation",
+      "verdict": "APPROVE",
+      "evidence": "Actual3DATA rawhashes,50 recursive refs/14unique; exact parent close/history/CI+T04 terminal settlements; unchanged start/deadline/scope/storage. Net one heavy and zero additional publication/CI/postgate."
+    },
+    {
+      "name": "/root/mcp_staging_evidence_review",
+      "scope": "operations/provenance",
+      "verdict": "APPROVE",
+      "evidence": "Actual3DATA rawhashes,26raw-reference occurrences and4closed-parent pins; parent pending empty, unused6→replacement7, PR/main1+1 replacement net0; honest sameownerreply two scoped receipts after parentclosure."
+    }
+  ],
+  "execution": {
+    "performedAfterBothApprovals": true,
+    "command": "node scripts/permission-batch-budget.mjs init ABS_BUDGET_PHASE02",
+    "resultPolicySHA256": "3b7dc2bf87b49ac1a61b5aed33484493f223401ef894cae11612f33e154a9419"
+  },
+  "scope": "Existing history and ad265 source block preserved; one heavy at a time,42minute admission reserve, hard deadline00:00, full35/760/12 gate unchanged. No candidate push/CI, Auth, original DB or production deployment grant."
+}

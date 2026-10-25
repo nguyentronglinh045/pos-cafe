@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "permission-night-collector-preparation-v1",
+  "recordedAtUtc": "2026-10-22T12:06:41.786Z",
+  "records": [
+    {
+      "kind": "service",
+      "sourcePath": "D:/Workspace/pos-cafe-permission-run-20261020/collect-cloud-service.mjs",
+      "sourceSHA256": "29d5a99b76aaf2859263c0fb37ccb0e658f75e175e9b0fb14967c5e4adad2d94",
+      "targetPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-cloud-service.mjs",
+      "targetSHA256": "27c438cf53fdbc59dff46623a9bd82d267e14ed986d38910c0e26664f154b036"
+    },
+    {
+      "kind": "t04",
+      "sourcePath": "D:/Workspace/pos-cafe-permission-run-20261020/collect-cloud-t04.mjs",
+      "sourceSHA256": "8f8f163bd67c5029ac68d566a1f9dbf78f8c2db3c32693427e5176bde3b8383c",
+      "targetPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/collect-cloud-t04.mjs",
+      "targetSHA256": "d5eab2255147248b3e60b696d60cc8a4793ea2d764a0ae0e256adf87e0d96ece"
+    }
+  ],
+  "changes": [
+    "new isolated checkout imports/root",
+    "T04 explicit attempt1, workflow event/path, HEAD/clean and validator pins",
+    "T04 nested source/workflow/attempt and success shape",
+    "service no retry attempt"
+  ],
+  "execution": "NOT_RUN",
+  "originalHelpersModified": false
+}

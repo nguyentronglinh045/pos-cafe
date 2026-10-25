@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-23T11:50:26.622Z",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "storeA": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf",
+  "storeB": "a1169660-de34-4a17-8fac-d05ead2201fa",
+  "positiveControl": "B owner can read own owner",
+  "aForeign": "NOT_FOUND",
+  "bForeign": "NOT_FOUND",
+  "mixedToken": "EMPLOYEE_SESSION_REQUIRED",
+  "counts": {
+    "A": 2,
+    "B": 1
+  },
+  "employeeListsUnchanged": true
+}

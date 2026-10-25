@@ -1,0 +1,367 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for core/writePayload.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">core</a> writePayload.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>103/103</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">99.15% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>118/119</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>17/17</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>74/74</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line high'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">45x</span>
+<span class="cline-any cline-yes">45x</span>
+<span class="cline-any cline-yes">10089x</span>
+<span class="cline-any cline-yes">152x</span>
+<span class="cline-any cline-yes">1453x</span>
+<span class="cline-any cline-yes">9105x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4942x</span>
+<span class="cline-any cline-yes">45x</span>
+<span class="cline-any cline-yes">22426x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1077x</span>
+<span class="cline-any cline-yes">45x</span>
+<span class="cline-any cline-yes">847x</span>
+<span class="cline-any cline-yes">497x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">497x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">45x</span>
+<span class="cline-any cline-yes">189x</span>
+<span class="cline-any cline-yes">189x</span>
+<span class="cline-any cline-yes">189x</span>
+<span class="cline-any cline-yes">784x</span>
+<span class="cline-any cline-yes">784x</span>
+<span class="cline-any cline-yes">784x</span>
+<span class="cline-any cline-yes">767x</span>
+<span class="cline-any cline-yes">767x</span>
+<span class="cline-any cline-yes">767x</span>
+<span class="cline-any cline-yes">3486x</span>
+<span class="cline-any cline-yes">3486x</span>
+<span class="cline-any cline-yes">3486x</span>
+<span class="cline-any cline-yes">3470x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">45x</span>
+<span class="cline-any cline-yes">4321x</span>
+<span class="cline-any cline-yes">4321x</span>
+<span class="cline-any cline-yes">4318x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">45x</span>
+<span class="cline-any cline-yes">28907x</span>
+<span class="cline-any cline-yes">27703x</span>
+<span class="cline-any cline-yes">22570x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">116x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">545x</span>
+<span class="cline-any cline-yes">545x</span>
+<span class="cline-any cline-yes">545x</span>
+<span class="cline-any cline-yes">535x</span>
+<span class="cline-any cline-yes">230x</span>
+<span class="cline-any cline-yes">181x</span>
+<span class="cline-any cline-yes">181x</span>
+<span class="cline-any cline-yes">168x</span>
+<span class="cline-any cline-yes">49x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">305x</span>
+<span class="cline-any cline-yes">235x</span>
+<span class="cline-any cline-yes">235x</span>
+<span class="cline-any cline-yes">216x</span>
+<span class="cline-any cline-yes">90x</span>
+<span class="cline-any cline-yes">88x</span>
+<span class="cline-any cline-yes">88x</span>
+<span class="cline-any cline-yes">93x</span>
+<span class="cline-any cline-yes">93x</span>
+<span class="cline-any cline-yes">93x</span>
+<span class="cline-any cline-yes">84x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-yes">66x</span>
+<span class="cline-any cline-yes">66x</span>
+<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">410x</span>
+<span class="cline-any cline-yes">400x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">979x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { EmployeePermission, WritePayloadV1 } from "@/domain";
+import { writeError } from "./writeErrors";
+&nbsp;
+export const MAX_MONEY = 2147483647;
+export const MAX_PAYLOAD_BYTES = 262144;
+export const isWriteUuid = (value: unknown): value is string =&gt; typeof value === "string" &amp;&amp; /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value) &amp;&amp; !/^0{8}-0{4}-0{4}-0{4}-0{12}$/.test(value);
+const invalid = (): never =&gt; { throw writeError("INVALID_WRITE_REQUEST"); };
+export const checkedMoney = (value: number): number =&gt; Number.isSafeInteger(value) &amp;&amp; value &gt;= 0 &amp;&amp; value &lt;= MAX_MONEY ? value : invalid();
+const integer = (v: unknown, lo: number, hi: number): boolean =&gt; typeof v === "number" &amp;&amp; Number.isInteger(v) &amp;&amp; v &gt;= lo &amp;&amp; v &lt;= hi;
+type Obj = Record&lt;string, unknown&gt;;
+const obj = (v: unknown): Obj =&gt; v !== null &amp;&amp; typeof v === "object" &amp;&amp; !Array.isArray(v) ? v as Obj : <span class="branch-1 cbranch-no" title="branch not covered" >invalid();</span>
+const keys = (o: Obj, required: string[], optional: string[] = []): void =&gt; {
+  if (required.some(k =&gt; !Object.prototype.hasOwnProperty.call(o, k)) || Object.keys(o).some(k =&gt; !required.includes(k) &amp;&amp; !optional.includes(k))) invalid();
+};
+const array = (v: unknown, lo: number, hi: number): unknown[] =&gt; Array.isArray(v) &amp;&amp; v.length &gt;= lo &amp;&amp; v.length &lt;= hi ? v : invalid();
+const note = (o: Obj, key: string): void =&gt; {
+  if (!Object.prototype.hasOwnProperty.call(o, key)) return;
+  const v = o[key];
+  // PostgreSQL text cannot represent NUL or lone UTF-16 surrogates.
+  if (v !== null &amp;&amp; (typeof v !== "string" || [...v].length &gt; 500 || /\u0000|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?&lt;![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(v))) invalid();
+};
+const newLines = (v: unknown, min: number): void =&gt; {
+  const lineIds = new Set&lt;string&gt;();
+  const optionIds = new Set&lt;string&gt;();
+  for (const entry of array(v, min, 200)) {
+    const line = obj(entry);
+    keys(line, ["id", "menuItemId", "quantity", "quotedBasePrice", "options"], ["note"]);
+    if (!isWriteUuid(line.id) || !isWriteUuid(line.menuItemId) || !integer(line.quantity, 1, 999) || !integer(line.quotedBasePrice, 0, MAX_MONEY)) invalid();
+    uniqueId(line.id as string, lineIds);
+    note(line, "note");
+    for (const entryOption of array(line.options, 0, 20)) {
+      const option = obj(entryOption);
+      keys(option, ["id", "optionValueId", "quantity", "quotedPriceDelta"]);
+      if (!isWriteUuid(option.id) || !isWriteUuid(option.optionValueId) || !integer(option.quantity, 1, 99) || !integer(option.quotedPriceDelta, 0, MAX_MONEY)) invalid();
+      uniqueId(option.id as string, optionIds);
+    }
+  }
+};
+const uniqueId = (id: string, used: Set&lt;string&gt;): void =&gt; {
+  const canonical = id.toLowerCase();
+  if (used.has(canonical)) invalid();
+  used.add(canonical);
+};
+&nbsp;
+// Restricted v1 values have bounded integers, so this matches JSONB text byte size:
+// PostgreSQL adds one space after a colon and comma, outside string literals.
+export const jsonbText = (value: unknown): string =&gt; {
+  if (Array.isArray(value)) return `[${value.map(jsonbText).join(", ")}]`;
+  if (value !== null &amp;&amp; typeof value === "object") return `{${Object.keys(value).sort().map(key =&gt; `${JSON.stringify(key)}: ${jsonbText((value as Obj)[key])}`).join(", ")}}`;
+  return JSON.stringify(value);
+};
+export const sameWritePayload = (a: WritePayloadV1, b: WritePayloadV1): boolean =&gt; jsonbText(a) === jsonbText(b);
+export function validateWritePayload(value: unknown): asserts value is WritePayloadV1 {
+  const p = obj(value);
+  const common = ["schemaVersion", "kind", "orderId", "expectedVersion"];
+  if (p.schemaVersion !== 1 || !isWriteUuid(p.orderId)) invalid();
+  if (p.kind === "submit_order_changes") {
+    if (p.action === "create") {
+      keys(p, [...common, "action", "orderType", "tableId", "newLines"]);
+      if (p.expectedVersion !== null || !(p.orderType === "takeaway" &amp;&amp; p.tableId === null || p.orderType === "dine_in" &amp;&amp; isWriteUuid(p.tableId))) invalid();
+      newLines(p.newLines, 1);
+    } else if (p.action === "update") {
+      keys(p, [...common, "action", "retainedLines", "newLines"]);
+      for (const entry of array(p.retainedLines, 1, 200)) {
+        const line = obj(entry);
+        keys(line, ["sourceItemId", "quantity"], ["note"]);
+        if (!isWriteUuid(line.sourceItemId) || !integer(line.quantity, 0, 999)) invalid();
+        note(line, "note");
+      }
+      newLines(p.newLines, 0);
+    } else if (p.action === "void_open") keys(p, [...common, "action"]);
+    else invalid();
+  } else if (p.kind === "pay_order" || p.kind === "pay_order_items") {
+    keys(p, [...common, "paymentId", "method", "receivedAmount", ...(p.kind === "pay_order_items" ? ["newOrderId", "lines"] : [])]);
+    if (!isWriteUuid(p.paymentId) || p.method !== "cash" || !integer(p.receivedAmount, 0, MAX_MONEY)) invalid();
+    if (p.kind === "pay_order_items") {
+      if (!isWriteUuid(p.newOrderId) || p.newOrderId === p.orderId) invalid();
+      const splitIds = new Set&lt;string&gt;();
+      for (const entry of array(p.lines, 1, 200)) {
+        const line = obj(entry);
+        keys(line, ["orderItemId", "quantity", "splitItemId"]);
+        if (!isWriteUuid(line.orderItemId) || !isWriteUuid(line.splitItemId) || !integer(line.quantity, 1, 999)) invalid();
+        uniqueId(line.splitItemId as string, splitIds);
+      }
+    }
+  } else if (p.kind === "void_order") {
+    keys(p, [...common, "reason"], ["reasonNote"]);
+    if (!["wrong_order", "customer_request", "out_of_stock", "duplicate", "other"].includes(p.reason as string)) invalid();
+    note(p, "reasonNote");
+  } else invalid();
+  if (!(p.kind === "submit_order_changes" &amp;&amp; p.action === "create") &amp;&amp; !integer(p.expectedVersion, 0, MAX_MONEY)) invalid();
+  if (new TextEncoder().encode(jsonbText(p)).byteLength &gt; MAX_PAYLOAD_BYTES) invalid();
+}
+export const writePermission = (p: WritePayloadV1): EmployeePermission =&gt; p.kind === "submit_order_changes" ? ({ create: "order.create", update: "order.update", void_open: "order.voidOpen" } as const)[p.action] : p.kind === "void_order" ? "order.voidPaid" : "payment.take";
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2026-10-23T11:57:52.539Z
+            </div>
+        <script src="../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
+    </body>
+</html>
+    

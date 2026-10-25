@@ -1,0 +1,407 @@
+{
+  "schemaVersion": "permission-owned-docs-checkpoint-package-v1",
+  "recordedAtUtc": "2026-10-22T14:49:25.845Z",
+  "author": "/root",
+  "repositoryRoot": "D:/Workspace/pos-cafe-docs",
+  "branch": "docs",
+  "baseHEAD": "d39c508ceb1a0c5c24fec4027ab76bf0bfbde581",
+  "payload": [
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/auth-dashboard-before01.json",
+      "bytes": 14043,
+      "sha256": "7a799a004d84bc9141537d3838b96783930c46239c5ec2fca4182df0d67bc2c3"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/auth-dashboard-before01.png",
+      "bytes": 68116,
+      "sha256": "777ff1ef4d4df31bf0f3f4bfd8da4c0564c5c09dea0ab56a244c2e7f5c72f62a"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/auth-dashboard-deferred01.json",
+      "bytes": 13800,
+      "sha256": "37df96ba43ec1e35c2b2c257730133664c2d268fe6c25bd1ad9e61d060f6a6bc"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/auth-dashboard-deferred01.png",
+      "bytes": 66823,
+      "sha256": "623005785fb9d008021fdbc16fe6ca8a71a27e4a1298da343d547d17660ccaa9"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/auth-deferred01.json",
+      "bytes": 2040,
+      "sha256": "d11e973f73b89de53b7f1b8f70b35f9dc0a47276cd5248bcee05b6de74b24fe2"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/auth-email-policy-before.png",
+      "bytes": 74353,
+      "sha256": "a8a170002d372ad910ae54fe0b2779f50f668e1e8de40f9029f80f19af1982c1"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/auth-incident-at-admission01.json",
+      "bytes": 2476,
+      "sha256": "4465da2e8c2ecfaca70e4beda58f54472fb289a28c0d5e22fde846198756637e"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/canonical-bytes01.json",
+      "bytes": 179213,
+      "sha256": "202cf2986a4d273a1ade9092dd8c0a61e8f773529e0bc6d981b218827251ce63"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/canonical-index-refresh01.json",
+      "bytes": 400,
+      "sha256": "c6c1badcd0d0a2dee39270baa83867d58be6d908fb4defe9de6e9d74da0a2a22"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/canonicalize-unmodified01.mjs",
+      "bytes": 3255,
+      "sha256": "aca015a2378c2014eb466e34106bbfe134aae20a60b4d44b6aa208392475b754"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/checkpoint-ci01.json",
+      "bytes": 3277,
+      "sha256": "58dad11574e3d54750fc99f98b6f3628c4264b10255d596588bee2d357fe24bb"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/checkpoint-heavy01.json",
+      "bytes": 4622,
+      "sha256": "38765505f4c782a018a0c5122fcf4def763877f428e96eb929589dd53df5104f"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/checkpoint-publication03-review01.json",
+      "bytes": 5558,
+      "sha256": "225618224bb16b8e45bc7493885a0d4718ba14efdf87e598a4841b928e09b440"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/checkpoint-publication03.json",
+      "bytes": 2984,
+      "sha256": "eb2fcf8b66ce05fbc9b8f1386448c968b48381a4e9ee8004bdbbf6132d22c453"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/checkpoint-t04-02-pending01.json",
+      "bytes": 3363,
+      "sha256": "1af891921c17b2a3442952d0560f33c732189ec1283de985fa0c7a07d81b7a2b"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/checkpoint-t04-failure01.json",
+      "bytes": 5474,
+      "sha256": "2a3869bfaca2f9cd0e886ccc85afb9c381caa1013403c46595e8b85542128460"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/cleanup-node-fixture01.json",
+      "bytes": 841,
+      "sha256": "9be217e6c83e8cb3b779a8a8a24de98832fe6269ca4a0967adce95df59dde44b"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/cleanup-node-fixture01.ps1",
+      "bytes": 3000,
+      "sha256": "abb43c4bd9df4aa3129b06531f5ecaac39548d7994f9d34ebd8c5d484e2a0fcc"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/cleanup-node-fixture02.json",
+      "bytes": 853,
+      "sha256": "cc70c1d732cca5285124595ae5158b05f56f0c8a7a021b044aaea9eb099aa535"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/cleanup-node-fixture02.ps1",
+      "bytes": 3521,
+      "sha256": "9f47654c8fd150b28ee229e3fb8c7461f6139312364344c3ee3101770c60250b"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/cleanup-node-fixture03.json",
+      "bytes": 853,
+      "sha256": "f4bcfcb1979e7ecd335d86200b53a47d03307f98d0f14e227becee90127d4ee6"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/cleanup-node-fixture03.ps1",
+      "bytes": 3790,
+      "sha256": "4fb13d9d1fca25c87656fe74f36150c40b5459b56d14dacd2313a095db49ac6f"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/cleanup-node-fixture04.json",
+      "bytes": 853,
+      "sha256": "a8f68da4fb9716eb1fc20e46dbd0504f9d66b648233f29f500e2fab35e29425e"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/cleanup-node-fixture04.ps1",
+      "bytes": 3790,
+      "sha256": "fbaefe07307fbc31e173409fab509243b37165f65b2cdad31553e648a59cef9f"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/collector-preparation01.json",
+      "bytes": 1263,
+      "sha256": "3c8ad7b4abc40b4a9a0e3abce23cf35776f657f4e8bf0ff7c286ea6e81661f97"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/docs-package-manifest01.json",
+      "bytes": 24390,
+      "sha256": "b51623446d739c1145b5cc5eaa061da5cc265c2fa57cc64bb26559f741ab1f62"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/extra-heavy-data-helper-review01.json",
+      "bytes": 1547,
+      "sha256": "5dfa9ed4a191a4b268392fd30a66ec4a4899f075f0649b12569477e4b63ce647"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/extra-heavy-plan-review01.json",
+      "bytes": 1450,
+      "sha256": "7d946612bbbbc0c436c6cb6534d094234faee77ba07df57ced68f18f0267f1fb"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/fullgate-prepush-audit01.json",
+      "bytes": 2488,
+      "sha256": "87eba2d30fecea7f69dd6744dda26fecbc4b9c147fa1d1491255f0e8cea53c21"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/fullgate-source-mapping-wip01.json",
+      "bytes": 142895,
+      "sha256": "96d4a87d5ed29dfa8638b19949a1180e3feea73473f53da60c42ef76c8827113"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/fullgate-source-mapping-wip02.json",
+      "bytes": 149176,
+      "sha256": "f3a3d1108819ec268a8a53c34d3f0a0414eaf1e802f648fe1885532a96091d09"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/handoff-snapshot-publication03.md",
+      "bytes": 8219,
+      "sha256": "f16ca2b909a91e609c7ca61b7241632696f4d4815dc44a0e1e2dbe8124e150b1"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/handoff-snapshot-t04-pending-draft01.md",
+      "bytes": 9457,
+      "sha256": "8c4b77e745588b8b5d3066cacbd1e9096e5c2ed0ca5809df44b1d90bf3b463ef"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/light-fullgate-join01.json",
+      "bytes": 3243,
+      "sha256": "2f78a4df807e3b75ac753f26819cb7a4b262d14c1e31c1011177ab77d15f2ad4"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/light-fullgate-join02.json",
+      "bytes": 3287,
+      "sha256": "962fc67109199e398c10d00852e5b44f203f5347ca5e05ad1bbe9e63ca6cf5b2"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/light-visual-review02.json",
+      "bytes": 1852,
+      "sha256": "187dc7a5723ae4031ba894eebf849ee26a8c51f72cfbbd2f717dd5b7f54660af"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/operations-helper-review02.json",
+      "bytes": 2180,
+      "sha256": "7639440c8f191281feafae2641766ff327c334fcc1eec061fcd0e474e1cf5855"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/owner-auth-incident-decision01.json",
+      "bytes": 1358,
+      "sha256": "771034e8e4b6cdb93c88c3c661bdd20ab08ed9362cb49343a53b8dbdb94e4dcb"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/owner-auth-test-grant01.json",
+      "bytes": 1349,
+      "sha256": "d50ae1de9772b22a36d0cbfc1e9085f19bd3f9fd998afa138b8e9f87b8cf408b"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/owner-extra-heavy-decision01.json",
+      "bytes": 1411,
+      "sha256": "c61352fd7292b75c5dc22fff0b0cf25418a57f1598c378f8597487283c73ac8c"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/owner-fixture-cleanup-grant01.json",
+      "bytes": 1018,
+      "sha256": "a7eb59a71cb67aefea374f745c2206069a6ac30c54b094ed9ac6cf44b40310ab"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/owner-grant01.json",
+      "bytes": 1591,
+      "sha256": "30fbe04d54d73a97f14c1b0aa3981ccb295f9b53da6c74fc1e99153a24edfa88"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/owner-pr-main-grant01.json",
+      "bytes": 1167,
+      "sha256": "e465fe706c53cc9aa5d5bc6220803b053741202b005afb4940848a7e8ac4062f"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/pin-ui-visual-classification01.json",
+      "bytes": 2851,
+      "sha256": "48b99435968d142c355c7e9ba4b8627d63583d4cfc246da98176b70d629cd780"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/pin-ui-visual-classification02.json",
+      "bytes": 3485,
+      "sha256": "1d06a450a5db5301bc6f16372e671e1d6aed38d265525c0eb6e7cb8262f640a7"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/plan-review01.json",
+      "bytes": 923,
+      "sha256": "b16c0c7599f901d962f1e84373424e26b6c4036c533d4790b5d659a900cd325e"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/postgate-plan-review01.json",
+      "bytes": 898,
+      "sha256": "f6585e390c6db2ba050d2e9f5148e124ea60f093377d0a6d36444568b07143b7"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/preparation-incidents01.json",
+      "bytes": 2463,
+      "sha256": "262dd26dc9c9d6e4cd0f8464af64b2461a17cde2148e5180ba2d69be74ded240"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/preparation-incidents02-original.json",
+      "bytes": 3587,
+      "sha256": "c5428ce55c14458e3d1ed3d94dec742225419f005861c21f35826c9cdf81ca54"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/preparation-incidents02.json",
+      "bytes": 3601,
+      "sha256": "d0764c6a8c5e3ccd02972368aa7bae268b2082875cfcb175e0cd49cefe64c254"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/prepare-collectors01.mjs",
+      "bytes": 3600,
+      "sha256": "c746324862aa7a7509eaaf4858442a2a7e8ed6bc06c573a1d862a64a1db0b42e"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/readonly-connection01.json",
+      "bytes": 1131,
+      "sha256": "a976ff222b1e65e032f29192f2dfaad3ffcbc891d93579b6207e2d0c603cd531"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/refresh-canonical-index01.mjs",
+      "bytes": 1609,
+      "sha256": "80ca78da988b9197432fe510499ba98e7c8cdbd3c2c47cfd5e0c9800a2378b53"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/source-mapping-review01.json",
+      "bytes": 1579,
+      "sha256": "946bf6ee620793964ee2c04a892683d5d5f2c388b019b90eb3f73cd8153338f2"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/source-mapping-review02.json",
+      "bytes": 1923,
+      "sha256": "7d1c95492c2612f1c64b0b8d6a2a151835ef1d38462009d7fa24fd675cb77b2e"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/staging-auth-edge-plan-review01.json",
+      "bytes": 1533,
+      "sha256": "5feb1a2bd8aedff4f43b1720d44f54f817bb1f69735d3b5d3436ad24b3f26af9"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/staging-auth-rpc-offline-check01.json",
+      "bytes": 2101,
+      "sha256": "d99bfac9bafbf090ce7efe481a180d49cd3f350b4b6072d5772a27c86b281dcf"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/staging-auth-rpc-offline-check02.json",
+      "bytes": 1707,
+      "sha256": "91000b45a0253f824a632301f9d48163e3edd14521b26bf5995b0fcf281f1530"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/staging-auth-rpc-recipe01.md",
+      "bytes": 23540,
+      "sha256": "2030fb051192bc1c2b1bb300a33e45a2a9b67c30dba62dc3a3624130410de825"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/staging-auth-rpc-review-final02.json",
+      "bytes": 3138,
+      "sha256": "18eab7760dfb40fe413fbaa37f0bdfdebb4563f7816ac207616e72687a44c1fc"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/staging-auth-rpc-review-ops02.json",
+      "bytes": 1991,
+      "sha256": "4053e0e75bf49bdffc4215d36dfc118258108ca3408c33aa8f3e09d408a14763"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/staging-auth-rpc-review-source02.json",
+      "bytes": 1510,
+      "sha256": "8c2bb93af414a6a13136bdd73d453c528312ffcebcff07a94ece6b96b3a72cd7"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/staging-counts-auth-deferred01.json",
+      "bytes": 1347,
+      "sha256": "55f14c6545bb1746bf818ea6f6bc449c0045c6001068dac4256051c037138ff1"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/staging-counts-baseline01.json",
+      "bytes": 1447,
+      "sha256": "b5d8da53cb04a4e785ebabf7df9a12a31f29d67140efea01b86fd5ffa854f863"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/staging-routing-baseline01.json",
+      "bytes": 1635,
+      "sha256": "167d6d77e3e8744879492f260a28107d5fdbfbb586efa0e1e711faacb8e1547d"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/supabase-incident01.json",
+      "bytes": 696,
+      "sha256": "bb43e2eac23dc6bfb335eab0c8d5a8db05ab96bda857e52295f349218a89a9e8"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/t04-remediation-plan-review01.json",
+      "bytes": 1235,
+      "sha256": "980925dd33544a86d9008fb781f7fcc4d6934b31c911fb493274325b1f9c9e51"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/v4-plan-candidate01.md",
+      "bytes": 16188,
+      "sha256": "3d6a46907289aede0c5706f691e470e773471a40cfd8ee67912f17e0fba92d21"
+    },
+    {
+      "path": "docs/implementation-log/permission-main-staging-night-20261022/v4-plan-candidate02.md",
+      "bytes": 17584,
+      "sha256": "c5e616f7bf7368c309e28794a3521d453fd63a4259ae6613ef08d10673a8ea43"
+    },
+    {
+      "path": "docs/workflow/tasks/permission-extra-heavy-successor-2026-10-22.md",
+      "bytes": 9856,
+      "sha256": "f179653027d0dbde7d600e4ead383566f5af282945f7260e144a61909a58ebf0"
+    },
+    {
+      "path": "docs/workflow/tasks/permission-main-staging-night-2026-10-22.md",
+      "bytes": 9703,
+      "sha256": "7ae3eb7abda3719a1f7f7c1f750bf3c48c9c28fe7b376d1dfb05d896e78534bd"
+    },
+    {
+      "path": "docs/workflow/tasks/permission-staging-auth-edge-proposal-2026-10-22.md",
+      "bytes": 4998,
+      "sha256": "cf17b62666d0e757aa190a970fd4e5f43a43f36150274855a7824ac0362c4d0d"
+    },
+    {
+      "path": "docs/workflow/tasks/permission-t04-fixture-remediation-2026-10-22.md",
+      "bytes": 8881,
+      "sha256": "52c312264af66d4f5566a45a8b37445bcbc5d87352ddac4f3f999f95c7f01ab8"
+    },
+    {
+      "path": "docs/workflow/tasks/permission-timeonly-budget-v4-2026-10-22.md",
+      "bytes": 18404,
+      "sha256": "bd8f385942656ce48c5ac437e62d3a608097dc4cb5e6946f21419a93cb5c26f7"
+    },
+    {
+      "path": "docs/workflow/tasks/permission-timeonly-budget-v4-postgate-ci-2026-10-22.md",
+      "bytes": 10218,
+      "sha256": "7c79bf8caf7deae6d0ff95b897bf2f89ab7f97253300cdffbdeaa7e68b5ca6b1"
+    }
+  ],
+  "readmeSelection": {
+    "path": "docs/workflow/tasks/README.md",
+    "method": "Commit HEAD bytes plus ONLY this task appended paragraph, preserving195preexisting unstaged lines.",
+    "existingWorkingPrefixBytes": 48062,
+    "existingWorkingPrefixSHA256": "292441becc497e1b20a8794aff7ddb05b674204286be47e25cf2da30b5ec2f9e",
+    "ownWorkingAdditionBytes": 544,
+    "ownWorkingAdditionSHA256": "b05e031f016b0b290bdf2b13eae1c0a3581a7be0921a0342f0bf1bb5fecd1adc",
+    "selectedRawSHA256": "bd47d43059fec5fc731878cc7228bf7d813a4c77be15f63a913131e8649c9420",
+    "selectedGitBlob": "a4ce5473bbf3a8e5b3e047e04f0af68553f66a30"
+  },
+  "previousCandidateHistory": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/docs-package-manifest01.json",
+    "sha256": "b51623446d739c1145b5cc5eaa061da5cc265c2fa57cc64bb26559f741ab1f62",
+    "interpretation": "Original unapproved candidate bytes are preserved base64 with exact originalSHA and snapshots; not an active old reference graph."
+  },
+  "closedFindings": [
+    "Stale image/T04 present-tense wording corrected.",
+    "send_message precision corrected.",
+    "Historicalf16 reviewed handoff recovered with exact originalSHA; originalreview bytes retained and active path resolved to immutable snapshot."
+  ],
+  "scope": "Local docs checkpoint only; no push/source/main/DB/provider/workflow mutation. Current4d1 T04PENDING, AuthDEFER; extraheavy authorized but successor uninitialized.",
+  "reviewStatus": "PENDING_TWO_NON_AUTHOR_PACKAGE_REVIEWS"
+}

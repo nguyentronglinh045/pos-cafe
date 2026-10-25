@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "permission-night-checkpoint-v1",
+  "recordedAtUtc": "2026-10-22T13:06:05.913Z",
+  "hardDeadlineUtc": "2026-10-22T17:00:00Z",
+  "localDeadline": "00:00 beginning 2026-10-23 Asia/Bangkok",
+  "sourceRoot": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+  "localBranch": "fix/permissions-timeonly-20261022",
+  "candidateSHA": "ad265321144521c0669500fea9be0f96ebacb769",
+  "remoteCandidateBranch": "run/permissions-20261020",
+  "remoteReadbackSHA": "ad265321144521c0669500fea9be0f96ebacb769",
+  "baseSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-packet02.json",
+    "sha256": "2d72f0df14d65d318833b87fd87e50d6711c3cd636c4790139db08a12b28996c"
+  },
+  "localTests": {
+    "receipt": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-node02.json",
+    "trackedFiles": 69,
+    "tests": 935,
+    "pass": 935,
+    "fail": 0,
+    "skip": 0
+  },
+  "reviews": "Both non-author source and operations APPROVE exact candidate and packet; publication-reviews02.json",
+  "budget": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase01.json",
+    "sha256": "86a7ed053fbebcfad314ef985834fb4d70017d61548b15f2d4ad61d7f3390dcc",
+    "initialized": true
+  },
+  "phaseSpent": {
+    "publication": 1,
+    "candidateCi": 1,
+    "heavy": 1,
+    "reviewRounds": 4,
+    "postGateCi": 0
+  },
+  "historicalBeforePhase": {
+    "publication": 4,
+    "ci": 4,
+    "heavy": 1,
+    "reviewRounds": 6
+  },
+  "next": [
+    "Collect T04 only when terminal; verify raw metadata/observation/reclaim then settle exact pending intent",
+    "If success proceed one whole profile at a time: PIN_ONBOARD, SUPABASE_T02, PIN_IDENTITY_SERVER, PIN_RACE, PIN_EXPIRY, PIN_IDENTITY_ONBOARDING, PIN_CANARY",
+    "Knownfailure/unknown stops dependent dispatch; no same-source retry",
+    "Prepare bounded hosted Auth/RPC recipe and2reviews; do not write before21:00 local or after21:30, except the separately granted one restorative rollback before21:45",
+    "Full35/760+12obligations and final2reviews before PR/main, plus separately budgeted PR/main CI"
+  ],
+  "guardIncident": "Unpublished f35126a preflight refused ENOBUFS before reservation; replaced by ad26532 binary Git batch fix. All1107 pins retained; no publication/CI/backend spent by that refusal.",
+  "staging": {
+    "project": "ineckiashpwloncxnbqx",
+    "schemaState": "COMMITTED_NOT_READY from b2 bootstrap; SQL unchanged in current candidate",
+    "mcp": "read_only=true; actual readonly role verified this phase",
+    "authEdgeHostedWrites": "Auth+bounded TEST granted by owner-auth-test-grant01.json for21:00–21:45 local, newwrites stop21:30; no hostedmutation yet. Edge still BLOCKED/separate authorization required."
+  },
+  "originalDb": "FORBIDDEN; never queried or modified this phase",
+  "production": "Not authorized; Git deploymentEnabled=false verified in main and candidate, recheck before main",
+  "main": "Only after unchanged35/760+12obligations/D19/R0/R1 and final reviews; extra PR/main CI2 separately granted, not yet consumed",
+  "cleanup": "Owner permits generated temp/night-nodeNN fixtures through00:00 only after saved report/hash. Fixture01/02 removed; source/reports/evidence preserved. Delete only verified merged task branches after successful merge.",
+  "candidateCi": {
+    "runId": "39780944907",
+    "status": "completed",
+    "conclusion": "success",
+    "wholeCi18": true,
+    "collection": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci01-collection.json",
+    "settlement": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci01-settlement.json"
+  },
+  "pendingHeavy": {
+    "profile": "SUPABASE_T04",
+    "runId": "39783325574",
+    "attempt": 1,
+    "observedStatus": "in_progress",
+    "reservationId": "f52d7ad95747540a70794f3628435ea7118b3f907d251955571175bc2a9ba5dc",
+    "identity": "night-heavy-t04-01",
+    "admission": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/heavy-t04-admission01.json"
+  },
+  "pinUi": "All3 fresh images schema/bytes validated and actually inspected; pin-ui-visual-classification01.json, intentional PIN masks limit visual scope.",
+  "sourceMapping": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/fullgate-source-mapping-wip01.json",
+    "sha256": "96d4a87d5ed29dfa8638b19949a1180e3feea73473f53da60c42ef76c8827113",
+    "sourceReview": "APPROVE two non-authors of mapping",
+    "runtime": "NOT_EXECUTED until actualreceipt join"
+  }
+}

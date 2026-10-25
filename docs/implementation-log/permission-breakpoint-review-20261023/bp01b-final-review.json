@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "permission-breakpoint-review-v1",
+  "recordedAtUtc": "2026-10-23T01:31:51.8374822Z",
+  "author": "/root",
+  "status": "BP1B_PREPARATION_APPROVED_PLAN_ONLY",
+  "candidate": {
+    "sha256": "212f4f110d7c19e6e870d52649782c4e34accc6ab490c92b7e7aebac6a0c32f6",
+    "path": "bp01b-preparation.md"
+  },
+  "predecessor": {
+    "sha256": "ec3e806d3dc867dfd714287d7f9fa7574de38b27a781d1cc5a5e36bf355f4a97",
+    "docsCommit": "4c6d12845c8dd29d436c53e10365cb5d392d17cf",
+    "review": "bp01-final-review.json"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/bp1_evidence_final_review",
+      "basis": "TC15 pre-operation snapshot gap, dependency inventory, image digest,TC10/T02/activation coverage, candidate-e2e route and restore/receipt design verified. Primary Storage tag supports metadata/bytes/probe sequence. No implementation/runtime proof.",
+      "scope": "Source/evidence/requirements and proposed minimal closure",
+      "verdict": "APPROVE"
+    },
+    {
+      "reviewer": "/root/bp1_authority_final_review",
+      "basis": "BP2scope/time pending owner, BP3design only, existing acceptance/order/deadline/history preserved, no orphan/cleanup false proof; source/link/version facts verified.",
+      "scope": "Authority/operational feasibility/continuation",
+      "verdict": "APPROVE"
+    }
+  ],
+  "findings": [
+    {
+      "id": "BP1B-CITATION",
+      "detail": "Corrected pg.ts DELETE link from unrelated1084–1110 to1011–1036 after independent review and root primary-source check; both reviewers approved final hash.",
+      "status": "RESOLVED"
+    }
+  ],
+  "nonBlockingImplementationNotes": [
+    {
+      "note": "Include exact-row preservation in existing employee collision case ownerPinServerRuntime.contract.test.ts:855–860 when implementing PIN15.",
+      "source": "/root/bp1_evidence_final_review"
+    },
+    {
+      "note": "Keep original TTL60s stale boundary; record actual monotonic sample timestamps/tolerance. Historical samples60.25/61.5s do not replace acceptance at60s.",
+      "source": "/root/bp1_authority_final_review"
+    },
+    {
+      "note": "No deployment is authorized. Any dependency install must fall within an applicable owner grant and satisfy global version/disk/peak admission; proposed BP2 is not an existing install permission.",
+      "source": "/root/bp1_authority_final_review"
+    }
+  ],
+  "execution": {
+    "sourceApproval": "NOT_GRANTED_BY_DOCS_VERDICT",
+    "installations": 0,
+    "applicationSourceWrites": 0,
+    "tests": 0,
+    "publicDocsSourceReads": true,
+    "databaseAccess": 0,
+    "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+    "ciPushHeavy": 0,
+    "authority": "Review and prepare only, owner budget decision pending",
+    "sourceClean": true,
+    "cleanup": 0,
+    "runtime": "ALL_EIGHT_BACKEND_NOT_RUN_FOR_THIS_SOURCE"
+  },
+  "nextBreakpoint": {
+    "scope": [
+      "CORSx-client-info",
+      "PIN07exactsnapshotandexplicitretry",
+      "PIN15collidedrowpreservation"
+    ],
+    "publication": 0,
+    "heavy": 0,
+    "name": "BP2 small source fixes and lightweight verification",
+    "database": 0,
+    "imageWork": "BP3design requires exact implementation/controls/review; do not publish before mandatory source/oracle gaps closed",
+    "ci": 0,
+    "proposedMaxMinutes": 60,
+    "approval": "PENDING_OWNER",
+    "deploy": 0
+  },
+  "walkthrough": "Prepared docs code-reading path; owner walkthrough/acceptance not claimed"
+}

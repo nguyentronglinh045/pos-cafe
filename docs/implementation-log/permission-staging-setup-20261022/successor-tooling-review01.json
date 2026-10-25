@@ -1,0 +1,50 @@
+{
+  "observedAt": "2026-10-22T08:53:57.873955+00:00",
+  "sourceFiles": [
+    {
+      "path": "D:/Workspace/pos-cafe-permission-ci-fix-20261022/tools/staging-setup-20261022/prepare.mjs",
+      "sha256": "718487f394aebaafa792b0a4376fa3c187977a8a4605cb58b744bd0193c4f232"
+    },
+    {
+      "path": "D:/Workspace/pos-cafe-permission-ci-fix-20261022/tools/staging-setup-20261022/prepare.test.mjs",
+      "sha256": "0048f441fe11d034901eaddee10ea071a6c178a40d0255a93315d84e7a27c84e"
+    }
+  ],
+  "rootFocusedTests": {
+    "command": "node --test --test-reporter=tap tools/staging-setup-20261022/prepare.test.mjs",
+    "exitCode": 0,
+    "pass": 7,
+    "fail": 0,
+    "skip": 0,
+    "durationMs": 1032.5164,
+    "log": "successor-helper-tests01.tap",
+    "logSha256": "b561b6fd51cac65a9569a509023830c58243a67c6428623d3b80f8e9d1e9bcb2",
+    "kind": "offline synthetic in-memory tooling tests; no deployment output or business tests"
+  },
+  "reviewers": [
+    {
+      "id": "/root/mcp_staging_scope_review",
+      "scope": "new policy/guard/source/history/atomic construction",
+      "verdict": "APPROVE"
+    },
+    {
+      "id": "/root/mcp_staging_evidence_review",
+      "scope": "tooling/tests/provenance/output preservation",
+      "verdict": "APPROVE"
+    }
+  ],
+  "notApprovedYet": [
+    "fresh provider observation",
+    "provider allowlist",
+    "exact generated SQL bundle",
+    "apply transport/execution"
+  ],
+  "phasePolicy": {
+    "file": "phase-policy01.json",
+    "sha256": "da8f14f4ebdfe6c55a45be1577dca40b52bc3eb6f8021f556cf79a9f39c577a0"
+  },
+  "applicationSourceChanged": false,
+  "databaseMutationsExecuted": 0,
+  "deadlineGuardAgent": "/root/staging_readonly_deadline_guard",
+  "ownerRestartReply": "User will restart and report; not evidence restart completed"
+}

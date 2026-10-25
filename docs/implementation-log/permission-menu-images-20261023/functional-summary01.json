@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-10-23T13:30:02.934Z",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "scope": "Hosted menu-image functional flow; no full release-gate claim",
+  "result": "PASS_WITH_STATED_LIMITS",
+  "appCodeChanged": false,
+  "sqlOrAclChanged": false,
+  "authChanged": false,
+  "edgeFunctionsAdded": [
+    "menu-image-gateway",
+    "menu-image-public"
+  ],
+  "gatewayVerifyJwt": true,
+  "publicVerifyJwt": false,
+  "sourceFilesReadbackMatched": 8,
+  "hostedResolvedGraph20": "UNVERIFIED",
+  "providerVersionAndEzbrDigest": "NOT_CAPTURED",
+  "checks": {
+    "inventoryBeforeBusinessMutation": "PASS",
+    "missingFunctionsConfirmed": "PASS",
+    "deployedSourceAndJwt": "PASS",
+    "gatewayMissingJwtAndEmployee": "PASS",
+    "corsPreflight": "PASS",
+    "cashierUploadPublishAndOwnedHandleReadDeleteDenied": "PASS",
+    "deniedRequestsPreserveBusinessRegistryAndStorage": "PASS",
+    "ownerApiStageAndUnpublishedPublic404": "PASS",
+    "ownerApiPublishAndAnonymous200304": "PASS",
+    "uiFirstImageDecode": "PASS",
+    "uiReplaceUploadSaveRefetchAndDecode": "PASS",
+    "withdrawnOldImage404IncludingConditional": "PASS",
+    "uiRemoveSaveReopen": "PASS",
+    "removedImage404IncludingConditional": "PASS",
+    "authorizedTwoPngCleanup": "PASS",
+    "nodeEmployeeSessionCloseout": "PASS"
+  },
+  "producerBoundaries": {
+    "firstUploadAndPublish": "Node HTTP using owner store JWT + employee token, public APIs; known unpublished-handle control before publish",
+    "replacement": "Browser owner UI file chooser + Save menu, then owner RPC/anonymous byte readback",
+    "remove": "Browser owner UI Remove image + Save menu + reopen, then RPC/anonymous origin readback",
+    "observer": "Privileged Dashboard SELECT for metadata/state, not an actor authorization test"
+  },
+  "loggedNodeRequests": {
+    "total": 32,
+    "rpc": 14,
+    "edge": 18,
+    "note": "Excludes browser/Auth/settings/Dashboard/observer requests and standalone initial JWT probe helper; one diagnostic wrong-prefixRPC404 preserved"
+  },
+  "ownedData": {
+    "storeId": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf",
+    "itemId": "442499a3-0950-4b6f-a2f4-3ad664897141",
+    "firstHandle": "9d759f09-5c90-445c-ad7a-706f34f3ba87",
+    "secondHandle": "924eb3e9-b3a3-4a79-bb0c-0a051fc25549",
+    "pngPayloadBytes": 10177,
+    "remainingAuthorizedPngs": 0,
+    "remainingPlaceholder": {
+      "name": "b4e6bfcd-21fb-41a8-8718-6fe26430a2cf/menu-items/442499a3-0950-4b6f-a2f4-3ad664897141/.emptyFolderPlaceholder",
+      "bytes": 0
+    },
+    "unpublishedAssets": 2,
+    "finalImageAssetKey": null,
+    "historicalUploads": 2
+  },
+  "sessions": {
+    "nodeEmployeeSessionsRevoked": 2,
+    "oldTokensRejected": 2,
+    "browserOwnerSession": "retained"
+  },
+  "notRun": [
+    "full permission image/security/fault/cross-store matrix",
+    "production release/CI/backend fullgate",
+    "direct Storage bypass matrix",
+    "UI initial upload onto empty image slot (initial publish via API; replacement upload/save via UI verified)"
+  ],
+  "harnessCorrections": [
+    "FormData global absent; continued with standard raw multipart, no upload had been sent by diagnostic cell",
+    "Wrong generic permission_ RPC prefix404 corrected to existing apply_menu_changes route; successful denied Edge requests not replayed",
+    "Initial cleanup count0 assumption corrected after observing one Dashboard-generated0byte .emptyFolderPlaceholder; two authorized PNGs absent, no third object deletion attempted"
+  ],
+  "authConfirmEmail": "ON unchanged"
+}

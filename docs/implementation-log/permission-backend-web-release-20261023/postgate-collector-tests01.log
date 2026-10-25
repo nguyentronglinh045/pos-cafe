@@ -1,0 +1,118 @@
+TAP version 13
+# Subtest: CLI accepts exactly the legacy five or optional six arguments without choosing a branch implicitly from metadata
+ok 1 - CLI accepts exactly the legacy five or optional six arguments without choosing a branch implicitly from metadata
+  ---
+  duration_ms: 1.2794
+  type: 'test'
+  ...
+# Subtest: current review PR binds candidate metadata and preserves exact raw inputs
+ok 2 - current review PR binds candidate metadata and preserves exact raw inputs
+  ---
+  duration_ms: 2.5522
+  type: 'test'
+  ...
+# Subtest: current review PR binds tested_merge metadata and preserves exact raw inputs
+ok 3 - current review PR binds tested_merge metadata and preserves exact raw inputs
+  ---
+  duration_ms: 0.8568
+  type: 'test'
+  ...
+# Subtest: current main push binds the chosen PR head and independently reads current main
+ok 4 - current main push binds the chosen PR head and independently reads current main
+  ---
+  duration_ms: 0.7004
+  type: 'test'
+  ...
+# Subtest: omitted branch preserves legacy PR and main behavior
+ok 5 - omitted branch preserves legacy PR and main behavior
+  ---
+  duration_ms: 1.8833
+  type: 'test'
+  ...
+# Subtest: omitting the branch refuses current PR and main collection rather than translating metadata
+ok 6 - omitting the branch refuses current PR and main collection rather than translating metadata
+  ---
+  duration_ms: 0.9047
+  type: 'test'
+  ...
+# Subtest: unknown branch and invalid arguments are refused before transport or writer access
+ok 7 - unknown branch and invalid arguments are refused before transport or writer access
+  ---
+  duration_ms: 0.4478
+  type: 'test'
+  ...
+# Subtest: both allowed branch choices must match actual PR metadata and actual PR head
+ok 8 - both allowed branch choices must match actual PR metadata and actual PR head
+  ---
+  duration_ms: 2.0025
+  type: 'test'
+  ...
+# Subtest: tested merge requires exact ordered base/candidate parents and identical candidate tree
+ok 9 - tested merge requires exact ordered base/candidate parents and identical candidate tree
+  ---
+  duration_ms: 2.3822
+  type: 'test'
+  ...
+# Subtest: repository names and IDs remain mandatory at both run and PR boundaries
+ok 10 - repository names and IDs remain mandatory at both run and PR boundaries
+  ---
+  duration_ms: 2.2086
+  type: 'test'
+  ...
+# Subtest: attempt event workflow path terminal state and summary identity guards remain strict
+ok 11 - attempt event workflow path terminal state and summary identity guards remain strict
+  ---
+  duration_ms: 2.2183
+  type: 'test'
+  ...
+# Subtest: actual PR association is mandatory and cannot be replaced by a matching branch
+ok 12 - actual PR association is mandatory and cannot be replaced by a matching branch
+  ---
+  duration_ms: 0.5924
+  type: 'test'
+  ...
+# Subtest: workflow commit recursive tree exact file and Git blob content checks remain strict
+ok 13 - workflow commit recursive tree exact file and Git blob content checks remain strict
+  ---
+  duration_ms: 2.5611
+  type: 'test'
+  ...
+# Subtest: main collection requires merged PR identity and a fresh exact main ref
+ok 14 - main collection requires merged PR identity and a fresh exact main ref
+  ---
+  duration_ms: 1.3108
+  type: 'test'
+  ...
+# Subtest: raw log summary and native cleanup cardinality are required without fabrication
+ok 15 - raw log summary and native cleanup cardinality are required without fabrication
+  ---
+  duration_ms: 0.8446
+  type: 'test'
+  ...
+# Subtest: native cleanup must retain the exact raw shape status and release facts
+ok 16 - native cleanup must retain the exact raw shape status and release facts
+  ---
+  duration_ms: 1.3291
+  type: 'test'
+  ...
+# Subtest: full18 failures or missing/reordered phases remain explicit nonpassing collections
+ok 17 - full18 failures or missing/reordered phases remain explicit nonpassing collections
+  ---
+  duration_ms: 2.9801
+  type: 'test'
+  ...
+# Subtest: nonbuffer and oversized transport responses remain refused before derived receipts
+ok 18 - nonbuffer and oversized transport responses remain refused before derived receipts
+  ---
+  duration_ms: 0.2261
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 103.3336

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "permission-bp4a-offline-outcome-v1",
+  "recordedAtUtc": "2026-10-23T04:28:05.485Z",
+  "status": "PASS",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "sourceClean": true,
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "recipes": {
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/bp4-archive-inspect.mjs": "00c8948c16b10b76160cc722acf937942225e793f6c7a10b5e9456ee2bd509f2",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/run-bp4-local02.mjs": "89ecc22136dca53882b716c0b7a0921cbc3070e1e1ff2d8689a5f22cb95c6c5f",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/check-bp4-archives-offline04.mjs": "6b2b409f8ad8ae4a42e5270850a5328ea66eaa0373a9efefb08d7c6516bc7bcb",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/bp4-archive-inspect.failed03.mjs": "0d3e68cb489c63dc960d0eadede25dd997e6769e2ad24badddb5f5a498c023bb",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/check-bp4-archives-offline03.mjs": "1f16218d4665b0e985f60745fd64b1c0ba1e226fec1533cd70b4b08237f7f09d",
+    "D:/Workspace/pos-cafe-permission-timeonly-20261022/operations/run-bp4-local.mjs": "5be26766ccca112d28c7341939d1febc4c8253fa727530e4c23c8bb2f8d47361"
+  },
+  "offline03": {
+    "status": "FAIL_OR_UNKNOWN",
+    "cached": 93,
+    "controls": 0,
+    "error": {
+      "code": "BP4_TAR_PATH",
+      "stage": "TAR",
+      "message": "BP4_TAR_PATH"
+    },
+    "reason": "agent-base 7.1.4 contains package/./dist/index.js; original dot rejection was incompatible; failed source snapshot retained"
+  },
+  "offline04": {
+    "status": "PASS",
+    "startedAtUtc": "2026-10-23T04:26:38.548Z",
+    "completedAtUtc": "2026-10-23T04:26:39.180Z",
+    "cacheArchives": 309,
+    "syntheticControls": 23,
+    "acceptedControls": 5,
+    "negativeControls": 18,
+    "receiptSHA256": "5d12862cf0186732dfd580f86475a5a41185eca90d3b6e148ed50d9dbf1a668f"
+  },
+  "oldLedgersUnchanged": true,
+  "actualArchivePreflight": {
+    "spent": 1,
+    "granted": 1,
+    "status": "FAIL_OR_UNKNOWN_PRESERVED_NO_NEW_ATTEMPT"
+  },
+  "excludedActions": {
+    "network": 0,
+    "install": 0,
+    "applicationBuild": 0,
+    "applicationUnit": 0,
+    "push": 0,
+    "ci": 0,
+    "backend": 0,
+    "database": 0,
+    "deploy": 0
+  },
+  "remaining": "46 uncached archives remain NOT_SUCCESSFULLY_VERIFIED after actual01 failed attempt; install/build/full unit remain NOT_RUN; main02 is PREPARATION_ONLY and cannot execute; new owner grant/window required for execution",
+  "freeBytes": {
+    "C:/": 193840381952,
+    "D:/": 98505461760
+  }
+}

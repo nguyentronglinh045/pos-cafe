@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "permission-pre-t04-local-checkpoint-v3",
+  "recordedUtc": "2026-10-24T02:06:58.226Z",
+  "sourceSHA": "90824f7cb81660818ab247f7dccf55b8a111d471",
+  "tree": "7f33dd64e2a17b56277698840a4e43bb39f2f844",
+  "fingerprint": "bd50735607395b09db1c0da701df193d6b2e180da946016d0b44a0d62abe1d74",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "files": 1115,
+  "bytes": 41827016,
+  "trustedPins": 45,
+  "checkoutClean": true,
+  "capacity": {
+    "localDisks": [
+      {
+        "path": "C:/",
+        "freeBytes": 193204277248
+      },
+      {
+        "path": "D:/",
+        "freeBytes": 98875609088
+      }
+    ],
+    "retainedLogicalBytes": 610346994,
+    "retainedLogicalCapBytes": 805306368,
+    "retained": [
+      {
+        "path": "D:/Workspace/pos-cafe-permission-run-20261020",
+        "logicalBytes": 218509891
+      },
+      {
+        "path": "D:/Workspace/pos-cafe/.git",
+        "logicalBytes": 48753463
+      },
+      {
+        "path": "C:/Users/nguye/AppData/Local/pos-cafe-release/permission-execution-20261020",
+        "logicalBytes": 4981266
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022",
+        "logicalBytes": 326348322
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022",
+        "logicalBytes": 1597957
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-release-20261022",
+        "logicalBytes": 5135304
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-staging-setup-20261022",
+        "logicalBytes": 1405939
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-final-push-20261023",
+        "logicalBytes": 516026
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023",
+        "logicalBytes": 3098826
+      }
+    ],
+    "linksNotFollowed": [
+      {
+        "path": "D:/Workspace/pos-cafe-permission-run-20261020/code/artifacts/ui-audit/test-junction-0096b055-d65e-4184-b94a-d37a2d493804",
+        "target": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\junction-target-6e0328dc-d474-4ba3-9a99-6c84896c44f9",
+        "followed": false
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-permission-run-20261020/code/artifacts/ui-audit/test-junction-e384a654-8af5-47d2-9a7e-e68c5432519a",
+        "target": "D:\\Workspace\\pos-cafe-permission-run-20261020\\code\\artifacts\\ui-audit\\junction-target-1e4e40e2-3c74-4d99-8166-6a34fe9e6fc4",
+        "followed": false
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/temp/night-node06/permission-staging-ci-portability-20261022-0wgANd/dangling-docs/docs-link",
+        "target": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\dangling-docs\\missing-target",
+        "followed": false
+      },
+      {
+        "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/temp/night-node06/permission-staging-ci-portability-20261022-0wgANd/present-docs/docs-alias",
+        "target": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node06\\permission-staging-ci-portability-20261022-0wgANd\\present-docs\\docs",
+        "followed": false
+      }
+    ],
+    "allocatedBytes": "NOT_MEASURED; logical sizes only, no reclaim claim",
+    "heavyLoopBytes": 19327352832,
+    "taskBudgetBytes": 21474836480,
+    "hostMinimumFreeBeforeLoopBytes": 53687091200,
+    "hostReserveBytes": 32212254720,
+    "outsideAdmissionBytes": 1073741824,
+    "outsideQuotaEnforced": false,
+    "noLocalInstall": true,
+    "noWslDockerDesktop": true,
+    "measuredAtUtc": "2026-10-24T02:06:58.267Z",
+    "measurement": "logical bytes; no links followed, not allocated-byte quota"
+  },
+  "remoteWorkerAdmission": "MUST_RECHECK_IN_NEW_JOB"
+}

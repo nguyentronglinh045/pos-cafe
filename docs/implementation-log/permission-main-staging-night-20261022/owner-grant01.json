@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "permission-night-owner-grant-v1",
+  "recordedAtUtc": "2026-10-22 11:44:58 UTC",
+  "reference": "request_user_input_async call_917e58ccb3a447838f9b40f2d36145e6 item0",
+  "question": "Để mở lượt mới tới 00:00, bạn có đồng ý ngân sách tối đa 2 lần push candidate + 2 CI và 8 lượt backend nguyên profile (T04 + 7 service profiles), giữ nguyên lịch sử và coverage? Chỉ một backend chạy tại một thời điểm; giữ ít nhất 42 phút dự phòng, không tự retry cùng nguồn khi lỗi, và chỉ push main nếu đủ full gate. Review/subagent chỉ giới hạn bởi thời gian.",
+  "answer": "cho phép, nhưng chỉ nên push khi code không còn gây lỗi",
+  "authorizedDeadlineUtc": "2026-10-22T17:00:00Z",
+  "phaseActionLimits": {
+    "candidatePublication": 2,
+    "candidateCi": 2,
+    "heavyProfiles": 8,
+    "reviewRounds": null
+  },
+  "conditions": [
+    "Time-only; no token cap",
+    "History and full coverage retained",
+    "One active backend",
+    "42-minute minimum admission reserve",
+    "No same-source automatic retry",
+    "Local checks and two independent reviews before candidate push",
+    "Main only after unchanged full gate"
+  ],
+  "notGrantedHere": [
+    "Additional PR/main automatic CI beyond 2 candidateCI",
+    "Auth settings changes",
+    "Edge deployment",
+    "Synthetic tenant/Auth/object creation",
+    "Original DB mutation",
+    "Vercel production deployment"
+  ],
+  "timestampMeaning": "recordedAtUtc is receipt recording time, not a claimed exact user-click timestamp"
+}

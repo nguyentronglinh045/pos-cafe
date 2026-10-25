@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "permission-night-pr-main-owner-grant-v1",
+  "recordedAtUtc": "2026-10-22 12:02:10 UTC",
+  "reference": "request_user_input_async call_2d0c88f57f7541cca1a9ee2226283df6 item0",
+  "question": "Workflow hiện tự chạy CI khi mở PR và khi cập nhật main, ngoài CI của hai lần push candidate bạn vừa duyệt. Bạn có đồng ý thêm tối đa 2 lượt CI tự động cho PR + main, chỉ dùng sau khi candidate đạt full gate? Giữ nguyên giới hạn 2 push candidate, 8 backend, hạn 00:00 và không triển khai production.",
+  "answer": "phương án 1, lưu ý: các nhánh sau khi merge hãy xóa nhánh đó đi, để nhiều nhánh đã merge sẽ khó quản lý",
+  "additionalAutomaticCi": 2,
+  "condition": "Only after candidate meets unchanged full gate; no extra candidate push or backend; no production deployment",
+  "authorizedDeadlineUtc": "2026-10-22T17:00:00Z",
+  "branchCleanup": "Delete this task's candidate branches after verified successful merge; retain evidence and preserve unrelated branches/data",
+  "timestampMeaning": "Receipt recording time; not a claimed exact user-click timestamp"
+}

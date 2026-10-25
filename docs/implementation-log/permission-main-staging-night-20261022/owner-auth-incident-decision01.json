@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "permission-staging-auth-incident-decision-v1",
+  "reference": "call_6fe87832442c41de91420b10aaac9fe2 item0",
+  "answer": "Chờ resolved; quá giờ admission thì hoãn Auth",
+  "recordingBasis": "Actual latest owner reply relayed by root in this conversation; no reply/click timestamp was supplied.",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "previousGrant": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/owner-auth-test-grant01.json",
+    "sha256": "d50ae1de9772b22a36d0cbfc1e9085f19bd3f9fd998afa138b8e9f87b8cf408b"
+  },
+  "decision": {
+    "waitForOfficialIncidentStatus": "RESOLVED",
+    "monitoringAlonePermitsAdmission": false,
+    "incidentExceptionAuthorized": false,
+    "residentStartWindowUtc": ["2026-10-22T14:00:00Z", "2026-10-22T14:02:00Z"],
+    "latestResidentAdmissionLocal": "2026-10-22 21:02:00 Asia/Bangkok",
+    "ifNotResolvedWithinAdmission": "DEFER_AUTH_WITHOUT_CONSUMER_ATTEMPT_OR_SETTING_TOGGLE",
+    "windowExtensionAuthorized": false
+  },
+  "scope": "Preserves prior finite Auth/TEST grant and stricter reviewed recipe; no additional Auth, Edge, SQL, original-DB, CI or environment action.",
+  "execution": "This receipt records a decision only; no consumer, Dashboard mutation, network/API/DB call or admission was performed while recording it."
+}

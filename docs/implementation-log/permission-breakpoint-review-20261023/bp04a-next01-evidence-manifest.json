@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "permission-bp4a-next-docs-raw-copy-v1",
+  "createdAtUtc": "2026-10-23T05:12:36.0281509Z",
+  "sourceEvidenceRoot": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\evidence",
+  "copies": [
+    {
+      "file": "bp04a-next01-admission01.json",
+      "sha256": "fb51001a0b2e77836f158734c729cc4d18dfb296b69a5e924c997c606f848839",
+      "bytes": 1426
+    },
+    {
+      "file": "bp04a-next01-archivePreflight.started.json",
+      "sha256": "98bab2640e20aec9cd46b3c7c596644dc04b0349046b39a2dfccdb363015d2e1",
+      "bytes": 306
+    },
+    {
+      "file": "bp04a-next01-collector-controls01.json",
+      "sha256": "ed29f4badd4412f541d9fc8de19a09f550e68d729ba4446856319fa2ea606214",
+      "bytes": 1622
+    },
+    {
+      "file": "bp04a-next01-collector-controls01.json.started.json",
+      "sha256": "52fb93a30c95b587eb36e71657445fccf2422155a91b4b5ef92a424d70833d87",
+      "bytes": 44
+    },
+    {
+      "file": "bp04a-next01-local01.json",
+      "sha256": "0eaef935ddd22f9ca7e2ad3e1a1ee8d7a98807fa194a4818b5ed319dce71a62c",
+      "bytes": 4668
+    },
+    {
+      "file": "bp04a-next01-local01.started.json",
+      "sha256": "10434984023eaed97e92de23536ab12ae13e40ab2b812cdfd72d5746aba18be0",
+      "bytes": 279
+    },
+    {
+      "file": "bp04a-next01-owner-grant.json",
+      "sha256": "8ffe42b6ed2cca26e746256773cc008880fb423ae95c75577657f3d2c223f7eb",
+      "bytes": 2271
+    },
+    {
+      "file": "bp04a-next01-readiness-observation01.json",
+      "sha256": "1bc12c36120371bf7ae3e3454c45827af39095ff69cb10a0b764281e7d49e958",
+      "bytes": 425
+    },
+    {
+      "file": "bp04a-next01-stop-observation01.json",
+      "sha256": "d4d2fa783bcb1605332e99f78eac2cfc57abe1abfe045197825e376e83cb4fc1",
+      "bytes": 3743
+    }
+  ],
+  "operationsPins": {
+    "operations/run-bp4-local03.mjs": "853c733b4e2a0c2cc65da90d43f69e0115e3be378d74dcef11b5f676a4a39f67",
+    "operations/bp4-archive-collector.mjs": "f7ba45a569248201ac176469168b1e0eb4bcbcccc303e4f19aa76e3f7ea1b9b9",
+    "operations/bp4-native-probe-next01.mjs": "e31d7289c27b8e42c6277ed276550a9c39f96e42de668b8af6bbb7a369a14e01",
+    "operations/check-bp4-next01-collector.mjs": "24d43824b4ba68b58c649df59134480313d8305632afdb62e38b4f832523ed04",
+    "evidence/bp4a-next01-owner-grant.json": "8ffe42b6ed2cca26e746256773cc008880fb423ae95c75577657f3d2c223f7eb",
+    "evidence/bp4a-next01-collector-controls01.json": "ed29f4badd4412f541d9fc8de19a09f550e68d729ba4446856319fa2ea606214"
+  },
+  "notes": "Copied original bytes; observation newly written; no executable source copied into docs"
+}

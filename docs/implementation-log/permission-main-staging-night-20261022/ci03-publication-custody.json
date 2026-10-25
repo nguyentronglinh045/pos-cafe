@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "permission-compact-evidence-custody-v1",
+  "recordedAtUtc": "2026-10-22T16:18:28.177Z",
+  "author": "/root",
+  "copies": [
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-budget-policy.json",
+      "bytes": 1957,
+      "sha256": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03-negative-controls.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-budget-negative-controls.json",
+      "bytes": 1276,
+      "sha256": "ae2a8c9f1380400fba90c2b17c656a8ffe630b71fdd841679a986606f9abeb04"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-packet05.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-publication-packet.json",
+      "bytes": 373018,
+      "sha256": "abecf340bd01bd1414e8d3bd0277d1e3c6b6bf1ac8fe413291e93e83f56f5571"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-reviews05.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-publication-reviews.json",
+      "bytes": 1558,
+      "sha256": "27cc9754f48c88b3cd5aa2dd043d1536a767fc7855cd083a2237c30904218083"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publish-manifest05.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-publication-manifest.json",
+      "bytes": 2064,
+      "sha256": "4866f18dbeab5b1da170dd8f4cae9aa0ca626579c0b2ba755cb0a4474aafcd9a"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-admission05-dryrun.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-publication-dryrun.json",
+      "bytes": 2013,
+      "sha256": "707e1617f9f6883eb20afdc78b295a07096b45a0fb4db78baf30dc16197dc164"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/publication-admission05.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-publication-admission.json",
+      "bytes": 2554,
+      "sha256": "4eab56463d9fca3ecf40ab17dd4de0cfdd0d8bb33131560922a2cc4f21738f55"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/ci03-settlement-helper-offline-check02.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-settlement-offline-checks.json",
+      "bytes": 1359,
+      "sha256": "a786a9a9c74ca95076bd28914092267fbda92899a07eb94595a2a5d42bdf6189"
+    },
+    {
+      "source": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/ci03-pg16-extractor-offline-check01.json",
+      "archivedPath": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/ci03-pg16-offline-checks.json",
+      "bytes": 1055,
+      "sha256": "266c2e718290248fc896ae6f86c6a99b1e95ae6dc0f19ddc645fbb628e79450d"
+    }
+  ],
+  "holder": "Owner of this Windows workspace",
+  "retention": "Keep until owner explicitly authorizes task evidence cleanup.",
+  "scope": "Immutable publication/authorization/review/offline control evidence only. No CI terminal or runtime PASS claim. No raw private captures or credentials copied.",
+  "pathInterpretation": "Raw bytes preserved; archive paths map to original source paths with SHA256. Original retained evidence remains required for ledger/API validation and recursive historical refs; copied observations do not create execution permission."
+}

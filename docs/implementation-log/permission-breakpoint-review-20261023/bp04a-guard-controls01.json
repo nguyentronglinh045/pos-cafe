@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "permission-bp4a-native-job-controls-v1",
+  "status": "FAIL",
+  "startedAtUTC": "2026-10-23T03:50:11.043Z",
+  "helperSHA256": "794b81dfc28b798bc8341765f58403c4e3d8acf3aada8f6098c114fe81c4315f",
+  "controls": [
+    {
+      "name": "normal",
+      "status": "PASS",
+      "expectedDisposition": "SUCCESS",
+      "exitCode": 0,
+      "transportError": null,
+      "proofPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-guard-normal01.proof.json",
+      "proofSHA256": "077c45dab96f4af39182b7f8b3182e0d9de11ce91676a9b4e07eb71a926c7e6e",
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "nonzero",
+      "status": "PASS",
+      "expectedDisposition": "EXPECTED_REJECTION",
+      "exitCode": 1,
+      "transportError": null,
+      "proofPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-guard-nonzero01.proof.json",
+      "proofSHA256": "5c7ab6715d0db346c0e8c9023b1508317852a8b5a0a0082c942155abe1dd46ec",
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "orphan",
+      "status": "FAIL",
+      "expectedDisposition": "EXPECTED_REJECTION",
+      "exitCode": 0,
+      "transportError": null,
+      "proofPath": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/bp4a-guard-orphan01.proof.json",
+      "proofSHA256": "16aaa5d1afd47c6e0bcdb7dd9a8e4b7c7c171ae6649f1750e389569735b91f82",
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "scope": "GUARD_ONLY_NO_INSTALL_BUILD_OR_APP_TEST",
+  "completedAtUTC": "2026-10-23T03:50:14.554Z"
+}

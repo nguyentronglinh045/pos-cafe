@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "t04-hardening-final-report-reviews-v1",
+  "recordedUtc": "2026-10-24T05:33:14.360Z",
+  "files": {
+    "outcome": {
+      "path": "t04-hardening-outcome-20261024.md",
+      "sha256": "c22cddd53b6ca844435568c8738e0c2a88ec734df692a4e60154ffa3cc625af0"
+    },
+    "brief": {
+      "path": "t04-oracle-hardening-brief-20261024.md",
+      "sha256": "09d40e6c852c7bd04d9a84f5972282c51de0854e6f5535e009117c51d011020f"
+    },
+    "task": {
+      "path": "../../workflow/tasks/permission-t04-oracle-hardening-2026-10-24.md",
+      "sha256": "5f9ea6db530b4c3c671aa6ace162487b61a60ff13d25e17ac01139c717b574fa"
+    },
+    "sourceReview": {
+      "path": "t04-hardening-source-reviews01.json",
+      "sha256": "b6f535545b6a503b3d18ea93e61c522334a4fd55a6644c798444a4e33a380830"
+    },
+    "checkpoint": {
+      "path": "t04-hardening-checkpoint01.json",
+      "sha256": "878bf65b2d3699a7644088c71120d2587ab4ad2aec572d742dc12f86eda1cda2"
+    }
+  },
+  "indexScope": "docs/workflow/tasks/README.md ownrow244only",
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE_REPORT_ONLY",
+      "scope": "integration/acceptance/report",
+      "blockingFindings": [],
+      "checks": [
+        "exacthashesand29locallinks",
+        "5tempdirs89files393476logicalbytes",
+        "retainedsum616429997bytes",
+        "historicalruntimevsuncommitted18filecandidate",
+        "node02precededexpectedmatchercontroldelta;reporters02coversfinalbytes",
+        "WindowsREFUSAL_ONLY;freshCI/T04NOT_RUN;cloud0"
+      ]
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE_REPORT_ONLY",
+      "scope": "diagnostic/privacy/transport/provenance/report",
+      "blockingFindings": [],
+      "closedFindings": [
+        {
+          "before": "historicalreceipt>34KiB",
+          "after": "exact34207B"
+        },
+        {
+          "before": "allprobesfailure-only",
+          "after": "teardownDOM/attachmentfailure-only;finiteDB/APIcheckpointsexplicit"
+        }
+      ],
+      "checks": [
+        "exactoutcomebrief/task/indexreview",
+        "UNKNOWN0andfirstfailedcontrolretained",
+        "noguaranteeofwholeT04PASS",
+        "capacity/temp/priorpolicyblockhonestlyreported"
+      ]
+    }
+  ],
+  "sourceUnchangedSinceSourceReview": true,
+  "sourceFingerprint": "fa38fc2ffbfcb7aab99d5b61b69b36d25c936bcdc7b7d98e9f15f7e1570066ab",
+  "businessAcceptance": "NOT_ACHIEVED",
+  "publicationCiT04": "NOT_AUTHORIZED_ADDITIONAL_RUN_PENDING_USER_REPLY",
+  "cleanupNewFive": "PENDING_USER_REPLY_NO_DELETION",
+  "mergeDeploy": false
+}

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "permission-breakpoint-authorization-v1",
+  "recordedAtUtc": "2026-10-23T01:39:04.5975289Z",
+  "author": "/root",
+  "ownerReply": "phương án 1, nhưng sau khi xong hãy xóa đi nếu có thể",
+  "sourceQuestion": "call_d6b9faf6b7ae46f096979a0fa0d71cfd/question0",
+  "selectedOption": "Cấp BP2, không cài mới (khuyến nghị)",
+  "startedAtUtc": "2026-10-23T01:34:29Z",
+  "deadlineUtc": "2026-10-23T02:34:29Z",
+  "deadlineLocal": "2026-10-23 09:34:29 Asia/Bangkok",
+  "maxMinutes": 60,
+  "baselineSource": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "codeRoot": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+  "approvedPlan": "bp01b-preparation.md",
+  "approvedPlanSHA256": "212f4f110d7c19e6e870d52649782c4e34accc6ab490c92b7e7aebac6a0c32f6",
+  "scope": [
+    "CORSx-client-infoandfocusedchecks",
+    "PIN07rollbackoraclesandexplicitseedretry",
+    "PIN15collidedrowpreservation",
+    "lightweightlocalverificationandtwoindependentreviews"
+  ],
+  "limits": {
+    "ci": 0,
+    "installation": 0,
+    "publication": 0,
+    "deploy": 0,
+    "databaseAccess": 0,
+    "heavyBackend": 0,
+    "coverage": "Keep35/760/12+D19/R0/R1"
+  },
+  "cleanup": {
+    "interpretation": "Only newly generated task-owned temporary fixtures after reports/hashes preserved; code, evidence, receipts and useful retained dependencies preserved",
+    "verifyOwnershipAbsolutePathsAndNoLiveProcess": true,
+    "noAuthorizationForOldOrUnrelatedTemp": true,
+    "communicatedToOwner": true
+  },
+  "status": "ACTIVE_LOCAL_BP2_ONLY",
+  "oldPhase03": "CLOSED/pending[], no grant reset or old allowance reuse"
+}

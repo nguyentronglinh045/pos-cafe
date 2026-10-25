@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "permission-operator-indexeddb-awaiting-owner-checkpoint-v1",
+  "recordedAtUtc": "2026-10-22T15:53:22.416Z",
+  "author": "/root",
+  "status": "LOCAL_FIX_REVIEWED_AWAITING_OWNER_REMOTE_BUDGET",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "treeSHA": "95013ef246608c96239b8ac31e8e5ea3fa744cef",
+  "branch": "fix/operator-indexeddb-evidence-20261022",
+  "localReview": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/operator-indexeddb-local-review01.json",
+    "sha256": "d3e5ee77bc50aeb41198e29a747c428c2ff8fa115e85b81c447ed7add2c88e81"
+  },
+  "planReview": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/operator-indexeddb-plan-review01.json",
+    "sha256": "c8e401774385a1bdaa044c058efc25fd6b787d0c6df3f1c38300c5d2218ee7d7"
+  },
+  "plan": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-operator-indexeddb-oracle-remediation-2026-10-22.md",
+    "sha256": "5801a583c63a34d74a943f9355bb70a178b589d5ed14cf8e228c5b4da6b09c4a"
+  },
+  "remote": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/remote-ref-checkpoint05.json",
+    "sha256": "7cd80983d5901ca7ddd81367a9b23a53e7c5b063a1c1c94318f3f938feff36f6"
+  },
+  "newSourceVerification": {
+    "localNode": "938/938 PASS",
+    "realChromeReaderControls": "6/6 PASS including original bug mutant refused",
+    "candidateCi": "NOT_RUN",
+    "wholeBackendProfiles": "0/8 NOT_RUN",
+    "fullGate": "PENDING_35_STAGES_760_REQUIRED_12_OBLIGATIONS"
+  },
+  "oldSourceVerification": {
+    "sourceSHA": "4d1ba3ada3810405b16c24d7b99ec7563a4f30ae",
+    "observedStages": 30,
+    "requiredIdentities": 706,
+    "status": "NOT_FULL_GATE_PASS_OPERATOR_ORACLE_GAP_AND_FIVE_PROFILES_MISSING",
+    "latestTerminal": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-service02-terminal.json",
+      "sha256": "4925fec4bfa850ac120042985b28c483d209f514aefc8177e0d809512bba7092"
+    },
+    "latestSettlement": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/cloud-service02-settlement.json",
+      "sha256": "7f8f18444bfed0419a93fa2a1c1027a372ad748e9dd9d06e45cc5aad750c3413"
+    }
+  },
+  "budget": {
+    "policy": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase02.json",
+      "sha256": "3b7dc2bf87b49ac1a61b5aed33484493f223401ef894cae11612f33e154a9419"
+    },
+    "status": "CLOSED_PENDING_EMPTY",
+    "phaseHeavySpent": 2,
+    "phaseHeavyLimit": 7,
+    "retainedUnusedHeavy": 5,
+    "lifetime": {
+      "publication": 6,
+      "ci": 6,
+      "heavy": 5,
+      "reviewRounds": 10
+    },
+    "unusedPostGateCi": {
+      "pull_request": 1,
+      "main_push": 1
+    },
+    "newPublicationAllowance": 0,
+    "newCandidateCiAllowance": 0
+  },
+  "cleanup": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/cleanup-node-fixture05.json",
+    "sha256": "05dcf05b163c695a003e585969ae20db17ae80317f012b86ce9154e399847cc1"
+  },
+  "cleanupPreparationRecovery": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/preparation-incidents03.json",
+    "sha256": "47b51bae1df62ea09d9f7b71b748365d43518bdfce96642d4a6fa7e8763a8687"
+  },
+  "continuation": "Do not reopen closed phases or relabel old PASS. Await actual owner remote budget answer. Then review new policy/receipts before init; fresh runtime guard; CI same source before heavy. Current00:00 cutoff and42minute reserve remain. Main requires unchanged full gate/final reviews/PR+main CI.",
+  "hosted": {
+    "staging": "AuthDEFER/EdgeBLOCKED; no hosted action in this continuation",
+    "originalDb": "NOT_ACCESSED",
+    "vercelProduction": "NO_ACTION"
+  },
+  "historicalDocsCommit": "537e0e093137f6fabc5d3f63458e6fe1a9183469"
+}

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "permission-bp4a-countdiag-owner-grant-v1",
+  "reference": "request_user_input_async call_1a52e7704f6b48f0abcf59b40bccf772 item0",
+  "answer": "Duyệt 15 phút dùng recipe đã sẵn (khuyến nghị)",
+  "recordedAtUtc": "2026-10-23T06:55:49Z",
+  "deadlineUtc": "2026-10-23T07:10:49Z",
+  "readinessDeadlineUtc": "2026-10-23T07:04:34Z",
+  "executionDeadlineUtc": "2026-10-23T07:05:49Z",
+  "timezone": "Asia/Bangkok",
+  "recordingTimeIsNotExactUserClick": true,
+  "planSHA256": "09caf0a76aebecc00b3b0ae6983918b36221ff2f6697b71ccfbbf7cdd5cd918c",
+  "amendment": "Replaces previous13:56:54 cap; readiness8min45sec plus75sec request/analysis plus5min reserve. Only grant/time/namespace binding changes; reuse controls02 strictly for unchanged functions/pins, fresh2review diff required.",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "lockSHA256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "parserSHA256": "00c8948c16b10b76160cc722acf937942225e793f6c7a10b5e9456ee2bd509f2",
+  "limits": {
+    "diagnosticGET": 1,
+    "compressedBodyMaxBytes": 65536,
+    "requestTimeoutMs": 15000,
+    "gzipOutputMaxBytes": 1048576,
+    "analysisBatch": 1,
+    "analysisTimeoutMs": 60000,
+    "totalGeneratedDiagnosticBytes": 1048576,
+    "diagnosticDataMemoryAllowanceBytes": 8388608,
+    "redirects": 0,
+    "retries": 0
+  },
+  "history": {
+    "archivePreflightUsed": 2,
+    "archivePreflightMaximum": 2,
+    "diagnosticGETPreviouslyUsed": 0,
+    "installPreviouslyUsed": 0,
+    "buildPreviouslyUsed": 0,
+    "unitPreviouslyUsed": 0,
+    "oldLedgers": "UNCHANGED_CLOSED"
+  },
+  "storage": {
+    "rootBaselineBytes": 51309130,
+    "maxGeneratedBytes": 2147483648,
+    "reserveBytes": 32212254720,
+    "retainedMaxBytes": 805306368
+  },
+  "excluded": [
+    "acceptance/count waiver or source/lock changes",
+    "main03/parser/collector admission edits",
+    "full46archive preflight",
+    "npm ci/install",
+    "build",
+    "appunit/coverage",
+    "push",
+    "CI",
+    "backend",
+    "database evenread",
+    "deploy",
+    "cleanup",
+    "new tools/browser/runtime"
+  ],
+  "stopPolicy": "One diagnostic invocation. Preserve raw/error evidence. No retry or fix/replay after actual request; known count mismatch may be observed within same offline diagnostic batch only. Final5minutes reserved for review/docs.",
+  "approvedAmendmentSHA256": "ec45fa582dd4eed26d9cda803770ee56a1ab2ac3e8814dd2b5ebc290f06aa7ed",
+  "reusedControlsReportSHA256": "6b16c4818a9395370b06269e6de31b4eb668a10a1ecdb7764cb96bc1c0db17a6",
+  "predecessorGrantSHA256": "8f652460f65b6da51e13c58c7b98d05c6de88951936a0e1afa48d9da92308f95"
+}

@@ -1,0 +1,16 @@
+Browser tab: 8, Title: "POS Cafe", URL: "http://localhost:5173/".
+0 AXWebArea POS Cafe, URL: localhost:5173/
+	1 container root
+		2 container
+			3 heading Đổi PIN tạm, Value: 1
+				4 text Đổi PIN tạm
+			5 text Bạn cần đổi PIN tạm trước khi sử dụng quán. Tài khoản:  Chủ quán
+			6 text PIN mới
+			7 text field (settable) PIN mới
+			8 text Nhập lại PIN mới
+			9 text field (settable) Nhập lại PIN mới
+			10 button Đổi PIN
+			11 button Đăng xuất
+			12 button Đổi quán
+
+The focused UI element is 0 AXWebArea POS Cafe, URL: localhost:5173/

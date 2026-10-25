@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "permission-docs-review-closure-v1",
+  "atUtc": "2026-10-22T03:23:29.751Z",
+  "sourceSHA": "b2e3122866f5b6108f026f381f4f12614c98027c",
+  "reviewedDocuments": [
+    {
+      "path": "docs/workflow/tasks/permission-release-2026-10-22.md",
+      "sha256": "93a4fae46fd7d091c6d6468acfa55ef7fc74341863b937d669732a66ff36c2be"
+    },
+    {
+      "path": "docs/workflow/tasks/permission-ci-portability-remediation-2026-10-22.md",
+      "sha256": "5c8cdaa0aa780bade6ab569e0c9a570f25ab6c0b4270f7675b8853ceeb46357c"
+    },
+    {
+      "path": "docs/workflow/tasks/permission-next-release-session-2026-10-22.md",
+      "sha256": "41fd07fe74c85412192b038c848ba5be48497c888eff708ee6be97950adfd2b1"
+    },
+    {
+      "path": "docs/reviews/2026-10-22-permission-release.md",
+      "sha256": "652aee7881d9e52f79d31f4b2868e49f18e9a9c90a69940415d17ebaec1c1046"
+    }
+  ],
+  "taskIndexScope": "ONLY_22OCT_ENTRY_PLUS_SEPARATOR",
+  "entrySHA256WithLF": "3f14c05c69b16f0bb8dfe93d9ef2cea14adb239b4d3823b1fbf3e472e53fd683",
+  "reviewers": [
+    {
+      "name": "/root/investigation_plan_review",
+      "scope": "source-plan-evidence",
+      "verdict": "APPROVE"
+    },
+    {
+      "name": "/root/continuation_operations_review",
+      "scope": "operations-authorization",
+      "verdict": "APPROVE"
+    }
+  ],
+  "boundedMappingReviewer": "/root/investigation_evidence_review",
+  "boundedMapSHA256": "2851f3ece8e27aeb98a6119d622b0eb25008a16c0543634ee1ad0d879a4f7c74",
+  "mechanicalCommitMetadata": "EVIDENCE_GITATTRIBUTES_MINUS_TEXT_AND_RAW_BLOB_COMPARISON",
+  "executionAuthorityAdded": false
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "permission-runtime-reviews-v2",
+  "recordedAtUtc": "2026-10-22T16:09:37.435Z",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "candidateSHA256": "abecf340bd01bd1414e8d3bd0277d1e3c6b6bf1ac8fe413291e93e83f56f5571",
+  "authors": [
+    "/root",
+    "/root/budget_time_guard_fix"
+  ],
+  "reviewers": [
+    {
+      "name": "/root/final_security_join_review",
+      "scope": "source",
+      "verdict": "APPROVE",
+      "evidence": "Actual reviewer message APPROVE exact packet abecf340bd01bd1414e8d3bd0277d1e3c6b6bf1ac8fe413291e93e83f56f5571: disk rehash, clean HEAD4f/tree95013, independent Git binary batch ALL1107 tree objects/modes and SHA256 pins;41697989 raw batch bytes;12 changed paths;18 absolute refs0mismatch. Policy03/grant03/local05/probe and both local/plan reviews pinned. All new CI/light/native/8backend NOT_RUN; old T02 cleanup only. No external action."
+    },
+    {
+      "name": "/root/mcp_staging_evidence_review",
+      "scope": "operations",
+      "verdict": "APPROVE",
+      "evidence": "Actual reviewer final message OPS APPROVE exact packet abecf340bd01bd1414e8d3bd0277d1e3c6b6bf1ac8fe413291e93e83f56f5571:1107 Git pins/tree clean/12 changed paths/18 raw refs. Initialized policy03 exact scope1publication1CI0backend0PRmain; no source runtime inheritance. Fresh guard required; no action performed."
+    }
+  ],
+  "scopeLimit": "Exactly1 candidate push+1 automatic CI, heavy0/postgate0; no PR/main/Supabase/Vercel. Full35stage760required12obligations PENDING; no old-source runtime PASS inheritance."
+}

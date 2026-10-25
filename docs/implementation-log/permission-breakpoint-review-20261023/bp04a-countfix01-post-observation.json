@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "permission-bp4a-countfix-post-observation-v1",
+  "observedAtUtc": "2026-10-23T07:29:32.9109488Z",
+  "sourceSHA": "e42215044b4faf7e90f787ae8e975937ad3e4479",
+  "sourceStatus": [],
+  "originalFilesUnchanged": {
+    "operations\\bp4-archive-inspect.mjs": "00c8948c16b10b76160cc722acf937942225e793f6c7a10b5e9456ee2bd509f2",
+    "operations\\bp4-archive-collector.mjs": "f7ba45a569248201ac176469168b1e0eb4bcbcccc303e4f19aa76e3f7ea1b9b9",
+    "operations\\run-bp4-local03.mjs": "853c733b4e2a0c2cc65da90d43f69e0115e3be378d74dcef11b5f676a4a39f67",
+    "evidence\\bp4-package-size-facts01.json": "1c00b0b0a3fb3279cad9ddb072cef74d8508a01215b46a92c2f4f3171a7c21f9",
+    "code\\package-lock.json": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18"
+  },
+  "oldLedgersUnchanged": {
+    "budget-phase03-close.json": "0eb116c8b4016d54d0b0d90474545bd8012625bdcb0d924e1aca22e3754ce05b",
+    "budget-phase03-negative-controls.json": "ae2a8c9f1380400fba90c2b17c656a8ffe630b71fdd841679a986606f9abeb04",
+    "budget-phase03.json": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142",
+    "budget-phase03.json.anchor.json": "ef89bdd0af7693f425c3081a3562bb555165957df6d7a1f9dcf028347412fb2f",
+    "budget-phase03.json.head.json": "adfec165ec85f3d4fd9f69db229249ba743845a5561799f295ae8590a5f6e527",
+    "budget-phase03.json.journal.jsonl": "5390f85e8fb7c01d6a037724ba1f8c2b00a8666ed5603094a3bbeb876ffbb694"
+  },
+  "newToolingPins": {
+    "operations\\bp4-regular-count-facts01.mjs": "6230b753ccbdb1f71cd748c99f4732c2b5816cc69ce132ce60745dc5d7537311",
+    "operations\\bp4-archive-collector-countfix01.mjs": "8091a91f64fda093a733fbf8ed079282a6fb4c95b5d9a9b8ab16db0d525acca5",
+    "operations\\check-bp4-countfix01.mjs": "c518e6eec98b83f1341fa3ac22d4d838f17bad72bc9eae9cb2d333db8c8dd032"
+  },
+  "volumes": [
+    {
+      "DriveLetter": "D",
+      "SizeRemaining": 98499534848
+    },
+    {
+      "DriveLetter": "C",
+      "SizeRemaining": 193626546176
+    }
+  ],
+  "activeBatchProcesses": [],
+  "actualOfflineBatches": 1,
+  "actualResult": "26/26PASS",
+  "networkRequests": 0,
+  "full46Preflight": "NOT_RUN",
+  "install": "NOT_RUN",
+  "build": "NOT_RUN",
+  "appunit": "NOT_RUN",
+  "database": 0,
+  "push": 0,
+  "runtimeProofSHA256": "720ca2cd2aac9847d8fe1fc61e3fbeee5e583f743932af19dc7fe06bc20465dc",
+  "scope": "Read/hash/source/process snapshot only, no further controls/parse/network; no OS quota claim"
+}

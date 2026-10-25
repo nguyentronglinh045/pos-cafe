@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "permission-observed-light-independent-reviews-v1",
+  "recordedUtc": "2026-10-23T16:06:07.361Z",
+  "sourceSHA": "eac4359d28b20b52309c20af7aa272362043c6c0",
+  "runId": "39980641660",
+  "attempt": 1,
+  "collection": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci04-collection.json",
+    "sha256": "b421a1070866aa2541fcbc2a41f87096c7c3578ee53fa8ccc8491e66aa0e78f8"
+  },
+  "summary": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-ci04-summary.json",
+    "sha256": "a9001ed0e4816bfd9be0cfa27511e521443834abc32c812900f8d46e8d7e1eb9"
+  },
+  "visualReview": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/pin-ui-visual-review01.json",
+    "sha256": "0f672ad3294873cb24d86ffd1a9c9af7acc853f241f03884bc4bbef494a9c61e"
+  },
+  "scope": {
+    "acceptedStages": 6,
+    "requiredIdentities": 343,
+    "static": {
+      "stages": 5,
+      "requiredIdentities": 313,
+      "actualAssertions": 480,
+      "proof": "Pinned producer validates private stage reports before safe aggregate"
+    },
+    "pg16": {
+      "stages": 1,
+      "requiredIdentities": 30,
+      "actualVersionNum": 160015
+    },
+    "photos": "Credential-free mock PIN UI only; all3 independently viewed;2maskedfields/29pxmobileverticalscroll declared",
+    "legacy087": "manualDeferredA18",
+    "fullBackend": "PENDING",
+    "deployment": "NOT_RUN"
+  },
+  "reviewers": [
+    {
+      "name": "/root/audit_technical_review",
+      "scope": "Actual CI/source/native cleanup/3photos",
+      "verdict": "APPROVE"
+    },
+    {
+      "name": "/root/audit_process_review",
+      "scope": "Actual log/API/artifact provenance/privacy/3photos",
+      "verdict": "APPROVE"
+    }
+  ]
+}

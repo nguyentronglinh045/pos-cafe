@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "permission-t04-image-diagnostic-mapping-v1",
+  "sourceSHA": "4e78a8c11d2d895ccebaccd2b2f7d3b2c69bcb3e",
+  "sourceFingerprint": "7086be12b292e0b17ef7e2eceef9beac7c5ef057a8d96cd978edcf5cb3c6d6c3",
+  "status": "SOURCE_MAPPING_ONLY_RUNTIME_PENDING",
+  "scope": "CANDIDATE_IMAGE_DIAGNOSTIC_ONLY",
+  "acceptance": {
+    "stages": 35,
+    "requiredIdentities": 760,
+    "supplementalObligations": 12,
+    "decision": "A18/D19",
+    "notAcceptedYet": true,
+    "legacyIdem087": "NOT_RUN/manualDeferred; excluded as new merge gate by DEC-MERGE-A18 proposal:168/traceability:115",
+    "production": "HELD",
+    "contexts": 34
+  },
+  "wholeAcceptanceMapping": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/supplemental-source-mapping07.json",
+    "bytes": 443165,
+    "sha256": "014d67ed7264249bb2d5d40058959c6cd59b1830ece8e64dfeadb9ff373320a6",
+    "sourceSHA": "34db1b13ab707bab114fe1d83642d021ff324c93",
+    "status": "HISTORICAL_NOT_REBOUND_OR_PROMOTED"
+  },
+  "fixedStage": {
+    "stage": "candidate-e2e",
+    "runtimeProfile": "SUPABASE_T04",
+    "permissionProfile": "candidate",
+    "owner": "R",
+    "runner": "playwright",
+    "files": [
+      "tests/supabase/permissionCandidate.spec.ts"
+    ],
+    "required": [
+      {
+        "file": "tests/supabase/permissionCandidate.spec.ts",
+        "name": "owner clears demo data through UI and refetch preserves custom records",
+        "project": "permission-candidate-isolated"
+      },
+      {
+        "file": "tests/supabase/permissionCandidate.spec.ts",
+        "name": "four active roles have protected navigation parity with server authorization",
+        "project": "permission-candidate-isolated"
+      }
+    ],
+    "config": {
+      "path": "playwright.permission-candidate.config.ts",
+      "bytes": 1032,
+      "sha256": "3e6721450d4384c65b5f96e8c865d939d3cedf7cc6cd792223e7c59f307459d7"
+    },
+    "configSHA": "3e6721450d4384c65b5f96e8c865d939d3cedf7cc6cd792223e7c59f307459d7",
+    "exactDiscovery": false,
+    "executionKind": "service",
+    "rollbackVariant": null,
+    "timeoutMs": 600000,
+    "wrapper": null
+  },
+  "fullFileNames": [
+    "candidate activation supports owner roster, floor, payment and first receipt preview",
+    "owner permission change reaches a live cashier context within five seconds",
+    "owner creates waiter and real UI hides protected administration and reporting",
+    "owner persists menu, floor and store settings changes through real candidate RPCs",
+    "four active roles have protected navigation parity with server authorization",
+    "owner clears demo data through UI and refetch preserves custom records"
+  ],
+  "commandRecipe": "Existing runtimeStageCommand(candidate-e2e) with owned Linux source/output roots; no test-name selection",
+  "lifecycle": "Same bootstrap/checkpoint/preflight; full Candidate file then image/observe/restore/original physical+storage verification/close",
+  "anchors": [
+    {
+      "path": "scripts/permission-runtime-t04.mjs",
+      "line": 64,
+      "needle": "export const runT04ImageDiagnostic=",
+      "sha256": "206276396c5d188245c74ae19a1b1a993ed9229ce284e0101890be5bcce8bbf6"
+    },
+    {
+      "path": "scripts/permission-runtime-t04.mjs",
+      "line": 122,
+      "needle": "export const renderT04ImageDiagnostic=",
+      "sha256": "206276396c5d188245c74ae19a1b1a993ed9229ce284e0101890be5bcce8bbf6"
+    },
+    {
+      "path": "scripts/permission-t04-image-measurement.mjs",
+      "line": 127,
+      "needle": "export async function runT04ImageMeasurement(",
+      "sha256": "e1cee16387ed6eeadccaa0cdda54507fa395e549d838782eff12ffdf87c9c3a8"
+    },
+    {
+      "path": "scripts/permission-runtime-t04-fixture.mjs",
+      "line": 116,
+      "needle": "export async function createT04FixtureBoundary(",
+      "sha256": "2840a9daf59ad79bfe4d2fd592533b7ffa9a5536b17790c42ab4b9fb15e4d589"
+    }
+  ],
+  "noAggregationAcrossBackends": true,
+  "wholeT04": "NOT_RUN",
+  "full35BusinessRuntime": "NOT_RUN",
+  "sourceCatalogSHA": "8ac506e4e9cf19b844cd0f12dfde32278deccca20bfba7cdfc95e43ce3b4e0f7"
+}

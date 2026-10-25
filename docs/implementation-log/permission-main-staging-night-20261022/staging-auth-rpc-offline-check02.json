@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "permission-staging-auth-rpc-offline-check-v1",
+  "author": "/root/mcp_staging_evidence_review",
+  "source": "ad265321144521c0669500fea9be0f96ebacb769",
+  "consumerSha256": "91573dcad6d5ec66bbcda52438300022dd6cdbe25938bb062b104699e30695ba",
+  "observerSha256": "d79cd0cd1d4176c6a864d2221bfabb1c55df4607d4b1133c4c8d0a04112d3e8f",
+  "nodeVersion": "24.16.0",
+  "syntaxExitCode": 0,
+  "pureAssertions": {
+    "execution": "Inline ES module piped to existing Node24 --input-type=module; imported named pure functions, never run().",
+    "stdout": "PURE_CHECKS_43_PASS_NO_NETWORK_NO_FIXTURES",
+    "exitCode": 0,
+    "count": 43,
+    "retainedChecks": 25,
+    "newChecks": 18,
+    "newCoverage": [
+      "Exact roster accepts unordered owner/cashier; rejects duplicate owner, missing cashier, wrong cashier name and foreign ID.",
+      "Exact employee set accepts unordered valid projections; rejects duplicate cashier, missing owner, wrong owner name and wrong owner revision.",
+      "Exact audit accepts distinct create/denied IDs; rejects duplicate create, missing denied, unrelated request ID and wrong denied reason.",
+      "New PIN remaps123456 to654321, preserves another valid six-digit PIN and rejects malformed PIN."
+    ],
+    "networkRequests": 0,
+    "filesystemFixturesCreated": 0,
+    "realPrivateClientRead": false,
+    "hostedConsumerRun": false
+  },
+  "limits": [
+    "No hosted API, Auth/RPC/SQL, PostgreSQL execution, Dashboard mutation or dependency installation.",
+    "Author checks do not replace two independent approvals of the final candidate.",
+    "Consumer still has53 HTTP slots and24 mutating slots; time/window/observer/credential guards unchanged."
+  ]
+}

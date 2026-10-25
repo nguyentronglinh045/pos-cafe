@@ -1,0 +1,24 @@
+Browser tab: 8, Title: "POS Cafe", URL: "http://localhost:5173/".
+0 AXWebArea POS Cafe, URL: localhost:5173/
+	1 container root
+		2 container
+			3 button (disabled) Quay lại
+				4 image
+				5 text Quay lại
+			6 text P POS Cafe
+			7 image
+			8 heading Tạo quán thành công!, Value: 2
+				9 text Tạo quán thành công!
+			10 text Lưu lại thông tin bên dưới trước khi tiếp tục. STORE KEY [STORE_KEY_REDACTED]
+			11 button Copy
+				12 image
+				13 text Copy
+			14 text PIN TẠM THỜI 123456
+			15 button Copy
+				16 image
+				17 text Copy
+			18 image
+			19 text PIN tạm thời: 123456. Bạn phải đổi PIN trước khi sử dụng quán.
+			20 button Tôi đã lưu Store Key.
+
+The focused UI element is 0 AXWebArea POS Cafe, URL: localhost:5173/

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "permission-staging-setup-input-v1",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "sourceFingerprint": "b966736214d772b33ebcc37bf6d5ad8e8df79c861d09d877dc6db13ffd6758dd",
+  "policy": {
+    "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\phase-policy01.json",
+    "sha256": "da8f14f4ebdfe6c55a45be1577dca40b52bc3eb6f8021f556cf79a9f39c577a0"
+  },
+  "observation": {
+    "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\postgres-observation01.json",
+    "sha256": "3ff90ea220d35841d478f9e407fbd803a133051c74e77b16606874612e44d6a0"
+  },
+  "allowlist": {
+    "path": "D:\\Workspace\\pos-cafe-docs\\docs\\implementation-log\\permission-staging-setup-20261022\\provider-allowlist01.json",
+    "sha256": "d997fe5e4c9522e1a7df4815211c994f3deb8735a0db7c82f04f5a79813d460e"
+  },
+  "nonce": "c439a96e8e0a4088865f74185b9a121d"
+}

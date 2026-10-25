@@ -1,0 +1,7 @@
+{
+  "at": "2026-10-23T13:03:41.770Z",
+  "questionItemId": "[\"request_user_input_async\",\"call_8915dbe231684992bbf635b6092326ea\",0]",
+  "question": "Cho triển khai hai Edge Functions đã chuẩn bị trên project ineckiashpwloncxnbqx rồi kiểm luồng ảnh bằng món TEST hiện có? Gateway giữ JWT, public chỉ đọc ảnh published; không đổi SQL/ACL/Auth.",
+  "answer": "Cho triển khai và kiểm thử",
+  "payloadSHA256": "63fd1b75056e9db7b3ad452ab484a6af5fb8a7c4d8806ae7d69c8064acb69c8a"
+}

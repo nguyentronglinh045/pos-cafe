@@ -1,0 +1,22 @@
+{
+  "recordedUtc": "2026-10-24T08:00:33.039Z",
+  "reviewer": "/root/main_integration",
+  "verdict": "APPROVE_BLOCKED_OUTCOME",
+  "scope": "Exact8 authorized control directories cleanup blocked before execution; not deletion success",
+  "verified": {
+    "directoriesRemaining": 8,
+    "filesRehashed": 130,
+    "logicalBytesRemaining": 562190,
+    "excludedDirectoriesStillPresent": 41,
+    "sourceSHA": "c4166715574dbf16a151d9ed7c272a3a43035231",
+    "sourceClean": true
+  },
+  "approvedSHA256": {
+    "t04-image-segment-cleanup-blocked01.json": "d5881ee222cff6f425d829f8f100780c10f0647d9f8050900b65bef10029028b",
+    "t04-image-segment-unremoved-paths01.txt": "a574a3afc200103f95a9d8432769b6e47b3753cdc257c842d70fb38187c20e06",
+    "permission-t04-oracle-hardening-2026-10-24.md": "c0ad36b9093ff795502d1ee28dadf6a2d63749372e72b2f9d7b118c4a7b565df"
+  },
+  "deleted": 0,
+  "reason": "Automatic approval review rejected Remove-Item before execution: blocked by policy",
+  "noRetryOrWorkaround": true
+}

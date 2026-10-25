@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "permission-independent-data-review-v1",
+  "recordedAtUtc": "2026-10-22T16:11:02.401Z",
+  "authors": [
+    "/root",
+    "/root/budget_time_guard_fix"
+  ],
+  "candidate": {
+    "policy": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase03.json",
+      "sha256": "b675263611371f69c4b0f7529b2754ab85eeed1815a4b945c861a49585dc2142"
+    },
+    "grant": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/owner-operator-idb-ci-grant03.json",
+      "sha256": "9d9278f0d11660e2a7865e5766185f3810797ff8e10c765eec56ff3d019dc3f6"
+    }
+  },
+  "reviewers": [
+    {
+      "name": "/root/final_security_join_review",
+      "scope": "source/authorization/policy chronology",
+      "verdict": "APPROVE",
+      "evidence": "Actual final reviewer message: rehash grant9d9278f0... and policyb6752636..., owner answer/start/deadline/scope/storage/four parent CLOSED pins/chronology correct; exactly1publication1CI0heavy with no postGateCi field; unused5heavy+2postgate deferred only; all22refs valid; no execution."
+    },
+    {
+      "name": "/root/mcp_staging_evidence_review",
+      "scope": "operations/budget custody",
+      "verdict": "APPROVE",
+      "evidence": "Actual reviewer message: exact grant03/policy03 hashes reviewed, four parent CLOSED pins and full predecessor chronology valid; counters0new/all historical6pub6CI5heavy10review preserved; no executable heavy/postgate grant; no source PASS inheritance; no execution."
+    }
+  ],
+  "scope": "DATA ONLY review before policy03 init. Actual init and negative controls recorded separately; approval is not runtime PASS."
+}

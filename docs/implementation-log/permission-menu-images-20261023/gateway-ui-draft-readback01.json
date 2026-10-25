@@ -1,0 +1,26 @@
+{
+  "projectRef": "ineckiashpwloncxnbqx",
+  "scope": "UI editor clipboard readback of prepared draft; not deployed source or runtime dependency proof",
+  "files": [
+    {
+      "name": "index.ts",
+      "normalizedSHA256": "cc31f1290b05668b4a60c321fa0c23bf447997df2fc449282a565e7206d56f8a",
+      "exactAfterEOLNormalization": true
+    },
+    {
+      "name": "menuImageHttp.ts",
+      "normalizedSHA256": "5100252654975ccfefdba774c0a6cd489981375c23cc2ae805a66f2229f0911f",
+      "exactAfterEOLNormalization": true
+    },
+    {
+      "name": "deno.json",
+      "normalizedSHA256": "eca3984001a907fb17773aa60e4ce77efb2033c255e3f5462963f3b87b894113",
+      "exactAfterEOLNormalization": true
+    },
+    {
+      "name": "deno.lock",
+      "normalizedSHA256": "6f9fc5dd3b6e81d9468c712bfbf3fc423e6ea28d49e8fe44915abca50740ab41",
+      "exactAfterEOLNormalization": true
+    }
+  ]
+}

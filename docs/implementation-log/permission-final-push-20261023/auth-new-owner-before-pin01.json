@@ -1,0 +1,26 @@
+{
+  "capturedUtc": "2026-10-23T14:27:21.237Z",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "storeId": "6b2e76fd-b8f8-4fa9-b784-faee8eb4af36",
+  "ownerId": "0feee792-8784-54d0-bc2f-ef944e95b2a4",
+  "authPasswordSignin": true,
+  "storeSession": {
+    "storeId": "6b2e76fd-b8f8-4fa9-b784-faee8eb4af36",
+    "storeNo": 3
+  },
+  "rosterCount": 1,
+  "restricted": {
+    "kind": "required_pin_change",
+    "employeeRevision": 0,
+    "ttlMs": 300000,
+    "containsAuthority": false
+  },
+  "restrictedAuthorityError": "PIN_CHANGE_REQUIRED",
+  "oracleSource": "permission-identity.sql:176 current employee pin_change_required -> PIN_CHANGE_REQUIRED; after revoke -> EMPLOYEE_SESSION_REQUIRED",
+  "newPinStoredPrivately": true,
+  "harnessDiagnostics": [
+    "RPChelper omitted contractmarker:426; corrected to match client.ts before any PIN mutation.",
+    "Correction cell referenced redeclared binding before assignment:0remote calls.",
+    "Before-change authority expected code was wrong; actual PIN_CHANGE_REQUIRED matches SQL:176. No remote retry or mutation to change outcome."
+  ]
+}

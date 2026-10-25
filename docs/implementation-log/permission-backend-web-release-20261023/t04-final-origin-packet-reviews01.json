@@ -1,0 +1,32 @@
+{
+  "recordedUtc": "2026-10-24T09:16:51.438Z",
+  "sourceSHA": "4e78a8c11d2d895ccebaccd2b2f7d3b2c69bcb3e",
+  "packet": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-final-origin-packet01.json",
+    "bytes": 331998,
+    "sha256": "373268905437d3cbf0cea04656deeb51982a98a34ab70475bb85f33bf0fa578f"
+  },
+  "mapping": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/t04-final-origin-mapping01.json",
+    "bytes": 4109,
+    "sha256": "159b389c1394c8a76b9392cb2ab4648bf1eacc85f3733cf388c2c0f995e5ff58"
+  },
+  "sourceFingerprint": "7086be12b292e0b17ef7e2eceef9beac7c5ef057a8d96cd978edcf5cb3c6d6c3",
+  "reviews": [
+    {
+      "reviewer": "/root/main_integration",
+      "verdict": "APPROVE",
+      "scope": "Exact1124Gitblobs/12delta/64pins/manifest/packet/mapping/anchors/provenance/budget/scope",
+      "blockingFindings": 0
+    },
+    {
+      "reviewer": "/root/final_diagnostic_review",
+      "verdict": "APPROVE",
+      "scope": "Exact1124Gitblobs/12delta/64pins/manifest/packet/mapping/anchors/provenance/budget/scope",
+      "blockingFindings": 0
+    }
+  ],
+  "freshCiAndActualReviewStillRequired": true,
+  "wholeT04": "NOT_RUN",
+  "mergeDeploy": "NOT_AUTHORIZED"
+}

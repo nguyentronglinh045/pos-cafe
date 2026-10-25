@@ -1,0 +1,45 @@
+✔ complete inventory retains 35 stages, 760 identities, original counting meanings and all source hashes (12.8498ms)
+✔ full source binding includes SQL, fixtures, app and lock, and detects a memory-only SQL change (371.0002ms)
+✔ valid target proves Auth reachability and typed REST routing with no data or mutation proof (1116.2672ms)
+✔ REST 401 with expected-looking JSON is refused; an HTTP error alone is never routing proof (874.4294ms)
+✔ REST generic404 is refused; an HTTP error alone is never routing proof (1038.6404ms)
+✔ REST wrong PostgREST code is refused; an HTTP error alone is never routing proof (1048.8414ms)
+✔ REST HTML404 is refused; an HTTP error alone is never routing proof (1022.4034ms)
+✔ REST malformed JSON is refused; an HTTP error alone is never routing proof (1039.1367ms)
+✔ REST oversized body is refused; an HTTP error alone is never routing proof (995.2185ms)
+✔ REST unexpected success/resource collision is refused; an HTTP error alone is never routing proof (1002.7716ms)
+✔ REST body read is covered by request timeout and is not retried (2028.1651ms)
+✔ chunked JSON at exactly4096bytes is accepted without preserving body fields (1183.9903ms)
+✔ additional grant is bound to the consumed prior claim, fixed target and a single new slot (8.9361ms)
+✔ invalid production ref is rejected with zero network calls (192.4292ms)
+✔ invalid production origin is rejected with zero network calls (196.8136ms)
+✔ invalid origin variant 0 is rejected with zero network calls (179.64ms)
+✔ invalid origin variant 1 is rejected with zero network calls (185.0507ms)
+✔ invalid origin variant 2 is rejected with zero network calls (178.0893ms)
+✔ invalid origin variant 3 is rejected with zero network calls (196.7664ms)
+✔ invalid origin variant 4 is rejected with zero network calls (185.4613ms)
+✔ invalid origin variant 5 is rejected with zero network calls (191.8925ms)
+✔ invalid origin variant 6 is rejected with zero network calls (183.9868ms)
+✔ invalid hostname suffix is rejected with zero network calls (220.7794ms)
+✔ invalid unknown operation is rejected with zero network calls (190.2354ms)
+✔ invalid unexpected field is rejected with zero network calls (182.6834ms)
+✔ manifest hash binding and coverage changes cannot silently select a new inventory (561.0611ms)
+✔ private configuration never falls back to ambient values or accepts service credentials (3041.7007ms)
+✔ deadline boundaries fail closed and a slow first GET cannot start a second (1721.7556ms)
+✔ HTTP 301 stops after one request without leaking body (603.3393ms)
+✔ HTTP 302 stops after one request without leaking body (567.3288ms)
+✔ HTTP 401 stops after one request without leaking body (609.1264ms)
+✔ HTTP 403 stops after one request without leaking body (587.086ms)
+✔ HTTP 500 stops after one request without leaking body (576.4725ms)
+✔ network exception and real timeout keep finite errors and do not retry (1203.6077ms)
+✔ disabled TLS validation is refused before any network request (3.2451ms)
+✔ actual HTTP cannot use an injected attempt store and synthetic HTTP must declare its store (5.8429ms)
+✔ CLI reserves parseable evidence before network, refuses repeat path and invalid output without network (2561.0199ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 26419.879

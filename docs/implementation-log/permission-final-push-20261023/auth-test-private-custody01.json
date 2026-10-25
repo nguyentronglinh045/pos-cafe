@@ -1,0 +1,22 @@
+{
+  "path": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\private\\functional-demo-20261023\\functional-demo-auth-C.json",
+  "length": 395,
+  "parentProtected": true,
+  "accessRules": [
+    {
+      "identity": "NT AUTHORITY\\SYSTEM",
+      "rights": "FullControl",
+      "inherited": true
+    },
+    {
+      "identity": "BUILTIN\\Administrators",
+      "rights": "FullControl",
+      "inherited": true
+    },
+    {
+      "identity": "Admin\\nguye",
+      "rights": "FullControl",
+      "inherited": true
+    }
+  ]
+}

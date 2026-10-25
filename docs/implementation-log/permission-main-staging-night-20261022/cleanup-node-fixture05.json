@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "permission-node-fixture-cleanup-v1",
+  "recordedAtUtc": "2026-10-22T15:50:15.5913376Z",
+  "authorizationReference": "request_user_input_async call_0a899e78075b42f4a7ca84a7d0073d9d item0",
+  "answer": "Cho phép dọn nhóm fixture này đến 00:00",
+  "approvedAbsolutePath": "D:\\Workspace\\pos-cafe-permission-timeonly-20261022\\temp\\night-node05",
+  "files": 45,
+  "logicalBytes": 40919.0,
+  "linksRemovedWithoutRecursion": 2,
+  "fixtureRemoved": true,
+  "freeBytesBefore": 98529148928,
+  "freeBytesAfter": 98529296384,
+  "observedHostFreeDeltaBytes": 147456,
+  "measurementLimit": "Logical fixture bytes are distinct from measured host free-space change; other processes may affect host delta.",
+  "reportsPreserved": [
+    "night-node05.tap",
+    "night-node05-stderr.log",
+    "night-node05.json"
+  ]
+}

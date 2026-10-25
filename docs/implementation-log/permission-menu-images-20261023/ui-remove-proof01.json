@@ -1,0 +1,57 @@
+{
+  "at": "2026-10-23T13:17:30.612Z",
+  "projectRef": "ineckiashpwloncxnbqx",
+  "producer": "Actual owner menu UI Remove image + Save menu; owner RPC/anonymous GET readback",
+  "itemId": "442499a3-0950-4b6f-a2f4-3ad664897141",
+  "removedAsset": "924eb3e9-b3a3-4a79-bb0c-0a051fc25549",
+  "binding": {
+    "id": "442499a3-0950-4b6f-a2f4-3ad664897141",
+    "name": "TEST - Cà phê",
+    "price": 32000,
+    "sortOrder": 1,
+    "categoryId": "d9b66fad-4a53-480c-a5cf-0ea153b39379",
+    "isAvailable": true,
+    "imageAssetKey": null
+  },
+  "publicRead": {
+    "index": 20,
+    "at": "2026-10-23T13:17:29.252Z",
+    "kind": "EDGE",
+    "label": "second-image-after-ui-remove",
+    "path": "menu-image-public/924eb3e9-b3a3-4a79-bb0c-0a051fc25549",
+    "method": "GET",
+    "status": 404,
+    "code": "NOT_FOUND",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 41,
+    "sha256": "5d710628a54c13f4620c98551d16ec56c097dda9629f48fc632fe3804b59257a"
+  },
+  "conditional": {
+    "index": 21,
+    "at": "2026-10-23T13:17:30.611Z",
+    "kind": "EDGE",
+    "label": "second-image-conditional-after-remove",
+    "path": "menu-image-public/924eb3e9-b3a3-4a79-bb0c-0a051fc25549",
+    "method": "GET",
+    "status": 404,
+    "code": "NOT_FOUND",
+    "headers": {
+      "access-control-allow-headers": "authorization,apikey,x-client-info,content-type,x-pos-employee-token,if-none-match",
+      "access-control-allow-methods": "GET,POST,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store",
+      "content-type": "application/json",
+      "x-content-type-options": "nosniff"
+    },
+    "bytes": 41,
+    "sha256": "5d710628a54c13f4620c98551d16ec56c097dda9629f48fc632fe3804b59257a"
+  },
+  "note": "Removed item binding and publication; private Storage bytes retained by existing design, not claimed physically deleted"
+}

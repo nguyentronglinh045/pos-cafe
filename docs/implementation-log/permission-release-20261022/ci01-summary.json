@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "pos-cafe-light-ci-v1",
+  "verificationScope": "LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY",
+  "repository": "nguyentronglinh045/pos-cafe",
+  "repositoryID": 1263057386,
+  "event": "push",
+  "sourceSHA": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+  "prHeadSHA": null,
+  "workflowSHA": "38a55aab775e1d70dba4b62d6658f41e28f8aef1",
+  "runId": "39709124524",
+  "attempt": 1,
+  "sourceFingerprint": "cbe37007075731312b1d21b318cc4a949d52bc2b63969d100e6ec944c223a8f5",
+  "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+  "overallStatus": "FAIL",
+  "runURL": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39709124524/attempts/1",
+  "phases": [
+    {
+      "id": "install",
+      "status": "PASS",
+      "elapsedMs": 5453,
+      "exitCode": 0,
+      "invocationSHA": "12fc5efc9b44af7827700b3ebfba6207bf908f18f8233512b24aeb4254e844fd",
+      "reportSHA": "9ae458c93c94801ed76fc8ad5a63bed3f4fddcc303cfb94fe1ca26bd191dbb80",
+      "counts": null,
+      "diagnostic": null
+    },
+    {
+      "id": "build",
+      "status": "PASS",
+      "elapsedMs": 8600,
+      "exitCode": 0,
+      "invocationSHA": "851a12580c2a5976942cfeece28005981010585b021396c7c9ee1994f4f01025",
+      "reportSHA": "70afbfcfacd3658537a09b24c92fbb15e9450a748c37c307148e5e6451b753f3",
+      "counts": null,
+      "diagnostic": null
+    },
+    {
+      "id": "unit",
+      "status": "PASS",
+      "elapsedMs": 98902,
+      "exitCode": 0,
+      "invocationSHA": "f305756bd3a9295b124bcacdfbcefb87de73fa8a3532c32cf5bcfa42a033e44d",
+      "reportSHA": "276ab33738cb549d0618ccab00b389ff7c770831053cb3ad1e8ac72748bccc31",
+      "counts": {
+        "discovered": 1175,
+        "run": 1175,
+        "pass": 1175,
+        "fail": 0,
+        "skip": 0,
+        "manualDeferred": 0
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "tooling",
+      "status": "PASS",
+      "elapsedMs": 25439,
+      "exitCode": 0,
+      "invocationSHA": "3d914fe295e3f26ed4e7c28e357f311935c6fcf982072e74696a1bf8762cfbb9",
+      "reportSHA": "8bf4c4e556f3e016a63e28650cd831c63ef11d6cf3bf181bf73b2ad9fb7f5833",
+      "counts": {
+        "discovered": 568,
+        "run": 567,
+        "pass": 567,
+        "fail": 0,
+        "skip": 1,
+        "manualDeferred": 1
+      },
+      "diagnostic": null
+    },
+    {
+      "id": "node-tools",
+      "status": "FAIL",
+      "elapsedMs": 13606,
+      "exitCode": 1,
+      "invocationSHA": "7c8d4e746f814821105ce5a87d9ac22068caa2913f1ac7333b79883575d53169",
+      "reportSHA": "2ca6ad0a8feece8d8b79931dc48c09342e4f36e5857b7090267e134947e29617",
+      "counts": null,
+      "diagnostic": {
+        "codes": [
+          "COMMAND_FAILED",
+          "REPORT_MISSING",
+          "TEST_TIMEOUT",
+          "ASSERTION_ERROR",
+          "TYPE_ERROR",
+          "PROTOCOL_ERROR",
+          "RESULT_INVALID"
+        ],
+        "metrics": {
+          "kernelCorePipe": 0,
+          "memoryCurrentBytes": 680083456,
+          "pidsCurrent": 7,
+          "peakMemoryBytes": 1408053248,
+          "peakPids": 49,
+          "oomEvents": 0,
+          "oomKills": 0,
+          "pidsLimitEvents": 0,
+          "minimumObservedFreeBytes": 90349940736,
+          "initialFreeBytes": 90759270400,
+          "freeSpaceDecreaseBytes": 409329664,
+          "ownedBytesAtCheckpoint": 496705536,
+          "coreFileCount": 1,
+          "coreAllocatedBytes": 4096,
+          "largestOwnedFileBytes": 33275904
+        },
+        "failedFiles": []
+      }
+    }
+  ],
+  "sourceProfile": "PERMISSION_APP_LIGHT",
+  "deferredFeatureGates": [
+    "PERMISSION_FULL"
+  ],
+  "hp1Execution": "RETIRED",
+  "sourcePreserved": true,
+  "peakOwnedBytes": 496705536,
+  "operatingCapBytes": 5368709120,
+  "minimumFreeBytes": 32212254720
+}

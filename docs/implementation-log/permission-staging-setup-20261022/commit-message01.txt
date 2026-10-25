@@ -1,0 +1,5 @@
+docs: lưu bằng chứng setup phân quyền staging
+
+Lưu SQL đã review, claim một lượt và marker staging của b2e3122.
+Giữ nguyên full gate; profile MCP lưu đã trả về chỉ đọc.
+Watcher có lỗi được đánh dấu không tái sử dụng.

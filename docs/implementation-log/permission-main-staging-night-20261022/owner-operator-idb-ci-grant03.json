@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "permission-owner-operator-idb-ci-grant-v1",
+  "reference": "request_user_input_async call_e03b26399e64430c9724dcd0f32a59f4 item0",
+  "authorizationSource": "request_user_input_async call_e03b26399e64430c9724dcd0f32a59f4 item0",
+  "answer": "Thêm 1 push candidate + 1 CI; không backend tối nay (khuyến nghị)",
+  "recordedAtUtc": "2026-10-22T16:00:53.786Z",
+  "timestampMeaning": "Actual receipt recording time after the predecessor CLOSED event; not the user click time.",
+  "authorizedDeadlineUtc": "2026-10-22T17:00:00Z",
+  "phaseId": "permission-operator-idb-ci-20261022",
+  "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+  "phaseActionLimits": {
+    "candidatePublication": 1,
+    "candidateCi": 1,
+    "heavyProfiles": 0,
+    "reviewRounds": null
+  },
+  "authorizationScope": "Exactly one candidate publication and its one CI only. No backend dispatch tonight. No PR/main CI or merge action is admitted by this phase.",
+  "decisionPlan": {
+    "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/permission-operator-indexeddb-oracle-remediation-2026-10-22.md",
+    "sha256": "5801a583c63a34d74a943f9355bb70a178b589d5ed14cf8e228c5b4da6b09c4a",
+    "selectedOption": "Thêm 1 push candidate + 1 CI; không backend tối nay (khuyến nghị)"
+  },
+  "predecessor": {
+    "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase02.json",
+    "policySHA256": "3b7dc2bf87b49ac1a61b5aed33484493f223401ef894cae11612f33e154a9419",
+    "anchorSHA256": "06ec6a96afacf9963df52b8608b77318df1a7cdcb496d990c06fe444316a5e6f",
+    "journalSHA256": "4b95a1896278dd22f484e9689f4ea7558d3ab3e52f5c9d4c04f8bc41103972d8",
+    "headSHA256": "946134c96ae92bb0d28de463c1bf5180687ac8bff5342e56e3f65b76be4e38ae"
+  },
+  "predecessorClosedAtUtc": "2026-10-22T15:32:34.658Z",
+  "predecessorPhaseCounts": {
+    "publication": 0,
+    "ci": 0,
+    "heavy": 2,
+    "reviewRounds": 0
+  },
+  "predecessorTotalCounts": {
+    "publication": 6,
+    "ci": 6,
+    "heavy": 5,
+    "reviewRounds": 10
+  },
+  "preservedHistory": {
+    "originalStartedAtUtc": "2026-10-21T08:18:14+00:00",
+    "deadlineUtc": "2026-10-22T17:00:00Z",
+    "blockedSources": [
+      "ad265321144521c0669500fea9be0f96ebacb769"
+    ],
+    "countsAndUsage": "Inherited from the pinned immutable predecessor chain; no reset, refund, replay or erased spend."
+  },
+  "deferredHistoricalAllowances": {
+    "status": "DEFERRED_NOT_EXECUTABLE",
+    "unusedBackendProfiles": 5,
+    "unusedPostGateCi": {
+      "pull_request": 1,
+      "main_push": 1
+    },
+    "predecessorPolicy": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase02.json",
+      "policySHA256": "3b7dc2bf87b49ac1a61b5aed33484493f223401ef894cae11612f33e154a9419",
+      "anchorSHA256": "06ec6a96afacf9963df52b8608b77318df1a7cdcb496d990c06fe444316a5e6f",
+      "journalSHA256": "4b95a1896278dd22f484e9689f4ea7558d3ab3e52f5c9d4c04f8bc41103972d8",
+      "headSHA256": "946134c96ae92bb0d28de463c1bf5180687ac8bff5342e56e3f65b76be4e38ae"
+    },
+    "ancestorPredecessor": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/budget-phase01.json",
+      "policySHA256": "86a7ed053fbebcfad314ef985834fb4d70017d61548b15f2d4ad61d7f3390dcc",
+      "anchorSHA256": "d180416dc0e73d64e066cce12663d7fe486ad6367c9ac8f2d66c893502d3e20b",
+      "journalSHA256": "909c6c19fb97a39daa42acc7d2db7017b41a5b527c5c5f3efcfa6a9218ff8de7",
+      "headSHA256": "cef69eef678f151b9d45bb177856bf51fc7137400ecb87ecedc6db206b93a962"
+    },
+    "priorHeavyGrant": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/owner-extra-heavy-grant02.json",
+      "sha256": "ac0645babb7e917e3317324b9f7e81ee4a0a18ac6e571ca56c2904b7f8f538b6"
+    },
+    "priorPostGateGrant": {
+      "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-main-staging-night-20261022/owner-pr-main-preserved-grant02.json",
+      "sha256": "f989f1d9b950809e5cc19208fdb0f3637ea9293d02c687aabeaf37bbb3628648"
+    },
+    "meaning": "The five unused backend slots and two unused PR/main CI slots remain documented historical allowances only. This child has heavy=0 and no postGateCi grant. A future explicit owner decision and valid transition are required before any such action; no old grant is replayed."
+  },
+  "localPreparation": {
+    "node": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/night-node05.json",
+      "sha256": "8a2025b8dddace0d053f1efd735cbfcf8567e9948689e79111b59d5751a91ce9",
+      "sourceSHA": "4f8772667fc0607c77451e5b0c5ddbedfe7b63b5",
+      "tests": 938,
+      "pass": 938,
+      "fail": 0,
+      "skip": 0
+    },
+    "indexedDbProbe": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/evidence/operator-indexeddb-local-probe01.json",
+      "sha256": "cd3bb500d95923f0d134bbb3acb8e905083ad967ef8dc54223fa86b80b8dde67"
+    },
+    "runtimeStatus": "New source CI and all backend/full-gate obligations remain NOT_EXECUTED or PENDING; historical source evidence is not inherited as PASS."
+  },
+  "invariants": {
+    "reserveMs": 2520000,
+    "deadlineUnchanged": true,
+    "maxOneHeavy": true,
+    "fullGateRequiredStages": 35,
+    "fullGateRequiredCases": 760,
+    "semanticObligations": 12,
+    "noRetrySameSourceAfterFailure": true,
+    "noBackendTonight": true,
+    "noPostGateCiInChild": true,
+    "noHostedMutation": true,
+    "noOriginalDatabaseWrites": true,
+    "noMerge": true
+  },
+  "recordingScope": "DATA ONLY: writing this receipt and successor policy does not initialize a phase, reserve or dispatch any action. Two non-author reviews of the final actual files precede initialization."
+}
