@@ -78,4 +78,9 @@ Exit0 lúc `2026-10-25T10:22:47.4701109Z` (17:22 UTC+7); không force, không pr
 
 Hướng dẫn hiện hành vẫn ở nhánh docs. AGENTS và starter được cập nhật cách đọc bằng `git show docs:<path>` khi không có worktree; các con trỏ trên main không bị sửa. Kho16 snapshot không là nguồn hướng dẫn hiện hành. Biên bản được ghi bằng temporary Git index, không tạo lại checkout vừa xóa.
 
-Candidate kết quả và delta hướng dẫn chờ hai reviewer xác nhận trước push; approval kế hoạch không thay review postconditions. Không refactor, DB/deploy, xóa kho giữ hoặc nhánh preserve.
+Kết quả và delta hướng dẫn trên candidate `f850c6bbcf6de7990e9a7bb297ee7fe9bb8e3c96` đã có hai **APPROVE**, không còn finding chặn:
+
+- `review_preservation` tự kiểm target/gitdir/registry,14worktree/0docs,16snapshot/ref,raw receipt/size và fallback Git với AGENTS/CLAUDE/spec/workflow/starter; diff5files đúng phạm vi.
+- `review_knowledge` tự kiểm cùng postconditions,16hash/size,preserve ref,khả năng đọc hướng dẫn bằng Git và ranh giới quyền; diff-check đạt.
+
+Receipt sau candidate chỉ ghi verdict/status rồi push fast-forward lên docs. Không refactor, DB/deploy, xóa kho giữ hoặc nhánh preserve; không tạo lại checkout để lưu biên bản.
