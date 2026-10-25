@@ -1,5 +1,7 @@
 # Dọn worktree docs đã hết dùng — 25/10/2026
 
+> **Tiếp nối25/10:** [task đồng bộ docs](docs-worktree-sync-2026-10-25.md) đã xử lý WIP gốc sau mốc xóa worktree tạm này. Các câu39/920 còn nguyên/chưa dọn bên dưới là kết quả lịch sử tại thời điểm16:41; hiện trạng mới theo task tiếp nối.
+
 ## Yêu cầu và phạm vi
 
 Chủ dự án yêu cầu: “hiện tại trên local có worktree nào của docs mà không dùng không? xóa giúp tôi”. Lệnh này cho phép kiểm và xóa worktree docs đã hết dùng; không yêu cầu xóa nhánh, lịch sử Git, worktree code hoặc WIP còn cần giữ. Không hỏi lại quyền xóa đúng worktree sạch đã xác minh.

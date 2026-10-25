@@ -2,11 +2,13 @@
 
 ## Đang theo dõi
 
-- [Dọn worktree docs đã hết dùng — 25/10/2026](docs-worktree-cleanup-2026-10-25.md): đã xóa đúng một checkout sạch đã xuất bản; giữ docs gốc có WIP và các nhánh/lịch sử.
+- [Đồng bộ worktree docs — 25/10/2026](docs-worktree-sync-2026-10-25.md): đã đối chiếu959file, worktree sạch theo remote;16snapshot khác và43commit lịch sử giữ riêng. Allowlist dọn cũ không còn áp dụng.
 
-- [Xuất bản spec/evidence WIP — 25/10/2026](docs-wip-publication-2026-10-25.md): permission15/PIN/CI và lịch sử evidence theo nguồn; bản gốc giữ nguyên, danh sách dọn chờ duyệt.
+- [Dọn worktree docs đã hết dùng — 25/10/2026](docs-worktree-cleanup-2026-10-25.md): đã xóa đúng một checkout sạch đã xuất bản; giữ các nhánh/lịch sử; WIP gốc đã được xử lý ở task đồng bộ tiếp nối.
 
-- [Chuẩn hóa docs — 25/10/2026](docs-normalization-2026-10-25.md): đã chỉnh lý, kiểm và có hai APPROVE; giữ WIP/evidence, phần xuất bản WIP/backend còn riêng.
+- [Xuất bản spec/evidence WIP — 25/10/2026](docs-wip-publication-2026-10-25.md): permission15/PIN/CI và lịch sử evidence theo nguồn; bộ hồ sơ đã xuất bản; allowlist dọn được task đồng bộ tiếp nối đánh dấu superseded.
+
+- [Chuẩn hóa docs — 25/10/2026](docs-normalization-2026-10-25.md): đã chỉnh lý, kiểm và có hai APPROVE; evidence giữ nguyên; WIP đã xuất bản/đồng bộ ở task tiếp nối, backend vẫn riêng.
 - [Kế hoạch chuẩn hóa sau tích hợp](post-integration-standardization-plan-2026-10-25.md): NC-10 + phần docs của NC-02 đi trước; NC-04…08 chưa mở.
 - [Tích hợp UI B01–B03](ui-main-docs-integration-2026-10-25.md): đã merge bốn PR, source main711a22e; backend/deploy HOLD.
 

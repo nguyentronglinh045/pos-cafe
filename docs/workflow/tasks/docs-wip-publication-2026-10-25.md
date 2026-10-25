@@ -1,5 +1,7 @@
 # Hòa giải và xuất bản spec/evidence WIP — 25/10/2026
 
+> **Tiếp nối25/10:** [đồng bộ worktree docs](docs-worktree-sync-2026-10-25.md) đã xử lý39 modified/920 untracked, giữ16 snapshot khác và nhánh lịch sử. Allowlist877 phía dưới là lịch sử đã superseded; không dùng để xóa file tracked hiện hành.
+
 ## Phạm vi và trạng thái
 
 Chủ dự án giao: “tiếp tục xử lý phần spec/evidence WIP chưa xuất bản trong pos-cafe-docs, đối chiếu rồi đưa nội dung còn cần lên nhánh docs. phần nào nên bỏ thì liệt kê để tôi duyệt, chưa làm refactor.” Đây là task tài liệu, tiếp sau [chỉnh lý core](docs-normalization-2026-10-25.md). Xuất bản không cấp lại các quyền chạy/cleanup/deploy đã hết hạn trong hồ sơ lịch sử.

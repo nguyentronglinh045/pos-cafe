@@ -1,6 +1,6 @@
 {
-  "status": "AWAITING_OWNER_APPROVAL_DO_NOT_DELETE",
-  "scope": "Exact untracked originals already preserved in the reviewed publication; never whole directories/worktree.",
+  "status": "SUPERSEDED_BY_DOCS_WORKTREE_SYNC_20261025_DO_NOT_DELETE",
+  "scope": "HISTORICAL ONLY. These formerly untracked paths are now canonical tracked files after synchronization. Do not delete them using this superseded proposal.",
   "files": [
     {
       "path": "D:/Workspace/pos-cafe-docs/docs/implementation-log/permission-backend-web-release-20261023/candidate-image-clear-execution-20261024.md",
@@ -6141,5 +6141,8 @@
       "publishedPath": "openspec/changes/redesign-pos-ui/.openspec.yaml",
       "condition": "Only after remote docs publication and exact Git blob byte verification; source file must still match SHA256."
     }
-  ]
+  ],
+  "supersededBy": "docs/workflow/tasks/docs-worktree-sync-2026-10-25.md",
+  "resolution": "User authorized cleanup and sync on 2026-10-25. All877 originally untracked exact copies are now canonical tracked files after syncing to remote5cf681d. Preserve this historical list/hash; never execute it as a current deletion allowlist.",
+  "originalScope": "Exact untracked originals already preserved in the reviewed publication; never whole directories/worktree."
 }

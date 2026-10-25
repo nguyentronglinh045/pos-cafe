@@ -13,7 +13,7 @@
 ## Làm gì tiếp
 
 1. Chuẩn hóa tri thức, trạng thái, nguồn và đường đọc docs; bảo toàn WIP và evidence. [Handoff đang thực hiện](workflow/tasks/docs-normalization-2026-10-25.md).
-2. [Hồ sơ WIP đã hòa giải](workflow/tasks/docs-wip-publication-2026-10-25.md): kiểm/review/xuất bản, giữ bằng chứng và danh sách dọn chờ duyệt; không mở refactor hoặc backend acceptance.
+2. [Hồ sơ WIP đã hòa giải](workflow/tasks/docs-wip-publication-2026-10-25.md): đã kiểm/review/xuất bản; [worktree đã đồng bộ](workflow/tasks/docs-worktree-sync-2026-10-25.md),16 snapshot khác giữ riêng. Không mở refactor hoặc backend acceptance.
 3. Tiếp tục NC-02 bản đồ code và NC-03 chốt slice theo [kế hoạch chung](workflow/tasks/post-integration-standardization-plan-2026-10-25.md). Chỉ mở refactor NC-04…08 khi được giao và đủ gate liên quan.
 4. Backend acceptance, deployment, owner/email provisioning, đo tải và lịch báo cáo cần phạm vi/điều kiện riêng. Merge UI không đóng NC-01/NC-11 toàn hệ thống.
 
