@@ -4,6 +4,10 @@ Mã FR/NFR tổng quan được giữ để truy vết; cập nhật mô tả th
 
 > Cột **Bằng chứng chính** là traceability nội bộ cho AI/developer. Khi viết báo cáo, không sao chép tên code, file, symbol hoặc migration từ cột này; chỉ dùng chúng để kiểm chứng rồi diễn đạt lại yêu cầu và thiết kế ở mức hệ thống.
 
+## Cách nối yêu cầu với phần hiện hành
+
+[Danh mục tính năng](features.md#danh-mục-tra-cứu) là điểm tra cứu chính theo hành trình; bảng FR/NFR dưới đây giữ mã và purpose. [Spec reconciliation](spec-reconciliation.md) nối 16 baseline với delta được duyệt; [regression map](regression-map.md) nối 21 FR/8 NFR tiểu luận với thay đổi và test/evidence cần kiểm. [Bản đồ evidence](testing.md#bản-đồ-bằng-chứng) phân biệt code, test có trong source, kết quả thực chạy, nghiệm thu và phát hành. G01–G12 là góc nhìn mục tiêu ở features, không thay mã FR/NFR.
+
 ## Tác Nhân
 
 | Tác nhân | Vai trò hiện hành |
@@ -43,12 +47,12 @@ Mã FR/NFR tổng quan được giữ để truy vết; cập nhật mô tả th
 
 | Mã | Yêu cầu | Tiêu chí chấp nhận hiện tại | Trạng thái |
 | --- | --- | --- | --- |
-| NFR-01 | Nhất quán giao dịch order/payment | Transaction v1 nguyên tử, replay K/R1 không ghi lặp; stale update bị chặn bằng expectedVersion bắt buộc | Đã triển khai và có test |
+| NFR-01 | Nhất quán giao dịch order/payment | Transaction v1 nguyên tử, replay K/R1 không ghi lặp; stale update bị chặn bằng expectedVersion bắt buộc | Có implementation/test source; bằng chứng theo E-PH27/E-BACKEND, không nhận toàn main PASS |
 | NFR-02 | Cô lập dữ liệu giữa cửa hàng | Tenant theo store; runtime đọc/ghi qua permission RPC/projection, phải kiểm deny trực tiếp | Có source; backend acceptance mới còn HOLD |
-| NFR-03 | Dễ kiểm thử và thay adapter | UI/features phụ thuộc ports; Supabase/mock cùng implement contract | Đã triển khai và có boundary test |
-| NFR-04 | Hỗ trợ màn hình vận hành ngang | Desktop, tablet/phone landscape dùng được; portrait hiển thị hướng dẫn xoay | Đã kiểm tra bằng Playwright đa viewport |
+| NFR-03 | Dễ kiểm thử và thay adapter | UI/features phụ thuộc ports; Supabase/mock cùng implement contract | Có boundary guard; E-UI giữ phạm vi unit theo source |
+| NFR-04 | Hỗ trợ màn hình vận hành ngang | Desktop, tablet/phone landscape dùng được; portrait hiển thị hướng dẫn xoay | E-UI có kiểm viewport/mock; chưa thay thiết bị thật |
 | NFR-05 | Khả năng khôi phục đồng bộ online | Realtime signal kết hợp refetch/polling danh mục đang active | Đã triển khai; không phải SLA cứng |
-| NFR-06 | Build kiểm tra kiểu nghiêm ngặt | `tsc -b` với TypeScript strict và Vite production build phải pass | Đạt tại baseline |
+| NFR-06 | Build kiểm tra kiểu nghiêm ngặt | `tsc -b` với TypeScript strict và Vite production build phải pass | E-UI ghi build candidate cùng tree; không có lần chạy mới trong lượt docs |
 | NFR-07 | Có bằng chứng kiểm thử nhiều lớp | Sáu tầng kiểm thử, tiêu chí "đủ test" theo loại thay đổi và cổng chất lượng định nghĩa tại [test-strategy.md](test-strategy.md); ngưỡng độ phủ 90% dòng trên phần logic nghiệp vụ thuần | **Kết quả lịch sử** tại main@3ada48c ngày 2026-09-10: chiến lược thành văn, độ phủ dòng 92,53%, kịch bản demo tự động hóa và gate chống trùng. Kết quả và ngày chạy trong [testing.md](testing.md) |
 | NFR-08 | Deploy web không cần server ứng dụng riêng | Vite build ra `dist`, Vercel SPA rewrite, Supabase làm backend managed | Đã cấu hình; URL live cần xác minh riêng trước khi claim |
 

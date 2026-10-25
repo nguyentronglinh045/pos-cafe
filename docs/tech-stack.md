@@ -2,6 +2,8 @@
 
 File này là technical decision record rút gọn. Mỗi quyết định nêu rõ dùng gì, vì sao chọn, không chọn gì, đánh đổi và cách giảm rủi ro.
 
+[Chỉ mục quyết định](workflow/decisions.md) phân biệt nguồn chốt, lịch sử phương án, phần đã xác nhận và chỗ còn thiếu căn cứ. Những lựa chọn mô tả dưới đây không tự là benchmark hoặc phê duyệt mới.
+
 ## Phiên bản nguồn ngày 25/10/2026
 
 Đối chiếu `package-lock.json` tại main711a22e; các lựa chọn/lý do bên dưới là hồ sơ quyết định, không phải benchmark mới. Chi tiết runtime permission đọc ở [architecture](architecture.md), thay mô tả legacy trong các phase cũ.

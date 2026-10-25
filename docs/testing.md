@@ -4,6 +4,23 @@ Bộ [test plan/traceability permission15](../openspec/changes/redesign-permissi
 
 Đây là nơi tổng hợp kết quả theo **source + ngày + môi trường**. [Chiến lược](test-strategy.md) quy định cách kiểm; [workflow](workflow/README.md) quy định review/bàn giao. Trang này không biến kết quả cũ thành lần chạy mới.
 
+## Bản đồ bằng chứng
+
+Bản đồ này nối nhóm tính năng với nguồn đã có, không tạo một lần chạy mới hoặc thay testplan. Xem [regression map](regression-map.md) để nối FR/NFR cũ; [spec reconciliation](spec-reconciliation.md) giữ expected hiện hành. “Chưa có bằng chứng ở nguồn đã khảo sát” không khẳng định artifact ngoài repo không tồn tại.
+
+| Mã / phần được hỗ trợ | Source, môi trường và kết quả | Giới hạn và nơi lấy hồ sơ |
+| --- | --- | --- |
+| **E-UI** — B01–03, local unit/browser/mock, guard và UI regression | Candidate cf8e304 ngày25/10, tree bằng main711a22e; bảng nguồn tích hợp phía dưới giữ counts/pass/skip riêng. | Không backend/thiết bị thật/deploy. [Handoff/source và đường raw](workflow/tasks/ui-main-docs-integration-2026-10-25.md), [review](implementation-log/ui-main-docs-integration-review-2026-10-25.md). Receipt/review trong Git; một phần raw là local, chưa coi toàn bộ đã có artifact truy cập chung. |
+| **E-PH27** — chống trùng, recovery và contract tài chính lịch sử | Source3ada48c ngày10/09; runtime loopback PostgreSQL/PostgREST/GoTrue; kết quả và coverage ở mục nghiệm thu phía dưới. | Không Storage/Realtime, không tự áp PASS cho permission/main mới. [Verification](implementation-log/phase-27-evidence/verification.md), [recipe lịch sử](implementation-log/phase-27-test-runtime.md). Không tự cài lại runtime đã dọn. |
+| **E-BACKEND** — quyền, PIN, ảnh, signal, lifecycle và giao thức cùng nguồn | Nhiều candidate/slice và execution profile, phải đọc fingerprint của từng receipt. Main integration không tạo full acceptance mới. | [Backend/web23/10](workflow/tasks/permission-backend-web-release-2026-10-23.md), [integration24/10](workflow/tasks/permission-main-integration-2026-10-24.md), [catalog evidence WIP](workflow/evidence/docs-wip-publication-20261025/catalog.md). Giữ FAIL/spent/NOT_RUN; T04, bảy profiles và supplemental obligations chưa được miễn. |
+| **E-CICD** — pipeline và kiểm nguồn PR | Có CI/Preview/release tooling; E-UI dẫn CI source head/synthetic cụ thể; các mốc CI trước đó giữ riêng. | [CI/CD proposal và hồ sơ nguồn](../openspec/changes/setup-project-ci-cd/proposal.md), [completion18/10](workflow/tasks/project-ci-cd-completion-2026-10-18.md). CI xanh không chứng minh functional Vercel/backend hiện hành đã phát hành. |
+| **E-OPS** — backup, restore, vận hành | [Backup v2](workflow/tasks/permission-backup-v2-2026-10-14.md) và [backup audit](workflow/tasks/permission-backup-audit-2026-10-13.md) giữ source/phạm vi từng lần; LOCAL/hosted/provider readiness phải tách biệt. | Không nhận thành restore production nguồn cuối hoặc RPO/RTO đã đạt. Secrets/private artifacts không được sao chép vào docs; reader cần quyền truy cập theo hồ sơ. Performance source cuối chưa có kết quả đầy đủ tại bản đồ này. |
+| **E-DOCS** — chất lượng kho tài liệu | [Lượt chỉnh lý hiện tại](workflow/tasks/docs-knowledge-reconciliation-2026-10-25.md) ghi candidate/checks/review; [hỏi đáp](workflow/tasks/docs-knowledge-clarification-2026-10-25.md) ghi nguồn xác nhận. | Chỉ kiểm tài liệu, không là acceptance sản phẩm. Checklist theo dõi vẫn local. |
+
+**Khả năng truy cập:** các link tương đối ở bảng dẫn tới receipt/spec/review trong docs. Với đường checkout cũ hoặc raw local, tra [hồ sơ gom kho và relocation](workflow/tasks/archive-consolidation-2026-10-25.md) trước khi kết luận file mất. Chưa xác minh lại từng file ngoài Git; không gọi đường local là bản evidence đã xuất bản. Không sửa byte frozen receipt để cập nhật đường dẫn.
+
+**Phần cần thu thập khi thực hiện:** evidence backend đủ gate trên source được chọn; URL/version Vercel và smoke chức năng; measurement hiệu năng/realtime theo kịch bản; restore/backup gắn scope và điều kiện; kiểm thiết bị thật; traceability từng TC. Dữ liệu thiếu giữ trạng thái thiếu, không chạy thêm suite chỉ để điền bảng tài liệu.
+
 ## Nguồn tích hợp UI — 25/10/2026
 
 Main `711a22e71983e3d6aa17799649af05ce4c762555` có tree bằng candidate B03 `cf8e304869ad0e92c491736790f59bff1b6f9dcc`. Đây là đối chiếu tree, **không có lần chạy test mới trên merge SHA** trong lượt docs.

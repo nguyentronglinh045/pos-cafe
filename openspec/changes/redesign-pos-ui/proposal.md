@@ -1,3 +1,5 @@
+> **Điều hướng hiện hành25/10/2026:** proposal này giữ bối cảnh/backlog tại thời điểm lập; một phần đã có tại [hồ sơ hiện hành](../../../docs/features.md#shared-ui-behavior). Đối chiếu [bản đồ spec và phần còn thiếu](../../../docs/spec-reconciliation.md) trước khi dùng chữ “chưa có” bên dưới làm hiện trạng. Không tự archive hoặc nhận toàn proposal hoàn tất.
+
 > **Đối chiếu xuất bản 25/10/2026.** Proposal/brief lịch sử; B01–B03 đã được tích hợp theo handoff25/10. Không coi đề xuất cũ là yêu cầu làm lại UI hoặc quyền refactor. [Nguồn, trạng thái và giới hạn](../../../docs/workflow/tasks/docs-wip-publication-2026-10-25.md). Các yêu cầu SHALL/expected bên dưới được giữ; không đổi để hợp thức hóa code.
 
 # Thiết kế lại giao diện POS

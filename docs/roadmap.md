@@ -18,6 +18,8 @@ Chủ dự án xác nhận **15 tuần thực hiện từ 2026-10-05**, sau đó
 
 [Đối chiếu 12 mục tiêu tốt nghiệp ngày 25/10/2026](workflow/tasks/docs-thesis-audit-2026-10-25.md) bổ sung góc nhìn theo đầu ra đồ án. Thứ tự ở hồ sơ đó là đề xuất, không tự thay deadline, cam kết nghiệp vụ hoặc mở refactor.
 
+[Bảng hiện hành G01–G12](features.md#đối-chiếu-12-mục-tiêu-tốt-nghiệp) là đường tra cứu theo mục tiêu; [đối chiếu spec](spec-reconciliation.md) và [evidence](testing.md#bản-đồ-bằng-chứng) giữ khoảng thiếu cụ thể.
+
 ## Làm gì tiếp
 
 1. Chuẩn hóa tri thức, trạng thái, nguồn và đường đọc docs; bảo toàn WIP và evidence. [Handoff đang thực hiện](workflow/tasks/docs-normalization-2026-10-25.md).

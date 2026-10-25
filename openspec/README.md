@@ -1,5 +1,7 @@
 # OpenSpec cho pos-cafe
 
+[Bản đồ hòa giải 16 capability](../docs/spec-reconciliation.md) dẫn baseline và delta theo từng chủ đề; đọc bảng này trước khi lấy một file baseline làm hợp đồng runtime hiện hành. Lượt chỉnh lý chỉ thêm điều hướng, giữ nguyên nội dung yêu cầu, không apply/archive change.
+
 ## Trạng thái đọc ngày 25/10/2026
 
 | Nhóm | Cách dùng |

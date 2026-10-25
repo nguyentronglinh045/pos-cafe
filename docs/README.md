@@ -8,7 +8,7 @@ Kho tri thức để AI tra cứu tính năng, thiết kế, quyết định và
 
 1. [Tổng quan](project-overview.md): bài toán, người dùng, mục tiêu và trạng thái.
 2. [Tính năng](features.md) và [phạm vi](phase-scope.md): luồng vận hành, phần có trên main, phần chưa làm.
-3. [Kiến trúc](architecture.md) → [dữ liệu](data-model.md): trách nhiệm các lớp, quyền, giao dịch và đồng bộ.
+3. [Chỉ mục quyết định](workflow/decisions.md) → [Kiến trúc](architecture.md) → [dữ liệu](data-model.md): trách nhiệm các lớp, quyền, giao dịch và đồng bộ.
 4. [Kiểm chứng](testing.md) và [giới hạn](limitations.md): kết quả nào thuộc nguồn nào, điều gì còn chưa được nghiệm thu.
 5. [Lộ trình](roadmap.md): ưu tiên hiện tại và dependency của việc tiếp theo.
 
@@ -16,9 +16,12 @@ Kho tri thức để AI tra cứu tính năng, thiết kế, quyết định và
 
 | Cần làm | Nguồn chuẩn |
 | --- | --- |
+| Tính năng A đang ở đâu, có gì còn thiếu? | [Danh mục tính năng và mục tiêu](features.md#danh-mục-tra-cứu) → FR/spec/decision/evidence |
+| Spec và code khác nhau, đọc cái nào? | [Đối chiếu 16 capability và delta](spec-reconciliation.md) |
+| Phần tiểu luận cũ còn được bảo toàn không? | [Bản đồ hồi quy](regression-map.md); không suy danh mục là PASS |
 | Viết yêu cầu, tìm mã FR/NFR | [Requirements](requirements.md); hợp đồng chi tiết ở [OpenSpec](../openspec/README.md) |
 | Hiểu màn hình và quyền mở màn | [Screens](screens.md) |
-| Giải thích lựa chọn công nghệ | [Tech stack](tech-stack.md); [trang học kiến trúc](architecture-explainer.html) là tài liệu giảng giải; ví dụ raw repository còn theo kiến trúc cũ, cần đọc cùng architecture.md và không dùng làm bản kiểm chứng runtime |
+| Giải thích lựa chọn công nghệ | [Chỉ mục quyết định và nguồn chốt](workflow/decisions.md), [Tech stack](tech-stack.md); [trang học kiến trúc](architecture-explainer.html) là tài liệu giảng giải; ví dụ raw repository còn theo kiến trúc cũ, cần đọc cùng architecture.md và không dùng làm bản kiểm chứng runtime |
 | Viết khóa luận | [Bản đồ nguồn báo cáo](report-source-map.md) |
 | Phát triển và kiểm thử | [CLAUDE.md](../CLAUDE.md), [chiến lược test](test-strategy.md), [quy trình task](workflow/README.md) |
 | Tiếp tục công việc đang mở | [Chỉ mục task](workflow/tasks/README.md) |
@@ -48,3 +51,13 @@ Khi nguồn mâu thuẫn: yêu cầu/quyết định đã duyệt xác định �
 | Lịch sử | Giữ quyết định, giới hạn và bằng chứng cần truy vết. Archive không đồng nghĩa vô giá trị; xóa/chuyển bằng chứng cần danh sách và quyết định retention cụ thể |
 
 Không đưa source ứng dụng vào docs hoặc merge nhánh docs vào main. Nhánh docs hiện có Markdown, HTML giảng giải và evidence JSON/ảnh/ZIP; không còn đúng khi gọi nó là “Markdown only”. Mỗi lần đổi chủ đề, sửa bản chuẩn và các link liên quan, kiểm link/source, review độc lập rồi xuất bản. Tránh tạo thêm báo cáo chỉ để lặp lại một handoff.
+
+## Cập nhật một chủ đề sau khi có thay đổi
+
+1. Khóa nguồn code và docs, kiểm WIP; không dùng ngày file làm bằng chứng mới hơn.
+2. Sửa mô tả/trạng thái ở features, nối FR/NFR và spec delta; chỉ sửa expected khi có quyết định phù hợp.
+3. Ghi quyết định/lý do ở hồ sơ chính, cập nhật chỉ mục quyết định và bảng reconciliation nếu thay thế một phần cũ.
+4. Ghi evidence theo source/môi trường hoặc nhãn thiếu ở testing; không sao chép test counts sang mọi trang.
+5. Kiểm liên kết/nguồn, review theo workflow, cập nhật handoff và trạng thái checklist. Phát hành/cleanup chỉ trong phạm vi được giao.
+
+[Lượt áp dụng ngày25/10](workflow/tasks/docs-knowledge-reconciliation-2026-10-25.md) dùng quy trình này cho danh mục/decision/spec/evidence, giữ lịch sử và danh sách đề nghị tổ chức lại riêng; không thêm gate hoặc bộ artifact mới cho sửa nhỏ.

@@ -2,6 +2,8 @@
 
 ## Đang theo dõi
 
+- [Chuẩn hóa đường tra cứu tri thức — 25/10/2026](docs-knowledge-reconciliation-2026-10-25.md): danh mục tính năng/G01–G12, quyết định, 16 baseline/delta và evidence; hồi quy tiểu luận21FR/8NFR; giữ các gap và đề nghị tổ chức lại, chưa refactor/push.
+
 - [Kế hoạch refactor an toàn — 25/10/2026](refactor-safety-2026-10-25/README.md): chốt nguồn/baseline, pilot Report presentation, 15 bất biến, phần việc nhỏ và gates/rollback; chưa triển khai. Hai review độc lập.
 
 - [Làm rõ kho docs và nguồn quyết định — 25/10/2026](docs-knowledge-clarification-2026-10-25.md): AI là đối tượng khai thác chủ yếu; khung12 mục tiêu đã được giảng viên xác nhận theo thông tin chủ dự án; đã xác nhận người chốt và động cơ tách các phần để thích ứng thay UI/DB; ký ức DDD và chi phí code giữ giới hạn nguồn; đã có khung 15 tuần từ 05/10, bảo vệ tuần 16, mục tiêu chạy trên Vercel và kiểm thử local; đã xác định phần cũ là tiểu luận từng demo, có ứng viên code/docs tháng 8 để khảo sát hồi quy; chưa xác nhận source demo chính xác. Checklist vẫn local.

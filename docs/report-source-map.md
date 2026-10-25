@@ -32,16 +32,17 @@ Riêng chương cơ sở dữ liệu:
 
 Chỉ được đưa code/file/migration vào **phụ lục** khi người dùng yêu cầu rõ hoặc mẫu báo cáo bắt buộc. Trước khi làm vậy phải hỏi lại người dùng và chỉ trích phần tối thiểu cần thiết.
 
-## Thứ Tự Tin Cậy
+## Phân biệt vai trò nguồn
 
-1. Code, tests và SQL migrations trên `main`.
-2. Root docs trong thư mục `docs/` — tổng hợp có source và giới hạn; đối chiếu requirement đã duyệt và evidence đúng môi trường.
-3. `implementation-log/` — bằng chứng lịch sử theo checkpoint.
-4. `archive/` — spec/audit cũ để truy vết, không phải current truth.
+| Câu hỏi | Nguồn dùng để trả lời |
+| --- | --- |
+| Hệ thống cần làm gì? | Requirement và quyết định đã được duyệt; [spec reconciliation](spec-reconciliation.md) phân biệt baseline/delta. |
+| Đã hiện thực thế nào? | Code/SQL đúng source; [features](features.md) và architecture là tổng hợp có nguồn. |
+| Đã kiểm điều gì, ở đâu? | Evidence có source, lệnh, môi trường, kết quả và phần thiếu tại [testing](testing.md#bản-đồ-bằng-chứng). |
+| Vì sao chọn? | [Chỉ mục quyết định](workflow/decisions.md) dẫn hồ sơ gốc; phân biệt người chốt với phân tích hồi cứu. |
+| Đã nghiệm thu hoặc phát hành chưa? | Quyết định chấp nhận và receipt triển khai đúng source/đích; không suy từ code/CI. |
 
-Nếu có mâu thuẫn, kiểm tra code/migration trước rồi cập nhật root docs. Không lấy kết quả test hoặc gap trong phase cũ làm trạng thái hiện hành khi phase sau đã supersede.
-
-[Bảng 12 mục tiêu tốt nghiệp](workflow/tasks/docs-thesis-audit-2026-10-25.md) nối hiện trạng, spec, mã, bằng chứng và phần còn thiếu. Đây là chỉ mục phân tích, chưa thay ma trận FR/NFR–UC–test hoặc bản cam kết với giảng viên.
+Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi nguồn khác nhau, phân loại requirement thay đổi, tài liệu cũ, thiếu implementation hoặc thiếu bằng chứng; giữ lịch sử và cập nhật bản tổng hợp đúng vai trò nguồn. [12 mục tiêu hiện hành](features.md#đối-chiếu-12-mục-tiêu-tốt-nghiệp) và [hồi quy tiểu luận](regression-map.md) là hai góc nhìn cùng bộ FR/NFR.
 
 ## Ánh Xạ Sang Cấu Trúc Báo Cáo
 
@@ -53,7 +54,7 @@ Nếu có mâu thuẫn, kiểm tra code/migration trước rồi cập nhật ro
 | Phân tích yêu cầu và traceability | [requirements.md](requirements.md) |
 | Thiết kế kiến trúc | [architecture.md](architecture.md), [tech-stack.md](tech-stack.md) |
 | Thiết kế cơ sở dữ liệu | [data-model.md](data-model.md) |
-| Cài đặt và quyết định kỹ thuật | [implementation-log/README.md](implementation-log/README.md) |
+| Cài đặt và quyết định kỹ thuật | [Quyết định](workflow/decisions.md), [implementation log](implementation-log/README.md) |
 | Kiểm thử và đánh giá | [testing.md](testing.md), [demo-runbook.md](demo-runbook.md) |
 | Kế hoạch và trình tự thực hiện | [roadmap.md](roadmap.md) |
 | Hạn chế và hướng phát triển | [limitations.md](limitations.md), [roadmap.md](roadmap.md) giai đoạn 2 |
@@ -82,7 +83,7 @@ Nếu có mâu thuẫn, kiểm tra code/migration trước rồi cập nhật ro
 - Screenshot mới theo source đã chọn và ghi ngày, sơ đồ kiến trúc/ERD đã render và hình minh họa demo.
 - URL deployment live, ngày kiểm tra, cấu hình môi trường đã che secret.
 - Tài liệu tham khảo học thuật/chính thức cho React, PostgreSQL, Supabase, realtime, RLS và kiến trúc.
-- Kết quả khảo sát người dùng hoặc benchmark nếu báo cáo yêu cầu; repository hiện chưa có dữ liệu này.
+- Kết quả khảo sát người dùng hoặc benchmark nếu báo cáo yêu cầu; lượt này chưa xác minh hồ sơ ngoài repo; không coi đây là yêu cầu mới của giảng viên.
 
 ## Checklist Trước Khi Viết Word
 

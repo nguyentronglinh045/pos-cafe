@@ -1,3 +1,5 @@
+> **Điều hướng hiện hành25/10/2026:** proposal này giữ bối cảnh/backlog tại thời điểm lập; một phần đã có tại [hồ sơ hiện hành](../setup-project-ci-cd/proposal.md). Đối chiếu [bản đồ spec và phần còn thiếu](../../../docs/spec-reconciliation.md) trước khi dùng chữ “chưa có” bên dưới làm hiện trạng. Không tự archive hoặc nhận toàn proposal hoàn tất.
+
 # Dựng quy trình triển khai liên tục
 
 ## Why

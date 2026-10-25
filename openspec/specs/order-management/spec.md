@@ -1,3 +1,5 @@
+> **Điểm đọc ngày25/10/2026:** baseline này cần đọc cùng [đối chiếu order-management và delta hiện hành](../../../docs/spec-reconciliation.md#order-management). Banner chỉ dẫn nguồn; nội dung yêu cầu phía dưới được giữ nguyên, không là xác nhận nghiệm thu/runtime.
+
 # Quản lý đơn hàng
 
 > Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
