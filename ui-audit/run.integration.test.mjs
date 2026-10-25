@@ -16,6 +16,35 @@ const run = (args, env = {}) => spawnSync(process.execPath, [runner, ...args], {
 });
 const outputPath = label => `artifacts/ui-audit/test-cli-${label}-${randomUUID()}.json`;
 
+test('screen-reader-only text is not accidental clipping; near-miss and real clipping remain findings', async () => {
+  const { chromium } = await import(process.env.UI_AUDIT_PLAYWRIGHT_MODULE || 'playwright');
+  const browser = await chromium.launch({ channel: 'chromium', headless: true });
+  try {
+    const page = await browser.newPage({ viewport: { width: 800, height: 600 } });
+    await page.setContent(`<style>
+      .text { font:16px/20px sans-serif; white-space:nowrap; overflow:hidden; }
+      .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+    </style>
+    <span id="sr-direct" class="sr text">Accessible label remains available</span>
+    <div class="sr"><strong id="sr-descendant" class="text" style="display:block;height:0">Nested accessible label</strong></div>
+    <div id="real-clipping" class="text" style="width:10px;height:10px">Visible text must be reported</div>
+    <div id="missing-clip" class="sr text" style="clip:auto">Tiny box without intentional clip</div>
+    <div id="larger-box" class="sr text" style="width:2px;height:2px">Larger clipped box is not the pattern</div>`);
+    await page.addScriptTag({ path: path.join(root, 'ui-audit', 'audit.js') });
+    const findings = await page.evaluate(() => window.__uiAudit({ checkOverlap: false }));
+    const clipping = findings.filter(f => ['clipped-text', 'clipped-text-vertical'].includes(f.rule));
+    for (const id of ['real-clipping', 'missing-clip', 'larger-box']) {
+      assert(clipping.some(f => f.sel === '#' + id && f.rule === 'clipped-text'), id + ' horizontal');
+      assert(clipping.some(f => f.sel === '#' + id && f.rule === 'clipped-text-vertical'), id + ' vertical');
+    }
+    for (const id of ['sr-direct', 'sr-descendant']) {
+      assert(!clipping.some(f => f.sel === '#' + id), id + ' is intentionally screen-reader-only');
+    }
+  } finally {
+    await browser.close();
+  }
+});
+
 test('real browser selftest emits source-bound PASS and refuses an existing report', () => {
   const output = outputPath('chromium');
   // Derive the consumer's facts independently, before launching the producer.

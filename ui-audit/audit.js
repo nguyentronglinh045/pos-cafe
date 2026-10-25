@@ -58,6 +58,19 @@
 
   function style(el) { return window.getComputedStyle(el); }
 
+  // pos-cafe local patch: the canonical 1px, zero-clip accessibility pattern
+  // deliberately hides text. Only clipping rules use this; controls still audit.
+  function screenReaderOnlyText(el) {
+    for (let node = el; node && node.nodeType === 1; node = node.parentElement) {
+      const s = style(node), r = node.getBoundingClientRect();
+      if ((s.position === 'absolute' || s.position === 'fixed') &&
+          r.width > 0 && r.width <= 1 && r.height > 0 && r.height <= 1 &&
+          s.overflowX === 'hidden' && s.overflowY === 'hidden' &&
+          s.clip.replace(/\s+/g, '') === 'rect(0px,0px,0px,0px)') return true;
+    }
+    return false;
+  }
+
   function visible(el) {
     const s = style(el);
     if (s.display === 'none' || s.visibility === 'hidden') return false;
@@ -480,11 +493,11 @@
       // text clipped with no ellipsis
       if (hasOwnText(el) && el.scrollWidth > el.clientWidth + 2 &&
           (s.overflow === 'hidden' || s.overflowX === 'hidden') &&
-          s.textOverflow !== 'ellipsis') {
+          s.textOverflow !== 'ellipsis' && !screenReaderOnlyText(el)) {
         add('clipped-text', 'warn', el,
           'content ' + el.scrollWidth + 'px clipped to ' + el.clientWidth + 'px, no text-overflow');
       }
-      if (hasOwnText(el) && el.scrollHeight > el.clientHeight + 4 && s.overflowY === 'hidden') {
+      if (hasOwnText(el) && el.scrollHeight > el.clientHeight + 4 && s.overflowY === 'hidden' && !screenReaderOnlyText(el)) {
         add('clipped-text-vertical', 'info', el,
           'content ' + el.scrollHeight + 'px clipped to ' + el.clientHeight + 'px tall');
       }
