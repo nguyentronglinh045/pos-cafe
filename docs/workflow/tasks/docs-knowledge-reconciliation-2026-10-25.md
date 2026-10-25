@@ -36,3 +36,21 @@ Không có file được xóa trong lượt này. Danh sách là đề nghị t�
 Đối chiếu source quan trọng của catalog/AppPorts/Auth/giao thức ghi/query/signal, 16 baseline và delta liên quan, hồ sơ quyết định và evidence. Không nhận đã đọc thủ công từng dòng toàn kho hoặc tái kiểm runtime. Kiểm link/path/anchor và code link ghim nguồn; hash baseline body/frozen input; main WIP trước/sau; review độc lập trước bàn giao. Không chạy ứng dụng/backend/CI, cài dependency, refactor, deploy, tạo worktree hoặc xóa dữ liệu.
 
 Checklist local chỉ tích các đầu ra đã đạt tiêu chí tài liệu. P1-03 vẫn cần bộ hình/mô hình và việc đọc/trích nguồn học thuật tiếp; map hồi quy không là coverage TC đã nghiệm thu. Mọi kết quả acceptance/phát hành phải cập nhật từ công việc tương ứng, không lấy lượt docs này làm quyền hoặc evidence thay thế.
+
+## Biên bản kiểm và review độc lập
+
+Ngày 25/10/2026. Candidate nội dung cuối `4579f3b9324993ff985079f4f15906d3d4e64fb1`, parent `810e7759df3c9935a95fd09acc525a1cd5995521`; checklist ngoài Git SHA256 `4385120a0c262c9d254e91232ad4bc19c56574b3f4e3253003b1997a49b01670`. Sau verdict chỉ bổ sung metadata ghi kết quả review; không sửa nội dung đã được duyệt.
+
+| Reviewer / phạm vi | Kiểm độc lập và verdict cuối |
+| --- | --- |
+| `/root/review_knowledge` — tính đúng sự kiện, coverage, điều hướng, tiêu chí hoàn tất tài liệu | **APPROVE** candidate và checklist trên. Đọc toàn delta33file và ba sửa cuối; đối chiếu G01–G12,21FR/8NFR, Q01–Q10, vai trò requirement/code/evidence, gapR06 và các tick checklist. Kiểm55link code ghim duy nhất, biên dòng,16baseline body, diff-check và bảo toàn subtree refactor có trước. Không có finding chặn. |
+| `/root/review_preservation` — bằng chứng, nguồn, phạm vi ủy quyền và bảo toàn | **APPROVE** candidate và checklist trên. Đọc toàn diff ở vòng đầu rồi xác nhận đúng ba sửa cuối; kiểm33path, không xóa,16baseline và3proposal giữ nguyên byte body, link/anchor, acceptance, owner-PIN, R06 và checklist. Đề xuất neo nguồn ở vòng đầu đã xử lý; không còn finding trong phạm vi. |
+
+| Vòng / nhận xét | Xử lý và kiểm lại |
+| --- | --- |
+| Candidate `87758de78eda32f13991208a1e010bad56ef009d`: preservation APPROVE, một đề xuất không chặn tại `docs/spec-reconciliation.md:39` | Nhận định seed đúng, nhưng neo `seedRepo.ts#L70` chưa sát điều kiện completed/skipped ở L79. Đổi sang L79. Vòng cuối preservation xác nhận đóng. |
+| Tự kiểm của tác giả: catalog Order thiếu nối mã FR-10; một shorthand `:183` chưa là link | Nối FR-10/phiếu vào hàng Order và chuyển shorthand thành link ghim `orderFlow.ts#L183`. Hai reviewer đã kiểm candidate cuối gồm các sửa này. |
+
+Kiểm tự động cuối: **418 liên kết nội bộ và 68 tham chiếu ghim nguồn**, không lỗi đường dẫn/anchor/biên dòng; `git diff --check` đạt. So byte xác nhận16baseline và3proposal chỉ thêm banner; không thay path frozen evidence, không sửa ngoài `docs/`/`openspec/`, không xóa file. Trạng thái porcelain main và checklist live giữ nguyên khi chốt candidate; checklist chỉ được áp dụng sau review. Commit kế hoạch refactor có trước được giữ nguyên, không thuộc việc triển khai của lượt này.
+
+Giới hạn chung: không tái kiểm runtime/backend, từng raw artifact ngoài Git, coverage từng TC, acceptance hoặc release. Preservation không độc lập kiểm được WIP trước thao tác của tác giả; phép so WIP trước/sau do tác giả thực hiện. P1-02 hoàn tất đường đọc chính và nhãn giới hạn truy cập, không phải mọi link archive. P1-03 vẫn mở. Hai verdict đánh giá đầu ra tài liệu, không thay quyết định nghiệm thu sản phẩm của chủ dự án.
