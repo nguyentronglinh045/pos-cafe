@@ -79,22 +79,21 @@ thiết bị vật lý hay độ giống design.
 
 ## Phạm vi state/viewport
 
-Config published bao phủ 13 state trên **UI main hiện có**: landing, store-pairing,
+Config tích hợp permission bao phủ 16 state: landing, store-pairing,
 passcode, floor, order-drawer, order-cart, menu-editor, report, employees, settings,
 clear-demo-dialog, payment và receipt-preview. State con kế thừa steps của cha bằng
 `extends`; `@ten` là `[data-testid="ten"]`. Hỗ trợ `click`, `clickAll`, `fill` +
 `value`, `press`, `waitFor` + `state`, `wait` và `timeout` riêng từng bước.
 
 Giữ ba viewport lịch sử: tablet 1024×768, desktop 1440×900, mobile ngang 844×390;
-tổng **39 cặp**. Đây là kiểm thử vận hành audit trên app mock hiện có. Không phải
+tổng **48 cặp**, gồm ba state compatibility-update-gate, compatibility-created-store và required-pin-change. Đây là kiểm thử vận hành audit trên app mock hiện có. Không phải
 pilot remake màn Stitch và không chứng minh toàn app đạt 568×320. Gate responsive
 568×320 trở lên của từng màn remake nằm trong workflow `ui-remake/`.
 
 Công thức login và fixture lấy từ `tests/smoke/helpers.ts` và
 `tests/smoke/demo-runbook.spec.ts`: mã mock `0001-X8F3QA`, admin
 `6b7bd350-7db2-4160-8471-cca2668c070d`, PIN mock `123456`. Không dùng thông tin cửa
-hàng thật. Ba fixture/state compatibility/required-PIN trên nhánh permission chưa
-được đưa sang vì module đó chưa thuộc main; publish audit không mở rộng scope app.
+hàng thật. Checkout tích hợp dùng admin synthetic `30000000-0000-4000-8000-000000000011`; ba fixture compatibility/required-PIN được giữ để kiểm candidate permission.
 
 ## Baseline và quyền chấp nhận
 

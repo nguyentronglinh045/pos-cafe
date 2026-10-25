@@ -290,6 +290,7 @@ let devServer = null;
 let browser = null;
 let exitCode = 0;
 const all = [];
+const pinPhotos = [];
 const setupFailures = [];
 const startedAt = new Date().toISOString();
 const environment = { node: process.version, os: `${platform()} ${release()} ${arch()}`,
@@ -302,7 +303,7 @@ let finishedAt = null;
 const status = () => !finishedAt || setupFailures.length || progress.completedPairs !== progress.expectedPairs ? 'INCOMPLETE' : 'COMPLETE';
 const checkpoint = () => {
   const runStatus = { version: 1, kind: 'ui-audit-run', status: status(), productAcceptance: 'NOT_ASSESSED',
-    startedAt, finishedAt, ...progress, setupFailures, source, environment, serverDiagnostics: getDevServerDiagnostics(devServer) };
+    startedAt, finishedAt, ...progress, setupFailures, source, environment, pinPhotos, serverDiagnostics: getDevServerDiagnostics(devServer) };
   // Keep the historical finding-array contract; completeness is explicit in the
   // Markdown and the additional ignored status receipt, never inferred from [].
   fs.writeFileSync(path.join(here, 'report.json'), JSON.stringify(all, null, 2));
@@ -382,12 +383,38 @@ try {
       for (const finding of grouped) { finding.known = baseline.has(finding.key); all.push(finding); }
       // Preserve detected findings even if annotation/screenshot subsequently fails.
       const fresh = grouped.filter(finding => !finding.known);
-      if (grouped.length) {
+      const pinTarget = target.name === 'required-pin-change';
+      if (grouped.length || pinTarget) {
+        if (pinTarget) {
+          const url = new URL(page.url());
+          if (cfg.devServer?.env?.VITE_DATA_MODE !== 'mock' || cfg.devServer.env.VITE_SUPABASE_URL !== ''
+            || cfg.devServer.env.VITE_SUPABASE_ANON_KEY !== '' || cfg.baseUrl !== 'http://127.0.0.1:5178'
+            || target.route !== '/ui-audit/required-pin-change.html' || url.origin !== cfg.baseUrl
+            || url.pathname !== target.route || url.search || url.hash || options.update) throw new Error('PIN_PHOTO_FIXTURE_REFUSED');
+          const safe = await page.evaluate(() => {
+            const inputs = [...document.querySelectorAll('input')];
+            return document.querySelectorAll('[data-testid="required-pin-change-screen"]').length === 1
+              && document.querySelectorAll('[data-testid="complete-required-pin"]').length === 1
+              && document.body.innerText.includes('Tài khoản: Chủ quán Cà phê Mây')
+              && inputs.length === 2 && inputs.every(input => input.type === 'password' && input.value === ''
+                && ['required-new-pin', 'required-confirm-pin'].includes(input.getAttribute('data-testid')))
+              && new Set(inputs.map(input => input.getAttribute('data-testid'))).size === 2;
+          });
+          if (!safe) throw new Error('PIN_PHOTO_CONTENT_REFUSED');
+        }
         stage('annotation');
         await page.evaluate(fs2 => window.__uiAuditMark(fs2), grouped);
         stage('screenshot');
         const name = target.name.replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '') || 'root';
-        await page.screenshot({ path: path.join(outDir, `${name}__${vp.name}.png`), fullPage: true });
+        const filename = `${name}__${vp.name}.png`, photoPath = path.join(outDir, filename);
+        await page.screenshot({ path: photoPath, fullPage: true,
+          ...(pinTarget ? { mask: [page.locator('input[type="password"]')], maskColor: '#000000' } : {}) });
+        if (pinTarget) {
+          const bytes = fs.readFileSync(photoPath);
+          pinPhotos.push({ state: target.name, viewport: vp.name, width: vp.width, height: vp.height,
+            filename, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex'),
+            credentialFreeMock: true, passwordInputsEmpty: true, maskedPasswordInputs: 2, annotatedFindings: grouped.length });
+        }
       }
       const bad = fresh.filter(finding => failOn.has(finding.severity)).length;
       console.log(`${bad ? 'FAIL' : ' ok '}  ${vp.name.padEnd(8)} ${target.name.padEnd(24)} ` +

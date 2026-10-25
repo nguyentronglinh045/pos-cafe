@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "permission-staging-introspection-manifest-v1",
+  "scope": "READ_ONLY_INTROSPECTION",
+  "targetProjectRef": "ineckiashpwloncxnbqx",
+  "forbiddenProjectRef": "kfqjdfwxhkdwihjobpny",
+  "deadlineUtc": "2026-10-22T04:00:00.000Z",
+  "query": {
+    "path": "scripts/permission-staging-introspection.sql",
+    "sha256": "a5097677e0f2c27e764b10768061b5d0cd368ee643b282eca6826caa13fb284b",
+    "bytes": 9030,
+    "statementCount": 1,
+    "outputRows": 1,
+    "outputColumn": "permission_staging_introspection",
+    "outputSchemaVersion": "permission-staging-introspection-v1"
+  },
+  "operatorContract": [
+    "Obtain both required independent review approvals for these exact query bytes before execution.",
+    "Use the owner-selected browser session and verify that the Supabase SQL editor URL and visible project identify targetProjectRef. This JSON file is an operator contract, not an executable enforcement guard.",
+    "Record query SHA256, visible project ref, selected database/role, documented Dashboard timeout and returned server statement_timeout, execution time and export receipt outside the query. The pure SELECT does not set a timeout or claim transaction_read_only is enabled. Use the documented 60-second Dashboard request limit without disabling it. This is a provider request bound, not proof that a disconnected backend was killed; any timeout or unknown outcome stops the operation and forbids duplicate execution.",
+    "Read the exact local SQL file into the SQL editor using the browser tool's documented UI API. Do not retype, truncate, combine with setup SQL or execute a modified fragment.",
+    "The final SELECT is the only SQL statement so the SQL editor can retain its one JSONB result cell. Export that cell/result without logging credentials or unrelated browser state.",
+    "The output permits structural catalog identifiers, role metadata and ACLs. Auth and Storage data appear only as aggregate counts. It excludes user IDs, emails, sessions, row contents, function bodies and policy expressions.",
+    "Prerequisite-table absence, privilege errors, timeout, incomplete export, unexpected catalog objects or existing data means STOP. Do not repair, bootstrap, retry automatically, or infer an empty database from a missing/error result.",
+    "SQL database name/address/version alone do not prove the project ref. Preserve the observed SQL-editor project binding with the result; later mutation requires same-connection identity/marker/lock guards.",
+    "This receipt cannot prove Auth signup behavior, Storage object bytes, Realtime delivery, Edge deployment, SQL mutation readiness or any business-test PASS. Existing preflight attempts and claims remain unchanged."
+  ],
+  "capabilityContractSource": {
+    "path": "scripts/permission-release-cutover.mjs",
+    "export": "readReleaseExecutionCapabilities",
+    "interpretation": "Preserve its provider-capability contract; do not assume hosted supabase_admin superuser or infer failure only from absent direct SET/ownership privileges."
+  },
+  "transport": {
+    "browser": "OWNER_SELECTED_IAB",
+    "requestTimeoutDocumentedMaxSeconds": 60,
+    "timeoutSource": "https://supabase.com/docs/guides/database/postgres/timeouts",
+    "verifiedUiSource": "Primary database",
+    "verifiedUiRole": "postgres",
+    "serverTimeoutKnownBeforeExecution": false,
+    "changesProviderTimeout": false
+  }
+}

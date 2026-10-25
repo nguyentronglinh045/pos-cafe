@@ -4,13 +4,36 @@ on:
   workflow_dispatch:
     inputs:
       confirmation:
-        description: 'Run synthetic T09/T10 only; no hosted DB/deploy. Type RUN_SYNTHETIC_PILOT'
+        description: 'Select the reviewed synthetic pilot or the small namespace probe; no hosted DB/deploy'
         required: true
         type: choice
         default: DO_NOT_RUN
         options:
           - DO_NOT_RUN
           - RUN_SYNTHETIC_PILOT
+          - RUN_T04_PROFILE
+          - RUN_T04_IMAGE_DIAGNOSTIC
+          - RUN_SERVICE_PROFILE
+          - RUN_NAMESPACE_PROBE
+          - RUN_CAPACITY_PROBE
+      expected_source_sha:
+        description: 'T04 profile, namespace or capacity probe: exact reviewed 40-character commit SHA'
+        required: false
+        type: string
+        default: ''
+      runtime_profile:
+        description: 'One exact reviewed service envelope; PIN server/onboarding use separate fixed fixtures'
+        required: false
+        type: choice
+        default: SUPABASE_T02
+        options:
+          - SUPABASE_T02
+          - PIN_ONBOARD
+          - PIN_RACE
+          - PIN_EXPIRY
+          - PIN_IDENTITY_SERVER
+          - PIN_IDENTITY_ONBOARDING
+          - PIN_CANARY
 
 permissions:
   contents: read
@@ -20,8 +43,25 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  capacity-probe:
+    if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386' && inputs.confirmation == 'RUN_CAPACITY_PROBE'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Measure host capacity before any package or image download
+        env:
+          PERMISSION_CAPACITY_CONFIRMATION: RUN_CAPACITY_PROBE
+          PERMISSION_CAPACITY_EXPECTED_SHA: ${{ inputs.expected_source_sha }}
+        run: |
+          ulimit -c 0
+          /usr/local/n/versions/node/22.23.3/bin/node scripts/permission-capacity-probe.mjs
+
   pilot:
-    if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386'
+    if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386' && inputs.confirmation == 'RUN_SYNTHETIC_PILOT'
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     steps:
@@ -43,3 +83,99 @@ jobs:
         env:
           CI1_CONFIRMATION: ${{ inputs.confirmation == 'RUN_SYNTHETIC_PILOT' && 'RUN_SYNTHETIC_PILOT' || 'REFUSED' }}
         run: node scripts/project-backend.mjs
+      - name: Reclaim the owned backend loop after process release
+        if: always()
+        env:
+          CI1_RECLAIM_AUTHORIZED: 'yes'
+        run: node scripts/permission-ci1-reclaim.mjs
+
+  namespace-probe:
+    if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386' && inputs.confirmation == 'RUN_NAMESPACE_PROBE'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Probe only the owned root and private mount namespace
+        env:
+          FULL_NAMESPACE_CONFIRMATION: RUN_NAMESPACE_PROBE
+          FULL_NAMESPACE_EXPECTED_SHA: ${{ inputs.expected_source_sha }}
+        run: |
+          ulimit -c 0
+          /usr/local/n/versions/node/22.23.3/bin/node scripts/permission-full-namespace-probe.mjs probe
+
+  t04-profile:
+    if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386' && inputs.confirmation == 'RUN_T04_PROFILE'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.16.0'
+          package-manager-cache: false
+      - name: Run nineteen T04 stages on one bounded synthetic backend
+        env:
+          CI1_CONFIRMATION: RUN_T04_PROFILE
+          CI1_EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
+        run: node scripts/project-backend-t04.mjs
+      - name: Reclaim the owned T04 loop after process release
+        if: always()
+        env:
+          CI1_RECLAIM_AUTHORIZED: 'yes'
+        run: node scripts/permission-runtime-t04-reclaim.mjs
+
+  t04-image-diagnostic:
+    if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386' && inputs.confirmation == 'RUN_T04_IMAGE_DIAGNOSTIC'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.16.0'
+          package-manager-cache: false
+      - name: Diagnose the full Candidate stage and image measurement on one bounded synthetic backend
+        env:
+          CI1_CONFIRMATION: RUN_T04_IMAGE_DIAGNOSTIC
+          CI1_EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
+        run: node scripts/project-backend-t04.mjs
+      - name: Reclaim the owned diagnostic loop after process release
+        if: always()
+        env:
+          CI1_RECLAIM_AUTHORIZED: 'yes'
+        run: node scripts/permission-runtime-t04-reclaim.mjs
+
+  service-profile:
+    if: github.repository == 'nguyentronglinh045/pos-cafe' && github.repository_id == '1263057386' && inputs.confirmation == 'RUN_SERVICE_PROFILE'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      PERMISSION_RUNTIME_PROFILE: ${{ inputs.runtime_profile }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.16.0'
+          package-manager-cache: false
+      - name: Run one bounded synthetic service profile
+        env:
+          CI1_CONFIRMATION: RUN_SERVICE_PROFILE
+          CI1_EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
+        run: node scripts/project-backend-service.mjs
+      - name: Reclaim the owned service loop after process release
+        if: always()
+        env:
+          CI1_RECLAIM_AUTHORIZED: 'yes'
+        run: node scripts/permission-runtime-service-reclaim.mjs

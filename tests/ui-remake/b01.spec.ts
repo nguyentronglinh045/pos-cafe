@@ -122,7 +122,7 @@ for (const vp of [{width:568,height:320},{width:1024,height:600},{width:1920,hei
     });
   test(`cashier navigation/keyboard lock ${vp.width}`, async ({ page }) => {
     await page.setViewportSize(vp);await login(page,true);
-    for(const id of ["employees","menu-editor","floor-editor","report","payment-settings","settings"])await expect(page.getByTestId(`nav-${id}`)).toBeDisabled();
+    for(const id of ["employees","menu-editor","floor-editor","report","payment-settings","settings"])await expect(page.getByTestId(`nav-${id}`)).toHaveCount(0);
     await expect(page.getByTestId("nav-order-history")).toBeEnabled();
     await page.getByTestId("nav-lock").focus();await page.keyboard.press("Enter");
     await expect(page.getByTestId("passcode-screen")).toBeVisible();

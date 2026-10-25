@@ -1,0 +1,426 @@
+{
+  "version": "permission-full-oracle-contract-v1",
+  "designSha256": "bfcc3f1ec4a2d393aec10e379510f650040eba1df085f27d8922fa352bb49cda",
+  "messages": [
+    {
+      "id": "INVALID_PIN / login",
+      "message": "PIN kh\u00f4ng \u0111\u00fang. Vui l\u00f2ng th\u1eed l\u1ea1i.",
+      "trigger": "LOGIN_WRONG_PIN",
+      "statePolicy": "UNCHANGED",
+      "code": "INVALID_PIN"
+    },
+    {
+      "id": "AUTH_REQUIRED / phi\u00ean qu\u00e1n",
+      "message": "Phi\u00ean c\u1eeda h\u00e0ng kh\u00f4ng c\u00f2n h\u1ee3p l\u1ec7. Vui l\u00f2ng gh\u00e9p qu\u00e1n l\u1ea1i.",
+      "trigger": "STORE_SESSION_EXPIRED",
+      "statePolicy": "UNCHANGED",
+      "code": "AUTH_REQUIRED"
+    },
+    {
+      "id": "AUTH_REQUIRED / t\u1ea1o qu\u00e1n",
+      "message": "Ch\u01b0a x\u00e1c nh\u1eadn \u0111\u01b0\u1ee3c t\u00e0i kho\u1ea3n c\u1eeda h\u00e0ng. Gi\u1eef trang n\u00e0y v\u00e0 th\u1eed l\u1ea1i.",
+      "trigger": "CREATE_AUTH_REQUIRED",
+      "statePolicy": "UNCHANGED",
+      "code": "AUTH_REQUIRED"
+    },
+    {
+      "id": "AUTH_REQUIRED / \u0111\u1ecbnh d\u1ea1ng Store Key",
+      "message": "Store Key kh\u00f4ng \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng.",
+      "trigger": "STORE_KEY_ELEVEN_DIGITS",
+      "statePolicy": "UNCHANGED",
+      "code": "AUTH_REQUIRED"
+    },
+    {
+      "id": "WRITE_PROTOCOL_UNSUPPORTED",
+      "message": "Phi\u00ean b\u1ea3n \u1ee9ng d\u1ee5ng ch\u01b0a t\u01b0\u01a1ng th\u00edch. Vui l\u00f2ng t\u1ea3i phi\u00ean b\u1ea3n m\u1edbi tr\u01b0\u1edbc khi ti\u1ebfp t\u1ee5c.",
+      "trigger": "CLIENT_SERVER_CONTRACT_MISMATCH",
+      "statePolicy": "UNCHANGED",
+      "code": "WRITE_PROTOCOL_UNSUPPORTED"
+    },
+    {
+      "id": "PIN_CHANGE_REQUIRED",
+      "message": "B\u1ea1n c\u1ea7n \u0111\u1ed5i PIN t\u1ea1m tr\u01b0\u1edbc khi s\u1eed d\u1ee5ng qu\u00e1n.",
+      "trigger": "RESTRICTED_TO_PROTECTED_RPC",
+      "statePolicy": "UNCHANGED",
+      "code": "PIN_CHANGE_REQUIRED"
+    },
+    {
+      "id": "PIN_REUSE_NOT_ALLOWED",
+      "message": "PIN m\u1edbi ph\u1ea3i kh\u00e1c PIN t\u1ea1m \u0111ang d\u00f9ng.",
+      "trigger": "NEW_PIN_EQUALS_TEMP",
+      "statePolicy": "UNCHANGED",
+      "code": "PIN_REUSE_NOT_ALLOWED"
+    },
+    {
+      "id": "PIN_CONFIRMATION_MISMATCH",
+      "message": "Hai l\u1ea7n nh\u1eadp PIN m\u1edbi ch\u01b0a kh\u1edbp.",
+      "trigger": "CONFIRMATION_DIFFERS",
+      "statePolicy": "UNCHANGED",
+      "code": "PIN_CONFIRMATION_MISMATCH"
+    },
+    {
+      "id": "INVALID_EMPLOYEE_REQUEST / PIN",
+      "message": "PIN m\u1edbi ph\u1ea3i g\u1ed3m 6 ch\u1eef s\u1ed1.",
+      "trigger": "NEW_PIN_FIVE_DIGITS",
+      "statePolicy": "UNCHANGED",
+      "code": "INVALID_EMPLOYEE_REQUEST"
+    },
+    {
+      "id": "INVALID_EMPLOYEE_REQUEST / payload kh\u00e1c",
+      "message": "Y\u00eau c\u1ea7u \u0111\u1ed5i PIN kh\u00f4ng h\u1ee3p l\u1ec7. Vui l\u00f2ng th\u1eed l\u1ea1i.",
+      "trigger": "FORCED_PAYLOAD_EXTRA_TARGET",
+      "statePolicy": "UNCHANGED",
+      "code": "INVALID_EMPLOYEE_REQUEST"
+    },
+    {
+      "id": "EMPLOYEE_SESSION_REQUIRED",
+      "message": "Phi\u00ean nh\u00e2n vi\u00ean kh\u00f4ng c\u00f2n h\u1ee3p l\u1ec7. Vui l\u00f2ng \u0111\u0103ng nh\u1eadp l\u1ea1i.",
+      "trigger": "REVOKED_EMPLOYEE_SESSION",
+      "statePolicy": "UNCHANGED",
+      "code": "EMPLOYEE_SESSION_REQUIRED"
+    },
+    {
+      "id": "EMPLOYEE_VERSION_CONFLICT",
+      "message": "PIN ho\u1eb7c tr\u1ea1ng th\u00e1i t\u00e0i kho\u1ea3n \u0111\u00e3 thay \u0111\u1ed5i. Vui l\u00f2ng \u0111\u0103ng nh\u1eadp l\u1ea1i.",
+      "trigger": "STALE_EMPLOYEE_REVISION",
+      "statePolicy": "UNCHANGED",
+      "code": "EMPLOYEE_VERSION_CONFLICT"
+    },
+    {
+      "id": "ADMIN_REQUEST_REUSED",
+      "message": "M\u00e3 y\u00eau c\u1ea7u \u0111\u00e3 \u0111\u01b0\u1ee3c d\u00f9ng cho n\u1ed9i dung kh\u00e1c. Vui l\u00f2ng t\u1ea1o y\u00eau c\u1ea7u m\u1edbi.",
+      "trigger": "SAME_REQUEST_ID_DIFFERENT_PAYLOAD",
+      "statePolicy": "UNCHANGED",
+      "code": "ADMIN_REQUEST_REUSED"
+    },
+    {
+      "id": "PERMISSION_UPDATE_UNAVAILABLE / \u0111\u1ed5i PIN",
+      "message": "Ch\u01b0a x\u00e1c nh\u1eadn \u0111\u01b0\u1ee3c vi\u1ec7c \u0111\u1ed5i PIN. Vui l\u00f2ng \u0111\u0103ng nh\u1eadp l\u1ea1i b\u1eb1ng PIN m\u1edbi; n\u1ebfu ch\u01b0a \u0111\u01b0\u1ee3c, th\u1eed l\u1ea1i b\u1eb1ng PIN t\u1ea1m.",
+      "trigger": "COMPLETE_COMMIT_ACK_LOST",
+      "statePolicy": "ACK_OUTCOME_UNKNOWN_NO_AUTO_REPLAY",
+      "code": "PERMISSION_UPDATE_UNAVAILABLE"
+    },
+    {
+      "id": "PERMISSION_UPDATE_UNAVAILABLE / recovery",
+      "message": "Ch\u01b0a x\u00e1c nh\u1eadn \u0111\u01b0\u1ee3c vi\u1ec7c kh\u00f4i ph\u1ee5c PIN. Ki\u1ec3m tra h\u1ed3 s\u01a1 tr\u01b0\u1edbc khi th\u1eed l\u1ea1i c\u00f9ng y\u00eau c\u1ea7u.",
+      "trigger": "RECOVERY_COMMIT_ACK_LOST",
+      "statePolicy": "ACK_OUTCOME_UNKNOWN_NO_AUTO_REPLAY",
+      "code": "PERMISSION_UPDATE_UNAVAILABLE"
+    },
+    {
+      "id": "PERMISSION_UPDATE_UNAVAILABLE / proof check",
+      "message": "Ch\u01b0a ki\u1ec3m tra \u0111\u01b0\u1ee3c phi\u00ean. Vui l\u00f2ng th\u1eed l\u1ea1i khi c\u00f3 k\u1ebft n\u1ed1i.",
+      "trigger": "PROOF_NETWORK_ABORTED",
+      "statePolicy": "ACK_OUTCOME_UNKNOWN_NO_AUTO_REPLAY",
+      "code": "PERMISSION_UPDATE_UNAVAILABLE"
+    },
+    {
+      "id": "PERMISSION_UPDATE_UNAVAILABLE / t\u1ea1o qu\u00e1n",
+      "message": "Ch\u01b0a x\u00e1c nh\u1eadn \u0111\u01b0\u1ee3c vi\u1ec7c t\u1ea1o qu\u00e1n. Gi\u1eef trang n\u00e0y v\u00e0 th\u1eed l\u1ea1i \u0111\u1ec3 ti\u1ebfp t\u1ee5c c\u00f9ng y\u00eau c\u1ea7u.",
+      "trigger": "BOOTSTRAP_COMMIT_ACK_LOST",
+      "statePolicy": "ACK_OUTCOME_UNKNOWN_NO_AUTO_REPLAY",
+      "code": "PERMISSION_UPDATE_UNAVAILABLE"
+    },
+    {
+      "id": "PERMISSION_UPDATE_UNAVAILABLE / seed",
+      "message": "Ch\u01b0a ho\u00e0n t\u1ea5t d\u1eef li\u1ec7u m\u1eabu. B\u1ea1n v\u1eabn c\u00f3 th\u1ec3 v\u00e0o qu\u00e1n ho\u1eb7c ch\u1ecdn th\u1eed l\u1ea1i.",
+      "trigger": "SEED_STAGE_FAILURE",
+      "statePolicy": "ACK_OUTCOME_UNKNOWN_NO_AUTO_REPLAY",
+      "code": "PERMISSION_UPDATE_UNAVAILABLE"
+    },
+    {
+      "id": "OWNER_RECOVERY_REVIEW_REQUIRED",
+      "message": "Ch\u01b0a \u0111\u1ee7 c\u0103n c\u1ee9 kh\u00f4i ph\u1ee5c ch\u1ee7 qu\u00e1n. C\u1ea7n x\u00e1c minh h\u1ed3 s\u01a1 h\u1ed7 tr\u1ee3.",
+      "trigger": "RECOVERY_MISSING_REF",
+      "statePolicy": "UNCHANGED",
+      "code": "OWNER_RECOVERY_REVIEW_REQUIRED"
+    },
+    {
+      "id": "OWNER_PROTECTED",
+      "message": "T\u00e0i kho\u1ea3n c\u1ea7n kh\u00f4i ph\u1ee5c ph\u1ea3i l\u00e0 ch\u1ee7 qu\u00e1n \u0111ang ho\u1ea1t \u0111\u1ed9ng.",
+      "trigger": "RECOVERY_TARGET_INACTIVE_OR_NONOWNER",
+      "statePolicy": "UNCHANGED",
+      "code": "OWNER_PROTECTED"
+    },
+    {
+      "id": "NOT_FOUND",
+      "message": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i kho\u1ea3n c\u1ea7n kh\u00f4i ph\u1ee5c.",
+      "trigger": "RECOVERY_TARGET_MISSING",
+      "statePolicy": "UNCHANGED",
+      "code": "NOT_FOUND"
+    },
+    {
+      "id": "FORBIDDEN",
+      "message": "B\u1ea1n kh\u00f4ng c\u00f3 quy\u1ec1n th\u1ef1c hi\u1ec7n thao t\u00e1c n\u00e0y.",
+      "trigger": "RECOVERY_OPERATOR_ROLE_MISSING",
+      "statePolicy": "UNCHANGED",
+      "code": "FORBIDDEN"
+    },
+    {
+      "id": "INVALID_WRITE_REQUEST / onboarding",
+      "message": "T\u00ean qu\u00e1n ph\u1ea3i c\u00f3 1\u2013120 k\u00fd t\u1ef1, \u0111\u1ecba ch\u1ec9 t\u1ed1i \u0111a 500 k\u00fd t\u1ef1 v\u00e0 l\u1ef1a ch\u1ecdn d\u1eef li\u1ec7u m\u1eabu ph\u1ea3i h\u1ee3p l\u1ec7.",
+      "trigger": "CREATE_NAME_121_CODEPOINTS",
+      "statePolicy": "UNCHANGED",
+      "code": "INVALID_WRITE_REQUEST"
+    },
+    {
+      "id": "BOOTSTRAP_CONFLICT",
+      "message": "Th\u00f4ng tin t\u1ea1o qu\u00e1n kh\u00f4ng kh\u1edbp y\u00eau c\u1ea7u ban \u0111\u1ea7u. \u0110\u00e3 d\u1eebng \u0111\u1ec3 tr\u00e1nh t\u1ea1o tr\u00f9ng qu\u00e1n.",
+      "trigger": "BOOTSTRAP_SAME_ID_CHANGED_PAYLOAD",
+      "statePolicy": "UNCHANGED",
+      "code": "BOOTSTRAP_CONFLICT"
+    },
+    {
+      "id": "ENTITY_ID_CONFLICT / seed",
+      "message": "D\u1eef li\u1ec7u hi\u1ec7n c\u00f3 tr\u00f9ng v\u1edbi d\u1eef li\u1ec7u m\u1eabu. \u0110\u00e3 d\u1eebng \u0111\u1ec3 gi\u1eef c\u00e1c thay \u0111\u1ed5i c\u1ee7a qu\u00e1n.",
+      "trigger": "SEED_EXISTING_ID_WITHOUT_STAGE_RECEIPT",
+      "statePolicy": "UNCHANGED",
+      "code": "ENTITY_ID_CONFLICT"
+    },
+    {
+      "id": "INITIAL_SEED_ATTEMPT_STALE",
+      "message": "Ti\u1ebfn tr\u00ecnh d\u1eef li\u1ec7u m\u1eabu \u0111\u00e3 thay \u0111\u1ed5i. Ki\u1ec3m tra tr\u1ea1ng th\u00e1i tr\u01b0\u1edbc khi th\u1eed l\u1ea1i.",
+      "trigger": "SEED_OLD_RUN_GENERATION",
+      "statePolicy": "UNCHANGED",
+      "code": "INITIAL_SEED_ATTEMPT_STALE"
+    },
+    {
+      "id": "Gi\u1edbi h\u1ea1n hard reload, th\u00f4ng b\u00e1o kh\u00f4ng gi\u1ea3 server recovery",
+      "message": "Trang \u0111\u00e3 t\u1ea3i l\u1ea1i. N\u1ebfu b\u1ea1n v\u1eeba t\u1ea1o qu\u00e1n, h\u00e3y d\u00f9ng Store Key \u0111\u00e3 l\u01b0u \u0111\u1ec3 gh\u00e9p qu\u00e1n khi c\u1ea7n. H\u1ec7 th\u1ed1ng kh\u00f4ng th\u1ec3 hi\u1ec3n th\u1ecb l\u1ea1i Store Key ch\u01b0a \u0111\u01b0\u1ee3c l\u01b0u.",
+      "trigger": "PAGE_HARD_RELOAD_UNSAVED_STORE_KEY",
+      "statePolicy": "UNCHANGED",
+      "code": "PAGE_HARD_RELOAD"
+    },
+    {
+      "id": "RELEASE_TARGET_NOT_EMPTY / tool m\u1edbi",
+      "message": "\u0110\u00edch ph\u00e1t h\u00e0nh c\u00f2n d\u1eef li\u1ec7u qu\u00e1n. \u0110\u00e3 d\u1eebng k\u00edch ho\u1ea1t.",
+      "trigger": "RELEASE_TENANT_ROWS_PRESENT",
+      "statePolicy": "UNCHANGED",
+      "code": "RELEASE_TARGET_NOT_EMPTY"
+    },
+    {
+      "id": "TARGET_STORE_SET_MISMATCH / tool hi\u1ec7n c\u00f3",
+      "message": "D\u1eef li\u1ec7u \u0111\u00edch \u0111\u00e3 thay \u0111\u1ed5i. \u0110\u00e3 d\u1eebng k\u00edch ho\u1ea1t.",
+      "trigger": "RELEASE_STORE_SET_CHANGED",
+      "statePolicy": "UNCHANGED",
+      "code": "TARGET_STORE_SET_MISMATCH"
+    },
+    {
+      "id": "TARGET_TENANT_SCHEMA_MISMATCH / release preflight m\u1edbi",
+      "message": "L\u01b0\u1ee3c \u0111\u1ed3 d\u1eef li\u1ec7u qu\u00e1n \u0111\u00e3 thay \u0111\u1ed5i. \u0110\u00e3 d\u1eebng \u0111\u1ec3 r\u00e0 so\u00e1t.",
+      "trigger": "RELEASE_SCHEMA_CHANGED",
+      "statePolicy": "UNCHANGED",
+      "code": "TARGET_TENANT_SCHEMA_MISMATCH"
+    },
+    {
+      "id": "ACTIVATION_TARGET_NOT_EMPTY / activation m\u1edbi",
+      "message": "\u0110\u00edch ph\u00e1t h\u00e0nh c\u00f2n d\u1eef li\u1ec7u qu\u00e1n. \u0110\u00e3 d\u1eebng k\u00edch ho\u1ea1t.",
+      "trigger": "ACTIVATION_TENANT_ROWS_PRESENT",
+      "statePolicy": "UNCHANGED",
+      "code": "ACTIVATION_TARGET_NOT_EMPTY"
+    },
+    {
+      "id": "ACTIVATION_STORE_SET_MISMATCH / activation hi\u1ec7n c\u00f3",
+      "message": "D\u1eef li\u1ec7u \u0111\u00edch \u0111\u00e3 thay \u0111\u1ed5i. \u0110\u00e3 d\u1eebng k\u00edch ho\u1ea1t.",
+      "trigger": "ACTIVATION_STORE_SET_CHANGED",
+      "statePolicy": "UNCHANGED",
+      "code": "ACTIVATION_STORE_SET_MISMATCH"
+    },
+    {
+      "id": "ACTIVATION_TENANT_SCHEMA_MISMATCH / activation m\u1edbi",
+      "message": "L\u01b0\u1ee3c \u0111\u1ed3 d\u1eef li\u1ec7u qu\u00e1n \u0111\u00e3 thay \u0111\u1ed5i. \u0110\u00e3 d\u1eebng \u0111\u1ec3 r\u00e0 so\u00e1t.",
+      "trigger": "ACTIVATION_SCHEMA_CHANGED",
+      "statePolicy": "UNCHANGED",
+      "code": "ACTIVATION_TENANT_SCHEMA_MISMATCH"
+    },
+    {
+      "id": "INVALID_TARGET_CONFIG / tool hi\u1ec7n c\u00f3",
+      "message": "C\u1ea5u h\u00ecnh \u0111\u00edch ph\u00e1t h\u00e0nh kh\u00f4ng h\u1ee3p l\u1ec7.",
+      "trigger": "TARGET_CONFIG_INVALID",
+      "statePolicy": "UNCHANGED",
+      "code": "INVALID_TARGET_CONFIG"
+    }
+  ],
+  "gaps": [
+    {
+      "owner": "P",
+      "field": "TC-PIN-02.no-skip-control",
+      "reason": "Gate test proves protected shell/lifecycle absence but has no explicit assertion enumerating absence of a bypass control. UI source/testing delta needs D review.",
+      "nextAction": "D/root review the specific oracle gap and proposed coverage delta; preserve required subvariant and acceptance. Static source evidence is not runtime PASS."
+    },
+    {
+      "owner": "P",
+      "field": "TC-PIN-03.exact-three-allowed-routes",
+      "reason": "Current browser grants inventory includes metadata/bootstrap/roster routes as nonBusiness. A complete allowed projection oracle must reconcile wording exactly; do not infer only-three from denials.",
+      "nextAction": "D/root review the specific oracle gap and proposed coverage delta; preserve required subvariant and acceptance. Static source evidence is not runtime PASS."
+    },
+    {
+      "owner": "P",
+      "field": "TC-PIN-05.exact-messages-no-effects",
+      "reason": "Recovery rejection snapshots and codes are located; exact runtime message assertion for every listed target/ref context is not demonstrated by that chain.",
+      "nextAction": "D/root review the specific oracle gap and proposed coverage delta; preserve required subvariant and acceptance. Static source evidence is not runtime PASS."
+    },
+    {
+      "owner": "P",
+      "field": "TC-PIN-11.exact-error-contexts",
+      "reason": "Create transport tests assert the configured expectedMessage; all AUTH_REQUIRED/PERMISSION_UPDATE_UNAVAILABLE/BOOTSTRAP_CONFLICT context triggers need a finite error-message matrix.",
+      "nextAction": "D/root review the specific oracle gap and proposed coverage delta; preserve required subvariant and acceptance. Static source evidence is not runtime PASS."
+    },
+    {
+      "owner": "P",
+      "field": "TC-PIN-12.no-persistence-URL-log-or-marker",
+      "reason": "Current browser assertions cover local/session storage and URL. A direct Key absence check across logger/IndexedDB and no new marker needs an explicit oracle mapping, not counts.",
+      "nextAction": "D/root review the specific oracle gap and proposed coverage delta; preserve required subvariant and acceptance. Static source evidence is not runtime PASS."
+    },
+    {
+      "owner": "P",
+      "field": "TC-PIN-17.unit-build-permission-regression",
+      "reason": "Full current unit/regression dependency identities exceed this seed catalog; inherited config/AST/runner closure must be chunked without clipping if >256KiB.",
+      "nextAction": "D/root review the specific oracle gap and proposed coverage delta; preserve required subvariant and acceptance. Static source evidence is not runtime PASS."
+    },
+    {
+      "owner": "P",
+      "field": "TC-PIN-17.ui-selftest-23",
+      "reason": "Command dependency is required; actual 23 findings/selftest OK NOT_RUN. Selftest/audit output normalizer belongs to D/E.",
+      "nextAction": "D/root review the specific oracle gap and proposed coverage delta; preserve required subvariant and acceptance. Static source evidence is not runtime PASS."
+    },
+    {
+      "owner": "P",
+      "field": "TC-PIN-17.PIN-3-viewports-photos-classified",
+      "reason": "No actual audit or annotated screenshots inspected in this pure task; requires explicit UI measurement recipe and evidence adapter at D/E.",
+      "nextAction": "D/root review the specific oracle gap and proposed coverage delta; preserve required subvariant and acceptance. Static source evidence is not runtime PASS."
+    },
+    {
+      "owner": "P",
+      "field": "TC-PIN-17.no-ui-baseline-update",
+      "reason": "Required operator restriction, not an executable test identity; retain as dependency constraint rather than fabricate a test.",
+      "nextAction": "D/root review the specific oracle gap and proposed coverage delta; preserve required subvariant and acceptance. Static source evidence is not runtime PASS."
+    },
+    {
+      "owner": "P",
+      "field": "TC-PIN-18.MAC-no-secret-audit-projection",
+      "reason": "Matrix scans candidate captures; complete finite keyed-MAC/receipt semantic projection assertions across all operations still need line mapping beyond canary absence.",
+      "nextAction": "D/root review the specific oracle gap and proposed coverage delta; preserve required subvariant and acceptance. Static source evidence is not runtime PASS."
+    },
+    {
+      "owner": "P",
+      "field": "TC-PIN-18.exact-error-context-triggers",
+      "reason": "Need every design message context mapped to a concrete trigger; absence of canary does not prove correct exact text.",
+      "nextAction": "D/root review the specific oracle gap and proposed coverage delta; preserve required subvariant and acceptance. Static source evidence is not runtime PASS."
+    },
+    {
+      "owner": "P",
+      "field": "TC-PIN-18.operator-loopback-unlock-CSRF-Origin-body-role",
+      "reason": "Core tests cover loopback/unlock/Origin/CSRF and safe projection. Explicit over-limit body and invalid-DB-role evidence is not established by these located tests.",
+      "nextAction": "D/root review the specific oracle gap and proposed coverage delta; preserve required subvariant and acceptance. Static source evidence is not runtime PASS."
+    }
+  ],
+  "restrictedOperations": {
+    "permission_check_required_pin_session": {
+      "payload": [],
+      "projection": [
+        "employeeRevision",
+        "expiresAt",
+        "purpose",
+        "valid"
+      ]
+    },
+    "permission_complete_required_pin_change": {
+      "payload": [
+        "expectedRevision",
+        "newPin",
+        "requestId"
+      ],
+      "projection": [
+        "credentialChanged",
+        "employeeRevision",
+        "pinChangeRequired"
+      ]
+    },
+    "permission_revoke_session": {
+      "payload": [],
+      "projection": [
+        "ok"
+      ]
+    }
+  },
+  "publicMetadata": {
+    "permission_get_contract": [
+      "permissionContractVersion",
+      "writeProtocolVersion"
+    ],
+    "permission_get_store_session": [
+      "storeId",
+      "storeNo"
+    ],
+    "permission_list_roster": [
+      "id",
+      "name"
+    ],
+    "permission_contract_probe": [],
+    "permission_contract_pre_request": [],
+    "set_updated_at": []
+  },
+  "preloginLifecycle": [
+    "permission_start_session",
+    "permission_reserve_store_no",
+    "permission_bootstrap_store"
+  ],
+  "operations": [
+    "bootstrap",
+    "complete",
+    "recovery",
+    "seed"
+  ],
+  "outcomes": [
+    "success",
+    "denied",
+    "fault",
+    "lostACK",
+    "replay"
+  ],
+  "keySites": [
+    "localStorage",
+    "sessionStorage",
+    "IndexedDB",
+    "url",
+    "logger",
+    "console",
+    "telemetry",
+    "marker"
+  ],
+  "rules": [
+    "hit-blocked",
+    "empty-icon",
+    "placeholder-leak",
+    "bad-inline-style",
+    "tiny-target",
+    "overflow-x",
+    "no-accessible-name",
+    "broken-image",
+    "low-contrast",
+    "tiny-font",
+    "clipped-text",
+    "bad-class-token",
+    "zero-size-interactive",
+    "overlapping-controls"
+  ],
+  "controls": [
+    "labelUsesEffectiveArea",
+    "coveredLabelKeepsTinyFinding",
+    "validCornerUsesReachableArea",
+    "choosesReachableAssociatedLabel",
+    "interactiveChildDoesNotActivateInput",
+    "clippedControlIsReported",
+    "innerScrollerCanRevealControl",
+    "offscreenLabelCanBeMeasuredAfterScroll",
+    "scrollOffsetsRestored",
+    "disabledControlHasNoTapRequirement",
+    "inactiveLabelsDoNotToggle",
+    "bareSmallControlDetected",
+    "scrollClippedHitIgnored",
+    "scrollClippedOverlapIgnored",
+    "trulyCoveredHitDetected",
+    "trulyCoveredOverlapDetected"
+  ]
+}
