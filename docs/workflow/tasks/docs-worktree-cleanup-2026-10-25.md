@@ -43,4 +43,9 @@ Danh sách877 bản WIP local trùng ở task trước **chưa được dọn**:
 
 ## Review kết quả
 
-Candidate receipt chờ hai reviewer xác nhận kết quả sau xóa trước khi xuất bản hồ sơ. Không dùng approval kế hoạch thay cho kiểm postconditions.
+Hai reviewer độc lập đã **APPROVE** receipt candidate `5fe77755b8af33a21c5a24bfd3f2e957af1377e4` sau thao tác, không có finding chặn:
+
+- `review_preservation`: kiểm target/gitdir/registry đã mất, các worktree khác giữ HEAD/branch,1.856 hash/size của docs gốc không đổi,39/920 WIP giữ nguyên; receipt/free-space/allocation khớp và diff2files đúng phạm vi.
+- `review_knowledge`: kiểm hậu xóa, dòng index, parent/ref,1.856 SHA256 và phép phân biệt logical/allocation/free-space; không mở quyền xóa WIP/branch/code hoặc backend acceptance.
+
+`git diff --check` đạt. Receipt sau candidate chỉ bổ sung kết quả review, không sửa phạm vi xóa, số đo hay evidence. Hồ sơ được xuất bản bằng push fast-forward thông thường lên docs; không tạo lại worktree đã xóa.
