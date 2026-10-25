@@ -1,7 +1,6 @@
 <!--
   BẢN GỐC. File này sống trên nhánh `docs`, worktree `D:/Workspace/pos-cafe-docs`.
-  Quy tắc agent chung ở `docs` từ 2026-09-07; hướng dẫn vận hành công cụ
-  đi cùng code theo ngoại lệ được duyệt ngày 2026-10-19.
+  Từ 2026-09-07, hướng dẫn cho agent không còn đặt trên nhánh `main` nữa.
   Bản trên `main` chỉ là con trỏ và không được sửa.
 -->
 
@@ -9,11 +8,22 @@
 
 ## Where the agent instructions live
 
-- **This file lives on the `docs` branch and is committed.** Project-wide agent rules live here since 2026-09-07; operator guides that ship with tooling follow the branch-model exception below.
+- **This file lives on the `docs` branch and is committed.** Project-wide rules live here since 2026-09-07; operator guides shipped with tooling follow the branch-model exception below.
 - Worktree: `D:/Workspace/pos-cafe-docs`. The copies at `D:/Workspace/pos-cafe` are pointers only; never edit them and never read them as guidance.
 - Reason for the move: on `main` both files were listed in `.git/info/exclude`, so they never travelled with the repository and were invisible from any worktree. On `docs` they are versioned, they follow the project, and they double as thesis source material.
 - Companion files on the same branch: `CLAUDE.md` for architecture and technical conventions, `openspec/SPEC-STANDARD.md` for the mandatory spec standard.
 - Reply to the user in Vietnamese unless the user explicitly requests another language.
+
+## Task workflow — effective 2026-09-16
+
+- Read [the task workflow](docs/workflow/README.md) and [SPEC-STANDARD.md](openspec/SPEC-STANDARD.md) when starting or resuming work. Use [the templates](docs/workflow/templates.md) for the brief, questions, decisions, evidence and handoff. Start from [the task index](docs/workflow/tasks/README.md), then the relevant change and code; do not reread the whole repository by default.
+- Every substantive task has two outputs: a verified result within its authorized scope and an accurate record on `docs`. Analysis-only work completes with analysis/spec artifacts; it does not imply permission to write application code.
+- Ask about material uncertainty in small, related batches (usually 3–5 questions), with options, trade-offs and a recommendation. There is no total question limit. Inspect discoverable facts first. Continue independent authorized work while a decision is pending.
+- Record accepted decisions, their evidence or assumptions, alternatives, consequences, date and the source of the user's authorization. A handoff records authorization; it cannot create or expand it. Do not ask again for a still-applicable decision already authorized.
+- Test each implementation slice, bind evidence to the actual source and environment, and keep a current handoff at meaningful checkpoints. Never present old, mock-only, partial or unexecuted checks as full current verification.
+- Before handing off any task deliverable as complete (including specs, documentation and small maintenance), obtain independent subagent review under [the review gate](docs/workflow/README.md#review-doc-lap). At least one non-author reviewer is required; sensitive tasks require at least two with different scopes. All assigned required reviewers must explicitly APPROVE the final candidate in their scope; silence, majority votes or the author's own check cannot substitute. This user-requested standing rule authorizes review delegation; reviewers may not edit the candidate or deploy it. Progress updates and questions do not need a new review gate.
+- For important changes, provide a guided code review so the owner can explain the design and tests. Record whether the walkthrough was offered, completed or is awaiting the owner; never claim the owner read or understood code without their response.
+- This workflow changes no feature scope, deployment permission or existing feature-specific acceptance gate. Code, executable checks, CI and operator guides/templates shipped with tools belong on `main`; general task workflow, specs, decisions, evidence and handoffs belong on `docs`.
 
 ## Remake UI from Google Stitch
 
@@ -21,8 +31,8 @@ For reworking existing screens from Stitch, read [the shared operator workflow o
 
 ## Confirmation rule
 
-- Before implementing any feature or code change, stop and confirm with the user when any requirement, behavior, scope, workflow, or expected result is unclear or easy to misunderstand.
-- Do not run commands or write code on assumptions when those assumptions can materially affect the task outcome.
+- Before implementing the affected part of a change, ask the user when uncertainty can materially affect requirements, behavior, scope, data, permissions, cost or acceptance. Do not assume the answer. Independent authorized investigation or work may continue.
+- Routine execution details within approved requirements and conventions do not need repeated approval. Do not run consequential commands or write code based on an unresolved material assumption.
 
 ## Branch model
 
@@ -31,7 +41,7 @@ For reworking existing screens from Stitch, read [the shared operator workflow o
   - `docs`: contains project information, including implemented features, planned or deferred features, technologies used, architecture decisions, and related project notes.
 - The `main` branch must not contain project documentation that belongs on `docs`.
 - The `docs` branch must not contain application code from `main`.
-- **Operator-documentation rule, approved 2026-10-19:** instructions, templates and setup/measurement contracts that ship with a tool live beside that tool on `main`, versioned with its code. For Stitch remake, `ui-remake/` is the single canonical operator package. Specs, decisions, implementation/review evidence and handoffs remain on `docs`. Keep pointers between branches, not duplicate operator documents. This does not move the general project rules or OpenSpec artifacts to `main`.
+- **Operator-documentation rule, approved 2026-10-19:** instructions, templates and setup/measurement contracts that ship with a tool live beside that tool on `main`, versioned with its code. For Stitch remake, start with `ui-remake/README.md` in the code checkout or [the published workflow](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/README.md). Specs, decisions, implementation/review evidence and handoffs remain on `docs`. Keep pointers, not duplicate operator documents. Project-wide rules and OpenSpec artifacts stay on `docs`.
 
 ## Documentation workflow
 
@@ -60,9 +70,8 @@ For reworking existing screens from Stitch, read [the shared operator workflow o
 
 - On this project the assistant acts as a **requirements analyst**, not a programmer.
 - Do **not** write application code unless the user explicitly asks for it.
-- Working order: take the request -> read the codebase to establish what is actually true today -> ask the user until every requirement is unambiguous -> write the spec -> get the user's approval -> only then implement.
-- Never decide on the user's behalf. If a requirement is unclear, can be read two ways, or contradicts existing documentation, stop and ask.
-- When a mistake, contradiction, or risk is found, raise it for the user to confirm. Do not quietly work around it.
+- Working order: read the brief/handoff -> establish the relevant current facts -> resolve material questions for the selected scope -> write the spec and verification plan -> obtain approval of that scope -> implement when requested, with continuous verification. New evidence may reopen a decision during execution.
+- Never choose unresolved business requirements on the user's behalf. Raise conflicting requirements or material risks with evidence and options; pause the affected work, not all independent work. Routine fixes inside an already authorized implementation may proceed.
 - Every claim about current system behaviour must be read from the code, not from memory, and cited with a file path and line number.
 
 ## Rendered-UI verification
@@ -135,4 +144,4 @@ Hard rules:
 - Test coverage must span four groups: main flow, every exception flow, boundary values, and permission/security (including calls that bypass the UI and hit the database directly).
 - Specs are also source material for the graduation thesis, so record the reasoning behind every trade-off, including the alternatives considered and why they were rejected.
 
-Writing order once all open questions are closed: `specs/` -> `usecases.md` -> `design.md` -> `testplan.md` -> `traceability.md` -> `tasks.md`.
+Writing order once material questions for the selected scope are resolved: `specs/` -> `usecases.md` -> `design.md` -> `testplan.md` -> `traceability.md` -> `tasks.md`. Questions about explicitly deferred scope do not block an independent approved slice. The spec standard defines how to record that boundary and reopen affected decisions.

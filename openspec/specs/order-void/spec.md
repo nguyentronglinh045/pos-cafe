@@ -1,5 +1,8 @@
 # Hủy đơn đã thanh toán
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Cho người có quyền hủy một đơn đã thanh toán kèm lý do bắt buộc và dấu vết kiểm toán, và loại đơn đó khỏi doanh thu. Đây là thao tác ghi đụng tiền, tách khỏi việc tra cứu lịch sử vì có quyền riêng, có xác nhận riêng và có cơ chế chống xung đột riêng. Truy vết: FR-15.

@@ -1,5 +1,8 @@
 ## ADDED Requirements
 
+> Bản xuất bản lịch sử, chưa phải bộ phân quyền đầy đủ đang dùng để đối chiếu main711a22e. WIP đã phát triển riêng ở checkout gốc; xem [trạng thái và nguồn](https://github.com/nguyentronglinh045/pos-cafe/blob/docs/openspec/README.md). Không dùng các placeholder hoặc catalog14/kế toán ở bản này để tuyên bố nghiệm thu runtime15.
+
+
 ### Requirement: Bất biến của bản ghi chủ quán
 
 Mỗi cửa hàng MUST luôn có đúng một nhân viên vai trò `owner` đang hoạt động. Bản ghi của nhân viên đó SHALL bất biến với mọi thao tác quản trị của người khác: MUST NOT xóa được, MUST NOT tạm khóa được, MUST NOT đổi sang vai trò khác được, và MUST NOT bị người khác đặt lại PIN. Quyền `employee.manage` MUST NOT tác động lên bản ghi này ở bất kỳ thao tác nào.

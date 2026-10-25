@@ -1,5 +1,8 @@
 # Công việc
 
+> Bản xuất bản lịch sử, chưa phải bộ phân quyền đầy đủ đang dùng để đối chiếu main711a22e. WIP đã phát triển riêng ở checkout gốc; xem [trạng thái và nguồn](https://github.com/nguyentronglinh045/pos-cafe/blob/docs/openspec/README.md). Không dùng các placeholder hoặc catalog14/kế toán ở bản này để tuyên bố nghiệm thu runtime15.
+
+
 Thứ tự bám theo Migration Plan trong `design.md`. Các nhóm 1 tới 3 không đổi hành vi quan sát được, nhóm 4 là bước phá vỡ tương thích.
 
 ## 1. Bảng tham chiếu và dữ liệu seed

@@ -1,5 +1,8 @@
 # Thiết kế mô hình phân quyền mới
 
+> Bản xuất bản lịch sử, chưa phải bộ phân quyền đầy đủ đang dùng để đối chiếu main711a22e. WIP đã phát triển riêng ở checkout gốc; xem [trạng thái và nguồn](https://github.com/nguyentronglinh045/pos-cafe/blob/docs/openspec/README.md). Không dùng các placeholder hoặc catalog14/kế toán ở bản này để tuyên bố nghiệm thu runtime15.
+
+
 ## Context
 
 Động cơ và phạm vi xem `proposal.md`, phần Why và phần Quyết định đã chốt. Phần này chỉ nêu hiện trạng kỹ thuật cần thiết để giải thích cách làm.

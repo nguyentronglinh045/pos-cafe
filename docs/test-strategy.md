@@ -1,5 +1,8 @@
 # Chiến Lược Kiểm Thử
 
+> Cập nhật điều hướng 25/10/2026: Khung chiến lược chốt tháng 9 vẫn là mức sàn; gate riêng của feature và [workflow/review](workflow/README.md) áp dụng bổ sung. Không suy `npm test` phủ backend, Storage/Realtime hoặc mọi runner permission; [testing](testing.md) ghi kết quả theo source.
+
+
 Tài liệu này trả lời ba câu: **tính năng mới thì viết loại test nào**, **bao nhiêu là đủ**, và **điều gì chặn một thay đổi được coi là xong**.
 
 Nó không chứa kết quả chạy. Kết quả, số liệu và ngày nằm ở [testing.md](testing.md). Hai file tách nhau vì nhịp cập nhật khác hẳn: chiến lược đổi hiếm, nhật ký đổi mỗi lần chạy lại bộ test.

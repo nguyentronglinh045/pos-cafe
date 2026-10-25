@@ -1,5 +1,14 @@
 # Kế hoạch rà soát và chuẩn hóa sau tích hợp — 25/10/2026
 
+## Ưu tiên đang áp dụng — docs trước refactor
+
+Ngày25/10/2026, sau tích hợp UI, chủ dự án giao **kiểm tra và chỉnh lý nhánh docs**, không chỉ lập kế hoạch. [Handoff docs-first](docs-normalization-2026-10-25.md) ghi source, phạm vi, kết quả và phần WIP/evidence cần giữ. Quyết định này đưa NC-10 và **phần kiểm kê tài liệu của NC-02** lên trước refactor. Không mở NC-04…08, deploy, backend acceptance hoặc cleanup worktree.
+
+Trình tự hiện hành: nguồn UI đã merge711a22e → docs-first (NC-10 + docs inventory NC-02) → NC-02 bản đồ code/NC-03 chốt slice khi được giao → refactor có gate. NC-01 và NC-11 toàn hệ thống vẫn chưa đóng. NC-10 tiếp tục đồng bộ theo từng slice sau này; hoàn tất chỉnh lý docs không có nghĩa toàn NC-02/NC-10 của chương trình đã hoàn tất.
+
+Các phần quyết định NC-UI và kế hoạch cũ dưới đây được giữ làm lịch sử/phạm vi tham chiếu; ưu tiên mới ở mục này thay thứ tự khởi đầu cũ.
+
+
 ## Quyết định thực hiện NC-UI ngày 25/10/2026
 
 Chủ dự án đã giao phiên mới **merge UI vào main và docs, xử lý hậu quả rồi xóa đúng nhánh đã merge; chưa cần chủ động CI**. [Handoff thực hiện](ui-main-docs-integration-2026-10-25.md) là nguồn trạng thái hiện hành. Quyền này thay các dòng chỉ-lập-kế-hoạch/không-merge bên dưới cho NC-UI; những dòng đó được giữ làm lịch sử phiên lập kế hoạch. Không mở refactor, cleanup worktree, deploy hay backend holds.
@@ -55,7 +64,7 @@ Mỗi task có một người/agent chịu trách nhiệm chính và reviewer kh
 | **NC-00 — Chốt nguồn, bảo toàn WIP** | P0, làm đầu tiên | Điều phối/Git | Source manifest; phân biệt main tích hợp, WIP riêng và docs WIP; chọn một nơi thực hiện |
 | **NC-01 — Khôi phục baseline kiểm thử đáng tin** | P0, sau NC-00 | QA/tooling + tác giả phần lỗi | Chẩn đoán terminal chính xác; xử lý hoặc giữ rõ blocker smoke; baseline cùng source |
 | **NC-UI — Review và chuẩn bị tích hợp PR UI** | P0, sau NC-00; đọc/review song song chẩn đoán NC-01, chốt trước refactor | UI/POS + QA + reviewer độc lập | Review #11/#12 trước, #13/#14 sau; giải quyết giao nhau với phân quyền; tích hợp chỉ khi được giao và đủ gate; chốt lại baseline |
-| **NC-02 — Bản đồ kiến trúc và kiểm kê** | P1, sau NC-00; song song khảo sát NC-01 | Phân tích kiến trúc | Bản đồ modules/flows; findings có nguồn; danh mục code/script/config/evidence |
+| **NC-02 — Bản đồ kiến trúc và kiểm kê** | Phần docs P0 cùng NC-10; phần code còn sau NC-00 | Phân tích kiến trúc | Bản đồ modules/flows; findings có nguồn; danh mục code/script/config/evidence |
 | **NC-03 — Chốt quy ước và chia slice** | P1, sau NC-02 và quyết định phạm vi UI ở NC-UI; cập nhật theo nguồn UI đã chọn | Kiến trúc/spec | Ownership, contracts, ma trận hồi quy, danh sách giữ/gộp/di chuyển/loại bỏ có căn cứ |
 | **NC-04 — Session, quyền và cổng dữ liệu** | P1, sau NC-01 + NC-03 | Backend/security | Ranh giới permission/session/read/write nhất quán, guard và adapter contract được kiểm |
 | **NC-05 — Luồng gọi món** | P1, sau NC-04 | POS/domain | UI–hook–flow rõ trách nhiệm; giữ giá lịch sử, OCC và giao thức ghi |
@@ -63,7 +72,7 @@ Mỗi task có một người/agent chịu trách nhiệm chính và reviewer kh
 | **NC-07 — UI và các module quản trị còn lại** | P2, sau NC-06 | UI/admin | Chuẩn hóa phần có finding: menu/floor/employees/report/settings, loading/error/dirty-exit |
 | **NC-08 — Tinh gọn code, script và cấu hình** | P2, sau NC-04…07 | Tooling/maintenance | Loại đúng phần hết dùng; CI/test discovery/recipe và đường tham chiếu còn nguyên |
 | **NC-09 — Dọn worktree theo nhóm đã xác minh** | P1 kiểm kê sớm; xóa theo điều kiện dưới | Git/retention | Allowlist cụ thể, WIP/evidence được giữ, receipt và mức thu hồi đo được |
-| **NC-10 — Đồng bộ kiến thức trên docs** | Xuyên suốt NC-00…09; chốt sau NC-08 và phần NC-09 đã giao | Tài liệu + từng tác giả | Kiến trúc/trách nhiệm/quy ước/test/status đúng source và giới hạn thực |
+| **NC-10 — Đồng bộ kiến thức trên docs** | P0 docs-first trước refactor; sau đó tiếp tục theo từng slice | Tài liệu + từng tác giả | Kiến trúc/trách nhiệm/quy ước/test/status đúng source và giới hạn thực |
 | **NC-11 — Hồi quy cuối và bàn giao** | Sau các slice đã giao + NC-10 | QA + reviewer độc lập | Ma trận đạt/chưa đạt/chưa chạy, nguồn tái hiện, review và danh sách còn mở |
 
 Luồng chính sau bổ sung: **NC-00 → [NC-01 chẩn đoán + NC-UI-A/B/C review + NC-02 khảo sát] → NC-UI-D chốt nguồn UI/baseline → NC-03 → NC-04 → NC-05 → NC-06 → NC-07 → NC-08 → NC-11**; NC-10 cập nhật tại từng checkpoint. NC-03 có thể soạn sớm nhưng phải rebind theo nguồn UI đã chọn. **Chưa mở refactor NC-04 khi baseline liên quan chưa đáng tin hoặc quyết định nhận/hoãn PR UI còn bỏ ngỏ.** Nếu sửa lỗi NC-01, tách patch sửa lỗi nền khỏi refactor. Nếu chứng minh B03 sửa đúng lỗi cũ, dùng correction đó với regression trên candidate mới; không sửa giao diện cũ rồi viết lại vô ích, cũng không coi thay UI tự làm lỗi cũ biến mất.
@@ -211,7 +220,7 @@ Các lệnh là kế hoạch, **chưa chạy**. Dùng lại dependencies/runner 
 
 ## Giao việc cho phiên tiếp theo
 
-**Nên bắt đầu bằng NC-00**, sau đó NC-01 chẩn đoán song song NC-UI-A/B và NC-02 khảo sát. Ưu tiên xử lý quyết định nhận/hoãn hai PR code UI trước refactor sâu; #11/#12 trước, #13/#14 sau. Không bắt đầu bằng xóa worktree hoặc đổi hàng loạt cấu trúc thư mục.
+**Hướng dẫn lịch sử trước quyết định docs-first:** khi đó đề nghị bắt đầu bằng NC-00, sau đó NC-01 chẩn đoán song song NC-UI-A/B và NC-02 khảo sát. Ưu tiên xử lý quyết định nhận/hoãn hai PR code UI trước refactor sâu; #11/#12 trước, #13/#14 sau. Không bắt đầu bằng xóa worktree hoặc đổi hàng loạt cấu trúc thư mục.
 
 Mẫu mở phiên khảo sát đầu tiên:
 

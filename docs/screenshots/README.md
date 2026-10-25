@@ -1,5 +1,8 @@
 # Screenshots
 
+> Cập nhật điều hướng 25/10/2026: Các chỉ mục current trong thư mục này là bộ ảnh/checklist lịch sử, không đại diện đầy đủ main711a22e. Evidence UI mới nằm trong package được [handoff tích hợp](../workflow/tasks/ui-main-docs-integration-2026-10-25.md) dẫn tới; không coi tên current là đã cập nhật hôm nay.
+
+
 ## Folder Này Chứa Gì
 
 Folder này chỉ giữ chỉ mục Markdown cho screenshot/UI baseline. Nhánh `docs` hiện là docs-only nên không giữ file ảnh binary.

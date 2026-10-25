@@ -1,10 +1,10 @@
 # Data Model
 
-Cập nhật 2026-09-10 theo `main@3ada48c` đã push và nghiệm thu. Phạm vi/SHA/bằng chứng ở [phase 27](implementation-log/phase-27-idempotent-write-operations.md); chưa triển khai migration lên môi trường thật.
+Đối chiếu source `main@711a22e` ngày 25/10/2026; không phải snapshot database đang chạy. Nguồn có migrations 001–017 và SQL trong `supabase/candidate/`; backend activation/acceptance mới vẫn HOLD.
 
-Data model dùng PostgreSQL/Supabase với **15 bảng nghiệp vụ chính**, thiết kế theo store-scoped multi-tenant: hầu hết bảng nghiệp vụ có `store_id`, UUID primary key, `created_at`, `updated_at`, và một số bảng editor có `deleted_at` để xóa mềm.
+Data model dùng PostgreSQL/Supabase với nhóm bảng nghiệp vụ nền và các bảng giao thức/quyền bổ sung, thiết kế theo store-scoped multi-tenant: hầu hết bảng nghiệp vụ có `store_id`, UUID primary key, `created_at`, `updated_at`, và một số bảng editor có `deleted_at` để xóa mềm.
 
-> **Quy tắc dùng cho báo cáo:** file này mô tả trạng thái dữ liệu cuối cùng. Tên migration, tên file SQL và symbol code chỉ là nguồn kiểm chứng nội bộ, không đưa vào báo cáo. Báo cáo tập trung vào ERD, bảng, trường, kiểu dữ liệu, PK/FK, quan hệ, constraint và quy tắc nghiệp vụ.
+> **Quy tắc dùng cho báo cáo:** file này mô tả mô hình trong source; schema đích phải được xác minh riêng. Tên migration, tên file SQL và symbol code chỉ là nguồn kiểm chứng nội bộ, không đưa vào báo cáo. Báo cáo tập trung vào ERD, bảng, trường, kiểu dữ liệu, PK/FK, quan hệ, constraint và quy tắc nghiệp vụ.
 
 ## ERD Rút Gọn
 
@@ -30,7 +30,7 @@ erDiagram
 
 ## Quan Hệ Và Ràng Buộc Chính
 
-- Mỗi bảng nghiệp vụ con mang `store_id`; RLS dùng store Auth user để cô lập tenant.
+- Mỗi bảng nghiệp vụ con mang `store_id`; store Auth xác định tenant; đường đọc/ghi runtime mới dùng RPC permission, không suy quyền SELECT trực tiếp từ mô hình legacy.
 - `store_settings.store_id` là PK/FK nên mỗi store có tối đa một settings row; create-store flow luôn tạo row này, nhưng schema riêng lẻ vẫn cho phép store có 0 settings.
 - `menu_items.category_id` thuộc cùng store; modifier dùng bảng nối nhiều-nhiều `menu_item_option_groups`.
 - `tables` và `floor_decor_items` thuộc một `floor_area`; order dine-in có `table_id`, takeaway để `null`.
@@ -42,7 +42,7 @@ erDiagram
 
 | Enum | Giá trị | Dùng cho |
 | --- | --- | --- |
-| `employee_role` | `admin`, `cashier`, `kitchen` | Quyền nhân viên |
+| Vai trò nhân viên | Catalog `owner`, `manager`, `cashier`, `waiter`, `kitchen` | Candidate chuyển từ enum legacy `admin/cashier/kitchen`; kitchen không bật |
 | `seed_status` | `pending`, `seeded`, `failed` | Trạng thái seed dữ liệu mẫu của store |
 | `option_select_type` | `single`, `multi` | Cách chọn option/topping |
 | `table_shape` | `round`, `square`, `rectangle` | Hình bàn trong floor editor |
@@ -56,21 +56,17 @@ erDiagram
 
 ## Nhóm Store & Settings
 
-- `stores`: store id, số store, email, trạng thái seed, trạng thái active.
-- `store_settings`: tên hiển thị, địa chỉ, currency VND, timezone, footer hóa đơn, QR info.
-- `employees`: nhân viên thuộc store, role, passcode hash, trạng thái active, `permission_overrides` (jsonb nullable — seam phân quyền theo hành động).
+`stores` là cửa hàng; `store_settings` giữ tên, địa chỉ, tiền tệ, timezone và footer. `employees` thuộc cửa hàng, giữ PIN hash và trạng thái; candidate dùng role catalog, revision và cờ bắt đổi PIN owner. Store Key ghép thiết bị, không phải bằng chứng sở hữu đủ cho recovery.
 
-Ý nghĩa:
+| Nhóm quyền/phiên bổ sung | Vai trò |
+| --- | --- |
+| `permission_roles`, `permission_catalog`, `role_permission_defaults`, `permission_catalog_state` | Vai trò, 15 quyền, defaults và revision catalog |
+| `private.employee_sessions` | Token hash, phiên/hạn/thu hồi; không đưa credential vào authority UI |
+| `employee_admin_audit`, `private.employee_admin_requests` | Audit quản trị và registry chống thực hiện lặp |
+| `store_change_signals`, `permission_catalog_signals` | Tín hiệu tối thiểu để invalidate/refresh |
+| `private.initial_seed_workflows`, `private.initial_seed_stages` | Tiến độ seed theo stage, retry có kiểm soát |
 
-- Store Key gồm store number và secret để ghép máy vào store.
-- Tạo store mới mặc định blank (store/settings + 1 admin), `seed_status=seeded`; chỉ seed dữ liệu mẫu khi `CreateStoreInput.seedDemo=true` (checkbox lúc tạo) hoặc khi admin bấm khởi tạo demo trong Cài đặt. Địa chỉ từ form được lưu vào `store_settings.address`.
-- Seed demo upsert theo `id`/`seed_key` và clear `deleted_at`/`deleted_by_employee_id` trên các bảng editor (cashier dùng `is_active`) nên idempotent với `clear_demo_data`.
-- Employee role quyết định default permission và module navigation; override từng nhân viên chỉ thay đổi quyền hành động, không mở thêm module trên nav.
-- UI hiện hành chỉ hỗ trợ `admin` và `cashier`. Giá trị `kitchen` vẫn tồn tại trong enum/database/core như seam tương lai, nhưng bị lọc khỏi màn PIN, Employees Drawer và app navigation.
-- `employees.permission_overrides` là **quyền theo hành động** tách khỏi quyền vào module: shape `{"grants": [...], "denies": [...]}`. Quyền hiệu lực = (default theo role ∪ grants) − denies (denies luôn thắng). Mặc định `null` (mọi người theo role). Employees Drawer chỉnh switch quyền hiệu lực và persist diff tối thiểu; `undefined` trong update DTO nghĩa là không đụng field, `null` nghĩa là xóa override.
-- Catalog runtime hiện có đúng 5 mã được enforce: `order.create`, `order.update`, `order.voidOpen`, `payment.take`, `order.voidPaid`. Mapper Supabase lọc bỏ mã ngoài catalog.
-- Employee session v1 do server cấp sau PIN; token được hash tại `private.employee_sessions`, hết hạn sau 12 giờ. RPC kiểm người gọi từ token và quyền hiện hành; DML sửa nhân viên/PIN/override cần admin đã xác minh. Nguồn: `014_write_identity_and_ledger.sql:162`–`:319`.
-- `store_settings.qr_info` là seam schema cho QR/bank sau này; drawer Payment Settings hiện là preview/local UI, chưa persist field này qua `settingsRepo`.
+Nguồn: [017:4](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/017_permission_catalog_bridge.sql#L4), [identity:13](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L13), [identity:47](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L47). ERD trên chỉ là nhóm nghiệp vụ nền, không phải toàn bộ catalog/quyền/audit. Không áp SQL candidate như migration tự động chỉ vì file nằm trên main.
 
 ## Nhóm Menu
 
@@ -148,32 +144,30 @@ Nguồn: `014_write_identity_and_ledger.sql:162`, `:322`, `:330`, `:355`. Ledger
 
 ## RPC Chính
 
-- `start_employee_session` / `revoke_employee_session`: cấp/thu hồi employee token sau PIN.
-- `bootstrap_store` cùng RPC quản trị nhân viên: tạo admin một lần, seed/cập nhật/reset bằng quyền server phù hợp.
-- `register_write_operation` / `execute_write_operation`: đóng băng ý định, thực hiện tạo/sửa, pay, split, void trong transaction.
-- `get_write_operation`, `list_write_operations`, `cancel_write_operation`: tra cứu và xử lý pending theo quyền hiện hành; list lọc tenant và quyền trước phân trang.
-- `get_write_capabilities`: client chỉ mở ghi khi server hỗ trợ đúng phiên bản.
-- `get_payment_receipt`: in lại receipt của đơn paid hiện tại; void bị chặn, R1 lịch sử vẫn giữ.
-- `clear_demo_data`: admin xác minh, chặn khi còn đơn mở; không xóa ledger/payment/audit.
+Runtime đọc qua các projections theo purpose và ghi qua permission changes/admin hoặc giao thức v1. Xem [hợp đồng read/session/admin](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/ports/permissions.ts#L12), [write contract:71](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/ports/index.ts#L71). Register/execute/get/list/cancel và receipt là các trách nhiệm riêng; không dùng raw table/DML hoặc overload cũ làm fallback.
 
-Nguồn activation/grants: `016_activate_write_protocol.sql`. RPC ghi cũ bị thu hồi mọi overload, helpers private không public. Tên các DTO cũ dưới đây còn phục vụ tương thích source; hợp đồng ghi UI hiện hành nằm trong `src/domain/writeOperations.ts` và port `IWriteOperationRepo`.
+SQL identity, administration, financial, read, changes, images, print, signals, seed và compatibility có trong `supabase/candidate/`. Đây là gói triển khai có gate riêng, không phải bằng chứng hosted đã activate. Các bảng/DTO legacy còn phục vụ regression và chuyển đổi.
 
 ## Domain Types Trong App
 
 - `MenuCatalog`: categories, menuItems, optionGroups, optionValues, menuItemOptionGroups.
 - `FloorPlan`: areas, tables, decorItems.
 - `OrderSummary`/`OrderDetail`: order state, total, table/order type, snapshot items; `OrderDetail.payment` giữ payment snapshot nullable cho đơn đã thanh toán; `OrderDetail` còn có metadata hủy (`voidedAt`, `voidedByEmployeeId`, `voidReasonCode`, `voidReasonNote`).
-- `VoidOrderInput`/`VoidOrderResult`: hủy đơn đã thanh toán (`reasonCode: VoidReasonCode`, `reasonNote`, `expectedVersion`). `EmployeePermission`/`EmployeePermissionOverrides`: seam quyền theo hành động trên `Employee.permissionOverrides`.
+- `VoidOrderInput`/`VoidOrderResult`: hủy đơn đã thanh toán (`reasonCode: VoidReasonCode`, `reasonNote`, `expectedVersion`). `EmployeePermission`/`EmployeePermissionOverrides` là kiểu legacy; runtime mới dùng `PermissionCatalog`, `AuthorityBundle`, `PermissionEmployee` trong `src/domain/permissions.ts:1`.
 - `PayOrderInput`/`PayOrderResult`: payment cash flow và receipt payload.
 - `PayOrderItemsInput`/`PayOrderItemsResult`: instant pay tách đơn (`newOrderId` + `items: {orderItemId, quantity, splitItemId}`), kết quả gồm đơn tách đã paid + trạng thái đơn gốc còn lại.
 - `MenuChanges`/`FloorPlanChanges`: changeset create/update/delete cho editor.
 
 ## Menu Image Storage
 
-- Bucket Supabase Storage: `menu-item-images`.
-- Supabase Storage dùng bucket public, giới hạn 5MB, MIME JPG/PNG/WebP và policy public-read/store-scoped write; database lưu asset key của ảnh món.
-- `menu_items.image_asset_key` lưu asset key theo dạng `menu-item-images/{store_id}/menu-items/{menu_item_id}/{uuid}.{ext}`.
-- Bucket public để POS render ảnh nhanh; upload/update/delete bị giới hạn bằng Storage RLS theo thư mục `auth.uid()`.
-- File hỗ trợ JPG, PNG, WebP, tối đa 5MB; UI chặn file lớn hơn giới hạn này trước khi upload.
-- Detail preview trong Menu Editor giữ ảnh không crop để nhân viên kiểm tra file đã chọn; card món trong Menu Editor và Order Drawer dùng `object-cover` để lấp đầy khung card.
-- Mọi môi trường phải có đồng thời policy Storage phù hợp và cột `menu_items.image_asset_key`.
+Runtime mới stage ảnh qua `menu-image-gateway`, dùng upload handle và finalization được kiểm quyền. Metadata private tách upload và published asset; GET phục vụ ảnh ở `menu-image-public`. Không mô tả public bucket + ghi trực tiếp theo thư mục của adapter legacy là contract runtime mới.
+
+Nguồn: [permissionMenuImagePort.ts:49](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/adapters/supabase/permissionMenuImagePort.ts#L49), [permission-images.sql:21](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-images.sql#L21), [public handler](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/functions/menu-image-public/index.ts#L1). DB và Storage không chung transaction; orphan cleanup, service profiles và nghiệm thu còn đọc theo gate backend, không suy từ mock UI.
+
+## Quyền in hóa đơn
+
+`private.initial_receipt_print_grants` giữ eligibility cho preview initial, riêng với K/R1 bất biến. In lại dùng `receipt.reprint`; quyền đọc và quyền in không đồng nhất. [permission-print.sql:4](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-print.sql#L4).
+
+## Phạm vi nguồn
+
+Chi tiết nghiệp vụ menu/floor/order/payment ở trên kế thừa quyết định đã chốt và được đối chiếu với [domain models](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/domain/models.ts#L1), [financial candidate](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-financial.sql#L1). Những nguồn phase 27 ghi trong từng mục là provenance lịch sử, không xác nhận deployment hiện hành.

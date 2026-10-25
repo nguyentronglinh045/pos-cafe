@@ -1,21 +1,27 @@
-# Lộ Trình Phát Triển
+# Lộ trình phát triển
 
-Cập nhật thực hiện 2026-09-10: chủ dự án đã duyệt và bắt đầu mục chống trùng; code/tests đã nghiệm thu và push `main@3ada48c`, docs phê duyệt đã push `0ecf84d`. Tiến độ và cổng cuối tại [phase 27](implementation-log/phase-27-idempotent-write-operations.md). Không tự suy quỹ giờ mỗi ngày từ việc làm hằng ngày; các mốc dự báo dưới đây chưa phải cam kết mới.
+## Đang ở đâu — 25/10/2026
 
-Thứ tự thực hiện và tiến độ của dự án. Tài liệu này trả lời câu hỏi **làm gì trước, làm gì sau, và đang ở đâu**.
-
-Nó không chép lại quan hệ phụ thuộc giữa các change — phần đó nằm ở mục "Thứ tự phụ thuộc" trong `openspec/README.md` và ở section `## Phụ thuộc` của từng proposal. Ở đây chỉ có trình tự thực hiện, mốc thời gian và trạng thái.
-
-| | |
+| Nhóm | Trạng thái hiện hành |
 | --- | --- |
-| Bắt đầu | 2026-08-28 |
-| Hạn cuối | 2026-12-21 |
-| Ngân sách thời gian | 16 tuần tròn, kết thúc 2026-12-17, còn 4 ngày đệm |
-| Ngân sách tiền | Không có. Mọi dịch vụ phải dùng được ở gói miễn phí |
-| Yêu cầu đầu ra | Code chạy thật dùng được, không phải chỉ phân tích thiết kế |
-| Cập nhật lần cuối | 2026-09-10, chuẩn hóa trình bày và bổ sung mô hình ảnh hưởng lịch; chưa duyệt thay đổi các mốc |
+| Giao thức ghi v1 | Đã có implementation và nghiệm thu lịch sử phase 27; không lấy kết quả đó nhận toàn main mới PASS |
+| Phân quyền | Runtime mới trên main711a22e; backend acceptance/toàn hệ thống còn HOLD; spec/hồ sơ WIP chưa xuất bản đủ |
+| UI B01/B02/B03 | Đã merge; [handoff tích hợp](workflow/tasks/ui-main-docs-integration-2026-10-25.md) giữ checks/source |
+| Chuẩn hóa | **Docs-first:** NC-10 và phần kiểm kê tài liệu của NC-02 làm trước refactor, theo yêu cầu chủ dự án 25/10 |
+| Phát hành | Không mở deploy/migration/live activation trong lượt này |
 
-Dự án đi từ tiểu luận cuối kỳ lên đồ án tốt nghiệp. Hai việc bắt buộc đến từ nhận xét của giảng viên phản biện: kiểm soát việc tạo cửa hàng, và tổ chức lại phân quyền cho đúng một hệ POS vận hành thật.
+## Làm gì tiếp
+
+1. Chuẩn hóa tri thức, trạng thái, nguồn và đường đọc docs; bảo toàn WIP và evidence. [Handoff đang thực hiện](workflow/tasks/docs-normalization-2026-10-25.md).
+2. Hòa giải/xuất bản riêng hồ sơ phân quyền WIP sau khi xác minh đúng source/quyết định; không coi bản proposal cũ là hợp đồng cho code mới.
+3. Tiếp tục NC-02 bản đồ code và NC-03 chốt slice theo [kế hoạch chung](workflow/tasks/post-integration-standardization-plan-2026-10-25.md). Chỉ mở refactor NC-04…08 khi được giao và đủ gate liên quan.
+4. Backend acceptance, deployment, owner/email provisioning, đo tải và lịch báo cáo cần phạm vi/điều kiện riêng. Merge UI không đóng NC-01/NC-11 toàn hệ thống.
+
+Không tự dời hạn đồ án hoặc phân bổ lại quỹ giờ. Lịch gốc ghi bắt đầu 28/08/2026, hạn 21/12/2026, bốn ngày đệm và ngân sách dịch vụ miễn phí; các mốc tuần phía dưới là kế hoạch đã lưu, không phải dự báo hoàn tất cập nhật.
+
+## Hồ sơ kế hoạch và lý do xếp thứ tự
+
+Giữ bảng/lập luận gốc sau đây để truy vết quyết định, gồm hướng mở rộng sau bảo vệ. Những dòng “chưa implement”, số role/quyền hay ngày rollout là trạng thái lúc lập kế hoạch; bảng đầu trang thay chúng cho mục đích điều hướng hiện tại.
 
 ## Quy Ước Trạng Thái
 
@@ -25,11 +31,11 @@ Dự án đi từ tiểu luận cuối kỳ lên đồ án tốt nghiệp. Hai v
 | `[~]` | Đang làm |
 | `[x]` | Đã xong, ghi ngày hoàn thành |
 
-Cập nhật cột trạng thái ngay khi đóng một mục, và sửa dòng "Cập nhật lần cuối" ở trên.
+Các checkbox phía dưới là checkpoint lịch sử tháng 9. Trạng thái mới nằm ở bảng đầu trang; chỉ đổi lịch cam kết khi chủ dự án chốt.
 
 **Quy ước ngày:** tài liệu điều hướng này dùng YYYY-MM-DD, kể cả ngày khi kể lại lịch sử. Lần chuẩn hóa 2026-09-10 chỉ đổi cách ghi, không đổi ngày thực tế hay phân bổ lại lịch. Bản báo cáo/evidence đã đóng băng ở file khác giữ nguyên hình thức gốc.
 
-## Giai Đoạn 1 — Đồ Án Tốt Nghiệp
+## Lịch gốc giai đoạn 1 — không là trạng thái thực hiện hiện nay
 
 Mười mục, làm tuần tự. Thứ tự dưới đây được xếp lại ngày 2026-08-28 sau khi đo chi phí thực tế trên kho mã; lý do ở mục "Vì sao thứ tự này" bên dưới.
 

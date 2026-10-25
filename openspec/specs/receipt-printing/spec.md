@@ -1,5 +1,8 @@
 # In ấn phiếu và hóa đơn
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Gom mọi việc in ấn của hệ thống về một chỗ: phiếu tạm tính và hóa đơn ở luồng thanh toán, in lại hóa đơn ở lịch sử đơn, và phiếu gửi bếp ở luồng gửi đơn. Cả ba dùng chung một cơ chế và chịu chung một giới hạn, nên được phát biểu một lần thay vì lặp ở từng năng lực. Truy vết: FR-10, FR-13.

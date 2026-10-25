@@ -1,5 +1,8 @@
 # Lịch sử đơn hàng
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Cho nhân viên tra cứu các đơn đã kết thúc theo khoảng ngày và bộ lọc, và xem lại chi tiết đã chụp của từng đơn. Việc in lại hóa đơn thuộc `receipt-printing`, việc hủy đơn đã thanh toán thuộc `order-void`. Truy vết: FR-14.

@@ -1,5 +1,8 @@
 # Quản lý nhân viên
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Cho phép quản lý tạo, chỉnh sửa, tạm khóa nhân viên, đặt lại PIN và điều chỉnh quyền hành động của từng người, đồng thời bảo vệ cửa hàng khỏi việc mất quyền quản trị. Truy vết: FR-05.

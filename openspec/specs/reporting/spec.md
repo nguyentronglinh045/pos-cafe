@@ -1,5 +1,8 @@
 # Báo cáo kinh doanh
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Cho quản lý xem doanh thu, sản lượng và các chỉ số vận hành theo ngày kinh doanh, đủ để biết quán bán được bao nhiêu, giờ nào đông và món nào chạy. Truy vết: FR-19.

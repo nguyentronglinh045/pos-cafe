@@ -1,5 +1,8 @@
 # Cài đặt và bảo trì dữ liệu cửa hàng
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Cho quản lý cập nhật thông tin nhận diện của cửa hàng dùng trên hóa đơn, và chủ động khởi tạo lại hoặc xóa bộ dữ liệu mẫu một cách an toàn khi demo hoặc kiểm thử. Truy vết: FR-20.

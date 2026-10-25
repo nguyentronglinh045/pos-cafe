@@ -1,5 +1,8 @@
 # Phiên làm việc của nhân viên
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Xác định nhân viên nào đang vận hành thiết bị POS tại mỗi thời điểm, bằng cách chọn nhân viên và xác minh PIN, để mọi thao tác nghiệp vụ đều gắn được với một người cụ thể. Truy vết: FR-03.

@@ -1,5 +1,8 @@
 # Desktop UI/UX Audit - 2026-06-16
 
+> Kiểm25/10/2026: 26 đường dẫn ảnh/contact sheet `screenshots/*.png` trong bộ ghi chú này không có ở tree docs hiện tại. Các link gốc được giữ trong hồ sơ lịch sử; không có ảnh để xác minh lại từ nhánh này. Dùng [testing hiện hành](../../../../testing.md), không nhận audit tháng6 là bằng chứng UI mới.
+
+
 Scope: local mock mode, desktop viewport 1440x900. This audit is visual/UX only; no UI implementation is included.
 
 ![Desktop audit contact sheet](screenshots/_contact-sheet.png)

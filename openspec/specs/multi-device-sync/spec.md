@@ -1,5 +1,8 @@
 # Đồng bộ đa thiết bị
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Giữ cho nhiều thiết bị POS cùng làm việc trong một quán nhìn thấy cùng một sự thật về bàn, đơn và thực đơn, bằng tín hiệu thời gian thực kết hợp tải lại dữ liệu khi đang có kết nối mạng. Truy vết: FR-21, NFR-05.

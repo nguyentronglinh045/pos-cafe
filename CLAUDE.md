@@ -1,240 +1,58 @@
-<!--
-  BẢN GỐC. File này sống trên nhánh `docs`, worktree `D:/Workspace/pos-cafe-docs`.
-  Quy tắc agent chung ở `docs` từ 2026-09-07; hướng dẫn vận hành công cụ
-  đi cùng code theo ngoại lệ được duyệt ngày 2026-10-19.
-  Bản trên `main` chỉ là con trỏ và không được sửa.
--->
+# Hướng dẫn kỹ thuật POS Cafe
 
-# CLAUDE.md
+Quy tắc agent chung nằm ở [AGENTS.md](AGENTS.md); quy trình thực hiện và review ở [workflow](docs/workflow/README.md); chuẩn đặc tả ở [SPEC-STANDARD](openspec/SPEC-STANDARD.md). File ở code root chỉ là con trỏ. Đối chiếu kỹ thuật ngày 25/10/2026 với `main@711a22e`; xem [điểm vào tài liệu](docs/README.md) trước khi lấy thông tin từ phase log.
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## Dự án và giới hạn
 
-## Project
+POS web tiếng Việt, ưu tiên landscape, online-only, cash-only, browser print. Bếp là seam tương lai. Giữ các giới hạn ở [phase-scope](docs/phase-scope.md); không mở nghiệp vụ mới dưới tên refactor. Có implementation phân quyền và UI mới trên main không đồng nghĩa backend đã nghiệm thu/activate.
 
-`pos-cafe` is a tablet-first, multi-device point-of-sale web app for a single cafe (store pairing + employee PIN login, dine-in floor plan, dine-in/takeaway ordering, cash payment, order history, kitchen seam, basic reports, and admin editors for menu/floor/employees/settings). It is an academic (TLCN) project.
+## Kiến trúc cần giữ
 
-- **UI language is Vietnamese** — keep new user-facing strings and error messages in Vietnamese.
-- **Phase constraints (intentional scope limits):** online-only (no offline), cash-only payment, browser print preview only (no native/ESC-POS printer), kitchen queue is a UI-only seam. These are deliberate; preserve the extension seams rather than removing them.
+- UI → feature hook/flow → port → adapter. Chỉ `src/app/runtimePorts.ts:24` compose adapter. `src/architectureBoundaries.test.ts:121` kiểm hướng import và boundary permission/legacy.
+- Production `src/ports/index.ts:154` gồm permission/write/auth/seed/print; raw repos thuộc `LegacyAppPorts:163` cho regression riêng. Không tái đưa legacy factory vào UI hoặc dùng nó để bypass permission.
+- Catalog 15 quyền và authority đã xác minh là nguồn quyền (`src/core/permissionCatalog.ts:5`, `src/core/permissionAuthority.ts:18`). `core/guards.ts` còn là legacy, không dùng bảng 5 quyền của nó để mô tả runtime mới.
+- UI profile chỉ phục vụ hiển thị; session credential nằm trong adapter, memory-only. Query key gắn store/employee/generation/purpose (`src/features/shared/permissionSession.ts:76`). Response muộn không được khôi phục quyền/dữ liệu của phiên cũ.
+- TanStack Query giữ async state, Zustand giữ UI/nháp. Invalidate/refetch theo purpose; không tự merge payload realtime vào cache. Query live poll5s foreground (`src/features/pos/usePosData.ts:8`); authority lifecycle poll30s/deadline5s (`src/core/permissionLifecycle.ts:47`).
+- Navigation là single URL + screen/drawer state. `src/app/shell/AppShell.tsx:22` đăng ký drawer và cổng quyền; không thêm route/history workflow ngoài phạm vi.
 
-## Documentation knowledge base
+Bản giải thích và lý do lựa chọn ở [architecture](docs/architecture.md); mô hình dữ liệu ở [data-model](docs/data-model.md). Các đường `src/...:line` trong file này đều tương đối với **code checkout main711a22e**, không phải nhánh docs.
 
-There is a **standalone `docs` branch** (not merged into `main`, Markdown only) that is the project's knowledge base — the "why" behind decisions. Read it when you need background that isn't in the code:
+## Giao dịch và seam
 
-```bash
-git show docs:docs/architecture.md      # layers, RPC/transaction boundary, realtime, permissions
-git show docs:docs/data-model.md        # tables, enums, RPC behavior
-git show docs:docs/tech-stack.md        # decision record (why each tech, tradeoffs)
-git show docs:docs/features.md          # per-module feature scope
-git show docs:pos-cafe-context.md       # dense single-file project context
-git ls-tree -r --name-only docs         # full doc index (incl. archive/, implementation-log/)
-```
+- Dùng `IWriteOperationRepo` cho submit/pay/split/void. K/payload bất biến trước execute; retry giữ cùng ý định, R1 là kết quả lịch sử. Không replay tự động khi reconnect; TTL pending không là hạn đơn. `src/features/pos/writeOperationFlow.ts:25`, `src/features/pos/orderFlow.ts:250`.
+- Retained lines giữ IDs/giá/options; phần mới dùng quote hiện tại. OCC dùng expectedVersion; không bỏ vì UI đã chặn double-click.
+- UUID client cho dữ liệu theo contract; editor dùng tombstone, order dùng void/removed. Không hard-delete chỉ để đơn giản hóa sync.
+- snake_case/Supabase DTO chỉ ở adapter, domain dùng camelCase và AppError. Port không chứa React.
+- Floor editor sở hữu layout, không sở hữu trạng thái vận hành bàn. Decor không nhận đơn. Logical stage1600×900.
+- Initial receipt grant nằm ngoài immutable K/R1; mỗi click in kiểm quyền hiện hành. Browser print không có xác nhận giấy; không hồi sinh callback cũ sau revoke/regrant. `src/app/components/ReceiptPreview.tsx:260`.
+- Ảnh món dùng staging/gateway/finalization của runtime permission; decor/nền bàn là asset đóng gói. Không khôi phục upload raw legacy để né guard. `src/adapters/supabase/newPermissionRuntime.ts:16`.
 
-Code is the final source of truth; docs describe verified state and may lag slightly.
+## Môi trường và lệnh
 
-Operator instructions and templates that ship with tooling are versioned beside the tool on `main` (owner decision 2026-10-19). For existing-screen remakes from Stitch, start with `ui-remake/README.md` in the code checkout, or [the published operator workflow](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/README.md). Its templates, palette/font and measurement guide have one canonical copy there. Specs, decisions and verification/review records remain on `docs`; do not duplicate the operator package here.
+`src/app/runtimePorts.ts:16` chọn mock nếu không ép mode và không đủ URL/key; có URL/key thì Supabase. Vì vậy một frontend mở được chưa chứng minh đang nối đúng backend. Không ghi secrets vào docs hoặc evidence.
 
-## Current write protocol (2026-09-10)
+Các lệnh sau đọc từ `package.json:6` ở code source trên, chạy trong code checkout phù hợp:
 
-The approved implementation is described in `docs/implementation-log/phase-27-idempotent-write-operations.md` on this branch. Migrations 014–016 implement employee sessions and write protocol v1; deployment status and final evidence are recorded in that phase log. Use `IWriteOperationRepo` for production order/payment/void flows. Register immutable K/payload before execute; retries preserve them, server recovery is independent of local memory, and terminal R1 is historical. Pending TTL 24h never expires the order. Online only, no automatic replay on reconnect.
+| Lệnh | Mục đích/giới hạn |
+| --- | --- |
+| `npm run dev` | Vite dev server |
+| `npm run build` | TypeScript build + Vite; không là backend gate |
+| `npm test` | Vitest suite theo config; không bao gồm mọi contract/backend/browser |
+| `npm run test:coverage` | Độ phủ theo config, không phải toàn hệ thống |
+| `npm run smoke` | Playwright mock; đọc applicability và skips |
+| `npm run smoke:supabase` | Suite riêng có ghi dữ liệu; chỉ dùng môi trường/phạm vi được giao |
+| `npm run ui-audit:selftest` → `npm run ui-audit` | Selftest detector trước audit app, đọc report và ảnh để phân loại |
+| `test:idempotency:*`, `test:contracts` | Runner chống trùng với source/environment/manifest riêng |
+| `permission:preflight`, `test:permission:t01`…`t07` | Các runner permission riêng, không tự chạy chỉ vì có script |
 
-Retained lines keep source IDs and historical prices/options; additions use current confirmed component prices. Employee tokens stay memory-only for 12h and SQL verifies current permissions. Old write RPC overloads and client financial DML are revoked. Do not restore legacy grants to make an old client work. See `src/adapters/supabase/writeOperationRepo.ts:31`, `014_write_identity_and_ledger.sql:162`, `016_activate_write_protocol.sql:258`.
+Không có lint script riêng trong package hiện tại. Dùng dependencies/browser đã có; trước cài/copy lớn tuân thủ dung lượng máy và thông báo ước tính. Không tự tạo WSL/Docker hoặc dựng backend để xử lý docs.
 
-For isolated integration testing use the dedicated `test:idempotency:*` scripts and `IDEM_ENV_FILE`; never run `smoke:supabase` against a real store as a substitute. Unit, contract, tooling and browser results must match one candidate fingerprint, with no required skip/retry/expected-failure. The native Auth/REST runtime omits Storage API and Realtime.
+Hướng dẫn đi cùng công cụ là nguồn chuẩn trên main: [UI audit](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-audit/README.md), [UI remake](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/README.md). Không tự chạy `ui-audit:update`; baseline defect chỉ được chủ dự án chấp nhận sau phân loại. Thay detector phải chạy selftest; quy trình chi tiết trong AGENTS và operator guide.
 
-## Commands
+## Backend và phát hành
 
-```bash
-npm run dev            # Vite dev server on http://127.0.0.1:5173
-npm run build          # tsc -b && vite build  — this is also the typecheck (no separate lint/typecheck script)
-npm test               # Vitest unit/component tests (run once)
-npm run test:watch     # Vitest watch mode
-npm run smoke          # Playwright smoke tests (mock data mode; auto-starts a dev server)
-npm run smoke:supabase # Playwright E2E against a real Supabase project (needs .env / .env.local)
-npm run ui-audit          # Rendered-UI audit (mock mode; starts its own dev server on 5178)
-npm run ui-audit:selftest # Verify the audit detector itself against ui-audit/demo-buggy.html
-npm run ui-audit:update   # Accept the current findings as the baseline (user decision only)
-```
+Source có migrations001–017 và fragments trong `supabase/candidate/`; activation là quy trình riêng. Không replay migration destructive hoặc apply candidate vào đích thật từ một ví dụ tài liệu. Giữ backend acceptance, migration, live activation và deployment HOLD theo [handoff tích hợp](docs/workflow/tasks/ui-main-docs-integration-2026-10-25.md). Kiểm deploy cần source/version/environment, không suy từ code merge hoặc CI mock.
 
-Run a single unit test:
+## Làm việc và viết tài liệu
 
-```bash
-npx vitest run src/features/pos/orderFlow.test.ts   # one file
-npx vitest run -t "submits order changes"           # by test name (substring)
-```
-
-Run a single smoke project/test:
-
-```bash
-npx playwright test --project=desktop   # one viewport project
-npx playwright test -g "create order"   # by title
-```
-
-There is **no ESLint config**; type safety comes from `tsc` (strict mode) via `npm run build`. The build emits a known Vite chunk-size warning.
-
-## Data mode (mock vs Supabase)
-
-The app runs against either an in-memory mock backend or Supabase, selected at runtime by `src/app/runtimePorts.ts`:
-
-- `VITE_DATA_MODE=mock` → mock adapter (default for dev, all unit tests, and `npm run smoke`).
-- `VITE_DATA_MODE=supabase` (or omitted but `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` present) → Supabase adapter.
-
-Copy `.env.example` to `.env.local` to configure. You can develop the entire UI without Supabase. (Supabase free tier pauses after ~7 days — wake it before a live demo.)
-
-## Architecture
-
-### Ports & Adapters (the core pattern)
-
-Everything above the data layer depends only on the interfaces in `src/ports/index.ts`. `AppPorts` bundles all repository/port interfaces (`auth`, `employee`, `write`, `menu`, `menuImages`, `floorPlan`, `order`, `payment`, `report`, `settings`, `seed`, `print`, `realtime`). Two interchangeable implementations:
-
-- `src/adapters/mock/` — `createMockPorts(state)` over an in-memory `MockState`.
-- `src/adapters/supabase/` — `createSupabasePorts(client)` over Supabase. Reads use `.from(...).select(...)` filtering `deleted_at is null`; writes use `repoShared.ts` helpers (`insertRows`, `updateRow`, `tombstoneRow`) and SQL RPC. `src/adapters/browser/printPort.ts` supplies the real print port here.
-
-Ports are provided through React context (`PortsContext` in `src/features/shared/portsContext.tsx`, wired in `src/app/AppProviders.tsx`) and consumed with `usePorts()`. **Add a backend capability by extending `AppPorts` first, then implementing it in both adapters.** Only `src/app/runtimePorts.ts` is allowed to compose concrete adapters.
-
-### Architecture boundary guard
-
-`src/architectureBoundaries.test.ts` is a Vitest test that walks the source tree with a TypeScript AST import scanner and **fails the test suite on layer violations**. Enforced rules:
-
-- `domain` / `core` / `ports` must not import React, `app`, `features`, or `adapters`.
-- `features` must not import `app` or `adapters`.
-- `adapters` must not import `app` or `features`.
-- Only `src/app/runtimePorts.ts` may import concrete adapters.
-- `src/ports` is interface/type-only; the React ports context lives in `src/features/shared/portsContext.tsx`.
-- `src/seed` is a shared fixture layer used only by the mock adapter and the Supabase seed bundle.
-
-If you move files between layers, run `npm test` — this guard will catch illegal imports.
-
-### State: two distinct stores
-
-- **Server/async state → TanStack Query.** Query keys are centralized (`src/features/shared/queryKeys.ts` `posQueryKeys`, plus per-feature `*QueryKeys.ts`). Defaults: `staleTime: 30s`, `retry: false`. Floor plan, open orders, and order detail also poll with `refetchInterval: 5000` to recover from missed realtime events. Mutations invalidate/refetch by query key — **never patch the cache manually.**
-- **Client/UI state → Zustand** (`src/app/useAppStore.ts`): current `screen`, `currentEmployee`, active area/category, which `drawer` is open, order/payment context, and the in-progress `draftItems` cart.
-
-### Navigation (single URL)
-
-No router. The whole app is one URL; navigation is internal state. Pre-login screens (`landing`, `storePairing`, `createStore`, `passcode`) and the logged-in `drawer` are driven by Zustand and routed in `src/app/App.tsx` → `shell/AppShell.tsx`. Browser back/forward is not a workflow; mutations happen only via explicit buttons. Refresh is safe: not paired → pairing, paired → passcode (current employee is memory-only). Landscape-first; phone portrait shows a rotate-guidance screen.
-
-### Layers
-
-- `src/domain/` — pure types only, no logic. `models.ts` (entities), `inputs.ts` (input DTOs), `changes.ts`. **Changeset pattern:** editor drawers accumulate a `Changeset<Create, Update, Delete>` (with tombstone deletes) and save it in one call; start from `emptyChangeset()` / `createEmpty*Changes()`.
-- `src/core/` — cross-cutting primitives: `appError.ts` (`AppError` + typed `AppErrorCode`, `isAppError`), `guards.ts` (permissions), `money.ts`, `orderDraft.ts`.
-- `src/features/<feature>/` — business logic as **pure flow functions** (`orderFlow.ts`, `adminFlow.ts`, `sessionFlow.ts`, … — the main unit-test targets), **React hooks** wrapping queries/mutations (`usePosData.ts`, `useAdminData.ts`, `useAdminMutations.ts`, `useOrderPaymentFlow.ts`), and **invalidation** modules. Features: `pos`, `admin`, `session`, `integration` (realtime invalidation, dirty-exit guards, UI error mapping).
-- `src/app/` — UI. `shell/` (`AppShell` = `LeftNav` left rail + `FloorWorkspace` + drawers), `drawers/pos/` + `drawers/admin/` (slide-overs rendered by `useAppStore().drawer`), `screens/` (pre-auth), `components/` (shared, incl. portal primitives).
-
-### RPC & transaction boundary
-
-Business-critical mutations use protocol v1 in migrations 014–016. The public endpoints are register/execute/get/list/cancel and capabilities; protected receipt reads use `get_payment_receipt`. Private helpers implement submit, pay, split and void. Every successful execute commits business rows, an audit event and immutable terminal result atomically. Known business errors roll back business effects before persisting rejected; infrastructure failures roll back the entire transaction.
-
-Store-level POS serialization remains, with a consistent K/order/table/numbering/catalog lock order and session/permission/TTL checks after waiting. OCC rejects null/mismatched expectedVersion. Old adapter methods remain for compatibility tests but are not a fallback for UI writes; SQL activation revokes every old overload and financial DML.
-
-### Auth & permissions
-
-Two levels: **store pairing** (Store Key `STORE_NO-SECRET`, e.g. `0001-X8F3QA` → `StoreSession`, secret never persisted raw) then **employee PIN** → `currentEmployee` with a role.
-
-- Permission lives in `src/core/guards.ts`: `canAccessModule(employee, module)` and `requireModuleAccess(...)` (throws `AppError("FORBIDDEN", …)`), backed by a `role → modules` map. Roles: `admin` (all), `cashier` (floor/order/payment/orderHistory), `kitchen` (kitchen seam). Admin-only flows also call `requireAdminActor(...)` in `adminFlow.ts` — never rely on a disabled button alone.
-- **Security boundary:** store Auth/RLS scopes tenant reads; employee session v1 proves the actor for protected writes, with live permission checks and financial/identity bypass revoked. SELECT remains store-scoped. Do not claim owner provisioning, PIN brute-force controls or complete per-employee read authorization.
-
-### Concurrency
-
-Orders and payments use optimistic locking: callers pass `expectedVersion`; the server returns a new `lockVersion`; a mismatch surfaces as `ORDER_VERSION_CONFLICT`, and the UI refetches. If another device closes/pays an order while a drawer is open, the order-detail refetch flips the UI to a closed/disabled state.
-
-### Floor plan editor
-
-Tables and decor live on a logical stage of **1600×900**, scaled to fit (see `src/app/components/ScaledFloorStage.tsx` and `src/app/floorStage.ts`). Drag/resize mutate the DOM directly via refs + `requestAnimationFrame` and only **commit a draft on pointerup**. The floor editor edits layout only and must **not** overwrite `table.status` (status is owned by the order/payment flow). Decor items render only — they never take orders and have no status.
-
-### UI overlay primitives
-
-Popups/modals use `PortalPopup`; drawers use `PortalDrawer` (`src/app/components/`, both `createPortal` internally). Drawers open in a workspace viewport behind `LeftNav` (desktop offset 176px, compact 68px), with an `rgba(0,0,0,0.2)` overlay, click-overlay-to-close, and a placement-based slide-in.
-
-### Styling
-
-Tailwind is primary, using custom `pos-*` color tokens backed by CSS variables and `rounded-pos` (`tailwind.config.ts` + the `posCafeStyles` plugin in `tailwind.posCafeStyles`). MUI provides the theme, `CssBaseline`, and some controls; `react-hot-toast` handles toasts. A test guards against legacy CSS classes — prefer Tailwind utilities/tokens over new CSS files.
-
-## Non-negotiable rules (offline-extension seams)
-
-These keep the door open for a future offline-first adapter; violating them breaks the seam:
-
-1. Generate UUIDs **on the client** (not via Postgres defaults).
-2. **No hard deletes** for sync/editor data — tombstone with `deleted_at` + `deleted_by_employee_id`; orders are voided (`status=void`), order items are removed (`status=removed`). Queries default to `deleted_at is null`.
-3. **Supabase/snake_case types never leak into core** — only adapters know them; adapters map to camelCase domain DTOs and map errors to `AppError`.
-4. Realtime is centralized in `IRealtimePort` / `useRealtimeInvalidation` and is **signal-only** (invalidate/refetch), never manual cache merging.
-5. Order/payment must use `lock_version` / `expectedVersion`.
-
-## Testing conventions
-
-- Unit/component tests are colocated as `*.test.ts(x)`, run under Vitest (jsdom, globals on, `@/` → `src/` alias, setup in `src/test/setup.ts`).
-- **Flow functions** are tested directly against `createMockPorts(createMockState())`.
-- **Component tests** render the component (often `App`) inside a `PortsContext.Provider` (mock ports, `vi.spyOn` on the relevant repo) plus a fresh `QueryClient`, then drive UI state via `useAppStore.setState(...)`; reset the Zustand store in `afterEach`.
-- Smoke tests: `tests/smoke/` (Playwright, mock mode, 5 viewport projects incl. a portrait "rotate" case). Supabase E2E: `tests/supabase/`.
-
-### Rendered-UI audit (`ui-audit/`, added 2026-09-16)
-
-A deterministic detector for defects that only exist after the browser has laid
-the page out, and that neither Vitest nor the smoke suite can see: a control
-covered by a transparent overlay, an icon that renders 0x0 because its font never
-loaded, `undefined` or `[object Object]` reaching the screen, a tap target under
-24px, text clipped with no ellipsis, an element past the viewport, contrast below
-WCAG AA. It measures the live DOM (`getBoundingClientRect`, `getComputedStyle`,
-`elementFromPoint`). No model in the loop and no screenshot diffing, so the same
-page always produces the same output and the result can gate CI.
-
-- `ui-audit/audit.js` — the detector, injected into the page via `addInitScript`.
-  Vendored from an external kit; see `ui-audit/UPSTREAM-README.md` for the
-  original 18-rule table.
-- `ui-audit/run.mjs` — the Playwright runner.
-- `ui-audit/config.json` — targets, viewports, thresholds, exclusions.
-- `ui-audit/README.md`, `ui-audit/AGENTS.md` — usage and the rules agents follow.
-
-**Targets are states, not routes.** Because the app has a single URL (see
-*Navigation*), `config.json` declares named states reached by a short list of
-Playwright steps, with `extends` so the login sequence is written once. `@foo` in
-a step is shorthand for `[data-testid="foo"]`. Each state runs in a fresh browser
-context, because store pairing persists in `localStorage` and a reused context
-would make every state after the first order-dependent. The mock fixtures are the
-same ones `tests/smoke` uses (store key `0001-X8F3QA`, admin PIN `123456`).
-Current states: `landing`, `store-pairing`, `passcode`, `floor`, `order-drawer`,
-`order-cart`, `menu-editor`, `report`. Adding a screen means adding a block to
-`config.json`, not changing code.
-
-**Three deliberate deviations from the upstream detector**, each commented in
-`audit.js`, each measured against this app:
-
-1. *Scope to the topmost viewport-covering fixed layer.* With a drawer open every
-   control behind it is covered, so `hit-blocked` and `overlapping-controls` fired
-   on the whole background. This alone took the first run from 70 findings to 13.
-2. *Skip fixed, click-through, viewport-sized containers.* That structural
-   signature is what `react-hot-toast` renders; a toast drifting past made
-   `hit-blocked` depend on how fast the run went.
-3. *Skip the contrast check when the backdrop is a gradient.* The report drawer's
-   teal cards have a transparent `background-color`, so the old code walked up to
-   a white ancestor and reported false contrast failures. `low-contrast` went from
-   13 to 3.
-
-`run.mjs` also collapses findings that differ only by `:nth-of-type(N)` and
-normalises React `useId` ids, so one repeated defect is one baseline line and the
-baseline survives seed-data changes and unrelated re-renders.
-
-A finding is keyed by state + viewport + rule + selector, never by pixels.
-`baseline.json` is the accepted set and is committed; `report.json`, `report.md`
-and `out/` are generated and git-ignored. Exit code 1 means a finding appeared
-that is not in the baseline.
-
-The runner uses `chromium` from the existing `@playwright/test` dependency. Do not
-add a separate `playwright` package — two Playwright versions would drift apart.
-
-## Supabase backend
-
-SQL lives in `supabase/migrations/`. Apply to a real environment only in an authorized deployment window. On 2026-09-13 the owner confirmed applying phase 27 migrations 014–016; read-only MCP checks matched 45 function bodies and inspected key grants. On 2026-09-14 GitHub/Vercel Production metadata and byte-identical public JS/CSS verified the frontend release at code `8ed7418`; live business-flow verification remains unconfirmed. See `docs/implementation-log/phase-27-live-mcp-check-2026-09-13.md`, `phase-27-timeout-followup-2026-09-14.md` in the same directory, and the rollout log. Historical migration roles: `001` schema+enums, `002` indexes+RLS+triggers, `003` RPC functions, `004` realtime publication, `005`–`006` menu item image storage + asset key, `007` full data wipe (pre-modifier-rework), `008` shared-modifier rework, `009` partial payment (superseded), `010` instant-pay split-order (replaces `009`, redefines the order/payment RPCs). Multi-tenant by `store_id` with RLS. `business_date` is computed from the store's timezone (not the device clock); `order_no` is unique per `(store_id, business_date)`. Reports are computed from paid orders only (void excluded), filtered by `business_date`.
-
-## Conventions
-
-- Import via the `@/` alias (→ `src/`), configured in `vite.config.ts`, `vitest.config.ts`, and `tsconfig.app.json`.
-- Throw `AppError` with a specific `AppErrorCode` for expected failures; map them to user-facing toasts via `src/app/appErrors.ts` / `src/features/integration/uiError.ts`.
-- Seed demo logins: admin PIN `123456`, cashier PIN `111111`.
-
-## Spec standard and assistant role
-
-This project treats the assistant as a **requirements analyst**: read the code, question the user until requirements are unambiguous, write the spec, and implement only when explicitly asked.
-
-Every change needs seven artifacts, not four: `proposal.md`, `specs/`, `design.md`, `usecases.md`, `testplan.md`, `traceability.md`, `tasks.md`.
-
-The authority is `openspec/SPEC-STANDARD.md` on the `docs` branch (worktree at `D:/Workspace/pos-cafe-docs`). Read it before writing or extending any spec. `AGENTS.md` carries a summary.
+Đọc [task index](docs/workflow/tasks/README.md), đối chiếu nguồn rồi làm đúng phần đã được giao. Chưa rõ nghiệp vụ/quyền/dữ liệu/nghiệm thu thì hỏi phần phụ thuộc và tiếp tục phần độc lập. Chỉ sửa app khi được yêu cầu; review độc lập trước bàn giao. Giữ kết quả thực chạy ở [testing](docs/testing.md)/hồ sơ task, không sao chép counts vào hướng dẫn kỹ thuật này.

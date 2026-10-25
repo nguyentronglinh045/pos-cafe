@@ -1,5 +1,8 @@
 # Quản lý thực đơn
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Cho quản lý dựng và duy trì thực đơn của quán gồm danh mục, món, ảnh món và thư viện nhóm tùy chọn dùng chung, với mô hình lưu quan hệ và cơ chế lưu theo tập thay đổi. Truy vết: FR-16.

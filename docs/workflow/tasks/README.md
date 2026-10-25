@@ -1,4 +1,15 @@
-# Chỉ mục bàn giao workflow
+# Chỉ mục công việc
+
+## Đang theo dõi
+
+- [Chuẩn hóa docs — 25/10/2026](docs-normalization-2026-10-25.md): ưu tiên trước refactor; chỉnh tri thức/điều hướng, giữ WIP và evidence.
+- [Kế hoạch chuẩn hóa sau tích hợp](post-integration-standardization-plan-2026-10-25.md): NC-10 + phần docs của NC-02 đi trước; NC-04…08 chưa mở.
+- [Tích hợp UI B01–B03](ui-main-docs-integration-2026-10-25.md): đã merge bốn PR, source main711a22e; backend/deploy HOLD.
+
+## Hồ sơ các checkpoint trước
+
+Các dòng bên dưới là ghi nhận tác giả tại ngày lập. Dòng “chưa merge/draft” của B03 không thay trạng thái tích hợp25/10 ở trên. Muốn tiếp tục task, đọc phần hiện hành của handoff thay vì lấy dòng index lịch sử làm quyền thực hiện.
+
 
 - [Tích hợp UI B01–B03 vào main/docs, branch cleanup — 25/10/2026](ui-main-docs-integration-2026-10-25.md) — đã merge đủ bốn PR và xóa bốn source branches local+remote; deployment/backend hold giữ nguyên. Hai cache còn do bộ duyệt tự động từ chối xóa.
 - [Kế hoạch chuẩn hóa sau tích hợp — rebind theo main711a22e](post-integration-standardization-plan-2026-10-25.md).

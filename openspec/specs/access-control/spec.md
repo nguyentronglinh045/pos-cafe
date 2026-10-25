@@ -1,5 +1,8 @@
 # Kiểm soát truy cập theo vai trò và quyền
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Giới hạn nhân viên chỉ thấy và làm được đúng phần công việc của mình, qua hai trục độc lập: quyền truy cập module theo vai trò, và quyền thực hiện hành động có thể ghi đè theo từng nhân viên. Truy vết: FR-04.

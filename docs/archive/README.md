@@ -2,7 +2,7 @@
 
 ## Folder Này Chứa Gì
 
-Archive chứa tài liệu cũ, audit, handoff và spec chi tiết theo lịch sử làm việc. Đây là nơi truy vết, không phải entrypoint chính cho người mới. Nhánh `docs` hiện chỉ giữ Markdown, nên ảnh/prototype HTML lịch sử đã được loại khỏi branch.
+Archive chứa tài liệu cũ, audit, handoff và spec chi tiết theo lịch sử làm việc. Đây là nơi truy vết, không phải entrypoint chính cho người mới. Một số ảnh/prototype lịch sử từng được loại khỏi branch; đường dẫn vắng phải ghi rõ, không giả là ảnh hiện hành. Nhánh docs hiện còn evidence nhị phân có source ở các package khác.
 
 ## Khi Nào Nên Đọc
 

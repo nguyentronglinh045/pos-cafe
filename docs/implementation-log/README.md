@@ -6,7 +6,7 @@ Folder này ghi nhật ký implement theo phase. Mục tiêu là track nhanh nh�
 
 ## Baseline Hiện Hành
 
-- Current truth bổ sung ngày **2026-09-10** theo `main@3ada48c`; các audit nền cũ có ngày riêng trong phase log.
+- Nguồn hiện hành: [tổng quan](../project-overview.md), [kiểm chứng](../testing.md), [tích hợp UI25/10](../workflow/tasks/ui-main-docs-integration-2026-10-25.md). Các phase bên dưới giữ nguồn/ngày riêng, không là baseline chung.
 - Phase log là evidence lịch sử tại checkpoint. Test failure, TODO hoặc giới hạn trong phase cũ có thể đã được phase sau supersede; dùng root docs và [../testing.md](../testing.md) để kết luận trạng thái hiện tại.
 - Không đổi chữ “pass/fail” lịch sử thành current truth. Khi cần làm rõ, thêm ghi chú “đã được phase sau supersede”.
 - Tên file, symbol, commit, migration và lệnh trong phase log chỉ phục vụ truy vết kỹ thuật. AI viết báo cáo phải chuyển chúng thành mô tả mục tiêu, cách tiếp cận, quyết định và kết quả; không sao chép artefact triển khai vào nội dung chính.

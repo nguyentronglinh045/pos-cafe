@@ -1,5 +1,8 @@
 ## ADDED Requirements
 
+> Bản xuất bản lịch sử, chưa phải bộ phân quyền đầy đủ đang dùng để đối chiếu main711a22e. WIP đã phát triển riêng ở checkout gốc; xem [trạng thái và nguồn](https://github.com/nguyentronglinh045/pos-cafe/blob/docs/openspec/README.md). Không dùng các placeholder hoặc catalog14/kế toán ở bản này để tuyên bố nghiệm thu runtime15.
+
+
 ### Requirement: Bộ vai trò dựng sẵn
 
 Hệ thống SHALL cung cấp một bộ vai trò dựng sẵn, lưu ở tầng dữ liệu chứ không phải hằng số cứng trong mã nguồn: `owner`, `manager`, `cashier`, `waiter`, `accountant` và `kitchen`. Chủ quán MUST NOT tạo được vai trò mới ngoài bộ này. Mỗi cửa hàng MUST có đúng một nhân viên vai trò `owner`. Vai trò `kitchen` SHALL tiếp tục không xuất hiện trên giao diện cho tới khi có tính năng hàng đợi bếp.

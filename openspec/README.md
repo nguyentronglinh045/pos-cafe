@@ -1,12 +1,26 @@
 # OpenSpec cho pos-cafe
 
+## Trạng thái đọc ngày 25/10/2026
+
+| Nhóm | Cách dùng |
+| --- | --- |
+| `specs/` | 16 capability baseline; đọc nguồn/thời điểm, không tự nhận khớp runtime permission mới |
+| `add-idempotent-write-operations` | Bộ đầy đủ, quyết định/acceptance lịch sử phase27; kết quả mới đọc [testing](../docs/testing.md) |
+| `redesign-permission-model` | Remote còn bản cũ 14 quyền/có kế toán và placeholders; main có catalog15/bốn role bật. Bộ WIP đầy đủ ở checkout gốc chưa xuất bản; không sửa requirement theo code để giả khớp |
+| `add-owner-account-and-store-provisioning` | Có khung bảy loại nhưng các phần còn placeholder; role owner trong main không chứng minh email provisioning đã làm |
+| `remake-b01`, `remake-b02`, `remake-b03`, `week03-b01-b02` | Giữ bộ spec/decision của tác giả; trạng thái merge mới ở [handoff25/10](../docs/workflow/tasks/ui-main-docs-integration-2026-10-25.md) |
+| `add-stitch-ui-remake-workflow` | Đủ sáu loại cho tooling; proposal nêu rõ ngoại lệ usecases |
+| 26 change còn lại | Proposal khảo sát, chưa có design/spec/test/traceability/tasks đầy đủ; không tạo khung giả chỉ để báo đủ file |
+
+[Chuẩn bắt buộc](SPEC-STANDARD.md) vẫn giữ bảy loại artifact và ngoại lệ đã định. Chỉ làm sâu khi phần việc tới lượt. Inventory là kiểm sự hiện diện, không xác nhận chất lượng/coverage requirement. [Hồ sơ chỉnh lý và WIP](../docs/workflow/tasks/docs-normalization-2026-10-25.md).
+
 ## Workflow remake UI Stitch — 19/10/2026
 
 [add-stitch-ui-remake-workflow](changes/add-stitch-ui-remake-workflow/proposal.md) đóng gói quy trình dùng chung Codex/Claude và công cụ đo, paletteA v1/BeVietnamPro/landscape568×320CSSpx. Đây là tooling, không phải triển khai UI sản phẩm; [workflow](../docs/workflow/stitch-ui-remake/README.md) và [testplan](changes/add-stitch-ui-remake-workflow/testplan.md) tách measurement khỏi nghiệm thu ứng dụng.
 
 ## Cập nhật bộ chống trùng ngày 2026-09-10
 
-[add-idempotent-write-operations](changes/add-idempotent-write-operations/proposal.md) có **bảy loại artifact / 13 file Markdown**, gồm 33 requirement, 12 use case, 93 testcase gốc và các ma trận biến thể. [Testplan](changes/add-idempotent-write-operations/testplan.md) ghi expected trước code; [đối chiếu review ngoài](../docs/reviews/2026-09-07-idempotency/15-doi-chieu-review-ngoai-va-bien-tap.md) ghi các đính chính sau mốc ba reviewer. Chủ dự án đã duyệt triển khai ngày 2026-09-10; docs đã push `0ecf84d`. Code `main@3ada48c` và tests đã nghiệm thu tại [phase 27](../docs/implementation-log/phase-27-idempotent-write-operations.md), đã push code sau khi đủ gate; chưa deploy migration thật. Ước lượng 76,5 + 2n giờ là dự báo công sức; không có quỹ giờ tuần cố định.
+[add-idempotent-write-operations](changes/add-idempotent-write-operations/proposal.md) có **bảy loại artifact / 13 file Markdown**, gồm 33 requirement, 12 use case, 93 testcase gốc và các ma trận biến thể. [Testplan](changes/add-idempotent-write-operations/testplan.md) ghi expected trước code; [đối chiếu review ngoài](../docs/reviews/2026-09-07-idempotency/15-doi-chieu-review-ngoai-va-bien-tap.md) ghi các đính chính sau mốc ba reviewer. Chủ dự án đã duyệt triển khai ngày 2026-09-10; docs đã push `0ecf84d`. Code `main@3ada48c` và tests đã nghiệm thu tại [phase 27](../docs/implementation-log/phase-27-idempotent-write-operations.md), đã push code sau khi đủ gate; trạng thái chưa deploy ở mốc10/09 là lịch sử; xem [kết quả14/09](../docs/implementation-log/phase-27-timeout-followup-2026-09-14.md), không suy source hiện tại đã phát hành. Ước lượng 76,5 + 2n giờ là dự báo công sức; không có quỹ giờ tuần cố định.
 
 Thư mục này là nơi quản lý spec của dự án. Nó chỉ tồn tại trên nhánh `docs`; nhánh `main` cố ý không có.
 
@@ -28,8 +42,8 @@ Slash command `/opsx:propose`, `/opsx:apply`, `/opsx:archive` chỉ nạp khi m�
 
 ## Hai thư mục
 
-- `specs/` là **hiện trạng**: hệ thống đang làm được gì, tại thời điểm này. Backfill từ `docs/requirements.md` (FR-01 tới FR-21, NFR-01 tới NFR-08) và `docs/features.md`.
-- `changes/` là **đề xuất**: việc muốn làm nhưng chưa làm. Khi một change được hoàn thành và archive, phần delta của nó được nhập vào `specs/`.
+- `specs/` là baseline đặc tả đã backfill và các delta đã archive; **chưa đồng bộ đầy đủ main711a22e**. Dùng cùng trạng thái change và source, không coi toàn thư mục là contract runtime mới.
+- `changes/` gồm proposal khảo sát, change đang thực hiện và bộ chưa archive dù đã có code. Sự hiện diện trong thư mục không có nghĩa “chưa làm” hoặc “đã đủ để triển khai”.
 
 `specs/` hiện có 16 năng lực. Ngày 2026-08-28 đã tách hai năng lực mới ra khỏi các spec cũ, không đổi một chữ nào trong nội dung requirement nên hiện trạng hệ thống giữ nguyên:
 
@@ -124,4 +138,4 @@ Tóm tắt: mỗi change cần bảy file thay vì bốn. Ba file bổ sung là 
 
 `define-test-strategy` là change đầu tiên viết trọn theo chuẩn này và đóng vai **khuôn mẫu** — cần biết một file nên trông như thế nào thì mở change đó ra xem.
 
-Hai change viết trước ngày 2026-09-07 là `redesign-permission-model` và `add-owner-account-and-store-provisioning` đã có khung ba file mới nhưng để trống, sẽ điền khi bắt đầu thực hiện.
+Trong bản đã xuất bản, hai change viết trước ngày 2026-09-07 là `redesign-permission-model` và `add-owner-account-and-store-provisioning` đã có khung ba file mới nhưng để trống, sẽ điền khi bắt đầu thực hiện.

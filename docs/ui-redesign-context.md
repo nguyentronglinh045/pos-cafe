@@ -1,5 +1,8 @@
 # UI Redesign Context
 
+> Cập nhật điều hướng 25/10/2026: B01/B02/B03 đã tích hợp vào main711a22e. Đây là nguyên tắc/context thiết kế, không phải backlog yêu cầu remake lại. Dùng [operator workflow trên main](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/README.md) và [screens](screens.md) cho runtime hiện hành.
+
+
 File này là context gọn để đưa cho Gemini/Stitch hoặc agent UI trước khi tạo ảnh/mockup/code UI mới. Mục tiêu là redesign thẩm mỹ và UX, không đổi backend trước.
 
 ## Mục Tiêu
@@ -37,7 +40,7 @@ File này là context gọn để đưa cho Gemini/Stitch hoặc agent UI trư�
 
 ## Screenshot Checklist
 
-Nhánh `docs` không giữ ảnh binary. Khi cần artefact/mockup mới, chụp lại các màn được liệt kê ở [screenshots/current/](screenshots/current/) và ưu tiên:
+Nhánh docs có giữ một số ảnh/JSON/trace làm evidence có source; không đưa output mới vào mặc định. Khi cần artefact/mockup mới, chụp lại các màn được liệt kê ở [screenshots/current/](screenshots/current/) và ưu tiên:
 
 - `07-pos-floor-view.png`
 - `08-order-drawer-new-draft.png`

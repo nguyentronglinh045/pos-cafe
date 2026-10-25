@@ -2,16 +2,16 @@
 
 File này là technical decision record rút gọn. Mỗi quyết định nêu rõ dùng gì, vì sao chọn, không chọn gì, đánh đổi và cách giảm rủi ro.
 
-## Baseline Phiên Bản 2026-07-30
+## Phiên bản nguồn ngày 25/10/2026
 
-Phiên bản major dùng trong code/report nên ghi theo baseline `main@c7f2f4e`; patch/minor chính xác nằm trong `package-lock.json`.
+Đối chiếu `package-lock.json` tại main711a22e; các lựa chọn/lý do bên dưới là hồ sơ quyết định, không phải benchmark mới. Chi tiết runtime permission đọc ở [architecture](architecture.md), thay mô tả legacy trong các phase cũ.
 
-| Nhóm | Phiên bản đang khóa cục bộ |
+| Nhóm | Phiên bản khóa trong source |
 | --- | --- |
-| Runtime/build | React 18.3, Vite 8.0, TypeScript 5.9 |
-| Data/state | Supabase JS 2.108, TanStack Query 5.101, Zustand 4.5 |
-| UI | MUI 5.18, Tailwind 3.4, Recharts 2.15, react-hot-toast 2.6, Lucide 0.468 |
-| Test | Vitest 4.1, Playwright 1.60, Testing Library React 15 |
+| Runtime/build | React 18.3.1, Vite 8.0.16, TypeScript 5.9.3 |
+| Data/state | Supabase JS 2.108.1, TanStack Query 5.101.0, Zustand 4.5.7 |
+| UI | MUI 5.18.0, Tailwind 3.4.19, Recharts 2.15.4, react-hot-toast 2.6.0, Lucide 0.468.0 |
+| Test | Vitest 4.1.11, Playwright 1.60.0, Testing Library React 15.0.7 |
 
 Vite 8 yêu cầu Node `^20.19.0 || >=22.12.0`; môi trường build/deploy phải thỏa engine này.
 
@@ -115,7 +115,7 @@ Vite 8 yêu cầu Node `^20.19.0 || >=22.12.0`; môi trường build/deploy ph�
 - **Đánh đổi:** E2E tốn thời gian hơn unit test và cần data/test mode ổn định.
 - **Giảm rủi ro:** tách `npm run test`, `npm run smoke`, `npm run smoke:supabase`.
 - **Liên quan tới tiểu luận:** có bằng chứng kiểm thử từ logic tới flow demo.
-- **Validation local gần nhất (2026-08-21, `main@c7f2f4e`):** 49 files/260 tests pass và build pass. Mock smoke 34 pass/31 skipped/0 failed là kết quả 2026-08-12, chưa chạy lại. Cloud E2E có ngày chạy riêng; xem [testing.md](testing.md) để không trộn môi trường.
+- **Kết quả kiểm chứng:** xem [testing.md](testing.md); không sao chép số baseline lịch sử vào decision record.
 
 ## 10. Browser Print Preview
 
@@ -153,6 +153,6 @@ Vite 8 yêu cầu Node `^20.19.0 || >=22.12.0`; môi trường build/deploy ph�
 - **Vercel contract:** `npm ci` → `npm run build` → publish `dist`; SPA rewrite mọi path về `index.html`.
 - **Runtime env:** `VITE_DATA_MODE=supabase`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
 - **Fallback quan trọng:** khi không ép Supabase mode hoặc thiếu env, `runtimePorts` có thể dùng mock seeded. Vì vậy mở được deployment chưa đủ chứng minh đang nối cloud; phải kiểm tra mode/env và data thật.
-- **Backend prerequisite:** chỉ với database mới/trống, bootstrap migration 001–013 theo thứ tự rồi cấu hình Storage/realtime/Auth. Với database đã có dữ liệu, kiểm tra migration history và chỉ apply forward migration chưa có; **không replay migration 007** vì file này `truncate stores cascade` và không phải đường upgrade an toàn.
+- **Backend prerequisite:** source main711a22e có migrations001–017 và candidate fragments với gate activation riêng. Recipe001–013 cũ không đủ cho runtime mới; không replay migration007 hoặc apply candidate vào đích từ trang này. Xem [data-model](data-model.md) và handoff được giao.
 - **Đánh đổi:** deploy nhanh và chi phí thấp, nhưng phụ thuộc trạng thái Supabase/Vercel và cấu hình env.
 - **Mức claim hiện tại:** repository **deployment-ready/configured**. Chỉ claim deployment live đã xác minh khi có URL, commit/version và ngày kiểm tra cụ thể.

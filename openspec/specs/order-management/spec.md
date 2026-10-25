@@ -1,5 +1,8 @@
 # Quản lý đơn hàng
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Cho nhân viên tạo và chỉnh sửa đơn tại bàn hoặc đơn mang đi, chọn món kèm tùy chọn dùng chung, và gửi đơn với giá được chốt phía database tại thời điểm gửi. Phiếu gửi bếp sinh ra khi gửi đơn thuộc năng lực `receipt-printing`. Truy vết: FR-07, FR-08, FR-09.

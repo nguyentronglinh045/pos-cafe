@@ -1,6 +1,30 @@
-# Testing & Verification
+# Kiểm thử và kiểm chứng
 
-Tài liệu này gom bằng chứng kiểm thử hiện hành để dùng trong báo cáo. Kết quả phải được đọc cùng **baseline, ngày chạy và môi trường**; không suy rộng local mock thành cloud production.
+Đây là nơi tổng hợp kết quả theo **source + ngày + môi trường**. [Chiến lược](test-strategy.md) quy định cách kiểm; [workflow](workflow/README.md) quy định review/bàn giao. Trang này không biến kết quả cũ thành lần chạy mới.
+
+## Nguồn tích hợp UI — 25/10/2026
+
+Main `711a22e71983e3d6aa17799649af05ce4c762555` có tree bằng candidate B03 `cf8e304869ad0e92c491736790f59bff1b6f9dcc`. Đây là đối chiếu tree, **không có lần chạy test mới trên merge SHA** trong lượt docs.
+
+| Kiểm | Nguồn và kết quả đã ghi |
+| --- | --- |
+| Build, unit, browser local | cf8e304: build PASS; 1.201 unit / 113 files PASS; 26 browser PASS |
+| Full mock smoke | cf8e304: 44 PASS / 37 skip theo applicability; map normalizer mới PASS81, không tăng skip |
+| Rendered UI | cf8e304: 48/48 COMPLETE, 0 findings; strict counts 48 PASS / 0 fail / 0 skip |
+| Detector/policy | 24 tool tests; selftest 23 findings/14 rules/16 controls; policy 2 PASS; 64 canonical pins khớp |
+| Required CI trước merge | PR13 pull_request PASS trên synthetic `aadae07397db20012d9786141ec71f2195081831`, head cf8e304; push PASS trên cf8e304 |
+| Backend/toàn hệ thống | Không nghiệm thu trong gói này; T04, bảy profiles và supplemental obligations giữ HOLD |
+| Thiết bị thật/deploy | Hardware/browser zoom/printer chưa kiểm; không deploy/migration/live activation |
+
+[Handoff nguồn và lệnh/evidence](workflow/tasks/ui-main-docs-integration-2026-10-25.md), [review](implementation-log/ui-main-docs-integration-review-2026-10-25.md). Không cộng số B01/B02 cũ hoặc phase 27 vào tổng cf8e304. Raw local tại đường dẫn trong handoff không tự là artifact đã xuất bản.
+
+## Kiểm tài liệu — 25/10/2026
+
+Chỉnh lý docs dùng đối chiếu source, kiểm file/link/anchor, inventory OpenSpec và review độc lập. Kết quả và giới hạn ở [hồ sơ chỉnh lý](workflow/tasks/docs-normalization-2026-10-25.md). Không chạy app suite, dựng backend hay dispatch CI cho sửa tài liệu.
+
+## Kết quả lịch sử
+
+Các phần dưới giữ nguyên số liệu/môi trường tại ngày chạy. Mốc PASS/NOT_RUN cũ không đại diện baseline source hiện tại; recipe runtime cũ cần kiểm điều kiện máy trước tái lập, không tự cài WSL/Docker.
 
 ## Nghiệm thu giao thức chống trùng — 2026-09-10
 

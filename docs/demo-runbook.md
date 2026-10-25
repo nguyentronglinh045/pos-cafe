@@ -1,12 +1,15 @@
 # Demo Runbook
 
+> Cập nhật điều hướng 25/10/2026: Runbook thao tác được giữ để chuẩn bị demo. Với main711a22e, chọn role theo catalog; owner mới phải đổi PIN tạm trước POS. Chỉ chạy trên môi trường/fixture được giao; tạo quán/seed/thu tiền có ghi dữ liệu. Kết quả chạy cũ không chứng minh source mới; xem [testing](testing.md).
+
+
 Runbook này dùng để chuẩn bị demo/bảo vệ phase tiểu luận.
 
 ## Flow Demo Chính
 
 1. Mở app ở landscape.
 2. Nếu chưa paired, tạo store mới hoặc ghép Store Key.
-3. Vào passcode, chọn admin/cashier và nhập PIN.
+3. Vào passcode, chọn nhân viên có quyền cần cho demo và nhập PIN.
 4. Ở floor view, chọn khu/tầng, mở một bàn trống.
 5. Tạo order dine-in: chọn món, option/topping, chỉnh số lượng/ghi chú, gửi đơn.
 6. Quay lại floor, thấy bàn chuyển sang đang phục vụ.

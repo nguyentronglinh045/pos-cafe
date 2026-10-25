@@ -1,5 +1,8 @@
 # Vận hành sơ đồ bàn
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Cho nhân viên nhìn thấy tình trạng thực tế của quán trên sơ đồ bàn trực quan theo khu, biết bàn nào đang trống và bàn nào đang phục vụ, để mở đơn đúng bàn. Truy vết: FR-06.

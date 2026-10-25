@@ -1,5 +1,8 @@
 # Cô lập dữ liệu giữa các cửa hàng
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Bảo đảm dữ liệu của mỗi cửa hàng chỉ truy cập được bởi chính cửa hàng đó, để nhiều quán dùng chung một hệ thống mà không nhìn thấy dữ liệu của nhau. Truy vết: NFR-02.

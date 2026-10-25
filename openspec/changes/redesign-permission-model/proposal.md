@@ -1,5 +1,8 @@
 # Thiết kế lại mô hình phân quyền người dùng
 
+> Bản xuất bản lịch sử, chưa phải bộ phân quyền đầy đủ đang dùng để đối chiếu main711a22e. WIP đã phát triển riêng ở checkout gốc; xem [trạng thái và nguồn](https://github.com/nguyentronglinh045/pos-cafe/blob/docs/openspec/README.md). Không dùng các placeholder hoặc catalog14/kế toán ở bản này để tuyên bố nghiệm thu runtime15.
+
+
 ## Why
 
 Mô hình quyền hiện tại đủ cho phạm vi tiểu luận nhưng sẽ vỡ khi các tính năng mở rộng vào. Cụ thể: chỉ có 5 quyền hành động được enforce (`order.create`, `order.update`, `order.voidOpen`, `payment.take`, `order.voidPaid`), trong khi `docs/features.md` đã liệt kê sẵn một danh mục quyền chưa dùng gồm chuyển và gộp bàn, hoàn tiền, áp giảm giá, ghi đè giá, mở ngăn kéo tiền và các quyền ca làm việc. Vai trò là enum cứng gồm `admin`, `cashier` và `kitchen`, không tạo được vai trò tùy chỉnh. Quản trị thực đơn, sơ đồ, nhân viên, cài đặt và báo cáo vẫn chỉ chặn theo vai trò chứ chưa chỉnh được theo từng người. Ngoài ra client giữ ảnh chụp quyền tại thời điểm đăng nhập nên đổi quyền phải đăng nhập lại mới có hiệu lực đầy đủ trên máy đang mở.

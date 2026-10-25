@@ -1,5 +1,8 @@
 # Khởi tạo và ghép cửa hàng
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Cho phép người dùng tạo một cửa hàng mới hoặc ghép thiết bị vào cửa hàng đã có bằng Store Key, để mọi thiết bị POS cùng làm việc trên đúng một cửa hàng. Truy vết: FR-01, FR-02.

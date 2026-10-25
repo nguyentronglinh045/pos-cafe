@@ -1,38 +1,27 @@
 # Features
 
-Cập nhật 2026-09-10 theo `main@3ada48c` đã push và nghiệm thu. Phạm vi/SHA/bằng chứng ở [phase 27](implementation-log/phase-27-idempotent-write-operations.md); chưa triển khai migration lên môi trường thật.
+Đối chiếu `main@711a22e` ngày 25/10/2026. “Có trên main” mô tả implementation, không phải nghiệm thu hoặc phát hành. [Testing](testing.md) giữ kết quả theo source; [giới hạn](limitations.md) giữ backend/deploy HOLD.
 
 ## Store & Session
 
-- Tạo store mới với tên hiển thị, địa chỉ (tùy chọn), Store Key và Admin PIN.
-- Mặc định store tạo ra là **trống** (chỉ store/settings + 1 admin). Màn tạo store có checkbox "Khởi tạo sẵn dữ liệu mẫu" (mặc định tắt); chỉ khi tick mới seed bộ demo gọn (vài category/món, 1 khu + vài bàn, 1 cashier demo).
-- Nếu seed demo lỗi, store vẫn vào được app; màn kết quả hiện cảnh báo + nút thử lại (cũng seed lại được trong Cài đặt).
-- Ghép store bằng Store Key (màn pairing không prefill key mẫu, chỉ dùng làm placeholder).
-- Lưu session store ở client adapter.
-- Nhập PIN để server cấp phiên nhân viên 12 giờ, token chỉ trong bộ nhớ. Reload/khóa quay về nhập PIN; server xác minh quyền hiện hành. Nguồn: `014_write_identity_and_ledger.sql:179`, `src/adapters/supabase/employeeRepo.ts:13`.
-- Khóa phiên nhân viên để quay lại passcode.
+Ghép thiết bị bằng Store Key, chọn nhân viên và nhập PIN để cấp phiên. Token nhân viên không nằm trong UI state; reload/khóa yêu cầu xác minh lại. Tạo quán mới có lựa chọn seed demo; owner nhận PIN tạm và phải đổi trước khi dùng POS. Seed có workflow/stages và retry riêng, không coi seed lỗi là mất cửa hàng. Chưa có email ownership/recovery hoàn chỉnh.
+
+Nguồn: [session contracts:17](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/ports/permissions.ts#L17), [PasscodeScreen:42](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/screens/PasscodeScreen.tsx#L42), [candidate bootstrap:498](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L498).
 
 ## Role & Permission
 
-- `admin`: dùng toàn bộ POS và admin modules hiện hành.
-- `cashier`: dùng floor, order, payment, order history.
-- `kitchen`: chỉ còn enum/schema/core scaffold cho tương lai; không xuất hiện trong nav, drawer registry, màn PIN hoặc form tạo/sửa nhân viên hiện tại.
-- UI disable/guard module không có quyền; core guard vẫn kiểm tra ở action quan trọng.
-- Có 2 trục quyền độc lập trong `core/guards.ts`: **module** (`canAccessModule` — thấy gì trên nav) và **hành động** (`hasPermission`/`requirePermission` — được làm gì). Quyền hành động mặc định suy từ role, có thể ghi đè per-employee qua `Employee.permissionOverrides` (grants/denies) — nên hai nhân viên cùng role vẫn có thể khác quyền.
-- 5 quyền runtime đang được enforce:
+Catalog có 15 quyền; vai trò bật là owner, manager, cashier, waiter; kitchen tắt. Role chọn trong editor là manager/cashier/waiter. Quyền hiệu lực đến từ catalog + overrides, không từ bảng role/module hardcode cũ.
 
-  | Quyền | Admin | Cashier | Kitchen (future seam) |
-  | --- | --- | --- | --- |
-  | `order.create` | Có | Có | Không |
-  | `order.update` | Có | Có | Không |
-  | `order.voidOpen` | Có | Có | Không |
-  | `payment.take` | Có | Có | Không |
-  | `order.voidPaid` | Có | Không | Không |
+| Nhóm | Quyền |
+| --- | --- |
+| Vận hành | `floor.view`, `order.create`, `order.update`, `order.voidOpen`, `payment.take` |
+| Lịch sử và in | `orderHistory.view`, `order.voidPaid`, `receipt.reprint` |
+| Quản trị | `menu.manage`, `floor.manage`, `employee.manage`, `employee.permission.edit`, `report.view`, `settings.manage` |
+| Dữ liệu mẫu | `data.clearDemo` — owner-only |
 
-- Employees Drawer cho admin bật/tắt quyền hiệu lực từng người. Đổi role reset về default role; lưu quyền đúng default sẽ xóa override. Client giữ snapshot cả role/quyền của nhân viên hiện hành, nên thay đổi trên UI phản ánh đầy đủ sau khi khóa/đăng nhập lại; RPC đọc override live.
-- UI quản lý nhân viên hiện chỉ cho chọn `admin` hoặc `cashier`; row `kitchen` cũ trong database được ẩn khỏi danh sách cho đến khi feature bếp được triển khai.
-- Flow tạo/sửa/hủy đơn mở, full/split payment và hủy đơn paid đều gọi `requirePermission`; Order/Payment Drawer disable nút sớm khi thiếu quyền; giao thức v1 xác minh employee token và quyền tại server, thu hồi RPC ghi cũ.
-- **Catalog production, chưa phải quyền runtime:** chuyển/gộp bàn; refund; `discount.apply`; `price.override`; `drawer.open`; mở/chốt ca và kiểm két (`shift.*`). Các mã này chỉ là hướng mở rộng, chưa nằm trong `EmployeePermission` và không xuất hiện trong editor vì chưa có tính năng đứng sau. Quản trị menu/sơ đồ/nhân viên/cài đặt/report hiện vẫn theo module + role, chưa chỉnh per-employee.
+`floor.view` là baseline cho role được bật. Mở màn, đọc dữ liệu và thực hiện thao tác là các kiểm tra riêng theo purpose; có quyền báo cáo không tự có chi tiết lịch sử. UI không hiện thao tác mất quyền và che phần bảo vệ khi authority chưa xác minh. SQL candidate bảo vệ server; **nghiệm thu backend vẫn chưa đóng**.
+
+Nguồn: [permissionCatalog.ts:5](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/core/permissionCatalog.ts#L5), [permissionUi.ts:5](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/permissionUi.ts#L5), [read contract:59](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/ports/permissions.ts#L59).
 
 ## POS Floor
 
@@ -113,13 +102,9 @@ Nguồn: `src/features/pos/writeOperationFlow.ts:25`, `:84`, `src/features/pos/o
 
 ## Employees
 
-- Layout hai pane: danh bạ nhân viên ở trái, hồ sơ/chỉnh sửa ở phải; tự chọn nhân viên đầu tiên sau khi tải.
-- Lọc bằng chip có số lượng: Tất cả, Quản lý, Thu ngân, Tạm khoá. Employee inactive vẫn truy cập được qua danh sách/filter để mở lại.
-- Tạo nhân viên.
-- Sửa tên/role/trạng thái đăng nhập trong cùng form; reset PIN inline khi cần.
-- Chỉnh quyền thao tác theo từng nhân viên đã tồn tại bằng switch; có action trở về mặc định vai trò và persist grants/denies tối thiểu.
-- Dirty confirm khi chuyển nhân viên/tạo mới trong lúc form chưa lưu.
-- Bảo vệ rule còn ít nhất một admin hoạt động, kể cả khi hạ role admin cuối; không cho tự tạm khoá tài khoản đang đăng nhập; cảnh báo khi admin sửa role/quyền chính mình vì client cần đăng nhập lại để nhận snapshot mới.
+Màn nhân viên tách quyền quản lý hồ sơ và sửa quyền. Role/permission lựa chọn lấy từ catalog; owner được bảo vệ, không tạo owner hoặc kitchen qua editor. Có tạo/sửa nhân viên, reset PIN, overrides và version/revision để phát hiện thay đổi cạnh tranh. Không dùng quy tắc “admin cuối” của legacy thay hợp đồng owner mới.
+
+Nguồn: [EmployeesDrawer.tsx:150](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/drawers/admin/EmployeesDrawer.tsx#L150), [request/response và mã lỗi](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/domain/permissions.ts#L99). Dirty-exit cần phân biệt theo màn, không tuyên bố mọi drawer đã có cùng mức bảo vệ; xem [giới hạn](limitations.md).
 
 ## Menu Editor
 
@@ -154,42 +139,32 @@ Nguồn: `src/features/pos/writeOperationFlow.ts:25`, `:84`, `src/features/pos/o
 - Doanh thu, số đơn đã thanh toán, average ticket, top item.
 - Biểu đồ doanh thu theo giờ.
 - Report chỉ tính order đã thanh toán và loại order hủy. Đơn `paid` bị hủy tự động rời khỏi doanh thu (report tính live, không có bảng tổng hợp).
-- Tổng hợp đơn hủy cho admin/chủ: `CoreReport.voidCount`/`voidAmount` đếm các đơn **paid-rồi-hủy** theo `business_date`; hiển thị ở rail trái (số đơn huỷ + tiền hủy). Nguồn lấy từ CoreReport chứ không đếm từ mảng orders phân trang.
+- Tổng hợp đơn hủy cho người có quyền báo cáo: `CoreReport.voidCount`/`voidAmount` đếm các đơn **paid-rồi-hủy** theo `business_date`; hiển thị ở rail trái (số đơn huỷ + tiền hủy). Nguồn lấy từ CoreReport chứ không đếm từ mảng orders phân trang.
 - Bộ lọc khoảng: Hôm nay / 7 ngày / Tháng này / Tuỳ chọn (from–to). Nút Xuất hiện disabled (chưa hỗ trợ export).
 - Layout dashboard **master/detail** (phase 12): rail trái = thẻ doanh thu + sparkline theo giờ, nav mục báo cáo (có badge) và tóm tắt nhanh (giờ cao điểm, thanh toán phổ biến, đơn huỷ); pane phải = chi tiết mục đang chọn. 4 mục: Tổng quan (KPI tile + biểu đồ giờ + món bán chạy), Theo giờ (bảng), Món bán chạy (bar-list), Đơn đã thanh toán (bảng).
 - Look mô phỏng Tremor nhưng dựng bằng Tailwind `pos-*` + Recharts, không thêm dependency.
 
 ## Settings & Maintenance
 
-- Sửa tên hiển thị, địa chỉ, footer hóa đơn, timezone.
-- Preview thông tin hóa đơn.
-- Khởi tạo dữ liệu mẫu (seed demo) ngay trong Cài đặt → Bảo trì dữ liệu, chỉ admin dùng; tiện cho demo nhanh hoặc dev/test trên store trống.
-- Clear/đặt lại dữ liệu mẫu theo seed bundle, chỉ admin dùng.
-- Clear demo bị block khi còn order mở để tránh mất dữ liệu đang bán.
-- Seed demo idempotent: chạy lại sau khi clear sẽ hồi sinh đúng các row mẫu đã xóa mềm (clear `deleted_at`), không tạo trùng.
+Thông tin quán phục vụ hiển thị/hóa đơn được đọc bằng purpose display, khác quyền quản lý settings. Settings và dữ liệu mẫu đi qua permission changes; đổi múi giờ và clear demo có ràng buộc owner phía server. Clear demo không là reset toàn bộ giao dịch, ledger hay audit.
+
+Nguồn: [permission changes contract](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/ports/permissionChanges.ts#L1), [candidate changes](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-changes.sql#L1), [display query](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/features/pos/usePosData.ts#L8).
 
 ## Seam: Có Code Nhưng CHƯA Dùng Trên UI
 
-Các mục dưới đây **đã có code, schema hoặc hỗ trợ ở tầng dữ liệu, nhưng người dùng không có đường nào chạm tới từ giao diện**. Chúng KHÔNG phải chức năng hiện hành và không được liệt kê như tính năng trong báo cáo. Trạng thái xác minh ngày 2026-08-21 trên `main@c7f2f4e`.
+| Phần chưa là tính năng vận hành đầy đủ | Giới hạn |
+| --- | --- |
+| Bếp | Chỉ phiếu preview; kitchen không bật, không có queue vận hành trong shell |
+| Thanh toán ngoài tiền mặt | Không có xử lý provider/callback/đối soát; QR settings là preview cục bộ |
+| Máy in POS | Browser print/preview, không có adapter ESC/POS |
+| Tìm/lọc lịch sử theo bàn | Contract dữ liệu có trường nhưng chưa có control tương ứng trên màn lịch sử |
+| Export báo cáo | Chưa có luồng xuất tệp hoạt động |
+| Discount/refund/kho/loyalty/ca | Ngoài phạm vi đã triển khai; schema hoặc proposal không đủ để tính là feature |
 
-| Seam | Có gì trong code | Vì sao chưa dùng trên UI |
-| --- | --- | --- |
-| Kitchen queue và role bếp | Enum `kitchen` trong schema/domain, `KitchenQueueDrawer` scaffold | Không đăng ký trong `DRAWER_REGISTRY`, bị ẩn khỏi nav, màn PIN và form tạo/sửa nhân viên. Chốt future-only từ phase 22 |
-| Tìm kiếm trong lịch sử đơn | `OrderHistoryFilter.search`; cả mock repo và Supabase repo đều lọc được | Ô tìm kiếm đã bị gỡ khỏi `OrderHistoryDrawer` ở `main@c7f2f4e`. Không còn entry point |
-| Lọc lịch sử theo bàn | `OrderHistoryFilter.tableIds`; cả hai adapter đều lọc được | Chưa từng có control nào trên giao diện truyền tham số này |
-| Giảm giá trên đơn | Cột `orders.discount_type` và `orders.discount_value` | RPC luôn ghi đè `'none'`/0 và đặt `total := subtotal`. Không có tham chiếu nào trong `src`. Là chỗ chừa sẵn cho khuyến mãi sau này |
-| Thông tin QR thanh toán | `store_settings.qr_info` trong schema; `PaymentSettingsDrawer` có ô nhập và preview | Giá trị chỉ nằm trong state cục bộ của màn, không đi qua `settingsRepo`. Tải lại trang là mất |
-| Phương thức thanh toán ngoài tiền mặt | Danh sách phương thức dựng để mở rộng | Thẻ, chuyển khoản và QR hiển thị ở trạng thái vô hiệu hóa để không bị hiểu nhầm là đã xử lý thật |
-| Khóa cửa hàng theo giấy phép | `stores.is_active` được ghi khi tạo cửa hàng | Không nơi nào đọc lại để chặn truy cập; RLS và RPC không kiểm tra cột này. Chỉ là khái niệm ở tầng ứng dụng |
-| In qua thiết bị | `IPrintPort.renderOrderTicket` và `renderReceipt` được `orderFlow` gọi thật | `BrowserPrintPort` chủ ý no-op. Việc in thực tế do lớp UI `ReceiptPreview` làm bằng popup và lệnh in của trình duyệt. Không có tích hợp máy in nhiệt |
-| Xuất báo cáo ra tệp | Nút `Xuất` có trong màn báo cáo | Luôn ở trạng thái `disabled`; chưa có logic sinh tệp |
-| Ngăn kéo drawer theo workspace | `PortalDrawer` nhận option viewport 176px/68px | Mọi drawer production đều dùng full-screen; option này không được truyền ở đâu |
-
-Quy tắc khi viết báo cáo: mô tả các mục này ở chương hạn chế và hướng phát triển, dùng đúng chữ **chưa dùng trên UI** hoặc **chưa có entry point**, không dùng chữ "đã hỗ trợ" hay "đã có".
+Nguồn UI: [shell registry:22](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/shell/AppShell.tsx#L22), [PaymentSettingsDrawer:1](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/drawers/admin/PaymentSettingsDrawer.tsx#L1), [OrderHistoryDrawer:1](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/drawers/admin/OrderHistoryDrawer.tsx#L1), [ReportDrawer:1](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/drawers/admin/ReportDrawer.tsx#L1). Giữ các điểm mở rộng; không xóa chỉ vì chưa có UI.
 
 ## Shared UI Behavior
 
-- Popup/modal dùng `PortalPopup`; drawer dùng `PortalDrawer`.
-- Popup/modal dùng overlay full-screen để modal xác nhận che toàn bộ app shell khi cần.
-- Drawer có overlay mờ `rgba(0,0,0,0.2)`, click overlay để đóng và slide-in theo placement khi mở.
-- Drawer mặc định dùng full-screen viewport và che cả `LeftNav`; popup xác nhận cũng full-screen khi cần chặn toàn app.
+B01 sơ đồ, B02 gọi món và B03 thanh toán đã merge; shell dùng theme chung và cổng authority. Đọc [screens](screens.md) cho bản đồ màn; [handoff tích hợp](workflow/tasks/ui-main-docs-integration-2026-10-25.md) cho source, kiểm và giới hạn. Mô tả thao tác ở trên giữ ý nghĩa nghiệp vụ; ảnh/bố cục phase cũ không đại diện giao diện mới.
+
+Nguồn nghiệp vụ đang dùng: [orderFlow.ts:250](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/features/pos/orderFlow.ts#L250), [PaymentDrawer.tsx:1](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/drawers/pos/PaymentDrawer.tsx#L1). Các tham chiếu phase 18/27 trong phần nghiệp vụ là lịch sử quyết định, không phải phép kiểm mới.

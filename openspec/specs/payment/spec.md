@@ -1,5 +1,8 @@
 # Thanh toán
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Cho thu ngân thu tiền mặt cho cả đơn hoặc cho một phần món theo mô hình instant pay tách đơn, và tính tiền thối. Việc in phiếu tạm tính và hóa đơn thuộc năng lực `receipt-printing`. Truy vết: FR-11, FR-12.

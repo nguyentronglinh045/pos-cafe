@@ -1,5 +1,8 @@
 # Use case
 
+> Bản xuất bản lịch sử, chưa phải bộ phân quyền đầy đủ đang dùng để đối chiếu main711a22e. WIP đã phát triển riêng ở checkout gốc; xem [trạng thái và nguồn](https://github.com/nguyentronglinh045/pos-cafe/blob/docs/openspec/README.md). Không dùng các placeholder hoặc catalog14/kế toán ở bản này để tuyên bố nghiệm thu runtime15.
+
+
 > **Chưa viết.** File này được tạo khung ngày 2026-09-07 khi chuẩn bảy artifact
 > (`openspec/SPEC-STANDARD.md`) được áp cho toàn dự án. Change này đã có
 > `proposal.md`, `specs/`, `design.md` và `tasks.md` viết theo chuẩn cũ bốn file.

@@ -1,5 +1,8 @@
 # Trình soạn sơ đồ mặt bằng
 
+> Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
+
+
 ## Purpose
 
 Cho quản lý dựng sơ đồ mặt bằng trực quan của quán gồm khu, bàn và vật trang trí, đặt vị trí bằng thao tác kéo thả, và chọn ảnh nền bàn cùng ảnh trang trí từ thư viện dựng sẵn. Truy vết: FR-17, FR-18.
