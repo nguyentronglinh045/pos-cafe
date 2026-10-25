@@ -1,5 +1,7 @@
-import { AlertTriangle, CreditCard } from "lucide-react";
-import clsx from "clsx";
+import { RemakeThemeProvider } from "@/theme/RemakeThemeProvider";
+import "./orderRemake.css";
+import { useOrderDialogFocus } from "./useOrderDialogFocus";
+import { AlertTriangle } from "lucide-react";
 import { Button } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
@@ -38,6 +40,7 @@ import { clearDrawerExitGuard, registerDrawerExitGuard } from "../../drawerNavig
 
 export function OrderDrawer() {
   const closeDrawer = useAppStore((state) => state.closeDrawer);
+  useOrderDialogFocus('[data-testid="order-drawer"]', closeDrawer);
   const openPayment = useAppStore((state) => state.openPayment);
   const context = useAppStore((state) => state.orderContext);
   const captureView = useViewLifetime(context);
@@ -192,124 +195,32 @@ export function OrderDrawer() {
 
   const orderTypeLabel = context?.orderType === "takeaway" ? "Mang đi" : `Bàn ${table?.name ?? "?"}`;
   const titleLabel = orderDetail ? `${orderTypeLabel} · Đơn #${orderDetail.orderNo}` : `${orderTypeLabel} · Đơn mới`;
+  const orderStatusLabel = orderDetail?.status === "paid" ? "Đã thanh toán"
+    : orderDetail?.status === "void" ? "Đã hủy" : orderDetail ? "Đã gửi" : "Chưa gửi";
 
-  return (
-    <PortalDrawer testId="order-drawer" onOutsideClick={handleClose}>
-      <WriteAttemptNotice onApplied={() => {
-        // Retry confirms the frozen submission. Consume its draft without replaying
-        // the initial-success kitchen preview or using historical R1 as current data.
-        clearDrawerExitGuard();
-        setDraftItems([]);
-        closeDrawer();
-      }} />
-      {remoteConflict && <div role="alert" className="m-3 rounded border border-amber-400 p-3"><p>Đơn đã thay đổi trên server. Phần đang chỉnh sửa vẫn được giữ để bạn kiểm tra.</p><Button onClick={() => {
-        acceptCurrent();
-        coordinator.leave();
-      }}>Bỏ bản đang sửa và dùng đơn trên server</Button></div>}
-      {priceChanged && <PriceChangedNotice priceChanged={priceChanged} draftItems={draftItems} menu={menu} setDraftItems={setDraftItems} onReviewed={() => { submitMutation.reset(); coordinator.leave(); }} />}
-      {pendingNavigation && <DiscardDraftDialog onKeep={() => setPendingNavigation(null)} onDiscard={() => { const navigate = pendingNavigation; setPendingNavigation(null); navigate(); }} />}
-
-      <header className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-pos-line bg-white/95 px-[18px] py-3 max-[980px]:min-h-[50px] max-[980px]:gap-x-2.5 max-[980px]:gap-y-2 max-[980px]:px-2.5 max-[980px]:py-2">
-        <div className="min-w-0 flex-[1_1_240px] grid gap-1 [&_h1]:m-0 [&_h1]:leading-[1.15] [&_h1]:tracking-normal [&_h2]:m-0 [&_h2]:leading-[1.15] [&_h2]:tracking-normal [&_h3]:m-0 [&_h3]:leading-[1.15] [&_h3]:tracking-normal [&_p]:mb-0 [&_p]:mt-1 [&_p]:overflow-hidden [&_p]:text-ellipsis [&_p]:whitespace-nowrap [&_p]:text-xs [&_p]:text-pos-muted max-sm:[&_h1]:text-[17px] max-sm:[&_h2]:text-[15px] max-sm:[&_h3]:text-[15px] [&_h2]:overflow-hidden [&_h2]:text-ellipsis [&_h2]:whitespace-nowrap [&_h3]:overflow-hidden [&_h3]:text-ellipsis [&_h3]:whitespace-nowrap">
-          <h2>{titleLabel}</h2>
-          <p>
-            <span className={clsx("inline-block rounded px-1.5 py-px text-[11px] font-bold", context?.orderType === "takeaway" ? "bg-[#ede9fe] text-[#7c3aed]" : "bg-pos-primarySoft text-pos-primary")}>
-              {context?.orderType === "takeaway" ? "Mang đi" : "Tại bàn"}
-            </span>
-            {" · "}
-            {orderDetail?.status === "paid" ? "Đã thanh toán" : orderDetail ? "Đã gửi" : "Chưa gửi"}
-            {" · "}
-            <span className="mr-1 inline-block h-[7px] w-[7px] align-middle rounded-full bg-[#22c55e]" />
-            online
-          </p>
-        </div>
-        <div className="flex min-w-0 flex-[0_1_auto] flex-wrap items-center justify-end gap-2.5 [&>*]:shrink-0 [&_.MuiButton-root]:min-h-9 [&_.MuiButton-root]:whitespace-nowrap max-sm:w-full max-sm:justify-start max-sm:[&_.MuiButton-root]:flex-[1_1_128px] max-[980px]:gap-2 max-[980px]:[&_.MuiButton-root]:min-h-[34px]">
-          <Button variant="outlined" data-testid="order-close-button" onClick={handleClose}>
-            Đóng
-          </Button>
-          {canPay && orderDetail && draftChanged && primaryAction !== "closed" && (
-            <Button variant="outlined" startIcon={<CreditCard size={16} />} disabled>
-              Thanh toán
-            </Button>
-          )}
-          {canVoidOpen && orderDetail && draftItems.length > 0 && <Button color="error" variant="outlined" disabled={blocked || submitMutation.isPending} data-testid="clear-open-order" onClick={() => setDraftItems([])}>Hủy đơn mở</Button>}
-          {!permissionDenied && <Button
-            variant="contained"
-            data-testid="submit-order-button"
-            disabled={primaryDisabledWithPermission}
-            onClick={runPrimaryAction}
-          >
-            {primaryActionLabel}
-          </Button>}
-        </div>
+  return <RemakeThemeProvider>
+    <PortalDrawer testId="order-drawer" onOutsideClick={handleClose} panelClassName="b02-remake" overlayColor="var(--drawer-overlay)">
+      <header className="order-header" data-testid="b02-header" aria-label={titleLabel}>
+        <div className="heading"><h1>{`Gọi món — ${orderTypeLabel}`}</h1><p><span className="badge"><span className="dot"/>{context?.orderType === "takeaway" ? "Mang đi" : `${floorPlanQuery.data?.areas.find(area => area.id === table?.areaId)?.name ? floorPlanQuery.data.areas.find(area => area.id === table?.areaId)!.name + " · " : ""}Tại bàn`}</span><span>{orderDetail ? `Đơn #${orderDetail.orderNo}` : "Đơn mới"} · {orderStatusLabel}</span></p></div>
+        <div className="header-actions"><button className="close" data-testid="order-close-button" onClick={handleClose}>Đóng</button>{canPay && orderDetail && draftChanged && primaryAction !== "closed" && <button className="payment-locked" disabled>Thanh toán</button>}{canVoidOpen && orderDetail && draftItems.length > 0 && <Button color="error" variant="outlined" disabled={blocked || submitMutation.isPending} data-testid="clear-open-order" onClick={() => setDraftItems([])}>Hủy đơn mở</Button>}{!permissionDenied && <button className="primary" data-testid="submit-order-button" disabled={primaryDisabledWithPermission} onClick={runPrimaryAction}><span>{primaryActionLabel}</span></button>}</div>
       </header>
-
-      <div className="min-h-0 overflow-auto bg-pos-bg p-3 max-[980px]:p-2">
-        {orderQuery.isError && (
-          <div className="mx-3.5 mt-2.5 flex items-center gap-2.5 rounded-pos border border-[#fbbf24] bg-[#fffbeb] px-3 py-2.5 text-[#92400e] [&_.MuiButton-root]:ml-auto [&_.MuiButton-root]:shrink-0 [&_p]:mb-0 [&_p]:mt-0.5 [&_p]:text-[13px] [&_p]:text-[#92400e]" data-testid="order-error-state">
-            <AlertTriangle size={18} />
-            <div>
-              <strong>Không tải được đơn hiện tại</strong>
-              <p>{toToastError(orderQuery.error)}</p>
-            </div>
-            <Button size="small" variant="outlined" onClick={() => void orderQuery.refetch()}>
-              Thử lại
-            </Button>
-          </div>
-        )}
-        {primaryAction === "closed" && (
-          <div className="mx-3.5 mt-2.5 flex items-center gap-2.5 rounded-pos border border-[#fbbf24] bg-[#fffbeb] px-3 py-2.5 text-[#92400e] [&_.MuiButton-root]:ml-auto [&_.MuiButton-root]:shrink-0 [&_p]:mb-0 [&_p]:mt-0.5 [&_p]:text-[13px] [&_p]:text-[#92400e]" data-testid="order-closed-state">
-            <AlertTriangle size={18} />
-            <div>
-              <strong>Đơn đã được cập nhật</strong>
-              <p>Thiết bị khác đã thanh toán hoặc đóng đơn này. Quay lại sơ đồ để xem trạng thái mới nhất.</p>
-            </div>
-          </div>
-        )}
-        <fieldset disabled={blocked} className="m-0 grid h-full min-h-0 min-w-[620px] grid-cols-[minmax(300px,1fr)_minmax(280px,360px)] gap-2.5 border-0 p-0">
-          {canEdit ? <OrderMenuPane
-            categories={menu?.categories}
-            items={items}
-            categoryId={categoryId}
-            search={search}
-            isLoading={menuQuery.isLoading}
-            isError={menuQuery.isError}
-            error={menuQuery.error}
-            getMenuImageUrl={(assetKey) => ports.permission!.menuImages.getImageUrl(assetKey)}
-            onSelectCategory={(selectedCategoryId) => {
-              setActiveCategoryId(selectedCategoryId);
-              setSearch("");
-            }}
-            onSearchChange={setSearch}
-            onRetry={() => void menuQuery.refetch()}
-            onAddItem={picker.requestAdd}
-          /> : <div className="p-4 text-pos-muted">Các món đã lưu trong đơn. Quyền hiện tại không cho phép sửa món.</div>}
-          <OrderCartPane
-            cartLines={cartLines}
-            draftItems={draftItems}
-            noteOpenId={noteOpenId}
-            total={total}
-            showPaymentHint={!!orderDetail && draftChanged && primaryAction !== "closed"}
-            primaryDisabled={primaryDisabledWithPermission}
-            primaryVisible={!permissionDenied}
-            canEdit={canEdit}
-            primaryActionLabel={primaryActionLabel}
-            onAdjustQuantity={adjustQuantity}
-            onToggleNote={(lineId) => setNoteOpenId(noteOpenId === lineId ? null : lineId)}
-            onUpdateNote={updateNote}
-            onPrimaryAction={runPrimaryAction}
-          />
-        </fieldset>
+      <div className="b02-notices" data-testid="b02-notices">
+        <WriteAttemptNotice onApplied={() => {
+          clearDrawerExitGuard();
+          setDraftItems([]);
+          closeDrawer();
+        }}/>
+        {remoteConflict && <div role="alert"><p>Đơn đã thay đổi trên server. Phần đang chỉnh sửa vẫn được giữ để bạn kiểm tra.</p><Button onClick={() => { acceptCurrent(); coordinator.leave(); }}>Bỏ bản đang sửa và dùng đơn trên server</Button></div>}
+        {priceChanged && <PriceChangedNotice priceChanged={priceChanged} draftItems={draftItems} menu={menu} setDraftItems={setDraftItems} onReviewed={() => { submitMutation.reset(); coordinator.leave(); }}/>}
+        {orderQuery.isError && <div className="b02-warning" data-testid="order-error-state"><AlertTriangle size={18}/><strong>Không tải được đơn hiện tại</strong><p>{toToastError(orderQuery.error)}</p><button onClick={() => void orderQuery.refetch()}>Thử lại</button></div>}
+        {primaryAction === "closed" && <div className="b02-warning" data-testid="order-closed-state"><AlertTriangle size={18}/><strong>Đơn đã được cập nhật</strong><p>Thiết bị khác đã thanh toán hoặc đóng đơn này. Quay lại sơ đồ để xem trạng thái mới nhất.</p></div>}
       </div>
-
-      {picker.modifierItem && menu && (
-        <ModifierPickerPopup
-          menuItem={picker.modifierItem}
-          groups={getItemModifierGroups(menu, picker.modifierItem.id)}
-          onConfirm={picker.confirm}
-          onClose={picker.cancel}
-        />
-      )}
+      <fieldset disabled={blocked} className="drawer-body">
+        {canEdit ? <OrderMenuPane categories={menu?.categories} items={items} allItems={menu?.menuItems} categoryId={categoryId} search={search} isLoading={menuQuery.isLoading} isError={menuQuery.isError} error={menuQuery.error} getMenuImageUrl={assetKey => ports.permission!.menuImages.getImageUrl(assetKey)} hasModifiers={itemId => !!menu && getItemModifierGroups(menu,itemId).length > 0} onSelectCategory={selectedCategoryId => { setActiveCategoryId(selectedCategoryId); setSearch(""); }} onSearchChange={setSearch} onRetry={() => void menuQuery.refetch()} onAddItem={picker.requestAdd}/> : <div className="p-4 text-pos-muted">Các món đã lưu trong đơn. Quyền hiện tại không cho phép sửa món.</div>}
+        <OrderCartPane cartLines={cartLines} draftItems={draftItems} noteOpenId={noteOpenId} total={total} showPaymentHint={!!orderDetail && draftChanged && primaryAction !== "closed"} primaryDisabled={primaryDisabledWithPermission} primaryActionLabel={primaryActionLabel} primaryVisible={!permissionDenied} canEdit={canEdit} onAdjustQuantity={adjustQuantity} onToggleNote={lineId => setNoteOpenId(noteOpenId === lineId ? null : lineId)} onUpdateNote={updateNote} onPrimaryAction={runPrimaryAction}/>
+      </fieldset>
+      {pendingNavigation && <DiscardDraftDialog onKeep={() => setPendingNavigation(null)} onDiscard={() => { const navigate = pendingNavigation; setPendingNavigation(null); navigate(); }}/>}
+      {picker.modifierItem && menu && <ModifierPickerPopup menuItem={picker.modifierItem} groups={getItemModifierGroups(menu,picker.modifierItem.id)} onConfirm={picker.confirm} onClose={picker.cancel}/>}
     </PortalDrawer>
-  );
+  </RemakeThemeProvider>;
 }

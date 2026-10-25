@@ -1,313 +1,143 @@
-import { AlertTriangle, LayoutGrid, RefreshCw } from "lucide-react";
-import { Button } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useMediaQuery } from "@mui/material";
 import toast from "react-hot-toast";
 import type { FloorTable } from "@/domain";
 import type { OperationalOrderSummary } from "@/ports/permissions";
-import { usePermission } from "@/features/shared/permissionSession";
-import { formatCompactVnd } from "@/core/money";
+import { sessionHasPermission } from "@/features/shared/permissionSession";
+import { useViewLifetime } from "../useViewLifetime";
+import { formatCompactVnd, formatVndShort } from "@/core/money";
 import { useFloorPlanQuery, useOpenOrdersQuery } from "@/features/pos";
+import { useStoreDisplayQuery } from "@/features/pos/usePosData";
 import { useAppStore } from "../useAppStore";
 import { toToastError } from "../appErrors";
 import { getLabelBoost, getObjectBoost, stageStyle } from "../floorStage";
 import { ScaledFloorStage } from "../components/ScaledFloorStage";
-import clsx from "clsx";
 import { FloorDecorVisual } from "../components/FloorDecorVisual";
-import { getFloorDecorAsset } from "../floorDecorAssets";
 import { getFloorTableBackgroundAsset } from "../floorTableBackgroundAssets";
+import { RemakeIcon } from "../components/RemakeIcon";
+import { FloorAreaChooser } from "./FloorAreaChooser";
+import "./floorAreaSelector.css";
 
 type TableFilter = "all" | "empty" | "occupied";
-
-const decorToneClass = (kind: string) => {
-  switch (kind) {
-    case "counter":
-      return "border-[#94a3b8] bg-[#e2e8f0] text-[#475569]";
-    case "decor":
-    case "image":
-      return "border-[#c4b5fd] bg-[#ede9fe] text-[#6d28d9]";
-    case "door":
-      return "border-[#fde047] bg-[#fef9c3] text-[#713f12]";
-    case "plant":
-      return "border-[#86efac] bg-[#dcfce7] text-[#166534]";
-    case "wall":
-      return "border-[#cbd5e1] bg-[#f1f5f9] text-[#64748b]";
-    default:
-      return "border-[#cbd5e1] bg-[#e2e8f0] text-[#475569]";
-  }
-};
-
-const nodeTransform = (rotation = 0, boost = 1) => ({
-  transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${boost})`,
-  transformOrigin: "center",
-});
+const nodeTransform = (rotation = 0, boost = 1) => ({ transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${boost})`, transformOrigin: "center" });
 
 export function FloorWorkspace() {
-  const activeAreaId = useAppStore((state) => state.activeAreaId);
-  const setActiveAreaId = useAppStore((state) => state.setActiveAreaId);
-  const openOrder = useAppStore((state) => state.openOrder);
-  const openPayment = useAppStore(state => state.openPayment);
-  const canCreate = usePermission("order.create"), canUpdate = usePermission("order.update");
-  const canPay = usePermission("payment.take"), canVoid = usePermission("order.voidOpen");
-
+  const activeAreaId = useAppStore((s) => s.activeAreaId);
+  const setActiveAreaId = useAppStore((s) => s.setActiveAreaId);
+  const openOrder = useAppStore((s) => s.openOrder);
+  const openPayment = useAppStore((s) => s.openPayment);
+  const captureView = useViewLifetime(activeAreaId);
+  const drawer = useAppStore((s) => s.drawer);
   const floorPlanQuery = useFloorPlanQuery();
   const openOrdersQuery = useOpenOrdersQuery();
-
+  const settings = useStoreDisplayQuery();
   const [tableFilter, setTableFilter] = useState<TableFilter>("all");
+  const [ordersOpen, setOrdersOpen] = useState(false);
+  const compactOrders = useMediaQuery("(max-width: 1279px)");
+  const panelRef = useRef<HTMLElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const firstArea = floorPlanQuery.data?.areas[0]?.id;
     if (!activeAreaId && firstArea) setActiveAreaId(firstArea);
   }, [activeAreaId, floorPlanQuery.data, setActiveAreaId]);
+  useEffect(() => { if (!compactOrders || drawer) setOrdersOpen(false); }, [compactOrders, drawer]);
+  useLayoutEffect(() => {
+    if (!ordersOpen || !compactOrders) return;
+    const background = [...document.querySelectorAll<HTMLElement>(".sidebar,.workspace-header,.workspace")];
+    const previous = background.map((element) => element.inert);
+    panelRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+    background.forEach((element) => { element.inert = true; });
+    return () => {
+      background.forEach((element, index) => { element.inert = previous[index]; });
+      if (!useAppStore.getState().drawer) toggleRef.current?.focus();
+    };
+  }, [ordersOpen, compactOrders]);
 
   const floorPlan = floorPlanQuery.data;
   const orders = openOrdersQuery.data ?? [];
   const areaId = activeAreaId ?? floorPlan?.areas[0]?.id ?? null;
   const allTables = floorPlan?.tables.filter((t) => t.areaId === areaId) ?? [];
   const decorItems = floorPlan?.decorItems.filter((d) => d.areaId === areaId) ?? [];
-
-  const isOccupied = (tableId: string) =>
-    allTables.find((t) => t.id === tableId)?.status === "occupied" ||
-    orders.some((o) => o.tableId === tableId);
-
+  const isOccupied = (tableId: string) => allTables.find((t) => t.id === tableId)?.status === "occupied" || orders.some((o) => o.tableId === tableId);
+  const openExistingOrder = (order: OperationalOrderSummary) => {
+    if (!sessionHasPermission("order.update") && sessionHasPermission("payment.take")) { openPayment(order.id); return; }
+    if (!sessionHasPermission("order.update") && !sessionHasPermission("order.voidOpen")) return;
+    openOrder({ orderId: order.id, tableId: order.orderType === "takeaway" ? null : order.tableId, orderType: order.orderType });
+  };
   const openTableOrder = async (table: FloorTable, cachedOrder?: OperationalOrderSummary) => {
-    if (cachedOrder) {
-      if (!canUpdate && canPay) { openPayment(cachedOrder.id); return; }
-      if (!canUpdate && !canVoid) return;
-      openOrder({
-        orderId: cachedOrder.id,
-        tableId: table.id,
-        orderType: "dine_in",
-      });
-      return;
-    }
-
+    if (cachedOrder) { openExistingOrder(cachedOrder); return; }
+    const isCurrent = captureView();
     const refreshed = await openOrdersQuery.refetch();
+    if (!isCurrent() || refreshed.isError) return;
     const freshOrder = refreshed.data?.openOrders.find((order) => order.tableId === table.id);
-    if (freshOrder && !canUpdate && canPay) { openPayment(freshOrder.id); return; }
-    if (freshOrder ? !canUpdate && !canVoid : !canCreate) return;
-    openOrder({
-      orderId: freshOrder?.id ?? null,
-      tableId: table.id,
-      orderType: "dine_in",
-    });
+    if (freshOrder) { openExistingOrder(freshOrder); return; }
+    if (sessionHasPermission("order.create")) openOrder({ orderId: null, tableId: table.id, orderType: "dine_in" });
+  };
+  const filteredTables = allTables.filter((t) => tableFilter === "empty" ? !isOccupied(t.id) : tableFilter === "occupied" ? isOccupied(t.id) : true);
+  const dineInOrders = orders.filter((o) => o.orderType === "dine_in");
+  const takeawayOrders = orders.filter((o) => o.orderType === "takeaway");
+  const area = floorPlan?.areas.find((a) => a.id === areaId);
+  const messageState = floorPlanQuery.isLoading || floorPlanQuery.isError || allTables.length === 0 || filteredTables.length === 0;
+  const onPanelKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (!compactOrders || !ordersOpen) return;
+    if (event.key === "Escape") { event.preventDefault(); setOrdersOpen(false); }
+    if (event.key === "Tab") {
+      const controls = [...panelRef.current!.querySelectorAll<HTMLElement>('button:not(:disabled),[tabindex="0"]')];
+      const first = controls[0], last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    }
+  };
+  const orderCard = (order: OperationalOrderSummary) => {
+    const table = floorPlan?.tables.find((t) => t.id === order.tableId);
+    const name = order.orderType === "takeaway" ? "Mang đi" : table?.name ?? order.tableId ?? "";
+    return <button key={order.id} className="order-card" data-testid={`floor-order-${order.id}`} onClick={() => { setOrdersOpen(false); openExistingOrder(order); }}>
+      <span className="order-card-top"><strong title={name}>{name}</strong><span className="order-number">#{order.orderNo}</span></span>
+      <span className="order-card-bottom"><span className="order-status"><span className="status-dot"/>Đang phục vụ</span><strong className="order-total" title={formatVndShort(order.total)}>{formatVndShort(order.total)}</strong></span>
+      <span className="order-card-hint">Mở đơn hàng <span aria-hidden="true">→</span></span>
+    </button>;
   };
 
-  const filteredTables = allTables.filter((t) => {
-    if (tableFilter === "empty") return !isOccupied(t.id);
-    if (tableFilter === "occupied") return isOccupied(t.id);
-    return true;
-  });
-
-  const takeawayOrders = orders.filter((o) => o.orderType === "takeaway");
-  const dineInOrders = orders.filter((o) => o.orderType === "dine_in");
-
-  return (
-    <div className="grid h-full min-h-0 grid-cols-[minmax(0,1fr)_200px] gap-2.5 overflow-hidden p-3.5 max-[1024px]:grid-cols-[minmax(0,1fr)_160px] max-[980px]:p-2 max-[740px]:grid-cols-1">
-        {/* Main region: floor canvas */}
-        <section className="grid h-full min-h-0 grid-cols-[minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-pos border border-pos-line bg-pos-surface" data-testid="floor-view">
-          <div className="flex min-h-12 min-w-0 items-center overflow-x-auto border-b border-pos-line">
-            <div className="flex min-h-12 min-w-0 flex-1 items-center gap-2 overflow-x-auto px-3 py-1.5">
-              {floorPlan?.areas.map((area) => (
-                <button
-                  className={clsx(
-                    "min-h-[34px] whitespace-nowrap rounded-[7px] border px-3 font-extrabold",
-                    area.id === areaId
-                      ? "border-[rgb(15_118_110_/_45%)] bg-pos-primarySoft text-pos-primary"
-                      : "border-pos-line bg-pos-surface text-pos-muted",
-                  )}
-                  key={area.id}
-                  onClick={() => setActiveAreaId(area.id)}
-                >
-                  {area.name}
-                </button>
-              ))}
-            </div>
-            <button
-              className="inline-flex min-h-[34px] shrink-0 items-center gap-1.5 rounded-[7px] border border-pos-line bg-pos-surface px-3 text-xs font-extrabold text-pos-primary transition-colors hover:border-pos-primary hover:bg-pos-primarySoft"
-              data-testid="floor-refresh-button"
-              onClick={() => {
-                void floorPlanQuery.refetch();
-                void openOrdersQuery.refetch();
-                toast.success("Đã làm mới dữ liệu");
-              }}
-            >
-              <RefreshCw size={14} />
-              Làm mới
-            </button>
-            <div className="flex shrink-0 gap-1.5 border-l border-pos-line px-3 py-1.5">
-              {(["all", "empty", "occupied"] as TableFilter[]).map((f) => (
-                <button
-                  key={f}
-                  className={clsx(
-                    "cursor-pointer whitespace-nowrap rounded-full border px-3 py-[3px] text-xs font-bold",
-                    tableFilter === f
-                      ? "border-pos-primary bg-pos-primary text-white"
-                      : "border-pos-line bg-pos-surface text-pos-muted",
-                  )}
-                  onClick={() => setTableFilter(f)}
-                >
-                  {f === "all" ? "Tất cả" : f === "empty" ? "Trống" : "Đang phục vụ"}
-                </button>
-              ))}
-            </div>
-          </div>
-          {floorPlanQuery.isLoading ? (
-            <div className="grid flex-1 place-items-center gap-2.5 p-10 text-center text-sm text-pos-muted">Đang tải sơ đồ...</div>
-          ) : floorPlanQuery.isError ? (
-            <div className="grid flex-1 place-items-center gap-2.5 p-10 text-center text-sm text-pos-muted" data-testid="floor-error-state">
-              <AlertTriangle size={32} color="#b45309" />
-              <p>Không tải được sơ đồ bàn.</p>
-              <p className="text-pos-muted">{toToastError(floorPlanQuery.error)}</p>
-              <Button variant="contained" size="small" onClick={() => void floorPlanQuery.refetch()}>
-                Thử tải lại
-              </Button>
-            </div>
-          ) : allTables.length === 0 ? (
-            <div className="grid flex-1 place-items-center gap-2.5 p-10 text-center text-sm text-pos-muted">
-              <LayoutGrid size={32} color="#94a3b8" />
-              <p>Chưa có bàn. Vào Sơ đồ để tạo bàn.</p>
-            </div>
-          ) : (
-            <div className="min-h-0 p-3.5 max-[980px]:p-2">
-              <ScaledFloorStage testId="floor-stage">
-                {({ scale }) => {
-                  const tableBoost = getObjectBoost(scale);
-                  const tableLabelBoost = getLabelBoost(scale * tableBoost);
-                  const decorLabelBoost = getLabelBoost(scale);
-
-                  return (
-                    <>
-                {decorItems.map((decor) => {
-                  const visualAsset = getFloorDecorAsset(decor.assetKey);
-                  return (
-                    <div
-                      className={clsx(
-                        "absolute grid place-items-center text-center text-xs font-black",
-                        visualAsset
-                          ? "overflow-hidden rounded-pos border border-transparent bg-transparent"
-                          : clsx("rounded-pos border border-dashed", decorToneClass(decor.kind)),
-                      )}
-                      data-testid={`decor-${decor.id}`}
-                      key={decor.id}
-                      style={{ ...stageStyle(decor.posX, decor.posY, decor.width, decor.height), ...nodeTransform(decor.rotation) }}
-                    >
-                      <FloorDecorVisual
-                        assetKey={decor.assetKey}
-                        kind={decor.kind}
-                        label={decor.label}
-                        fallbackLabel={decor.assetKey}
-                        labelBoost={decorLabelBoost}
-                      />
-                    </div>
-                  );
-                })}
-                {filteredTables.map((table) => {
-                  const openOrderSummary = orders.find((o) => o.tableId === table.id);
-                  const occupied = isOccupied(table.id);
-                  const isRound = table.shape === "round";
-                  const tableBackground = getFloorTableBackgroundAsset(table.backgroundAssetKey);
-                  return (
-                    <button
-                      className={clsx(
-                        "absolute grid place-items-center overflow-hidden border-2 bg-white bg-cover bg-center text-center font-black shadow-[0_8px_18px_rgb(15_23_42_/_10%)]",
-                        occupied ? "border-[#f97316]" : "border-[#86efac]",
-                        isRound ? "rounded-full" : "rounded-pos",
-                      )}
-                      data-testid={`table-${table.id}`}
-                      data-table-status={occupied ? "occupied" : "empty"}
-                      data-order-total={openOrderSummary?.total ?? 0}
-                      key={table.id}
-                      style={{
-                        ...stageStyle(table.posX, table.posY, table.width, table.height),
-                        ...nodeTransform(table.rotation, tableBoost),
-                        backgroundImage: tableBackground ? `url("${tableBackground.assetKey}")` : undefined,
-                      }}
-                      onClick={() => void openTableOrder(table, openOrderSummary)}
-                    >
-                      <span
-                        className="grid place-items-center gap-0.5 rounded-[6px] bg-white/85 px-2 py-1 leading-none shadow-sm"
-                        style={{ transform: `scale(${tableLabelBoost})`, transformOrigin: "center" }}
-                      >
-                        <strong data-floor-label="name" className="block text-[13px] font-extrabold leading-none">
-                          {table.name}
-                        </strong>
-                        {openOrderSummary && (
-                          <small data-floor-label="price" className="block text-[11px] font-bold leading-none text-[#ea580c]">
-                            {formatCompactVnd(openOrderSummary.total)}
-                          </small>
-                        )}
-                      </span>
-                    </button>
-                  );
-                })}
-                    </>
-                  );
-                }}
-              </ScaledFloorStage>
-            </div>
-          )}
-        </section>
-
-        {/* Right open orders panel */}
-        <aside className="grid content-start grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-pos border border-pos-line bg-pos-surface max-[740px]:hidden">
-          <div className="px-3.5 pb-2 pt-3 text-[10px] font-extrabold uppercase tracking-[0.07em] text-pos-muted">Đơn đang mở · {dineInOrders.length}</div>
-          <div className="grid content-start gap-1.5 overflow-y-auto px-2.5 pb-2.5 pt-1.5">
-            {openOrdersQuery.isLoading ? (
-              <p className="m-0 py-3 text-center text-[13px] text-pos-muted">Đang tải đơn đang mở...</p>
-            ) : openOrdersQuery.isError ? (
-              <div className="m-0 py-3 text-center text-[13px] text-pos-muted" data-testid="floor-orders-error-state">
-                <p>Không tải được đơn đang mở.</p>
-                <Button variant="outlined" size="small" onClick={() => void openOrdersQuery.refetch()}>
-                  Thử lại
-                </Button>
-              </div>
-            ) : dineInOrders.length === 0 ? (
-              <p className="m-0 py-3 text-center text-[13px] text-pos-muted">Chưa có đơn tại bàn.</p>
-            ) : (
-              dineInOrders.map((ord) => {
-                const table = floorPlan?.tables.find((t) => t.id === ord.tableId);
-                return (
-                  <button
-                    key={ord.id}
-                    className="grid cursor-pointer gap-[3px] rounded-[7px] border border-pos-line bg-pos-bg px-2.5 py-2 text-left transition-colors hover:border-pos-primary"
-                    onClick={() => openOrder({ orderId: ord.id, tableId: ord.tableId, orderType: "dine_in" })}
-                  >
-                    <div className="flex justify-between text-[13px]">
-                      <strong>{table?.name ?? ord.tableId}</strong>
-                      <span className="text-[11px] font-bold text-pos-muted">#{ord.orderNo}</span>
-                    </div>
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-[11px] font-bold text-[#c2410c]">Đang phục vụ</span>
-                      <span className="text-sm font-extrabold text-pos-primary">{formatCompactVnd(ord.total)}</span>
-                    </div>
-                  </button>
-                );
-              })
-            )}
-          </div>
-          {takeawayOrders.length > 0 && (
-            <>
-              <div className="border-t border-pos-line px-3.5 pb-2 pt-2.5 text-[10px] font-extrabold uppercase tracking-[0.07em] text-pos-muted">
-                Mang đi · {takeawayOrders.length}
-              </div>
-              <div className="grid content-start gap-1.5 overflow-y-auto px-2.5 pb-2.5 pt-1.5">
-                {takeawayOrders.map((ord) => (
-                  <button
-                    key={ord.id}
-                    className="grid cursor-pointer gap-[3px] rounded-[7px] border border-pos-line bg-pos-bg px-2.5 py-2 text-left transition-colors hover:border-pos-primary border-l-[3px] border-l-[#6366f1]"
-                    onClick={() => openOrder({ orderId: ord.id, tableId: null, orderType: "takeaway" })}
-                  >
-                    <div className="flex justify-between text-[13px]">
-                      <strong>Mang đi</strong>
-                      <span className="text-[11px] font-bold text-pos-muted">#{ord.orderNo}</span>
-                    </div>
-                    <div className="text-sm font-extrabold text-pos-primary">{formatCompactVnd(ord.total)}</div>
-                  </button>
-                ))}
-              </div>
-            </>
-          )}
-        </aside>
+  return <>
+    <header className="workspace-header" data-testid="floor-header"><div className="breadcrumb"><span><RemakeIcon name="store"/></span><strong title={settings.data?.displayName}>{settings.data?.displayName ?? ""}</strong><span className="breadcrumb-divider">›</span><span className="header-context">Vận hành bán hàng</span></div><div className="header-actions"><span className="sync-label">Tự động cập nhật</span><button ref={toggleRef} className="secondary-button orders-toggle" data-testid="floor-orders-toggle" aria-controls="floor-order-panel" aria-expanded={ordersOpen} onClick={() => setOrdersOpen(true)}>Đơn đang mở <span>({orders.length})</span></button></div></header>
+    <div className="workspace">
+      <section className="floor-card" data-testid="floor-view">
+        <div className="floor-toolbar" data-testid="floor-toolbar">
+          <div className="floor-title"><h1>Sơ đồ bàn</h1><p>Chọn bàn để xem và quản lý đơn hàng.</p></div>
+          <div className="status-filters" aria-label="Trạng thái bàn">{(["all", "empty", "occupied"] as TableFilter[]).map((f) => <button key={f} data-testid={`floor-filter-${f}`} aria-pressed={tableFilter === f} onClick={() => setTableFilter(f)}>{f !== "all" && <span className={`status-dot ${f}-dot`} aria-hidden="true"/>}{f === "all" ? "Tất cả" : f === "empty" ? "Trống" : "Đang phục vụ"}</button>)}</div>
+          <button className="icon-button refresh-button" data-testid="floor-refresh-button" aria-label="Làm mới" title="Làm mới dữ liệu" onClick={() => { void floorPlanQuery.refetch(); void openOrdersQuery.refetch(); toast.success("Đã làm mới dữ liệu"); }}><RemakeIcon name="refresh"/></button>
+        </div>
+        <div className="area-navigation" data-testid="floor-area-summary"><FloorAreaChooser areas={floorPlan?.areas ?? []} tables={floorPlan?.tables ?? []} activeAreaId={areaId} onSelect={setActiveAreaId}/><div className="area-metrics"><strong className="b01-area-only" title={area?.name}>{area?.name ?? ""}</strong><span>{`${allTables.reduce((sum, t) => sum + t.seats, 0)} chỗ ngồi`}</span><strong className="occupancy">{`${allTables.length ? Math.round(allTables.filter((t) => isOccupied(t.id)).length / allTables.length * 100) : 0}% sử dụng`}</strong></div></div>
+        {messageState ? <div className="state-message" data-testid={floorPlanQuery.isError ? "floor-error-state" : "floor-message"}>
+          {floorPlanQuery.isLoading ? <p>Đang tải sơ đồ...</p> : floorPlanQuery.isError ? <><span className="error-icon" aria-hidden="true">!</span><p>Không tải được sơ đồ bàn.</p><p>{toToastError(floorPlanQuery.error)}</p><button className="secondary-button" onClick={() => void floorPlanQuery.refetch()}>Thử tải lại</button></> : <p>{allTables.length === 0 ? "Chưa có bàn. Vào Sơ đồ để tạo bàn." : "Không có bàn phù hợp với bộ lọc."}</p>}
+        </div> : <ScaledFloorStage testId="floor-stage" viewportTestId="floor-canvas-viewport" minScale={0.6}>
+          {({ scale }) => {
+            const boost = getObjectBoost(scale), labelBoost = getLabelBoost(scale * boost);
+            return <>
+              {decorItems.map((d) => <div key={d.id} className="b01-decoration" data-testid={`decor-${d.id}`} style={{ ...stageStyle(d.posX, d.posY, d.width, d.height), ...nodeTransform(d.rotation) }}><FloorDecorVisual assetKey={d.assetKey} kind={d.kind} label={d.label} fallbackLabel={d.assetKey} labelBoost={getLabelBoost(scale)}/></div>)}
+              {filteredTables.map((t) => {
+                const order = orders.find((o) => o.tableId === t.id), occupied = isOccupied(t.id), bg = getFloorTableBackgroundAsset(t.backgroundAssetKey);
+                const hitBoost = Math.max(boost, 44.1 / (Math.min(t.width, t.height) * scale));
+                return <button key={t.id} className={`b01-table${t.shape === "round" ? " round" : ""}`} aria-label={`${t.name}${order ? " " + formatCompactVnd(order.total) : ""}`} title={t.name} data-testid={`table-${t.id}`} data-table-status={occupied ? "occupied" : "empty"} data-status={occupied ? "occupied" : "empty"} data-order-total={order?.total ?? 0} style={{ ...stageStyle(t.posX, t.posY, t.width, t.height), ...nodeTransform(t.rotation, hitBoost), backgroundImage: bg ? `url("${bg.assetKey}")` : undefined }} onClick={() => void openTableOrder(t, order)}>
+                  <span className="table-label" style={{ transform: `scale(${labelBoost})`, maxWidth: `${100 / labelBoost}%` }}><strong data-floor-label="name">{t.name}</strong>{order && <small data-floor-label="price">{formatCompactVnd(order.total)}</small>}</span>
+                </button>;
+              })}
+            </>;
+          }}
+        </ScaledFloorStage>}
+        <footer className="floor-footer"><span>Chọn bàn để mở giao diện gọi món</span><span>{filteredTables.length}/{allTables.length} bàn</span></footer>
+      </section>
     </div>
-  );
+    <aside ref={panelRef} id="floor-order-panel" className={`order-panel${ordersOpen ? " open" : ""}`} data-testid="floor-open-orders" aria-label="Đơn đang mở" role={ordersOpen && compactOrders ? "dialog" : undefined} aria-modal={ordersOpen && compactOrders ? true : undefined} onKeyDown={onPanelKeyDown}>
+      <header className="order-panel-header"><h2>Đơn đang mở <span className="count-badge">{orders.length}</span></h2><button className="icon-button close-orders" aria-label="Đóng danh sách đơn" onClick={() => setOrdersOpen(false)}>×</button></header>
+      <div className="order-list">
+        {openOrdersQuery.isLoading ? <p>Đang tải đơn đang mở...</p> : openOrdersQuery.isError ? <div className="state-message" data-testid="floor-orders-error-state"><p>Không tải được đơn đang mở.</p><button className="secondary-button" onClick={() => void openOrdersQuery.refetch()}>Thử lại</button></div> : <>
+          {dineInOrders.length === 0 ? <p className="order-group-label">Chưa có đơn tại bàn.</p> : <><p className="order-group-label">Tại bàn · {dineInOrders.length}</p>{dineInOrders.map(orderCard)}</>}
+          {takeawayOrders.length > 0 && <><p className="order-group-label">Mang đi · {takeawayOrders.length}</p>{takeawayOrders.map(orderCard)}</>}
+        </>}
+      </div>
+      <footer className="order-panel-footer">Chọn một đơn để tiếp tục phục vụ.</footer>
+    </aside>
+  </>;
 }

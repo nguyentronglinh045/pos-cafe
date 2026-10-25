@@ -1,4 +1,6 @@
 import type { ComponentType } from "react";
+import { useStoreDisplayQuery } from "@/features/pos/usePosData";
+import { RemakeThemeProvider } from "@/theme/RemakeThemeProvider";
 import { useAppStore, type DrawerModule } from "../useAppStore";
 import { EmployeesStubDrawer } from "../drawers/admin/EmployeesDrawer";
 import { FloorEditorDrawer } from "../drawers/admin/FloorEditorDrawer";
@@ -32,25 +34,26 @@ const DRAWER_REGISTRY: Record<NonNullable<DrawerModule>, ComponentType> = {
 };
 
 export function AppShell() {
+  const settings = useStoreDisplayQuery();
   const drawer = useAppStore((state) => state.drawer);
   const context = useAppStore(state => state.orderContext);
   const authority = usePermissionSession();
   const ActiveDrawer = drawer && drawerAllowed(authority.bundle, drawer, context) ? DRAWER_REGISTRY[drawer] : null;
 
   return (
-    <main
-      className="grid h-[100dvh] w-full grid-cols-[176px_minmax(0,1fr)] overflow-hidden [@media(orientation:portrait)]:hidden max-[980px]:grid-cols-[68px_minmax(0,1fr)]"
+    <RemakeThemeProvider><main
+      className="app-frame [@media(orientation:portrait)]:!hidden"
       data-testid="app-shell"
       style={authority.status !== "verified" ? { visibility: "hidden", pointerEvents: "none" } : undefined}
       aria-hidden={authority.status !== "verified"}
     >
-      <LeftNav />
+      <LeftNav storeName={settings.data?.displayName} />
 
-      <section className="relative min-h-0 min-w-0 overflow-hidden bg-pos-bg">
+      <>
         <FloorWorkspace />
         {ActiveDrawer ? <ActiveDrawer /> : null}
         <ReceiptPreviewPopup />
-      </section>
-    </main>
+      </>
+    </main></RemakeThemeProvider>
   );
 }

@@ -14,6 +14,7 @@ const posBaseStyles = {
     "--success": "#15803d",
     "--warning": "#b45309",
     "--danger": "#b91c1c",
+    "--drawer-overlay": "rgba(0, 0, 0, 0.2)",
     "--rail": "#f8fbfb",
     "color": "var(--ink)",
     "background": "var(--bg)",

@@ -1,135 +1,29 @@
-import { AlertTriangle, Coffee } from "lucide-react";
-import clsx from "clsx";
-import { Button, TextField } from "@mui/material";
+import { useState } from "react";
 import type { Category, MenuItem } from "@/domain";
 import { formatVnd } from "@/core/money";
 import { toToastError } from "../../appErrors";
-import { useState } from "react";
-
-function MenuItemImage({ imageUrl, name }: { imageUrl: string | null; name: string }) {
-  const [failed, setFailed] = useState(false);
-  if (!imageUrl || failed) return <Coffee size={22} data-testid="menu-image-placeholder" />;
-  return <img src={imageUrl} alt={`Ảnh ${name}`} className="h-full w-full object-cover" onError={() => setFailed(true)} />;
-}
 
 type OrderMenuPaneProps = {
-  categories: Category[] | undefined;
-  items: MenuItem[];
-  categoryId: string;
-  search: string;
-  isLoading: boolean;
-  isError: boolean;
-  error: unknown;
+  categories: Category[] | undefined; items: MenuItem[]; allItems?: MenuItem[]; categoryId: string; search: string;
+  isLoading: boolean; isError: boolean; error: unknown;
   getMenuImageUrl: (assetKey: string | null | undefined) => string | null;
-  onSelectCategory: (categoryId: string) => void;
-  onSearchChange: (search: string) => void;
-  onRetry: () => void;
-  onAddItem: (item: MenuItem) => void;
+  hasModifiers?: (itemId: string) => boolean;
+  onSelectCategory: (categoryId: string) => void; onSearchChange: (search: string) => void; onRetry: () => void; onAddItem: (item: MenuItem) => void;
 };
 
-export function OrderMenuPane({
-  categories,
-  items,
-  categoryId,
-  search,
-  isLoading,
-  isError,
-  error,
-  getMenuImageUrl,
-  onSelectCategory,
-  onSearchChange,
-  onRetry,
-  onAddItem,
-}: OrderMenuPaneProps) {
-  return (
-    <section className="grid min-h-0 grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-pos border border-pos-line bg-pos-surface">
-      <div className="flex min-h-11 items-center gap-2.5 border-b border-pos-line bg-[#fbfcfd] px-3 py-2">
-        <div className="flex min-w-0 flex-[1_1_auto] flex-nowrap items-center gap-1.5 overflow-x-auto [scrollbar-width:thin]">
-          {categories?.map((cat) => (
-            <button
-              key={cat.id}
-              className={clsx(
-                "flex min-h-[34px] items-center whitespace-nowrap rounded-[7px] border px-3 font-extrabold",
-                cat.id === categoryId && !search
-                  ? "border-[rgb(15_118_110_/_45%)] bg-pos-primarySoft text-pos-primary"
-                  : "border-pos-line bg-pos-surface text-pos-muted",
-              )}
-              onClick={() => onSelectCategory(cat.id)}
-            >
-              <span className={clsx("mr-1 inline-block h-2 w-2 shrink-0 rounded-full align-middle", cat.id === "c68d7fbd-c06a-42a4-8140-476da8ebbf74" && "bg-[#7c3aed]", cat.id === "1ebf92aa-cf30-4e0d-8279-2b6fe3f8fb54" && "bg-[#0891b2]", cat.id === "0e2b2b01-1e52-436b-8130-428e82585276" && "bg-[#0d9488]", cat.id === "d8e03f30-1979-44b1-8fae-dc3cf6756680" && "bg-[#d97706]", cat.id !== "c68d7fbd-c06a-42a4-8140-476da8ebbf74" && cat.id !== "1ebf92aa-cf30-4e0d-8279-2b6fe3f8fb54" && cat.id !== "0e2b2b01-1e52-436b-8130-428e82585276" && cat.id !== "d8e03f30-1979-44b1-8fae-dc3cf6756680" && "bg-[#64748b]")} />
-              {cat.name}
-            </button>
-          ))}
-        </div>
-        <TextField
-          size="small"
-          placeholder="Tìm món..."
-          value={search}
-          onChange={(event) => onSearchChange(event.target.value)}
-          className="max-w-[180px]"
-        />
-      </div>
-      <div className="min-h-0 overflow-auto p-2.5 max-[980px]:p-2">
-        {isLoading ? (
-          <p className="text-pos-muted p-3">Đang tải menu...</p>
-        ) : isError ? (
-          <div className="flex flex-col items-center justify-center gap-3 px-5 py-10 text-center text-pos-muted" data-testid="order-menu-error-state">
-            <AlertTriangle size={30} color="#b45309" />
-            <strong>Không tải được menu</strong>
-            <p>{toToastError(error)}</p>
-            <Button variant="contained" size="small" onClick={onRetry}>
-              Thử tải lại
-            </Button>
-          </div>
-        ) : items.length === 0 ? (
-          <p className="text-pos-muted p-3">Không có món.</p>
-        ) : (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-2.5">
-            {items.map((item) => {
-              const imageUrl = getMenuImageUrl(item.imageAssetKey);
-              return (
-                <button
-                  key={item.id}
-                  className={clsx(
-                    "grid min-h-[96px] cursor-pointer grid-cols-[82px_minmax(0,1fr)] overflow-hidden rounded-pos border p-2 text-left transition-[border-color,box-shadow] disabled:cursor-not-allowed",
-                    item.isAvailable
-                      ? "border-pos-line bg-white hover:border-pos-primary hover:shadow-[0_0_0_2px_rgb(15_118_110_/_12%)]"
-                      : "border-[#fecaca] bg-[#fff7f7] hover:border-[#fecaca] hover:shadow-none",
-                  )}
-                  data-testid={`menu-item-${item.id}`}
-                  onClick={() => onAddItem(item)}
-                  disabled={!item.isAvailable}
-                >
-                  <div
-                    className={clsx(
-                      "relative grid h-20 w-20 place-items-center overflow-hidden rounded-[7px] border",
-                      item.isAvailable
-                        ? "border-pos-line bg-pos-primarySoft text-pos-primary"
-                        : "border-[#fecaca] bg-[#fff7f7] text-pos-danger",
-                    )}
-                  >
-                    <MenuItemImage key={imageUrl ?? "no-image"} imageUrl={imageUrl} name={item.name} />
-                    {!item.isAvailable && (
-                      <>
-                        <span className="absolute inset-0 bg-white/70" />
-                        <span className="absolute left-1/2 top-1/2 w-[calc(100%-10px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#fecaca] bg-white/95 px-1.5 py-1 text-center text-[10px] font-black leading-tight text-pos-danger shadow-sm">
-                          Đã bán hết
-                        </span>
-                      </>
-                    )}
-                  </div>
-                  <div className="grid min-w-0 content-between gap-1 px-2">
-                    <div className="grid min-w-0 gap-1">
-                      <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-bold leading-[1.3]">{item.name}</strong>
-                    </div>
-                    <span className="font-black text-pos-primary">{formatVnd(item.price)}</span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        )}
-      </div>
+export function OrderMenuPane({ categories, items, allItems = items, categoryId, search, isLoading, isError, error, getMenuImageUrl, hasModifiers, onSelectCategory, onSearchChange, onRetry, onAddItem }: OrderMenuPaneProps) {
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+  return <>
+    <aside className="categories" data-testid="b02-categories"><h2>DANH MỤC MÓN</h2><nav className="category-list" aria-label="Danh mục món">{categories?.map(cat => <button key={cat.id} className={cat.id === categoryId && !search ? "selected" : undefined} data-testid={`b02-category-${cat.id}`} title={cat.name} aria-label={cat.name} aria-pressed={cat.id === categoryId && !search} onClick={() => onSelectCategory(cat.id)}><span className="category-name">{cat.name}</span><span className="category-count">{allItems.filter(item => item.categoryId === cat.id).length}</span></button>)}</nav></aside>
+    <section className="menu-zone" data-testid="b02-menu">
+      <div className="search-bar" data-testid="b02-search-bar"><label className="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg><input value={search} onChange={event => onSearchChange(event.target.value)} data-testid="b02-search" placeholder="Tìm món..." aria-label="Tìm món"/></label><span className="menu-count">{items.length} món</span></div>
+      <div className="menu-scroll" data-testid="b02-menu-scroll">{isLoading ? <p className="empty-message">Đang tải menu...</p> : isError ? <div className="b02-menu-error" data-testid="order-menu-error-state"><strong>Không tải được menu</strong><p>{toToastError(error)}</p><button onClick={onRetry}>Thử tải lại</button></div> : !items.length ? <p className="empty-message">Không có món.</p> : <div className="product-grid">{items.map(item => {
+        const image = getMenuImageUrl(item.imageAssetKey);
+        return <button key={item.id} className={`product${item.isAvailable ? "" : " unavailable"}`} data-testid={`menu-item-${item.id}`} disabled={!item.isAvailable} title={item.name} onClick={() => onAddItem(item)}>
+          <span className="product-image">{image && !failedImages[image] ? <img src={image} alt={`Ảnh ${item.name}`} onError={() => setFailedImages(old => ({ ...old, [image]: true }))}/> : <svg data-testid="menu-image-placeholder" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h12v8a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4Z M17 9h2a3 3 0 0 1 0 6h-2 M3 22h17 M8 2v3 M12 1v4"/></svg>}</span>
+          <span className="product-name">{item.name}</span><span className="product-subtitle">{!item.isAvailable ? "Đã bán hết" : hasModifiers?.(item.id) ? "Có tùy chọn" : "Chọn để thêm vào đơn"}</span><span className="product-bottom"><span className="menu-price" data-testid={`b02-menu-price-${item.id}`}>{formatVnd(item.price)}</span><span className="add-label">+ Thêm</span></span>
+        </button>;
+      })}</div>}</div>
     </section>
-  );
+  </>;
 }

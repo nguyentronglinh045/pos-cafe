@@ -24,6 +24,9 @@ type ScaledFloorStageContext = {
 
 interface ScaledFloorStageProps {
   children: ReactNode | ((context: ScaledFloorStageContext) => ReactNode);
+  /** Opt-in display scrolling; editor keeps legacy fit behaviour. */
+  minScale?: number;
+  viewportTestId?: string;
   className?: string;
   contentClassName?: string;
   testId?: string;
@@ -45,6 +48,8 @@ const setForwardedRef = (ref: Ref<HTMLDivElement>, value: HTMLDivElement | null)
 export const ScaledFloorStage = forwardRef<HTMLDivElement, ScaledFloorStageProps>(function ScaledFloorStage(
   {
     children,
+    minScale = 0,
+    viewportTestId,
     className,
     contentClassName,
     testId,
@@ -71,7 +76,8 @@ export const ScaledFloorStage = forwardRef<HTMLDivElement, ScaledFloorStageProps
 
     const updateSize = () => {
       const rect = container.getBoundingClientRect();
-      setSize({ width: rect.width, height: rect.height });
+      const style = getComputedStyle(container);
+      setSize({ width: rect.width - parseFloat(style.paddingLeft || "0") - parseFloat(style.paddingRight || "0"), height: rect.height - parseFloat(style.paddingTop || "0") - parseFloat(style.paddingBottom || "0") });
     };
 
     updateSize();
@@ -92,7 +98,7 @@ export const ScaledFloorStage = forwardRef<HTMLDivElement, ScaledFloorStageProps
 
   const hasMeasuredSize = size.width > 0 && size.height > 0;
   const scale = hasMeasuredSize
-    ? Math.min(1, size.width / logicalStage.width, size.height / logicalStage.height)
+    ? Math.max(minScale, Math.min(1, size.width / logicalStage.width, size.height / logicalStage.height))
     : 1;
   const scaledWidth = logicalStage.width * scale;
   const scaledHeight = logicalStage.height * scale;
@@ -111,17 +117,17 @@ export const ScaledFloorStage = forwardRef<HTMLDivElement, ScaledFloorStageProps
   const renderedChildren = typeof children === "function" ? children({ scale }) : children;
 
   return (
-    <div ref={containerRef} className={clsx("grid h-full min-h-0 w-full place-items-center overflow-hidden", className)}>
+    <div ref={containerRef} data-testid={viewportTestId} tabIndex={minScale > 0 ? 0 : undefined} aria-label={minScale > 0 ? "Sơ đồ bàn có thể cuộn" : undefined} className={clsx(minScale > 0 ? "canvas-viewport" : "grid h-full min-h-0 w-full place-items-center overflow-hidden", className)}>
       <div
         ref={setStageRef}
-        className="relative overflow-hidden"
+        className={minScale > 0 ? "canvas-size" : "relative overflow-hidden"}
         data-testid={testId}
         onPointerDown={onPointerDown}
         style={stageStyle}
       >
         <div
           className={clsx(
-            "absolute left-0 top-0 touch-none overflow-hidden rounded-pos border border-pos-line bg-[#eef3f7] bg-[linear-gradient(90deg,rgb(215_222_232_/_42%)_1px,transparent_1px),linear-gradient(rgb(215_222_232_/_42%)_1px,transparent_1px),#eef3f7] bg-[length:60px_60px]",
+            minScale > 0 ? "logical-floor" : "absolute left-0 top-0 touch-none overflow-hidden rounded-pos border border-pos-line bg-[#eef3f7] bg-[linear-gradient(90deg,rgb(215_222_232_/_42%)_1px,transparent_1px),linear-gradient(rgb(215_222_232_/_42%)_1px,transparent_1px),#eef3f7] bg-[length:60px_60px]",
             contentClassName,
           )}
           data-testid={layerTestId}

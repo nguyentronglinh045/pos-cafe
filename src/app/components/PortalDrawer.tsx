@@ -28,7 +28,7 @@ const getPortalRoot = (containerId: string): HTMLElement => {
   return root;
 };
 
-const workspaceOverlayClass = "fixed inset-y-0 right-0 left-[176px] max-[980px]:left-[68px]";
+const workspaceOverlayClass = "fixed inset-y-0 right-0 left-[var(--workspace-rail-width,176px)] max-[980px]:left-[var(--workspace-rail-width,68px)]";
 const screenOverlayClass = "fixed inset-0";
 
 const defaultPanelClass =
@@ -51,7 +51,7 @@ const slideAnimationClass: Record<DrawerPlacement, string> = {
 export function PortalDrawer({
   children,
   placement = "Right",
-  overlayColor = "rgba(0, 0, 0, 0.2)",
+  overlayColor = "var(--drawer-overlay)",
   onOutsideClick,
   zIndex = 10,
   containerId = "portals",

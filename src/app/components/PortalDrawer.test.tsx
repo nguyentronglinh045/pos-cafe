@@ -23,8 +23,8 @@ describe("PortalDrawer", () => {
     expect(root).toContainElement(panel);
     expect(panel).toHaveTextContent("Drawer body");
     expect(overlay?.className).toContain("inset-0");
-    expect(overlay?.className).not.toContain("left-[176px]");
-    expect(overlay?.className).not.toContain("max-[980px]:left-[68px]");
+    expect(overlay?.className).not.toContain("left-[var(--workspace-rail-width,176px)]");
+    expect(overlay?.className).not.toContain("max-[980px]:left-[var(--workspace-rail-width,68px)]");
   });
 
   it("can still target only the workspace viewport", () => {
@@ -36,8 +36,8 @@ describe("PortalDrawer", () => {
 
     const overlay = screen.getByTestId("kitchen-drawer").parentElement;
 
-    expect(overlay?.className).toContain("left-[176px]");
-    expect(overlay?.className).toContain("max-[980px]:left-[68px]");
+    expect(overlay?.className).toContain("left-[var(--workspace-rail-width,176px)]");
+    expect(overlay?.className).toContain("max-[980px]:left-[var(--workspace-rail-width,68px)]");
   });
 
   it("fills the available drawer viewport on every breakpoint", () => {
@@ -64,7 +64,7 @@ describe("PortalDrawer", () => {
     );
 
     const overlay = screen.getByTestId("kitchen-drawer").parentElement;
-    expect(overlay).toHaveStyle({ backgroundColor: "rgba(0, 0, 0, 0.2)" });
+    expect(overlay).toHaveStyle({ backgroundColor: "var(--drawer-overlay)" });
   });
 
   it("animates the default right drawer into view", () => {

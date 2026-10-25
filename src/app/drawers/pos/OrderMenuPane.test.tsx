@@ -52,9 +52,13 @@ describe("OrderMenuPane", () => {
       "src",
       "https://assets.local/menu-item-images/e572ea5f-9adf-493c-8d84-dca3cd86e1eb/menu-items/d50ff72b-d0bc-4832-8888-183c19f5a158/photo.webp",
     );
-    expect(image).toHaveClass("object-cover");
+    expect(image.closest(".product-image")).toBeInTheDocument();
+    fireEvent.error(image);
+    expect(screen.queryByAltText("Ảnh Latte")).not.toBeInTheDocument();
+    expect(screen.getByTestId(`menu-item-${items[0].id}`).querySelector("svg")).toBeInTheDocument();
 
     const soldOutCard = screen.getByTestId("menu-item-9491e262-856d-4408-82b7-c9d7f7ac3f27");
+    expect(soldOutCard).toBeDisabled();
     expect(within(soldOutCard).getByText("Đã bán hết")).toBeInTheDocument();
     expect(within(soldOutCard).queryByText("Tạm hết")).not.toBeInTheDocument();
   });
