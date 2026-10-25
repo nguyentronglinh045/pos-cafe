@@ -15,7 +15,7 @@
     "vitest.config.ts": "1cb32e60581f3bc8c6f2a6e487e2c337a89d40f3ae966b82896792ce5b077042",
     "vitest.project-tooling.config.ts": "a85416abe41bd3bdb8b70262c82b102be5c48d1e1b5edfdad0eaf7ad9e2b9c31",
     "playwright.config.ts": "780a3bd5eb4bbb256a2fb1f81cb78a000bf2ee82fd0a2b4e752184eeaa19dba5",
-    "ci/smoke-applicability.json": "d45efdb184ce72ab9435c7d2359258fdcfe29712b183194d26792f32df791b61",
+    "ci/smoke-applicability.json": "a637930d8d07e4b5b0aae1fabd26710cb9427162bcf7c83fbc0e2b385b533fb6",
     "package.json": "abedb95ed5f63def53d0c77cda9e64ddddc3e4c6a993902f7198c778457bcc13",
     "package-lock.json": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
     "tests/smoke/helpers.ts": "110b8b8327acf2198a324aea1adb292a4b84bab1cd45ae903359a9bce5a6577f",

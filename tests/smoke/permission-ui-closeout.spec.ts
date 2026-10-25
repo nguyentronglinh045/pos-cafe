@@ -22,8 +22,8 @@ test.describe("landscape permission controls", () => {
     const drawer = page.getByTestId("employees-drawer");
     await expect(drawer).toBeVisible();
     const rows = drawer.locator('[data-testid^="employee-row-"]');
+    await expect.poll(() => rows.count()).toBeGreaterThan(3);
     const count = await rows.count();
-    expect(count).toBeGreaterThan(3);
     for (let i = 0; i < count; i++) {
       await rows.nth(i).click();
       await expect(rows.nth(i)).toHaveClass(/bg-pos-primary/);

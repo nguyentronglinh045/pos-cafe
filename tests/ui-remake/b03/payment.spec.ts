@@ -289,6 +289,25 @@ test("full success receipt remains keyboard accessible after drawer unmount", as
   await page.keyboard.press("Escape");
   await expect(receipt).toBeHidden();
 });
+test("persistent status toast does not block footer actions", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const [width, height] of [[568, 320], [844, 390], [1366, 768]]) {
+    await page.setViewportSize({ width, height });
+    await page.goto("/tests/ui-remake/b03/toast.html");
+    const status = page.getByRole("status");
+    await expect(status).toContainText("Thông báo luôn hiển thị");
+    const button = page.getByTestId("toast-underlying-action");
+    await expect(button).toBeVisible();
+    await expect.poll(() => button.evaluate(element => {
+      const rect = element.getBoundingClientRect();
+      const hit = document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
+      return hit === element || element.contains(hit);
+    })).toBe(true);
+    await button.click();
+    await expect(button).toHaveText("Đã bấm");
+    await expect(status).toBeVisible();
+  }
+});
 test("software keyboard visual viewport keeps amount and footer reachable", async ({
   page
 }) => {
