@@ -2,6 +2,8 @@
 
 ## Đang theo dõi
 
+- [Dọn worktree docs đã hết dùng — 25/10/2026](docs-worktree-cleanup-2026-10-25.md): đã xóa đúng một checkout sạch đã xuất bản; giữ docs gốc có WIP và các nhánh/lịch sử.
+
 - [Xuất bản spec/evidence WIP — 25/10/2026](docs-wip-publication-2026-10-25.md): permission15/PIN/CI và lịch sử evidence theo nguồn; bản gốc giữ nguyên, danh sách dọn chờ duyệt.
 
 - [Chuẩn hóa docs — 25/10/2026](docs-normalization-2026-10-25.md): đã chỉnh lý, kiểm và có hai APPROVE; giữ WIP/evidence, phần xuất bản WIP/backend còn riêng.
