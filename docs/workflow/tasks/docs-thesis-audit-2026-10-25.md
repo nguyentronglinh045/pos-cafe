@@ -123,4 +123,4 @@ Các link sau đều ghim main711a22e; số dòng là điểm bắt đầu nội
 
 Đầu ra của lượt này là bản rà soát, mapping 12 mục tiêu, chỉnh lý các sai lệch sự kiện đã xác minh và danh sách đề xuất hợp nhất. Không tuyên bố toàn bộ chuẩn hóa docs, các mục tiêu sản phẩm hoặc nghiệm thu tốt nghiệp đã hoàn tất. Không chạy test ứng dụng cho thay đổi tài liệu; kiểm diff, link/source và review độc lập theo phạm vi.
 
-Review candidate: chờ hai reviewer độc lập; biên bản sẽ ghi candidate, phạm vi, finding và verdict thực tế trước khi xuất bản.
+Review hoàn tất: `review_knowledge` và `review_preservation` đều **APPROVE candidate4b89f7bfc543c963e1637f4ffdcf40ebdeb02bfc** trong các phạm vi bổ sung, không finding chặn/không chặn. [Biên bản và kiểm tra](../../reviews/2026-10-25-docs-thesis-audit.md). Sau review chỉ bổ sung metadata này và biên bản; không thay nội dung kết luận. Phân tích/chỉnh lý sự kiện hoàn tất; phần chuẩn hóa sâu và mục tiêu sản phẩm còn theo bảng trên.
