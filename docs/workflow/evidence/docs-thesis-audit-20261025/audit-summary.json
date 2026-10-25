@@ -1,0 +1,25 @@
+{
+  "docs_sha": "422eecfd280f889d8c6f7a43c9df77197789c3f7",
+  "main_sha": "711a22e71983e3d6aa17799649af05ce4c762555",
+  "tracked_files": 2165,
+  "logical_bytes": 106310105,
+  "markdown_files": 856,
+  "inline_markdown_links_scanned": 7957,
+  "absolute_windows_links": 3193,
+  "unresolved_relative_links": 140,
+  "bad_anchors": 0,
+  "invalid_pinned_source_paths_or_line_bounds": 0,
+  "baseline_capabilities": 16,
+  "nonarchive_changes": 47,
+  "change_artifact_type_counts": {
+    "1": 32,
+    "7": 9,
+    "6": 6
+  },
+  "limitations": [
+    "Regex scan of inline Markdown links outside fenced blocks, not a full Markdown/HTML renderer or HTTP availability check.",
+    "Line-bound validation does not prove semantic correctness of a cited claim.",
+    "Historical local links are counted for portability; counts do not establish that original evidence has been lost.",
+    "Artifact presence does not prove completeness, approval, or runtime acceptance."
+  ]
+}

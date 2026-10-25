@@ -5,7 +5,7 @@
 
 ## Folder Này Chứa Gì
 
-Folder này chỉ giữ chỉ mục Markdown cho screenshot/UI baseline. Nhánh `docs` hiện là docs-only nên không giữ file ảnh binary.
+Folder này giữ chỉ mục Markdown cho screenshot/UI baseline. Nhánh docs có thể giữ evidence ảnh/JSON/ZIP có source, consumer và lý do retention theo [chính sách chung](../README.md); không còn đúng khi gọi toàn nhánh là Markdown-only.
 
 - `current/`: ghi chú về bộ screenshot gần nhất; ảnh cần refresh nên tạo ngoài nhánh `docs` hoặc lưu ở artefact báo cáo riêng.
 
@@ -17,7 +17,7 @@ Folder này chỉ giữ chỉ mục Markdown cho screenshot/UI baseline. Nhánh 
 
 ## Quy Tắc Duy Trì
 
-- Không commit ảnh/prototype vào nhánh `docs`; branch này chỉ giữ `.md`.
-- Nếu cần giữ ảnh cũ, lưu ngoài nhánh docs hoặc trong artefact báo cáo riêng.
+- Không đưa hàng loạt output ảnh/prototype vào knowledge base. Ảnh dùng cho báo cáo mặc định lưu trong artefact báo cáo; evidence cần giữ trên docs phải có source, phạm vi, consumer và retention rõ theo chính sách chung.
+- Giữ nguyên evidence lịch sử đã được nhận vào docs. Di chuyển/xóa cần kiểm consumer và duyệt phạm vi; không xóa binary để làm khớp quy tắc cũ.
 - Khi UI core thay đổi đáng kể, chụp lại floor, order, payment và takeaway trước; với scope hiện tại cần giữ thêm baseline cho Employees Drawer hai pane, modifier picker, transform handles, instant pay và flow hủy đơn paid/report sau hủy. Không đưa kitchen vào bộ current cho đến khi feature được mở lại.
 - Screenshot dùng trong báo cáo phải ghi baseline commit/ngày và lưu ngoài nhánh `docs`; bộ 2026-06-20 không phải evidence UI cho `main@b7b7262`.

@@ -54,10 +54,10 @@ Nhóm này trả lời trực tiếp hai khuyết điểm bảo mật mà phản
 | Nguồn | Dùng ở đâu trong báo cáo |
 | --- | --- |
 | Saltzer, J. H.; Schroeder, M. D. "The Protection of Information in Computer Systems". *Proceedings of the IEEE*, 63(9), 1975 | Chương bảo mật: nguyên tắc **đặc quyền tối thiểu** và **mặc định an toàn**. Đây là khung lý thuyết đúng để tự phê bình việc cấp PIN mặc định giống nhau cho mọi cửa hàng |
-| NIST SP 800-63B. *Digital Identity Guidelines: Authentication and Lifecycle Management* | Chương bảo mật: yêu cầu về bí mật ghi nhớ được, cách xử lý bí mật cấp ban đầu, và chống thử sai nhiều lần. Nguồn chuẩn mực để bảo vệ quyết định ép đổi PIN ở lần đăng nhập đầu |
+| NIST SP 800-63B-4. *Digital Identity Guidelines: Authentication and Authenticator Management* (2025), [nguồn chính thức](https://csrc.nist.gov/pubs/sp/800/63/B/4/final) | Chương bảo mật: yêu cầu về bí mật ghi nhớ được, cách xử lý bí mật cấp ban đầu, và chống thử sai nhiều lần. Nguồn chuẩn mực để bảo vệ quyết định ép đổi PIN ở lần đăng nhập đầu |
 | Sandhu, R. và cộng sự. "Role-Based Access Control Models". *IEEE Computer*, 29(2), 1996 | Chương phân quyền: nền lý thuyết của mô hình vai trò và quyền đang được tổ chức lại |
 | Ferraiolo, D.; Kuhn, R. "Role-Based Access Controls". *15th NIST-NCSC National Computer Security Conference*, 1992 | Chương phân quyền: bài gốc của mô hình vai trò |
-| OWASP *Application Security Verification Standard* (ASVS), phiên bản 4.x | Chương bảo mật: danh mục kiểm tra xác thực và kiểm soát truy cập, dùng làm thước đo tự đánh giá |
+| OWASP *Application Security Verification Standard* (ASVS), phiên bản 5.0.0 (2025), [nguồn chính thức](https://github.com/OWASP/ASVS) | Chương bảo mật: danh mục kiểm tra xác thực và kiểm soát truy cập, dùng làm thước đo tự đánh giá |
 
 ## Nhóm 5 — Kiểm Thử Và Chất Lượng
 
@@ -78,6 +78,10 @@ Dùng cho chương hạn chế và hướng phát triển, để mỗi hướng 
 | Kleppmann, M. và cộng sự. "Local-First Software: You Own Your Data, in Spite of the Cloud". *Onward!*, 2019 | Hướng phát triển ngoại tuyến: đặt nhóm offline đang hoãn vào một khung khái niệm có tên gọi |
 | Shapiro, M. và cộng sự. "Conflict-Free Replicated Data Types". *SSS*, 2011 | Hướng phát triển ngoại tuyến: cơ sở của việc hòa giải xung đột sau khi có mạng trở lại |
 | Fielding, R. T. *Architectural Styles and the Design of Network-based Software Architectures*. Luận án tiến sĩ, UC Irvine, 2000 | Chương kiến trúc: nền của kiểu giao tiếp giữa client và máy chủ |
+
+## Đối chiếu nguồn ngày 25/10/2026
+
+Đã xác minh metadata NIST SP800-63B-4 (tháng7/2025, thay bản63B cũ) và ASVS5.0.0 (tháng5/2025) từ nguồn chính thức ở bảng trên; chưa xác minh toàn bộ danh mục/số trang. Đây là cập nhật tài liệu tham khảo, không tự nhận hệ thống tuân thủ NIST/ASVS hoặc mở thêm requirement bảo mật. Cần đối chiếu đúng loại authenticator, mục áp dụng và phiên bản mã yêu cầu; ép đổi PIN tạm không đủ để tuyên bố tuân thủ. [Bản rà soát đồ án](workflow/tasks/docs-thesis-audit-2026-10-25.md).
 
 ## Việc Còn Phải Làm
 

@@ -16,13 +16,13 @@ Hiệu lực: **2026-09-16**. Chủ dự án yêu cầu áp dụng cho task mớ
 | Bằng chứng và giải thích kết quả | Biên bản dưới `docs/implementation-log/`; liên kết log/report/ảnh được lưu ở nơi phù hợp, không đưa bí mật vào docs |
 | Quyết định dùng chung nhiều feature | Một hồ sơ quyết định trên `docs`, được liên kết từ các change dùng nó; không sao chép nhiều bản có thể lệch |
 
-`main` và `docs` là hai nhánh của cùng repo, có worktree riêng. Tài liệu ở `docs` không có nghĩa thay đổi chưa commit đã có trong ref `docs`. Luôn nhận diện worktree, HEAD và phần chưa commit khi dùng tài liệu/code làm đầu vào. Giữ các con trỏ hướng dẫn hiện có trên `main`; không nhân đôi toàn bộ quy trình vào code.
+`main` và `docs` là hai nhánh của cùng repo. Sau đợt dọn được chủ dự án duyệt ngày25/10/2026, không còn worktree docs thường trực; đọc bản đã commit qua `git -C D:/Workspace/pos-cafe show docs:<path>` và xác minh ref với remote. Khi có checkout phục vụ task, luôn nhận diện worktree, HEAD và phần chưa commit; file chưa commit không tự nằm trong ref. Không tạo lại checkout chỉ vì receipt lịch sử nhắc đường dẫn cũ. Giữ con trỏ trên main và kho snapshot được bảo toàn; không nhân đôi quy trình vào code.
 
 Task phân tích chỉ cần đầu ra phân tích/spec trong phạm vi được yêu cầu. Task triển khai cần cả phần mềm và hồ sơ. Hoàn thành việc code không tự có nghĩa đã được chủ dự án nghiệm thu hoặc đã phát hành.
 
 ## Khởi động và tiếp tục một task
 
-1. Đọc `AGENTS.md`, chuẩn spec và tài liệu này từ worktree `docs` đã xác minh bằng Git. Nếu đang ở checkout thiếu con trỏ hướng dẫn, làm theo [câu mở đầu](start-task.md).
+1. Đọc `AGENTS.md`, chuẩn spec và tài liệu này từ ref `docs` đã xác minh bằng Git; nếu có worktree thì kiểm đúng ref/trạng thái trước khi đọc. Checkout thiếu con trỏ hướng dẫn dùng [câu mở đầu](start-task.md).
 2. Đọc chỉ mục bàn giao, chọn đúng task; đọc đề bài, quyết định còn hiệu lực và các nguồn được liên kết. Nếu chưa có bàn giao, lập từ nguồn thực tế và đánh dấu điều chưa xác minh.
 3. Kiểm tra nhánh/HEAD/trạng thái thay đổi của code và docs. Chỉ khảo sát code, tests, migrations và tài liệu liên quan. Bàn giao là chỉ dẫn, không thay việc kiểm tra phần đã thay đổi từ lần trước.
 4. Tóm tắt kết quả cần tạo, phạm vi được giao, điều đã biết/chưa biết, dependency và tiêu chí hoàn thành. Dùng mẫu đề bài; người dùng không phải tự điền mọi trường.

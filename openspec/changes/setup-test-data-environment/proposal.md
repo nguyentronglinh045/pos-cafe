@@ -1,5 +1,7 @@
 # Chuẩn hóa dữ liệu và môi trường kiểm thử
 
+> **Đối chiếu 25/10/2026 với main711a22e:** các mô tả “hiện có” và nợ tuần 9 bên dưới là nguồn kế hoạch tháng 9. Source nay có [fixture literal độc lập seed](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/tests/contracts/fixtures.ts#L1), [reset harness có guard](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/tests/contracts/harness.ts#L22) và [bảy service profiles](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/scripts/permission-runtime-service-profile.mjs#L6). Không bắt đầu lại từ giả định chỉ có demo seed/mock; cũng không nhận các môi trường hay gate đều sẵn sàng. Khi tiếp tục, kiểm inventory, recipe, cleanup và evidence của nguồn cuối theo [G01](../../../docs/workflow/tasks/docs-thesis-audit-2026-10-25.md). Nội dung mục tiêu/quyết định lịch sử được giữ, chưa tự đóng proposal.
+
 ## Why
 
 Hiện có hai nguồn dữ liệu cho kiểm thử: bộ seed demo trong ứng dụng và adapter mock, cả hai đều được thiết kế cho việc demo chứ không cho kiểm thử. Hệ quả là test khó tái lập: kịch bản báo cáo cần dữ liệu ở nhiều ngày kinh doanh khác nhau, kịch bản quyền cần nhiều nhân viên với cấu hình quyền khác nhau, kịch bản đa thiết bị cần hai phiên trên cùng một cửa hàng, và không có cách dọn sạch giữa các lần chạy. Không giải quyết việc này thì mọi kịch bản E2E sẽ phụ thuộc trạng thái sót lại của lần chạy trước.

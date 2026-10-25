@@ -10,6 +10,8 @@
 | Chuẩn hóa | **Docs-first:** đợt chỉnh lý core/điều hướng đã kiểm và hai reviewer APPROVE; NC-10 tiếp tục theo các slice, phần WIP tiếp tục theo hồ sơ xuất bản25/10 |
 | Phát hành | Không mở deploy/migration/live activation trong lượt này |
 
+[Đối chiếu 12 mục tiêu tốt nghiệp ngày 25/10/2026](workflow/tasks/docs-thesis-audit-2026-10-25.md) bổ sung góc nhìn theo đầu ra đồ án. Thứ tự ở hồ sơ đó là đề xuất, không tự thay deadline, cam kết nghiệp vụ hoặc mở refactor.
+
 ## Làm gì tiếp
 
 1. Chuẩn hóa tri thức, trạng thái, nguồn và đường đọc docs; bảo toàn WIP và evidence. [Handoff đang thực hiện](workflow/tasks/docs-normalization-2026-10-25.md).

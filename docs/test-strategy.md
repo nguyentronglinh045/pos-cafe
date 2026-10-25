@@ -19,7 +19,7 @@ Cột **không kiểm** quan trọng ngang cột **kiểm**. Thiếu nó thì c�
 | Luồng tính năng | Vitest + adapter mock | Kịch bản nghiệp vụ nhiều bước: gửi đơn, thanh toán, tách đơn, hủy đơn, đổi quyền | Cách trình bày trên màn hình |
 | Thành phần giao diện | Vitest + Testing Library | Trạng thái màn: nút bị vô hiệu, thông báo lỗi, trạng thái đang tải, phần tử ẩn theo quyền | Tính đúng của nghiệp vụ phía sau |
 | Ranh giới kiến trúc | Vitest + quét AST | Hướng phụ thuộc giữa các tầng | Hành vi lúc chạy |
-| Mock E2E | Playwright, 5 viewport | Hành trình người dùng đầu cuối trên adapter mock, và bố cục theo kích thước màn | Chính sách bảo mật hàng, hành vi thật của RPC |
+| Mock E2E | Playwright, projects theo cấu hình source | Hành trình người dùng đầu cuối trên adapter mock, và bố cục theo kích thước màn | Chính sách bảo mật hàng, hành vi thật của RPC |
 | Cloud E2E | Playwright + Supabase thật | Đúng ba nhóm mock không chứng minh được: chính sách bảo mật mức dòng, hành vi RPC trong PostgreSQL, realtime giữa hai máy | Mọi thứ mock đã chứng minh được |
 
 **Luật chống trùng lặp.** Một hành vi chỉ được kiểm ở **tầng thấp nhất có thể kiểm được nó**. Cùng một quy tắc nghiệp vụ mà bị kiểm cả ở tầng đơn vị lẫn tầng E2E thì bỏ bản ở E2E, trừ khi bản E2E kiểm thêm phần **nối giữa các bước**.
@@ -76,9 +76,11 @@ Một thay đổi chỉ được coi là xong khi cả bốn kiểm dưới đâ
 
 Lý do tách: cloud E2E cần một project Supabase riêng cùng credential và tốn thời gian đáng kể. Ép mỗi lần merge sẽ làm vòng lặp phát triển chậm tới mức người làm tìm cách bỏ qua — lúc đó cổng thành hình thức, tệ hơn là không có.
 
-**Trạng thái thực thi, nói đúng:** dự án **chưa có CI**. `add-ci-pipeline` nằm ở giai đoạn 2 của roadmap. Tới thời điểm này cổng được giữ bằng **kỷ luật**, chưa có máy nào ép. Khi CI lên, bảng trên bê nguyên thành cấu hình, không phải thiết kế lại.
+**Thực thi đối chiếu 25/10/2026:** main711a22e đã có [POS light CI trên push/PR](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/.github/workflows/ci.yml#L1), [backend workflow](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/.github/workflows/backend.yml#L1) và [frontend Preview](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/.github/workflows/frontend-preview.yml#L1). CI gọi runner theo cấu hình, không có nghĩa mọi gate backend/Storage/Realtime đều chạy hoặc đã PASS. [Testing](testing.md) giữ kết quả theo source; [bảng G01](workflow/tasks/docs-thesis-audit-2026-10-25.md) ghi phần cần hợp nhất. Ngưỡng coverage và các gate feature đã duyệt giữ nguyên; bảng tháng 9 không thay thế gate chuyên biệt hiện hành.
 
-## Ba Tình Huống Bắt Buộc Trên Cloud E2E
+## Ba Tình Huống Bắt Buộc Trên Cloud E2E — checkpoint tháng 9
+
+Các trạng thái “chưa có” trong bảng dưới là lúc lập chiến lược 07/09/2026, không phải kiểm kê test main hiện tại. Source nay có SQL/Auth/REST contract và bộ permission/PIN riêng, ví dụ [read contracts](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/tests/contracts/permissionRead.contract.test.ts#L1). Tình huống kiểm vẫn cần được truy vết; phải đối chiếu nguồn và kết quả thực chạy trước khi đóng từng khoảng thiếu, không suy có file test thành PASS. Phần nợ và hạn tuần 9 bên dưới cũng là kế hoạch lịch sử, chưa phải lịch được xác nhận lại.
 
 Nguyên tắc chọn: **chỉ đưa lên cloud những thứ adapter mock không chứng minh được.**
 
@@ -96,7 +98,7 @@ Nên có nếu còn thời gian: món bị xóa giữa chừng trả `MENU_ITEM_
 
 `npm run smoke:supabase` **không có bước dọn dẹp**, nên mỗi lần chạy để lại một cửa hàng thử trên project Supabase thật. Đã chấp nhận có ý thức ở quyết định 10 của `define-test-strategy`, vì dữ liệu cũ đằng nào cũng bị xóa sạch ở tuần 7 tới 9.
 
-**Nhưng khoản nợ này có hạn dùng.** Trần 5 cửa hàng mỗi tài khoản chủ sẽ làm **lần chạy thứ sáu đỏ vì chạm trần**, tính từ khi `add-owner-account-and-store-provisioning` lên. Phải xử lý **trước khi kết thúc tuần 9**, nếu không cổng cloud E2E tự khóa chính nó — và nó là cổng duy nhất chứng minh được chính sách bảo mật mức dòng. Nghĩa vụ ghi ở `setup-test-data-environment`, mục "Nợ kỹ thuật thừa hưởng".
+**Nhưng khoản nợ này có hạn dùng.** Trần 5 cửa hàng mỗi tài khoản chủ sẽ làm **lần chạy thứ sáu đỏ vì chạm trần**, tính từ khi `add-owner-account-and-store-provisioning` lên. Phải xử lý **trước khi kết thúc tuần 9**, nếu không cổng cloud E2E tự khóa chính nó — và tại checkpoint lập kế hoạch đây là cổng cloud chứng minh chính sách bảo mật mức dòng. Hiện đã có thêm các contract trực tiếp SQL/Auth/REST; phải đọc bản đồ suite và evidence đúng source, không coi riêng lệnh này là toàn bộ kiểm backend. Nghĩa vụ ghi ở `setup-test-data-environment`, mục "Nợ kỹ thuật thừa hưởng".
 
 ## Quy Ước Đặt Tên Và Vị Trí
 

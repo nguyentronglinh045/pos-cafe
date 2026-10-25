@@ -33,15 +33,11 @@ Chủ dự án chọn **online** cho phạm vi hiện tại. `add-idempotent-wri
 
 Quyết định nghiệp vụ nằm trong [tài liệu 10](../docs/reviews/2026-09-07-idempotency/10-quyet-dinh-sau-review-va-chinh-sach-gia.md); bộ hiện hành nằm tại [proposal chống trùng](changes/add-idempotent-write-operations/proposal.md). Tài liệu 07 và danh sách 32 PRE-IDEM là mốc trước review, không thay thế bộ hoàn chỉnh ngày 2026-09-09. Các proposal offline hoãn vẫn được giữ tham khảo, không archive như đã hoàn thành; vì vậy vẫn có thể xuất hiện trong `openspec list`.
 
-## Cách gọi
+## Cách đọc và dùng công cụ
 
-Worktree này đã đăng ký làm store id `pos-cafe-docs`, nên chạy được từ bất kỳ đâu:
+Không còn worktree docs sau đợt dọn được duyệt ngày25/10/2026. Đọc tài liệu đã commit bằng `git -C D:/Workspace/pos-cafe show docs:openspec/README.md` và các đường tương ứng; xác minh ref với remote trước khi gọi là hiện hành.
 
-```bash
-openspec list --store pos-cafe-docs
-```
-
-Slash command `/opsx:propose`, `/opsx:apply`, `/opsx:archive` chỉ nạp khi mở Claude Code tại chính worktree này, vì `.claude/commands` nằm trên nhánh `docs`.
+Lệnh lịch sử `openspec list --store pos-cafe-docs` chỉ dùng khi registry của công cụ trỏ tới một checkout còn tồn tại và đã được xác minh. Lượt này không chạy lại OpenSpec CLI, không xác nhận registration cũ còn dùng được, không tạo lại worktree. Các slash command trong `.claude/commands` cần workspace có những file đó; đọc ref Git không tự nạp chúng. Không coi kết quả validate ghi trong checkpoint cũ là kết quả CLI hôm nay.
 
 ## Hai thư mục
 

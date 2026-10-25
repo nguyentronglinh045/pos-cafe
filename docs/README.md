@@ -2,6 +2,8 @@
 
 Điểm bắt đầu để hiểu dự án và viết báo cáo. **Nguồn code đối chiếu: `main@711a22e71983e3d6aa17799649af05ce4c762555`, ngày 25/10/2026.** Đây là trạng thái mã đã tích hợp; không phải xác nhận bản đang chạy trên cửa hàng thật.
 
+[Rà soát theo 12 mục tiêu tốt nghiệp — 25/10/2026](workflow/tasks/docs-thesis-audit-2026-10-25.md): hiện trạng, khoảng thiếu, lỗi tài liệu và thứ tự chỉnh lý đề xuất; chưa là nghiệm thu sản phẩm.
+
 ## Đường đọc chính
 
 1. [Tổng quan](project-overview.md): bài toán, người dùng, mục tiêu và trạng thái.
@@ -16,7 +18,7 @@
 | --- | --- |
 | Viết yêu cầu, tìm mã FR/NFR | [Requirements](requirements.md); hợp đồng chi tiết ở [OpenSpec](../openspec/README.md) |
 | Hiểu màn hình và quyền mở màn | [Screens](screens.md) |
-| Giải thích lựa chọn công nghệ | [Tech stack](tech-stack.md); [trang học kiến trúc](architecture-explainer.html) là tài liệu giảng giải, không phải bản kiểm chứng runtime |
+| Giải thích lựa chọn công nghệ | [Tech stack](tech-stack.md); [trang học kiến trúc](architecture-explainer.html) là tài liệu giảng giải; ví dụ raw repository còn theo kiến trúc cũ, cần đọc cùng architecture.md và không dùng làm bản kiểm chứng runtime |
 | Viết khóa luận | [Bản đồ nguồn báo cáo](report-source-map.md) |
 | Phát triển và kiểm thử | [CLAUDE.md](../CLAUDE.md), [chiến lược test](test-strategy.md), [quy trình task](workflow/README.md) |
 | Tiếp tục công việc đang mở | [Chỉ mục task](workflow/tasks/README.md) |

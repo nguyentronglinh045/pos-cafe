@@ -41,6 +41,8 @@ Chỉ được đưa code/file/migration vào **phụ lục** khi người dùng
 
 Nếu có mâu thuẫn, kiểm tra code/migration trước rồi cập nhật root docs. Không lấy kết quả test hoặc gap trong phase cũ làm trạng thái hiện hành khi phase sau đã supersede.
 
+[Bảng 12 mục tiêu tốt nghiệp](workflow/tasks/docs-thesis-audit-2026-10-25.md) nối hiện trạng, spec, mã, bằng chứng và phần còn thiếu. Đây là chỉ mục phân tích, chưa thay ma trận FR/NFR–UC–test hoặc bản cam kết với giảng viên.
+
 ## Ánh Xạ Sang Cấu Trúc Báo Cáo
 
 | Phần báo cáo gợi ý | Nguồn chính |

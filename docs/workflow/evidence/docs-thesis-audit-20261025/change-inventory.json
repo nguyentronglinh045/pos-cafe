@@ -1,0 +1,415 @@
+[
+  {
+    "change": "add-cd-deployment",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-ci-pipeline",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-cross-store-reporting",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-customer-registry",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-discount-engine",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-electronic-payment",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-employee-time-clock",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-happy-hour-pricing",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-idempotent-write-operations",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "usecases.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 14
+  },
+  {
+    "change": "add-inventory-core",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-inventory-management-screen",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-kitchen-display",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-loyalty-management-screen",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-loyalty-points",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-manual-order-discount",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-modifier-link-realtime-subscription",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-multi-store-ownership",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-offline-data-layer",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-offline-status-ux",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-offline-sync-conflict-resolution",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-owner-account-and-store-provisioning",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "usecases.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 11
+  },
+  {
+    "change": "add-promo-codes-and-vouchers",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-promotion-management-screen",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-provider-admin-console",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-recipe-based-stock-deduction",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-shift-management",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "add-stitch-ui-remake-workflow",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 6
+  },
+  {
+    "change": "add-table-transfer-and-merge",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "adopt-ai-task-workflow",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 7
+  },
+  {
+    "change": "bound-permission-test-iterations",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 6
+  },
+  {
+    "change": "enforce-permissions-at-database",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "expand-e2e-coverage",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "force-default-pin-change",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "usecases.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 8
+  },
+  {
+    "change": "handle-long-running-session",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "measure-runtime-load",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "optimize-runtime-load",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "optimize-store-data-access",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "usecases.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 8
+  },
+  {
+    "change": "permission-provider-capability-guard",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 6
+  },
+  {
+    "change": "redesign-permission-model",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "usecases.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 14
+  },
+  {
+    "change": "redesign-pos-ui",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "remake-b01",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "usecases.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 7
+  },
+  {
+    "change": "remake-b02",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "usecases.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 7
+  },
+  {
+    "change": "remake-b03",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "usecases.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 7
+  },
+  {
+    "change": "setup-project-ci-cd",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 6
+  },
+  {
+    "change": "setup-test-data-environment",
+    "artifact_types": [
+      "proposal.md"
+    ],
+    "files": 2
+  },
+  {
+    "change": "use-supabase-staging-for-permission-tests",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 6
+  },
+  {
+    "change": "week03-b01-b02",
+    "artifact_types": [
+      "proposal.md",
+      "design.md",
+      "usecases.md",
+      "testplan.md",
+      "traceability.md",
+      "tasks.md",
+      "specs"
+    ],
+    "files": 7
+  }
+]
