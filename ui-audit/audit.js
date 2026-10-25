@@ -386,6 +386,9 @@
     // ---- interactive element rules -------------------------------------
     const boxes = [];
     for (const el of interactives) {
+      // pos-cafe local patch: display:none ancestors have no layout boxes.
+      // A laid-out zero-size control still has a box and must remain a finding.
+      if (!el.getClientRects().length) continue;
       const r = el.getBoundingClientRect();
       const s = style(el);
       if (s.display === 'none' || s.visibility === 'hidden') continue;
@@ -535,6 +538,8 @@
     for (const el of all) {
       if (!el.matches('i,span,svg,[class*=icon],[class*=Icon]')) continue;
       if (el.children.length) continue;
+      // pos-cafe local patch: hidden descendants are not missing rendered icons.
+      if (!el.getClientRects().length) continue;
       const s = style(el);
       if (s.display === 'none') continue;
       const r = el.getBoundingClientRect();
