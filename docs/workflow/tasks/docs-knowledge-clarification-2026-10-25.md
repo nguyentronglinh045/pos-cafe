@@ -121,3 +121,10 @@ Q10 chặn việc chốt chính xác phạm vi hồi quy mang nhãn “đợt tr
 ### Đợt ghi nhận Q07–Q09
 
 Đồng bộ khung thời gian và mức hoàn thành vào roadmap/project-overview; bổ sung vai trò kiểm thử local và hồi quy vào test-strategy; cập nhật task index và tiến độ checklist local. Chỉ sửa tài liệu theo thông tin mới, giữ lịch sử và gate. Kiểm ngày bằng phép cộng tuần, kiểm diff và liên kết; không chạy ứng dụng/backend, deploy, cài môi trường hoặc refactor.
+
+### Review đợt Q07–Q09
+
+- Reviewer độc lập `/root/review_preservation`: **APPROVE** docs candidate `22250d3f347c7ff14680d96907c3fefaf75587b8` và checklist local candidate SHA256 `d891a18c73ec4e7612f3471c501dc6a68d959aca6f54768087882aa440131d2e`; không có finding chặn hoặc không chặn.
+- Reviewer kiểm toàn delta, parent, hash, diff và link/anchor. Các khoảng tuần tính đúng, ghi rõ là quy đổi, không thành hạn nộp/ngày bảo vệ chính thức; mong muốn hồi quy không bị gán thành rubric của giảng viên và gate giữ nguyên. Q05–Q06, baseline Q10 vẫn mở; P0 chưa tích hoàn tất.
+- Kiểm tác giả: phép cộng tuần khớp Q07; `git diff --check` đạt; 60 liên kết tương đối trong 5 file sửa không có lỗi path/anchor. Không chạy ứng dụng/backend, cài môi trường hoặc deploy.
+- Sau APPROVE chỉ bổ sung metadata review này và metadata tương ứng vào checklist. Lượt này lưu trên docs local, chưa push; checklist ngoài repository.
