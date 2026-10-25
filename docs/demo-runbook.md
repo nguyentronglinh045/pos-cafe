@@ -14,30 +14,30 @@ Runbook này dùng để chuẩn bị demo/bảo vệ phase tiểu luận.
 5. Tạo order dine-in: chọn món, option/topping, chỉnh số lượng/ghi chú, gửi đơn.
 6. Quay lại floor, thấy bàn chuyển sang đang phục vụ.
 7. Mở lại order, chuyển sang payment.
-8. **Demo instant pay (điểm nhấn):** bỏ `Chọn tất cả`, tick 1-2 món (chỉnh số lượng bằng nút `+`), hoàn tất → bill riêng in ra (kế thừa số đơn gốc), đơn gốc còn lại trên bàn với số mới; mở report thấy doanh thu vào NGAY.
+8. **Demo instant pay (điểm nhấn):** bỏ `Chọn tất cả`, tick 1-2 món (chỉnh số lượng bằng nút `+`), hoàn tất → preview bill riêng mở khi có initial grant và bật checkbox in (kế thừa số đơn gốc), đơn gốc còn lại trên bàn với số mới; mở report thấy doanh thu vào NGAY.
 9. Chủ động chọn phần còn lại sau split (selection lúc này rỗng), rồi nhập tiền khách đưa, kiểm tra trạng thái thiếu/đủ tiền, hoàn tất thanh toán.
 10. Xem receipt preview, quay lại floor thấy bàn trống.
 11. Mở report/history: 2 đơn độc lập từ cùng một bàn, số đơn tăng theo thứ tự thanh toán.
-12. **Demo hủy đơn đã thanh toán:** đăng nhập admin, chọn một đơn paid trong Lịch sử, bấm `Hủy đơn`, chọn lý do (nếu chọn `Lý do khác` phải nhập ghi chú), xác nhận badge `Đã hủy`, người/thời điểm/lý do hủy và nút in lại bị khóa.
+12. **Demo hủy đơn đã thanh toán:** đăng nhập nhân viên có `orderHistory.view` và `order.voidPaid` (owner/manager theo defaults catalog), chọn một đơn paid trong Lịch sử, bấm `Hủy đơn`, chọn lý do (nếu chọn `Lý do khác` phải nhập ghi chú), xác nhận badge `Đã hủy`, người/thời điểm/lý do hủy và nút in lại bị khóa.
 13. Mở Report: xác nhận đơn vừa hủy bị loại khỏi doanh thu/số đơn paid, đồng thời `Đơn đã huỷ` và `Tiền hủy` tăng đúng để đối soát.
-14. **Demo phân quyền per-employee:** admin mở Nhân viên → Thu ngân 1 → bỏ `Thanh toán đơn` → lưu → khóa phiên → đăng nhập lại Thu ngân 1. Xác nhận vẫn tạo/sửa đơn được nhưng action thanh toán bị disable và có lý do; đăng nhập lại admin để khôi phục quyền nếu cần.
-15. Demo admin: menu editor, floor editor, settings.
-16. Demo clear dữ liệu mẫu khi không còn order mở; nếu còn order mở thì giải thích trạng thái blocked.
+14. **Demo phân quyền per-employee:** dùng owner hoặc actor có `employee.permission.edit` mở Nhân viên, chọn đúng nhân viên fixture thu ngân, bỏ quyền `payment.take` và lưu. Ở phiên nhân viên đích, chờ authority được xác minh theo lifecycle rồi kiểm vẫn tạo/sửa đơn nhưng không thực hiện được thanh toán. Khôi phục quyền bằng actor có quyền sửa trong fixture nếu kịch bản yêu cầu; không sửa quyền cửa hàng thật để demo.
+15. Demo quản trị với quyền tương ứng: `menu.manage`, `floor.manage`, `settings.manage`.
+16. Owner có `data.clearDemo` demo clear dữ liệu mẫu khi không còn order mở; nếu còn order mở thì giải thích trạng thái blocked.
 
 ## Checklist Trước Demo
 
 - Supabase project còn active, không bị pause.
 - App build/deploy mới nhất mở được.
-- Store demo có dữ liệu seed đủ: nhân viên, menu, option, floor areas, bàn và 7 decor ảnh built-in đa dạng (tường, cây, ghế, quầy/thiết bị, ảnh khác).
+- Fixture demo có nhân viên/quyền, menu/modifier, bàn/khu và decor cần cho kịch bản; ghi fixture/source, không suy số lượng từ seed phase cũ.
 - Có ít nhất một order thanh toán thành công để report/history không trống nếu cần.
-- Dùng admin (hoặc nhân viên có grant `order.voidPaid`) nếu demo hủy đơn đã thanh toán.
-- Nếu demo phân quyền trên cloud, bảo đảm migration 012 đã được apply; thay đổi quyền client có hiệu lực sau khi khóa/đăng nhập lại.
-- Nếu demo nền bàn, bảo đảm migration 013 đã được apply và floor-plan select đọc được `background_asset_key`.
+- Chuẩn bị actor có `orderHistory.view` + `order.voidPaid` để demo hủy; actor `employee.permission.edit` để chỉnh quyền; `report.view` để kiểm báo cáo.
+- Demo backend mới chỉ sau khi có môi trường được giao và gate activation/acceptance thích hợp. Không dùng migration012 như recipe runtime711a22e; giữ HOLD của [testing](testing.md).
+- Kiểm projection sơ đồ/nền bàn trên đúng fixture/backend; không tự apply migration từ checklist demo.
 - Màn hình trình chiếu ở landscape, đủ rộng.
 - Chuẩn bị 4G/hotspot vì phase này online-only.
 - Kitchen không còn entry point trong UI hiện hành. Nếu được hỏi, giải thích enum/schema/component scaffold được giữ cho tương lai nhưng queue backend và role vận hành chưa triển khai. Payment Settings/QR vẫn là preview optional.
 
-## Kiểm Chứng Trên Supabase
+## Kiểm Chứng Trên Supabase — lịch sử phase 15–20
 
 - **Realtime cross-device (phase 15): ĐÃ kiểm chứng** qua `npm run smoke:supabase` (phase 18): 2 browser cùng store thật, máy A tạo đơn → máy B thấy bàn đang phục vụ ≤30s; máy B thanh toán → máy A thấy bàn trống. Phần self-heal khi ngắt/nối mạng vẫn chỉ kiểm được thủ công (ngắt mạng máy B rồi nối lại → sau `SUBSCRIBED` phải tự resync ngay). Xem [implementation-log/phase-15-realtime-hardening.md](implementation-log/phase-15-realtime-hardening.md).
 - **Instant pay tách đơn (phase 18): ĐÃ kiểm chứng** qua E2E trên cloud đã áp migration 009+010 (tách dòng, số bill theo thứ tự trả, lịch sử 2 đơn độc lập).
@@ -57,7 +57,7 @@ Runbook này dùng để chuẩn bị demo/bảo vệ phase tiểu luận.
 
 ## Rủi Ro Demo & Cách Xử Lý
 
-- **Report trống:** tạo một order live rồi thanh toán trước khi mở report.
+- **Report trống:** trên fixture/môi trường demo được giao, tạo và thanh toán đơn mẫu trước khi mở report; không dùng giao dịch cửa hàng thật để tạo số liệu.
 - **Report về 0 sau hủy:** đây là behavior đúng nếu đơn paid duy nhất vừa bị hủy; kiểm tra thêm `Đơn đã huỷ`/`Tiền hủy` ở rail trái.
 - **Không thấy nút Hủy đơn:** kiểm tra đang chọn đơn `Đã thanh toán` và nhân viên hiện tại có quyền `order.voidPaid` (theo catalog/overrides).
 - **Quyền vừa sửa nhưng UI chưa đổi:** runtime mới xác minh revision/authority qua lifecycle; kiểm trạng thái unavailable, signal/refetch và đúng source/backend. Không phục hồi legacy grants hoặc dùng recipe migration012 để sửa một candidate mới. Xem [architecture](architecture.md#permission).

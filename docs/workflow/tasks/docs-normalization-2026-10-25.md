@@ -97,3 +97,8 @@ Checkpoint dung lượng trước review:C192.843.644.928 bytes,D98.720.903.168 
 | K3 features:64–70 mô tả B03 header/pane/reset lựa chọn cũ | Header vị trí/số đơn/số món, summary trái/cashier phải; sau split selection rỗng. Sửa screens/demo cùng nghĩa, giữ điều kiện initial receipt grant | Chờ review lại |
 
 Delta còn thêm README ở root để GitHub nhánh docs có điểm vào tự hiển thị; context cũ giữ con trỏ tương thích. Self-check delta:344Markdown/1239links,0anchor/source-pin/raw-drift; các missing/local lịch sử không đổi; diff-check exit0. Không chạy app/test backend. Hai reviewer cần xác nhận candidate mới trước xuất bản.
+
+
+### Vòng review 2 — candidate1e89f408e9aed89c14e59d70c1718cb52a3478c0
+
+review_preservation **APPROVE**, tái kiểm344Markdown/1239links và bảo toàn trong scope. review_knowledge xác nhận K1/K2/K3 đã sửa nhưng **CHANGES_REQUESTED** với K4 chặn: demo-runbook:21/23 vẫn dùng role admin trong luồng hiện hành. Delta tiếp sửa bước12–16 theo quyền/catalog/fixture, checklist bỏ recipe migration012/013 và giữ cloud evidence phase15–20 dưới nhãn lịch sử. K4 chờ reviewer kiểm lại; không tự nhận đóng.
