@@ -9,9 +9,11 @@ Thay dòng "Việc cần làm" bằng yêu cầu của bạn; không cần tự 
 ```text
 Áp dụng quy trình task POS-cafe trên nhánh docs.
 
-Trước tiên xác minh worktree docs; trên máy này dự kiến là
-D:/Workspace/pos-cafe-docs. Đọc AGENTS.md, openspec/SPEC-STANDARD.md,
-docs/workflow/README.md và bàn giao đúng task trong docs/workflow/tasks/.
+Trước tiên xác minh ref/worktree docs. Máy này không còn worktree docs
+sau lượt dọn25/10/2026; đọc bản đã commit qua git show docs:<path>
+từ D:/Workspace/pos-cafe nếu chưa có checkout docs mới được xác minh.
+Đọc AGENTS.md, openspec/SPEC-STANDARD.md, docs/workflow/README.md
+và bàn giao đúng task trong docs/workflow/tasks/.
 Đối chiếu remote/commit và WIP local; ghi rõ phần chưa commit, không mặc nhiên lấy WIP làm current truth hoặc ghi đè checkout bẩn.
 
 Việc cần làm: [mô tả tính năng/vấn đề và kết quả tôi muốn thấy].

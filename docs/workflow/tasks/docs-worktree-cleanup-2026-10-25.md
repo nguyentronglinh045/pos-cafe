@@ -1,5 +1,7 @@
 # Dọn worktree docs đã hết dùng — 25/10/2026
 
+> **Hiện trạng sau yêu cầu tiếp:** đã xóa cả worktree docs cuối sau khi đồng bộ và xác minh toàn bộ commit trên remote. Còn14 worktree code,0 worktree docs; nhánh docs và kho16 snapshot vẫn giữ. Các mục đầu trang ghi lần xóa worktree tạm trước đó.
+
 > **Tiếp nối25/10:** [task đồng bộ docs](docs-worktree-sync-2026-10-25.md) đã xử lý WIP gốc sau mốc xóa worktree tạm này. Các câu39/920 còn nguyên/chưa dọn bên dưới là kết quả lịch sử tại thời điểm16:41; hiện trạng mới theo task tiếp nối.
 
 ## Yêu cầu và phạm vi
@@ -51,3 +53,29 @@ Hai reviewer độc lập đã **APPROVE** receipt candidate `5fe77755b8af33a21c
 - `review_knowledge`: kiểm hậu xóa, dòng index, parent/ref,1.856 SHA256 và phép phân biệt logical/allocation/free-space; không mở quyền xóa WIP/branch/code hoặc backend acceptance.
 
 `git diff --check` đạt. Receipt sau candidate chỉ bổ sung kết quả review, không sửa phạm vi xóa, số đo hay evidence. Hồ sơ được xuất bản bằng push fast-forward thông thường lên docs; không tạo lại worktree đã xóa.
+
+
+## Xóa worktree docs cuối sau đồng bộ — 25/10/2026
+
+Sau khi được báo chỉ còn `D:/Workspace/pos-cafe-docs`, chủ dự án hỏi “có thể xóa đi không”. Trong chuỗi yêu cầu dọn worktree này, AI tiếp tục thực hiện xóa đúng checkout đã sạch/đã xuất bản, thông báo rõ mục tiêu và phần giữ trước thao tác. Không mở rộng sang xóa branch, Git history hoặc kho16 bản khác biệt.
+
+Hai reviewer độc lập tự kiểm và APPROVE kế hoạch: target HEAD/local docs/origin/docs/remote đều `b5be5914e1782f6b52cf386246e7ff15558d180f`; clean,0untracked/ignored/reparse/nested Git/lock; pointer/backpointer đúng. Inventory2.166 files/106.445.969 bytes logical. Kho `D:/Workspace/pos-cafe-docs-retained-20261025` là sibling ngoài target;16snapshot/357.496 bytes khớp hash, preserve ref vẫn0fe967d. Không thấy process thường trú gắn target.
+
+Fresh checks sát lệnh kiểm lại refs, sạch/ignored và hash toàn bộ2.166 file, containment của target và kho giữ. Từ cwd `D:/Workspace/pos-cafe` chạy:
+
+```powershell
+git -C D:/Workspace/pos-cafe worktree remove -- D:/Workspace/pos-cafe-docs
+```
+
+Exit0 lúc `2026-10-25T10:22:47.4701109Z` (17:22 UTC+7); không force, không prune/glob/Remove-Item. Target và registry entry không còn; tổng worktrees15→14, **docs1→0**. Local docs vẫn b5be591 ngay sau remove; Git objects/remote/preserve ref và toàn bộ worktree code giữ nguyên. Kiểm lại16snapshot sau xóa không sai hash.
+
+| Windows free space (bytes) | Trước | Ngay sau | Chênh lệch |
+| --- | ---: | ---: | ---: |
+| C | 192.733.511.680 | 192.733.511.680 | 0 |
+| D | 98.717.110.272 | 98.828.529.664 | **+111.419.392** |
+
+Ổ D tăng khoảng111,4MB trống sát thao tác; đây là đo free-space, không đồng nhất với106,4MB logical hoặc tuyên bố Git history đã bị xóa. Số đo có thể gồm metadata và ghi nền khác. Receipt/manifest mới là `docs-last-worktree-removal-result.json` và `docs-last-worktree-removal-input.json` tại thư mục QA đã ghi ở trên; không ghi đè receipt lần xóa worktree tạm.
+
+Hướng dẫn hiện hành vẫn ở nhánh docs. AGENTS và starter được cập nhật cách đọc bằng `git show docs:<path>` khi không có worktree; các con trỏ trên main không bị sửa. Kho16 snapshot không là nguồn hướng dẫn hiện hành. Biên bản được ghi bằng temporary Git index, không tạo lại checkout vừa xóa.
+
+Candidate kết quả và delta hướng dẫn chờ hai reviewer xác nhận trước push; approval kế hoạch không thay review postconditions. Không refactor, DB/deploy, xóa kho giữ hoặc nhánh preserve.

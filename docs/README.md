@@ -30,7 +30,7 @@
 - **Đã nghiệm thu:** cần quyết định chấp nhận đúng phạm vi; không suy từ merge hay một bộ test xanh.
 - **Đã phát hành:** cần version và môi trường đích được xác minh riêng. Backend acceptance, migration và live activation của đợt phân quyền/UI vẫn HOLD.
 
-Khi nguồn mâu thuẫn: yêu cầu/quyết định đã duyệt xác định điều phải làm; source xác định điều đã hiện thực; evidence xác định điều đã kiểm. Không dùng một loại thay cho loại khác. Bộ spec/evidence WIP được hòa giải tại [hồ sơ xuất bản](workflow/tasks/docs-wip-publication-2026-10-25.md); catalog lịch sử giữ source và giới hạn riêng. [Worktree docs đã đồng bộ](workflow/tasks/docs-worktree-sync-2026-10-25.md);16 snapshot khác và lịch sử local được giữ riêng để xem xét, không tự coi là bản chuẩn mới hơn.
+Khi nguồn mâu thuẫn: yêu cầu/quyết định đã duyệt xác định điều phải làm; source xác định điều đã hiện thực; evidence xác định điều đã kiểm. Không dùng một loại thay cho loại khác. Bộ spec/evidence WIP được hòa giải tại [hồ sơ xuất bản](workflow/tasks/docs-wip-publication-2026-10-25.md); catalog lịch sử giữ source và giới hạn riêng. [WIP đã đối chiếu và đồng bộ](workflow/tasks/docs-worktree-sync-2026-10-25.md), sau đó [worktree docs cuối đã được xóa](workflow/tasks/docs-worktree-cleanup-2026-10-25.md). Tài liệu/hướng dẫn vẫn đọc được từ nhánh docs bằng Git hoặc GitHub;16 snapshot khác và lịch sử local giữ riêng để xem xét, không tự coi là bản chuẩn mới hơn.
 
 ## Quy tắc duy trì
 

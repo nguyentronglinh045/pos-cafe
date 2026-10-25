@@ -2,9 +2,9 @@
 
 ## Đang theo dõi
 
-- [Đồng bộ worktree docs — 25/10/2026](docs-worktree-sync-2026-10-25.md): đã đối chiếu959file, worktree sạch theo remote;16snapshot khác và43commit lịch sử giữ riêng. Allowlist dọn cũ không còn áp dụng.
+- [Đồng bộ worktree docs — 25/10/2026](docs-worktree-sync-2026-10-25.md): đã đối chiếu959file và sync;16snapshot khác và43commit lịch sử giữ riêng. Worktree đã được xóa ở bước tiếp; allowlist dọn cũ không còn áp dụng.
 
-- [Dọn worktree docs đã hết dùng — 25/10/2026](docs-worktree-cleanup-2026-10-25.md): đã xóa đúng một checkout sạch đã xuất bản; giữ các nhánh/lịch sử; WIP gốc đã được xử lý ở task đồng bộ tiếp nối.
+- [Dọn worktree docs đã hết dùng — 25/10/2026](docs-worktree-cleanup-2026-10-25.md): đã xóa cả hai checkout docs sau kiểm chứng; hiện0 worktree docs. Giữ nhánh/lịch sử Git và kho16snapshot.
 
 - [Xuất bản spec/evidence WIP — 25/10/2026](docs-wip-publication-2026-10-25.md): permission15/PIN/CI và lịch sử evidence theo nguồn; bộ hồ sơ đã xuất bản; allowlist dọn được task đồng bộ tiếp nối đánh dấu superseded.
 
