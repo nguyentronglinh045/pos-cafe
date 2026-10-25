@@ -14,7 +14,7 @@ Mỗi cửa hàng là một phạm vi dữ liệu riêng. Khả năng phục v�
 
 Theo chủ dự án ngày 25/10/2026, đồ án có 15 tuần thực hiện từ 05/10/2026 và bảo vệ trực tiếp với giảng viên ở tuần 16. Quy đổi theo tuần liên tiếp, giai đoạn thực hiện kết thúc 17/01/2027, tuần bảo vệ là 18–24/01/2027; chưa có ngày bảo vệ hoặc hạn nộp báo cáo cụ thể. [Roadmap](roadmap.md#khung-thời-gian-đồ-án--xác-nhận-2026-10-25) giữ khung lịch hiện hành và lịch sử riêng.
 
-Mục tiêu bàn giao là các chức năng đã đăng ký hoạt động trên Vercel và chứng minh có thể chạy kiểm thử ở local. Chủ dự án cũng nêu mong muốn phần chức năng từ đợt trước tiếp tục hoạt động tốt; mốc bản cũ để chốt phạm vi hồi quy còn cần làm rõ. Giảng viên chưa có yêu cầu minh chứng bổ sung cụ thể theo thông tin chủ dự án. [Hồ sơ nguồn](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-thesis-01--thời-gian-và-mức-hoàn-thành-đồ-án) phân biệt mục tiêu này với trạng thái code, kết quả kiểm chứng và quyền triển khai.
+Mục tiêu bàn giao là các chức năng đã đăng ký hoạt động trên Vercel và chứng minh có thể chạy kiểm thử ở local. Phần chức năng cũ cần bảo toàn đã được xác định là tiểu luận từng demo cho giảng viên. [Mốc khảo sát hồi quy](phase-scope.md#mốc-tiểu-luận-dùng-để-khảo-sát-hồi-quy) liên kết ứng viên code tháng 8 và snapshot tài liệu; chưa xác nhận source chính xác của bản demo. Giảng viên chưa có yêu cầu minh chứng bổ sung cụ thể theo thông tin chủ dự án. [Hồ sơ nguồn](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-thesis-01--thời-gian-và-mức-hoàn-thành-đồ-án) phân biệt mục tiêu này với trạng thái code, kết quả kiểm chứng và quyền triển khai.
 
 ## Người dùng và hành trình
 

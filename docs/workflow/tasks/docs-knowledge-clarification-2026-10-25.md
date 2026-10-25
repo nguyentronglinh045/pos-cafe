@@ -2,7 +2,7 @@
 
 ## Phạm vi và nguồn xác nhận
 
-Chủ dự án yêu cầu hỏi theo nhóm, ghi nhận câu trả lời và cập nhật docs cho phù hợp. Nội dung được biên tập thành thông tin dự án, không chép nguyên văn hội thoại. Nguồn là ba nhóm câu trả lời trong chat ngày 25/10/2026: Q01–Q03 về người đọc docs, 12 mục tiêu tốt nghiệp và chủ thể quyết định; Q04–Q06 về động cơ chọn kiến trúc, phương án từng cân nhắc và đánh đổi; Q07–Q09 về thời gian thực hiện, mức triển khai và kiểm chứng cần đạt. Chỉ ghi chắc phần chủ dự án xác nhận; phần được nhớ lại kèm yêu cầu kiểm tra vẫn giữ trạng thái cần đối chiếu.
+Chủ dự án yêu cầu hỏi theo nhóm, ghi nhận câu trả lời và cập nhật docs cho phù hợp. Nội dung được biên tập thành thông tin dự án, không chép nguyên văn hội thoại. Nguồn là bốn nhóm câu trả lời trong chat ngày 25/10/2026: Q01–Q03 về người đọc docs, 12 mục tiêu tốt nghiệp và chủ thể quyết định; Q04–Q06 về động cơ chọn kiến trúc, phương án từng cân nhắc và đánh đổi; Q07–Q09 về thời gian thực hiện, mức triển khai và kiểm chứng cần đạt; Q10 nhận diện phần tiểu luận đã demo cần bảo toàn. Chỉ ghi chắc phần chủ dự án xác nhận; phần được nhớ lại kèm yêu cầu kiểm tra vẫn giữ trạng thái cần đối chiếu.
 
 Đây là hồ sơ đang được bổ sung trong quá trình làm rõ. Ngày25/10 là ngày xác nhận thông tin, không tự là ngày ra quyết định kiến trúc ban đầu hoặc ngày giảng viên phê duyệt mục tiêu. Checklist theo dõi vẫn giữ local, không đưa lên Git. Việc cập nhật tài liệu không mở refactor, triển khai chức năng, chạy backend hoặc thay gate nghiệm thu.
 
@@ -76,7 +76,7 @@ Chưa có hạn nộp báo cáo riêng hoặc lịch kiểm tra giữa kỳ. Kh�
 - **Kiểm thử local:** cần chứng minh có thể thực hiện kiểm thử ở môi trường local. Tài liệu phải dẫn tới cách chuẩn bị, lệnh chạy, phạm vi và kết quả gắn đúng source/môi trường theo [chiến lược kiểm thử](../../test-strategy.md). Không tự diễn giải thành chỉ cần unit/mock, hoặc yêu cầu mọi thành phần backend đều phải được cài trực tiếp trên máy cá nhân; lựa chọn môi trường vẫn theo gate và giới hạn tài nguyên đã có.
 - **Giới hạn xác nhận:** chưa có yêu cầu thử nghiệm/vận hành thường xuyên tại quán thật từ câu trả lời này. Không tự thêm hợp đồng vận hành thương mại, cũng không bỏ các mục backup, bảo mật, hiệu năng đã đăng ký. URL/version của bản dùng để bảo vệ và kết quả kiểm chứng vẫn cần xác định khi thực hiện.
 - **Minh chứng bổ sung từ giảng viên:** theo chủ dự án, giảng viên không đưa thêm yêu cầu minh chứng cụ thể ngoài các mục tiêu đã trao đổi. Không tự đặt thêm rubric của giảng viên; các tiêu chí, coverage và gate kỹ thuật đã được duyệt vẫn giữ hiệu lực.
-- **Hồi quy tính năng cũ:** chủ dự án nêu mong muốn các tính năng của đợt trước tiếp tục hoạt động tốt. Ghi đây là định hướng bảo toàn chức năng khi phát triển tiếp, không phải một rubric bổ sung đã được giảng viên xác nhận. Phần kiểm thử cần có phạm vi hồi quy cho bản cũ sau khi xác định mốc đối chiếu; chưa chốt tag/commit hoặc danh mục chỉ bằng câu trả lời này. Các thay đổi nghiệp vụ/UI đã được duyệt vẫn là expected mới, không khôi phục hành vi cũ đã bị thay thế chỉ để khớp baseline.
+- **Hồi quy tính năng cũ:** chủ dự án nêu mong muốn các tính năng của đợt trước tiếp tục hoạt động tốt. Ghi đây là định hướng bảo toàn chức năng khi phát triển tiếp, không phải một rubric bổ sung đã được giảng viên xác nhận. Q10 đã xác định phần cũ là tiểu luận đã demo cho giảng viên. Phạm vi hồi quy được khảo sát từ hồ sơ lịch sử bên dưới; chưa xác nhận tag/commit chính xác của bản demo hoặc danh mục đã nghiệm thu. Các thay đổi nghiệp vụ/UI đã được duyệt vẫn là expected mới, không khôi phục hành vi cũ đã bị thay thế chỉ để khớp baseline.
 
 ### Trạng thái câu hỏi về đích đồ án
 
@@ -84,15 +84,45 @@ Chưa có hạn nộp báo cáo riêng hoặc lịch kiểm tra giữa kỳ. Kh�
 | --- | --- | --- |
 | Q07 | Mốc thực hiện và bảo vệ | Đã có khung 15 tuần từ 05/10, bảo vệ tuần 16; chưa có ngày bảo vệ và hạn nộp báo cáo cụ thể. |
 | Q08 | Mức triển khai cần đạt | Đã trả lời: chức năng đăng ký chạy trên Vercel, chứng minh chạy kiểm thử ở local. Chưa là bằng chứng triển khai/test đã đạt. |
-| Q09 | Yêu cầu minh chứng bổ sung và bảo toàn phần cũ | Không có yêu cầu bổ sung từ giảng viên theo chủ dự án; đã ghi định hướng hồi quy tính năng đợt trước, mốc baseline còn cần xác định. |
+| Q09 | Yêu cầu minh chứng bổ sung và bảo toàn phần cũ | Không có yêu cầu bổ sung từ giảng viên theo chủ dự án; định hướng hồi quy tính năng cũ được Q10 xác định là phần tiểu luận đã demo, source chính xác còn cần đối chiếu. |
 
-## Câu hỏi tiếp theo
+## DEC-REGRESSION-01 — Mốc chức năng từ tiểu luận
 
-| Mã | Thông tin cần làm rõ | Trạng thái |
+- **Chủ dự án xác nhận qua Q10:** “đợt trước” là giai đoạn tiểu luận đã demo cho giảng viên. Đây là phần chức năng cần được bảo toàn khi phát triển đồ án tốt nghiệp; không phải mặc định lấy main mới nhất trước ngày bắt đầu làm mốc cũ.
+- **Thời gian nhớ lại:** khoảng một đến hai tháng trước ngày bắt đầu 05/10/2026. Dùng khoảng 05/08–05/09/2026 làm cửa sổ khảo sát ban đầu, không coi đó là giới hạn chính xác hoặc ngày demo đã xác nhận.
+- **Điều chưa được xác nhận:** ngày demo, commit/tag và cấu hình/môi trường thực tế của bản đã demo; việc demo không tự chứng minh mọi test hoặc chức năng đều đã được giảng viên nghiệm thu.
+
+### Các mốc Git đã đối chiếu
+
+Đọc lịch sử nhánh code qua local ref `origin/main@711a22e` và xác minh remote main vẫn cùng SHA ngày 25/10/2026. Các ngày bên dưới là ngày commit, không phải ngày demo.
+
+| Mốc | Bằng chứng | Cách sử dụng |
 | --- | --- | --- |
-| Q10 | “Đợt trước” cần bảo toàn là bản đã nộp/bảo vệ tiểu luận trước giai đoạn tốt nghiệp, hay một mốc khác? Có ngày/tên bản để tra lại không? | Chưa trả lời. AI tự đối chiếu Git/docs sau khi nhận diện mốc, không yêu cầu chủ dự án tìm commit hoặc lập danh mục từ đầu. |
+| Code `c7f2f4e`, 09/08/2026 | [Commit](https://github.com/nguyentronglinh045/pos-cafe/commit/c7f2f4ec495ee42c1cfb6a682961713a32b9162d), thay đổi danh sách lịch sử đơn | Commit trên first-parent main trong cửa sổ khảo sát; là ứng viên để đọc phần tiểu luận. Chưa xác nhận đây là đúng bản đã demo. |
+| Docs `40a6706` và `7c77688`, 21/08/2026 | [Đợt đồng bộ root docs](https://github.com/nguyentronglinh045/pos-cafe/commit/40a6706c82a3d246e3914fbe883dc17876b94a60), [requirements tại snapshot](https://github.com/nguyentronglinh045/pos-cafe/blob/7c77688937f632b4a4bc2b60ffd613fea52d7134/docs/requirements.md#L3) và [phạm vi tiểu luận](https://github.com/nguyentronglinh045/pos-cafe/blob/7c77688937f632b4a4bc2b60ffd613fea52d7134/docs/phase-scope.md#L5) | Tài liệu ghi rõ baseline `main@c7f2f4e`, cho căn cứ liên kết code và phạm vi tiểu luận. Ngày rà docs không thay ngày demo. |
+| Code `a4ab461` và `7183b31`, 07/09/2026 | [Coverage](https://github.com/nguyentronglinh045/pos-cafe/commit/a4ab461e633be221c8d3848b4137a13badbe7181), [demo runbook tự động](https://github.com/nguyentronglinh045/pos-cafe/commit/7183b31a4ca27ed2be3ca7097f391fd2c07f806c) | Các cập nhật sau ứng viên tháng 8; có sửa source/UI phục vụ runbook, không coi toàn bộ code tree giống `c7f2f4e` chỉ vì tên commit là test. |
+| Code `3ada48c`, 10/09/2026 | [Giao thức ghi chống trùng](https://github.com/nguyentronglinh045/pos-cafe/commit/3ada48c0c9c494d9b34838fd3739bda6091e0bb9) | Thêm giao thức ghi và migration 014–016; không tự gán vào bản đã demo chỉ vì diễn ra trước 05/10. Đây vẫn là đầu vào cho kiểm hồi quy hiện hành theo các quyết định về sau. |
 
-Q10 chặn việc chốt chính xác phạm vi hồi quy mang nhãn “đợt trước”, không chặn giữ gate hiện hành hoặc cập nhật lịch và mục tiêu triển khai đã xác nhận. Q05–Q06 tiếp tục mở ở phần lịch sử kiến trúc.
+`c7f2f4e` cùng snapshot docs ngày 21/08 là **mốc khảo sát có căn cứ**, chưa phải định danh được xác nhận của bản demo. Việc chọn mốc này để tra cứu là suy luận hiện tại của AI từ thời gian ước lượng và hồ sơ, không phải quyết định chọn commit của chủ dự án. Chưa có bằng chứng deployment hoặc bản đóng gói demo gắn chính xác source; không suy từ ngày commit rằng bản đó đã được deploy.
+
+### Phạm vi hồi quy để bắt đầu đối chiếu
+
+Snapshot requirements trên ghi 21 FR và 8 NFR. Đây là danh mục lịch sử để lập đối chiếu, không phải 29 ca test hoặc xác nhận toàn bộ đã đạt. Các nhóm được tổng hợp từ FR-01–FR-21:
+
+| Nhóm chức năng tiểu luận | Mã trong snapshot lịch sử |
+| --- | --- |
+| Tạo/ghép cửa hàng, đăng nhập bằng PIN | FR-01–FR-03 |
+| Quyền và quản lý nhân viên | FR-04–FR-05 |
+| Sơ đồ bàn, gọi món tại bàn/mang đi, modifier và phiếu gửi bếp dạng preview | FR-06–FR-10 |
+| Thanh toán tiền mặt, tách món thanh toán, hóa đơn web, lịch sử và hủy đơn đã trả | FR-11–FR-15 |
+| Menu/ảnh món, thiết kế sơ đồ, decor và nền bàn | FR-16–FR-18 |
+| Báo cáo, cài đặt/dữ liệu mẫu và đồng bộ online có giới hạn | FR-19–FR-21 |
+
+Không chép nguyên trạng các mô tả admin/5 quyền, RPC legacy, seed hoặc UI cũ thành expected mới. Đối chiếu từng nhóm với spec/quyết định hiện hành và source/test tương ứng, ghi phần giữ nguyên, phần thay thế có chủ ý, phần thiếu hoặc chưa kiểm; không tự bỏ một chức năng cũ vì main hiện không có. Chưa hoàn tất ma trận này hoặc chạy lại hồi quy trong lượt Q10. Các NFR và giới hạn lịch sử cũng cần được đối chiếu, không lấy mô tả cũ để hạ gate hiện hành.
+
+### Trạng thái Q10 và phần còn mở
+
+Q10 **đã trả lời về giai đoạn và sự kiện demo**, kèm thời gian ước lượng. Phần xác minh source chính xác còn mở, nhưng đủ căn cứ để tiếp tục dựng danh mục hồi quy tạm từ hồ sơ tiểu luận; không cần yêu cầu chủ dự án đoán commit/ngày chính xác. Nếu tìm thêm bản nộp, deployment receipt hoặc ảnh/demo có ngày, dùng để điều chỉnh mốc và ghi nguồn thay vì âm thầm đổi baseline. Q05–Q06 tiếp tục mở ở phần lịch sử kiến trúc.
 
 ## Ghi nhận cập nhật
 
@@ -128,3 +158,7 @@ Q10 chặn việc chốt chính xác phạm vi hồi quy mang nhãn “đợt tr
 - Reviewer kiểm toàn delta, parent, hash, diff và link/anchor. Các khoảng tuần tính đúng, ghi rõ là quy đổi, không thành hạn nộp/ngày bảo vệ chính thức; mong muốn hồi quy không bị gán thành rubric của giảng viên và gate giữ nguyên. Q05–Q06, baseline Q10 vẫn mở; P0 chưa tích hoàn tất.
 - Kiểm tác giả: phép cộng tuần khớp Q07; `git diff --check` đạt; 60 liên kết tương đối trong 5 file sửa không có lỗi path/anchor. Không chạy ứng dụng/backend, cài môi trường hoặc deploy.
 - Sau APPROVE chỉ bổ sung metadata review này và metadata tương ứng vào checklist. Lượt này lưu trên docs local, chưa push; checklist ngoài repository.
+
+### Đợt ghi nhận Q10
+
+Đã nhận diện giai đoạn tiểu luận, tra lịch sử Git và gắn ứng viên code với snapshot docs; lập nhóm chức năng lịch sử để khởi đầu đối chiếu hồi quy. Đồng bộ phase-scope, project-overview, test-strategy, task index và tiến độ checklist local. Chưa xác nhận source demo, chưa hoàn tất ma trận hồi quy hoặc chạy test; không checkout/refactor/deploy.

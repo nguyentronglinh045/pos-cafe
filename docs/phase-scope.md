@@ -22,6 +22,12 @@ Online-only; cash-only; browser print; bếp chỉ preview. Gộp/chuyển bàn,
 
 Ưu tiên chỉnh lý docs trước refactor. Được sửa nội dung, mục lục, cấu trúc/liên kết có thể phục hồi, kiểm và xuất bản docs sau review. Không sửa app/DB, chạy backend, dispatch CI, deploy hoặc cleanup worktree. Bỏ/chuyển bằng chứng cần quyết định theo nhóm cụ thể. [Handoff](workflow/tasks/docs-normalization-2026-10-25.md).
 
+## Mốc tiểu luận dùng để khảo sát hồi quy
+
+Chủ dự án xác nhận ngày 25/10/2026 rằng phần cũ cần bảo toàn là **tiểu luận đã demo cho giảng viên**, nhớ khoảng một đến hai tháng trước 05/10/2026. Ứng viên đối chiếu là code `c7f2f4e` ngày 09/08 và [snapshot docs ngày 21/08](https://github.com/nguyentronglinh045/pos-cafe/blob/7c77688937f632b4a4bc2b60ffd613fea52d7134/docs/phase-scope.md#L5), có [21 FR và 8 NFR lịch sử](https://github.com/nguyentronglinh045/pos-cafe/blob/7c77688937f632b4a4bc2b60ffd613fea52d7134/docs/requirements.md#L17). Chưa xác nhận commit này chính là bản demo.
+
+[Hồ sơ Q10](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-regression-01--mốc-chức-năng-từ-tiểu-luận) ghi cách chọn mốc khảo sát, nhóm chức năng và phần chưa rõ. Dùng snapshot để tìm chức năng cần bảo toàn; expected phải theo spec/quyết định hiện hành, kể cả các thay đổi có chủ ý về quyền, giao thức ghi, seed và UI. Không lấy bảng lịch sử bên dưới làm lệnh khôi phục implementation cũ hoặc bằng chứng main hiện đã PASS hồi quy.
+
 ## Lịch sử thay đổi phạm vi đến tháng 8
 
 Các mốc sau ghi điều đúng tại thời điểm đó, kể cả role admin/5 quyền và baseline cũ. Không dùng chúng thay bảng hiện hành trên.
