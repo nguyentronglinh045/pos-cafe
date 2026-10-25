@@ -38,7 +38,7 @@ B02: menu và giỏ hàng, modifier/số lượng/ghi chú, nháp và gửi đơ
 
 ## 9. Payment Drawer
 
-B03: console tiền mặt và danh sách món chọn trả. Mặc định chọn tất cả; chọn một dòng khởi tạo một sản phẩm, nút + xoay vòng đến giới hạn. Chặn khi thiếu tiền, không chọn món, hết quyền hoặc order lỗi/đóng; refetch không tự biến lựa chọn rỗng thành trả toàn bộ. Split tạo đơn paid độc lập, phần còn lại giữ mở.
+B03: console tiền mặt và danh sách món chọn trả. Mặc định chọn tất cả; chọn một dòng khởi tạo một sản phẩm, nút + xoay vòng đến giới hạn. Chặn khi thiếu tiền, không chọn món, hết quyền hoặc order lỗi/đóng; refetch không tự biến lựa chọn rỗng thành trả toàn bộ. Split tạo đơn paid độc lập, phần còn lại giữ mở; selection về rỗng để lần tiếp theo chọn chủ động.
 
 ## 10. Takeaway Drawer
 

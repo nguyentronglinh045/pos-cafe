@@ -81,3 +81,19 @@ Candidate chờ hai verdict độc lập. Kiểm tự rà trước review:343 Ma
 Recipe kiểm dùng Python standard library (không cài gói), quét Markdown links/heading anchors, kiểm source pin trên code checkout và git hash-object của raw evidence so docs2d5806c. Script và JSON kết quả giữ ngoài nhánh docs tại `C:/Users/nguye/.codex/visualizations/2026/10/25/01a1722d-2ed2-7610-bd8c-eee18bc8de1f/check_docs.py` và `docs-check-result.json`; baseline `docs-link-baseline.json` cùng thư mục. Đây là bằng chứng kiểm tài liệu, không là công cụ mới trong dự án. `python <đường-dẫn-check_docs.py>` exit0; parser chỉ kiểm cú pháp link Markdown đang dùng, không là browser/HTTP crawl. Review kiểm nội dung/requirement bổ sung.
 
 Checkpoint dung lượng trước review:C192.843.644.928 bytes,D98.720.903.168 bytes trống; không nhận biến động dung lượng hệ thống là lượng thu hồi của task. Reviewer không sửa candidate. Walkthrough tài liệu: đường đọc README → overview/features → architecture/data → testing/limitations → roadmap; đã cung cấp đường đọc, chưa nhận chủ dự án đã đọc/nghiệm thu.
+
+
+### Vòng review 1 — candidate90b03df1d71033cf1d60108a941611bb5bcc35bf
+
+| Reviewer / phạm vi | Kết quả và giới hạn |
+| --- | --- |
+| review_knowledge — tri thức core/source/current-vs-history | CHANGES_REQUESTED. Đã đối chiếu ports/catalog/session/payment/RPC, versions/Node engine và tree cf8e304=711a22e; không kiểm backend/HTTP hoặc phát hành |
+| review_preservation — workflow/ủy quyền, WIP/spec/evidence, retention, links và NC dependencies | APPROVE. Tự tính inventory/duplicates/ZIP/hash;343Markdown/1225links,0anchor/source-pin/raw-drift;36missing/166local156vắng đúng mô tả. Không deletion/rename,24spec chỉ thêm banner; WIP hiện trạng khớp, không có snapshot trước để reviewer chứng minh độc lập mọi byte chưa từng thay đổi |
+
+| Finding chặn | Sửa trong delta sau90b03df | Trạng thái |
+| --- | --- | --- |
+| K1 tech-stack:52 gọi RPC legacy là hiện hành | Đổi sang permission identity/register-execute/projections, cập nhật AppPorts/query keys/print boundary và bỏ claim deployment-ready | Chờ review lại |
+| K2 features:100–101 nói admin/cashier/requirePermission cũ | Quyền history/void/reprint theo catalog, requireCurrentPermission; nguồn FR05/16/19/20/21 đổi khỏi adapter legacy | Chờ review lại |
+| K3 features:64–70 mô tả B03 header/pane/reset lựa chọn cũ | Header vị trí/số đơn/số món, summary trái/cashier phải; sau split selection rỗng. Sửa screens/demo cùng nghĩa, giữ điều kiện initial receipt grant | Chờ review lại |
+
+Delta còn thêm README ở root để GitHub nhánh docs có điểm vào tự hiển thị; context cũ giữ con trỏ tương thích. Self-check delta:344Markdown/1239links,0anchor/source-pin/raw-drift; các missing/local lịch sử không đổi; diff-check exit0. Không chạy app/test backend. Hai reviewer cần xác nhận candidate mới trước xuất bản.

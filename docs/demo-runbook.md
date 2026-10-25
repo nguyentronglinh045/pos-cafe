@@ -15,7 +15,7 @@ Runbook này dùng để chuẩn bị demo/bảo vệ phase tiểu luận.
 6. Quay lại floor, thấy bàn chuyển sang đang phục vụ.
 7. Mở lại order, chuyển sang payment.
 8. **Demo instant pay (điểm nhấn):** bỏ `Chọn tất cả`, tick 1-2 món (chỉnh số lượng bằng nút `+`), hoàn tất → bill riêng in ra (kế thừa số đơn gốc), đơn gốc còn lại trên bàn với số mới; mở report thấy doanh thu vào NGAY.
-9. Nhập tiền khách đưa cho phần còn lại, kiểm tra trạng thái thiếu/đủ tiền, hoàn tất thanh toán.
+9. Chủ động chọn phần còn lại sau split (selection lúc này rỗng), rồi nhập tiền khách đưa, kiểm tra trạng thái thiếu/đủ tiền, hoàn tất thanh toán.
 10. Xem receipt preview, quay lại floor thấy bàn trống.
 11. Mở report/history: 2 đơn độc lập từ cùng một bàn, số đơn tăng theo thứ tự thanh toán.
 12. **Demo hủy đơn đã thanh toán:** đăng nhập admin, chọn một đơn paid trong Lịch sử, bấm `Hủy đơn`, chọn lý do (nếu chọn `Lý do khác` phải nhập ghi chú), xác nhận badge `Đã hủy`, người/thời điểm/lý do hủy và nút in lại bị khóa.
@@ -43,7 +43,7 @@ Runbook này dùng để chuẩn bị demo/bảo vệ phase tiểu luận.
 - **Instant pay tách đơn (phase 18): ĐÃ kiểm chứng** qua E2E trên cloud đã áp migration 009+010 (tách dòng, số bill theo thứ tự trả, lịch sử 2 đơn độc lập).
 - **Hủy đơn đã thanh toán (phase 19): ĐÃ kiểm chứng** trên cloud đã áp migration 011: admin tạo/thanh toán/hủy đơn qua UI, popup đóng, audit hiện và badge chuyển `Đã hủy`; fix refetch `lock_version` trước khi gọi RPC đã chạy ổn định. Ngày 2026-07-19 chạy lại targeted E2E 1/1 pass.
 - **Phân quyền per-employee (phase 20): ĐÃ kiểm chứng cloud** sau khi áp migration 012. E2E admin deny `payment.take` → cashier đăng nhập lại vẫn tạo đơn được, UI khóa thanh toán; gọi thẳng payment RPC trả `FORBIDDEN`. Full `smoke:supabase` 5/5 pass ngày 2026-07-19.
-- **Baseline local hiện hành:** xem [testing.md](testing.md). Không gộp 260 local tests với 5 cloud E2E thành một con số.
+- **Baseline theo nguồn:** xem [testing.md](testing.md). Không gộp 260 local tests với 5 cloud E2E thành một con số.
 
 ## Luận Điểm Nên Nói Khi Bảo Vệ
 
@@ -53,16 +53,16 @@ Runbook này dùng để chuẩn bị demo/bảo vệ phase tiểu luận.
 - Realtime được dùng để invalidate/refetch, giảm rủi ro patch cache thủ công.
 - Ports/adapters giúp app không khóa cứng vào Supabase và dễ test/mock.
 - Offline-first, native printer, QR payment thật và kitchen queue thật là mở rộng sau, đã có seam trong schema/architecture.
-- RLS hiện cô lập store, không phải employee-level DB identity; đây là giới hạn đã biết, không nên trình bày quá mức.
+- Store Auth cô lập tenant; runtime có employee session/projections theo quyền. Backend acceptance mới chưa đóng, không nhận demo mock là chứng minh quyền DB hoàn chỉnh.
 
 ## Rủi Ro Demo & Cách Xử Lý
 
 - **Report trống:** tạo một order live rồi thanh toán trước khi mở report.
 - **Report về 0 sau hủy:** đây là behavior đúng nếu đơn paid duy nhất vừa bị hủy; kiểm tra thêm `Đơn đã huỷ`/`Tiền hủy` ở rail trái.
-- **Không thấy nút Hủy đơn:** kiểm tra đang chọn đơn `Đã thanh toán` và nhân viên hiện tại có quyền `order.voidPaid` (mặc định admin).
-- **Quyền vừa sửa nhưng UI chưa đổi:** khóa phiên và đăng nhập lại nhân viên; client giữ snapshot quyền tại login. Nếu RPC vẫn cho mutation đã bị deny, kiểm tra migration 012 đã apply và map default SQL chưa drift so với `core/guards.ts`.
+- **Không thấy nút Hủy đơn:** kiểm tra đang chọn đơn `Đã thanh toán` và nhân viên hiện tại có quyền `order.voidPaid` (theo catalog/overrides).
+- **Quyền vừa sửa nhưng UI chưa đổi:** runtime mới xác minh revision/authority qua lifecycle; kiểm trạng thái unavailable, signal/refetch và đúng source/backend. Không phục hồi legacy grants hoặc dùng recipe migration012 để sửa một candidate mới. Xem [architecture](architecture.md#permission).
 - **Mất mạng:** dùng hotspot; nói rõ online-only là tradeoff phase này.
 - **Supabase pause:** wake project trước demo.
 - **Clear demo bị blocked:** đây là behavior đúng vì còn order mở; đóng/thanh toán order trước.
 - **UI overlay/drawer:** drawer đã có portal overlay, click outside để đóng và slide-in khi mở; exit animation là polish optional/backlog.
-- **Vercel hiện dữ liệu mẫu dù không tạo store cloud:** kiểm tra đủ `VITE_DATA_MODE=supabase`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`; runtime thiếu cấu hình sẽ fallback mock seeded.
+- **Vercel hiện dữ liệu mẫu dù không tạo store cloud:** kiểm tra đủ `VITE_DATA_MODE=supabase`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`; không ép mode và thiếu URL/key sẽ chọn mock; explicit Supabase mode không tự fallback khi cấu hình sai.

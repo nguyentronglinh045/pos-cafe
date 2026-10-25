@@ -21,7 +21,7 @@ Mã FR/NFR tổng quan được giữ để truy vết; cập nhật mô tả th
 | FR-02 | Ghép thiết bị vào cửa hàng bằng Store Key và lưu session cửa hàng ở client | Đã triển khai | [screens.md](screens.md#2-store-pairing), `sessionFlow`, `storeKey` |
 | FR-03 | Chọn nhân viên hiện hành và xác minh PIN trước khi vào POS | Đã triển khai | [screens.md](screens.md#4-passcode), `src/ports/permissions.ts:17`, `src/app/screens/PasscodeScreen.tsx:42` |
 | FR-04 | Giới hạn màn, đọc và thao tác theo catalog 15 quyền/authority | Đã triển khai | [features.md](features.md#role--permission), `src/core/permissionCatalog.ts:5`, `src/app/permissionUi.ts:17`; SQL candidate chưa nhận activation đích |
-| FR-05 | Quản lý nhân viên: lọc, tạo, sửa tên/role/trạng thái, reset PIN và chỉnh quyền | Đã triển khai | [screens.md](screens.md#12-employees-drawer), phase 22 |
+| FR-05 | Quản lý nhân viên: lọc, tạo, sửa tên/role/trạng thái, reset PIN và chỉnh quyền | Đã triển khai | [screens.md](screens.md#12-employees-drawer), `src/app/drawers/admin/EmployeesDrawer.tsx:150`; phase22 là lịch sử UI cũ |
 | FR-06 | Xem sơ đồ theo khu/tầng, lọc trạng thái bàn và nhận biết bàn trống/đang phục vụ | Đã triển khai | [features.md](features.md#pos-floor), `FloorWorkspace` |
 | FR-07 | Tạo và cập nhật đơn tại bàn, gồm món, số lượng, ghi chú và modifier | Đã triển khai | [features.md](features.md#order), giao thức v1 action create/update, retained/new |
 | FR-08 | Tạo và tiếp tục xử lý đơn mang đi | Đã triển khai | [features.md](features.md#takeaway), `TakeawayDrawer` |
@@ -32,12 +32,12 @@ Mã FR/NFR tổng quan được giữ để truy vết; cập nhật mô tả th
 | FR-13 | Preview/in phiếu tạm tính và hóa đơn qua browser | Đã triển khai ở mức web | Phase 13–14, `ReceiptPreview`; không claim tích hợp ESC/POS |
 | FR-14 | Xem lịch sử đơn đã kết thúc, mặc định gần đây không giới hạn ngày, lọc theo khoảng ngày/trạng thái/loại đơn, phân trang và xem chi tiết snapshot | Đã triển khai | [features.md](features.md#order-history), `OrderHistoryDrawer` |
 | FR-15 | Hủy đơn đã thanh toán theo quyền, lý do, audit và optimistic lock | Đã triển khai | giao thức v1 action void_paid, migration 015 |
-| FR-16 | Quản lý menu/category/món/modifier và upload ảnh món JPG/PNG/WebP tối đa 5MB | Đã triển khai | [features.md](features.md#menu-editor), migrations 005–006 |
+| FR-16 | Quản lý menu/category/món/modifier và upload ảnh món JPG/PNG/WebP tối đa 5MB | Đã triển khai | [features.md](features.md#menu-editor), `src/adapters/supabase/permissionMenuImagePort.ts:17`; migrations005–006 là storage legacy |
 | FR-17 | Quản lý khu, bàn, decor; kéo, resize, xoay, khóa và lưu changeset | Đã triển khai | [features.md](features.md#floor-editor), phase 17 và 21 |
 | FR-18 | Chọn asset decor và nền bàn built-in, render đồng nhất ở editor và POS | Đã triển khai | Phase 21 và 23, migration 013 |
-| FR-19 | Xem báo cáo doanh thu, số đơn, trung bình đơn, top món, giờ bán và số/tiền đơn hủy | Đã triển khai | [features.md](features.md#report), `reportRepo` |
-| FR-20 | Cập nhật thông tin cửa hàng, seed lại hoặc xóa dữ liệu mẫu có kiểm soát | Đã triển khai | [features.md](features.md#settings--maintenance), `settingsRepo`, `seedRepo` |
-| FR-21 | Đồng bộ thay đổi chính giữa nhiều thiết bị khi online bằng realtime invalidate/refetch | Đã triển khai có giới hạn | [architecture.md](architecture.md#realtime), phase 15 và [limitations.md](limitations.md) |
+| FR-19 | Xem báo cáo doanh thu, số đơn, trung bình đơn, top món, giờ bán và số/tiền đơn hủy | Đã triển khai | [features.md](features.md#report), `src/ports/permissions.ts:67` |
+| FR-20 | Cập nhật thông tin cửa hàng và xóa dữ liệu mẫu có kiểm soát; seed/retry ban đầu thuộc workflow FR-01 | Đã triển khai | [features.md](features.md#settings--maintenance), `src/ports/permissionChanges.ts:4`, `src/ports/permissions.ts:24` |
+| FR-21 | Đồng bộ thay đổi chính giữa nhiều thiết bị khi online bằng realtime invalidate/refetch | Đã triển khai có giới hạn | [architecture.md](architecture.md#realtime), `src/adapters/supabase/permissionSignalPort.ts:49` và [limitations.md](limitations.md) |
 
 ## Yêu Cầu Phi Chức Năng
 

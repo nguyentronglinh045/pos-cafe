@@ -39,7 +39,7 @@ Vite 8 yêu cầu Node `^20.19.0 || >=22.12.0`; môi trường build/deploy ph�
 ## 2. Supabase
 
 - **Quyết định:** dùng Supabase làm backend managed.
-- **Dùng cho:** Postgres, auth/session store owner, RLS/RPC, realtime, cloud demo.
+- **Dùng cho:** Postgres, store Auth, employee session qua RPC, RLS, realtime và cloud demo; role owner không đồng nghĩa email ownership đã hoàn tất.
 - **Vì sao chọn:** miễn phí cho demo, có Postgres quan hệ, realtime và RLS sẵn; giảm thời gian tự build backend.
 - **Không chọn:** tự viết NestJS/VPS, PocketBase, Firebase.
 - **Đánh đổi:** phụ thuộc managed service và online connection; giới hạn free tier.
@@ -49,7 +49,7 @@ Vite 8 yêu cầu Node `^20.19.0 || >=22.12.0`; môi trường build/deploy ph�
 ## 3. PostgreSQL + RPC + RLS
 
 - **Quyết định:** nghiệp vụ quan trọng chạy qua Postgres tables/RPC/RLS.
-- **Dùng cho:** xác minh PIN, submit order, full/split payment, hủy đơn paid, clear demo data, helper quyền và store-scoped data. RPC hiện hành chính gồm `verify_employee_pin`, `submit_order_changes`, `pay_order`, `pay_order_items`, `void_order`, `clear_demo_data`, `has_employee_permission`.
+- **Dùng cho:** xác minh PIN, submit order, full/split payment, hủy đơn paid, clear demo data, helper quyền và store-scoped data. Runtime xác minh phiên qua permission identity, ghi tài chính qua register/execute và đọc qua projections. Các RPC submit/pay/verify cũ là legacy, không phải API để UI fallback. Nguồn: `src/adapters/supabase/permissionIdentityRepo.ts:41`, `src/adapters/supabase/writeOperationRepo.ts:33`, `src/ports/permissions.ts:59`.
 - **Vì sao chọn:** order/payment cần transaction, lock version, snapshot giá/tên và consistency bàn/order/payment.
 - **Không chọn:** để client tự tính và ghi nhiều table rời rạc.
 - **Đánh đổi:** SQL/RPC phức tạp hơn CRUD client đơn giản.
@@ -69,7 +69,7 @@ Vite 8 yêu cầu Node `^20.19.0 || >=22.12.0`; môi trường build/deploy ph�
 ## 5. Ports/Adapters
 
 - **Quyết định:** UI/features phụ thuộc `AppPorts`, không phụ thuộc trực tiếp Supabase.
-- **Dùng cho:** auth, employee, menu, menu images, floor, order, payment, report, settings, seed, print, realtime.
+- **Dùng cho:** production surface permission/write/auth/seed/print. Permission nhóm các cổng read/admin/session/changes/signals/images/print; raw repos thuộc LegacyAppPorts cho kiểm tương thích. Nguồn: `src/ports/index.ts:154`.
 - **Vì sao chọn:** dễ test bằng mock adapter, dễ đổi backend/offline sau này.
 - **Không chọn:** import Supabase client trực tiếp trong components/features.
 - **Đánh đổi:** phải duy trì interface và mapper.
@@ -83,7 +83,7 @@ Vite 8 yêu cầu Node `^20.19.0 || >=22.12.0`; môi trường build/deploy ph�
 - **Vì sao chọn:** cache, loading/error state, refetch/invalidate hợp với realtime signal.
 - **Không chọn:** tự viết global store cho server state trong Zustand.
 - **Đánh đổi:** cần quản lý query keys và invalidation discipline.
-- **Giảm rủi ro:** query key helper theo domain, mutation hooks refetch đúng scope.
+- **Giảm rủi ro:** query keys theo store/employee/generation/purpose, mutation hooks refetch đúng scope (`src/features/shared/permissionSession.ts:76`).
 - **Liên quan tới tiểu luận:** phân biệt server state và UI state rõ ràng.
 
 ## 7. Zustand
@@ -124,7 +124,7 @@ Vite 8 yêu cầu Node `^20.19.0 || >=22.12.0`; môi trường build/deploy ph�
 - **Vì sao chọn:** đủ demo, không phụ thuộc driver/máy in, chạy được trên web deployment.
 - **Không chọn:** native printer, USB, ESC/POS, service in local.
 - **Đánh đổi:** không phải tích hợp máy in POS thật.
-- **Giảm rủi ro:** giữ `IPrintPort` để sau này thay adapter in thật mà không đổi order/payment flow.
+- **Giảm rủi ro:** giữ seam `IPrintPort` cho adapter thiết bị, còn authorization mỗi click qua permission print; không bypass grant/reprint gate khi đổi adapter.
 - **Liên quan tới tiểu luận:** giải thích phạm vi web/free demo và seam mở rộng phần cứng.
 
 ## 11. Online-Only Phase Này
@@ -152,7 +152,7 @@ Vite 8 yêu cầu Node `^20.19.0 || >=22.12.0`; môi trường build/deploy ph�
 - **Quyết định:** frontend build tĩnh bằng Vite và cấu hình deploy Vercel; backend dùng Supabase managed.
 - **Vercel contract:** `npm ci` → `npm run build` → publish `dist`; SPA rewrite mọi path về `index.html`.
 - **Runtime env:** `VITE_DATA_MODE=supabase`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
-- **Fallback quan trọng:** khi không ép Supabase mode hoặc thiếu env, `runtimePorts` có thể dùng mock seeded. Vì vậy mở được deployment chưa đủ chứng minh đang nối cloud; phải kiểm tra mode/env và data thật.
+- **Fallback quan trọng:** khi không ép mode và không đủ URL/key, `runtimePorts` chọn mock; đủ URL/key chọn Supabase, mode explicit có ưu tiên (`src/app/runtimePorts.ts:16`). Vì vậy mở được deployment chưa đủ chứng minh đang nối cloud; phải kiểm tra mode/env và data thật.
 - **Backend prerequisite:** source main711a22e có migrations001–017 và candidate fragments với gate activation riêng. Recipe001–013 cũ không đủ cho runtime mới; không replay migration007 hoặc apply candidate vào đích từ trang này. Xem [data-model](data-model.md) và handoff được giao.
 - **Đánh đổi:** deploy nhanh và chi phí thấp, nhưng phụ thuộc trạng thái Supabase/Vercel và cấu hình env.
-- **Mức claim hiện tại:** repository **deployment-ready/configured**. Chỉ claim deployment live đã xác minh khi có URL, commit/version và ngày kiểm tra cụ thể.
+- **Mức claim hiện tại:** repository có cấu hình build/deploy; **chưa xác nhận deployment-ready cho runtime backend mới**. Chỉ claim deployment live đã xác minh khi có URL, commit/version và ngày kiểm tra cụ thể.
