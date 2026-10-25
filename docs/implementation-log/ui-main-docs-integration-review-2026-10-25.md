@@ -60,3 +60,15 @@ Cả hai reviewer **APPROVE B03 `5b4d5a44e4eb1b017ca17eb96d9703d4b94366b5`**: pa
 Cả hai reviewer **APPROVE `da743bd8743701d8a08bc4f52e4b27202338547d`**: guard chính xác mẫu sr-only, chỉ trong hai luật clipping; không bỏ subtree hay control khỏi audit. Test Chromium mới có direct/nested sr-only negatives, horizontal/vertical real clipping và hai near-miss positives. RED trước sửa; GREEN24tooltests sau sửa, selftest vẫn23/14/16 và policy2PASS. RI tự chạy browser regression, R-UI đọc nguồn/đối chứng; cả hai tự đối chiếu64canonicalhashes. Chỉ pin audit.js đổi ở delta này. Không đổi baseline/ngưỡng/coverage/normalizer/workflow/protection/production hold. Full audit/CI mới cần kết quả riêng.
 
 Cả hai reviewer **APPROVE B03 `7e75dd809b2c21baa9d5b4eaafd11c91bd1c0e86`**, tree `c2717098bb6a145c7a2da4b1d957ec9442ffa3bb`: parents5b4d5a4+da743bd và đúng ba file delta đã duyệt; application tree không đổi so6f22106. Sau approval delta, audit7e75dd8 hoàn tất48/48,0findings,sourcepreserved; gọi đúng strict `uiCounts` PASS48/0fail/0skip. Auditda743bd cũng48/48,0findings và strict normalizerPASS. Hai snapshot `audit-da743bd/`, `audit-7e75dd8/` chỉ có report/status mới: không sao chép ảnh floor cũ để giả làm ảnh lượt0finding. CI GitHub vẫn cần check riêng trên merge/source SHA hiện hành.
+
+## Cặp đầu đã merge; delta B03 cuối
+
+#11 main3cd7111 và #12 docs6196ed7 đã merge sau check bắt buộc. Cả hai reviewer **APPROVE0febe55158eca3d0f9cfdbeeab9ab02b80b92fe0**: parents7e75dd8+3cd7111, treec2717098 không đổi. Không nhận tree-equivalence là lần chạy test mới.
+
+Cả hai reviewer **APPROVE `cf8e304869ad0e92c491736790f59bff1b6f9dcc`**, tree `395953d26e9702e307c49ed62a3a7773575be00d`:
+
+- Bốn key applicability đổi line/title theo test B03 hiện hữu;37entries và project-scope giữ nguyên. Pin tương ứng cập nhật canonical bytes; cả hai tự kiểm64/64hashes.
+- Eager-count nhân viên đổi sang poll cùng điều kiện>3; không nới acceptance hay thay số hàng mong đợi.
+- Toast thông báo không bắt pointer event để tránh che primary action rồi pause vô hạn khi hover; status/live semantics,nội dung,thời lượng giữ nguyên. Tất cả call-site hiện là thông báo, không có toast CTA. R-UI tự kiểm touch/focus; RI kiểm không đổi quyền/payment/write/receipt.
+- Regression dùng productionAppProviders, toast Infinity và action bị phủ: RED trước sửa, GREEN sau sửa ở568×320/844×390/1366×768; toast vẫn hiện sau click. Root đã xem ảnh RED; không force-click/ẩn overlay trong test.
+- BuildPASS;1201unit/113filesPASS;26browserPASS;81smoke gồm44PASS/37skip. Hai reviewer tự đối chiếu normalizer trên cùng report: map cũ bị bác, map mới PASS81; không gọi failed69run làPASS. Auditcf8e304 và requiredCI mới cần kết quả riêng.
