@@ -1,5 +1,25 @@
 # Tích hợp UI B01–B03 vào main và docs — 25/10/2026
 
+## Trạng thái hiện hành
+
+Phần này là trạng thái mới nhất. Các checkpoint phía dưới giữ nguyên diễn biến, gồm các thời điểm audit FAIL, CI bị chặn và test đang chạy; không dùng chúng thay thế bảng hiện hành.
+
+| Hạng mục | Trạng thái hiện hành |
+| --- | --- |
+| #11 B01/B02 | Head `da743bd8743701d8a08bc4f52e4b27202338547d`, cả hai reviewer APPROVE; chờ check GitHub bắt buộc |
+| #12 docs B01/B02 | Đã hòa giải, review; chờ merge sau #11 |
+| #13 B03 | Head `7e75dd809b2c21baa9d5b4eaafd11c91bd1c0e86`, tree `c2717098bb6a145c7a2da4b1d957ec9442ffa3bb`, cả hai reviewer APPROVE; base còn nhánh #11 |
+| #14 docs B03 | Đã hòa giải, review checkpoint và cập nhật evidence; chờ merge sau #13 |
+| Audit B01/B02 mới nhất | da743bd:48/48 COMPLETE,0findings,sourcepreserved; strict `uiCounts` PASS48/0fail/0skip, không đổi baseline |
+| Audit B03 mới nhất | 7e75dd8 đang chạy; không nhận audit source khác thành PASS source này |
+| CI tự kích hoạt trên #11 |40164686981(pull_request)/40164683402(push), chờ kết quả. Không dispatch/rerun thủ công |
+| Branch cleanup | Chưa xóa vì chưa merge; chỉ xóa bốn source branches sau khi kiểm merged/reachable/không WIP hoặc checked-out |
+| Deploy/backend | Không deploy, migration, live activation; không mở lại acceptance backend/toàn hệ thống |
+
+Phần ứng dụng B01/B02 của da743bd giống source76e974c đã build/unit1198/browser52PASS. Phần ứng dụng B03 của7e75dd8 giống6f22106 đã build/unit1201/browser25PASS; các commit tiếp chỉ sửa bộ đo/test/pins và merge ancestry. Đây là đối chiếu tree, không gán các run cũ sang SHA mới. Detector cuối có24tooltests PASS, selftest23findings/14rules/16controls PASS, policy2PASS và64/64canonicalpins khớp; cả hai reviewer APPROVE các delta và merge SHA. [Biên bản review](../../implementation-log/ui-main-docs-integration-review-2026-10-25.md).
+
+Hai worktree có WIP vẫn giữ HEAD: code5156820, docs0fe967d (413 dòng status ở checkpoint); không reset/pull/stash/clean. Không cài thêm package/runtime/WSL/Docker. Chủ dự án đã cho xóa đúng hai cache watcher `watch-test-0e46973a-952d-405d-9bd4-a5c66b9b78b6` và `watch-test-ff096676-d4bd-45ad-972f-4df5f69edc4e` dưới `D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/ui-audit/`, tổng30.625.668 bytes logic. Đã xác minh ownership bằng log và junction `escape` trỏ về repo; không có process dùng cache. Bộ duyệt tự động từ chối cả lệnh xóa gộp và lệnh gỡ junction riêng với **blocked by policy**. Vì vậy hai cache vẫn còn, chưa thu hồi dung lượng. Không thử xóa bằng shell/API khác để vượt chặn.
+
 ## Quyền và phạm vi đang thực hiện
 
 Chủ dự án giao trong chat kế hoạch ngày 25/10/2026: **“tạo cho tôi session mới xử lý phần merge UI vào main và docs. lưu ý: sau khi merge xong cần xóa nhánh đó đi để dễ quản lý. phần này ưu tiên merge và xử lý hậu quả sau merge, chưa cần ci lúc này”**. Chat thực hiện nhận trực tiếp bàn giao từ chat `01a1711a-d488-7832-baf8-560e04578494`.
@@ -79,7 +99,7 @@ npm.cmd run ui-audit
 $env:VITE_DATA_MODE='mock'; $env:VITE_SUPABASE_URL=''; $env:VITE_SUPABASE_ANON_KEY=''
 node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5191 --strictPort
 # Browser (tiến trình khác, source6f22106):
-$env:WEEK03_EVIDENCE_DIR='artifacts/ui-integration-20261025/<ten-run-moi>'
+$env:WEEK03_EVIDENCE_DIR='artifacts/ui-integration-20261025/replay-'+(Get-Date -Format 'yyyyMMdd-HHmmss')
 node node_modules/@playwright/test/cli.js test -c playwright.week03.config.ts --project=B03 --project=integration -g '568x320|844x390|1920x1080|state |keyboard focus|money input|offline|full success|journey|software keyboard|authority gate|authority recovery' --workers=2
 ```
 
