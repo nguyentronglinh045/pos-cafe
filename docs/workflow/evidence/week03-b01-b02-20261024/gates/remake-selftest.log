@@ -1,0 +1,14 @@
+minimum: PASS (control expects PASS)
+phone: PASS (control expects PASS)
+tablet: PASS (control expects PASS)
+desktop: PASS (control expects PASS)
+long-vietnamese: PASS (control expects PASS)
+detect-shift: FAIL (control expects FAIL)
+detect-palette: FAIL (control expects FAIL)
+detect-occlusion: FAIL (control expects FAIL)
+detect-small-target: FAIL (control expects FAIL)
+detect-font: FAIL (control expects FAIL)
+detect-overflow: FAIL (control expects FAIL)
+SELFTEST PASS; 11 cases; product acceptance NOT_ASSESSED; artifacts\ui-remake\week03-final\remake-selftest
+
+--- STDERR ---

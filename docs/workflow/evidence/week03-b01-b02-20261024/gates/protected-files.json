@@ -1,0 +1,43 @@
+{
+  "baseline": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "protectedFiles": [
+    {
+      "path": "src/app/drawers/pos/PaymentDrawer.tsx",
+      "currentSha256": "654702b43221f7912d9265542c940e3e855e134f52fca9250733de8151e2be94",
+      "baseBlobSha256": "09ceecf49d759bf95f9c06088043ad0432af3cd4621baad4a4f091e4d15d6bd8",
+      "normalizedContentIdentical": true
+    },
+    {
+      "path": "src/app/drawers/pos/PaymentCashierPane.tsx",
+      "currentSha256": "3d0f7c0af9d46f2dc0e8be6e97a06735aff87c0e7ca3e93b61ee093b197934a4",
+      "baseBlobSha256": "fd6626b549693386dc9700d616e7ba1f668897e9906fbf96cc4247d3621c7270",
+      "normalizedContentIdentical": true
+    },
+    {
+      "path": "src/app/drawers/pos/PaymentSummaryPane.tsx",
+      "currentSha256": "3544d647450a5e7b4912dd2bfcb43eb235bb5c18d3acf08f7876412dc82dd79c",
+      "baseBlobSha256": "c179ff145223946641ee8550a4b871ce4af4f495da77f25cf4d7bf88ddbac371",
+      "normalizedContentIdentical": true
+    },
+    {
+      "path": "src/app/drawers/pos/paymentShared.tsx",
+      "currentSha256": "b98405199bbfa54ed95e91be09f62896c6fbd9f40e5baebb38cb3b8b969cf07a",
+      "baseBlobSha256": "c610372fd978a05282aefcf0d962e39408039f308b83d30183ca0a869cb68798",
+      "normalizedContentIdentical": true
+    },
+    {
+      "path": "src/app/components/ReceiptPreview.tsx",
+      "currentSha256": "4b795819ebfcfcdfa5a0e05c1281643fdb0ffd7d5f3d72ef814d16cec2473fd5",
+      "baseBlobSha256": "99590f491755e9f3e053b7ef76cc992629edcddc61d01d467303c439c8268f7c",
+      "normalizedContentIdentical": true
+    },
+    {
+      "path": "src/app/useAppStore.ts",
+      "currentSha256": "d33a84f79c07b07ff3b00151a10f186e8348acedca92c5e8d1e6c9c3ee7b6a28",
+      "baseBlobSha256": "34396596e8e12f790430dc4dc0fcc53695cc17b7847e2dba8a7198475b02afec",
+      "normalizedContentIdentical": true
+    }
+  ],
+  "financialPathDiff": "",
+  "B03RemakeIncluded": false
+}

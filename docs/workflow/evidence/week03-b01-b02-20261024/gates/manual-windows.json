@@ -1,0 +1,9 @@
+{
+  "status": "NOT_RUN",
+  "attemptedAt": "2026-10-24T09:04:41.837Z",
+  "url": "http://127.0.0.1:5191/",
+  "details": "Edge BrowserUse unavailable. Native Chrome opened dedicated POS mock tab, but actual interaction could not be completed: coordinate input geometry unavailable, FrameArrived timed out, recovery window capture timed out. No manual B01/B02 acceptance claimed.",
+  "screenshotsPublished": false,
+  "tabletPhoneHardware": "NOT_RUN",
+  "supabaseProduction": "NOT_RUN"
+}

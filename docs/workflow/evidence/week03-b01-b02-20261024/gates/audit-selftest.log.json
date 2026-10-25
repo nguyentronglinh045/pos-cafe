@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-10-24T08:50:42.874Z",
+  "finishedAt": "2026-10-24T08:50:48.524Z",
+  "cwd": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\.worktrees\\week03-b01-b02-main",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "ui-audit/run.mjs",
+    "--selftest",
+    "--selftest-report",
+    "artifacts/ui-audit/week03-selftest.json"
+  ],
+  "exitCode": 0,
+  "source": {
+    "head": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "sha256": "9b6790ca85ca91338087239138c5dc389e45b86b8fb2ece0779703816b4a5209"
+  },
+  "sourceAfter": {
+    "head": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+    "sha256": "9b6790ca85ca91338087239138c5dc389e45b86b8fb2ece0779703816b4a5209"
+  },
+  "sourcePreserved": true,
+  "logSha256": "7073388b3120dc287a27ea3805c14548052363169f90ce35cf57821b629c4557"
+}

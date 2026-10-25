@@ -1,0 +1,423 @@
+{
+  "anchors": [
+    {
+      "id": "sidebar",
+      "x": 0,
+      "y": 0,
+      "width": 260,
+      "height": 1080,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "21px",
+      "color": "rgb(22, 32, 47)",
+      "backgroundColor": "rgb(255, 255, 255)"
+    },
+    {
+      "id": "header",
+      "x": 260,
+      "y": 0,
+      "width": 1660,
+      "height": 48,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "21px",
+      "color": "rgb(22, 32, 47)",
+      "backgroundColor": "rgb(255, 255, 255)"
+    },
+    {
+      "id": "toolbar",
+      "x": 277,
+      "y": 65,
+      "width": 1266,
+      "height": 77,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "21px",
+      "color": "rgb(22, 32, 47)",
+      "backgroundColor": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "id": "area-summary",
+      "x": 277,
+      "y": 142,
+      "width": 1266,
+      "height": 56,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "21px",
+      "color": "rgb(22, 32, 47)",
+      "backgroundColor": "rgb(240, 253, 250)"
+    },
+    {
+      "id": "canvas-viewport",
+      "x": 277,
+      "y": 198,
+      "width": 1266,
+      "height": 832,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "21px",
+      "color": "rgb(22, 32, 47)",
+      "backgroundColor": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "id": "logical-floor",
+      "x": 293,
+      "y": 214,
+      "width": 1234,
+      "height": 694.125,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "21px",
+      "color": "rgb(22, 32, 47)",
+      "backgroundColor": "rgb(248, 250, 252)"
+    },
+    {
+      "id": "nav-floor",
+      "x": 12,
+      "y": 117.5,
+      "width": 235,
+      "height": 44,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "600",
+      "lineHeight": "22px",
+      "color": "rgb(15, 118, 110)",
+      "backgroundColor": "rgb(240, 253, 250)"
+    },
+    {
+      "id": "refresh",
+      "x": 1485,
+      "y": 81,
+      "width": 44,
+      "height": 44,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "500",
+      "lineHeight": "20px",
+      "color": "rgb(15, 118, 110)",
+      "backgroundColor": "rgb(255, 255, 255)"
+    },
+    {
+      "id": "filter-all",
+      "x": 1201.71875,
+      "y": 81,
+      "width": 64.03125,
+      "height": 44,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "12px",
+      "fontWeight": "600",
+      "lineHeight": "20px",
+      "color": "rgb(15, 118, 110)",
+      "backgroundColor": "rgb(255, 255, 255)"
+    },
+    {
+      "id": "table-B01",
+      "x": 448.021240234375,
+      "y": 332.0012512207031,
+      "width": 92.550048828125,
+      "height": 58.615020751953125,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "21px",
+      "color": "rgb(22, 32, 47)",
+      "backgroundColor": "rgb(255, 255, 255)"
+    },
+    {
+      "id": "table-B02",
+      "x": 633.1212158203125,
+      "y": 332.0012512207031,
+      "width": 92.550048828125,
+      "height": 58.615020751953125,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "21px",
+      "color": "rgb(22, 32, 47)",
+      "backgroundColor": "rgb(255, 255, 255)"
+    },
+    {
+      "id": "order-panel",
+      "x": 1560,
+      "y": 48,
+      "width": 360,
+      "height": 1032,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "21px",
+      "color": "rgb(22, 32, 47)",
+      "backgroundColor": "rgb(255, 255, 255)"
+    },
+    {
+      "id": "order-24",
+      "x": 1577,
+      "y": 162.5,
+      "width": 327,
+      "height": 110,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "21px",
+      "color": "rgb(22, 32, 47)",
+      "backgroundColor": "rgb(255, 255, 255)"
+    },
+    {
+      "id": "area-chooser",
+      "x": 291,
+      "y": 147.5,
+      "width": 1138,
+      "height": 44,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "21px",
+      "color": "rgb(22, 32, 47)",
+      "backgroundColor": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "id": "area-scroller",
+      "x": 291,
+      "y": 147.5,
+      "width": 1138,
+      "height": 44,
+      "fontFamily": "\"Be Vietnam Pro\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "21px",
+      "color": "rgb(22, 32, 47)",
+      "backgroundColor": "rgba(0, 0, 0, 0)"
+    }
+  ],
+  "responsive": {
+    "pass": true,
+    "viewport": {
+      "width": 1920,
+      "height": 1080
+    },
+    "horizontalOverflowPx": 0,
+    "checks": [
+      {
+        "id": "nav-floor",
+        "selector": "[data-ref=\"nav-floor\"]",
+        "pass": true,
+        "width": 235,
+        "height": 44,
+        "reachable": true,
+        "occluded": false,
+        "reason": null
+      },
+      {
+        "id": "refresh",
+        "selector": "[data-ref=\"refresh\"]",
+        "pass": true,
+        "width": 44,
+        "height": 44,
+        "reachable": true,
+        "occluded": false,
+        "reason": null
+      },
+      {
+        "id": "area-0",
+        "selector": "[data-ref=\"area-0\"]",
+        "pass": true,
+        "width": 107.828125,
+        "height": 44,
+        "reachable": true,
+        "occluded": false,
+        "reason": null
+      },
+      {
+        "id": "filter-all",
+        "selector": "[data-ref=\"filter-all\"]",
+        "pass": true,
+        "width": 64.03125,
+        "height": 44,
+        "reachable": true,
+        "occluded": false,
+        "reason": null
+      },
+      {
+        "id": "filter-empty",
+        "selector": "[data-ref=\"filter-empty\"]",
+        "pass": true,
+        "width": 74.171875,
+        "height": 44,
+        "reachable": true,
+        "occluded": false,
+        "reason": null
+      },
+      {
+        "id": "filter-occupied",
+        "selector": "[data-ref=\"filter-occupied\"]",
+        "pass": true,
+        "width": 121.078125,
+        "height": 44,
+        "reachable": true,
+        "occluded": false,
+        "reason": null
+      },
+      {
+        "id": "table-B01",
+        "selector": "[data-ref=\"table-B01\"]",
+        "pass": true,
+        "width": 92.550048828125,
+        "height": 58.615020751953125,
+        "reachable": true,
+        "occluded": false,
+        "reason": null
+      },
+      {
+        "id": "table-B02",
+        "selector": "[data-ref=\"table-B02\"]",
+        "pass": true,
+        "width": 92.550048828125,
+        "height": 58.615020751953125,
+        "reachable": true,
+        "occluded": false,
+        "reason": null
+      },
+      {
+        "id": "order-24",
+        "selector": "[data-ref=\"order-24\"]",
+        "pass": true,
+        "width": 327,
+        "height": 110,
+        "reachable": true,
+        "occluded": false,
+        "reason": null
+      },
+      {
+        "id": "lock",
+        "selector": "[data-ref=\"lock\"]",
+        "pass": true,
+        "width": 235,
+        "height": 44,
+        "reachable": true,
+        "occluded": false,
+        "reason": null
+      }
+    ]
+  },
+  "font": {
+    "required": "Be Vietnam Pro",
+    "declared": true,
+    "loaded": true,
+    "pass": true,
+    "faces": [
+      {
+        "family": "Be Vietnam Pro",
+        "status": "loaded",
+        "style": "normal",
+        "weight": "400",
+        "stretch": "normal"
+      },
+      {
+        "family": "Be Vietnam Pro",
+        "status": "loaded",
+        "style": "normal",
+        "weight": "500",
+        "stretch": "normal"
+      },
+      {
+        "family": "Be Vietnam Pro",
+        "status": "loaded",
+        "style": "normal",
+        "weight": "600",
+        "stretch": "normal"
+      },
+      {
+        "family": "Be Vietnam Pro",
+        "status": "loaded",
+        "style": "normal",
+        "weight": "700",
+        "stretch": "normal"
+      }
+    ],
+    "anchors": [
+      {
+        "id": "sidebar",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "header",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "toolbar",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "area-summary",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "canvas-viewport",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "logical-floor",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "nav-floor",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "refresh",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "filter-all",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "table-B01",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "table-B02",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "order-panel",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "order-24",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "area-chooser",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      },
+      {
+        "id": "area-scroller",
+        "firstFamily": "be vietnam pro",
+        "pass": true
+      }
+    ],
+    "reason": null
+  }
+}

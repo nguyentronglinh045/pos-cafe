@@ -1,0 +1,585 @@
+{
+  "kind": "WEEK03_B01_B02_OUTSIDE_SCOPE_BASE_REPRODUCTION",
+  "at": "2026-10-24T09:02:17.287Z",
+  "baseHead": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+  "baseSourceSha256": "329f388288c63d4b29edefdae35acd7e1b4f352a0c635fdfde1da8d5bfdc46cd",
+  "baseFilesVerified": 564,
+  "candidateSourceSha256": "9b6790ca85ca91338087239138c5dc389e45b86b8fb2ece0779703816b4a5209",
+  "configSha256": "4ca78cef6ab5c5dbe16de990cd0cb8b6904ee76c72c25edb9da6f0f26b838412",
+  "detectorSha256": "cb775fb2b9ff0517d4fd9137870f9192457b1695ba9dda5858af57647ec9d7e6",
+  "browser": "148.0.7778.96",
+  "data": [
+    {
+      "target": "settings",
+      "viewport": "tablet",
+      "viewportSize": {
+        "name": "tablet",
+        "width": 1024,
+        "height": 768
+      },
+      "findings": [
+        {
+          "rule": "tiny-font",
+          "severity": "warn",
+          "sel": "div.min-h-0.overflow-hidden > div.grid.h-full > aside.grid.min-h-0 > div.grid.gap-0.5:nth-of-type(2) > span.text-[9.5px].font-black",
+          "label": "MÃ QUÁN",
+          "detail": "font-size 9.5px",
+          "rect": {
+            "x": 28,
+            "y": 705,
+            "w": 209,
+            "h": 14
+          }
+        }
+      ],
+      "matches": [
+        {
+          "rule": "tiny-font",
+          "selector": "div.min-h-0.overflow-hidden > div.grid.h-full > aside.grid.min-h-0 > div.grid.gap-0.5:nth-of-type(2) > span.text-[9.5px].font-black",
+          "detail": "font-size 9.5px",
+          "matched": true
+        }
+      ],
+      "screenshot": "settings-tablet.png"
+    },
+    {
+      "target": "payment",
+      "viewport": "tablet",
+      "viewportSize": {
+        "name": "tablet",
+        "width": 1024,
+        "height": 768
+      },
+      "findings": [
+        {
+          "rule": "no-accessible-name",
+          "severity": "error",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "no text, aria-label, title or alt",
+          "rect": {
+            "x": 707,
+            "y": 222,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "no-accessible-name",
+          "severity": "error",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(2) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "no text, aria-label, title or alt",
+          "rect": {
+            "x": 707,
+            "y": 313,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "no-accessible-name",
+          "severity": "error",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(3) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "no text, aria-label, title or alt",
+          "rect": {
+            "x": 707,
+            "y": 404,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "tiny-target",
+          "severity": "warn",
+          "sel": "aside.grid.min-h-0 > section.grid.min-h-0:nth-of-type(2) > div.flex.items-center:nth-of-type(1) > label.flex.cursor-pointer > input.size-4.accent-pos-primary",
+          "label": "Chọn tất cả",
+          "detail": "112x20px < 24px",
+          "rect": {
+            "x": 698,
+            "y": 163,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "tiny-target",
+          "severity": "warn",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "16x16px < 24px",
+          "rect": {
+            "x": 707,
+            "y": 222,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "tiny-target",
+          "severity": "warn",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(2) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "16x16px < 24px",
+          "rect": {
+            "x": 707,
+            "y": 313,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "tiny-target",
+          "severity": "warn",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(3) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "16x16px < 24px",
+          "rect": {
+            "x": 707,
+            "y": 404,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "low-contrast",
+          "severity": "warn",
+          "sel": "aside.grid.min-h-0 > section.border-b.border-pos-line:nth-of-type(1) > div.flex.items-start > div.min-w-0 > p.m-0.font-black",
+          "label": "KHÁCH HÀNG",
+          "detail": "contrast 4.42:1, need 4.5:1",
+          "rect": {
+            "x": 698,
+            "y": 95,
+            "w": 107,
+            "h": 21
+          }
+        }
+      ],
+      "matches": [
+        {
+          "rule": "no-accessible-name",
+          "selector": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "detail": "no text, aria-label, title or alt",
+          "matched": true
+        },
+        {
+          "rule": "tiny-target",
+          "selector": "aside.grid.min-h-0 > section.grid.min-h-0:nth-of-type(2) > div.flex.items-center:nth-of-type(1) > label.flex.cursor-pointer > input.size-4.accent-pos-primary",
+          "detail": "118x20px < 24px",
+          "matched": false
+        },
+        {
+          "rule": "tiny-target",
+          "selector": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "detail": "16x16px < 24px",
+          "matched": true
+        }
+      ],
+      "screenshot": "payment-tablet.png"
+    },
+    {
+      "target": "settings",
+      "viewport": "desktop",
+      "viewportSize": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "findings": [
+        {
+          "rule": "tiny-font",
+          "severity": "warn",
+          "sel": "div.min-h-0.overflow-hidden > div.grid.h-full > aside.grid.min-h-0 > div.grid.gap-0.5:nth-of-type(2) > span.text-[9.5px].font-black",
+          "label": "MÃ QUÁN",
+          "detail": "font-size 9.5px",
+          "rect": {
+            "x": 28,
+            "y": 837,
+            "w": 209,
+            "h": 14
+          }
+        }
+      ],
+      "matches": [
+        {
+          "rule": "tiny-font",
+          "selector": "div.min-h-0.overflow-hidden > div.grid.h-full > aside.grid.min-h-0 > div.grid.gap-0.5:nth-of-type(2) > span.text-[9.5px].font-black",
+          "detail": "font-size 9.5px",
+          "matched": true
+        }
+      ],
+      "screenshot": "settings-desktop.png"
+    },
+    {
+      "target": "payment",
+      "viewport": "desktop",
+      "viewportSize": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "findings": [
+        {
+          "rule": "no-accessible-name",
+          "severity": "error",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "no text, aria-label, title or alt",
+          "rect": {
+            "x": 1123,
+            "y": 228,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "no-accessible-name",
+          "severity": "error",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(2) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "no text, aria-label, title or alt",
+          "rect": {
+            "x": 1123,
+            "y": 324,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "no-accessible-name",
+          "severity": "error",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(3) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "no text, aria-label, title or alt",
+          "rect": {
+            "x": 1123,
+            "y": 419,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "tiny-target",
+          "severity": "warn",
+          "sel": "aside.grid.min-h-0 > section.grid.min-h-0:nth-of-type(2) > div.flex.items-center:nth-of-type(1) > label.flex.cursor-pointer > input.size-4.accent-pos-primary",
+          "label": "Chọn tất cả",
+          "detail": "118x21px < 24px",
+          "rect": {
+            "x": 1114,
+            "y": 168,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "tiny-target",
+          "severity": "warn",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "16x16px < 24px",
+          "rect": {
+            "x": 1123,
+            "y": 228,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "tiny-target",
+          "severity": "warn",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(2) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "16x16px < 24px",
+          "rect": {
+            "x": 1123,
+            "y": 324,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "tiny-target",
+          "severity": "warn",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(3) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "16x16px < 24px",
+          "rect": {
+            "x": 1123,
+            "y": 419,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "low-contrast",
+          "severity": "warn",
+          "sel": "aside.grid.min-h-0 > section.border-b.border-pos-line:nth-of-type(1) > div.flex.items-start > div.min-w-0 > p.m-0.font-black",
+          "label": "KHÁCH HÀNG",
+          "detail": "contrast 4.42:1, need 4.5:1",
+          "rect": {
+            "x": 1114,
+            "y": 96,
+            "w": 115,
+            "h": 23
+          }
+        }
+      ],
+      "matches": [
+        {
+          "rule": "no-accessible-name",
+          "selector": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "detail": "no text, aria-label, title or alt",
+          "matched": true
+        },
+        {
+          "rule": "tiny-target",
+          "selector": "aside.grid.min-h-0 > section.grid.min-h-0:nth-of-type(2) > div.flex.items-center:nth-of-type(1) > label.flex.cursor-pointer > input.size-4.accent-pos-primary",
+          "detail": "124x21px < 24px",
+          "matched": false
+        },
+        {
+          "rule": "tiny-target",
+          "selector": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "detail": "16x16px < 24px",
+          "matched": true
+        }
+      ],
+      "screenshot": "payment-desktop.png"
+    },
+    {
+      "target": "menu-editor",
+      "viewport": "mobile",
+      "viewportSize": {
+        "name": "mobile",
+        "width": 844,
+        "height": 390
+      },
+      "findings": [
+        {
+          "rule": "clipped-interactive",
+          "severity": "error",
+          "sel": "div.grid.h-full > section.grid.h-full > div.flex.min-h-11:nth-of-type(1) > div.flex.min-w-0 > button.inline-flex.min-h-8:nth-of-type(5)",
+          "label": "Danh mục",
+          "detail": "control is outside a non-scrollable clipped ancestor",
+          "rect": {
+            "x": 476,
+            "y": 75,
+            "w": 107,
+            "h": 32
+          }
+        },
+        {
+          "rule": "clipped-interactive",
+          "severity": "error",
+          "sel": "div.grid.content-start > div.grid.min-h-[104px]:nth-of-type(2) > div.grid.min-w-0:nth-of-type(2) > div.flex.flex-wrap:nth-of-type(2) > button.inline-flex.h-7:nth-of-type(2)",
+          "label": "Xóa",
+          "detail": "control is outside a non-scrollable clipped ancestor",
+          "rect": {
+            "x": 495,
+            "y": 221,
+            "w": 31,
+            "h": 28
+          }
+        },
+        {
+          "rule": "clipped-interactive",
+          "severity": "error",
+          "sel": "div.grid.content-start > div.grid.min-h-[104px]:nth-of-type(4) > div.grid.min-w-0:nth-of-type(2) > div.flex.flex-wrap:nth-of-type(2) > button.inline-flex.h-7:nth-of-type(2)",
+          "label": "Xóa",
+          "detail": "control is outside a non-scrollable clipped ancestor",
+          "rect": {
+            "x": 495,
+            "y": 367,
+            "w": 31,
+            "h": 28
+          }
+        },
+        {
+          "rule": "clipped-interactive",
+          "severity": "error",
+          "sel": "div.grid.content-start > div.grid.min-h-[104px]:nth-of-type(6) > div.grid.min-w-0:nth-of-type(2) > div.flex.flex-wrap:nth-of-type(2) > button.inline-flex.h-7:nth-of-type(2)",
+          "label": "Xóa",
+          "detail": "control is outside a non-scrollable clipped ancestor",
+          "rect": {
+            "x": 495,
+            "y": 514,
+            "w": 31,
+            "h": 28
+          }
+        }
+      ],
+      "matches": [
+        {
+          "rule": "clipped-interactive",
+          "selector": "div.grid.h-full > section.grid.h-full > div.flex.min-h-11:nth-of-type(1) > div.flex.min-w-0 > button.inline-flex.min-h-8:nth-of-type(5)",
+          "detail": "control is outside a non-scrollable clipped ancestor",
+          "matched": true
+        },
+        {
+          "rule": "clipped-interactive",
+          "selector": "div.grid.content-start > div.grid.min-h-[104px]:nth-of-type(2) > div.grid.min-w-0:nth-of-type(2) > div.flex.flex-wrap:nth-of-type(2) > button.inline-flex.h-7:nth-of-type(2)",
+          "detail": "control is outside a non-scrollable clipped ancestor",
+          "matched": true
+        }
+      ],
+      "screenshot": "menu-editor-mobile.png"
+    },
+    {
+      "target": "payment",
+      "viewport": "mobile",
+      "viewportSize": {
+        "name": "mobile",
+        "width": 844,
+        "height": 390
+      },
+      "findings": [
+        {
+          "rule": "clipped-interactive",
+          "severity": "error",
+          "sel": "aside.grid.min-h-0 > section.grid.min-h-0:nth-of-type(2) > div.flex.items-center:nth-of-type(1) > label.flex.cursor-pointer > input.size-4.accent-pos-primary",
+          "label": "Chọn tất cả",
+          "detail": "control is outside a non-scrollable clipped ancestor",
+          "rect": {
+            "x": 550,
+            "y": 127,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "no-accessible-name",
+          "severity": "error",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "no text, aria-label, title or alt",
+          "rect": {
+            "x": 555,
+            "y": 178,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "no-accessible-name",
+          "severity": "error",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(2) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "no text, aria-label, title or alt",
+          "rect": {
+            "x": 555,
+            "y": 261,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "no-accessible-name",
+          "severity": "error",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(3) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "no text, aria-label, title or alt",
+          "rect": {
+            "x": 555,
+            "y": 343,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "tiny-target",
+          "severity": "warn",
+          "sel": "aside.grid.min-h-0 > section.grid.min-h-0:nth-of-type(2) > div.flex.items-center:nth-of-type(1) > label.flex.cursor-pointer > input.size-4.accent-pos-primary",
+          "label": "Chọn tất cả",
+          "detail": "16x16px < 24px",
+          "rect": {
+            "x": 550,
+            "y": 127,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "tiny-target",
+          "severity": "warn",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "16x16px < 24px",
+          "rect": {
+            "x": 555,
+            "y": 178,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "tiny-target",
+          "severity": "warn",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(2) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "16x16px < 24px",
+          "rect": {
+            "x": 555,
+            "y": 261,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "tiny-target",
+          "severity": "warn",
+          "sel": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(3) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "label": "",
+          "detail": "16x16px < 24px",
+          "rect": {
+            "x": 555,
+            "y": 343,
+            "w": 16,
+            "h": 16
+          }
+        },
+        {
+          "rule": "low-contrast",
+          "severity": "warn",
+          "sel": "aside.grid.min-h-0 > section.border-b.border-pos-line:nth-of-type(1) > div.flex.items-start > div.min-w-0 > p.m-0.font-black",
+          "label": "KHÁCH HÀNG",
+          "detail": "contrast 4.42:1, need 4.5:1",
+          "rect": {
+            "x": 550,
+            "y": 70,
+            "w": 92,
+            "h": 18
+          }
+        }
+      ],
+      "matches": [
+        {
+          "rule": "clipped-interactive",
+          "selector": "aside.grid.min-h-0 > section.grid.min-h-0:nth-of-type(2) > div.flex.items-center:nth-of-type(1) > label.flex.cursor-pointer > input.size-4.accent-pos-primary",
+          "detail": "control is outside a non-scrollable clipped ancestor",
+          "matched": true
+        },
+        {
+          "rule": "no-accessible-name",
+          "selector": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "detail": "no text, aria-label, title or alt",
+          "matched": true
+        },
+        {
+          "rule": "tiny-target",
+          "selector": "aside.grid.min-h-0 > section.grid.min-h-0:nth-of-type(2) > div.flex.items-center:nth-of-type(1) > label.flex.cursor-pointer > input.size-4.accent-pos-primary",
+          "detail": "16x16px < 24px",
+          "matched": true
+        },
+        {
+          "rule": "tiny-target",
+          "selector": "div.min-h-0.overflow-y-auto:nth-of-type(2) > div.grid.gap-2 > article.rounded-pos.border:nth-of-type(1) > div.grid.grid-cols-[auto_minmax(0,1fr)_auto]:nth-of-type(1) > input.size-4.accent-pos-primary",
+          "detail": "16x16px < 24px",
+          "matched": true
+        }
+      ],
+      "screenshot": "payment-mobile.png"
+    }
+  ],
+  "allNewFindingsReproduced": false
+}

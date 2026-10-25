@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "kind": "ui-audit-run",
+  "status": "COMPLETE",
+  "productAcceptance": "NOT_ASSESSED",
+  "startedAt": "2026-10-24T08:50:49.650Z",
+  "finishedAt": "2026-10-24T08:55:23.728Z",
+  "expectedPairs": 39,
+  "attemptedPairs": 39,
+  "completedPairs": 39,
+  "setupFailures": [],
+  "source": {
+    "before": {
+      "head": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+      "detectorSha256": "cb775fb2b9ff0517d4fd9137870f9192457b1695ba9dda5858af57647ec9d7e6",
+      "fixtureSha256": "4c1424232be357167b1cf643ff1baa602d2987856317d40460d95f6358662cce",
+      "effectiveTargetsSha256": "45161db48a31b684dc6a85802fa49a14816a582af3141ea8a0a0248ec90aa334",
+      "runnerSha256": "12ac971a84b3b1b826ea4a751cce35de85b487cc6e42984ac9289d3e788f5b93",
+      "configSha256": "4ca78cef6ab5c5dbe16de990cd0cb8b6904ee76c72c25edb9da6f0f26b838412",
+      "runtimeSha256": "41af4591f6e1c9b6171adb46f169ff274b3a4358e075dedc8a65143b9ff181ce",
+      "baselineSha256": "79fe315c36c21db23a66724939b085e5ac4065d16780e2a0d26e1f9da5c87080"
+    },
+    "after": {
+      "head": "2da0d7e10d65ed4e79c8628d65220582a6cbd32b",
+      "detectorSha256": "cb775fb2b9ff0517d4fd9137870f9192457b1695ba9dda5858af57647ec9d7e6",
+      "fixtureSha256": "4c1424232be357167b1cf643ff1baa602d2987856317d40460d95f6358662cce",
+      "effectiveTargetsSha256": "45161db48a31b684dc6a85802fa49a14816a582af3141ea8a0a0248ec90aa334",
+      "runnerSha256": "12ac971a84b3b1b826ea4a751cce35de85b487cc6e42984ac9289d3e788f5b93",
+      "configSha256": "4ca78cef6ab5c5dbe16de990cd0cb8b6904ee76c72c25edb9da6f0f26b838412",
+      "runtimeSha256": "41af4591f6e1c9b6171adb46f169ff274b3a4358e075dedc8a65143b9ff181ce",
+      "baselineSha256": "79fe315c36c21db23a66724939b085e5ac4065d16780e2a0d26e1f9da5c87080"
+    },
+    "preserved": true
+  },
+  "environment": {
+    "node": "v24.22.0",
+    "os": "win32 10.0.19045 x64",
+    "engine": "chromium",
+    "channel": "chromium",
+    "browserVersion": "148.0.7778.96",
+    "playwrightVersion": "1.60.0"
+  },
+  "serverDiagnostics": {
+    "pid": 21260,
+    "exitCode": 1,
+    "signalCode": null,
+    "tail": "\n> pos-cafe@0.1.0 dev\n> vite --host 127.0.0.1 --port 5178 --strictPort\n\n\n  VITE v8.0.16  ready in 285 ms\n\n  ➜  Local:   http://127.0.0.1:5178/\n"
+  }
+}

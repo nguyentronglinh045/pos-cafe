@@ -1,0 +1,22 @@
+selftest: 23 finding(s) on demo-buggy.html
+  severity: error=13 warn=9 info=1
+  low-contrast             5
+  placeholder-leak         4
+  hit-blocked              2
+  no-accessible-name       1
+  zero-size-interactive    1
+  overlapping-controls     1
+  bad-class-token          1
+  bad-inline-style         1
+  broken-image             1
+  empty-icon               1
+  tiny-target              1
+  clipped-text             1
+  tiny-font                1
+  overflow-x               1
+  image-no-alt             1
+effective-target controls OK
+
+selftest OK - exactly 23 findings, 14 required rules and 16 effective-target controls
+
+--- STDERR ---
