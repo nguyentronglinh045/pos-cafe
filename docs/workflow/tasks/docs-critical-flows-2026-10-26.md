@@ -38,3 +38,16 @@ Candidate đầu `ac32b4e1876f58445e3e1cf4ddee3d10ed8b4c4c`: reviewer knowledge 
 ## Bước tiếp theo
 
 N3 là nguồn học thuật theo luận điểm; N4/N5 và việc xuất hình/visual QA làm theo phạm vi được giao tiếp. Chưa có yêu cầu triển khai code hoặc thay chính sách nghiệp vụ trong lượt này.
+
+## Receipt hoàn tất đầu ra N2 — 26/10/2026
+
+Hai reviewer độc lập **APPROVE** candidate `71e9c0457be33831f39f681fce9dde1d337d1e87`, base `319afc6631c15d0fc799cbd8270ad64a211976a6`, checklist SHA256 `3f05d82c1cc4d221e2c8d51446e3298227d1093020ba293623e3745c5ac586f3`:
+
+| Reviewer | Phạm vi và kết quả |
+| --- | --- |
+| `/root/review_knowledge` | F01–F08, transaction/K/R1/retry/resume/PIN/authority/signal; tự tính lại28fingerprint từ Git và đối chiếu raw/metadata/manifest. N2-K01 đã đóng trên candidate cuối; APPROVE, không còn finding. |
+| `/root/review_preservation` | Quyền/phạm vi/bảo toàn/truy vết/checklist; đủ nguồn/ngày/trạng thái/giới hạn cho tám hình; xác nhận delta F07 và diễn đạt protocol. APPROVE, không còn finding. |
+
+Cả hai review chỉ đọc, không gọi DB hoặc chạy app/render. Sau verdict đã chạy lại kiểm cuối đúng candidate:164link nội bộ/66nguồn ghim hợp lệ;8hash manifest và3raw catalog khớp;8hình (4flowchart,3sequence,1state) đạt phép kiểm tập cấu trúc Mermaid đã sử dụng; diff-check sạch. Không nhận đã chạy full Mermaid parser/renderer hoặc visual QA. Main WIP/evidence cũ/normative specs giữ nguyên; checklist chỉ tích N2 và bổ sung receipt, các mục còn lại không đổi.
+
+Sau review chỉ bổ sung metadata receipt này; N2 hoàn tất tài liệu và commit trên docs local, chưa push gói N2. Gói N1 đã push trước khi làm N2 theo yêu cầu, remote xác nhận319afc6. Nghiệm thu backend/runtime và quyền triển khai vẫn giữ nguyên.
