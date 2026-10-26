@@ -126,7 +126,7 @@ erDiagram
     "private.store_no_reservations"
 ```
 
-Nguồn: [017_permission_catalog_bridge.sql:129](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/017_permission_catalog_bridge.sql#L129), [permission-identity.sql:67](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L67). Reservation có trước Auth/store nên không có FK tới store. bootstrap_requests.owner_id là ID logic, không FK. Workflow có tối đa một dòng/store; mỗi stage có khóa (workflow_id,stage) và stage_id duy nhất. Đây là seed ban đầu/retry, chưa hòa giải yêu cầu seed lại trong Settings (R06).
+Nguồn: [017_permission_catalog_bridge.sql:129](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/017_permission_catalog_bridge.sql#L129), [permission-identity.sql:67](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L67). Reservation có trước Auth/store nên không có FK tới store. bootstrap_requests.owner_id là ID logic, không FK. Workflow có tối đa một dòng/store; mỗi stage có khóa (workflow_id,stage) và stage_id duy nhất. Đây là seed ban đầu/retry; khác khôi phục mẫu sau xóa đã được hoãn theo [quyết định R06-A/B](spec-reconciliation.md#r06-decisions). Không nhận chức năng reseed sau xóa đã đáp ứng.
 
 ### Ảnh món
 

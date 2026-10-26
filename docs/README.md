@@ -26,6 +26,7 @@ Kho tri thức để AI tra cứu tính năng, thiết kế, quyết định và
 | Tra nghĩa thuật ngữ, bảng/cột và ràng buộc | [Thuật ngữ](glossary.md) → [Mô hình/ERD](data-model.md) → [Từ điển dữ liệu](data-dictionary.md); mô hình source và [đối chiếu catalog staging](implementation-log/staging-schema-20261026/README.md); không thay nghiệm thu backend |
 | Hiểu luồng tiền, retry/recovery, PIN/quyền và realtime | [Tám sơ đồ luồng hiện hành](critical-flows.md), kèm ranh giới transaction và nguồn code/DB; [bộ SVG hiện hành](figures/README.md) gồm ERD/luồng/kiến trúc; [review ngữ nghĩa và khác biệt WIP/DB](reviews/diagram-semantics-20261026/INDEX.md) |
 | Hòa giải seed, Settings và trạng thái khóa cửa hàng | [R06-A/B/C](spec-reconciliation.md#r06-detail): yêu cầu gốc → code/metadata → quyết định26/10 và phần còn phải làm |
+| Chuẩn bị nội dung báo cáo từ kho docs | [Bản đồ chủ đề → yêu cầu/quyết định → hình/nguồn → evidence](report-source-map.md), [chú thích 18 hình](figures/README.md#chu-thich); trạng thái tài liệu khác trạng thái hoàn thành Word/sản phẩm |
 | Tìm cơ sở học thuật cho một luận điểm | [C01–C11 và thẻ nguồn R/S](references.md#claims): phần đã đọc, vị trí và giới hạn |
 | Viết khóa luận | [Bản đồ nguồn báo cáo](report-source-map.md) |
 | Phát triển và kiểm thử | [CLAUDE.md](../CLAUDE.md), [chiến lược test](test-strategy.md), [quy trình task](workflow/README.md) |

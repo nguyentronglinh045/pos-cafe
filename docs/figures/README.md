@@ -27,6 +27,36 @@ F04/F05/F07/F08 dùng bản sửa `2026-10-26-r2`; 12 hình còn lại dùng b�
 | A01 | [A01 — Lời gọi và ranh giới thực thi](../architecture-diagrams.md#a01) | [Mở SVG](2026-10-26-architecture/architecture-01.svg) | 784 × 967 |
 | A02 | [A02 — Phụ thuộc module và điểm ghép adapter](../architecture-diagrams.md#a02) | [Mở SVG](2026-10-26-architecture/architecture-02.svg) | 569 × 552 |
 
+<a id="chu-thich"></a>
+## Chú thích để chọn và sử dụng hình
+
+Bảng này cung cấp câu chú thích ở mức thiết kế/nghiệp vụ; dùng cùng trang nguồn và đúng SVG trong danh mục trên. Đây là nguyên liệu cho người viết, chưa đổi nhãn trong hình hoặc nhận đã dàn trang theo mẫu trường. Không sao chép hình có tên file/symbol vào báo cáo nếu chưa chuyển các nhãn đó thành vai trò thiết kế theo [quy tắc đầu vào](../report-source-map.md). ERD vật lý có thể giữ tên bảng/cột cần trình bày trong phần thiết kế dữ liệu.
+
+| Hình / trang nguồn | Chú thích gợi ý | Giới hạn cần giữ khi diễn giải |
+| --- | --- | --- |
+| [ERD-01](../data-model.md#cửa-hàng-nhân-viên-và-danh-mục-quyền) | Quan hệ giữa cửa hàng, nhân viên, phiên và danh mục phân quyền. | Quan hệ dữ liệu không tự chứng minh quyền truy cập đã được kiểm. |
+| [ERD-02](../data-model.md#thực-đơn-và-tùy-chọn-dùng-chung) | Mô hình thực đơn và nhóm tùy chọn được dùng chung giữa các món. | Không suy thêm ràng buộc duy nhất của cặp món–nhóm nếu DDL không khai báo. |
+| [ERD-03](../data-model.md#sơ-đồ-bàn) | Quan hệ khu vực, bàn, vật trang trí và đơn gắn với bàn. | Đơn mang đi có thể không gắn bàn; tối đa một đơn mở trên bàn không cấm nhiều đơn lịch sử. |
+| [ERD-04](../data-model.md#đơn-payment-lệnh-ghi-và-event) | Liên kết dữ liệu đơn, thanh toán, lệnh ghi và sự kiện tài chính. | Phân biệt kết quả lệnh được lưu với trạng thái đơn hiện tại. |
+| [ERD-05](../data-model.md#quản-trị-và-grant-in) | Dữ liệu quản trị, nhật ký kiểm toán và quyền in được cấp theo thao tác. | Các liên kết logic/audit không được tự vẽ thành khóa ngoại; quyền in lại là quyền riêng. |
+| [ERD-06](../data-model.md#khởi-tạo-cửa-hàng-và-dữ-liệu-mẫu) | Dữ liệu điều phối khởi tạo cửa hàng và nạp dữ liệu mẫu ban đầu. | Khởi tạo/retry khác khôi phục mẫu sau xóa đã hoãn theo R06. |
+| [ERD-07](../data-model.md#ảnh-món) | Quan hệ dữ liệu quản lý ảnh món từ tải tạm đến công bố. | Dữ liệu ảnh trong Storage và dữ liệu quan hệ không nằm trong một transaction chung. |
+| [ERD-08](../data-model.md#tín-hiệu-và-cổng-tương-thích) | Nhóm dữ liệu tín hiệu thay đổi và kiểm soát tương thích ứng dụng. | Các bảng rời không hàm ý thiếu FK trong hình; định tuyến logic không phải FK. |
+| [F01](../critical-flows.md#f01) | Thanh toán toàn bộ đơn hoặc tách phần món được chọn thành đơn độc lập. | Ví dụ là minh họa nghiệp vụ, không phải giao dịch đã chạy trên staging. |
+| [F02](../critical-flows.md#f02) | Đăng ký lệnh và thực thi giao dịch tài chính có kiểm quyền. | Đăng ký và thực thi là hai transaction; mạng và in không nằm trong transaction DB. |
+| [F03](../critical-flows.md#f03) | Các trạng thái bền vững của lệnh ghi trên cơ sở dữ liệu. | Chưa rõ kết quả là trạng thái nhận biết ở client; hết hạn không chứng minh có tác vụ nền quét lệnh. |
+| [F04](../critical-flows.md#f04) | Tra cứu và thử lại cùng ý định khi mất phản hồi. | Giữ phân biệt kết quả tra cứu với kết quả thực thi; không tự gửi lại khi reconnect. |
+| [F05](../critical-flows.md#f05) | Đăng nhập nhân viên và điều hướng phiên bắt buộc đổi mã PIN. | Phiên hạn chế chưa cấp quyền vận hành; không đại diện cho tài khoản chủ/email/chuyển sở hữu. |
+| [F06](../critical-flows.md#f06) | Hoàn tất đổi PIN bắt buộc và thu hồi phiên trong một transaction. | Đổi PIN thành công không tự cấp phiên vận hành; mất phản hồi có nhánh xử lý riêng. |
+| [F07](../critical-flows.md#f07) | Xác minh lại quyền và xử lý thay đổi quyền trong phiên làm việc. | Chu kỳ/deadline là cấu hình, không phải giới hạn độ trễ được bảo đảm khi offline/lỗi server. |
+| [F08](../critical-flows.md#f08) | Nhận tín hiệu thay đổi rồi đọc lại dữ liệu theo quyền hiện hành. | Không cam kết mọi signal đến hoặc đến theo thứ tự; một số dữ liệu không có live polling. |
+| [A01](../architecture-diagrams.md#a01) | Thành phần khi ứng dụng hoạt động và ranh giới thực thi kiểm quyền. | Chiều gọi khác chiều phụ thuộc; Auth, RPC và Realtime là các đường riêng, chưa xác nhận deployment. |
+| [A02](../architecture-diagrams.md#a02) | Chiều phụ thuộc giữa các nhóm module và điểm ghép adapter. | Hình chỉ giữ các cạnh chính của production source; test có ngoại lệ và features vẫn phụ thuộc framework. |
+
+Đối với cả tám ERD, đây là góc nhìn rút gọn theo nguồn: đọc [từ điển dữ liệu](../data-dictionary.md) để lấy đầy đủ FK/nullability/constraint; nét đứt trong ERD không có cùng nghĩa với nét đứt signal ở A01. Các hình F/A không thay kết quả kiểm runtime. F01/F02/F04 còn phải giữ [khác biệt WIP](../reviews/diagram-semantics-20261026/INDEX.md#wip) khi chọn nguồn báo cáo.
+
+Mỗi hình dùng trong báo cáo cần giữ một bản ghi nguồn nội bộ: ID hình → trang/khối nguồn → ref code và ngày đối chiếu → đúng file SVG/hash trong manifest → chú thích/phạm vi → vị trí dùng trong báo cáo. Ref/hash là dữ liệu truy vết nội bộ, không phải chữ bắt buộc in dưới hình. Câu nguồn có thể diễn đạt “Tổng hợp từ thiết kế và mã nguồn hệ thống, bản đối chiếu ngày 26/10/2026”; không gọi là ảnh chụp DB hoặc kết quả triển khai. Chọn số hình và quy cách nguồn theo mẫu trường khi có, không tự đánh số chương ở kho docs.
+
 ## Nội dung đã sửa
 
 - **F04:** phân biệt kết quả execute của retry với kết quả get của lookup. Get pending rồi execute applied/rejected/expired phải đi theo kết quả execute; không bị diễn giải thành pending từ get cũ.
@@ -48,4 +78,4 @@ Recipe r2: lấy định nghĩa `.mmd` và kiểm hash; kiểm nó khớp khối
 
 Postprocess giữ tọa độ chữ và đường nối: state dùng nền trắng cho `.edgeLabels rect.background`; sequence thêm rect trắng theo bbox của `text.messageText` (padding ngang 2, dọc 0), đặt các rect rồi chữ lên cuối cùng trong SVG. R2 áp thêm cùng nền cho `text.loopText, text.sectionTitle` trong group control-structure không có transform, đặt rect rồi chữ cuối cùng trong cùng group. Dừng nếu cấu trúc/tọa độ DOM khác giả định. Bước này tránh lifeline xuyên chữ, không đổi message/node/edge. Xuất SVG rồi chụp PNG, kiểm nhánh, mũi tên, chữ và hash trước khi dùng.
 
-SVG giữ vector; font hệ thống không nhúng nên cần kiểm lại khi nhập môi trường khác. ERD-05 và F07 rộng, một số flow dài; chưa nhận vừa một trang A4 hoặc đã kiểm Word/PDF/in. A01/A02 đã bổ sung kiến trúc có nguồn nhưng nhãn còn ở mức tài liệu kỹ thuật; chưa chuyển sang bản dàn trang/nhãn theo mẫu trường; HTML kiến trúc cũ không được mở hoặc xác minh trong lượt này. Các gate runtime/backend/deploy/hardware và P1-03/N4/H1–H4 còn mở.
+SVG giữ vector; font hệ thống không nhúng nên cần kiểm lại khi nhập môi trường khác. ERD-05 và F07 rộng, một số flow dài; chưa nhận vừa một trang A4 hoặc đã kiểm Word/PDF/in. A01/A02 đã bổ sung kiến trúc có nguồn nhưng nhãn còn ở mức tài liệu kỹ thuật; chưa chuyển sang bản dàn trang/nhãn theo mẫu trường; HTML kiến trúc cũ không được mở hoặc xác minh trong lượt này. Các gate runtime/backend/deploy/hardware và N4/H1–H4 còn mở. P1-03 được đánh giá theo đầu ra kho tài liệu tại [handoff gói đầu vào](../workflow/tasks/docs-report-inputs-2026-10-26.md), không theo việc đã nộp báo cáo hoặc nghiệm thu sản phẩm.

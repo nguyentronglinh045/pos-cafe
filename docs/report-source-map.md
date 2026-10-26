@@ -4,7 +4,7 @@
 
 Nguồn phân tích/thiết kế bổ sung: [permission15](../openspec/changes/redesign-permission-model/proposal.md), [forced-PIN](../openspec/changes/force-default-pin-change/proposal.md), [catalog evidence](workflow/evidence/docs-wip-publication-20261025/catalog.md). [Nguồn theo luận điểm](references.md#claims) có tám nguồn R01–R08 đã đọc phần liên quan và hai chuẩn S01–S02 đối chiếu mục cụ thể. Danh mục chỉ giữ nguồn đã đọc phần liên quan và có luận điểm sử dụng. Kiểu trích dẫn cuối chờ mẫu trường; không suy danh mục là bằng chứng hệ thống đạt chuẩn.
 
-Nhánh `docs` là **nguồn dữ liệu để viết báo cáo**, không phải bản Word hoàn chỉnh. Nguồn implementation đối chiếu ngày **25/10/2026** là `main@711a22e`. Source code, expected của spec và kết quả kiểm là ba loại bằng chứng khác nhau; main không mặc nhiên là bản đã phát hành.
+Nhánh `docs` là **nguồn dữ liệu để viết báo cáo**, không phải bản Word hoàn chỉnh. Nguồn implementation đối chiếu ngày **26/10/2026** là `main@711a22e`. Source code, expected của spec và kết quả kiểm là ba loại bằng chứng khác nhau; main không mặc nhiên là bản đã phát hành. Lượt này hoàn thiện đường tra cứu đầu vào, không tạo báo cáo Word, chạy lại tests hoặc thêm kết quả triển khai.
 
 ## Quy Tắc Cứng Cho AI Tổng Hợp Báo Cáo
 
@@ -48,19 +48,22 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 
 ## Ánh Xạ Sang Cấu Trúc Báo Cáo
 
-| Phần báo cáo gợi ý | Nguồn chính |
-| --- | --- |
-| Mở đầu, bài toán, mục tiêu | [project-overview.md](project-overview.md) |
-| Phạm vi và đối tượng sử dụng | [requirements.md](requirements.md), [phase-scope.md](phase-scope.md) |
-| Khảo sát/chức năng hệ thống | [features.md](features.md), [screens.md](screens.md) |
-| Phân tích yêu cầu và traceability | [requirements.md](requirements.md), [ma trận21 FR/8 NFR](regression-map.md) |
-| Thiết kế kiến trúc | [architecture.md](architecture.md), [A01/A02 và bảng truy nguồn](architecture-diagrams.md), [tech-stack.md](tech-stack.md) |
-| Thiết kế cơ sở dữ liệu | [Mô hình và ERD](data-model.md), [từ điển dữ liệu](data-dictionary.md), [thuật ngữ](glossary.md); phân biệt mô hình source và DB đích |
-| Cài đặt và quyết định kỹ thuật | [Quyết định](workflow/decisions.md), [implementation log](implementation-log/README.md) |
-| Kiểm thử và đánh giá | [testing.md](testing.md), [ma trận ca kiểm/evidence](regression-map.md), [demo-runbook.md](demo-runbook.md); tách suite aggregate, từng ca browser và backend chưa chứng minh |
-| Kế hoạch và trình tự thực hiện | [roadmap.md](roadmap.md) |
-| Hạn chế và hướng phát triển | [limitations.md](limitations.md), [roadmap.md](roadmap.md) giai đoạn 2 |
-| Phụ lục/demo | [demo-runbook.md](demo-runbook.md), [screenshots/README.md](screenshots/README.md) |
+Các hàng dưới là chủ đề để tra cứu, chưa phải mục lục chương của trường. Mỗi hàng nối yêu cầu/quyết định với hiện trạng, hình, cơ sở và bằng chứng; [danh mục G01–G12](features.md#đối-chiếu-12-mục-tiêu-tốt-nghiệp) vẫn là điểm tra trạng thái mục tiêu, không tạo bộ yêu cầu thứ hai ở đây.
+
+| Chủ đề / mục tiêu liên quan | Nguồn yêu cầu và quyết định | Hiện trạng, hình và cơ sở để diễn giải | Evidence và giới hạn khi viết |
+| --- | --- | --- | --- |
+| Bài toán, đối tượng và phạm vi chung | [Tổng quan](project-overview.md), [requirements](requirements.md), [phạm vi](phase-scope.md), [nguồn chốt mục tiêu](workflow/decisions.md#phạm-vi-kiểm-chứng-và-giao-sản-phẩm) | [Features](features.md) phân biệt chức năng hiện hành, kế hoạch và phần hoãn; [thuật ngữ](glossary.md) thống nhất cách gọi. | Khung mục tiêu theo xác nhận chủ dự án; không thêm rubric/UAT mới như yêu cầu của giảng viên. Bản demo tiểu luận chưa xác định chính xác source. |
+| Kiến trúc và lựa chọn công nghệ | [Quyết định kiến trúc](workflow/decisions.md#kiến-trúc-và-công-nghệ), [tech stack](tech-stack.md) | [Kiến trúc](architecture.md), [A01/A02](architecture-diagrams.md), [C01–C03](references.md#claims). | Hình được kiểm theo code; [review A01/A02](workflow/tasks/docs-architecture-overview-2026-10-26.md). Động cơ thay UI/DB không phải số đo chi phí chuyển đổi; ký ức DDD không thành biên bản thử nghiệm. |
+| Thiết kế dữ liệu và ràng buộc | [Spec reconciliation](spec-reconciliation.md), [quyết định giao dịch/quyền](workflow/decisions.md#nghiệp-vụ-và-quyền) | [Mô hình/8 ERD](data-model.md#erd-rút-gọn), [từ điển](data-dictionary.md); quy tắc nghiệp vụ và FK/CHECK phải phân biệt. | [Catalog staging N1](implementation-log/staging-schema-20261026/README.md) chỉ xác nhận phần metadata đã kiểm. Mô hình candidate không tự là schema mọi môi trường hoặc nghiệm thu quyền. |
+| Chống trùng và khôi phục — G02 | [Proposal/design giao thức](../openspec/changes/add-idempotent-write-operations/proposal.md), [quyết định](workflow/decisions.md#nghiệp-vụ-và-quyền) | [F01–F04](critical-flows.md#f01), [C04–C05](references.md#claims): tách đơn, ranh giới giao dịch, trạng thái bền vững, mất phản hồi. | [E-PH27/E-BACKEND](testing.md#bản-đồ-bằng-chứng) giữ nguồn riêng; [FIN-WIP-02](reviews/diagram-semantics-20261026/INDEX.md#wip) chưa sửa. Không suy exactly-once đầu cuối hoặc coi mất phản hồi là thất bại giao dịch. |
+| Phân quyền, DB và PIN — G03/G04/G07 | [Permission proposal](../openspec/changes/redesign-permission-model/proposal.md), [PIN proposal](../openspec/changes/force-default-pin-change/proposal.md) | [F05–F07](critical-flows.md#f05), ERD-01/05 trong [gallery](figures/README.md), [C06–C07/C10–C11](references.md#claims). | [N2 fingerprint staging](implementation-log/critical-flows-20261026/README.md) và [E-BACKEND](testing.md#bản-đồ-bằng-chứng) không thay nhau. Ẩn UI, có RLS hoặc có catalog không tự chứng minh mọi đường truy cập an toàn. |
+| Chủ cửa hàng và sở hữu — G05/G06 | [Quyết định owner](../openspec/changes/add-owner-account-and-store-provisioning/proposal.md#quyết-định-đã-chốt), [recovery chuyển tiếp](workflow/decisions.md#nghiệp-vụ-và-quyền) | [Hiện trạng/kế hoạch](features.md#tài-khoản-chủ-và-sở-hữu), [phần spec còn thiếu](spec-reconciliation.md#phần-còn-thiếu-và-phân-loại). | Chưa có evidence nghiệm thu email owner/chuyển chủ. F05/F06 mô tả phiên nhân viên/PIN, không dùng thay hình hoặc kết quả cho khối owner còn kế hoạch. |
+| Giao diện chính — G08 | [Handoff B01–B03](workflow/tasks/ui-main-docs-integration-2026-10-25.md), [screens](screens.md) | [Features UI](features.md#shared-ui-behavior), [chỉ mục screenshot](screenshots/README.md), [demo runbook](demo-runbook.md). | [E-UI](testing.md#bản-đồ-bằng-chứng) ghi source/phạm vi đã kiểm; không gọi mọi ảnh trong current là ảnh main mới. Mang đi chưa có batch remake riêng được nhận hoàn tất. |
+| Đồng bộ nhiều thiết bị — G09 | [Delta sync](spec-reconciliation.md#multi-device-sync), [quyết định realtime](workflow/decisions.md#nghiệp-vụ-và-quyền) | [F08](critical-flows.md#f08), [kiến trúc realtime](architecture.md#realtime), nguồn code/contract tại trang hình. | [E-BACKEND](testing.md#bản-đồ-bằng-chứng); còn giới hạn signal liên kết món–nhóm và phạm vi poll. Chưa dùng khoảng cấu hình làm độ trễ thực đo hoặc SLA. |
+| Kiểm thử và đánh giá — G01 | [Chiến lược](test-strategy.md), [quyết định kiểm thử](workflow/decisions.md#phạm-vi-kiểm-chứng-và-giao-sản-phẩm) | [21 FR/8 NFR → scenario/TC](regression-map.md), [C08–C09](references.md#claims). | [Testing](testing.md) và [N5](implementation-log/test-traceability-20261026/README.md) phân biệt có test, đã chạy và còn thiếu. Không cộng counts giữa source hoặc dùng coverage/mock thay backend acceptance. |
+| Triển khai, backup, bảo mật, hiệu năng — G10 | [Roadmap](roadmap.md), [CI/CD proposal](../openspec/changes/setup-project-ci-cd/proposal.md) | [Giới hạn hiện hành](limitations.md), [E-CICD/E-OPS](testing.md#bản-đồ-bằng-chứng). | Cần receipt đúng source/đích cho Vercel, restore và đo tải. LOCAL/hosted/provider readiness tách biệt; chưa suy RPO/RTO từ một gói backup. |
+| Cơ sở tham khảo — G11 | [Bản đồ C01–C11](references.md#claims), [quyết định dự án](workflow/decisions.md) | Thẻ R01–R08 và S01–S02 ghi phần đã đọc, phiên bản/trang/mục và giới hạn. Không lập lại danh mục nguồn chờ. | Nguồn lý thuyết không chứng minh kết quả hệ thống. Kiểu trích dẫn/format trường sẽ áp khi làm báo cáo; không nhận đọc phần liên quan là đọc toàn tài liệu. |
+| Báo cáo và tài liệu — G12 | Trang này, [quy tắc kho docs](README.md), [bàn giao gói đầu vào](workflow/tasks/docs-report-inputs-2026-10-26.md) | [18 hình và chú thích](figures/README.md#chu-thich), các nguồn ở từng hàng trên. | Hoàn thiện đầu vào docs không phải hoàn thành Word/slide hoặc nghiệm thu đồ án. [Phần còn thiếu](#ngoai-docs) ghi điều kiện và nơi bổ sung. |
 
 ## Cách Dùng Phase Log
 
@@ -79,20 +82,27 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 - Instant Pay là tách đơn độc lập; retained/new giữ snapshot giá. Giữ lý do và hệ quả ở ADR thay vì kể migration trong báo cáo.
 - Seam/schema/proposal chưa có luồng dùng được phải đưa vào giới hạn/hướng phát triển, không đưa vào bảng tính năng đã nghiệm thu.
 
+<a id="ngoai-docs"></a>
 ## Artefact Còn Cần Bổ Sung Ngoài Nhánh Docs
 
-- File Word theo mẫu của trường, trang bìa, thông tin sinh viên/giảng viên và quy định định dạng.
-- Screenshot mới theo source đã chọn và ghi ngày, cùng minh họa demo. [Bộ 18 SVG hiện hành](figures/README.md) gồm ERD/luồng và hai hình kiến trúc đã render/kiểm hình; nhãn kỹ thuật và bản dàn trang báo cáo còn phải chuyển theo mẫu trường.
-- URL deployment live, ngày kiểm tra, cấu hình môi trường đã che secret.
-- Tài liệu tham khảo học thuật/chính thức cho React, PostgreSQL, Supabase, realtime, RLS và kiến trúc.
-- Kết quả khảo sát người dùng hoặc benchmark nếu báo cáo yêu cầu; lượt này chưa xác minh hồ sơ ngoài repo; không coi đây là yêu cầu mới của giảng viên.
+Các mục dưới là việc phụ thuộc đầu vào hoặc task riêng. Chúng không biến một bản đồ nguồn đã đầy đủ thành báo cáo hoàn chỉnh, và cũng không được lấy việc thiếu Word/runtime để phủ nhận phần kiểm tài liệu đã xong.
+
+| Việc còn lại | Đầu vào/điều kiện cần | Nơi ghi khi có kết quả |
+| --- | --- | --- |
+| Bản Word/slide, bìa, mục lục, kiểu trích dẫn và dàn trang | Mẫu trường/thông tin nộp và giao việc tạo báo cáo; trong lượt này chưa có mẫu định dạng được chọn. | Artifact báo cáo riêng; chỉ cập nhật con trỏ/source map nếu cần. Không tự chọn IEEE/APA hoặc sửa kho docs thành luận văn. |
+| Nhãn hình và screenshot cho báo cáo | Chọn đúng source và hình phù hợp luận điểm; dùng [chú thích 18 hình](figures/README.md#chu-thich), đổi nhãn file/symbol sang vai trò thiết kế khi cần. Screenshot cần ngày, source, backend/mode, màn/viewport; ảnh lịch sử giữ nhãn lịch sử. | Artifact báo cáo, theo [quy tắc screenshot](screenshots/README.md). SVG kỹ thuật gốc/manifest giữ nguyên để truy nguồn. Chưa có bản Word/PDF/in được kiểm. |
+| Runtime/backend/deployment, restore và hiệu năng | Task kiểm chứng được giao, đúng source/môi trường/gate; chưa tự dựng lab hoặc chạy suite từ task docs. | Receipt thật và [testing](testing.md#bản-đồ-bằng-chứng), sau đó nối [regression map](regression-map.md). Không dùng số dự kiến làm kết quả. |
+| Chi tiết N4 và owner khi tới lượt triển khai | [Quyết định R06](spec-reconciliation.md#r06-decisions) giữ hiệu lực; chốt chi tiết còn mở của store lock/owner trong change được chọn. | Spec/usecases/testplan/traceability tương ứng, rồi cập nhật hiện trạng theo code và evidence. Không tự điền quyết định còn thiếu. |
+| HTML kiến trúc H1–H4 | Kiểm hiển thị/tương tác/in và receipt theo checklist local. Preview tự động trước đây bị từ chối; không lách qua bề mặt khác. Chủ dự án có thể tự kiểm và ghi nhận. | [Handoff HTML](workflow/tasks/docs-reorganization-2026-10-26.md) và checklist local. Hai hình SVG mới không thay phép kiểm HTML. |
+
+Nguồn học thuật hiện có đáp ứng phần mapping C01–C11 đã chọn. Nếu báo cáo bổ sung luận điểm khác hoặc cần dẫn hành vi của một thư viện/dịch vụ, đọc đúng tài liệu gốc rồi cập nhật [references](references.md); không thêm danh sách chưa đọc hoặc xem việc tìm thêm nguồn là kết quả đã có. Khảo sát người dùng/benchmark chỉ bổ sung theo yêu cầu thực tế; không tự biến khuyến nghị cũ thành yêu cầu của giảng viên.
 
 ## Checklist Trước Khi Viết Word
 
 - Chốt baseline main/docs và ghi ngày.
-- Chỉ đưa tính năng `Đã triển khai` từ [requirements.md](requirements.md).
+- Đọc trạng thái từng tính năng từ [features](features.md) cùng [requirements](requirements.md): có code, đã kiểm, đã nghiệm thu và đã phát hành là các nhận định khác nhau. Phần kết quả chỉ dùng nhận định có bằng chứng đúng phạm vi.
 - Dẫn các tính năng hoãn sang chương hướng phát triển, không mô tả như chức năng hiện có.
-- Dùng [testing.md](testing.md) làm nguồn duy nhất cho số liệu baseline kiểm thử.
+- Bắt đầu từ [testing.md](testing.md), mở receipt gốc để lấy số liệu đúng source/ngày/môi trường và giữ PASS/FAIL/skip/NOT_RUN; không lấy số từ câu tóm tắt đã lỗi thời.
 - Chuyển evidence kỹ thuật thành mô tả thiết kế; không sao chép code, đường dẫn file, symbol, commit, migration hoặc lệnh terminal.
 - Chụp lại UI/diagram theo checklist và lưu trong artefact báo cáo riêng.
 - Rà lại deployment URL và cloud migration trước ngày nộp/bảo vệ.
@@ -119,7 +129,7 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 | [F07](critical-flows.md#f07) | Đồng bộ/thu hồi quyền và chặn response cũ | Chu kỳ và deadline là cấu hình source, chưa là số đo hiệu năng |
 | [F08](critical-flows.md#f08) | Đồng bộ theo signal và projection có quyền | Có giới hạn join-only menu, mất signal và poll chỉ ở một số purpose |
 
-Khi chuyển thành báo cáo, dùng diễn giải nghiệp vụ/thuật toán và sơ đồ phù hợp mẫu trường; bỏ chi tiết file/symbol/lệnh khỏi phần văn bản báo cáo theo quy tắc ở đầu trang. [Bộ SVG 26/10](figures/README.md) đã được parser/renderer kiểm và rà 16 ảnh ở kích thước gốc. P1-03 còn chuyển nhãn kỹ thuật sang ngôn ngữ thiết kế của báo cáo, dàn trang/định dạng tham khảo theo mẫu và các evidence runtime đang thiếu; không đóng chỉ từ bộ hình này. [Handoff N2](workflow/tasks/docs-critical-flows-2026-10-26.md) giữ kiểm tra, review và commit.
+Khi chuyển thành báo cáo, dùng diễn giải nghiệp vụ/thuật toán và sơ đồ phù hợp mẫu trường; bỏ chi tiết file/symbol/lệnh khỏi phần văn bản báo cáo theo quy tắc ở đầu trang. [Bộ SVG 26/10](figures/README.md) đã được parser/renderer kiểm và rà 16 ảnh ở kích thước gốc. Gói đầu vào P1-03 được rà theo điều kiện tài liệu tại [handoff](workflow/tasks/docs-report-inputs-2026-10-26.md). Chuyển nhãn/dàn trang theo mẫu và thu thập evidence runtime là phần tiếp theo có điều kiện, không phải kết quả được suy từ bộ hình. [Handoff N2](workflow/tasks/docs-critical-flows-2026-10-26.md) giữ kiểm tra, review và commit.
 
 Bộ hình hiện hành đã sửa F04 và làm rõ F05/F07/F08 theo [review ngữ nghĩa](reviews/diagram-semantics-20261026/INDEX.md). Khi dùng trong báo cáo, ghi source O riêng với snapshot WIP; không lấy metadata staging S làm chứng minh DB local L hoặc deployment. FIN-WIP-02 chưa sửa code.
 
@@ -138,4 +148,4 @@ Nguồn học thuật và chuẩn không thay nguồn chính thức về hành v
 
 ## Nguyên liệu kiến trúc bổ sung — 26/10/2026
 
-[A01](architecture-diagrams.md#a01) phân biệt lời gọi ở trình duyệt với thực thi RPC/SQL và signal; [A02](architecture-diagrams.md#a02) giải thích chiều import, composition và các ranh giới thực tế. Bảng truy nguồn là dữ liệu kiểm chứng nội bộ. Khi viết báo cáo, đổi nhãn module/file/symbol thành vai trò thiết kế, giữ ý nghĩa mũi tên và giới hạn nguồn. Không dùng hình để khẳng định thay DB/UI đã được chứng minh, toàn bộ features là use case thuần, RLS là cơ chế kiểm quyền duy nhất, hoặc mọi backend đã activate. Bộ hình không đóng FIN-WIP-02, N4, H1–H4 hay gate runtime/deployment.
+[A01](architecture-diagrams.md#a01) phân biệt lời gọi ở trình duyệt với thực thi RPC/SQL và signal; [A02](architecture-diagrams.md#a02) giải thích chiều import, composition và các ranh giới thực tế. Bảng truy nguồn là dữ liệu kiểm chứng nội bộ. Khi viết báo cáo, đổi nhãn module/file/symbol thành vai trò thiết kế, giữ ý nghĩa mũi tên và giới hạn nguồn. Không dùng hình để khẳng định thay DB/UI đã được chứng minh, toàn bộ features là use case thuần, RLS là cơ chế kiểm quyền duy nhất, hoặc mọi backend đã activate. Bộ hình không đóng FIN-WIP-02, N4, H1–H4 hay gate runtime/deployment. Trạng thái hoàn thiện đường tra cứu đầu vào được ghi riêng ở handoff P1-03, không đổi các gate này.

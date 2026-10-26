@@ -2,6 +2,8 @@
 
 ## Đang theo dõi
 
+- [Hoàn thiện gói đầu vào báo cáo — 26/10/2026](docs-report-inputs-2026-10-26.md): mapping chủ đề/luận điểm/nguồn/evidence và chú thích 18 hình; sửa trạng thái G11/G12/R06 còn cũ. Rà điều kiện hoàn tất P1-03 riêng với Word/runtime, không đổi gate sản phẩm hoặc sửa code/DB.
+
 - [Hai hình kiến trúc theo code — 26/10/2026](docs-architecture-overview-2026-10-26.md): lời gọi và phụ thuộc module, ranh giới quyền, hai SVG/Mermaid với bảng truy nguồn. Chỉ docs; giữ WIP/DB/runtime và HTML cũ trong đúng giới hạn.
 
 - [Sửa hình sau review ngữ nghĩa — 26/10/2026](docs-flow-corrections-2026-10-26.md): F04 phân biệt get/execute; làm rõ F05/F07/F08; giữ khác biệt WIP/DB và evidence gốc. Chỉ docs, không sửa code/DB.
