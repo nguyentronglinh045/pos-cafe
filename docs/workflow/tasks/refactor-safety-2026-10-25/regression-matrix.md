@@ -2,6 +2,8 @@
 
 Nguồn code và test: main711a22e71983e3d6aa17799649af05ce4c762555. Trạng thái mọi phép chạy dưới đây: **CHƯA CHẠY trong lượt lập kế hoạch**. Đọc tên/nội dung test chỉ xác nhận test tồn tại và phạm vi dự kiến; không nhận test PASS hay coverage đầy đủ. [Kế hoạch](README.md) · [Phần việc](slices.md).
 
+**Bổ sung đầu vào ngày 26/10/2026:** đọc [bàn giao nguồn](README.md#handoff-20261026), dùng [regression map 21 FR/8 NFR](../../../regression-map.md), [spec reconciliation](../../../spec-reconciliation.md) và [testing](../../../testing.md#bản-đồ-bằng-chứng) để hoàn thiện RF-I15/impact map. Các mốc docs7e29287 bên dưới giữ nguồn khảo sát cũ; ưu tiên quyết định hiện hành đã truy vết trong bảng hòa giải. FIN-WIP-02 và delta ACL gắn snapshot WIP, chưa gán cho source main. Lượt cập nhật chỉ chuẩn bị tài liệu, không chạy lại baseline, miễn gate hay đổi expected.
+
 ## B1. Bất biến và oracle
 
 | ID | Điều phải giữ; phản ví dụ phải bắt được | Nguồn/test hiện có cần dùng | Phần áp dụng; bổ sung khi có gap |

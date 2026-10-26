@@ -1,5 +1,55 @@
 # Kế hoạch refactor cấu trúc và file lớn — 25/10/2026
 
+<a id="handoff-20261026"></a>
+## Bàn giao đầu vào docs — 26/10/2026
+
+**Đã chuẩn bị nguồn tài liệu; chưa triển khai refactor hoặc chạy baseline của đợt refactor.** Chủ dự án giao: “vậy bạn thực hiện các bước cần thiết trước khi xử lý refactor code, tôi sẽ tiến hành refactor code sau”. Lượt này cập nhật kế hoạch và đường tra cứu trên docs; việc sửa code được chủ dự án để cho lượt sau trong chat [Refactor pos-cafe-code](codex://threads/01a172b4-4636-7f61-a5ba-cf240f5d5247). Không chuyển việc sang chat đó hoặc tự khởi chạy phần triển khai.
+
+### Mốc nguồn đã đối chiếu
+
+| Nguồn | Mốc và cách dùng |
+| --- | --- |
+| Remote main và origin/main | `711a22e71983e3d6aa17799649af05ce4c762555`, xác minh bằng Git ngày 26/10. Đây là nguồn code của kế hoạch, không phải kết quả kiểm thử mới. |
+| Docs nền của lượt bàn giao | `afa7640813e33075e21bc71f1dffe9b766a8bc50`, khớp remote lúc bắt đầu. Lượt bàn giao này nằm trong commit kế tiếp; khi tiếp tục, đọc bản đã xuất bản mới nhất và đối chiếu delta, không quay lại docs cũ chỉ vì bảng này ghim nguồn. |
+| Checkout đọc code | `D:/Workspace/pos-cafe-permission-timeonly-20261022/code`, detached tại main trên, sạch tracked/untracked. Chưa chọn làm nơi chạy refactor; RF-00 vẫn phải kiểm claims, path bindings, ignored runtime và người đang sử dụng. |
+| Checkout có WIP | `D:/Workspace/pos-cafe`, local main `5156820f7d6679cd6f8051bdc38419737ffa0c7e`; giữ nguyên WIP và index. Không dùng HEAD này riêng lẻ để nhận diện WIP, không reset/pull/merge bản này vào nguồn refactor tự động. |
+
+Kế hoạch trong chat refactor dừng ở ngày 25/10, khi hồ sơ còn ở docs local `810e775`. Kế hoạch đã có trên docs xuất bản; các gói chuẩn hóa ngày 26/10 bổ sung đầu vào bên dưới. Chưa có worktree docs thường trực; đọc qua Git, không tạo lại đường dẫn checkout cũ chỉ vì hồ sơ lịch sử nhắc tới.
+
+### Đường đọc hiện hành cho người thực hiện
+
+| Cần biết | Nguồn chuẩn và cách dùng |
+| --- | --- |
+| Phạm vi, tính năng, điều đã hoãn | [Features](../../../features.md), [requirements](../../../requirements.md), [phase scope](../../../phase-scope.md). Phân biệt có code, đã kiểm, nghiệm thu và phát hành. |
+| Trách nhiệm và ranh giới module | [Architecture](../../../architecture.md), [A01/A02](../../../architecture-diagrams.md), [thuật ngữ](../../../glossary.md). Hình giúp định hướng; consumer/state ownership phải kiểm lại theo source của từng phần. |
+| Expected và thứ tự áp dụng spec | [Spec reconciliation](../../../spec-reconciliation.md), [quyết định](../../decisions.md). Đọc baseline cùng các delta còn hiệu lực; với pilot Report bắt đầu ở [reporting](../../../spec-reconciliation.md#reporting), không lấy code hoặc test đang xanh làm chuẩn thay requirement. |
+| Hành trình cũ và phạm vi kiểm | [Regression map 21 FR/8 NFR](../../../regression-map.md), [testing](../../../testing.md#bản-đồ-bằng-chứng), [test strategy](../../../test-strategy.md), [matrix RF](regression-matrix.md). Tái dùng mapping đã có; bổ sung theo impact map của phần được chọn, không dựng bảng requirement cạnh tranh. |
+| Findings và giới hạn nguồn | [Review ngữ nghĩa](../../../reviews/diagram-semantics-20261026/INDEX.md#sources), đặc biệt [WIP](../../../reviews/diagram-semantics-20261026/INDEX.md#wip) và [DB/ACL](../../../reviews/diagram-semantics-20261026/INDEX.md#db). Đọc source manifest/evidence gốc trước khi kết luận finding áp dụng cho candidate. |
+
+N1/N2/N3/N5 và phần chuẩn bị nguồn P1-03 đã hoàn tất về tài liệu, theo [handoff đầu vào báo cáo](../docs-report-inputs-2026-10-26.md). Các dòng P1-03 còn mở hoặc “chưa push” trong receipt cũ là trạng thái tại thời điểm lập, không thay kết luận mới. Không lấy việc hoàn tất docs thành baseline kiểm thử hoặc nghiệm thu sản phẩm.
+
+### Findings phải mang vào RF-00/01
+
+- **FIN-WIP-02 còn mở trong hồ sơ snapshot W:** liên quan khoảng chờ kiểm quyền trước begin; hồ sơ phân biệt O (main đã push) và W (HEAD cũ cộng WIP). Lượt bàn giao không chạy lại oracle hoặc sửa lỗi. Không gán finding W cho main, cũng không nhập WIP mà bỏ qua finding; phân loại phạm vi áp dụng trước khi nhận WIP vào candidate.
+- **Delta ACL và môi trường:** hồ sơ ghi W khác O ở recipe quyền DB; metadata staging S không chứng minh DB local L hoặc Vercel giống S. Không sửa grants/config để làm nguồn giống nhau. Gate backend cần cho phần được chọn vẫn chặn khi chưa đủ nguồn, quyền hoặc môi trường; không mở lại acceptance/activation/deploy đang HOLD.
+- **Evidence lịch sử:** kết quả đã có giữ source, ngày, môi trường, skip và giới hạn. Chưa có lần chạy baseline refactor mới trong lượt này; không đổi nhãn kết quả cũ thành PASS của source sau extraction.
+
+### Phần còn mở và điều kiện trước sửa code
+
+| Việc | Xử lý khi tiếp tục |
+| --- | --- |
+| N4: store lock và owner | [Quyết định R06](../../../spec-reconciliation.md#r06-decisions) giữ hiệu lực: nhận vị trí retry hiện tại; hoãn reseed sau xóa; store lock còn chi tiết. Owner còn khung usecase/testplan/traceability. Các mục này không chặn khảo sát/pilot Report độc lập; nếu phần được chọn phụ thuộc yêu cầu chưa chốt thì dừng phần đó để làm rõ. |
+| HTML H1–H4 và báo cáo Word/slide | Giữ ở [phần việc riêng](../../../report-source-map.md#ngoai-docs); không là điều kiện bắt đầu RF-00/01. Không nhận hình/DOM check thành kiểm browser/in hoặc runtime. |
+| RF-00/01 | Xác minh lại refs và checkout, phân loại WIP; chốt allowlist, consumer/state ownership, invariant và test inventory của phần đầu. Lượt docs này chỉ đã đối chiếu nguồn/giữ WIP, chưa hoàn tất toàn RF-00/01. |
+| RF-02 và trước extraction | Phiếu phần việc theo mục 4 phải có expected theo spec, gaps/test oracle, baseline trên đúng source/môi trường, gate theo ảnh hưởng và rollback. Bổ sung test khi được giao; kết quả liên quan chưa đáng tin thì chưa extraction. |
+| Review và bàn giao | Giữ nguyên gates ở mục 5–8 và [matrix](regression-matrix.md); mọi reviewer bắt buộc phải APPROVE đúng candidate. Cập nhật docs tại từng phần, không dùng review tài liệu này làm review code. |
+
+Lượt sau kế thừa kế hoạch RF-00/01 → chuẩn bị pilot Report; RF-02/03 và các đợt sau chỉ thực hiện theo phạm vi được giao. Không thêm requirement, đổi gate hoặc cấp quyền sửa code từ bàn giao này. [Receipt kiểm và review của lượt cập nhật](review.md#handoff-20261026).
+
+---
+
+Các mục dưới giữ kế hoạch và khảo sát ngày 25/10/2026; các mốc “local/chưa push” là lịch sử. Phần bàn giao ngày 26/10 ở trên bổ sung nguồn mới, không thay các bất biến, điều kiện dừng hoặc phạm vi nhạy cảm đang HOLD.
+
 **Trạng thái: kế hoạch đề xuất, chưa triển khai.** Yêu cầu của chủ dự án: “bạn lên kế hoạch kĩ giúp tôi, việc refactor file lớn này cũng tìm ẩn rủi ro, cần kĩ lưỡng cao nhất”.
 
 Đích đến là trách nhiệm module rõ hơn và dễ bảo trì, đồng thời giữ nguyên hành vi đã được chốt. Không dùng số dòng/file hay số thư mục giảm được làm tiêu chí thành công. “Cẩn trọng cao” nghĩa là mỗi phần có bằng chứng trước/sau, phản ví dụ và đường hoàn tác; không thể hứa không còn rủi ro.

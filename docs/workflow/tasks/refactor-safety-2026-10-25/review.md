@@ -35,3 +35,23 @@ Publisher dùng index riêng, chỉ4file trong thư mục kế hoạch và1entry
 Reviewer tooling đã đọc recipe publisher trước chạy; nhắc kiểm semantic drift nếu docs thay. Điều phối bổ sung guard buộc base bằng docs7e2928787d9b2f5d259162819a1fa49586f80947: nếu khác, dừng và đối chiếu/rebind, không tự retry qua nguồn chưa đọc. Kết quả publication thực tế được ghi ở D:/Workspace/pos-cafe-archive/_plans/refactor-safety-20261025/docs-publication.json; không giả reviewer đã kiểm execution.
 
 Chỉ bổ sung metadata ghi verdict/finding này sau review; ba file nội dung kế hoạch giữ nguyên các hash đã duyệt. Kế hoạch chưa được chủ dự án duyệt triển khai.
+
+<a id="handoff-20261026"></a>
+## Cập nhật bàn giao nguồn — 26/10/2026
+
+Phạm vi được giao trong chat hiện tại: chuẩn bị các bước tài liệu trước refactor; chủ dự án sẽ tiến hành refactor code sau. Cập nhật năm file: README/slices/regression-matrix/review của kế hoạch và một entry trong task index. Không thêm change OpenSpec, đổi requirement/gate, sửa code/DB hoặc gửi lệnh sang chat refactor.
+
+Nguồn trước cập nhật: docs `afa7640813e33075e21bc71f1dffe9b766a8bc50`, main `711a22e71983e3d6aa17799649af05ce4c762555`, đã khớp remote. Checkout đọc code detached main trên sạch tracked/untracked; chưa kiểm claims/ignored runtime để chọn làm nơi chạy. Main gốc giữ HEAD `5156820f7d6679cd6f8051bdc38419737ffa0c7e`, 553 đường thay đổi/untracked (551 file có mặt, hai đường thiếu); fingerprint bảo toàn chỉ nhận diện nội dung, không thay snapshot phục hồi WIP.
+
+| Kiểm bảo toàn trước sửa docs | SHA256 |
+| --- | --- |
+| Main index | `45849e5188d12f3f52a0354e354e0a8e8d836fa37d68223a1e455d2f8c429352` |
+| Main status porcelain v1, NUL-separated | `05445e070d8d04f4ad5f40383b4158f0a537865576b2418b78ebd178f6341a91` |
+| Manifest path → SHA256/MISSING của WIP | `8dc4f8b9cb19d78f99a61e3c2d2478f82df89b304fdd252aa19256a40ec567b6` |
+| package-lock của checkout đọc code | `2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477` |
+
+Manifest lấy hợp `git diff HEAD --name-only -z` và `git ls-files --others --exclude-standard -z`, sắp đường dẫn; JSON UTF-8, sort_keys=true, giá trị SHA256 byte file hoặc MISSING. Không gồm ignored files, dữ liệu DB hoặc claims. Các phạm vi đó không được ghi hay nhận đã kiểm từ fingerprint này.
+
+Publisher dùng Git objects/tree/commit riêng, không checkout docs và không dùng main index; cập nhật docs bằng compare-and-swap sau review rồi push fast-forward. Mọi file ngoài năm đường được phép phải giữ blob gốc. Nếu refs/WIP drift thì dừng để đối chiếu; không tự ghi đè hoặc force-push. Không cài gói, tạo runtime/worktree hoặc sinh bản sao source.
+
+Phép kiểm nội dung: đường đọc tới spec/quyết định/evidence, nguồn O/W/S/L và phần chưa chạy; đường dẫn/anchor nội bộ, diff/allowlist và bảo toàn source/index/WIP. Không chạy app tests/backend/browser. Kết quả kiểm, candidate cuối và verdict độc lập sẽ được ghi tiếp dưới đây sau khi có thực tế; review 25/10 phía trên không tự áp dụng cho delta này.
