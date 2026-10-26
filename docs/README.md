@@ -20,10 +20,11 @@ Kho tri thức để AI tra cứu tính năng, thiết kế, quyết định và
 | Spec và code khác nhau, đọc cái nào? | [Đối chiếu 16 capability và delta](spec-reconciliation.md) |
 | Phần tiểu luận cũ còn được bảo toàn không? | [Ma trận21 FR/8 NFR](regression-map.md): scenario/UC → ca kiểm → evidence/khoảng thiếu; không suy danh mục là PASS |
 | Viết yêu cầu, tìm mã FR/NFR | [Requirements](requirements.md); hợp đồng chi tiết ở [OpenSpec](../openspec/README.md) |
+| Hiểu cấu trúc và chiều phụ thuộc | [Hai hình kiến trúc A01/A02](architecture-diagrams.md): lời gọi, composition, module và ranh giới kiểm quyền; có nguồn code và giới hạn DB/deployment |
 | Hiểu màn hình và quyền mở màn | [Screens](screens.md) |
 | Giải thích lựa chọn công nghệ | [Chỉ mục quyết định và nguồn chốt](workflow/decisions.md), [Tech stack](tech-stack.md); [trang giải thích kiến trúc hiện hành](architecture-explainer.html) có bản đồ tầng, ranh giới quyền và luồng đọc/thanh toán ghim source; không là bằng chứng runtime |
 | Tra nghĩa thuật ngữ, bảng/cột và ràng buộc | [Thuật ngữ](glossary.md) → [Mô hình/ERD](data-model.md) → [Từ điển dữ liệu](data-dictionary.md); mô hình source và [đối chiếu catalog staging](implementation-log/staging-schema-20261026/README.md); không thay nghiệm thu backend |
-| Hiểu luồng tiền, retry/recovery, PIN/quyền và realtime | [Tám sơ đồ luồng hiện hành](critical-flows.md), kèm ranh giới transaction và nguồn code/DB; [bộ SVG hiện hành](figures/README.md) gồm ERD/luồng; [review ngữ nghĩa và khác biệt WIP/DB](reviews/diagram-semantics-20261026/INDEX.md) |
+| Hiểu luồng tiền, retry/recovery, PIN/quyền và realtime | [Tám sơ đồ luồng hiện hành](critical-flows.md), kèm ranh giới transaction và nguồn code/DB; [bộ SVG hiện hành](figures/README.md) gồm ERD/luồng/kiến trúc; [review ngữ nghĩa và khác biệt WIP/DB](reviews/diagram-semantics-20261026/INDEX.md) |
 | Hòa giải seed, Settings và trạng thái khóa cửa hàng | [R06-A/B/C](spec-reconciliation.md#r06-detail): yêu cầu gốc → code/metadata → quyết định26/10 và phần còn phải làm |
 | Tìm cơ sở học thuật cho một luận điểm | [C01–C11 và thẻ nguồn R/S](references.md#claims): phần đã đọc, vị trí và giới hạn |
 | Viết khóa luận | [Bản đồ nguồn báo cáo](report-source-map.md) |

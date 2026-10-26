@@ -54,7 +54,7 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 | Phạm vi và đối tượng sử dụng | [requirements.md](requirements.md), [phase-scope.md](phase-scope.md) |
 | Khảo sát/chức năng hệ thống | [features.md](features.md), [screens.md](screens.md) |
 | Phân tích yêu cầu và traceability | [requirements.md](requirements.md), [ma trận21 FR/8 NFR](regression-map.md) |
-| Thiết kế kiến trúc | [architecture.md](architecture.md), [tech-stack.md](tech-stack.md) |
+| Thiết kế kiến trúc | [architecture.md](architecture.md), [A01/A02 và bảng truy nguồn](architecture-diagrams.md), [tech-stack.md](tech-stack.md) |
 | Thiết kế cơ sở dữ liệu | [Mô hình và ERD](data-model.md), [từ điển dữ liệu](data-dictionary.md), [thuật ngữ](glossary.md); phân biệt mô hình source và DB đích |
 | Cài đặt và quyết định kỹ thuật | [Quyết định](workflow/decisions.md), [implementation log](implementation-log/README.md) |
 | Kiểm thử và đánh giá | [testing.md](testing.md), [ma trận ca kiểm/evidence](regression-map.md), [demo-runbook.md](demo-runbook.md); tách suite aggregate, từng ca browser và backend chưa chứng minh |
@@ -82,7 +82,7 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 ## Artefact Còn Cần Bổ Sung Ngoài Nhánh Docs
 
 - File Word theo mẫu của trường, trang bìa, thông tin sinh viên/giảng viên và quy định định dạng.
-- Screenshot mới theo source đã chọn và ghi ngày, hình kiến trúc tổng thể và minh họa demo. [Bộ 16 SVG ERD/luồng](figures/README.md) đã render/kiểm hình; bản dàn trang báo cáo còn theo mẫu trường.
+- Screenshot mới theo source đã chọn và ghi ngày, cùng minh họa demo. [Bộ 18 SVG hiện hành](figures/README.md) gồm ERD/luồng và hai hình kiến trúc đã render/kiểm hình; nhãn kỹ thuật và bản dàn trang báo cáo còn phải chuyển theo mẫu trường.
 - URL deployment live, ngày kiểm tra, cấu hình môi trường đã che secret.
 - Tài liệu tham khảo học thuật/chính thức cho React, PostgreSQL, Supabase, realtime, RLS và kiến trúc.
 - Kết quả khảo sát người dùng hoặc benchmark nếu báo cáo yêu cầu; lượt này chưa xác minh hồ sơ ngoài repo; không coi đây là yêu cầu mới của giảng viên.
@@ -119,7 +119,7 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 | [F07](critical-flows.md#f07) | Đồng bộ/thu hồi quyền và chặn response cũ | Chu kỳ và deadline là cấu hình source, chưa là số đo hiệu năng |
 | [F08](critical-flows.md#f08) | Đồng bộ theo signal và projection có quyền | Có giới hạn join-only menu, mất signal và poll chỉ ở một số purpose |
 
-Khi chuyển thành báo cáo, dùng diễn giải nghiệp vụ/thuật toán và sơ đồ phù hợp mẫu trường; bỏ chi tiết file/symbol/lệnh khỏi phần văn bản báo cáo theo quy tắc ở đầu trang. [Bộ SVG 26/10](figures/README.md) đã được parser/renderer kiểm và rà 16 ảnh ở kích thước gốc. P1-03 còn hình kiến trúc tổng thể, dàn trang/định dạng tham khảo theo mẫu và các evidence runtime đang thiếu; không đóng chỉ từ bộ hình này. [Handoff N2](workflow/tasks/docs-critical-flows-2026-10-26.md) giữ kiểm tra, review và commit.
+Khi chuyển thành báo cáo, dùng diễn giải nghiệp vụ/thuật toán và sơ đồ phù hợp mẫu trường; bỏ chi tiết file/symbol/lệnh khỏi phần văn bản báo cáo theo quy tắc ở đầu trang. [Bộ SVG 26/10](figures/README.md) đã được parser/renderer kiểm và rà 16 ảnh ở kích thước gốc. P1-03 còn chuyển nhãn kỹ thuật sang ngôn ngữ thiết kế của báo cáo, dàn trang/định dạng tham khảo theo mẫu và các evidence runtime đang thiếu; không đóng chỉ từ bộ hình này. [Handoff N2](workflow/tasks/docs-critical-flows-2026-10-26.md) giữ kiểm tra, review và commit.
 
 Bộ hình hiện hành đã sửa F04 và làm rõ F05/F07/F08 theo [review ngữ nghĩa](reviews/diagram-semantics-20261026/INDEX.md). Khi dùng trong báo cáo, ghi source O riêng với snapshot WIP; không lấy metadata staging S làm chứng minh DB local L hoặc deployment. FIN-WIP-02 chưa sửa code.
 
@@ -135,3 +135,7 @@ Bộ hình hiện hành đã sửa F04 và làm rõ F05/F07/F08 theo [review ng�
 | Chiến lược và kết quả kiểm thử | C08–C09 / R08 và R02 | Test strategy, evidence đúng source/môi trường; mock/coverage không thay acceptance backend |
 
 Nguồn học thuật và chuẩn không thay nguồn chính thức về hành vi React/PostgreSQL/Supabase. Khi viết, chọn đúng luận điểm trước, đọc vị trí đã ghi, giữ giới hạn áp dụng và dẫn evidence riêng cho kết quả dự án. [Handoff N3](workflow/tasks/docs-academic-references-2026-10-26.md).
+
+## Nguyên liệu kiến trúc bổ sung — 26/10/2026
+
+[A01](architecture-diagrams.md#a01) phân biệt lời gọi ở trình duyệt với thực thi RPC/SQL và signal; [A02](architecture-diagrams.md#a02) giải thích chiều import, composition và các ranh giới thực tế. Bảng truy nguồn là dữ liệu kiểm chứng nội bộ. Khi viết báo cáo, đổi nhãn module/file/symbol thành vai trò thiết kế, giữ ý nghĩa mũi tên và giới hạn nguồn. Không dùng hình để khẳng định thay DB/UI đã được chứng minh, toàn bộ features là use case thuần, RLS là cơ chế kiểm quyền duy nhất, hoặc mọi backend đã activate. Bộ hình không đóng FIN-WIP-02, N4, H1–H4 hay gate runtime/deployment.

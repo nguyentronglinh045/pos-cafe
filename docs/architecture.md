@@ -2,6 +2,8 @@
 
 Đối chiếu source `main@711a22e` ngày 26/10/2026. Các mô tả dưới đây là kiến trúc trong mã tích hợp; [testing](testing.md) và [giới hạn](limitations.md) xác định phạm vi đã kiểm, không thay nghiệm thu backend đích. [Đối chiếu staging N1](implementation-log/staging-schema-20261026/README.md) và [fingerprint function N2](implementation-log/critical-flows-20261026/README.md) ghi riêng phạm vi metadata đã kiểm.
 
+[Hai hình kiến trúc](architecture-diagrams.md) bổ sung góc nhìn lời gọi và phụ thuộc module, ghim nguồn code và ranh giới kiểm quyền. Có SVG/Mermaid độc lập để tra cứu; trạng thái HTML cũ giữ riêng.
+
 [Bản giải thích trực quan](architecture-explainer.html) dẫn theo tầng, ranh giới tin cậy và luồng đọc/thanh toán trên cùng source; mô tả dưới đây giữ chi tiết và giới hạn.
 
 [Sơ đồ luồng quan trọng](critical-flows.md) mở rộng thanh toán/tách đơn, mất phản hồi–khôi phục, phiên/PIN/quyền và signal–đọc lại dữ liệu, có nhánh lỗi và ranh giới transaction theo source hiện hành. Đây là sơ đồ Markdown độc lập; trạng thái preview HTML cũ không thay đổi.
@@ -10,7 +12,7 @@
 
 ## Hexagonal Architecture / Ports & Adapters
 
-UI gọi hook/flow, hook/flow phụ thuộc port, adapter thực hiện I/O. Đây là Ports & Adapters theo hướng Hexagonal; không phải mô hình textbook tuyệt đối vì tính nhất quán giao dịch nằm cả trong PostgreSQL.
+Đường nghiệp vụ chính đi từ UI qua hook/flow tới port rồi adapter thực hiện I/O; một số lifecycle/quyền in ở app dùng port trực tiếp. [A01](architecture-diagrams.md#a01) ghi những đường này và các phần được lược khỏi hình. Đây là Ports & Adapters theo hướng Hexagonal; không phải mô hình textbook tuyệt đối vì tính nhất quán giao dịch nằm cả trong PostgreSQL.
 
 **Động cơ lựa chọn:** chủ dự án xác nhận hồi cứu ngày 25/10/2026 rằng muốn tách rõ các phần từ đầu, nhằm thích ứng khi UI thay đổi hoặc chuyển công nghệ cơ sở dữ liệu. Đây là mục tiêu giảm phụ thuộc; chưa phải kết quả kiểm chứng việc thay UI framework/DB. Lý do kiểm logic độc lập và thay mock/backend, cùng chi phí interface/mapper, đã được ghi trong tài liệu cũ. [Hồ sơ quyết định](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-arch-01--nguồn-của-quyết-định-lựa-chọn-kiến-trúc) phân biệt động cơ đã xác nhận với ký ức về DDD và đánh đổi còn cần đối chiếu; [tech-stack](tech-stack.md#architectural-pattern-hexagonal-architecture--ports--adapters) giữ bản tóm tắt.
 

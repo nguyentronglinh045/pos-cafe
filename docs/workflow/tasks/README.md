@@ -2,6 +2,8 @@
 
 ## Đang theo dõi
 
+- [Hai hình kiến trúc theo code — 26/10/2026](docs-architecture-overview-2026-10-26.md): lời gọi và phụ thuộc module, ranh giới quyền, hai SVG/Mermaid với bảng truy nguồn. Chỉ docs; giữ WIP/DB/runtime và HTML cũ trong đúng giới hạn.
+
 - [Sửa hình sau review ngữ nghĩa — 26/10/2026](docs-flow-corrections-2026-10-26.md): F04 phân biệt get/execute; làm rõ F05/F07/F08; giữ khác biệt WIP/DB và evidence gốc. Chỉ docs, không sửa code/DB.
 
 - [Xuất hình ERD/luồng — 26/10/2026](docs-diagram-exports-2026-10-26.md): 16 SVG từ Mermaid N1/N2 giữ nguyên; parser/render/kiểm hình và nguồn. P1-03 còn mở; không kiểm HTML cũ, code/DB hoặc runtime sản phẩm.

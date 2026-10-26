@@ -1,0 +1,94 @@
+{
+  "schema": "docs-architecture-diagrams-v1",
+  "date": "2026-10-26",
+  "previous_docs": "2e458f0bd9ad82467bbb3ccd0fbb45654a53c2d0",
+  "code_source": "711a22e71983e3d6aa17799649af05ce4c762555",
+  "source_identity": "Git blob/SHA256 of docs/architecture-diagrams.md; verbatim LF Mermaid definitions included",
+  "figures": [
+    {
+      "id": "architecture-01",
+      "title": "A01 — Lời gọi và ranh giới thực thi",
+      "source_path": "docs/architecture-diagrams.md",
+      "source_git_blob": "ffeba213938db6fa3136ed7ae7004510e69b895d",
+      "source_file_sha256": "06ca24c908bcbf77d628b06c8e60f2af2f58d9713839f2070dfed22aef5845b0",
+      "source_line": 13,
+      "definition": "architecture-01.mmd",
+      "mermaid_sha256_lf": "086060bd5d4f91fc8afc6a44143f59611a62c65086fbea2c8105bcef3e6218de",
+      "svg": "architecture-01.svg",
+      "svg_sha256": "31798dddb97e153d908b138dd945fa328d78aed9e53dc52943492261e62beb75",
+      "svg_bytes": 36668,
+      "width_px": 784,
+      "height_px": 967,
+      "labels_checked": 20,
+      "labels_outside_viewbox": 0,
+      "label_presentation": {
+        "stateLabelBackgrounds": 0,
+        "sequenceMessageBackgrounds": 0,
+        "sequenceGroupLabelBackgrounds": 0,
+        "flowLabelBackgrounds": 9,
+        "clusterLabelBackgrounds": 2
+      },
+      "parser": "PASS",
+      "render": "PASS",
+      "local_qa_png": "architecture-01.png",
+      "local_qa_png_sha256": "86bd0b702825bffcbc6e226e0888bfbdb10c5d287181e91d7714c39f4b37523a"
+    },
+    {
+      "id": "architecture-02",
+      "title": "A02 — Phụ thuộc module và điểm ghép adapter",
+      "source_path": "docs/architecture-diagrams.md",
+      "source_git_blob": "ffeba213938db6fa3136ed7ae7004510e69b895d",
+      "source_file_sha256": "06ca24c908bcbf77d628b06c8e60f2af2f58d9713839f2070dfed22aef5845b0",
+      "source_line": 63,
+      "definition": "architecture-02.mmd",
+      "mermaid_sha256_lf": "107de367e611f1f0d7401aa51aa66caad4bbb6e00a190782915ef24cebc33a3d",
+      "svg": "architecture-02.svg",
+      "svg_sha256": "e83d08cfc3c0461afd12362d11ba7b79c92e3c1efecec15e008e0a62872119b8",
+      "svg_bytes": 26880,
+      "width_px": 569,
+      "height_px": 552,
+      "labels_checked": 16,
+      "labels_outside_viewbox": 0,
+      "label_presentation": {
+        "stateLabelBackgrounds": 0,
+        "sequenceMessageBackgrounds": 0,
+        "sequenceGroupLabelBackgrounds": 0,
+        "flowLabelBackgrounds": 9,
+        "clusterLabelBackgrounds": 0
+      },
+      "parser": "PASS",
+      "render": "PASS",
+      "local_qa_png": "architecture-02.png",
+      "local_qa_png_sha256": "e46505b6f3aedbdf6f5ac1d8a892e624db185dc03acd1f96ae72e277d76366c9"
+    }
+  ],
+  "renderer": {
+    "name": "Mermaid",
+    "version": "12.2.0",
+    "bundle_sha256": "a8a6a6f805b074a8261a2825c86f99c8054acb3b35f50bb7e24a4f9f2c3c3b9f",
+    "bundle_source": "https://cdn.jsdelivr.net/npm/mermaid@12.2.0/dist/mermaid.min.js",
+    "config": "renderer-config.json",
+    "config_sha256": "45004e46e3c0302b065652528b06128e33047021dc56a6e695f1f887bac19764",
+    "browser": "151.0.7922.34",
+    "font": "Arial (system, not embedded)",
+    "network_requests": 0
+  },
+  "counts": {
+    "figures": 2,
+    "svg_bytes": 63548,
+    "text_boxes": 36,
+    "outside": 0
+  },
+  "verification_scope": [
+    "Source/code comparison; reviewers recorded in task handoff",
+    "Mermaid parse/render, XML safety, source/hash/link checks, local PNG inspection"
+  ],
+  "not_verified": [
+    "Application runtime",
+    "DB L or deployment",
+    "Word/PDF/physical print",
+    "Old architecture HTML preview"
+  ],
+  "png_scope": "Local visual-QA artifacts, not included in docs branch",
+  "review_record": "../../workflow/tasks/docs-architecture-overview-2026-10-26.md"
+}

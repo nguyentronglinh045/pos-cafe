@@ -1,0 +1,17 @@
+flowchart TB
+  UI["app<br/>UI, providers, lifecycle"]
+  C["app/runtimePorts.ts<br/>Điểm ghép adapter cụ thể"]
+  F["features<br/>Flow, hooks, PortsContext"]
+  A["adapters<br/>Supabase / mock / browser"]
+  P["ports<br/>Hợp đồng TypeScript"]
+  K["core<br/>Quy tắc, validation, lifecycle"]
+  D["domain<br/>Kiểu dữ liệu miền"]
+  UI -->|"AppProviders"| C
+  UI --> F
+  C --> A
+  F --> P
+  F --> K
+  A --> P
+  A --> K
+  P --> D
+  K --> D

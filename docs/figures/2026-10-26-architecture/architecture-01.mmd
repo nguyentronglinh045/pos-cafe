@@ -1,0 +1,23 @@
+flowchart TB
+  subgraph browser["TRÌNH DUYỆT — mode Supabase"]
+    UI["app • React / Zustand<br/>Màn, drawer, lifecycle"]
+    F["features<br/>Hook / flow • TanStack Query"]
+    P["AppPorts • lời gọi qua hợp đồng<br/>permission / write / auth / seed / print"]
+    A["Adapters được inject<br/>Supabase + SDK / browser print seam"]
+    UI --> F
+    F --> P
+    UI -->|"lifecycle / quyền in"| P
+    P -->|"instance được inject"| A
+  end
+  subgraph backend["BACKEND — mô tả source, chưa xác nhận deployment"]
+    AUTH["Supabase Auth<br/>Phiên cửa hàng"]
+    RPC["PostgREST / RPC"]
+    SQL["SQL functions<br/>Guard theo RPC: store / session / quyền"]
+    DB[("PostgreSQL<br/>Business rows, ledger, audit")]
+    RT["Supabase Realtime<br/>store_change_signals<br/>permission_catalog_signals"]
+    RPC --> SQL
+    SQL -->|"đọc / ghi theo nghiệp vụ"| DB
+  end
+  A -->|"ghép / tạo cửa hàng"| AUTH
+  A -->|"RPC đọc / ghi / phiên"| RPC
+  A <-.->|"subscribe / signal"| RT
