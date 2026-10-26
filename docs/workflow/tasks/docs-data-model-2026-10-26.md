@@ -26,7 +26,7 @@ Nguồn docs đầu vào `4191e2126f8558839d0a02f2422389c798ab5079`; code `711a2
 
 ## Kiểm chứng và giới hạn
 
-Đã kiểm offline các khai báo DDL, ALTER và controller: đủ 35 bảng/332 cột trong từ điển; tám khối ERD/36 quan hệ đối chiếu FK, PK/UNIQUE và nullability; liên kết nội bộ/nguồn ghim hợp lệ. Quy tắc cú pháp ERD dùng trong tám khối đã được kiểm theo tập cú pháp nhỏ đã chọn; không có Mermaid renderer/parser đầy đủ được chạy. Main WIP và nội dung FR/NFR gốc giữ nguyên. Candidate chờ review độc lập trước bàn giao; số kiểm cuối và verdict ghi trong receipt bên dưới. Kiểm kê đủ bảng/cột không là kiểm tất cả function/policy/trigger hoặc chứng nhận bảo mật.
+Đã kiểm offline các khai báo DDL, ALTER và controller: đủ 35 bảng/332 cột trong từ điển; tám khối ERD/36 quan hệ đối chiếu FK, PK/UNIQUE và nullability; liên kết nội bộ/nguồn ghim hợp lệ. Quy tắc cú pháp ERD dùng trong tám khối đã được kiểm theo tập cú pháp nhỏ đã chọn; không có Mermaid renderer/parser đầy đủ được chạy. Main WIP và nội dung FR/NFR gốc giữ nguyên. Candidate đã qua hai review độc lập; số kiểm cuối và verdict ghi trong receipt bên dưới. Kiểm kê đủ bảng/cột không là kiểm tất cả function/policy/trigger hoặc chứng nhận bảo mật.
 
 Nguồn giải nghĩa kỹ thuật: [PostgreSQL 16 constraints](https://www.postgresql.org/docs/16/ddl-constraints.html), [Mermaid ER syntax](https://mermaid.js.org/syntax/entityRelationshipDiagram.html). Dùng cho nullability/PK và ký hiệu ERD, không nhận đã hoàn thiện danh mục học thuật N3. Source code ghim theo file/dòng trong ba trang đầu ra.
 
@@ -34,7 +34,7 @@ Không chạy app/backend, không cài dependency hay dựng WSL/Docker. Không 
 
 ## Review và bàn giao
 
-Chờ hai review độc lập: tính đúng mô hình/source và preservation/phạm vi/checklist. Bảng findings và verdict sẽ cập nhật đúng candidate. Đường đọc để chủ dự án kiểm: thuật ngữ → nhóm ERD → các cột/ràng buộc tương ứng; chưa nhận chủ dự án đã đọc/hiểu.
+Hai review độc lập đã hoàn tất: tính đúng mô hình/source và preservation/phạm vi/checklist. Bảng findings và verdict gắn đúng candidate ở receipt bên dưới. Đường đọc để chủ dự án kiểm: thuật ngữ → nhóm ERD → các cột/ràng buộc tương ứng; chưa nhận chủ dự án đã đọc/hiểu.
 
 | Finding | Nguồn phát hiện và xử lý |
 | --- | --- |
@@ -42,3 +42,16 @@ Chờ hai review độc lập: tính đúng mô hình/source và preservation/ph
 | N1-R01 — Tên lệnh hủy paid kế thừa trong data-model không đúng giao thức v1 | Reviewer knowledge đối chiếu source: sửa `action void_paid` thành `kind void_order`; làm rõ giỏ toàn số lượng 0 chuyển thành action void_open, DB mark removed và giữ raw quantity/options. Dẫn domain contract, flow và SQL helper; không đổi requirement/code. |
 
 Việc tiếp theo: N2 sơ đồ các luồng quan trọng, rồi N3 nguồn học thuật theo luận điểm; chỉ thực hiện theo phạm vi lượt tiếp theo. Lượt N1 commit trên docs local, không tự mở lượt triển khai hoặc nhận quyền push mới từ receipt năm nhóm đã hoàn tất.
+
+## Receipt hoàn tất N1 — 26/10/2026
+
+Candidate nội dung `87f849c0221bf99c135f58d412d092d20b679a70`, base `4191e2126f8558839d0a02f2422389c798ab5079`. Hai reviewer xác nhận **APPROVE** đúng candidate và checklist SHA256 `5290d09e07d496c9fd51f37220a2af1417210a2968f19acefdb4d661e12fa886`:
+
+| Reviewer | Phạm vi và kết quả |
+| --- | --- |
+| `/root/review_knowledge` | Tám file, DDL/controller/contract source711a22e; kiểm kê độc lập 35 bảng/332 cột không lệch; ERD/PK/FK/NULL/cardinality/constraint và thuật ngữ. N1-R01 đã đóng; SELF-01 đã sửa đúng. APPROVE, không còn finding. |
+| `/root/review_preservation` | Phạm vi, bảo toàn requirement/evidence, liên kết/anchor, khả năng tra cứu và checklist. Đã xác nhận lại delta tên lệnh hủy và bản ghi findings. APPROVE, không còn finding chặn. |
+
+Kiểm cuối: 203 liên kết nội bộ và 550 tham chiếu source ghim hợp lệ; 35 bảng/332 cột; tám ERD/36 quan hệ FK; `git diff --check` sạch. Main WIP, các normative spec và evidence gốc giữ nguyên. Không introspect DB, chạy app/backend hoặc Mermaid renderer/parser đầy đủ; các giới hạn này không bị đổi thành PASS. Sau verdict chỉ cập nhật metadata review trong handoff.
+
+N1 hoàn tất đầu ra tài liệu trên docs local; checklist ngoài Git chỉ tích N1, P1-03/N2–N5/H1–H4 còn mở. Không push trong lượt này. Đây không phải quyết định nghiệm thu backend hoặc phát hành sản phẩm.
