@@ -28,3 +28,16 @@ Checklist `D:/Workspace/pos-cafe-docs-priorities.local.md` tiếp tục ngoài G
 ## Bước tiếp theo
 
 Chủ dự án xem ba phương án ở [bảng cần duyệt](../../spec-reconciliation.md#r06-detail). Chỉ sửa expected sau quyết định tương ứng; không cần code để ghi quyết định. N5 có thể kiểm kê requirement → TC → evidence độc lập khi được giao, nhưng không dùng để đóng những nghĩa vụ còn mở. Đã cung cấp đường đọc source; chưa nhận chủ dự án đã hiểu hoặc nghiệm thu. Chưa push N3/N4.
+
+## Receipt kiểm và review — 26/10/2026
+
+Candidate được cả hai reviewer kiểm: `76add012358c2394fe0678d2e2cc4b8ea32d4e15`, base `669a27158032d585bef986be2145d6fc8d26a412`. Checklist candidate SHA256 `d155e6e3ccf3c6443d79e2935c1cdc902a639de05ea0174918b272577bcba478`; file ở ngoài Git.
+
+| Reviewer / trọng tâm | Kiểm độc lập và giới hạn | Verdict / finding |
+| --- | --- | --- |
+| `/root/review_knowledge` — requirement/delta/source | Đọc baseline/PERM-23/PIN-05, phân biệt retry và reseed sau xóa; kiểm lifecycle/Settings, receipts/clear-demo, store-session/identity lock/employee guard; PIN-D04 không tự bãi bỏ SHALL; owner G05/G06 và ba khung giữ nguyên. Đối chiếu checklist và diff-check. Không DB, suite hoặc UI thực. | **APPROVE** đúng candidate/checklist; không có finding chặn hoặc đề nghị sửa trong phạm vi. |
+| `/root/review_preservation` — DB/security evidence, target binding và bảo toàn | Giải mã 5 raw MCP khớp rows, 2 manifest hash, tính lại 14 body từ Git; kiểm 291 link/95 nguồn ghim, diff-check và main porcelain theo cùng tùy chọn. Giới hạn comment marker/provider, ACL/RLS/anon EXECUTE không suy runtime PASS; checklist append-only, N4 còn mở. Không gọi DB, chạy nghiệp vụ hoặc test bảo mật. | **APPROVE** đúng candidate/checklist; không có finding chặn. |
+
+Tác giả kiểm 11 file (8 Markdown, 3 JSON), 291 liên kết nội bộ, 95 tham chiếu code ghim, 14 body function/overload, 5 raw queries và 2 hash dữ liệu; không lỗi link/anchor/encoding/diff-check. Các file candidate khớp Git; spec và evidence cũ bất biến, status main khớp snapshot. Không dùng các kiểm này thay test sản phẩm.
+
+Không có vòng sửa finding. Sau hai verdict chỉ thêm metadata receipt này; nội dung đã review giữ nguyên. Hoàn tất **phần đối chiếu docs** của N4; R06-A/B/C vẫn chờ quyết định, N4 tổng thể chưa tích. Gói N3/N4 commit local, chưa push; không thay code/DB, refactor hoặc nhận nghiệm thu chức năng.
