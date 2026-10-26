@@ -27,3 +27,24 @@ HTML phục vụ chủ dự án/AI/người viết báo cáo: bản đồ trách
 Kiểm trước push: diff/links/anchors/source, body lịch sử và frozen evidence, WIP, controls/nội dung HTML và hai review độc lập đúng candidate. Không chạy app/backend, cài gói, tải image, tạo lab hoặc sửa code.
 
 Kế hoạch xem HTML ở trình duyệt bị chặn: URL policy từ chối giao thức file://; không dùng đường vòng để vượt chính sách. Kiểm thay thế có phạm vi hẹp hơn bằng jsdom24.1.3 đã có trên máy, chạy offline, không phát request mạng: ba luồng/12bước, nút trước–sau/chọn bước, nguồn ghim, theme, print disclosure, fallback không JS và anchor. Không nhận kiểm DOM là kiểm layout/screenshot; render rộng/hẹp, chồng lấp và tương phản thực tế chưa được xác minh bằng trình duyệt. Reviewer phải đánh giá cả giới hạn này, không được suy PASS hiển thị.
+
+## Kiểm chứng và review cuối
+
+Candidate nội dung `730cc4ef2c386dd5981340110e05ea63e38addd2`, parent `8bf74fd9b8e2c3962ecafbd9e5fde3ca830be0a2`. Checklist local SHA256 `c040e905e66cfdf81d45bdf682b4f0612531b19870781b5b6a534d3c48ab733e`; sau verdict chỉ thêm metadata kiểm/review/xuất bản, không thay nội dung đã duyệt.
+
+| Reviewer | Phạm vi / verdict cuối |
+| --- | --- |
+| `/root/review_knowledge` | **APPROVE** candidate/checklist trên: toàn28file và delta cuối; tính đúng theo code, năm nhóm đầu ra, mapping scope/gate, nội dung HTML và giới hạn bằng chứng. |
+| `/root/review_preservation` | **APPROVE** candidate/checklist trên: lịch sử, evidence, quyền thực hiện, liên kết cũ và toàn bộ phạm vi chuẩn bị push. Kiểm63path từ remote, không có code ứng dụng, xóa file hoặc thay raw evidence;16baseline giữ body so remote. Không phát hiện mẫu secret rõ trong dòng thêm, không phải chứng nhận bảo mật. |
+
+| Vòng / finding | Xử lý và xác nhận |
+| --- | --- |
+| Knowledge: CHANGES_REQUESTED trên `8db54aaa6640c72d39b4352106ab58a6f38a688c`, HTML print giữ màu nền dark trong khi body đổi chữ đen | Đặt lại đủ9token palette light trong `@media print`, selector thắng data-theme. Kiểm CSSOM bổ sung; reviewer đóng trên candidate cuối. |
+| Knowledge: góp ý core không hoàn toàn là hàm thuần | HTML và architecture.md nêu rõ lifecycle/timer/callback I/O được inject, không phụ thuộc trực tiếp SDK/React; dẫn permissionLifecycle.ts:6. Reviewer xác nhận đúng nguồn. |
+| Preservation: CHANGES_REQUESTED trên `8db54aaa6640c72d39b4352106ab58a6f38a688c`, testing dùng chữ “render HTML” | Sửa thành kiểm DOM/controls và giới hạn chưa xác minh render/layout, thống nhất với handoff/receipt. Reviewer đóng trên candidate cuối. |
+
+Kết quả kiểm cuối: `git diff --check` đạt; **464 liên kết nội bộ +114 tham chiếu ghim nguồn**, không lỗi hoặc consumer anchor mới bị hỏng. Bốn proposal gốc nằm nguyên byte ở history cùng folder, bốn batch giữ body nguyên byte, setup giữ phần lịch sử; các đoạn roadmap/testing chuyển nguyên nội dung. Frozen evidence, normative spec và main WIP không thay bởi task. Một link checkout D: trong proposal lịch sử được giữ theo nguyên bản, không coi nó là đường truy cập dùng chung; trang hiện hành dùng nguồn ghim.
+
+HTML SHA256 `219ed1ba2a4f309dc2256730426554cb4136b1210dd5698390cd8f4552a5f329`: jsdom24.1.3 có sẵn, **99 assertions đạt**, không lỗi script hoặc request mạng; có kiểm token print. Hai reviewer xác nhận thiếu render/layout/screenshot/bản in thực không chặn phạm vi tài liệu này, nhưng không được gọi là visual PASS. Không chạy app/backend hoặc cài công cụ. Receipt/script kiểm cục bộ thuộc `docs-reorganization-20261026` trong thư mục visualization của phiên.
+
+Trạng thái: nội dung tài liệu đã qua kiểm/review, được phép push theo yêu cầu26/10. Đây không phải quyền deploy ứng dụng, refactor hoặc nghiệm thu backend. Receipt công bố được bổ sung sau khi đối chiếu remote.
