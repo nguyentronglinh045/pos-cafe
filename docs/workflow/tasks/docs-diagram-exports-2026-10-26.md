@@ -28,3 +28,18 @@ Checklist ngoài Git chỉ cập nhật tiến độ phần hình và nhật ký
 Kiểm candidate: đủ 16 SVG/XML an toàn, source Mermaid giữ nguyên, hash/config/PNG khớp, liên kết/anchor/source ghim, diff-check và bảo toàn main/index/evidence. Review độc lập gồm tính đọc được của hình và tính đúng nguồn/giới hạn/preservation. Candidate/checklist/verdict thật được ghi trong receipt cuối; không nhận kế hoạch review là APPROVE.
 
 Khi cập nhật source sau này, xuất lại đúng hình bị ảnh hưởng và kiểm/review trước thay bộ SVG; không sửa tay SVG để làm khác nội dung Mermaid. Sau nhập vào báo cáo phải kiểm lại dàn trang tại tài liệu đích. Bộ hình không thay việc chủ dự án đọc và giải thích thiết kế.
+
+## Receipt review độc lập — 26/10/2026
+
+Phạm vi cuối: toàn bộ 25 file của gói xuất hình từ docs `1751c2fefb7ce8accc2922af94b0083cf3321e3f` tới candidate `65d6164cfd7c68e9f06e6aa8f9acb8c747e63ed3`, tree `bd754200ef399bf4c02faa7f39ab224c894bbd1a`; checklist local SHA256 `75af32bb3a766fb08a9c2d921390f19655c03dc6bd51992b4e36d187877e7d71`.
+
+| Reviewer | Kiểm độc lập và kết luận cuối | Giới hạn |
+| --- | --- | --- |
+| `/root/review_knowledge` | **APPROVE** candidate/checklist nêu trên. Đã xem đủ 16 ảnh ở vòng đầu và xem lại F02/F03/F06/F08 sau sửa; nhãn rõ, không còn đường xuyên chữ. Đối chiếu Mermaid, text/hình học cạnh, hash nguồn/SVG/PNG, config/recipe/handoff và checklist; không còn finding chặn. | Không xác nhận A4, Word/PDF, HTML hoặc nghiệm thu sản phẩm. |
+| `/root/review_preservation` | **APPROVE** candidate/checklist nêu trên. Kế thừa review toàn gói, kiểm lại hash 16 SVG/PNG, bundle/config, nguồn và tính toàn vẹn text/tọa độ/path/line/marker; XML không có active content/tài nguyên ngoài. Spec/evidence/HTML cũ, main status/index và tick checklist giữ nguyên; diff-check sạch. | Không chạy lại renderer; việc xác nhận bốn hình hết đường xuyên chữ thuộc reviewer hình ảnh. Không kiểm Word/PDF/in. |
+
+Lịch sử finding: tại candidate `e43130d7b5ca5a4fc877df4dea979a4ae3823cd3`, checklist SHA256 `c9c2229d5c0560080b99cd5d5f997bfdbd38d5678b2530f585a588a5134a348d`, reviewer hình ảnh trả **CHANGES_REQUESTED**: F03 có đường pending→expired xuyên nhãn chuyển sang cancelled; F02/F06/F08 có lifeline xuyên chữ self-call. Reviewer preservation đã APPROVE trong phạm vi riêng, nhưng chưa đủ để bàn giao. Tác giả thêm nền trắng cho nhãn, giữ nguyên nội dung và hình học; chỉ bốn PNG này đổi, 12 PNG khác giữ nguyên hash. Reviewer hình ảnh xác nhận đóng finding trên candidate cuối; reviewer preservation cũng xác nhận lại candidate cuối. ERD-05 rộng là lưu ý dàn trang không chặn, đã ghi giới hạn.
+
+Kiểm cuối của tác giả đạt: 16 SVG (469.642 bytes), 344 hộp chữ trong khung, 218 liên kết nội bộ và 81 tham chiếu source ghim; 16 khối Mermaid và nội dung/tọa độ chữ/hình học cạnh giữ nguyên. Không đổi code/DB, evidence/spec/HTML cũ hoặc trạng thái main/index. Checklist giữ P1-03/N4/H1–H4 mở và nằm ngoài Git.
+
+Sau các verdict chỉ bổ sung metadata receipt này, không đổi nội dung/hình đã duyệt. Lượt công việc tiếp tục nhánh docs theo phạm vi đã giao; kết quả push thực tế được ghi riêng ở checklist và receipt local sau khi xác minh remote. Không nhận review là chủ dự án đã đọc, nghiệm thu hay đã hoàn thành báo cáo.
