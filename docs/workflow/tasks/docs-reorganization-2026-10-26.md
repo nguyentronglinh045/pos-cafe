@@ -48,3 +48,9 @@ Kết quả kiểm cuối: `git diff --check` đạt; **464 liên kết nội b�
 HTML SHA256 `219ed1ba2a4f309dc2256730426554cb4136b1210dd5698390cd8f4552a5f329`: jsdom24.1.3 có sẵn, **99 assertions đạt**, không lỗi script hoặc request mạng; có kiểm token print. Hai reviewer xác nhận thiếu render/layout/screenshot/bản in thực không chặn phạm vi tài liệu này, nhưng không được gọi là visual PASS. Không chạy app/backend hoặc cài công cụ. Receipt/script kiểm cục bộ thuộc `docs-reorganization-20261026` trong thư mục visualization của phiên.
 
 Trạng thái: nội dung tài liệu đã qua kiểm/review, được phép push theo yêu cầu26/10. Đây không phải quyền deploy ứng dụng, refactor hoặc nghiệm thu backend. Receipt công bố được bổ sung sau khi đối chiếu remote.
+
+## Receipt công bố — 26/10/2026
+
+Đã fast-forward nhánh `docs` trên `nguyentronglinh045/pos-cafe` từ `9b4fd3acb626a27b3561f3e3d2bfd0d8cad51088` tới `dd82dfbb916e1b5e256784b4d707971f9b7b5846` sau hai APPROVE. Đối chiếu bằng `git ls-remote` xác nhận đúng commit, remote main vẫn `711a22e71983e3d6aa17799649af05ce4c762555`. Không force-push, không push main/tag hoặc deploy ứng dụng. Commit nối tiếp chỉ bổ sung receipt này; nội dung được review vẫn ở candidate `730cc4ef2c386dd5981340110e05ea63e38addd2`.
+
+Checklist tại `D:/Workspace/pos-cafe-docs-priorities.local.md` giữ ngoài Git; P1-03 vẫn mở. Nội dung HTML đã kiểm DOM/controls/CSS theo receipt, chưa có kiểm render/layout thực tế vì URL policy chặn file://. Main WIP và evidence gốc giữ nguyên.
