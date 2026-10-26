@@ -34,3 +34,20 @@ Kiểm diff/đường dẫn/anchor/source ref, đủ 18 ID/chú thích và liên
 Hai reviewer độc lập: (1) tính đúng của mapping/chú thích/phạm vi và cơ sở đóng P1-03; (2) bảo toàn nguồn/hình/evidence, liên kết và checklist. Cần cả hai APPROVE đúng candidate cuối; receipt metadata bổ sung sau verdict. Không coi việc có sẵn bộ hình là tự thông qua review lượt này.
 
 Chưa tạo báo cáo hoặc khẳng định chủ dự án đã đọc/hiểu toàn bộ nguồn. Khi viết báo cáo, đường đọc đã chuẩn bị là chủ đề → quyết định/hiện trạng → hình/cơ sở → evidence/giới hạn.
+
+## Receipt kiểm và review — 26/10/2026
+
+Candidate nội dung cuối `934eb236369511d8975adb662bcdeb73d75bc6f5`, tree `54ec4ce21ebdd315265ee51e92e3dfcae3024cb4`, trên docs nền `fece5ec3fe0edfb6e1d8e52064c30e9c866d7b13`. Checklist local-only được review với SHA256 `c1546198bebe1317c23d04f1cdb2ad80ebe60cccc0d1ee68ec284df4745926ea`.
+
+| Reviewer | Phạm vi / verdict cuối |
+| --- | --- |
+| `/root/review_knowledge` | **APPROVE** đúng candidate/checklist trên. Đã kiểm 18 chú thích, mapping chủ đề/nguồn/evidence, trạng thái G11/G12/R06 và điều kiện P1-03. Không có finding còn lại; đóng phần chuẩn bị nguồn phù hợp tiêu chí gốc, không đổi gate sản phẩm. |
+| `/root/review_preservation` | **APPROVE** đúng candidate/tree/checklist trên trong phạm vi preservation/provenance và cơ sở đóng P1-03. Đã kiểm độc lập liên kết/anchor, cấu trúc bảng, source/hình/evidence và checklist. Không có finding còn lại trong scope. |
+
+Vòng đầu ở `9d0f5c92cf7ebd3a0686f9e4f5644cca29951aa9`: reviewer nội dung **CHANGES_REQUESTED** vì chú thích F01 chỉ nói tách đơn, bỏ nhánh thanh toán toàn bộ đơn hiện có. Nguồn `orderFlow.ts:376–384` xử lý full selection; dòng397 mới bắt đầu lệnh tách phần chọn. Reviewer preservation APPROVE trong scope của mình nhưng ghi rõ chưa thể xuất bản khi finding của reviewer nội dung còn mở. Đã sửa F01 thành “Thanh toán toàn bộ đơn hoặc tách phần món được chọn thành đơn độc lập”; cả hai xác nhận candidate cuối. Delta chỉ đổi câu chú thích, không đổi checklist hoặc hình.
+
+Kiểm candidate cuối: tám Markdown; 414 link nội bộ và 79 nguồn code ghim hợp lệ; đủ 18 ID hình/18 chú thích và đường tra G01–G12, không mất anchor cũ. Toàn bộ SVG/Mermaid/manifest/config, spec/evidence/HTML và code giữ nguyên. Main HEAD/status/index và 544 hash file WIP khớp nguồn đã kiểm; checklist chỉ đổi tick P1-03, giữ nguyên lịch sử và mọi tick khác. Diff-check sạch. Không chạy lại app, DB, browser, renderer hoặc xác minh deployment.
+
+Cả hai reviewer đối chiếu tiêu chí gốc của P1-03: người viết tìm được nội dung/dẫn chứng và biết phần còn thiếu; Word/slide/đánh số chương/văn phong luận văn không phải cấu trúc bắt buộc của kho docs. Vì vậy hoàn tất **phần chuẩn bị nguồn**, không nhận đồ án hoặc sản phẩm hoàn tất. N4/H1–H4, FIN-WIP-02, template/format báo cáo và gate backend/runtime/deploy giữ đúng phạm vi còn lại.
+
+Sau verdict chỉ bổ sung receipt và metadata xuất bản/checklist; nội dung đã review không đổi. Quyền push docs đã có trong session. Kết quả remote được xác minh ở checkpoint xuất bản và checklist local; không phát hành ứng dụng hoặc sửa DB.
