@@ -30,3 +30,20 @@ Hai reviewer độc lập bắt buộc: một người đối chiếu kiến tr�
 Đường giải thích đã chuẩn bị cho chủ dự án: A01 → bảng ranh giới SQL/Auth → A02 → động cơ/đánh đổi trong architecture. Chưa khẳng định chủ dự án đã đọc hoặc hiểu các hình mới.
 
 Phần còn mở: FIN-WIP-02 và các delta O/W; DB L/deployment; nghiệm thu backend/runtime; N4 khi chọn triển khai; HTML H1–H4; nhãn/kiểu trích dẫn/dàn trang theo mẫu trường và screenshot demo. Những phần này không được đóng bằng việc xuất thêm SVG. Không refactor, không sửa code/tests/config/DB; giữ nguyên evidence và checklist local.
+
+## Receipt kiểm và review — 26/10/2026
+
+Candidate nội dung cuối: `483085aa518e274b434a6e36c263b1cbd808724d`, tree `a359d7aba8249ed3efff2f03ff295cbf2292001b`, trên docs nền `2e458f0bd9ad82467bbb3ccd0fbb45654a53c2d0`. Checklist local-only được review với SHA256 `f8084f66171ba8ed7f002dd789f119d5cb42a9acba11e1e278c329646bb5dc03`.
+
+| Reviewer độc lập | Phạm vi và kết luận cuối |
+| --- | --- |
+| `/root/review_knowledge` | **APPROVE** đúng candidate/checklist trên. Đã đối chiếu A01/A02 với source `711a22e`: composition, mock/legacy, Auth/employee session, headers/RPC, SQL guard, image gateway, print và chiều import; xem PNG và kiểm hash. Không còn finding trong scope. |
+| `/root/review_preservation` | **APPROVE** đúng candidate/tree/checklist trên. Đã xem trực tiếp hai PNG, kiểm SVG/.mmd/source/config/manifest, bảng 18 hình và giới hạn evidence; main status/index, hình cũ/r2/spec/evidence/HTML giữ nguyên. Không còn finding trong scope. |
+
+Vòng đầu trên `8006506ea6b7d914920bd9db45d1698571d828f5`: cả hai reviewer **CHANGES_REQUESTED** vì dòng trống tách A01/A02 khỏi bảng gallery. Đã bỏ dòng trống; cả hai xác nhận đủ 18 hàng cùng bảng. Reviewer nội dung còn đề nghị không chặn: nói rõ ranh giới import áp dụng production source, test được loại khỏi phép kiểm. Đã bổ sung câu và nguồn `architectureBoundaries.test.ts:118`; cả hai xác nhận đúng.
+
+Delta sau review không đổi Mermaid, hình học hoặc PNG. SVG chỉ đổi description chứa blob nguồn vì trang Markdown được bổ sung câu giải thích; source blob cuối `ffeba213938db6fa3136ed7ae7004510e69b895d`, hash SVG/PNG/config khớp manifest. Sau APPROVE chỉ bổ sung receipt này và metadata xuất bản/checklist; không sửa nội dung đã được duyệt.
+
+Kiểm cuối: 13 file docs; hai SVG mới tổng 63.548 bytes, 36 hộp chữ, không vượt khung; 235 link nội bộ và 59 nguồn code ghim hợp lệ; diff-check sạch. Bộ 16 hình gốc, bốn hình r2, spec, evidence, HTML và mã ứng dụng không đổi. Đối chiếu bổ sung 544 file checkout với source-manifest của review ngữ nghĩa trước cũng không có hash khác; đây là kiểm bảo toàn source, không phải chạy lại tests.
+
+Không chạy suite ứng dụng/DB và không xác nhận deployment, Word/PDF/in hay HTML cũ. Các giới hạn O/W/S/L, FIN-WIP-02, P1-03/N4/H1–H4 và gate backend/runtime giữ nguyên. Push docs là bước xuất bản được ủy quyền sau review; không triển khai sản phẩm. Kết quả remote được xác minh ở checkpoint xuất bản và checklist local.
