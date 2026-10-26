@@ -100,4 +100,21 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 - [Thuật ngữ](glossary.md): dùng cách gọi cửa hàng/tenant, owner, đơn/bill/payment/receipt, lệnh/retry/recovery nhất quán; giữ từ gốc khi trích lịch sử.
 - [ERD theo nhóm](data-model.md#erd-rút-gọn): quan hệ FK và cardinality từ source; liên kết logic audit/tín hiệu được ghi riêng. Các hình bao quát 35 bảng dự án của mô hình candidate sau chuyển đổi, không phải ảnh chụp DB đang chạy.
 - [Từ điển](data-dictionary.md): 332 cột với kiểu, NULL, PK/FK/UNIQUE/CHECK và nguồn; phân biệt constraint với invariant do luồng nghiệp vụ bảo đảm.
-- [Handoff N1](workflow/tasks/docs-data-model-2026-10-26.md) ghi cách kiểm, giới hạn và review. [Đối chiếu catalog staging](implementation-log/staging-schema-20261026/README.md) xác nhận phạm vi bảng/cột/khóa đã kiểm, phân biệt thêm bảng marker vận hành; không xác nhận mọi CHECK/default/function body, runtime hoặc production. Chưa hoàn thiện bộ sơ đồ luồng của N2 hoặc nguồn học thuật theo luận điểm của N3. Hình/bảng xuất sang báo cáo cần theo mẫu và nguồn được chọn lúc viết.
+- [Handoff N1](workflow/tasks/docs-data-model-2026-10-26.md) ghi cách kiểm, giới hạn và review. [Đối chiếu catalog staging](implementation-log/staging-schema-20261026/README.md) xác nhận phạm vi bảng/cột/khóa đã kiểm, phân biệt thêm bảng marker vận hành; không xác nhận mọi CHECK/default/function body, runtime hoặc production. Bộ sơ đồ luồng N2 được bổ sung bên dưới; nguồn học thuật theo luận điểm của N3 còn mở. Hình/bảng xuất sang báo cáo cần theo mẫu và nguồn được chọn lúc viết.
+
+## Nguyên liệu luồng bổ sung — 26/10/2026
+
+[Bộ tám sơ đồ](critical-flows.md) mô tả code main711a22e ngày26/10/2026, với [đối chiếu fingerprint function/publication/trigger staging](implementation-log/critical-flows-20261026/README.md). Chỉ dùng những gì phạm vi bằng chứng cho phép; không ghi đây là kiểm chạy E2E, mất mạng, race hoặc realtime đa thiết bị.
+
+| Hình | Dùng cho luận điểm/phần báo cáo | Giới hạn phải giữ khi tổng hợp |
+| --- | --- | --- |
+| [F01](critical-flows.md#f01) | Quy trình thanh toán và thiết kế tách đơn theo món | Ví dụ là minh họa thuật toán, không phải dữ liệu thử staging |
+| [F02](critical-flows.md#f02) | Ranh giới giao dịch, OCC, kiểm quyền sau chờ khóa, audit/R1 | Register và execute là hai transaction; in trình duyệt là tác vụ riêng |
+| [F03](critical-flows.md#f03) | Máy trạng thái và chống lặp hiệu ứng | Unknown thuộc client; expiry không hàm ý có cron |
+| [F04](critical-flows.md#f04) | Khôi phục khi mất phản hồi và phân biệt retry/resume | Không tự gửi lại khi reconnect; lịch sử khác dữ liệu hiện tại |
+| [F05](critical-flows.md#f05) | Hai lớp danh tính và phiên đổi PIN bắt buộc | Không đại diện cho owner email/recovery/ownership transfer chưa hoàn thiện |
+| [F06](critical-flows.md#f06) | Giao dịch đổi PIN, thu hồi phiên và mất ACK | Thành công không tự cấp phiên normal; credential cũ không replay thành quyền |
+| [F07](critical-flows.md#f07) | Đồng bộ/thu hồi quyền và chặn response cũ | Chu kỳ và deadline là cấu hình source, chưa là số đo hiệu năng |
+| [F08](critical-flows.md#f08) | Đồng bộ theo signal và projection có quyền | Có giới hạn join-only menu, mất signal và poll chỉ ở một số purpose |
+
+Khi chuyển thành báo cáo, dùng diễn giải nghiệp vụ/thuật toán và sơ đồ phù hợp mẫu trường; bỏ chi tiết file/symbol/lệnh khỏi phần văn bản báo cáo theo quy tắc ở đầu trang. N2 chưa xuất ảnh hoặc visual-verify Mermaid; P1-03 còn các hình xuất bản, nguồn học thuật và công việc khác. [Handoff N2](workflow/tasks/docs-critical-flows-2026-10-26.md) giữ kiểm tra, review và commit.

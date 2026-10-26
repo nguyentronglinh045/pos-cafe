@@ -1,0 +1,743 @@
+{
+  "code": "711a22e71983e3d6aa17799649af05ce4c762555",
+  "project_ref": "ineckiashpwloncxnbqx",
+  "comparison": "MD5 of exact pg_proc.prosrc and source dollar-quoted body, removing CR only. Text fingerprint, not security checksum or execution proof.",
+  "functions": [
+    {
+      "schema_name": "private",
+      "function_name": "apply_write",
+      "identity_arguments": "p jsonb, plan jsonb, p_actor uuid, p_at timestamp with time zone",
+      "argument_count": 4,
+      "language": "plpgsql",
+      "security_definer": false,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "cdcdbc82700e1968e921d362cd3556b1",
+      "source_matches": [
+        {
+          "name": "private.apply_write",
+          "arguments": "p jsonb,plan jsonb,p_actor uuid,p_at timestamptz",
+          "body_md5": "cdcdbc82700e1968e921d362cd3556b1",
+          "path": "supabase/migrations/015_write_business_helpers.sql",
+          "line": 236
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "emit_permission_catalog_signal",
+      "identity_arguments": "",
+      "argument_count": 0,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "419f538c58cea5061aafaf0ab4051c82",
+      "source_matches": [
+        {
+          "name": "private.emit_permission_catalog_signal",
+          "arguments": "",
+          "body_md5": "419f538c58cea5061aafaf0ab4051c82",
+          "path": "supabase/candidate/permission-signals.sql",
+          "line": 62
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "emit_store_change_signal",
+      "identity_arguments": "",
+      "argument_count": 0,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "7144fc017bb96037a7b946d559935f9e",
+      "source_matches": [
+        {
+          "name": "private.emit_store_change_signal",
+          "arguments": "",
+          "body_md5": "7144fc017bb96037a7b946d559935f9e",
+          "path": "supabase/candidate/permission-signals.sql",
+          "line": 22
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "lock_write_input",
+      "identity_arguments": "p jsonb",
+      "argument_count": 1,
+      "language": "plpgsql",
+      "security_definer": false,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "70bbf8a6c541f9d1aa46363b20e49bfc",
+      "source_matches": [
+        {
+          "name": "private.lock_write_input",
+          "arguments": "p jsonb",
+          "body_md5": "70bbf8a6c541f9d1aa46363b20e49bfc",
+          "path": "supabase/migrations/015_write_business_helpers.sql",
+          "line": 66
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "operation_view",
+      "identity_arguments": "w write_operations",
+      "argument_count": 1,
+      "language": "sql",
+      "security_definer": false,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "2017c7391d7b07eb764b6a3f51ea59a1",
+      "source_matches": [
+        {
+          "name": "private.operation_view",
+          "arguments": "w public.write_operations",
+          "body_md5": "2017c7391d7b07eb764b6a3f51ea59a1",
+          "path": "supabase/migrations/015_write_business_helpers.sql",
+          "line": 13
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "permission_create_initial_receipt_print_grant",
+      "identity_arguments": "p_grant_id uuid, p_store_id uuid, p_operation_id uuid, p_order_id uuid, p_executor_employee_id uuid, p_created_at timestamp with time zone",
+      "argument_count": 6,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "989dcc4e1fc60362fd4a918758cb9680",
+      "source_matches": [
+        {
+          "name": "private.permission_create_initial_receipt_print_grant",
+          "arguments": "\n p_grant_id uuid,p_store_id uuid,p_operation_id uuid,p_order_id uuid,p_executor_employee_id uuid,p_created_at timestamptz\n",
+          "body_md5": "989dcc4e1fc60362fd4a918758cb9680",
+          "path": "supabase/candidate/permission-print.sql",
+          "line": 28
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "permission_current_employee",
+      "identity_arguments": "p_lock boolean",
+      "argument_count": 1,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "23b3986475cdc5899e063add0707c6e8",
+      "source_matches": [
+        {
+          "name": "private.permission_current_employee",
+          "arguments": "p_lock boolean default true",
+          "body_md5": "23b3986475cdc5899e063add0707c6e8",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 159
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "permission_financial_allowed",
+      "identity_arguments": "e employees, p_permission text",
+      "argument_count": 2,
+      "language": "sql",
+      "security_definer": false,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "2e03e0b602cb4f6ff352e84530ad936c",
+      "source_matches": [
+        {
+          "name": "private.permission_financial_allowed",
+          "arguments": "e public.employees,p_permission text",
+          "body_md5": "2e03e0b602cb4f6ff352e84530ad936c",
+          "path": "supabase/candidate/permission-financial.sql",
+          "line": 20
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "permission_financial_checkpoint",
+      "identity_arguments": "p_references uuid[]",
+      "argument_count": 1,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "c0c501f4b7e3f6c4a7a72695bd7cf312",
+      "source_matches": [
+        {
+          "name": "private.permission_financial_checkpoint",
+          "arguments": "p_references uuid[] default array[]::uuid[]",
+          "body_md5": "c0c501f4b7e3f6c4a7a72695bd7cf312",
+          "path": "supabase/candidate/permission-financial.sql",
+          "line": 5
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "permission_identity_lock",
+      "identity_arguments": "sid uuid, eid uuid, all_sessions boolean",
+      "argument_count": 3,
+      "language": "plpgsql",
+      "security_definer": false,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "e9b2a5d5c19c749e127a3e552976d232",
+      "source_matches": [
+        {
+          "name": "private.permission_identity_lock",
+          "arguments": "sid uuid,eid uuid,all_sessions boolean",
+          "body_md5": "e9b2a5d5c19c749e127a3e552976d232",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 146
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "permission_read_guard",
+      "identity_arguments": "required text[]",
+      "argument_count": 1,
+      "language": "plpgsql",
+      "security_definer": false,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "dd49a8a256de2c08209d6f24ebb06bb1",
+      "source_matches": [
+        {
+          "name": "private.permission_read_guard",
+          "arguments": "required text[]",
+          "body_md5": "dd49a8a256de2c08209d6f24ebb06bb1",
+          "path": "supabase/candidate/permission-read.sql",
+          "line": 5
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "prepare_write",
+      "identity_arguments": "p jsonb",
+      "argument_count": 1,
+      "language": "plpgsql",
+      "security_definer": false,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "59834a7963b75bad28fc5df8c087f283",
+      "source_matches": [
+        {
+          "name": "private.prepare_write",
+          "arguments": "p jsonb",
+          "body_md5": "59834a7963b75bad28fc5df8c087f283",
+          "path": "supabase/migrations/015_write_business_helpers.sql",
+          "line": 100
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "write_operation_request",
+      "identity_arguments": "p_mode text, p_operation_id uuid, p_payload jsonb, p_print_grant_id uuid",
+      "argument_count": 4,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "f0991d1cbd28773272187899b1c4d2b3",
+      "source_matches": [
+        {
+          "name": "private.write_operation_request",
+          "arguments": "p_mode text,p_operation_id uuid,p_payload jsonb default null,p_print_grant_id uuid default null",
+          "body_md5": "f0991d1cbd28773272187899b1c4d2b3",
+          "path": "supabase/candidate/permission-financial.sql",
+          "line": 61
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "cancel_write_operation",
+      "identity_arguments": "p_operation_id uuid",
+      "argument_count": 1,
+      "language": "sql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog",
+        "TimeZone=UTC"
+      ],
+      "body_md5": "09b5fb1fbfad366ee293869284c7f51c",
+      "source_matches": [
+        {
+          "name": "public.cancel_write_operation",
+          "arguments": "p_operation_id uuid",
+          "body_md5": "09b5fb1fbfad366ee293869284c7f51c",
+          "path": "supabase/candidate/permission-financial.sql",
+          "line": 152
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "execute_write_operation",
+      "identity_arguments": "p_operation_id uuid, p_payload jsonb",
+      "argument_count": 2,
+      "language": "sql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog",
+        "TimeZone=UTC"
+      ],
+      "body_md5": "0ac1f536c36dff401d34d16b5af1621f",
+      "source_matches": [
+        {
+          "name": "public.execute_write_operation",
+          "arguments": "p_operation_id uuid,p_payload jsonb",
+          "body_md5": "0ac1f536c36dff401d34d16b5af1621f",
+          "path": "supabase/candidate/permission-financial.sql",
+          "line": 146
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "execute_write_operation",
+      "identity_arguments": "p_operation_id uuid, p_payload jsonb, p_print_grant_id uuid",
+      "argument_count": 3,
+      "language": "sql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog",
+        "TimeZone=UTC"
+      ],
+      "body_md5": "248e55c24034537542673f32c127e17b",
+      "source_matches": [
+        {
+          "name": "public.execute_write_operation",
+          "arguments": "p_operation_id uuid,p_payload jsonb,p_print_grant_id uuid",
+          "body_md5": "248e55c24034537542673f32c127e17b",
+          "path": "supabase/candidate/permission-financial.sql",
+          "line": 148
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "get_write_capabilities",
+      "identity_arguments": "",
+      "argument_count": 0,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog",
+        "TimeZone=UTC"
+      ],
+      "body_md5": "f3cf56001888f09c420af1e2a37fd100",
+      "source_matches": [
+        {
+          "name": "public.get_write_capabilities",
+          "arguments": "",
+          "body_md5": "f3cf56001888f09c420af1e2a37fd100",
+          "path": "supabase/candidate/permission-financial.sql",
+          "line": 25
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "get_write_operation",
+      "identity_arguments": "p_operation_id uuid",
+      "argument_count": 1,
+      "language": "sql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog",
+        "TimeZone=UTC"
+      ],
+      "body_md5": "671a2505fa4e2f4c84868778038756ae",
+      "source_matches": [
+        {
+          "name": "public.get_write_operation",
+          "arguments": "p_operation_id uuid",
+          "body_md5": "671a2505fa4e2f4c84868778038756ae",
+          "path": "supabase/candidate/permission-financial.sql",
+          "line": 150
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "list_write_operations",
+      "identity_arguments": "p_order_id uuid, p_kinds text[], p_statuses text[], p_registered_from timestamp with time zone, p_registered_to timestamp with time zone, p_cursor text, p_limit integer",
+      "argument_count": 7,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog",
+        "TimeZone=UTC"
+      ],
+      "body_md5": "ec0bb137eac24aed89fbf756085e8602",
+      "source_matches": [
+        {
+          "name": "public.list_write_operations",
+          "arguments": "p_order_id uuid default null,p_kinds text[] default null,p_statuses text[] default null,\n p_registered_from timestamptz default null,p_registered_to timestamptz default null,p_cursor text default null,p_limit integer default 50",
+          "body_md5": "ec0bb137eac24aed89fbf756085e8602",
+          "path": "supabase/candidate/permission-financial.sql",
+          "line": 155
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "permission_check_required_pin_session",
+      "identity_arguments": "",
+      "argument_count": 0,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "08a759f5075220fcbf5eb030cbeb9705",
+      "source_matches": [
+        {
+          "name": "public.permission_check_required_pin_session",
+          "arguments": "",
+          "body_md5": "08a759f5075220fcbf5eb030cbeb9705",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 311
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "permission_complete_required_pin_change",
+      "identity_arguments": "p_request jsonb",
+      "argument_count": 1,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "aeec2e1d00af66d79d0d97037c6d80ca",
+      "source_matches": [
+        {
+          "name": "public.permission_complete_required_pin_change",
+          "arguments": "p_request jsonb",
+          "body_md5": "aeec2e1d00af66d79d0d97037c6d80ca",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 330
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "permission_get_authority",
+      "identity_arguments": "",
+      "argument_count": 0,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "2889b8b2ae460655e73a87d3b7380623",
+      "source_matches": [
+        {
+          "name": "public.permission_get_authority",
+          "arguments": "",
+          "body_md5": "2889b8b2ae460655e73a87d3b7380623",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 207
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "permission_get_floor_operational",
+      "identity_arguments": "",
+      "argument_count": 0,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog",
+        "TimeZone=UTC"
+      ],
+      "body_md5": "85c6c62e6acb4e040a9c12d4578159cc",
+      "source_matches": [
+        {
+          "name": "public.permission_get_floor_operational",
+          "arguments": "",
+          "body_md5": "85c6c62e6acb4e040a9c12d4578159cc",
+          "path": "supabase/candidate/permission-read.sql",
+          "line": 180
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "permission_get_open_order_detail",
+      "identity_arguments": "p_order_id uuid",
+      "argument_count": 1,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog",
+        "TimeZone=UTC"
+      ],
+      "body_md5": "befabea2cc5c4cc21239d917ea9bb389",
+      "source_matches": [
+        {
+          "name": "public.permission_get_open_order_detail",
+          "arguments": "p_order_id uuid",
+          "body_md5": "befabea2cc5c4cc21239d917ea9bb389",
+          "path": "supabase/candidate/permission-read.sql",
+          "line": 246
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "permission_get_revision",
+      "identity_arguments": "",
+      "argument_count": 0,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "c76681fc2ca49270460f25aa8102624f",
+      "source_matches": [
+        {
+          "name": "public.permission_get_revision",
+          "arguments": "",
+          "body_md5": "c76681fc2ca49270460f25aa8102624f",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 213
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "permission_revoke_session",
+      "identity_arguments": "",
+      "argument_count": 0,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "3238682a36406d195443cacfbe64bf30",
+      "source_matches": [
+        {
+          "name": "public.permission_revoke_session",
+          "arguments": "",
+          "body_md5": "3238682a36406d195443cacfbe64bf30",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 250
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "permission_start_session",
+      "identity_arguments": "p_employee_id uuid, p_pin text",
+      "argument_count": 2,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "body_md5": "5bd1bdfb239cbb3d3f35bd28af2075b5",
+      "source_matches": [
+        {
+          "name": "public.permission_start_session",
+          "arguments": "p_employee_id uuid,p_pin text",
+          "body_md5": "5bd1bdfb239cbb3d3f35bd28af2075b5",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 226
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "register_write_operation",
+      "identity_arguments": "p_operation_id uuid, p_payload jsonb",
+      "argument_count": 2,
+      "language": "plpgsql",
+      "security_definer": true,
+      "configuration": [
+        "search_path=pg_catalog",
+        "TimeZone=UTC"
+      ],
+      "body_md5": "5cb4492c3f38a9e1b1bba1de0555cdf6",
+      "source_matches": [
+        {
+          "name": "public.register_write_operation",
+          "arguments": "p_operation_id uuid,p_payload jsonb",
+          "body_md5": "5cb4492c3f38a9e1b1bba1de0555cdf6",
+          "path": "supabase/candidate/permission-financial.sql",
+          "line": 33
+        }
+      ],
+      "matched": true
+    }
+  ],
+  "matched_count": 28,
+  "queried_count": 28,
+  "publication": [
+    {
+      "pubname": "supabase_realtime",
+      "schemaname": "public",
+      "tablename": "permission_catalog_signals"
+    },
+    {
+      "pubname": "supabase_realtime",
+      "schemaname": "public",
+      "tablename": "store_change_signals"
+    }
+  ],
+  "signal_triggers": [
+    {
+      "schema_name": "public",
+      "table_name": "categories",
+      "trigger_name": "permission_signal_categories",
+      "enabled_mode": "O",
+      "definition": "CREATE TRIGGER permission_signal_categories AFTER INSERT OR DELETE OR UPDATE ON categories FOR EACH ROW EXECUTE FUNCTION private.emit_store_change_signal('menu')"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "floor_areas",
+      "trigger_name": "permission_signal_floor_areas",
+      "enabled_mode": "O",
+      "definition": "CREATE TRIGGER permission_signal_floor_areas AFTER INSERT OR DELETE OR UPDATE ON floor_areas FOR EACH ROW EXECUTE FUNCTION private.emit_store_change_signal('floor')"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "floor_decor_items",
+      "trigger_name": "permission_signal_floor_decor",
+      "enabled_mode": "O",
+      "definition": "CREATE TRIGGER permission_signal_floor_decor AFTER INSERT OR DELETE OR UPDATE ON floor_decor_items FOR EACH ROW EXECUTE FUNCTION private.emit_store_change_signal('floor')"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "menu_items",
+      "trigger_name": "permission_signal_menu_items",
+      "enabled_mode": "O",
+      "definition": "CREATE TRIGGER permission_signal_menu_items AFTER INSERT OR DELETE OR UPDATE ON menu_items FOR EACH ROW EXECUTE FUNCTION private.emit_store_change_signal('menu')"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "option_groups",
+      "trigger_name": "permission_signal_option_groups",
+      "enabled_mode": "O",
+      "definition": "CREATE TRIGGER permission_signal_option_groups AFTER INSERT OR DELETE OR UPDATE ON option_groups FOR EACH ROW EXECUTE FUNCTION private.emit_store_change_signal('menu')"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "option_values",
+      "trigger_name": "permission_signal_option_values",
+      "enabled_mode": "O",
+      "definition": "CREATE TRIGGER permission_signal_option_values AFTER INSERT OR DELETE OR UPDATE ON option_values FOR EACH ROW EXECUTE FUNCTION private.emit_store_change_signal('menu')"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "orders",
+      "trigger_name": "permission_signal_orders",
+      "enabled_mode": "O",
+      "definition": "CREATE TRIGGER permission_signal_orders AFTER INSERT OR DELETE OR UPDATE ON orders FOR EACH ROW EXECUTE FUNCTION private.emit_store_change_signal('orders')"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "payments",
+      "trigger_name": "permission_signal_payments",
+      "enabled_mode": "O",
+      "definition": "CREATE TRIGGER permission_signal_payments AFTER INSERT OR DELETE OR UPDATE ON payments FOR EACH ROW EXECUTE FUNCTION private.emit_store_change_signal('orders')"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "permission_catalog_state",
+      "trigger_name": "catalog_no_truncate",
+      "enabled_mode": "O",
+      "definition": "CREATE TRIGGER catalog_no_truncate BEFORE TRUNCATE ON permission_catalog_state FOR EACH STATEMENT EXECUTE FUNCTION private.permission_catalog_no_truncate()"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "permission_catalog_state",
+      "trigger_name": "catalog_state_invariant",
+      "enabled_mode": "O",
+      "definition": "CREATE CONSTRAINT TRIGGER catalog_state_invariant AFTER INSERT OR DELETE OR UPDATE ON permission_catalog_state DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION private.permission_catalog_validate()"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "permission_catalog_state",
+      "trigger_name": "permission_catalog_signal",
+      "enabled_mode": "O",
+      "definition": "CREATE TRIGGER permission_catalog_signal AFTER UPDATE OF revision ON permission_catalog_state FOR EACH ROW EXECUTE FUNCTION private.emit_permission_catalog_signal()"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "store_settings",
+      "trigger_name": "permission_signal_store_settings",
+      "enabled_mode": "O",
+      "definition": "CREATE TRIGGER permission_signal_store_settings AFTER INSERT OR DELETE OR UPDATE ON store_settings FOR EACH ROW EXECUTE FUNCTION private.emit_store_change_signal('settings')"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "tables",
+      "trigger_name": "permission_signal_tables",
+      "enabled_mode": "O",
+      "definition": "CREATE TRIGGER permission_signal_tables AFTER INSERT OR DELETE OR UPDATE ON tables FOR EACH ROW EXECUTE FUNCTION private.emit_store_change_signal('orders')"
+    }
+  ],
+  "limits": [
+    "Selected function bodies only; not all dependencies, grants, policies or configuration.",
+    "No business RPC invocation, user data, realtime delivery or runtime acceptance."
+  ]
+}

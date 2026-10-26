@@ -2,6 +2,7 @@
 
 ## Đang theo dõi
 
+- [N2 — Sơ đồ các luồng quan trọng — 26/10/2026](docs-critical-flows-2026-10-26.md): tám hình theo code và metadata DB staging, không sửa code/schema hoặc nghiệm thu runtime.
 - [N1 — Thuật ngữ, ERD và từ điển dữ liệu — 26/10/2026](docs-data-model-2026-10-26.md): chuẩn hóa mô hình source và ràng buộc; đã đối chiếu catalog staging qua MCP chỉ đọc, có marker vận hành ngoài mô hình; chưa refactor code hoặc đóng gate backend.
 
 - [Tổ chức năm nhóm docs — 26/10/2026](docs-reorganization-2026-10-26.md): CI/CD, UI, enforcement, lịch sử và HTML kiến trúc; giữ evidence, không refactor; được giao push sau kiểm/review.

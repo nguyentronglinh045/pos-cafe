@@ -1,8 +1,10 @@
 # Kiến trúc
 
-Đối chiếu source `main@711a22e` ngày 26/10/2026. Các mô tả dưới đây là kiến trúc trong mã tích hợp; [testing](testing.md) và [giới hạn](limitations.md) xác định phạm vi đã kiểm, chưa xác nhận activation backend đích.
+Đối chiếu source `main@711a22e` ngày 26/10/2026. Các mô tả dưới đây là kiến trúc trong mã tích hợp; [testing](testing.md) và [giới hạn](limitations.md) xác định phạm vi đã kiểm, không thay nghiệm thu backend đích. [Đối chiếu staging N1](implementation-log/staging-schema-20261026/README.md) và [fingerprint function N2](implementation-log/critical-flows-20261026/README.md) ghi riêng phạm vi metadata đã kiểm.
 
 [Bản giải thích trực quan](architecture-explainer.html) dẫn theo tầng, ranh giới tin cậy và luồng đọc/thanh toán trên cùng source; mô tả dưới đây giữ chi tiết và giới hạn.
+
+[Sơ đồ luồng quan trọng](critical-flows.md) mở rộng thanh toán/tách đơn, mất phản hồi–khôi phục, phiên/PIN/quyền và signal–đọc lại dữ liệu, có nhánh lỗi và ranh giới transaction theo source hiện hành. Đây là sơ đồ Markdown độc lập; trạng thái preview HTML cũ không thay đổi.
 
 ## Hexagonal Architecture / Ports & Adapters
 
