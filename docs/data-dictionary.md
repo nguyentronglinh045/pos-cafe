@@ -1,8 +1,8 @@
 # Từ điển dữ liệu
 
-Đối chiếu ngày **26/10/2026**, source `main@711a22e71983e3d6aa17799649af05ce4c762555`. [Mô hình và ERD](data-model.md) là điểm vào; [thuật ngữ](glossary.md) giải thích cách gọi nghiệp vụ. Đây là từ điển **mô hình đích được mô tả trong source**, gồm nền, bridge và candidate sau bước activation theo controller; **không phải dump/catalog của DB đang chạy**. Backend activation/acceptance vẫn HOLD.
+Đối chiếu ngày **26/10/2026**, source `main@711a22e71983e3d6aa17799649af05ce4c762555`. [Mô hình và ERD](data-model.md) là điểm vào; [thuật ngữ](glossary.md) giải thích cách gọi nghiệp vụ. Đây là từ điển **mô hình đích được mô tả trong source**, gồm nền, bridge và candidate sau bước activation theo controller; **không phải bản dump đầy đủ của DB đang chạy**. Đã có [đối chiếu metadata staging ngày26/10/2026](implementation-log/staging-schema-20261026/README.md); giới hạn phép kiểm và bảng marker ngoài mô hình được ghi riêng bên dưới. Nghiệm thu backend vẫn HOLD.
 
-Phạm vi kiểm kê: **35 bảng do dự án quản lý, 332 cột**, sau khi loại ba bảng legacy mà controller dọn. Có tính bảng cổng tương thích được chuẩn bị trước activation. `auth.users`, `storage.buckets`, `storage.objects` do nền tảng quản lý chỉ là điểm tích hợp, không nằm trong số này. Không chạy SQL để tạo hoặc introspect schema trong lượt tài liệu.
+Phạm vi kiểm kê: **35 bảng/332 cột của mô hình source N1**, sau khi loại ba bảng legacy mà controller dọn. Có tính bảng cổng tương thích được chuẩn bị trước activation. `auth.users`, `storage.buckets`, `storage.objects` do nền tảng quản lý chỉ là điểm tích hợp, không nằm trong số này. Lượt bổ sung đã dùng MCP chỉ đọc để introspect staging; không tạo hoặc sửa schema/dữ liệu. Catalog staging có tổng 36 bảng/335 cột trong public/private, gồm 35 bảng của mô hình và một marker vận hành.
 
 Nguồn chuyển trạng thái: [thứ tự fragments](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/scripts/permission-activation-bundle.mjs#L4), [đổi role và dọn bridge](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/scripts/permission-activation-steps.mjs#L36). Migrations 001–016 xác định nền trước activation; 017 thêm catalog/bridge. Vì controller áp 017 trong bundle, danh sách file 001–017 không phải hướng dẫn áp tất cả rồi chạy lại bundle. Recipe triển khai giữ ở hồ sơ backend; không thực hiện từ trang này.
 
@@ -1007,3 +1007,17 @@ Nguồn tạo bảng: **Candidate**, [permission-compatibility-prepare.sql:4](ht
 - Không mô tả toàn bộ function, view, index hiệu năng, policy và trigger ở mức catalog. Các constraint/trigger có ảnh hưởng trực tiếp tới cách hiểu mô hình được nêu; hợp đồng thực thi và bằng chứng tiếp tục ở spec/testing.
 - Ba bảng `private.legacy_permission_roles`, `private.legacy_permission_catalog`, `private.legacy_permission_defaults` và enum employee_role chỉ thuộc bridge trước activation. Cột `orders.paid_amount`, `order_items.payment_id` cùng view history_entries đã bị thay bởi mô hình tách đơn; không đưa vào mô hình đích.
 - Không thêm entity tài khoản owner email/chuyển quyền sở hữu chỉ từ proposal; đó là phần kế hoạch riêng. Các khoảng thiếu nghiệp vụ/kiểm chứng không được đóng bằng từ điển dữ liệu.
+
+## Đối chiếu staging và bảng vận hành ngoài mô hình N1
+
+Ngày26/10/2026, MCP được khóa vào staging `ineckiashpwloncxnbqx`, `read_only=true`. Catalog PostgreSQL17.11 xác nhận 35 bảng/332 cột của mô hình với tên/kiểu/NULL và PK khớp; 69 FK khớp cột hai phía/ON DELETE, 24 UNIQUE khớp bộ cột. Tám ERD rút gọn vẽ 36 trong 69 FK đó. [Biên bản và metadata gốc](implementation-log/staging-schema-20261026/README.md) ghi phạm vi kiểm; không suy đã so sánh đầy đủ mọi CHECK/default/function body hoặc chứng minh quyền truy cập runtime.
+
+`private.permission_staging_bootstrap_marker` là bảng thứ 36, riêng cho bootstrap staging, được tạo bởi [bootstrap source:72](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/scripts/permission-staging-bootstrap-sql.mjs#L72). Bảng không có FK và không thêm thực thể nghiệp vụ vào tám ERD.
+
+| Cột | Kiểu | NULL | Ràng buộc/default trong catalog |
+| --- | --- | --- | --- |
+| singleton | boolean | Không | PK; CHECK(singleton); không có default |
+| binding | jsonb | Không | Không có default |
+| state | text | Không | CHECK(state = 'COMMITTED_NOT_READY'); không có default |
+
+CHECK trên state là định nghĩa schema, không là kết quả đọc giá trị marker. Không đọc binding hoặc dòng dữ liệu nào của bảng này. Không lấy sự hiện diện marker hay schema làm PASS triển khai/kiểm thử.

@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"migrations\":[{\"version\":\"20261022092646\",\"name\":\"permission_staging_bootstrap_b2e3122_20261022_1700\"}]}"
+    }
+  ]
+}

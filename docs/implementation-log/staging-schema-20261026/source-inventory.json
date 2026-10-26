@@ -1,0 +1,3299 @@
+{
+  "code": "711a22e71983e3d6aa17799649af05ce4c762555",
+  "interpretation": "Source model after ordered candidate activation incl prepared contract gate; NOT live schema",
+  "tables": {
+    "public.stores": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 18,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key references auth.users (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 19,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_no": {
+          "definition": "integer not null unique",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 20,
+          "nullable": false,
+          "type": "integer"
+        },
+        "name": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 21,
+          "nullable": true,
+          "type": "text"
+        },
+        "email": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 22,
+          "nullable": true,
+          "type": "text"
+        },
+        "seed_status": {
+          "definition": "public.seed_status not null default 'pending'",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 23,
+          "nullable": false,
+          "type": "public.seed_status"
+        },
+        "is_active": {
+          "definition": "boolean not null default true",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 24,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 25,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 26,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [],
+      "indexes": [],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.employees": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 29,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 30,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 31,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "name": {
+          "definition": "text not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 32,
+          "nullable": false,
+          "type": "text"
+        },
+        "role": {
+          "definition": "text not null",
+          "path": "scripts/permission-activation-steps.mjs",
+          "line": 36,
+          "before": "public.employee_role not null",
+          "note": "Candidate: role is converted before identity fragment; no deployment claim.",
+          "nullable": false,
+          "type": "text"
+        },
+        "passcode_hash": {
+          "definition": "text not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 34,
+          "nullable": false,
+          "type": "text"
+        },
+        "is_active": {
+          "definition": "boolean not null default true",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 35,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "seed_key": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 36,
+          "nullable": true,
+          "type": "text"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 37,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 38,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "permission_overrides": {
+          "definition": "jsonb",
+          "path": "supabase/migrations/011_void_paid_order.sql",
+          "line": 37,
+          "nullable": true,
+          "type": "jsonb"
+        },
+        "permission_revision": {
+          "definition": "bigint not null default 0 check(permission_revision>=0)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 33,
+          "nullable": false,
+          "type": "bigint"
+        },
+        "pin_change_required": {
+          "definition": "boolean not null default false",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 13,
+          "nullable": false,
+          "type": "boolean"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 39
+        },
+        {
+          "sql": "constraint employees_permission_role_fk foreign key(role) references public.permission_roles(code)",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 11
+        },
+        {
+          "sql": "constraint employees_owner_active check(role<>'owner' or is_active)",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 12
+        },
+        {
+          "sql": "constraint employees_pin_change_owner check(not pin_change_required or role='owner')",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 14
+        }
+      ],
+      "indexes": [
+        {
+          "sql": "(store_id, seed_key) where seed_key is not null",
+          "path": "supabase/migrations/002_indexes_rls_triggers.sql",
+          "line": 54
+        }
+      ],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.store_settings": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 42,
+      "columns": {
+        "store_id": {
+          "definition": "uuid primary key references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 43,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "display_name": {
+          "definition": "text not null default 'POS Demo'",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 44,
+          "nullable": false,
+          "type": "text"
+        },
+        "address": {
+          "definition": "text not null default ''",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 45,
+          "nullable": false,
+          "type": "text"
+        },
+        "currency": {
+          "definition": "text not null default 'VND'",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 46,
+          "nullable": false,
+          "type": "text"
+        },
+        "timezone": {
+          "definition": "text not null default 'Asia/Saigon'",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 47,
+          "nullable": false,
+          "type": "text"
+        },
+        "bill_footer": {
+          "definition": "text not null default ''",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 48,
+          "nullable": false,
+          "type": "text"
+        },
+        "qr_info": {
+          "definition": "jsonb",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 49,
+          "nullable": true,
+          "type": "jsonb"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 50,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 51,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "constraint store_settings_currency_vnd check (currency = 'VND')",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 52
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "store_id"
+      ]
+    },
+    "public.categories": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 55,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 56,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 57,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "name": {
+          "definition": "text not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 58,
+          "nullable": false,
+          "type": "text"
+        },
+        "sort_order": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 59,
+          "nullable": false,
+          "type": "integer"
+        },
+        "seed_key": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 60,
+          "nullable": true,
+          "type": "text"
+        },
+        "deleted_at": {
+          "definition": "timestamptz",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 61,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "deleted_by_employee_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 62,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 63,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 64,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 65
+        },
+        {
+          "sql": "foreign key (store_id, deleted_by_employee_id) references public.employees (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 66
+        }
+      ],
+      "indexes": [
+        {
+          "sql": "(store_id, seed_key) where seed_key is not null",
+          "path": "supabase/migrations/002_indexes_rls_triggers.sql",
+          "line": 56
+        }
+      ],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.menu_items": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 69,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 70,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 71,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "category_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 72,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "name": {
+          "definition": "text not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 73,
+          "nullable": false,
+          "type": "text"
+        },
+        "price": {
+          "definition": "integer not null check (price >= 0)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 74,
+          "nullable": false,
+          "type": "integer"
+        },
+        "image_asset_key": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 75,
+          "nullable": true,
+          "type": "text"
+        },
+        "sort_order": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 76,
+          "nullable": false,
+          "type": "integer"
+        },
+        "is_available": {
+          "definition": "boolean not null default true",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 77,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "seed_key": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 78,
+          "nullable": true,
+          "type": "text"
+        },
+        "deleted_at": {
+          "definition": "timestamptz",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 79,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "deleted_by_employee_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 80,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 81,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 82,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 83
+        },
+        {
+          "sql": "foreign key (store_id, category_id) references public.categories (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 84
+        },
+        {
+          "sql": "foreign key (store_id, deleted_by_employee_id) references public.employees (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 85
+        }
+      ],
+      "indexes": [
+        {
+          "sql": "(store_id, seed_key) where seed_key is not null",
+          "path": "supabase/migrations/002_indexes_rls_triggers.sql",
+          "line": 58
+        }
+      ],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.option_groups": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 88,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 89,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 90,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "name": {
+          "definition": "text not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 92,
+          "nullable": false,
+          "type": "text"
+        },
+        "select_type": {
+          "definition": "public.option_select_type not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 93,
+          "nullable": false,
+          "type": "public.option_select_type"
+        },
+        "is_required": {
+          "definition": "boolean not null default false",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 94,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "sort_order": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 97,
+          "nullable": false,
+          "type": "integer"
+        },
+        "seed_key": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 98,
+          "nullable": true,
+          "type": "text"
+        },
+        "deleted_at": {
+          "definition": "timestamptz",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 99,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "deleted_by_employee_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 100,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 101,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 102,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 103
+        },
+        {
+          "sql": "foreign key (store_id, deleted_by_employee_id) references public.employees (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 105
+        }
+      ],
+      "indexes": [
+        {
+          "sql": "(store_id, seed_key) where seed_key is not null",
+          "path": "supabase/migrations/002_indexes_rls_triggers.sql",
+          "line": 60
+        }
+      ],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.option_values": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 109,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 110,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 111,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "option_group_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 112,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "name": {
+          "definition": "text not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 113,
+          "nullable": false,
+          "type": "text"
+        },
+        "price_delta": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 114,
+          "nullable": false,
+          "type": "integer"
+        },
+        "sort_order": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 115,
+          "nullable": false,
+          "type": "integer"
+        },
+        "seed_key": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 116,
+          "nullable": true,
+          "type": "text"
+        },
+        "deleted_at": {
+          "definition": "timestamptz",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 117,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "deleted_by_employee_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 118,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 119,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 120,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 121
+        },
+        {
+          "sql": "foreign key (store_id, option_group_id) references public.option_groups (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 122
+        },
+        {
+          "sql": "foreign key (store_id, deleted_by_employee_id) references public.employees (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 123
+        },
+        {
+          "sql": "constraint option_values_nonnegative_delta check(price_delta>=0)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 320
+        }
+      ],
+      "indexes": [
+        {
+          "sql": "(store_id, seed_key) where seed_key is not null",
+          "path": "supabase/migrations/002_indexes_rls_triggers.sql",
+          "line": 62
+        }
+      ],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.floor_areas": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 126,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 127,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 128,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "name": {
+          "definition": "text not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 129,
+          "nullable": false,
+          "type": "text"
+        },
+        "sort_order": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 130,
+          "nullable": false,
+          "type": "integer"
+        },
+        "seed_key": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 131,
+          "nullable": true,
+          "type": "text"
+        },
+        "deleted_at": {
+          "definition": "timestamptz",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 132,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "deleted_by_employee_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 133,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 134,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 135,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 136
+        },
+        {
+          "sql": "foreign key (store_id, deleted_by_employee_id) references public.employees (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 137
+        }
+      ],
+      "indexes": [
+        {
+          "sql": "(store_id, seed_key) where seed_key is not null",
+          "path": "supabase/migrations/002_indexes_rls_triggers.sql",
+          "line": 64
+        }
+      ],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.tables": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 140,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 141,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 142,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "area_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 143,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "name": {
+          "definition": "text not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 144,
+          "nullable": false,
+          "type": "text"
+        },
+        "background_asset_key": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 145,
+          "nullable": true,
+          "type": "text"
+        },
+        "pos_x": {
+          "definition": "integer not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 146,
+          "nullable": false,
+          "type": "integer"
+        },
+        "pos_y": {
+          "definition": "integer not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 147,
+          "nullable": false,
+          "type": "integer"
+        },
+        "width": {
+          "definition": "integer not null check (width > 0)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 148,
+          "nullable": false,
+          "type": "integer"
+        },
+        "height": {
+          "definition": "integer not null check (height > 0)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 149,
+          "nullable": false,
+          "type": "integer"
+        },
+        "shape": {
+          "definition": "public.table_shape not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 150,
+          "nullable": false,
+          "type": "public.table_shape"
+        },
+        "rotation": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 151,
+          "nullable": false,
+          "type": "integer"
+        },
+        "seats": {
+          "definition": "integer not null default 2",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 152,
+          "nullable": false,
+          "type": "integer"
+        },
+        "sort_order": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 153,
+          "nullable": false,
+          "type": "integer"
+        },
+        "status": {
+          "definition": "public.table_status not null default 'empty'",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 154,
+          "nullable": false,
+          "type": "public.table_status"
+        },
+        "seed_key": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 155,
+          "nullable": true,
+          "type": "text"
+        },
+        "deleted_at": {
+          "definition": "timestamptz",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 156,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "deleted_by_employee_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 157,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 158,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 159,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 160
+        },
+        {
+          "sql": "foreign key (store_id, area_id) references public.floor_areas (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 161
+        },
+        {
+          "sql": "foreign key (store_id, deleted_by_employee_id) references public.employees (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 162
+        }
+      ],
+      "indexes": [
+        {
+          "sql": "(store_id, seed_key) where seed_key is not null",
+          "path": "supabase/migrations/002_indexes_rls_triggers.sql",
+          "line": 66
+        }
+      ],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.floor_decor_items": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 165,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 166,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 167,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "area_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 168,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "kind": {
+          "definition": "public.decor_kind not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 169,
+          "nullable": false,
+          "type": "public.decor_kind"
+        },
+        "label": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 170,
+          "nullable": true,
+          "type": "text"
+        },
+        "asset_key": {
+          "definition": "text not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 171,
+          "nullable": false,
+          "type": "text"
+        },
+        "pos_x": {
+          "definition": "integer not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 172,
+          "nullable": false,
+          "type": "integer"
+        },
+        "pos_y": {
+          "definition": "integer not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 173,
+          "nullable": false,
+          "type": "integer"
+        },
+        "width": {
+          "definition": "integer not null check (width > 0)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 174,
+          "nullable": false,
+          "type": "integer"
+        },
+        "height": {
+          "definition": "integer not null check (height > 0)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 175,
+          "nullable": false,
+          "type": "integer"
+        },
+        "rotation": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 176,
+          "nullable": false,
+          "type": "integer"
+        },
+        "z_index": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 177,
+          "nullable": false,
+          "type": "integer"
+        },
+        "is_locked": {
+          "definition": "boolean not null default false",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 178,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "seed_key": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 179,
+          "nullable": true,
+          "type": "text"
+        },
+        "deleted_at": {
+          "definition": "timestamptz",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 180,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "deleted_by_employee_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 181,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 182,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 183,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 184
+        },
+        {
+          "sql": "foreign key (store_id, area_id) references public.floor_areas (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 185
+        },
+        {
+          "sql": "foreign key (store_id, deleted_by_employee_id) references public.employees (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 186
+        }
+      ],
+      "indexes": [
+        {
+          "sql": "(store_id, seed_key) where seed_key is not null",
+          "path": "supabase/migrations/002_indexes_rls_triggers.sql",
+          "line": 68
+        }
+      ],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.orders": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 189,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 190,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 191,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "table_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 192,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "order_type": {
+          "definition": "public.order_type not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 193,
+          "nullable": false,
+          "type": "public.order_type"
+        },
+        "order_no": {
+          "definition": "integer not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 194,
+          "nullable": false,
+          "type": "integer"
+        },
+        "business_date": {
+          "definition": "date not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 195,
+          "nullable": false,
+          "type": "date"
+        },
+        "status": {
+          "definition": "public.order_status not null default 'open'",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 196,
+          "nullable": false,
+          "type": "public.order_status"
+        },
+        "subtotal": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 197,
+          "nullable": false,
+          "type": "integer"
+        },
+        "discount_type": {
+          "definition": "public.discount_type not null default 'none'",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 198,
+          "nullable": false,
+          "type": "public.discount_type"
+        },
+        "discount_value": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 199,
+          "nullable": false,
+          "type": "integer"
+        },
+        "total": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 200,
+          "nullable": false,
+          "type": "integer"
+        },
+        "employee_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 201,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "paid_at": {
+          "definition": "timestamptz",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 202,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "lock_version": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 203,
+          "nullable": false,
+          "type": "integer"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 204,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 205,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "voided_at": {
+          "definition": "timestamptz",
+          "path": "supabase/migrations/011_void_paid_order.sql",
+          "line": 19,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "voided_by_employee_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/011_void_paid_order.sql",
+          "line": 19,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "void_reason_code": {
+          "definition": "text",
+          "path": "supabase/migrations/011_void_paid_order.sql",
+          "line": 19,
+          "nullable": true,
+          "type": "text"
+        },
+        "void_reason_note": {
+          "definition": "text",
+          "path": "supabase/migrations/011_void_paid_order.sql",
+          "line": 19,
+          "nullable": true,
+          "type": "text"
+        },
+        "created_by_employee_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 322,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "last_modified_by_employee_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 322,
+          "nullable": true,
+          "type": "uuid"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 206
+        },
+        {
+          "sql": "unique (store_id, business_date, order_no)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 207
+        },
+        {
+          "sql": "foreign key (store_id, table_id) references public.tables (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 208
+        },
+        {
+          "sql": "foreign key (store_id, employee_id) references public.employees (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 209
+        },
+        {
+          "sql": "constraint order_money_nonnegative check (subtotal >= 0 and discount_value >= 0 and total >= 0)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 210
+        },
+        {
+          "sql": "constraint orders_voided_by_employee_fk foreign key (store_id, voided_by_employee_id) references public.employees (store_id, id)",
+          "path": "supabase/migrations/011_void_paid_order.sql",
+          "line": 25
+        },
+        {
+          "sql": "constraint orders_void_reason_code_check check (void_reason_code is null or void_reason_code in ('wrong_order', 'customer_request', 'out_of_stock', 'duplicate', 'other'))",
+          "path": "supabase/migrations/011_void_paid_order.sql",
+          "line": 30
+        },
+        {
+          "sql": "foreign key(store_id,created_by_employee_id) references public.employees(store_id,id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 322
+        },
+        {
+          "sql": "foreign key(store_id,last_modified_by_employee_id) references public.employees(store_id,id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 322
+        },
+        {
+          "sql": "constraint orders_valid_version check(lock_version>=0)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 322
+        }
+      ],
+      "indexes": [
+        {
+          "sql": "(store_id, table_id) where status = 'open' and table_id is not null",
+          "path": "supabase/migrations/002_indexes_rls_triggers.sql",
+          "line": 70
+        }
+      ],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.order_items": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 213,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 214,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 215,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "order_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 216,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "menu_item_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 217,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "item_name": {
+          "definition": "text not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 218,
+          "nullable": false,
+          "type": "text"
+        },
+        "quantity": {
+          "definition": "integer not null check (quantity >= 0)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 219,
+          "nullable": false,
+          "type": "integer"
+        },
+        "unit_price": {
+          "definition": "integer not null check (unit_price >= 0)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 220,
+          "nullable": false,
+          "type": "integer"
+        },
+        "note": {
+          "definition": "text",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 221,
+          "nullable": true,
+          "type": "text"
+        },
+        "status": {
+          "definition": "public.order_item_status not null default 'waiting'",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 222,
+          "nullable": false,
+          "type": "public.order_item_status"
+        },
+        "sort_order": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 223,
+          "nullable": false,
+          "type": "integer"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 224,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 225,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 226
+        },
+        {
+          "sql": "foreign key (store_id, order_id) references public.orders (store_id, id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 227
+        },
+        {
+          "sql": "foreign key (store_id, menu_item_id) references public.menu_items (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 228
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.order_item_options": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 231,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 232,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 233,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "order_item_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 234,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "option_value_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 235,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "option_name": {
+          "definition": "text not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 236,
+          "nullable": false,
+          "type": "text"
+        },
+        "price_delta": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 237,
+          "nullable": false,
+          "type": "integer"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 238,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 239,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "quantity": {
+          "definition": "integer not null default 1 check (quantity > 0)",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 36,
+          "nullable": false,
+          "type": "integer"
+        },
+        "snapshot_sort_order": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/015_write_business_helpers.sql",
+          "line": 4,
+          "nullable": false,
+          "type": "integer"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 240
+        },
+        {
+          "sql": "foreign key (store_id, order_item_id) references public.order_items (store_id, id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 241
+        },
+        {
+          "sql": "foreign key (store_id, option_value_id) references public.option_values (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 242
+        },
+        {
+          "sql": "constraint order_item_options_nonnegative_delta check(price_delta>=0)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 321
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.payments": {
+      "path": "supabase/migrations/001_schema_enums.sql",
+      "line": 245,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 246,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 247,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "order_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 248,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "employee_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 249,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "method": {
+          "definition": "public.payment_method not null",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 250,
+          "nullable": false,
+          "type": "public.payment_method"
+        },
+        "amount": {
+          "definition": "integer not null check (amount >= 0)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 251,
+          "nullable": false,
+          "type": "integer"
+        },
+        "received_amount": {
+          "definition": "integer not null check (received_amount >= 0)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 252,
+          "nullable": false,
+          "type": "integer"
+        },
+        "change_amount": {
+          "definition": "integer not null check (change_amount >= 0)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 253,
+          "nullable": false,
+          "type": "integer"
+        },
+        "paid_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 254,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 255,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 256,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "receipt_snapshot": {
+          "definition": "jsonb",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 327,
+          "nullable": true,
+          "type": "jsonb"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 257
+        },
+        {
+          "sql": "foreign key (store_id, order_id) references public.orders (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 258
+        },
+        {
+          "sql": "foreign key (store_id, employee_id) references public.employees (store_id, id)",
+          "path": "supabase/migrations/001_schema_enums.sql",
+          "line": 259
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.menu_item_option_groups": {
+      "path": "supabase/migrations/008_modifier_rework.sql",
+      "line": 9,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 10,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores (id) on delete cascade",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 11,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "menu_item_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 12,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "option_group_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 13,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "sort_order": {
+          "definition": "integer not null default 0",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 14,
+          "nullable": false,
+          "type": "integer"
+        },
+        "seed_key": {
+          "definition": "text",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 15,
+          "nullable": true,
+          "type": "text"
+        },
+        "deleted_at": {
+          "definition": "timestamptz",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 16,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "deleted_by_employee_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 17,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 18,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 19,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique (store_id, id)",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 20
+        },
+        {
+          "sql": "foreign key (store_id, menu_item_id) references public.menu_items (store_id, id)",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 21
+        },
+        {
+          "sql": "foreign key (store_id, option_group_id) references public.option_groups (store_id, id)",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 22
+        },
+        {
+          "sql": "foreign key (store_id, deleted_by_employee_id) references public.employees (store_id, id)",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 23
+        }
+      ],
+      "indexes": [
+        {
+          "sql": "(store_id, seed_key) where seed_key is not null",
+          "path": "supabase/migrations/008_modifier_rework.sql",
+          "line": 44
+        }
+      ],
+      "pk": [
+        "id"
+      ]
+    },
+    "private.employee_sessions": {
+      "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+      "line": 162,
+      "columns": {
+        "token_hash": {
+          "definition": "bytea primary key",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 163,
+          "nullable": false,
+          "type": "bytea"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores(id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 164,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "employee_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 165,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "issued_at": {
+          "definition": "timestamptz not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 166,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "expires_at": {
+          "definition": "timestamptz not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 167,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "revoked_at": {
+          "definition": "timestamptz",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 168,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "purpose": {
+          "definition": "text not null default 'normal' check(purpose in ('normal','required_pin_change'))",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 16,
+          "nullable": false,
+          "type": "text"
+        },
+        "employee_revision": {
+          "definition": "bigint not null default 0 check(employee_revision between 0 and 9007199254740991)",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 18,
+          "nullable": false,
+          "type": "bigint"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "foreign key(store_id,employee_id) references public.employees(store_id,id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 169
+        },
+        {
+          "sql": "constraint employee_sessions_purpose_ttl check( (purpose='normal' and expires_at=issued_at+interval '12 hours') or (purpose='required_pin_change' and expires_at=issued_at+interval '5 minutes'))",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 20
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "token_hash"
+      ]
+    },
+    "public.write_operations": {
+      "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+      "line": 330,
+      "columns": {
+        "store_id": {
+          "definition": "uuid not null references public.stores(id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 331,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "operation_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 331,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "schema_version": {
+          "definition": "integer not null check(schema_version=1)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 332,
+          "nullable": false,
+          "type": "integer"
+        },
+        "kind": {
+          "definition": "text not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 332,
+          "nullable": false,
+          "type": "text"
+        },
+        "action": {
+          "definition": "text",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 333,
+          "nullable": true,
+          "type": "text"
+        },
+        "required_permission": {
+          "definition": "text not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 333,
+          "nullable": false,
+          "type": "text"
+        },
+        "payload": {
+          "definition": "jsonb not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 333,
+          "nullable": false,
+          "type": "jsonb"
+        },
+        "order_id": {
+          "definition": "uuid generated always as ((payload->>'orderId')::uuid) stored",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 334,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "registered_at": {
+          "definition": "timestamptz not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 335,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "expires_at": {
+          "definition": "timestamptz not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 335,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "initiated_by_employee_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 336,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "status": {
+          "definition": "public.write_operation_status not null default 'pending'",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 336,
+          "nullable": false,
+          "type": "public.write_operation_status"
+        },
+        "result": {
+          "definition": "jsonb",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 337,
+          "nullable": true,
+          "type": "jsonb"
+        },
+        "error": {
+          "definition": "jsonb",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 337,
+          "nullable": true,
+          "type": "jsonb"
+        },
+        "executed_by_employee_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 337,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "decided_at": {
+          "definition": "timestamptz",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 337,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "cancelled_by_employee_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 338,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "replay_count": {
+          "definition": "bigint not null default 0 check(replay_count>=0)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 338,
+          "nullable": false,
+          "type": "bigint"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "primary key(store_id,operation_id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 339
+        },
+        {
+          "sql": "foreign key(store_id,initiated_by_employee_id) references public.employees(store_id,id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 340
+        },
+        {
+          "sql": "foreign key(store_id,executed_by_employee_id) references public.employees(store_id,id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 341
+        },
+        {
+          "sql": "foreign key(store_id,cancelled_by_employee_id) references public.employees(store_id,id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 342
+        },
+        {
+          "sql": "check(expires_at=registered_at+interval '24 hours')",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 343
+        },
+        {
+          "sql": "check(private.valid_write_payload(operation_id,payload))",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 344
+        },
+        {
+          "sql": "check(kind=payload->>'kind' and action is not distinct from payload->>'action')",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 345
+        },
+        {
+          "sql": "check((status='pending' and result is null and error is null and decided_at is null and executed_by_employee_id is null and cancelled_by_employee_id is null) or (status='applied' and result is not null and error is null and decided_at is not null and executed_by_employee_id is not null and cancelled_by_employee_id is null) or (status='rejected' and result is null and error is not null and decided_at is not null and executed_by_employee_id is null and cancelled_by_employee_id is null) or (status='cancelled' and result is null and error is null and decided_at is not null and executed_by_employee_id is null and cancelled_by_employee_id is not null) or (status='expired' and result is null and error is null and decided_at is not null and executed_by_employee_id is null and cancelled_by_employee_id is null))",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 346
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "store_id",
+        "operation_id"
+      ]
+    },
+    "public.order_events": {
+      "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+      "line": 355,
+      "columns": {
+        "id": {
+          "definition": "uuid primary key",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 356,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores(id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 356,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "operation_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 356,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "action": {
+          "definition": "text not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 357,
+          "nullable": false,
+          "type": "text"
+        },
+        "source_order_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 357,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "result_order_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 357,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "payment_id": {
+          "definition": "uuid",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 357,
+          "nullable": true,
+          "type": "uuid"
+        },
+        "initiated_by": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 358,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "executed_by": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 358,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "occurred_at": {
+          "definition": "timestamptz not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 358,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "before_version": {
+          "definition": "integer",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 359,
+          "nullable": true,
+          "type": "integer"
+        },
+        "after_version": {
+          "definition": "integer not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 359,
+          "nullable": false,
+          "type": "integer"
+        },
+        "summary": {
+          "definition": "jsonb not null",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 359,
+          "nullable": false,
+          "type": "jsonb"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique(store_id,operation_id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 360
+        },
+        {
+          "sql": "foreign key(store_id,operation_id) references public.write_operations(store_id,operation_id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 361
+        },
+        {
+          "sql": "foreign key(store_id,source_order_id) references public.orders(store_id,id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 362
+        },
+        {
+          "sql": "foreign key(store_id,result_order_id) references public.orders(store_id,id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 363
+        },
+        {
+          "sql": "foreign key(store_id,payment_id) references public.payments(store_id,id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 364
+        },
+        {
+          "sql": "foreign key(store_id,initiated_by) references public.employees(store_id,id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 365
+        },
+        {
+          "sql": "foreign key(store_id,executed_by) references public.employees(store_id,id)",
+          "path": "supabase/migrations/014_write_identity_and_ledger.sql",
+          "line": 366
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "id"
+      ]
+    },
+    "public.permission_roles": {
+      "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+      "line": 4,
+      "columns": {
+        "code": {
+          "definition": "text primary key check(code in ('owner','manager','cashier','waiter','kitchen'))",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 5,
+          "nullable": false,
+          "type": "text"
+        },
+        "label_vi": {
+          "definition": "text not null check(length(label_vi)>0)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 6,
+          "nullable": false,
+          "type": "text"
+        },
+        "enabled": {
+          "definition": "boolean not null",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 7,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "selectable": {
+          "definition": "boolean not null",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 8,
+          "nullable": false,
+          "type": "boolean"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "check(enabled = (code <> 'kitchen'))",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 9
+        },
+        {
+          "sql": "check(selectable = (code in ('manager','cashier','waiter')))",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 10
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "code"
+      ]
+    },
+    "public.permission_catalog": {
+      "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+      "line": 12,
+      "columns": {
+        "code": {
+          "definition": "text primary key check(code in ('floor.view','order.create','order.update','order.voidOpen', 'payment.take','orderHistory.view','order.voidPaid','menu.manage','floor.manage','employee.manage', 'employee.permission.edit','report.view','settings.manage','data.clearDemo','receipt.reprint'))",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 13,
+          "nullable": false,
+          "type": "text"
+        },
+        "label_vi": {
+          "definition": "text not null check(length(label_vi)>0)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 16,
+          "nullable": false,
+          "type": "text"
+        },
+        "module": {
+          "definition": "text not null",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 17,
+          "nullable": false,
+          "type": "text"
+        },
+        "owner_only": {
+          "definition": "boolean not null default false check(owner_only = (code='data.clearDemo'))",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 18,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "baseline": {
+          "definition": "boolean not null default false check(baseline = (code='floor.view'))",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 19,
+          "nullable": false,
+          "type": "boolean"
+        }
+      },
+      "constraints": [],
+      "indexes": [],
+      "pk": [
+        "code"
+      ]
+    },
+    "public.role_permission_defaults": {
+      "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+      "line": 21,
+      "columns": {
+        "role_code": {
+          "definition": "text not null references public.permission_roles(code)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 22,
+          "nullable": false,
+          "type": "text"
+        },
+        "permission_code": {
+          "definition": "text not null references public.permission_catalog(code)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 23,
+          "nullable": false,
+          "type": "text"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "primary key(role_code,permission_code)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 24
+        },
+        {
+          "sql": "check(role_code <> 'kitchen')",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 25
+        },
+        {
+          "sql": "check(permission_code <> 'data.clearDemo' or role_code='owner')",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 26
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "role_code",
+        "permission_code"
+      ]
+    },
+    "public.permission_catalog_state": {
+      "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+      "line": 28,
+      "columns": {
+        "singleton": {
+          "definition": "boolean primary key default true check(singleton)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 29,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "revision": {
+          "definition": "bigint not null default 0 check(revision>=0)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 30,
+          "nullable": false,
+          "type": "bigint"
+        },
+        "changed_in_transaction": {
+          "definition": "xid8",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 31,
+          "nullable": true,
+          "type": "xid8"
+        }
+      },
+      "constraints": [],
+      "indexes": [],
+      "pk": [
+        "singleton"
+      ]
+    },
+    "private.permission_request_mac_keys": {
+      "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+      "line": 112,
+      "columns": {
+        "key_version": {
+          "definition": "integer primary key check(key_version>0)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 113,
+          "nullable": false,
+          "type": "integer"
+        },
+        "secret_bytes": {
+          "definition": "bytea not null check(octet_length(secret_bytes)>=32)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 114,
+          "nullable": false,
+          "type": "bytea"
+        }
+      },
+      "constraints": [],
+      "indexes": [],
+      "pk": [
+        "key_version"
+      ]
+    },
+    "private.employee_admin_requests": {
+      "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+      "line": 117,
+      "columns": {
+        "store_id": {
+          "definition": "uuid not null references public.stores(id)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 118,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "actor_type": {
+          "definition": "text not null",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 119,
+          "nullable": false,
+          "type": "text"
+        },
+        "actor_key": {
+          "definition": "text not null check(length(actor_key)>0)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 120,
+          "nullable": false,
+          "type": "text"
+        },
+        "request_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 121,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "kind": {
+          "definition": "text not null",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 122,
+          "nullable": false,
+          "type": "text"
+        },
+        "payload_mac": {
+          "definition": "bytea not null check(octet_length(payload_mac)=32)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 123,
+          "nullable": false,
+          "type": "bytea"
+        },
+        "mac_key_version": {
+          "definition": "integer not null references private.permission_request_mac_keys(key_version)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 124,
+          "nullable": false,
+          "type": "integer"
+        },
+        "terminal_outcome": {
+          "definition": "jsonb not null",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 125,
+          "nullable": false,
+          "type": "jsonb"
+        },
+        "audit_keys": {
+          "definition": "jsonb not null default '[]' check(jsonb_typeof(audit_keys)='array')",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 126,
+          "nullable": false,
+          "type": "jsonb"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "primary key(store_id,actor_type,actor_key,request_id)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 127
+        },
+        {
+          "sql": "check(actor_type in ('employee','operator'))",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 64
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "store_id",
+        "actor_type",
+        "actor_key",
+        "request_id"
+      ]
+    },
+    "private.bootstrap_requests": {
+      "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+      "line": 129,
+      "columns": {
+        "store_id": {
+          "definition": "uuid not null references public.stores(id)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 130,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "request_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 130,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "owner_id": {
+          "definition": "uuid not null",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 130,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "canonical_input": {
+          "definition": "jsonb not null check(jsonb_typeof(canonical_input)='object')",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 131,
+          "nullable": false,
+          "type": "jsonb"
+        },
+        "outcome": {
+          "definition": "jsonb not null",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 132,
+          "nullable": false,
+          "type": "jsonb"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "primary key(store_id,request_id)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 133
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "store_id",
+        "request_id"
+      ]
+    },
+    "private.permission_contract_gate": {
+      "path": "supabase/candidate/permission-compatibility-prepare.sql",
+      "line": 4,
+      "columns": {
+        "singleton": {
+          "definition": "boolean primary key default true check (singleton)",
+          "path": "supabase/candidate/permission-compatibility-prepare.sql",
+          "line": 5,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "strict": {
+          "definition": "boolean not null default false",
+          "path": "supabase/candidate/permission-compatibility-prepare.sql",
+          "line": 6,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "contract_version": {
+          "definition": "integer not null default 2 check (contract_version=2)",
+          "path": "supabase/candidate/permission-compatibility-prepare.sql",
+          "line": 7,
+          "nullable": false,
+          "type": "integer"
+        }
+      },
+      "constraints": [],
+      "indexes": [],
+      "pk": [
+        "singleton"
+      ]
+    },
+    "public.employee_admin_audit": {
+      "path": "supabase/candidate/permission-identity.sql",
+      "line": 47,
+      "columns": {
+        "store_id": {
+          "definition": "uuid not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 48,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "actor_type": {
+          "definition": "text not null check(actor_type in ('employee','operator'))",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 48,
+          "nullable": false,
+          "type": "text"
+        },
+        "actor_key": {
+          "definition": "text not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 49,
+          "nullable": false,
+          "type": "text"
+        },
+        "request_id": {
+          "definition": "uuid not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 49,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "target_id": {
+          "definition": "uuid not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 49,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "kind": {
+          "definition": "text not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 50,
+          "nullable": false,
+          "type": "text"
+        },
+        "outcome": {
+          "definition": "text not null check(outcome in ('applied','noop','denied'))",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 50,
+          "nullable": false,
+          "type": "text"
+        },
+        "reason": {
+          "definition": "text",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 50,
+          "nullable": true,
+          "type": "text"
+        },
+        "before_snapshot": {
+          "definition": "jsonb",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 51,
+          "nullable": true,
+          "type": "jsonb"
+        },
+        "proposed_after": {
+          "definition": "jsonb",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 51,
+          "nullable": true,
+          "type": "jsonb"
+        },
+        "actual_after": {
+          "definition": "jsonb",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 51,
+          "nullable": true,
+          "type": "jsonb"
+        },
+        "actor_effective": {
+          "definition": "text[] not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 51,
+          "nullable": false,
+          "type": "text[]"
+        },
+        "catalog_revision": {
+          "definition": "bigint not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 52,
+          "nullable": false,
+          "type": "bigint"
+        },
+        "credential_changed": {
+          "definition": "boolean not null default false",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 52,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "operator_case_ref": {
+          "definition": "text",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 53,
+          "nullable": true,
+          "type": "text"
+        },
+        "operator_proof_ref": {
+          "definition": "text",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 53,
+          "nullable": true,
+          "type": "text"
+        },
+        "occurred_at": {
+          "definition": "timestamptz not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 53,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "details": {
+          "definition": "jsonb",
+          "path": "supabase/candidate/permission-administration.sql",
+          "line": 2,
+          "nullable": true,
+          "type": "jsonb"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "primary key(store_id,actor_type,actor_key,request_id,target_id)",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 54
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "store_id",
+        "actor_type",
+        "actor_key",
+        "request_id",
+        "target_id"
+      ]
+    },
+    "public.store_change_signals": {
+      "path": "supabase/candidate/permission-identity.sql",
+      "line": 56,
+      "columns": {
+        "store_id": {
+          "definition": "uuid not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 57,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "topic": {
+          "definition": "text not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 57,
+          "nullable": false,
+          "type": "text"
+        },
+        "revision": {
+          "definition": "bigint not null check(revision>=0)",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 57,
+          "nullable": false,
+          "type": "bigint"
+        },
+        "event_id": {
+          "definition": "uuid not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 58,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "target_id": {
+          "definition": "uuid",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 58,
+          "nullable": true,
+          "type": "uuid"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "primary key(store_id,topic)",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 58
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "store_id",
+        "topic"
+      ]
+    },
+    "private.store_no_reservations": {
+      "path": "supabase/candidate/permission-identity.sql",
+      "line": 67,
+      "columns": {
+        "request_id": {
+          "definition": "uuid primary key",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 68,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_no": {
+          "definition": "integer not null unique check(store_no between 1 and 2147483647)",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 69,
+          "nullable": false,
+          "type": "integer"
+        },
+        "created_at": {
+          "definition": "timestamptz not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 70,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [],
+      "indexes": [],
+      "pk": [
+        "request_id"
+      ]
+    },
+    "private.initial_seed_workflows": {
+      "path": "supabase/candidate/permission-identity.sql",
+      "line": 72,
+      "columns": {
+        "workflow_id": {
+          "definition": "uuid primary key",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 73,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null unique references public.stores(id) on delete cascade",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 74,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "requested": {
+          "definition": "boolean not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 75,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "template_version": {
+          "definition": "integer not null check(template_version=1)",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 76,
+          "nullable": false,
+          "type": "integer"
+        },
+        "status": {
+          "definition": "text not null check(status in ('skipped','pending','in_progress','needs_retry','completed'))",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 77,
+          "nullable": false,
+          "type": "text"
+        },
+        "workflow_revision": {
+          "definition": "bigint not null default 0 check(workflow_revision between 0 and 9007199254740991)",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 78,
+          "nullable": false,
+          "type": "bigint"
+        },
+        "auto_claimed_at": {
+          "definition": "timestamptz",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 79,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "run_generation": {
+          "definition": "bigint not null default 0 check(run_generation between 0 and 9007199254740991)",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 80,
+          "nullable": false,
+          "type": "bigint"
+        },
+        "last_error_code": {
+          "definition": "text check(last_error_code in ('ENTITY_ID_CONFLICT','PERMISSION_UPDATE_UNAVAILABLE'))",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 81,
+          "nullable": true,
+          "type": "text"
+        },
+        "created_at": {
+          "definition": "timestamptz not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 82,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "updated_at": {
+          "definition": "timestamptz not null",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 83,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [],
+      "indexes": [],
+      "pk": [
+        "workflow_id"
+      ]
+    },
+    "private.initial_seed_stages": {
+      "path": "supabase/candidate/permission-identity.sql",
+      "line": 85,
+      "columns": {
+        "workflow_id": {
+          "definition": "uuid not null references private.initial_seed_workflows(workflow_id) on delete cascade",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 86,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "stage": {
+          "definition": "text not null check(stage in ('employee','menu','floor'))",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 87,
+          "nullable": false,
+          "type": "text"
+        },
+        "stage_id": {
+          "definition": "uuid not null unique",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 88,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "status": {
+          "definition": "text not null default 'pending' check(status in ('pending','committed'))",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 89,
+          "nullable": false,
+          "type": "text"
+        },
+        "committed_at": {
+          "definition": "timestamptz",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 90,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "receipt": {
+          "definition": "jsonb",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 91,
+          "nullable": true,
+          "type": "jsonb"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "primary key(workflow_id,stage)",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 92
+        },
+        {
+          "sql": "check((status='pending' and committed_at is null and receipt is null) or (status='committed' and committed_at is not null and jsonb_typeof(receipt)='object'))",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 93
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "workflow_id",
+        "stage"
+      ]
+    },
+    "private.menu_image_uploads": {
+      "path": "supabase/candidate/permission-images.sql",
+      "line": 21,
+      "columns": {
+        "upload_handle": {
+          "definition": "uuid primary key",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 22,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores(id)",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 23,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "item_id": {
+          "definition": "uuid not null",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 24,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "object_key": {
+          "definition": "text not null unique",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 25,
+          "nullable": false,
+          "type": "text"
+        },
+        "mime_type": {
+          "definition": "text not null check(mime_type in('image/jpeg','image/png','image/webp'))",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 26,
+          "nullable": false,
+          "type": "text"
+        },
+        "byte_size": {
+          "definition": "bigint not null check(byte_size between 1 and 5242880)",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 27,
+          "nullable": false,
+          "type": "bigint"
+        },
+        "created_by_employee_id": {
+          "definition": "uuid not null",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 28,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "state": {
+          "definition": "text not null check(state in('uploading','ready','published','discarded'))",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 29,
+          "nullable": false,
+          "type": "text"
+        },
+        "created_at": {
+          "definition": "timestamptz not null default now()",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 30,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "ready_at": {
+          "definition": "timestamptz",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 31,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "published_at": {
+          "definition": "timestamptz",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 32,
+          "nullable": true,
+          "type": "timestamptz"
+        },
+        "discarded_at": {
+          "definition": "timestamptz",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 33,
+          "nullable": true,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique(store_id,item_id,upload_handle)",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 34
+        },
+        {
+          "sql": "foreign key(store_id,created_by_employee_id) references public.employees(store_id,id)",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 37
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "upload_handle"
+      ]
+    },
+    "private.menu_image_assets": {
+      "path": "supabase/candidate/permission-images.sql",
+      "line": 39,
+      "columns": {
+        "asset_key": {
+          "definition": "uuid primary key",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 40,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null references public.stores(id)",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 41,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "item_id": {
+          "definition": "uuid not null",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 42,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "upload_handle": {
+          "definition": "uuid not null unique references private.menu_image_uploads(upload_handle)",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 43,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "object_key": {
+          "definition": "text not null unique",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 44,
+          "nullable": false,
+          "type": "text"
+        },
+        "mime_type": {
+          "definition": "text not null check(mime_type in('image/jpeg','image/png','image/webp'))",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 45,
+          "nullable": false,
+          "type": "text"
+        },
+        "byte_size": {
+          "definition": "bigint not null check(byte_size between 1 and 5242880)",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 46,
+          "nullable": false,
+          "type": "bigint"
+        },
+        "published": {
+          "definition": "boolean not null default true",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 47,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "published_at": {
+          "definition": "timestamptz not null",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 48,
+          "nullable": false,
+          "type": "timestamptz"
+        },
+        "unpublished_at": {
+          "definition": "timestamptz",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 49,
+          "nullable": true,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "foreign key(store_id,item_id) references public.menu_items(store_id,id)",
+          "path": "supabase/candidate/permission-images.sql",
+          "line": 50
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "asset_key"
+      ]
+    },
+    "public.permission_catalog_signals": {
+      "path": "supabase/candidate/permission-signals.sql",
+      "line": 4,
+      "columns": {
+        "singleton": {
+          "definition": "boolean primary key default true check(singleton)",
+          "path": "supabase/candidate/permission-signals.sql",
+          "line": 5,
+          "nullable": false,
+          "type": "boolean"
+        },
+        "revision": {
+          "definition": "bigint not null check(revision>=0)",
+          "path": "supabase/candidate/permission-signals.sql",
+          "line": 6,
+          "nullable": false,
+          "type": "bigint"
+        },
+        "event_id": {
+          "definition": "uuid not null",
+          "path": "supabase/candidate/permission-signals.sql",
+          "line": 7,
+          "nullable": false,
+          "type": "uuid"
+        }
+      },
+      "constraints": [],
+      "indexes": [],
+      "pk": [
+        "singleton"
+      ]
+    },
+    "private.initial_receipt_print_grants": {
+      "path": "supabase/candidate/permission-print.sql",
+      "line": 4,
+      "columns": {
+        "grant_id": {
+          "definition": "uuid primary key",
+          "path": "supabase/candidate/permission-print.sql",
+          "line": 5,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "store_id": {
+          "definition": "uuid not null",
+          "path": "supabase/candidate/permission-print.sql",
+          "line": 6,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "operation_id": {
+          "definition": "uuid not null",
+          "path": "supabase/candidate/permission-print.sql",
+          "line": 7,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "order_id": {
+          "definition": "uuid not null",
+          "path": "supabase/candidate/permission-print.sql",
+          "line": 8,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "executor_employee_id": {
+          "definition": "uuid not null",
+          "path": "supabase/candidate/permission-print.sql",
+          "line": 9,
+          "nullable": false,
+          "type": "uuid"
+        },
+        "employee_session_hash": {
+          "definition": "bytea not null",
+          "path": "supabase/candidate/permission-print.sql",
+          "line": 10,
+          "nullable": false,
+          "type": "bytea"
+        },
+        "created_at": {
+          "definition": "timestamptz not null",
+          "path": "supabase/candidate/permission-print.sql",
+          "line": 11,
+          "nullable": false,
+          "type": "timestamptz"
+        }
+      },
+      "constraints": [
+        {
+          "sql": "unique(store_id,operation_id)",
+          "path": "supabase/candidate/permission-print.sql",
+          "line": 12
+        },
+        {
+          "sql": "foreign key(store_id,operation_id) references public.write_operations(store_id,operation_id)",
+          "path": "supabase/candidate/permission-print.sql",
+          "line": 13
+        },
+        {
+          "sql": "foreign key(store_id,order_id) references public.orders(store_id,id)",
+          "path": "supabase/candidate/permission-print.sql",
+          "line": 14
+        },
+        {
+          "sql": "foreign key(store_id,executor_employee_id) references public.employees(store_id,id)",
+          "path": "supabase/candidate/permission-print.sql",
+          "line": 15
+        }
+      ],
+      "indexes": [],
+      "pk": [
+        "grant_id"
+      ]
+    }
+  },
+  "legacy_removed_by_controller": {
+    "private.legacy_permission_roles": {
+      "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+      "line": 139,
+      "columns": {
+        "code": {
+          "definition": "public.employee_role primary key",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 140
+        },
+        "modules": {
+          "definition": "text[] not null",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 140
+        },
+        "enabled_in_ui": {
+          "definition": "boolean not null",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 140
+        }
+      },
+      "constraints": [],
+      "indexes": []
+    },
+    "private.legacy_permission_catalog": {
+      "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+      "line": 142,
+      "columns": {
+        "code": {
+          "definition": "text primary key",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 142
+        }
+      },
+      "constraints": [],
+      "indexes": []
+    },
+    "private.legacy_permission_defaults": {
+      "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+      "line": 143,
+      "columns": {
+        "role_code": {
+          "definition": "public.employee_role references private.legacy_permission_roles(code)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 144
+        },
+        "permission_code": {
+          "definition": "text references private.legacy_permission_catalog(code)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 145
+        }
+      },
+      "constraints": [
+        {
+          "sql": "primary key(role_code,permission_code)",
+          "path": "supabase/migrations/017_permission_catalog_bridge.sql",
+          "line": 146
+        }
+      ],
+      "indexes": []
+    }
+  },
+  "ddl_statement_count": 94
+}

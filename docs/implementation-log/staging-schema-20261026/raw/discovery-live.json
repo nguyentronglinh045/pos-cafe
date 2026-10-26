@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "name": "supabase_pos_cafe",
+      "runtimeStatus": "failed",
+      "pluginId": null,
+      "httpOrigin": "https://mcp.supabase.com",
+      "serverInfo": null,
+      "serverCapabilities": null,
+      "toolListMeta": null,
+      "tools": {},
+      "toolsError": "MCP startup failed: OAuth token refresh failed: Failed to parse server response",
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "oAuth"
+    }
+  ],
+  "nextCursor": null
+}

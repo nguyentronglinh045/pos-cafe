@@ -1,0 +1,26 @@
+{
+  "project_ref": "ineckiashpwloncxnbqx",
+  "source_commit": "711a22e71983e3d6aa17799649af05ce4c762555",
+  "scope": "Read-only catalog metadata; no business rows or function bodies",
+  "sha256": {
+    "comparison.json": "6b1b551a58455626454683c5ee1166e52080306a3fac1f528bb646ab1ab7baa6",
+    "diagram-manifest.json": "4c1f0e562805c45e515bf4704d0c77bba15b3180b5dc4d0deff022ef8e0ee60b",
+    "metadata.json": "2d7ebe1880fd707394d01a7af1f9ef7b296a376c8dc6936088537eaf109ccc11",
+    "queries.json": "902f53fbde34fb8593094c3b2cae60e193e0284e9db72774f225934193082799",
+    "raw/connection-capture.json": "f8a0467a04cc22932df74a0fd02d08392cf3c1677866591a7139201abe1c233a",
+    "raw/connection-probe.json": "181989c6c37964df240463a9b3d80e918bdcc1cfd39344d188ed84fbbfa6bc27",
+    "raw/discovery-capture.json": "4c06c0a9ccbaa3820123beb2f5733e5999be7a823e27d8e14fe4e5a456a5a094",
+    "raw/discovery-live.json": "499645e190633b7520fb92cdd16b545edff33135c487df2247c9b7efb172a6b3",
+    "raw/raw-columns.json": "ad91c843275f728aa648bc98a16e6d3866900e95759efb575153e67aae75aaad",
+    "raw/raw-constraints.json": "d815e711ac02a0c9702de9ef38cc467f605bff6f5549a5ca011ca595f04dfd32",
+    "raw/raw-enums.json": "175a45ac3bf5d37e0a65c975b974bbdcbf4639efb9da6bbe11e44323dbb10852",
+    "raw/raw-functions.json": "bfc6ef77d6f3082388226023db630b419f406408d2377bbe6bc2f94ae7d7cd65",
+    "raw/raw-indexes.json": "c13be1d77573f9f0ab340866cd007c6ca5264e1d84516b52768aadba2b7be034",
+    "raw/raw-migrations.json": "9e48fff39489e9967bfed76b513429fc5d4163d2148fc2b87764bb1df3610234",
+    "raw/raw-policies.json": "2f7c4cb1e58583385f0c5307a5cd9aff6903dc672ed336faf4ae44f478bf16f1",
+    "raw/raw-table_grants.json": "3183f36640a00a212a2ad97a4d66c32ef705bc9a889cc6786996bd313f76bd49",
+    "raw/raw-tables.json": "17a57b3fdb8690b80803219882dcd7a7be86209a0ec841b26154670ac2e16092",
+    "raw/raw-triggers.json": "bd53f5522d9f6a411ea4c7831e177df40a49cb0d74768053b5e34a2a9ab50809",
+    "source-inventory.json": "10d1486042204b9e6a70b484654c75378e89e38ee69b7695d71a5ab7565263b1"
+  }
+}

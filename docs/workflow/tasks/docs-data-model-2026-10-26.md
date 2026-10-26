@@ -55,3 +55,13 @@ Candidate nội dung `87f849c0221bf99c135f58d412d092d20b679a70`, base `4191e2126
 Kiểm cuối: 203 liên kết nội bộ và 550 tham chiếu source ghim hợp lệ; 35 bảng/332 cột; tám ERD/36 quan hệ FK; `git diff --check` sạch. Main WIP, các normative spec và evidence gốc giữ nguyên. Không introspect DB, chạy app/backend hoặc Mermaid renderer/parser đầy đủ; các giới hạn này không bị đổi thành PASS. Sau verdict chỉ cập nhật metadata review trong handoff.
 
 N1 hoàn tất đầu ra tài liệu trên docs local; checklist ngoài Git chỉ tích N1, P1-03/N2–N5/H1–H4 còn mở. Không push trong lượt này. Đây không phải quyết định nghiệm thu backend hoặc phát hành sản phẩm.
+
+## Bổ sung xác minh DB staging — 26/10/2026
+
+Sau receipt N1, chủ dự án yêu cầu kiểm DB đích bằng MCP và xác nhận DB đang dùng là staging. Phạm vi bổ sung là đọc metadata, đối chiếu mô hình và cập nhật docs; không migration, sửa dữ liệu, gọi RPC nghiệp vụ, chạy app/backend test hoặc refactor. Mốc không introspect trong receipt phía trên là lịch sử của lượt N1 ban đầu, được bổ sung bởi kết quả mới này.
+
+[Biên bản staging và evidence](../../implementation-log/staging-schema-20261026/README.md) ghi endpoint `ineckiashpwloncxnbqx`, PostgreSQL17.11, kết nối `supabase_read_only_user`/`transaction_read_only=on`, query và response gốc. OAuth ban đầu lỗi refresh; chủ dự án hoàn tất đăng nhập lại rồi mới có truy vấn. Không truy cập DB gốc hoặc thay cấu hình project để nới quyền.
+
+Kết quả đối chiếu: đủ 35 bảng/332 cột của N1; tên/kiểu/NULL, 35 PK, 69 FK (hai bộ cột, bảng đích, ON DELETE), 24 UNIQUE (bộ cột) khớp source inventory. Có thêm `private.permission_staging_bootstrap_marker` ba cột, đúng bootstrap source. Đã thêm phụ lục từ điển và cập nhật đường đọc. Không đổi ERD nghiệp vụ hoặc nâng gate backend thành PASS. Query catalog riêng từng transaction; không có snapshot nhất quán xuyên cả lượt. Chưa kiểm tương đương toàn bộ CHECK/default/function body hoặc thực thi RLS/RPC.
+
+Docs base lượt này `059552b47abe6b0309988edfeb91385bb9f6767d`; source code và remote main vẫn `711a22e71983e3d6aa17799649af05ce4c762555`, remote docs `4191e2126f8558839d0a02f2422389c798ab5079` lúc kiểm. Local main WIP giữ nguyên. Checklist ngoài repo bổ sung kết quả, không tích N2–N5/P1-03/H1–H4. Candidate cần hai review độc lập về tính đúng metadata và preservation trước bàn giao; receipt cuối sẽ ghi verdict. Không push trong lượt bổ sung này.

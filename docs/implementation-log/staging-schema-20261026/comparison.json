@@ -1,0 +1,30 @@
+{
+  "source": "711a22e71983e3d6aa17799649af05ce4c762555",
+  "project_ref": "ineckiashpwloncxnbqx",
+  "expected_tables": 35,
+  "expected_columns": 332,
+  "live_tables": 36,
+  "live_columns": 335,
+  "missing_tables": [],
+  "extra_tables": [
+    "private.permission_staging_bootstrap_marker"
+  ],
+  "column_or_pk_differences": [],
+  "diagram_edges": 36,
+  "missing_diagram_edges": [],
+  "source_fk_count": 69,
+  "live_fk_count": 69,
+  "missing_fks": [],
+  "extra_fks": [],
+  "source_unique_count": 24,
+  "live_unique_count": 24,
+  "missing_unique": [],
+  "extra_unique": [],
+  "unvalidated_constraints": [],
+  "invalid_indexes": [],
+  "disabled_triggers": [],
+  "limits": [
+    "Catalog queries are separate read-only transactions, not one consistent snapshot.",
+    "No function-body equality, complete CHECK/default-expression equivalence, runtime behavior, policy authorization or deployment acceptance verified."
+  ]
+}

@@ -4,7 +4,7 @@
 
 ## Phạm vi và cách đọc mô hình
 
-Mô hình gồm nền nghiệp vụ và phần mở rộng quyền/phiên/ledger/registry trong **source candidate**, sau các bước chuyển đổi mà controller mô tả. Backend activation/acceptance vẫn **HOLD**. Chưa kết nối hoặc introspect DB đích trong lượt này, vì vậy không gọi ERD là schema production đã triển khai.
+Mô hình gồm nền nghiệp vụ và phần mở rộng quyền/phiên/ledger/registry trong **source candidate**, sau các bước chuyển đổi mà controller mô tả. Ngày26/10/2026 đã [đối chiếu catalog DB staging qua MCP chỉ đọc](implementation-log/staging-schema-20261026/README.md): đủ 35 bảng/332 cột của mô hình; tên/kiểu/NULL, 35 PK, 69 FK (cột hai phía và ON DELETE) và 24 UNIQUE (bộ cột) khớp inventory source. Staging có thêm một bảng marker kỹ thuật riêng, tổng 36 bảng/335 cột. Có schema trên staging không đóng gate nghiệm thu backend đang **HOLD**, không xác nhận production hoặc hành vi runtime.
 
 | Lớp nguồn | Vai trò và cách sử dụng |
 | --- | --- |
