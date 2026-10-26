@@ -65,3 +65,14 @@ Sau receipt N1, chủ dự án yêu cầu kiểm DB đích bằng MCP và xác n
 Kết quả đối chiếu: đủ 35 bảng/332 cột của N1; tên/kiểu/NULL, 35 PK, 69 FK (hai bộ cột, bảng đích, ON DELETE), 24 UNIQUE (bộ cột) khớp source inventory. Có thêm `private.permission_staging_bootstrap_marker` ba cột, đúng bootstrap source. Đã thêm phụ lục từ điển và cập nhật đường đọc. Không đổi ERD nghiệp vụ hoặc nâng gate backend thành PASS. Query catalog riêng từng transaction; không có snapshot nhất quán xuyên cả lượt. Chưa kiểm tương đương toàn bộ CHECK/default/function body hoặc thực thi RLS/RPC.
 
 Docs base lượt này `059552b47abe6b0309988edfeb91385bb9f6767d`; source code và remote main vẫn `711a22e71983e3d6aa17799649af05ce4c762555`, remote docs `4191e2126f8558839d0a02f2422389c798ab5079` lúc kiểm. Local main WIP giữ nguyên. Checklist ngoài repo bổ sung kết quả, không tích N2–N5/P1-03/H1–H4. Candidate cần hai review độc lập về tính đúng metadata và preservation trước bàn giao; receipt cuối sẽ ghi verdict. Không push trong lượt bổ sung này.
+
+## Receipt bổ sung staging — 26/10/2026
+
+Hai reviewer độc lập **APPROVE** candidate `d34ede88b310a6110f6c95894b9e2bf376b639e1`, base `059552b47abe6b0309988edfeb91385bb9f6767d`, checklist SHA256 `7f6e9c1b0ff3e39c2bebe79a78506ce49aac3778ea1c02795474383a2101fd1b`:
+
+| Reviewer | Phạm vi và verdict |
+| --- | --- |
+| `/root/review_knowledge` | Đối chiếu độc lập 332 kiểu/NULL, 35 PK, 69 FK/ON DELETE, 24 UNIQUE; marker/source, các cờ catalog, raw/manifest và giới hạn kết luận. APPROVE; không có finding. Không gọi lại DB. |
+| `/root/review_preservation` | Quyền/đích MCP, metadata/provenance, bảo toàn source/evidence/checklist, link và giới hạn. APPROVE; không có finding chặn. Không thấy credential trong evidence đã kiểm; không gọi lại DB. |
+
+Kiểm cuối trên candidate: 171 liên kết nội bộ/518 nguồn ghim hợp lệ, 19 hash manifest đúng, chín nhóm raw giải mã khớp metadata; diff-check sạch. Main WIP/evidence cũ/normative specs giữ nguyên, checklist chỉ nối thêm kết quả và giữ mọi tick cũ. Sau review chỉ thêm receipt này; cập nhật docs local và checklist local-only, không push. Đối chiếu catalog hoàn tất trong phạm vi đã nêu, không thay nghiệm thu runtime hoặc giải quyết giới hạn render/HTML.
