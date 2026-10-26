@@ -1,0 +1,33 @@
+flowchart TD
+    trigger["Focus, hiện lại tab, online, signal quyền/catalog hoặc poll foreground"]
+    start["Lifecycle yêu cầu revision hiện hành"]
+    valid{"Kết quả đọc revision hiện hành?"}
+    stale["Bỏ qua response cũ hoặc đến sau deadline; không áp bundle"]
+    expired["Phiên hết hạn hoặc không còn hợp lệ: khóa phiên và về đăng nhập"]
+    compatibility["Compatibility block: yêu cầu cập nhật ứng dụng"]
+    unavailable["Mạng, lỗi đọc hoặc quá deadline 5 giây: unavailable, chặn UI bảo vệ"]
+    changed{"Revision nhân viên hoặc catalog đổi?"}
+    bundle["Đọc authority mới và kiểm tính nhất quán"]
+    lost{"Mất quyền liên quan?"}
+    purge["Dừng continuation, bỏ cache và đóng phần UI/nháp không còn được phép"]
+    apply["Áp bundle mới"]
+    verified["verified: cho phép phần còn quyền"]
+    trigger --> start
+    start -->|"Kết quả hoặc lỗi của lượt đọc hiện hành"| valid
+    start -->|"Response cũ hoặc sau deadline"| stale
+    valid -->|"Lỗi thuộc nhóm phiên"| expired
+    valid -->|"Protocol không hỗ trợ"| compatibility
+    valid -->|"Lỗi còn lại hoặc timeout"| unavailable
+    valid -->|"Hợp lệ"| changed
+    changed -->|"Không"| verified
+    changed -->|"Có"| bundle
+    bundle -->|"Response cũ hoặc sau deadline"| stale
+    bundle -->|"Lỗi còn lại hoặc timeout"| unavailable
+    bundle -->|"Lỗi thuộc nhóm phiên"| expired
+    bundle -->|"Protocol không hỗ trợ"| compatibility
+    bundle -->|"Bundle hợp lệ"| lost
+    lost -->|"Có"| purge
+    lost -->|"Không"| apply
+    purge --> apply
+    apply --> verified
+    unavailable -->|"Người dùng thử lại hoặc trigger đọc tiếp"| start

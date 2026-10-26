@@ -1,0 +1,32 @@
+{
+  "observed_at_utc": "2026-10-26T09:15:47.271Z",
+  "mcp": [
+    {
+      "section": "[mcp_servers.supabase]",
+      "host": "mcp.supabase.com",
+      "project_ref": "kfqjdfwxhkdwihjobpny",
+      "read_only": null
+    },
+    {
+      "section": "[mcp_servers.pos_cafe_supabase_ro]",
+      "host": "mcp.supabase.com",
+      "project_ref": "kfqjdfwxhkdwihjobpny",
+      "read_only": "true"
+    }
+  ],
+  "env_files": [
+    {
+      "file": ".env.local",
+      "sha256": "a61ccb1d2f3849b8341f30a10bb9cb83291c866e6e081ee0911791d380744127",
+      "mode": "supabase",
+      "supabase_host": "kfqjdfwxhkdwihjobpny.supabase.co",
+      "key_present": true
+    }
+  ],
+  "shell": {
+    "mode": null,
+    "url_present": false,
+    "key_present": false
+  },
+  "limitation": "Read local configuration only; no running browser/build/deployed Vercel configuration was inspected. No secret values or env files copied."
+}

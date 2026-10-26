@@ -1,10 +1,12 @@
 # Các luồng quan trọng của POS Cafe
 
-[Bản SVG đã render và kiểm hình — 26/10/2026](figures/README.md): 8 ERD + 8 luồng, giữ nguyên Mermaid và phạm vi nguồn; chưa phải hình dàn trang theo mẫu báo cáo.
+[Bộ SVG hiện hành — 26/10/2026](figures/README.md): 8 ERD + 8 luồng. F04/F05/F07/F08 được cập nhật sau review trực tiếp với code; chưa phải hình dàn trang theo mẫu báo cáo.
 
 Đối chiếu ngày **26/10/2026**, code `main@711a22e71983e3d6aa17799649af05ce4c762555`, DB staging `ineckiashpwloncxnbqx`. Đây là bản mô tả implementation để tra cứu và làm đầu vào báo cáo; không thêm requirement hoặc đề xuất refactor.
 
 **Trạng thái của cả tám hình:** luồng hiện hành trong source đã ghim, có đối chiếu metadata staging. [Evidence N2](implementation-log/critical-flows-20261026/README.md) xác nhận fingerprint body của **28 function/overload được chọn**, publication và trigger tín hiệu; [evidence N1](implementation-log/staging-schema-20261026/README.md) giữ đối chiếu bảng/cột/khóa. Đây không là kiểm chạy giao dịch, trình duyệt hoặc giao nhận realtime; backend acceptance vẫn HOLD. Mỗi hình dưới ghi phạm vi DB cụ thể; không suy mọi dependency/function đều đã đối chiếu.
+
+**Phạm vi sau review ngữ nghĩa:** hình chính mô tả `origin/main@711a22e`, không đồng nhất với mọi file đang sửa ở local. [Hồ sơ đối chiếu code và môi trường](reviews/diagram-semantics-20261026/INDEX.md) giữ kết luận từng hình, 36 cạnh ERD, 54 claim luồng và nguồn kiểm chéo. Snapshot WIP có khoảng chờ authority trước `begin` chưa được bảo vệ như origin; cấu hình frontend local trỏ một DB khác staging đã kiểm. Các khác biệt đó được ghi riêng, chưa sửa code hoặc cấu hình DB.
 
 | Nhóm | Hình và câu hỏi |
 | --- | --- |
@@ -19,6 +21,8 @@ Ký hiệu: **K = (storeId, operationId)** là định danh lệnh; **payload** 
 ## F01 — Chọn phần thanh toán và kết quả tách đơn
 
 Ngày26/10/2026 — implementation hiện hành. DB đã đối chiếu body planner/apply và dispatcher tài chính; chưa chạy payment/split thực tế trong lượt này. Tiền mặt là đường đang dùng. Đơn phải là đơn đang mở; `expectedVersion` được đóng băng cùng lựa chọn để DB kiểm lại.
+
+Phạm vi lifecycle: origin chụp và kiểm guard quanh khoảng đợi authority trước khi tạo attempt. WIP được review thiếu guard này; đóng màn trong khoảng đợi vẫn có thể bắt đầu lệnh. F01 rút gọn thuật toán chọn/thanh toán; [khác biệt trước begin](reviews/diagram-semantics-20261026/INDEX.md#wip) vẫn là finding code mở.
 
 [Mở SVG của hình này](figures/2026-10-26/flow-01.svg)
 
@@ -69,6 +73,8 @@ Nguồn: [chọn toàn bộ/một phần](https://github.com/nguyentronglinh045/
 ## F02 — Đăng ký K và thực hiện giao dịch tài chính
 
 Ngày26/10/2026 — implementation hiện hành; DB fingerprint khớp các entry point tài chính, dispatcher, checkpoint, planner/apply được liệt kê trong evidence. Hình là đường thành công khi K mới/pending. **Register và execute là hai RPC, hai transaction riêng**; ký hiệu bắt đầu/commit dưới đây diễn tả ranh giới RPC, không phải UI gửi lệnh BEGIN/COMMIT.
+
+F02 bắt đầu ở lệnh đã chuyển vào coordinator. Guard trước `begin` khác giữa origin và WIP như [phạm vi nguồn](reviews/diagram-semantics-20261026/INDEX.md#wip); không dùng hình protocol này để kết luận hai checkout bảo vệ toàn bộ vòng đời giống nhau.
 
 [Mở SVG của hình này](figures/2026-10-26/flow-02.svg)
 
@@ -149,7 +155,7 @@ Nguồn: [terminal replay](https://github.com/nguyentronglinh045/pos-cafe/blob/7
 
 Ngày26/10/2026 — implementation hiện hành ở client, kết hợp các RPC tài chính đã fingerprint. Chưa chạy mất mạng/timeout/race trong lượt docs.
 
-[Mở SVG của hình này](figures/2026-10-26/flow-04.svg)
+[Mở SVG của hình này](figures/2026-10-26-r2/flow-04.svg)
 
 ```mermaid
 flowchart TD
@@ -161,7 +167,7 @@ flowchart TD
     context{"Còn attempt trong phiên hiện tại?"}
     retry["Người dùng bấm thử lại: get K rồi execute đúng K và payload cũ"]
     lookup["Mở Tra cứu thao tác, chọn K đã lưu trên server"]
-    state{"Get thấy trạng thái nào?"}
+    state{"Kết quả cuối của đường gọi?"}
     terminal["Terminal: xem lịch sử riêng, đọc đơn hiện tại riêng"]
     pending["Pending: người dùng chọn tiếp tục hoặc hủy lệnh"]
     resume["Tiếp tục: get lại; chỉ execute nếu vẫn pending, dùng payload đã lưu"]
@@ -175,8 +181,8 @@ flowchart TD
     unknown --> context
     context -->|"Có"| retry
     context -->|"Đã đổi phiên hoặc mất bộ nhớ"| lookup
-    retry --> state
-    lookup --> state
+    retry -->|"Kết quả execute"| state
+    lookup -->|"Kết quả get"| state
     state -->|"applied, rejected, cancelled, expired"| terminal
     state -->|"pending"| pending
     state -->|"Không truy xuất được"| absent
@@ -187,7 +193,9 @@ flowchart TD
 
 `retryCurrent` luôn get rồi execute cùng payload đang giữ, kể cả get thấy terminal: nhánh replay ở DB ngăn lặp hiệu ứng. `resume` từ màn tra cứu khác ở chỗ get lại và chỉ execute nếu còn pending. Một phản hồi pending hoặc lỗi tiếp tục giữ tình trạng chưa xác định để người dùng tra cứu; không tự dựng lựa chọn mới, register K bị thiếu hoặc mở preview in.
 
-Coordinator chỉ ở bộ nhớ. Timeout mặc định15giây không hủy request server. Đóng drawer/đổi context làm phản hồi cũ mất hiệu lực với UI; đổi nhân viên/phiên xóa ngữ cảnh client tương ứng, không hủy transaction đang chạy trên server. Thu hồi quyền có thể chặn cả xem/tiếp tục lệnh cũ. Tạo ý định mới sau terminal bị từ chối/hủy/hết hạn cần đọc dữ liệu hiện hành và xác nhận mới, không sửa payload của K cũ.
+Coordinator chỉ ở bộ nhớ. Timeout mặc định 15 giây không hủy request server. Sau `begin`, đóng drawer/đổi context làm continuation và phản hồi UI cũ mất hiệu lực; đổi nhân viên/phiên xóa ngữ cảnh client tương ứng, không hủy transaction đang chạy trên server. Khoảng chờ authority **trước** `begin` có guard ở origin nhưng thiếu trong snapshot WIP; xem [FIN-WIP-02](reviews/diagram-semantics-20261026/INDEX.md#wip). Thu hồi quyền có thể chặn cả xem/tiếp tục lệnh cũ. Tạo ý định mới sau terminal bị từ chối/hủy/hết hạn cần đọc dữ liệu hiện hành và xác nhận mới, không sửa payload của K cũ.
+
+Điểm rẽ đã sửa theo FIN-01: nếu `get` trả pending rồi `execute` trả applied/rejected/expired, nhánh retry xử lý trạng thái terminal của `execute`. Chỉ đường tra cứu dùng kết quả `get` để mời tiếp tục/hủy khi còn pending. Đây là đối chiếu control flow, không phải kết quả chạy giao dịch DB.
 
 Nguồn: [attempt trong bộ nhớ, timeout](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/features/pos/writeOperationFlow.ts#L27), [retryCurrent và resume](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/features/pos/writeOperationFlow.ts#L104), [đổi vòng đời/phiên](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/WriteLifecycle.tsx#L20), [tra cứu và đọc đơn hiện tại](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/drawers/pos/WriteRecoveryDrawer.tsx#L77), [action không retry tự động hoặc mở receipt](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/drawers/pos/WriteRecoveryDrawer.tsx#L95).
 
@@ -196,7 +204,7 @@ Nguồn: [attempt trong bộ nhớ, timeout](https://github.com/nguyentronglinh0
 
 Ngày26/10/2026 — implementation hiện hành; DB fingerprint khớp start_session, current_employee và required-PIN RPC. Tiền điều kiện: đã có phiên cửa hàng. Danh tính cửa hàng và phiên nhân viên là hai lớp; hình không mô tả owner email/recovery/ownership transfer chưa hoàn thiện.
 
-[Mở SVG của hình này](figures/2026-10-26/flow-05.svg)
+[Mở SVG của hình này](figures/2026-10-26-r2/flow-05.svg)
 
 ```mermaid
 flowchart TD
@@ -212,7 +220,10 @@ flowchart TD
     canChange{"Proof còn hợp lệ và màn đang được phép gửi?"}
     blocked["Chặn gửi khi chưa xác minh; phiên hết hạn thì về đăng nhập"]
     submit["Nhập và xác nhận PIN mới; thực hiện F06"]
+    pinResult{"Kết quả đổi PIN?"}
     done["Về đăng nhập; không tự cấp phiên normal"]
+    inputError["PIN/input không hợp lệ: giữ màn để sửa"]
+    ended["Lỗi phiên/revision hoặc kết quả chưa rõ: về đăng nhập"]
     login --> verify
     verify --> valid
     valid -->|"Không"| fail
@@ -224,10 +235,13 @@ flowchart TD
     proof --> canChange
     canChange -->|"Không"| blocked
     canChange -->|"Có"| submit
-    submit --> done
+    submit --> pinResult
+    pinResult -->|"applied"| done
+    pinResult -->|"PIN mới trùng PIN tạm hoặc input sai"| inputError
+    pinResult -->|"Lỗi phiên/revision hoặc unknown"| ended
 ```
 
-Hình rút gọn nhánh kết thúc thành công; lỗi PIN mới trùng PIN tạm hoặc input không hợp lệ giữ màn để sửa. Lỗi phiên/revision hoặc kết quả đổi PIN không rõ đưa về đăng nhập. Khi lost-ACK, UI hướng dẫn thử PIN mới; nếu chưa được thì thử PIN tạm. Không replay request hoàn tất bằng credential đã bị thu hồi để lấy lại authority.
+Hình phân biệt nhánh applied với lỗi PIN/input giữ màn để sửa và lỗi phiên/revision hoặc kết quả không rõ đưa về đăng nhập. Khi lost-ACK, UI hướng dẫn thử PIN mới; nếu chưa được thì thử PIN tạm. Không replay request hoàn tất bằng credential đã bị thu hồi để lấy lại authority.
 
 Token nhân viên giữ riêng trong adapter, memory-only; UI nhận view không có credential. DB lưu token hash. Phiên restricted chỉ phục vụ đổi PIN/proof; normal guard từ chối nó với `PIN_CHANGE_REQUIRED`. Hai TTL là thời hạn phiên do DB cấp, không phải TTL24giờ của lệnh tài chính.
 
@@ -271,13 +285,14 @@ Nguồn: [RPC và kiểm trước receipt](https://github.com/nguyentronglinh045
 
 Ngày26/10/2026 — implementation hiện hành; DB fingerprint khớp get_revision/get_authority/current_employee, client lifecycle đọc trực tiếp từ source. Không suy đây là kết quả đo thời gian lan truyền quyền.
 
-[Mở SVG của hình này](figures/2026-10-26/flow-07.svg)
+[Mở SVG của hình này](figures/2026-10-26-r2/flow-07.svg)
 
 ```mermaid
 flowchart TD
     trigger["Focus, hiện lại tab, online, signal quyền/catalog hoặc poll foreground"]
     start["Lifecycle yêu cầu revision hiện hành"]
-    valid{"Phiên và response còn hợp lệ?"}
+    valid{"Kết quả đọc revision hiện hành?"}
+    stale["Bỏ qua response cũ hoặc đến sau deadline; không áp bundle"]
     expired["Phiên hết hạn hoặc không còn hợp lệ: khóa phiên và về đăng nhập"]
     compatibility["Compatibility block: yêu cầu cập nhật ứng dụng"]
     unavailable["Mạng, lỗi đọc hoặc quá deadline 5 giây: unavailable, chặn UI bảo vệ"]
@@ -288,13 +303,15 @@ flowchart TD
     apply["Áp bundle mới"]
     verified["verified: cho phép phần còn quyền"]
     trigger --> start
-    start --> valid
+    start -->|"Kết quả hoặc lỗi của lượt đọc hiện hành"| valid
+    start -->|"Response cũ hoặc sau deadline"| stale
     valid -->|"Lỗi thuộc nhóm phiên"| expired
     valid -->|"Protocol không hỗ trợ"| compatibility
     valid -->|"Lỗi còn lại hoặc timeout"| unavailable
     valid -->|"Hợp lệ"| changed
     changed -->|"Không"| verified
     changed -->|"Có"| bundle
+    bundle -->|"Response cũ hoặc sau deadline"| stale
     bundle -->|"Lỗi còn lại hoặc timeout"| unavailable
     bundle -->|"Lỗi thuộc nhóm phiên"| expired
     bundle -->|"Protocol không hỗ trợ"| compatibility
@@ -310,6 +327,8 @@ Focus/online/hiện lại tab chuyển UI sang unverified ngay trước khi đ�
 
 Phân nhánh theo mã lỗi thực tế: `WRITE_PROTOCOL_UNSUPPORTED` vào compatibility block; `EMPLOYEE_SESSION_REQUIRED`, `EMPLOYEE_ROLE_UNAVAILABLE`, `AUTH_REQUIRED` kết thúc phiên; lỗi còn lại và deadline đưa về unavailable. Không gộp mọi lỗi bundle thành unavailable: kiểm active/role/identity hoặc tính nhất quán snapshot có thể ném lỗi thuộc nhóm phiên; kiểm độ mới revision có nhánh `PERMISSION_REFRESH_UNAVAILABLE` riêng.
 
+Response thuộc request/generation cũ bị bỏ qua, không tự khóa phiên mới. Deadline của lượt đọc hiện hành vẫn đưa UI về unavailable; response đến sau deadline không được áp bundle hoặc đưa UI trở lại verified. Guard được kiểm sau cả lần đọc revision và authority, trước khi công bố kết quả.
+
 Khi mất quyền, UI hủy/xóa query theo purpose và đóng phần không còn được phép trước khi công bố bundle mới. Write đang chờ có thể bị suspend; việc đó không hủy tác vụ server đã nhận. Khi response đọc về, `permissionRead` kiểm generation, employeeRevision, catalogRevision và quyền lần nữa; response phiên/quyền cũ không được lấp lại cache. Việc nhận quyền mới không khôi phục draft đã bị bỏ.
 
 Nguồn: [khởi tạo và poll](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/core/permissionLifecycle.ts#L36), [resume/signal](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/core/permissionLifecycle.ts#L56), [revision, timeout và lỗi](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/core/permissionLifecycle.ts#L83), [purge trước apply](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/PermissionLifecycle.tsx#L28), [query key và chặn response cũ](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/features/shared/permissionSession.ts#L74), [RPC authority/revision](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L207).
@@ -319,7 +338,7 @@ Nguồn: [khởi tạo và poll](https://github.com/nguyentronglinh045/pos-cafe/
 
 Ngày26/10/2026 — implementation hiện hành. Staging hiện có publication `supabase_realtime` gồm hai bảng signal; body emit/read RPC được chọn khớp source và trigger được quan sát enabled. **Chưa chạy subscription hoặc chứng minh giao nhận realtime** trong lượt này.
 
-[Mở SVG của hình này](figures/2026-10-26/flow-08.svg)
+[Mở SVG của hình này](figures/2026-10-26-r2/flow-08.svg)
 
 ```mermaid
 sequenceDiagram
@@ -330,16 +349,27 @@ sequenceDiagram
     participant cache as Query theo purpose
     deviceA->>db: Ghi nghiệp vụ qua RPC có quyền
     db->>db: Cùng TX cập nhật dữ liệu và revision của signal
-    db-->>deviceA: Commit và kết quả RPC
-    db-->>realtime: Thay đổi đã commit ở bảng signal
-    realtime-->>deviceB: Gợi ý store, topic và revision
-    deviceB->>deviceB: Kiểm hình dạng signal và store
-    deviceB->>cache: Invalidate các purpose liên quan
-    cache->>db: Query đang được phép đọc lại qua RPC
-    db->>db: Kiểm phiên, quyền và phạm vi store hiện hành
-    db-->>cache: Projection dữ liệu được phép
-    cache->>cache: Kiểm generation, revision và quyền sau response
-    cache-->>deviceB: Hiển thị dữ liệu hiện hành
+    Note over deviceA,deviceB: Sau commit, ACK và signal không có thứ tự nhận bảo đảm
+    par Kết quả RPC khi ACK tới
+        db-->>deviceA: Kết quả RPC đã commit
+    and Kênh signal độc lập
+        opt Khi signal tới thiết bị B
+            db-->>realtime: Thay đổi đã commit ở bảng signal
+            realtime-->>deviceB: Gợi ý store, topic và revision
+            deviceB->>deviceB: Kiểm hình dạng signal và store
+            opt Signal hợp lệ cho store
+                deviceB->>cache: Invalidate các purpose liên quan
+                opt Query còn được phép đọc
+                    cache->>db: Đọc lại qua RPC
+                    db->>db: Kiểm phiên, quyền và phạm vi store hiện hành
+                    db-->>cache: Projection dữ liệu được phép
+                    cache->>cache: Kiểm generation, revision và quyền sau response
+                    cache-->>deviceB: Hiển thị dữ liệu hiện hành nếu response còn hợp lệ
+                end
+            end
+        end
+    end
+    Note over deviceB,cache: Signal có thể bị bỏ lỡ. Quyền theo F07. Chỉ một số query có poll dự phòng
 ```
 
 Signal chỉ là gợi ý có thể bỏ lỡ/gộp/đến lặp; không mang snapshot đơn/menu để merge thẳng vào cache, không là audit bất biến. Quyền/catalog đi qua lifecycle F07; topic nghiệp vụ invalidate purpose tương ứng. Không giả định thứ tự quan sát giữa ACK của thiết bị A và signal ở thiết bị B; hình chỉ đặt cả hai sau commit.

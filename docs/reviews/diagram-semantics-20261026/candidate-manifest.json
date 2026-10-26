@@ -1,0 +1,26 @@
+{
+  "schema": "diagram-semantic-review-candidate-v1",
+  "source_manifest_sha256": "2929925805096f6dc2873fea2f076e9f84a395e83cb57257f316f1f9bdac2282",
+  "files": [
+    {
+      "path": "candidate/docs/workflow/tasks/diagram-semantic-review-2026-10-26/README.md",
+      "sha256": "d1f0fe4ed96a5403c3aa3a65b250cba2e4ec6cb3cc37193a1fa2e0cfe2e97be6",
+      "bytes": 10482
+    },
+    {
+      "path": "candidate/docs/workflow/tasks/diagram-semantic-review-2026-10-26/findings.md",
+      "sha256": "98ac55c0cd96b1bf12e05ac781b832ded585bc4f264fd346700c67b95e34c15c",
+      "bytes": 11144
+    },
+    {
+      "path": "candidate/docs/workflow/tasks/diagram-semantic-review-2026-10-26/traceability.md",
+      "sha256": "3d6afd5a39f6c49eb7d2212216a34abfa9c41c45b2a7fff4ef5db32f55a9827c",
+      "bytes": 42513
+    },
+    {
+      "path": "candidate/docs/workflow/tasks/diagram-semantic-review-2026-10-26/verification.md",
+      "sha256": "7c5273fbabb3b75a7b7b152c50f41843e23c33b9a26d30fdef71fccd642d7e2d",
+      "bytes": 5537
+    }
+  ]
+}

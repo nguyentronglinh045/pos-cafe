@@ -1,18 +1,10 @@
 # Bộ hình từ mô hình và luồng hiện hành
 
-Cập nhật 26/10/2026. Bộ **8 ERD + 8 sơ đồ luồng** được xuất từ Mermaid đã có ở [data model](../data-model.md) và [critical flows](../critical-flows.md). Các khối Mermaid giữ nguyên; SVG là bản xuất để đọc, phóng to và làm đầu vào dàn trang báo cáo. Không có yêu cầu hoặc hành vi hệ thống mới.
+Cập nhật 26/10/2026 sau review trực tiếp với code. Bộ **8 ERD + 8 sơ đồ luồng** dùng làm tài liệu đầu vào báo cáo; đọc cùng [data model](../data-model.md) và [critical flows](../critical-flows.md). Nguồn chính là main `711a22e71983e3d6aa17799649af05ce4c762555`. [Hồ sơ review ngữ nghĩa](../reviews/diagram-semantics-20261026/INDEX.md) giữ bảng truy vết và phân biệt origin, WIP, staging và DB trong cấu hình local.
 
-Nguồn đầu vào là docs `1751c2fefb7ce8accc2922af94b0083cf3321e3f`, mô tả main `711a22e71983e3d6aa17799649af05ce4c762555`. Các phạm vi metadata staging vẫn theo N1/N2; lượt xuất hình **không kiểm lại DB hoặc nghiệm thu sản phẩm**. Đọc chú thích và giới hạn bên cạnh Mermaid ở trang nguồn khi dùng từng hình; SVG riêng không thay toàn bộ phần giải thích.
+F04/F05/F07/F08 dùng bản sửa `2026-10-26-r2`; 12 hình còn lại dùng bản xuất đầu. Toàn bộ 16 SVG, manifest và config của bản đầu vẫn giữ nguyên để truy lại lịch sử. Không dùng bản F04 đầu để giải thích điểm rẽ retry sau khi đã có bản sửa.
 
-## Chọn hình và dùng đúng phạm vi
-
-- SVG giữ chữ và đường nét dạng vector, có title/description ghi nguồn. Chỉ giữ bản xuất SVG trên docs; PNG dùng kiểm hình ở artifact local được ghi hash trong manifest. Không đưa bundle renderer/browser vào Git.
-- Mã ERD-01–08 ở đây chỉ là tên hình xuất, không là requirement mới; F01–F08 giữ mã hình đã có. ERD thể hiện quan hệ FK chọn lọc, không phải mọi cột/FK. Bảng đứng riêng nghĩa là hình không nối FK, không có nghĩa nó độc lập về nghiệp vụ.
-- Đây là **hình kỹ thuật đầu vào**, chưa phải bộ hình dàn trang theo mẫu trường. ERD-05 rất rộng; F01/F02/F04/F05/F07 nhiều bước. Khi viết, chọn trang ngang hoặc tách hình và kiểm cỡ chữ, giữ đầy đủ nhánh/transaction/giới hạn; không ép mọi hình vào một trang nhỏ.
-- Phông Arial dùng từ hệ thống, không nhúng font. Đã kiểm ảnh ở Chromium của lượt này; cần kiểm lại sau nhập Word/PDF hoặc đổi font. Chưa xác minh bản in, máy in hay nội dung báo cáo cuối.
-- Hình kiến trúc tổng thể dành riêng cho báo cáo chưa được bổ sung trong gói này. HTML kiến trúc cũ và checklist H1–H4 vẫn chưa được xác minh hiển thị/tương tác/in; không dùng kết quả render SVG thay việc đó.
-
-## Danh mục hình
+## Danh mục hình hiện hành
 
 | Hình | Nội dung / nguồn giải thích | Bản SVG | Kích thước gốc |
 | --- | --- | --- | --- |
@@ -27,25 +19,29 @@ Nguồn đầu vào là docs `1751c2fefb7ce8accc2922af94b0083cf3321e3f`, mô t�
 | F01 | [F01 — Chọn phần thanh toán và kết quả tách đơn](../critical-flows.md#f01) | [Mở SVG](2026-10-26/flow-01.svg) | 1263 × 2351 |
 | F02 | [F02 — Đăng ký K và thực hiện giao dịch tài chính](../critical-flows.md#f02) | [Mở SVG](2026-10-26/flow-02.svg) | 812 × 1590 |
 | F03 | [F03 — Trạng thái bền vững của lệnh trên DB](../critical-flows.md#f03) | [Mở SVG](2026-10-26/flow-03.svg) | 1045 × 418 |
-| F04 | [F04 — Mất phản hồi, thử lại và tra cứu khôi phục](../critical-flows.md#f04) | [Mở SVG](2026-10-26/flow-04.svg) | 874 × 1601 |
-| F05 | [F05 — Đăng nhập nhân viên và phiên đổi PIN bắt buộc](../critical-flows.md#f05) | [Mở SVG](2026-10-26/flow-05.svg) | 833 × 1514 |
+| F04 | [F04 — Mất phản hồi, thử lại và tra cứu khôi phục](../critical-flows.md#f04) | [Mở SVG](2026-10-26-r2/flow-04.svg) | 874 × 1657 |
+| F05 | [F05 — Đăng nhập nhân viên và phiên đổi PIN bắt buộc](../critical-flows.md#f05) | [Mở SVG](2026-10-26-r2/flow-05.svg) | 1110 × 1763 |
 | F06 | [F06 — Hoàn tất đổi PIN bắt buộc trong một transaction](../critical-flows.md#f06) | [Mở SVG](2026-10-26/flow-06.svg) | 811 × 1194 |
-| F07 | [F07 — Làm mới authority và mất quyền khi đang thao tác](../critical-flows.md#f07) | [Mở SVG](2026-10-26/flow-07.svg) | 1478 × 1533 |
-| F08 | [F08 — Signal rồi đọc lại dữ liệu có quyền](../critical-flows.md#f08) | [Mở SVG](2026-10-26/flow-08.svg) | 1007 × 1030 |
+| F07 | [F07 — Làm mới authority và mất quyền khi đang thao tác](../critical-flows.md#f07) | [Mở SVG](2026-10-26-r2/flow-07.svg) | 1850 × 1574 |
+| F08 | [F08 — Signal rồi đọc lại dữ liệu có quyền](../critical-flows.md#f08) | [Mở SVG](2026-10-26-r2/flow-08.svg) | 1047 × 1441 |
 
-## Kết quả kiểm và tái xuất
+## Nội dung đã sửa
 
-[Manifest](2026-10-26/manifest.json) ghi source blob, vị trí/hash từng khối Mermaid, 16 hash SVG, kích thước, môi trường và hash PNG đã xem. [Cấu hình](2026-10-26/renderer-config.json) ghi style/layout, override độ rộng nhãn và bước thêm nền chữ sau render; [handoff](../workflow/tasks/docs-diagram-exports-2026-10-26.md) giữ review và phạm vi công việc.
+- **F04:** phân biệt kết quả execute của retry với kết quả get của lookup. Get pending rồi execute applied/rejected/expired phải đi theo kết quả execute; không bị diễn giải thành pending từ get cũ.
+- **F05:** nhánh applied về đăng nhập, lỗi PIN/input giữ màn, lỗi phiên/revision hoặc kết quả chưa rõ về đăng nhập. Điểm rẽ kết quả cũng giúp các đường nối không đi qua ô chặn gửi.
+- **F07:** response request/generation cũ hoặc đến sau deadline bị bỏ qua; deadline của lượt hiện hành vẫn đưa UI về unavailable. Không đồng nhất response cũ với lỗi phiên.
+- **F08:** ACK và signal sau commit không có thứ tự nhận bảo đảm. Nhánh nhận signal, lọc store và đọc query có điều kiện; vẫn có kiểm quyền/generation sau response. Signal có thể bị bỏ lỡ và chỉ một số query có poll dự phòng.
 
-16/16 khối đã qua parser và renderer Mermaid 12.2.0, xuất SVG thuần (không script, ảnh ngoài hoặc foreignObject). Kiểm hộp chữ nằm trong viewBox đạt; tác giả đã mở cả 16 PNG và rà chữ/nhánh/mũi tên. Review độc lập phát hiện đường nối xuyên chữ ở F02/F03/F06/F08; bản xuất đã thêm nền trắng cho nhãn và kiểm lại bốn hình này, không còn quan sát chữ bị cắt hoặc đường xuyên chữ ở kích thước gốc. Kiểm hộp chữ không tự phát hiện mọi đường giao nhau hoặc chứng minh bố cục trên mọi trình đọc. Đã chỉnh cấu hình để tên bảng/cột và mã PAYMENT_AMOUNT_TOO_LOW không bị ngắt giữa từ; không đổi text, node hoặc edge trong source.
+Các hình còn rút gọn tầng adapter/HTTP và một số nhánh chi tiết; chú thích ở trang nguồn là một phần của tài liệu. WIP thiếu guard trước begin và khác recipe ACL; DB local được cấu hình khác staging đã kiểm. [Các khác biệt còn mở](../reviews/diagram-semantics-20261026/INDEX.md#wip) không được giải quyết bằng việc sửa hình.
 
-Recipe tái xuất:
+## Nguồn, kiểm hình và tái xuất
 
-1. Lấy hai file Markdown ở đúng docs SHA trong manifest, trích 8 khối Mermaid mỗi file theo thứ tự. Chuẩn hóa CRLF→LF và giữ một newline cuối để kiểm `mermaid_sha256_lf`; không chép source từ screenshot.
-2. Dùng bundle Mermaid 12.2.0 tại URL/hash trong manifest, theo [API chính thức](https://mermaid.js.org/config/usage.html). Không đưa toàn bộ source dự án lên dịch vụ render bên ngoài. Lượt này chỉ tải bundle tĩnh; lúc render chặn mọi request mạng.
-3. Áp `base` trong cấu hình, gộp `erOverrides` cho ERD và `diagramOverrides` theo ID nếu có. Font Arial sẵn trên máy; đợi font sẵn trước parse/render. Dùng canvas trắng, layout Dagre, SVG text thay nhãn HTML.
-4. Gọi parser rồi renderer với từng khối; áp `postprocess` của cấu hình trên SVG đã gắn vào DOM. Đặt nền SVG trắng. Với state diagram, đặt fill/fill-opacity/opacity của `.edgeLabels rect.background` thành trắng/1/1. Với sequence, đo `getBBox()` của từng `text.messageText` ở trực tiếp dưới SVG; thêm tất cả rect nền trắng tại bbox (padding ngang 2, dọc 0 đơn vị SVG), rồi đưa các text đó lên cuối cùng trong cùng SVG. Không đổi tọa độ chữ, path, marker hoặc nội dung. Nếu cấu trúc DOM khác, dừng và kiểm lại thay vì áp lên tọa độ chưa biết.
-5. Ghi `width/height` từ viewBox, thêm title/description nguồn và xuất UTF-8 SVG; chụp PNG để kiểm. Các file SVG đã có có thể xem độc lập mà không cài renderer. Byte output có thể khác khi đổi runtime/font; bản đã duyệt được nhận diện bằng hash, không nhận bản mới chỉ vì cùng tên.
-6. Kiểm XML, link/nguồn và phạm vi; mở hình ở kích thước gốc, rồi kiểm lại bản nhập tài liệu đích. Reviewer kiểm độc lập trước khi cập nhật bộ hình trên docs.
+[Manifest r2](2026-10-26-r2/manifest.json) ghim blob/hash trang nguồn, dòng/hash của bốn khối Mermaid, hash SVG/PNG và môi trường renderer. Bốn file `.mmd` cùng thư mục là bản trích nguyên văn chuẩn LF từ trang nguồn. Blob/hash tránh vòng phụ thuộc giữa commit chứa manifest và chính manifest. [Manifest bản đầu](2026-10-26/manifest.json) tiếp tục nhận diện 12 hình đang dùng và 4 hình lịch sử.
 
-Không chạy suite sản phẩm, không mở HTML bị chặn trước đó, không tạo môi trường WSL/Docker hoặc thay DB. Kiểm hiện trạng/schema/source vẫn xem tại trang gốc; renderer không chứng minh các claim đó.
+Bốn hình r2 đã parse/render bằng Mermaid 12.2.0, kiểm XML không chứa script/foreignObject/tài nguyên ngoài, kiểm hộp chữ trong viewBox và xem PNG ở kích thước gốc. Kết quả review độc lập của candidate cuối được ghi tại [handoff](../workflow/tasks/docs-flow-corrections-2026-10-26.md). Review của bản xuất đầu và review ngữ nghĩa trước sửa là các checkpoint riêng, không tự duyệt bản sửa này.
+
+Recipe r2: lấy định nghĩa `.mmd` và kiểm hash; kiểm nó khớp khối Mermaid tương ứng trong trang nguồn theo blob/SHA256. Dùng bundle Mermaid 12.2.0 cùng URL/hash ở manifest, nạp local trong trang trống và chặn network. Áp `base` cùng overrides trong [config r2](2026-10-26-r2/renderer-config.json), đợi font Arial, parse rồi render. Đặt nền SVG trắng, width/height theo viewBox, thêm title/desc nguồn. Không tải renderer/browser vào repo.
+
+Postprocess giữ tọa độ chữ và đường nối: state dùng nền trắng cho `.edgeLabels rect.background`; sequence thêm rect trắng theo bbox của `text.messageText` (padding ngang 2, dọc 0), đặt các rect rồi chữ lên cuối cùng trong SVG. R2 áp thêm cùng nền cho `text.loopText, text.sectionTitle` trong group control-structure không có transform, đặt rect rồi chữ cuối cùng trong cùng group. Dừng nếu cấu trúc/tọa độ DOM khác giả định. Bước này tránh lifeline xuyên chữ, không đổi message/node/edge. Xuất SVG rồi chụp PNG, kiểm nhánh, mũi tên, chữ và hash trước khi dùng.
+
+SVG giữ vector; font hệ thống không nhúng nên cần kiểm lại khi nhập môi trường khác. ERD-05 và F07 rộng, một số flow dài; chưa nhận vừa một trang A4 hoặc đã kiểm Word/PDF/in. Chưa có hình kiến trúc tổng thể theo mẫu trường; HTML kiến trúc cũ không được mở hoặc xác minh trong lượt này. Các gate runtime/backend/deploy/hardware và P1-03/N4/H1–H4 còn mở.

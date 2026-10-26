@@ -2,6 +2,8 @@
 
 ## Đang theo dõi
 
+- [Sửa hình sau review ngữ nghĩa — 26/10/2026](docs-flow-corrections-2026-10-26.md): F04 phân biệt get/execute; làm rõ F05/F07/F08; giữ khác biệt WIP/DB và evidence gốc. Chỉ docs, không sửa code/DB.
+
 - [Xuất hình ERD/luồng — 26/10/2026](docs-diagram-exports-2026-10-26.md): 16 SVG từ Mermaid N1/N2 giữ nguyên; parser/render/kiểm hình và nguồn. P1-03 còn mở; không kiểm HTML cũ, code/DB hoặc runtime sản phẩm.
 
 - [N5 — Truy vết kiểm chứng và xuất bản N3–N5 — 26/10/2026](docs-test-traceability-2026-10-26.md): đủ21 FR/8 NFR có scenario/UC, ca kiểm, evidence hoặc khoảng thiếu; chỉ đọc source/artifact. Chủ dự án đã giao push toàn gói sau kiểm cuối với hai subagent; receipt review ở handoff. Các checkpoint “chưa push” của N3/N4 là lịch sử trước lượt này.

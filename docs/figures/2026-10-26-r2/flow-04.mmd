@@ -1,0 +1,31 @@
+flowchart TD
+    waitReply["Đang chờ register hoặc execute"]
+    uncertain["Timeout, offline hoặc vòng đời thao tác thay đổi"]
+    sent{"Register đã bắt đầu gửi?"}
+    safe["Nếu chưa gửi: coordinator bỏ attempt chưa đăng ký"]
+    unknown["Nếu đã gửi: kết quả chưa biết; server có thể đã commit"]
+    context{"Còn attempt trong phiên hiện tại?"}
+    retry["Người dùng bấm thử lại: get K rồi execute đúng K và payload cũ"]
+    lookup["Mở Tra cứu thao tác, chọn K đã lưu trên server"]
+    state{"Kết quả cuối của đường gọi?"}
+    terminal["Terminal: xem lịch sử riêng, đọc đơn hiện tại riêng"]
+    pending["Pending: người dùng chọn tiếp tục hoặc hủy lệnh"]
+    resume["Tiếp tục: get lại; chỉ execute nếu vẫn pending, dùng payload đã lưu"]
+    cancel["Hủy: gọi cancel; DB quyết định trạng thái hiện thời"]
+    absent["Không thấy K hoặc không có quyền: dừng, kiểm tra lại"]
+    noAuto["Reconnect không tự đăng ký, không tự gửi lại lệnh"]
+    waitReply --> uncertain
+    uncertain --> sent
+    sent -->|"Chưa"| safe
+    sent -->|"Rồi"| unknown
+    unknown --> context
+    context -->|"Có"| retry
+    context -->|"Đã đổi phiên hoặc mất bộ nhớ"| lookup
+    retry -->|"Kết quả execute"| state
+    lookup -->|"Kết quả get"| state
+    state -->|"applied, rejected, cancelled, expired"| terminal
+    state -->|"pending"| pending
+    state -->|"Không truy xuất được"| absent
+    pending -->|"Tiếp tục"| resume
+    pending -->|"Hủy"| cancel
+    unknown -.-> noAuto

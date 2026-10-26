@@ -1,0 +1,32 @@
+flowchart TD
+    login["Chọn nhân viên và nhập PIN 6 chữ số"]
+    verify["DB khóa identity, kiểm store, nhân viên active, PIN và role enabled"]
+    valid{"Đăng nhập hợp lệ?"}
+    fail["Báo lỗi đăng nhập hoặc role"]
+    required{"pin_change_required?"}
+    normal["Phiên normal 12 giờ, có authority"]
+    gate["UI bắt đầu lifecycle quyền F07"]
+    limited["Phiên required_pin_change 5 phút, không có authority nghiệp vụ"]
+    proof["Màn đổi PIN kiểm proof; kiểm lại khi focus hoặc online"]
+    canChange{"Proof còn hợp lệ và màn đang được phép gửi?"}
+    blocked["Chặn gửi khi chưa xác minh; phiên hết hạn thì về đăng nhập"]
+    submit["Nhập và xác nhận PIN mới; thực hiện F06"]
+    pinResult{"Kết quả đổi PIN?"}
+    done["Về đăng nhập; không tự cấp phiên normal"]
+    inputError["PIN/input không hợp lệ: giữ màn để sửa"]
+    ended["Lỗi phiên/revision hoặc kết quả chưa rõ: về đăng nhập"]
+    login --> verify
+    verify --> valid
+    valid -->|"Không"| fail
+    valid -->|"Có"| required
+    required -->|"Không"| normal
+    normal --> gate
+    required -->|"Có, owner"| limited
+    limited --> proof
+    proof --> canChange
+    canChange -->|"Không"| blocked
+    canChange -->|"Có"| submit
+    submit --> pinResult
+    pinResult -->|"applied"| done
+    pinResult -->|"PIN mới trùng PIN tạm hoặc input sai"| inputError
+    pinResult -->|"Lỗi phiên/revision hoặc unknown"| ended

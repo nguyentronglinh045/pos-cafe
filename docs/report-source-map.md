@@ -121,6 +121,8 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 
 Khi chuyển thành báo cáo, dùng diễn giải nghiệp vụ/thuật toán và sơ đồ phù hợp mẫu trường; bỏ chi tiết file/symbol/lệnh khỏi phần văn bản báo cáo theo quy tắc ở đầu trang. [Bộ SVG 26/10](figures/README.md) đã được parser/renderer kiểm và rà 16 ảnh ở kích thước gốc. P1-03 còn hình kiến trúc tổng thể, dàn trang/định dạng tham khảo theo mẫu và các evidence runtime đang thiếu; không đóng chỉ từ bộ hình này. [Handoff N2](workflow/tasks/docs-critical-flows-2026-10-26.md) giữ kiểm tra, review và commit.
 
+Bộ hình hiện hành đã sửa F04 và làm rõ F05/F07/F08 theo [review ngữ nghĩa](reviews/diagram-semantics-20261026/INDEX.md). Khi dùng trong báo cáo, ghi source O riêng với snapshot WIP; không lấy metadata staging S làm chứng minh DB local L hoặc deployment. FIN-WIP-02 chưa sửa code.
+
 ## Nguồn lý thuyết theo luận điểm — 26/10/2026
 
 [Bản đồ C01–C11](references.md#claims) là điểm tra cứu; các thẻ R/S giữ đúng bản, mục/trang, ngày đọc và giới hạn. Bảng này chỉ dẫn đường, tránh tạo danh mục tham khảo thứ hai.

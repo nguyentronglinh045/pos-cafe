@@ -1,0 +1,29 @@
+sequenceDiagram
+    participant deviceA as Thiết bị A
+    participant db as PostgreSQL
+    participant realtime as Realtime
+    participant deviceB as Thiết bị B
+    participant cache as Query theo purpose
+    deviceA->>db: Ghi nghiệp vụ qua RPC có quyền
+    db->>db: Cùng TX cập nhật dữ liệu và revision của signal
+    Note over deviceA,deviceB: Sau commit, ACK và signal không có thứ tự nhận bảo đảm
+    par Kết quả RPC khi ACK tới
+        db-->>deviceA: Kết quả RPC đã commit
+    and Kênh signal độc lập
+        opt Khi signal tới thiết bị B
+            db-->>realtime: Thay đổi đã commit ở bảng signal
+            realtime-->>deviceB: Gợi ý store, topic và revision
+            deviceB->>deviceB: Kiểm hình dạng signal và store
+            opt Signal hợp lệ cho store
+                deviceB->>cache: Invalidate các purpose liên quan
+                opt Query còn được phép đọc
+                    cache->>db: Đọc lại qua RPC
+                    db->>db: Kiểm phiên, quyền và phạm vi store hiện hành
+                    db-->>cache: Projection dữ liệu được phép
+                    cache->>cache: Kiểm generation, revision và quyền sau response
+                    cache-->>deviceB: Hiển thị dữ liệu hiện hành nếu response còn hợp lệ
+                end
+            end
+        end
+    end
+    Note over deviceB,cache: Signal có thể bị bỏ lỡ. Quyền theo F07. Chỉ một số query có poll dự phòng

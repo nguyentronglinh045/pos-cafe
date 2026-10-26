@@ -1,0 +1,139 @@
+{
+  "schema": "docs-diagram-corrections-v1",
+  "date": "2026-10-26",
+  "previous_docs": "27f8cfb89b52b2a562bf3c59d1806c3ccdd02c1a",
+  "code_source": "711a22e71983e3d6aa17799649af05ce4c762555",
+  "source_identity": "Git blob and SHA256 of current docs/critical-flows.md; verbatim LF Mermaid definitions included",
+  "figures": [
+    {
+      "id": "flow-04",
+      "title": "F04 — Mất phản hồi, thử lại và tra cứu khôi phục",
+      "source_path": "docs/critical-flows.md",
+      "source_git_blob": "05a149f621e60bc181ebe51b0e2ffd19abbcbd75",
+      "source_file_sha256": "ca0cdacc3cb7a5a4d84b2cd600d53167cd32879ced6a93d671080b74f4765002",
+      "source_line": 160,
+      "definition": "flow-04.mmd",
+      "mermaid_sha256_lf": "fc482ee8eb01515c4ff71d867d8abec79a86003665a89b47a7342a2495d646d7",
+      "svg": "flow-04.svg",
+      "svg_sha256": "e88c3e1936746857e0b3dec4f0acea40fdd9ef65b84d284d13797cba79be1906",
+      "svg_bytes": 48716,
+      "width_px": 874,
+      "height_px": 1657,
+      "labels_checked": 30,
+      "labels_outside_viewbox": 0,
+      "label_presentation": {
+        "stateLabelBackgrounds": 0,
+        "sequenceMessageBackgrounds": 0,
+        "sequenceGroupLabelBackgrounds": 0
+      },
+      "parser": "PASS",
+      "render": "PASS",
+      "local_qa_png": "flow-04.png",
+      "local_qa_png_sha256": "d5e14cba95bee6e437789fbd32e5460141b94327cc475c981582790760281862"
+    },
+    {
+      "id": "flow-05",
+      "title": "F05 — Đăng nhập nhân viên và phiên đổi PIN bắt buộc",
+      "source_path": "docs/critical-flows.md",
+      "source_git_blob": "05a149f621e60bc181ebe51b0e2ffd19abbcbd75",
+      "source_file_sha256": "ca0cdacc3cb7a5a4d84b2cd600d53167cd32879ced6a93d671080b74f4765002",
+      "source_line": 209,
+      "definition": "flow-05.mmd",
+      "mermaid_sha256_lf": "831ebc361293b9ff816eca4530e1fa52bd5fcfb21a42dae9344935956dc25620",
+      "svg": "flow-05.svg",
+      "svg_sha256": "b23e9fb07cc67b46ddfeeb2f9ee282f39c3327a2883fb74eae0b44d6e70b1a7c",
+      "svg_bytes": 46869,
+      "width_px": 1110,
+      "height_px": 1763,
+      "labels_checked": 31,
+      "labels_outside_viewbox": 0,
+      "label_presentation": {
+        "stateLabelBackgrounds": 0,
+        "sequenceMessageBackgrounds": 0,
+        "sequenceGroupLabelBackgrounds": 0
+      },
+      "parser": "PASS",
+      "render": "PASS",
+      "local_qa_png": "flow-05.png",
+      "local_qa_png_sha256": "11ea28c4891bb9ced4d25eecf515cdcfc94092fe8adb65b9d27c1c31994b7b69"
+    },
+    {
+      "id": "flow-07",
+      "title": "F07 — Làm mới authority và mất quyền khi đang thao tác",
+      "source_path": "docs/critical-flows.md",
+      "source_git_blob": "05a149f621e60bc181ebe51b0e2ffd19abbcbd75",
+      "source_file_sha256": "ca0cdacc3cb7a5a4d84b2cd600d53167cd32879ced6a93d671080b74f4765002",
+      "source_line": 290,
+      "definition": "flow-07.mmd",
+      "mermaid_sha256_lf": "c397474ba8643c68044a4483be281d5cf9c8510d8f5b49bc5b58a379b52e0f71",
+      "svg": "flow-07.svg",
+      "svg_sha256": "c68cc9fb3b1dd7b5030c3aace7631a11776af3ea094d0dc0bfa070581a927000",
+      "svg_bytes": 54731,
+      "width_px": 1850,
+      "height_px": 1574,
+      "labels_checked": 32,
+      "labels_outside_viewbox": 0,
+      "label_presentation": {
+        "stateLabelBackgrounds": 0,
+        "sequenceMessageBackgrounds": 0,
+        "sequenceGroupLabelBackgrounds": 0
+      },
+      "parser": "PASS",
+      "render": "PASS",
+      "local_qa_png": "flow-07.png",
+      "local_qa_png_sha256": "3671ab5c4b836ab89359d93b5e45ad4302c31ffa3d2ef51b3a7f1b62ec5e3b22"
+    },
+    {
+      "id": "flow-08",
+      "title": "F08 — Signal rồi đọc lại dữ liệu có quyền",
+      "source_path": "docs/critical-flows.md",
+      "source_git_blob": "05a149f621e60bc181ebe51b0e2ffd19abbcbd75",
+      "source_file_sha256": "ca0cdacc3cb7a5a4d84b2cd600d53167cd32879ced6a93d671080b74f4765002",
+      "source_line": 343,
+      "definition": "flow-08.mmd",
+      "mermaid_sha256_lf": "8faafdabf05bbc33d422db8865e82ed7610a0f5fb2d44d97b632fd6dc7f36fcc",
+      "svg": "flow-08.svg",
+      "svg_sha256": "ea661b76cc6004f6207d528da2366de4dd8746016d3f158497e3e615fc4fd715",
+      "svg_bytes": 44463,
+      "width_px": 1047,
+      "height_px": 1441,
+      "labels_checked": 48,
+      "labels_outside_viewbox": 0,
+      "label_presentation": {
+        "stateLabelBackgrounds": 0,
+        "sequenceMessageBackgrounds": 23,
+        "sequenceGroupLabelBackgrounds": 5
+      },
+      "parser": "PASS",
+      "render": "PASS",
+      "local_qa_png": "flow-08.png",
+      "local_qa_png_sha256": "2dbbf13f86b96da55851317cdfd33a1251d6a311af89bf11707998930a7d746d"
+    }
+  ],
+  "renderer": {
+    "name": "Mermaid",
+    "version": "12.2.0",
+    "bundle_url": "https://cdn.jsdelivr.net/npm/mermaid@12.2.0/dist/mermaid.min.js",
+    "bundle_sha256": "a8a6a6f805b074a8261a2825c86f99c8054acb3b35f50bb7e24a4f9f2c3c3b9f",
+    "bundle_bytes": 5494801,
+    "config_file": "renderer-config.json",
+    "config_sha256": "03d966321ce709fcdd01ff115216ad46968d99b4251e72ca613dc8fd6747066e",
+    "browser": "151.0.7922.34",
+    "playwright_version": "1.62.1",
+    "font": "Arial, system font; not embedded",
+    "render_network_requests": 0,
+    "postprocess_version": 2
+  },
+  "visual_qa_pngs_local_root": "C:/Users/nguye/.codex/visualizations/2026/10/25/01a1722d-2ed2-7610-bd8c-eee18bc8de1f/docs-flow-corrections-20261026/rendered",
+  "counts": {
+    "corrected": 4,
+    "retained_from_first_export": 12,
+    "svg_bytes": 194779
+  },
+  "limits": [
+    "Code inspection and static rendering, no new product/DB runtime test",
+    "Origin main and WIP are distinct; local configured DB was not the observed staging",
+    "Original 16 SVG and manifest retained byte-for-byte",
+    "Not verified in Word/PDF/print or the historical HTML"
+  ]
+}

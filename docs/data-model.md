@@ -4,6 +4,8 @@
 
 Đối chiếu ngày **26/10/2026**, source `main@711a22e71983e3d6aa17799649af05ce4c762555`. Trang này giữ mô hình, ERD và giải thích nghiệp vụ; [từ điển dữ liệu](data-dictionary.md) giữ chi tiết bảng/cột/ràng buộc; [thuật ngữ](glossary.md) thống nhất cách gọi. Nhánh docs là nguồn viết báo cáo, không là bản báo cáo hoàn chỉnh.
 
+[Review ngữ nghĩa 26/10](reviews/diagram-semantics-20261026/INDEX.md) đã đối chiếu 36 cạnh FK trên nguồn O/W và catalog staging S; ERD giữ nguyên. DB trong cấu hình local L chưa được xác minh là cùng S.
+
 ## Phạm vi và cách đọc mô hình
 
 Mô hình gồm nền nghiệp vụ và phần mở rộng quyền/phiên/ledger/registry trong **source candidate**, sau các bước chuyển đổi mà controller mô tả. Ngày26/10/2026 đã [đối chiếu catalog DB staging qua MCP chỉ đọc](implementation-log/staging-schema-20261026/README.md): đủ 35 bảng/332 cột của mô hình; tên/kiểu/NULL, 35 PK, 69 FK (cột hai phía và ON DELETE) và 24 UNIQUE (bộ cột) khớp inventory source. Staging có thêm một bảng marker kỹ thuật riêng, tổng 36 bảng/335 cột. Có schema trên staging không đóng gate nghiệm thu backend đang **HOLD**, không xác nhận production hoặc hành vi runtime.
