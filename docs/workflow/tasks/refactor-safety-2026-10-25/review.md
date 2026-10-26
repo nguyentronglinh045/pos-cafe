@@ -55,3 +55,18 @@ Manifest lấy hợp `git diff HEAD --name-only -z` và `git ls-files --others -
 Publisher dùng Git objects/tree/commit riêng, không checkout docs và không dùng main index; cập nhật docs bằng compare-and-swap sau review rồi push fast-forward. Mọi file ngoài năm đường được phép phải giữ blob gốc. Nếu refs/WIP drift thì dừng để đối chiếu; không tự ghi đè hoặc force-push. Không cài gói, tạo runtime/worktree hoặc sinh bản sao source.
 
 Phép kiểm nội dung: đường đọc tới spec/quyết định/evidence, nguồn O/W/S/L và phần chưa chạy; đường dẫn/anchor nội bộ, diff/allowlist và bảo toàn source/index/WIP. Không chạy app tests/backend/browser. Kết quả kiểm, candidate cuối và verdict độc lập sẽ được ghi tiếp dưới đây sau khi có thực tế; review 25/10 phía trên không tự áp dụng cho delta này.
+
+### Kết quả kiểm và review độc lập
+
+Candidate nội dung `be692509955bab7b9ab9ef29b9e424da10a28df0`, parent `afa7640813e33075e21bc71f1dffe9b766a8bc50`, được kiểm ngày 26/10/2026. Hai reviewer chỉ đọc và không tham gia viết candidate.
+
+| Reviewer | Phạm vi và verdict |
+| --- | --- |
+| `/root/review_docs_status` | **APPROVE**: nguồn/bàn giao, expected theo baseline và delta, RF-I15, findings WIP, phạm vi N4/HTML/báo cáo và gates trước extraction. Không có finding chặn. Không kiểm thực thi publisher. |
+| `/root/review_handoff_preservation` | **APPROVE**: đúng năm Markdown, bảo toàn nội dung lịch sử, fingerprint main/WIP/lockfile/checkout, nguồn và quyền; liên kết đích hợp lệ, remote tại lúc review khớp nguồn. Không có finding chặn; recipe CAS/push được rà, execution publication chưa chạy lúc verdict. |
+
+Tác giả kiểm 70 link nội bộ, 12 lần dẫn anchor và 12 link source local; các đích tồn tại. Reviewer bảo toàn kiểm độc lập 70 link và chín anchor đích khác nhau. Diff-check/allowlist đạt; thân kế hoạch README ngày 25/10 và review cũ giữ nguyên. HEAD/status/index, manifest 553 đường/551 file, checkout main711/lockfile và registry khớp bảng fingerprint trước sửa. Toàn bộ blobs ngoài năm file cho phép giữ nguyên theo diff cây Git.
+
+Không có app test, backend, browser, migration, deploy hoặc baseline refactor mới. Việc hoàn tất ở đây là **bàn giao đầu vào docs**; RF-00/01 đầy đủ, baseline RF-02 và triển khai code vẫn chưa được nhận hoàn tất. Hai verdict không thay review/test của phần refactor sau này.
+
+Sau verdict chỉ bổ sung metadata kiểm/review này; bốn file nội dung còn lại giữ đúng candidate đã duyệt. Publication phải recheck local/remote refs và fingerprint, cập nhật docs bằng CAS rồi push không force; kết quả remote cuối được kiểm riêng và báo trong bàn giao chat. Không tạo worktree, file tạm, bản sao runtime hoặc dùng index main. Lượt này không xóa dữ liệu; Git blobs/trees/commits là hồ sơ cần giữ.
