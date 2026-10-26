@@ -29,3 +29,18 @@ Kiểm trước review: diff whitespace, liên kết nội bộ/anchor, tham chi
 ## Đường đọc cho chủ dự án và phần còn lại
 
 Đọc bảng C01–C11 trước, mở thẻ R/S khi cần giải thích; dùng source map để lấy đầu vào báo cáo. Đã cung cấp đường đọc, chưa nhận chủ dự án đã đọc/hiểu hoặc nghiệm thu. N4/N5 làm khi được giao tiếp; mẫu trường, nguồn backlog cần cho luận điểm mới, hình xuất bản và bằng chứng sản phẩm còn riêng.
+
+## Receipt hoàn tất đầu ra N3 — 26/10/2026
+
+Hai reviewer độc lập **APPROVE** candidate `060f4176e542c1f4d6bff428320dfb7c1dfa6f22`, base `d75e41ec40a3287da054b023594fb087d412d983`, checklist SHA256 `db287fc0f2c7d9077aa266cfadf982eb81a747e3591c103e2c4f2d23c0dfd181`.
+
+| Reviewer | Phạm vi và kết quả |
+| --- | --- |
+| `/root/review_knowledge` | C01–C11, các nguồn R/S, vị trí đọc và giới hạn; đối chiếu nguồn gốc online cùng các đoạn code ghim trọng yếu. APPROVE, không có finding chặn. |
+| `/root/review_preservation` | Authorization, preservation, provenance, navigation và checklist; giữ đủ 33 nguồn cũ, bốn PDF local khớp hash, link/source hợp lệ. APPROVE, không có finding. |
+
+Candidate đầu `8c1b0457200ed1b734915799ab1735c712c134c1` đã được cả hai duyệt. Một điểm biên tập không chặn do tác giả tự phát hiện và reviewer knowledge xác nhận: đổi “sách NIST/ASVS” thành “chuẩn NIST/ASVS”. Hai reviewer đã kiểm delta và xác nhận lại candidate cuối; không còn finding.
+
+Kiểm cuối đúng candidate: **8 Markdown, 231 liên kết nội bộ, 75 tham chiếu code ghim, 11 luận điểm, 10 thẻ nguồn, 26 nguồn backlog**; diff-check sạch. Diff chỉ trong allowlist docs; main WIP, mọi spec/requirement và evidence cũ giữ nguyên. Checklist chỉ tích N3 và thêm nhật ký. Sau verdict chỉ bổ sung metadata receipt này, không đổi nội dung đã duyệt.
+
+Không nhận đã đọc toàn văn mọi sách/bài, kiểm bản in gốc R01, mọi trang ảnh PDF, runtime/DB/bảo mật hoặc tuân thủ. N3 hoàn tất đầu ra tài liệu, commit local và **chưa push**. Phần N2 đã xuất bản tại d75e41e theo yêu cầu ở đầu lượt. P1-03/N4/N5/H1–H4, mẫu trích dẫn và evidence sản phẩm còn theo trạng thái riêng.
