@@ -52,3 +52,9 @@ Không nhận đã đọc toàn văn mọi sách/bài, kiểm bản in gốc R01
 Chủ dự án hỏi sự cần thiết và đề xuất bỏ các nguồn chưa đọc để tránh loãng thông tin. Đã bỏ toàn bộ danh sách 26 mục cùng đoạn lịch sử biên tập không cần thiết khỏi trang tham khảo; cập nhật README/source map và chỉ dẫn đọc để không còn trỏ tới danh sách chờ. Danh sách cũ vẫn có trong Git tại commit b12fc03, không tạo thêm một trang backlog/archive thay thế. Chỉ bổ sung nguồn khi một luận điểm mới thực sự cần và đã đọc phần liên quan.
 
 Giữ nguyên bảng C01–C11, 8 thẻ R, 2 thẻ S và các giới hạn đọc/áp dụng/tuân thủ. Không đổi spec, evidence gốc, code, DB hoặc gate. Checklist local chỉ thêm nhật ký, không đổi tick. Đây là bảo trì tài liệu nhẹ: một reviewer độc lập kiểm toàn diff, tính nhất quán và bảo toàn; verdict/candidate ghi ở receipt sau kiểm. Các receipt N3 phía trên giữ nguyên ý nghĩa lịch sử, không nhận kiểm cũ thành kiểm mới. Chưa push gói N3 hoặc phần chỉnh gọn này.
+
+### Receipt chỉnh gọn — 26/10/2026
+
+Reviewer độc lập `/root/review_preservation` **APPROVE** candidate `6a42f9c3fc518d9f6cafc785d2d485e9ce6a004f`, base `b12fc037604a81e6536199691f30a564f3acefb1`, checklist SHA256 `d012c6c83885a8d190dc34b0465cb3b382aa208da3a092ed4c59851f40553559`. Không có finding chặn. Phạm vi bảo trì nhẹ chỉ loại nguồn chưa sử dụng và cập nhật chỉ dẫn; một reviewer theo gate hiện hành, không thay nội dung phân quyền/giao dịch hoặc cơ chế đóng gate.
+
+Kiểm: 4 Markdown, 130 liên kết nội bộ và 9 tham chiếu code ghim hợp lệ; bảng C01–C11 và 10 thẻ R/S nguyên văn; không còn backlog/chỉ dẫn tới backlog trên ba trang tra cứu chính; diff-check sạch. Main WIP, spec và evidence cũ không đổi; checklist chỉ nối nhật ký. Sau verdict chỉ bổ sung metadata receipt này. Commit docs local, chưa push; không kiểm code/runtime/DB.
