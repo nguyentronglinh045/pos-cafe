@@ -18,7 +18,7 @@ Kho tri thức để AI tra cứu tính năng, thiết kế, quyết định và
 | --- | --- |
 | Tính năng A đang ở đâu, có gì còn thiếu? | [Danh mục tính năng và mục tiêu](features.md#danh-mục-tra-cứu) → FR/spec/decision/evidence |
 | Spec và code khác nhau, đọc cái nào? | [Đối chiếu 16 capability và delta](spec-reconciliation.md) |
-| Phần tiểu luận cũ còn được bảo toàn không? | [Bản đồ hồi quy](regression-map.md); không suy danh mục là PASS |
+| Phần tiểu luận cũ còn được bảo toàn không? | [Ma trận21 FR/8 NFR](regression-map.md): scenario/UC → ca kiểm → evidence/khoảng thiếu; không suy danh mục là PASS |
 | Viết yêu cầu, tìm mã FR/NFR | [Requirements](requirements.md); hợp đồng chi tiết ở [OpenSpec](../openspec/README.md) |
 | Hiểu màn hình và quyền mở màn | [Screens](screens.md) |
 | Giải thích lựa chọn công nghệ | [Chỉ mục quyết định và nguồn chốt](workflow/decisions.md), [Tech stack](tech-stack.md); [trang giải thích kiến trúc hiện hành](architecture-explainer.html) có bản đồ tầng, ranh giới quyền và luồng đọc/thanh toán ghim source; không là bằng chứng runtime |

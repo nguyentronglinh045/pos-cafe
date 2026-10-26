@@ -2,6 +2,8 @@
 
 ## Đang theo dõi
 
+- [N5 — Truy vết kiểm chứng và xuất bản N3–N5 — 26/10/2026](docs-test-traceability-2026-10-26.md): đủ21 FR/8 NFR có scenario/UC, ca kiểm, evidence hoặc khoảng thiếu; chỉ đọc source/artifact. Chủ dự án đã giao push toàn gói sau kiểm cuối với hai subagent; receipt review ở handoff. Các checkpoint “chưa push” của N3/N4 là lịch sử trước lượt này.
+
 - [N4 — Hòa giải seed/Settings và khóa store — 26/10/2026](docs-requirements-reconciliation-2026-10-26.md): đã đối chiếu và ghi quyết định chủ dự án — nhận vị trí retry hiện tại, hoãn reseed sau xóa, giữ khóa store trong G04; còn đặc tả/kiểm chứng khi triển khai, chỉ docs.
 - [N3 — Tài liệu tham khảo theo luận điểm — 26/10/2026](docs-academic-references-2026-10-26.md): tám nguồn nền tảng, hai chuẩn đối chiếu, C01–C11 và giới hạn; phần2 đã push tại d75e41e. Chỉ docs, không code/DB.
 

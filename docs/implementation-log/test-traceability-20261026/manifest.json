@@ -1,0 +1,106 @@
+{
+  "schema": "docs-test-evidence-index-v1",
+  "indexed_on": "2026-10-26",
+  "new_product_execution": false,
+  "source": "cf8e304869ad0e92c491736790f59bff1b6f9dcc",
+  "comparison_main": "711a22e71983e3d6aa17799649af05ce4c762555",
+  "source_tree": "395953d26e9702e307c49ed62a3a7773575be00d",
+  "comparison_tree": "395953d26e9702e307c49ed62a3a7773575be00d",
+  "source_attribution": "Existing UI integration handoff and review attribute the run to cf8e304; git tree equality verified during N5. Raw filenames alone are not source attestation.",
+  "source_receipts": [
+    {
+      "docs_commit": "3834a5501eedfc3e697f7763802a1d184c2769dd",
+      "path": "docs/workflow/tasks/ui-main-docs-integration-2026-10-25.md",
+      "git_blob": "7d138d139b5eeb9e5d4d458ee5bc6617913d41c9"
+    },
+    {
+      "docs_commit": "3834a5501eedfc3e697f7763802a1d184c2769dd",
+      "path": "docs/implementation-log/ui-main-docs-integration-review-2026-10-25.md",
+      "git_blob": "476694750a6fff15bf478d636027809f528ba82a"
+    }
+  ],
+  "raw_local_root": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code/artifacts/ui-integration-20261025",
+  "raw_files": [
+    {
+      "path": "b03-cf8e304-unit.log",
+      "bytes": 312,
+      "sha256": "d777a738a5ab3946f45407ec6b3105cd47548cd46121e01363a4cb2b7b0ca510"
+    },
+    {
+      "path": "b03-cf8e304-build.log",
+      "bytes": 791,
+      "sha256": "b866120b7c5e54063310102a17b4572fbfdf77f7ebfa823c09a2c5abeb3f63d9"
+    },
+    {
+      "path": "b03-cf8e304-browser/results.json",
+      "bytes": 31455,
+      "sha256": "3229f719a5b6746bd3c4e821c50240db39a684727e40feff6ce4df6b0f4aeffd"
+    },
+    {
+      "path": "b03-cf8e304-smoke.json",
+      "bytes": 128077,
+      "sha256": "622e93ae39a9530d75d685d13802e755acbe0bc8e2c43085e6a7e95141dfcebf"
+    },
+    {
+      "path": "final-receipt.json",
+      "bytes": 1714,
+      "sha256": "6efe85e09a251c79150de61af0525575e83e0ddd42b7afe09f090d302dd6adc8"
+    }
+  ],
+  "unit": {
+    "reported_result": "PASS",
+    "files_passed": 113,
+    "tests_passed": 1201,
+    "granularity": "suite_total_only; no per-case or per-file result in inspected unit log",
+    "runner": "Vitest 4.1.11",
+    "coverage_measured": false
+  },
+  "build": {
+    "reported_result": "PASS",
+    "command": "npm run build",
+    "script": "tsc -b && vite build",
+    "warning": "chunk exceeds 500 kB; build success is not a performance result"
+  },
+  "browser_runs": {
+    "B": {
+      "raw_relative_path": "b03-cf8e304-browser/results.json",
+      "stats": {
+        "startTime": "2026-10-25T05:38:52.530Z",
+        "duration": 49493.640999999996,
+        "expected": 26,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "records": 26,
+      "pass": 26,
+      "skip": 0
+    },
+    "S": {
+      "raw_relative_path": "b03-cf8e304-smoke.json",
+      "stats": {
+        "startTime": "2026-10-25T05:38:53.273Z",
+        "duration": 82216.53199999999,
+        "expected": 44,
+        "skipped": 37,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "records": 81,
+      "pass": 44,
+      "skip": 37
+    }
+  },
+  "derived_files": [
+    {
+      "path": "browser-cases.json",
+      "sha256": "62e6c03a3c3d911e07db76ca55bfe1601638e0a911f386b87cb27a0107d6bf26"
+    }
+  ],
+  "limitations": [
+    "No new test run on main merge SHA",
+    "No current full backend acceptance",
+    "Raw files remain local and are not republished",
+    "No hardware, live deployment or performance measurement"
+  ]
+}

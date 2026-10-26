@@ -21,7 +21,11 @@ Bản đồ này nối nhóm tính năng với nguồn đã có, không tạo m�
 
 **Khả năng truy cập:** các link tương đối ở bảng dẫn tới receipt/spec/review trong docs. Với đường checkout cũ hoặc raw local, tra [hồ sơ gom kho và relocation](workflow/tasks/archive-consolidation-2026-10-25.md) trước khi kết luận file mất. Chưa xác minh lại từng file ngoài Git; không gọi đường local là bản evidence đã xuất bản. Không sửa byte frozen receipt để cập nhật đường dẫn.
 
-**Phần cần thu thập khi thực hiện:** evidence backend đủ gate trên source được chọn; URL/version Vercel và smoke chức năng; measurement hiệu năng/realtime theo kịch bản; restore/backup gắn scope và điều kiện; kiểm thiết bị thật; traceability từng TC. Dữ liệu thiếu giữ trạng thái thiếu, không chạy thêm suite chỉ để điền bảng tài liệu.
+**Phần cần thu thập khi thực hiện:** evidence backend đủ gate trên source được chọn; URL/version Vercel và smoke chức năng; measurement hiệu năng/realtime theo kịch bản; restore/backup gắn scope và điều kiện; kiểm thiết bị thật; receipt chi tiết cho những TC còn thiếu trong [ma trận FR/NFR](regression-map.md). Dữ liệu thiếu giữ trạng thái thiếu, không chạy thêm suite chỉ để điền bảng tài liệu.
+
+## Truy vết từng yêu cầu — 26/10/2026
+
+[Ma trận21 FR/8 NFR](regression-map.md) đã tách từng yêu cầu, nối scenario/UC với ca cụ thể và phần còn thiếu. [Chỉ mục evidence N5](implementation-log/test-traceability-20261026/README.md) trích các kết quả từng ca/project của hai report browser cũ, đồng thời chỉ nhận unit ở mức tổng suite. Đây là đọc lại artifact có sẵn và kiểm tree bằng nhau; không phải run mới hoặc đóng backend acceptance. Các raw được kiểm hash trong manifest vẫn local, không tuyên bố toàn bộ raw đã xuất bản. Khoảng trống mang đi/phiếu bếp/bộ lọc và các gate hiện hành vẫn mở.
 
 ## Nguồn tích hợp UI — 25/10/2026
 

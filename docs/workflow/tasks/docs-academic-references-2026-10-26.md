@@ -1,5 +1,7 @@
 # N3 — Tài liệu tham khảo theo luận điểm
 
+> **Cập nhật phạm vi xuất bản26/10:** chủ dự án đã giao kiểm cuối với subagent rồi push gói N3–N5 tại [handoff N5](docs-test-traceability-2026-10-26.md). Các câu “chưa push/chưa giao N5” và receipt bên dưới giữ bối cảnh checkpoint trước đó; không phải giới hạn ủy quyền hiện tại.
+
 Ngày26/10/2026. [Nguồn chuẩn](../../references.md) · [Bản đồ báo cáo](../../report-source-map.md) · [N2 trước đó](docs-critical-flows-2026-10-26.md).
 
 **Trạng thái sau chỉnh gọn ngày26/10/2026:** chủ dự án chọn bỏ danh sách 26 nguồn chưa đọc để tránh loãng thông tin. `references.md` hiện chỉ giữ 8 nguồn nền tảng và 2 chuẩn có phần đã đọc, gắn C01–C11. Các con số backlog và receipt bên dưới ghi checkpoint N3 trước chỉnh gọn; xem cập nhật cuối hồ sơ.

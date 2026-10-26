@@ -1,0 +1,1429 @@
+{
+  "schema": "docs-browser-case-index-v1",
+  "kind": "derived_index_not_new_execution",
+  "source": "cf8e304869ad0e92c491736790f59bff1b6f9dcc",
+  "equivalent_main_tree": "395953d26e9702e307c49ed62a3a7773575be00d",
+  "runs": {
+    "B": {
+      "raw_relative_path": "b03-cf8e304-browser/results.json",
+      "stats": {
+        "startTime": "2026-10-25T05:38:52.530Z",
+        "duration": 49493.640999999996,
+        "expected": 26,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "records": 26,
+      "pass": 26,
+      "skip": 0
+    },
+    "S": {
+      "raw_relative_path": "b03-cf8e304-smoke.json",
+      "stats": {
+        "startTime": "2026-10-25T05:38:53.273Z",
+        "duration": 82216.53199999999,
+        "expected": 44,
+        "skipped": 37,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "records": 81,
+      "pass": 44,
+      "skip": 37
+    }
+  },
+  "cases": [
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 59,
+      "title": "matrix 568x320 full/change/partial",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 59,
+      "title": "matrix 844x390 full/change/partial",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 59,
+      "title": "matrix 1920x1080 full/change/partial",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 112,
+      "title": "state missing",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 112,
+      "title": "state loading",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 112,
+      "title": "state error",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 112,
+      "title": "state empty",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 112,
+      "title": "state paid",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 112,
+      "title": "state void",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 112,
+      "title": "state deny",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 112,
+      "title": "state cashier",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 133,
+      "title": "keyboard focus, receipt overlay, Escape and touch controls",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 181,
+      "title": "authority gate keeps hidden payment dialogs out of keyboard handling",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 191,
+      "title": "receipt authority recovery rebinds keyboard focus for provisional and initial receipts",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 233,
+      "title": "money input, quick options, insufficient and refetch intent",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 253,
+      "title": "offline, pending, unknown and conflict keep recovery/close reachable",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 272,
+      "title": "full success receipt remains keyboard accessible after drawer unmount",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 292,
+      "title": "persistent status toast does not block footer actions",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/b03/payment.spec.ts",
+      "line": 311,
+      "title": "software keyboard visual viewport keeps amount and footer reachable",
+      "project": "B03",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/integration/areas.spec.ts",
+      "line": 46,
+      "title": "area strip 568x320: 1/2/5/6 and long names",
+      "project": "integration",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/integration/areas.spec.ts",
+      "line": 46,
+      "title": "area strip 844x390: 1/2/5/6 and long names",
+      "project": "integration",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/integration/areas.spec.ts",
+      "line": 46,
+      "title": "area strip 1920x1080: 1/2/5/6 and long names",
+      "project": "integration",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/integration/journey.spec.ts",
+      "line": 15,
+      "title": "floor to order dirty-exit to split/full payment to floor 568",
+      "project": "integration",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/integration/journey.spec.ts",
+      "line": 59,
+      "title": "floor to new modifier order to kitchen to payment 568",
+      "project": "integration",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/integration/journey.spec.ts",
+      "line": 15,
+      "title": "floor to order dirty-exit to split/full payment to floor 1920",
+      "project": "integration",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "B",
+      "file": "tests/ui-remake/integration/journey.spec.ts",
+      "line": 59,
+      "title": "floor to new modifier order to kitchen to payment 1920",
+      "project": "integration",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 86,
+      "title": "portrait shows rotation guidance after login and restores POS on landscape",
+      "project": "desktop",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 86,
+      "title": "portrait shows rotation guidance after login and restores POS on landscape",
+      "project": "tablet-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 86,
+      "title": "portrait shows rotation guidance after login and restores POS on landscape",
+      "project": "phone-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 86,
+      "title": "portrait shows rotation guidance after login and restores POS on landscape",
+      "project": "small-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 86,
+      "title": "portrait shows rotation guidance after login and restores POS on landscape",
+      "project": "portrait",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 20,
+      "title": "employees rows remain selectable through ordinary scrolling",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 40,
+      "title": "payment selection and quantity controls stay accessible without paying",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 20,
+      "title": "employees rows remain selectable through ordinary scrolling",
+      "project": "tablet-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 40,
+      "title": "payment selection and quantity controls stay accessible without paying",
+      "project": "tablet-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 20,
+      "title": "employees rows remain selectable through ordinary scrolling",
+      "project": "phone-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 40,
+      "title": "payment selection and quantity controls stay accessible without paying",
+      "project": "phone-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 20,
+      "title": "employees rows remain selectable through ordinary scrolling",
+      "project": "small-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 40,
+      "title": "payment selection and quantity controls stay accessible without paying",
+      "project": "small-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 20,
+      "title": "employees rows remain selectable through ordinary scrolling",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/permission-ui-closeout.spec.ts",
+      "line": 40,
+      "title": "payment selection and quantity controls stay accessible without paying",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 92,
+      "title": "portrait pre-login flow keeps primary actions reachable",
+      "project": "desktop",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 119,
+      "title": "POS mock flow keeps primary actions visible on landscape viewports",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 131,
+      "title": "ordering an item with modifiers opens the picker and adds the choice to the cart",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 150,
+      "title": "floor plan stage keeps demo layout readable across landscape viewports",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 206,
+      "title": "admin mock modules are reachable without changing URL",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 283,
+      "title": "floor toolbar actions stay fully inside the floor workspace",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 311,
+      "title": "sample floor shows varied image decor across both areas",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 339,
+      "title": "round tables stay visually circular in the editor and POS floor",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 362,
+      "title": "wall, decor and table backgrounds persist from editor to POS floor",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 408,
+      "title": "employee permission editor gates payment after re-login",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 441,
+      "title": "payment drawer exposes complete action for occupied table",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 449,
+      "title": "payment drawer keeps secondary text readable on landscape viewports",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 462,
+      "title": "payment drawer keeps readable controls across approved landscape breakpoints",
+      "project": "desktop",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 92,
+      "title": "portrait pre-login flow keeps primary actions reachable",
+      "project": "tablet-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 119,
+      "title": "POS mock flow keeps primary actions visible on landscape viewports",
+      "project": "tablet-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 131,
+      "title": "ordering an item with modifiers opens the picker and adds the choice to the cart",
+      "project": "tablet-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 150,
+      "title": "floor plan stage keeps demo layout readable across landscape viewports",
+      "project": "tablet-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 206,
+      "title": "admin mock modules are reachable without changing URL",
+      "project": "tablet-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 283,
+      "title": "floor toolbar actions stay fully inside the floor workspace",
+      "project": "tablet-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 311,
+      "title": "sample floor shows varied image decor across both areas",
+      "project": "tablet-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 339,
+      "title": "round tables stay visually circular in the editor and POS floor",
+      "project": "tablet-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 362,
+      "title": "wall, decor and table backgrounds persist from editor to POS floor",
+      "project": "tablet-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 408,
+      "title": "employee permission editor gates payment after re-login",
+      "project": "tablet-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 441,
+      "title": "payment drawer exposes complete action for occupied table",
+      "project": "tablet-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 449,
+      "title": "payment drawer keeps secondary text readable on landscape viewports",
+      "project": "tablet-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 462,
+      "title": "payment drawer keeps readable controls across approved landscape breakpoints",
+      "project": "tablet-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 92,
+      "title": "portrait pre-login flow keeps primary actions reachable",
+      "project": "phone-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 119,
+      "title": "POS mock flow keeps primary actions visible on landscape viewports",
+      "project": "phone-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 131,
+      "title": "ordering an item with modifiers opens the picker and adds the choice to the cart",
+      "project": "phone-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 150,
+      "title": "floor plan stage keeps demo layout readable across landscape viewports",
+      "project": "phone-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 206,
+      "title": "admin mock modules are reachable without changing URL",
+      "project": "phone-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 283,
+      "title": "floor toolbar actions stay fully inside the floor workspace",
+      "project": "phone-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 311,
+      "title": "sample floor shows varied image decor across both areas",
+      "project": "phone-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 339,
+      "title": "round tables stay visually circular in the editor and POS floor",
+      "project": "phone-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 362,
+      "title": "wall, decor and table backgrounds persist from editor to POS floor",
+      "project": "phone-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 408,
+      "title": "employee permission editor gates payment after re-login",
+      "project": "phone-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 441,
+      "title": "payment drawer exposes complete action for occupied table",
+      "project": "phone-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 449,
+      "title": "payment drawer keeps secondary text readable on landscape viewports",
+      "project": "phone-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 462,
+      "title": "payment drawer keeps readable controls across approved landscape breakpoints",
+      "project": "phone-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 92,
+      "title": "portrait pre-login flow keeps primary actions reachable",
+      "project": "small-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 119,
+      "title": "POS mock flow keeps primary actions visible on landscape viewports",
+      "project": "small-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 131,
+      "title": "ordering an item with modifiers opens the picker and adds the choice to the cart",
+      "project": "small-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 150,
+      "title": "floor plan stage keeps demo layout readable across landscape viewports",
+      "project": "small-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 206,
+      "title": "admin mock modules are reachable without changing URL",
+      "project": "small-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 283,
+      "title": "floor toolbar actions stay fully inside the floor workspace",
+      "project": "small-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 311,
+      "title": "sample floor shows varied image decor across both areas",
+      "project": "small-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 339,
+      "title": "round tables stay visually circular in the editor and POS floor",
+      "project": "small-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 362,
+      "title": "wall, decor and table backgrounds persist from editor to POS floor",
+      "project": "small-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 408,
+      "title": "employee permission editor gates payment after re-login",
+      "project": "small-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 441,
+      "title": "payment drawer exposes complete action for occupied table",
+      "project": "small-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 449,
+      "title": "payment drawer keeps secondary text readable on landscape viewports",
+      "project": "small-landscape",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 462,
+      "title": "payment drawer keeps readable controls across approved landscape breakpoints",
+      "project": "small-landscape",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 92,
+      "title": "portrait pre-login flow keeps primary actions reachable",
+      "project": "portrait",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 119,
+      "title": "POS mock flow keeps primary actions visible on landscape viewports",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 131,
+      "title": "ordering an item with modifiers opens the picker and adds the choice to the cart",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 150,
+      "title": "floor plan stage keeps demo layout readable across landscape viewports",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 206,
+      "title": "admin mock modules are reachable without changing URL",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 283,
+      "title": "floor toolbar actions stay fully inside the floor workspace",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 311,
+      "title": "sample floor shows varied image decor across both areas",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 339,
+      "title": "round tables stay visually circular in the editor and POS floor",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 362,
+      "title": "wall, decor and table backgrounds persist from editor to POS floor",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 408,
+      "title": "employee permission editor gates payment after re-login",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 441,
+      "title": "payment drawer exposes complete action for occupied table",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 449,
+      "title": "payment drawer keeps secondary text readable on landscape viewports",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/pos-cafe.spec.ts",
+      "line": 462,
+      "title": "payment drawer keeps readable controls across approved landscape breakpoints",
+      "project": "portrait",
+      "expected_status": "skipped",
+      "reported_outcome": "skipped",
+      "attempt_statuses": [
+        "skipped"
+      ],
+      "result": "SKIP"
+    },
+    {
+      "run": "S",
+      "file": "tests/smoke/demo-runbook.spec.ts",
+      "line": 4,
+      "title": "kịch bản demo chính chạy liền mạch qua 14 bước",
+      "project": "demo-runbook",
+      "expected_status": "passed",
+      "reported_outcome": "expected",
+      "attempt_statuses": [
+        "passed"
+      ],
+      "result": "PASS"
+    }
+  ]
+}

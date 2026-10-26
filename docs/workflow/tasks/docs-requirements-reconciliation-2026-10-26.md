@@ -1,5 +1,7 @@
 # N4 — Hòa giải yêu cầu dữ liệu mẫu và khóa cửa hàng
 
+> **Cập nhật phạm vi xuất bản26/10:** chủ dự án đã giao kiểm cuối với subagent rồi push gói N3–N5 tại [handoff N5](docs-test-traceability-2026-10-26.md). Các câu “chưa push/chưa giao N5” và receipt bên dưới giữ bối cảnh checkpoint trước đó; không phải giới hạn ủy quyền hiện tại.
+
 Ngày26/10/2026. [Đối chiếu hiện trạng](../../spec-reconciliation.md#r06-detail) · [Quyết định hiện hành](../../spec-reconciliation.md#r06-decisions) · [Evidence khảo sát](../../implementation-log/requirements-reconciliation-20261026/README.md).
 
 ## Phạm vi và nguồn quyền

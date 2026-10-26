@@ -8,7 +8,7 @@ Mã FR/NFR tổng quan được giữ để truy vết; cập nhật mô tả th
 
 ## Cách nối yêu cầu với phần hiện hành
 
-[Danh mục tính năng](features.md#danh-mục-tra-cứu) là điểm tra cứu chính theo hành trình; bảng FR/NFR dưới đây giữ mã và purpose. [Spec reconciliation](spec-reconciliation.md) nối 16 baseline với delta được duyệt; [regression map](regression-map.md) nối 21 FR/8 NFR tiểu luận với thay đổi và test/evidence cần kiểm. [Bản đồ evidence](testing.md#bản-đồ-bằng-chứng) phân biệt code, test có trong source, kết quả thực chạy, nghiệm thu và phát hành. G01–G12 là góc nhìn mục tiêu ở features, không thay mã FR/NFR.
+[Danh mục tính năng](features.md#danh-mục-tra-cứu) là điểm tra cứu chính theo hành trình; bảng FR/NFR dưới đây giữ mã và purpose. [Spec reconciliation](spec-reconciliation.md) nối 16 baseline với delta được duyệt; [regression map](regression-map.md) tách 21 FR/8 NFR thành scenario/UC → ca kiểm cụ thể → evidence/kết quả hoặc phần chưa chứng minh; không nhận tổng suite là PASS từng requirement. [Bản đồ evidence](testing.md#bản-đồ-bằng-chứng) phân biệt code, test có trong source, kết quả thực chạy, nghiệm thu và phát hành. G01–G12 là góc nhìn mục tiêu ở features, không thay mã FR/NFR.
 
 ## Tác Nhân
 

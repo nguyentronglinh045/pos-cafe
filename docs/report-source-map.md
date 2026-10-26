@@ -53,11 +53,11 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 | Mở đầu, bài toán, mục tiêu | [project-overview.md](project-overview.md) |
 | Phạm vi và đối tượng sử dụng | [requirements.md](requirements.md), [phase-scope.md](phase-scope.md) |
 | Khảo sát/chức năng hệ thống | [features.md](features.md), [screens.md](screens.md) |
-| Phân tích yêu cầu và traceability | [requirements.md](requirements.md) |
+| Phân tích yêu cầu và traceability | [requirements.md](requirements.md), [ma trận21 FR/8 NFR](regression-map.md) |
 | Thiết kế kiến trúc | [architecture.md](architecture.md), [tech-stack.md](tech-stack.md) |
 | Thiết kế cơ sở dữ liệu | [Mô hình và ERD](data-model.md), [từ điển dữ liệu](data-dictionary.md), [thuật ngữ](glossary.md); phân biệt mô hình source và DB đích |
 | Cài đặt và quyết định kỹ thuật | [Quyết định](workflow/decisions.md), [implementation log](implementation-log/README.md) |
-| Kiểm thử và đánh giá | [testing.md](testing.md), [demo-runbook.md](demo-runbook.md) |
+| Kiểm thử và đánh giá | [testing.md](testing.md), [ma trận ca kiểm/evidence](regression-map.md), [demo-runbook.md](demo-runbook.md); tách suite aggregate, từng ca browser và backend chưa chứng minh |
 | Kế hoạch và trình tự thực hiện | [roadmap.md](roadmap.md) |
 | Hạn chế và hướng phát triển | [limitations.md](limitations.md), [roadmap.md](roadmap.md) giai đoạn 2 |
 | Phụ lục/demo | [demo-runbook.md](demo-runbook.md), [screenshots/README.md](screenshots/README.md) |
