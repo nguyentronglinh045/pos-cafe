@@ -6,7 +6,6 @@ Cập nhật **26/10/2026**. Đây là kho nguồn đầu vào cho báo cáo, kh
 
 - **Đã đọc phần liên quan**: tám nguồn R01–R08 bên dưới có vị trí đọc, luận điểm hỗ trợ và giới hạn. Không đồng nghĩa đã đọc toàn bộ sách/bài báo, hoặc chủ dự án đã tự đọc các nguồn này.
 - **Chuẩn đối chiếu**: S01–S02 là NIST/OWASP, không tính như bài báo nghiên cứu. Chỉ đối chiếu các mục được ghi; chưa đánh giá tuân thủ hệ thống.
-- **Đề xuất chưa xác minh**: danh sách cuối trang giữ những nguồn cũ chưa được đọc/kiểm đủ; không tự đưa vào danh mục báo cáo.
 - Nguồn lý thuyết giải thích nguyên lý; code/spec/evidence xác định thực tế dự án. Mọi liên hệ trong bảng là **phân tích áp dụng hiện tại**, không chứng minh nguồn đã được dùng lúc ra quyết định ban đầu.
 - Mã R/S và C là mã tra cứu nội bộ, không phải số trích dẫn IEEE. Giữ tác giả, nhan đề, năm, ấn phẩm, phiên bản, vị trí và URL; định dạng IEEE/APA chờ mẫu trường. Ngày truy cập/đọc lại: **26/10/2026**.
 - Ưu tiên diễn giải, không sao chép hình hoặc đoạn dài. Trang PDF đếm từ1 và trang in được ghi riêng; không suy trang in khi chỉ đọc HTML hoặc bản tác giả không đánh số theo tạp chí.
@@ -104,50 +103,9 @@ OWASP Foundation. *Application Security Verification Standard*, **v5.0.0**, 2025
 
 **Đã đọc:** V8, chọn8.1.1 (tài liệu quyền),8.2.1–2 (chức năng/đối tượng),8.3.1 (trusted service layer),8.4.1 (cross-tenant), tương ứng level1,1,1,1,2. Đây là checklist chuẩn thực hành hỗ trợ C11. Chỉ lập ánh xạ chủ đề; chưa map từng ID tới TC/kết quả, chưa chứng minh đạt bất kỳ level nào hoặc toàn bộ ASVS. Khi dùng phải giữ prefix phiên bản `v5.0.0-` để tránh lẫn ID phiên bản khác.
 
-<a id="backlog"></a>
-## Nguồn đề xuất chưa đọc hoặc chưa xác minh đủ
-
-Các mục dưới giữ từ danh mục trước, **không nằm trong tập đã đọc của N3**. Metadata sách/bài báo còn cần kiểm đúng bản trước khi trích. Cột cuối chỉ là hướng đọc dự kiến; không khẳng định nguồn đã chứng minh lựa chọn của dự án.
-
-| Nguồn đề xuất (metadata chờ kiểm) | Hướng đọc / điều kiện dùng |
-| --- | --- |
-| Martin, R. C. *Clean Architecture: A Craftsman Guide to Software Structure and Design*. Prentice Hall, 2017 | Quy tắc phụ thuộc; đối chiếu phần nghiệp vụ trong SQL trước khi dùng tên Clean Architecture. |
-| Evans, E. *Domain-Driven Design: Tackling Complexity in the Heart of Software*. Addison-Wesley, 2003 | Thuật ngữ domain model/bounded context; không tự gán toàn bộ DDD cho dự án. |
-| Fowler, M. *Patterns of Enterprise Application Architecture*. Addison-Wesley, 2002 | Repository/data mapper và concurrency; phân biệt legacy repository với production ports. |
-| Ford, N.; Parsons, R.; Kua, P. *Building Evolutionary Architectures*. O'Reilly, 2017 | Fitness functions; kiểm phạm vi trước khi liên hệ với guard import. |
-| Bass, L.; Clements, P.; Kazman, R. *Software Architecture in Practice*. 4th ed., Addison-Wesley, 2021 | Thuộc tính chất lượng và đánh đổi; cần đọc đúng chương của bản4. |
-| Larman, C. *Applying UML and Patterns*. 3rd ed., Prentice Hall, 2004 | Use case/UML; kiểm ví dụ POS và trang trước khi đối chiếu. |
-| Gray, J.; Reuter, A. *Transaction Processing: Concepts and Techniques*. Morgan Kaufmann, 1993 | Đào sâu transaction; R04 hiện chỉ đủ cho luận điểm C04. |
-| Bernstein, P. A.; Newcomer, E. *Principles of Transaction Processing*. 2nd ed., Morgan Kaufmann, 2009 | Ranh giới giao dịch/thử lại; chưa chọn đoạn hỗ trợ cụ thể. |
-| Kleppmann, M. *Designing Data-Intensive Applications*. O'Reilly, 2017 | Nhất quán và đồng thời; chưa đọc chương/trang liên quan. |
-| Kung, H. T.; Robinson, J. T. "On Optimistic Methods for Concurrency Control". *ACM TODS*, 6(2), 1981 | OCC; cần đối chiếu thuật toán với expectedVersion kết hợp khóa trong dự án. |
-| Berenson, H. và cộng sự. "A Critique of ANSI SQL Isolation Levels". *SIGMOD*, 1995 | Hiện tượng isolation; chưa chứng minh mức cô lập hoặc lý do chọn ở DB đích. |
-| Hellerstein, J. M.; Stonebraker, M.; Hamilton, J. "Architecture of a Database System". *Foundations and Trends in Databases*, 1(2), 2007 | Cấu trúc DBMS; không dùng thay số đo chi phí truy vấn. |
-| Ramakrishnan, R.; Gehrke, J. *Database Management Systems*. 3rd ed., McGraw-Hill, 2003 | Chuẩn hóa/toàn vẹn; chưa có đối chiếu trang cho mô hình dữ liệu hiện tại. |
-| Helland, P. "Idempotence Is Not a Medical Condition". *ACM Queue*, 10(4), 2012 | Phạm vi idempotence và retry. ACM Queue trả403 trong N3; chưa đọc bài, không giữ khẳng định tuyệt đối về exactly-once. |
-| Helland, P. "Life beyond Distributed Transactions: an Apostate Opinion". *CIDR*, 2007 | Thiết kế phân tán; chưa xác minh luận điểm về ID client/khóa nghiệp vụ. |
-| Nygard, M. T. *Release It! Design and Deploy Production-Ready Software*. 2nd ed., Pragmatic Bookshelf, 2018 | Timeout/retry; cần chọn mẫu và điều kiện áp dụng. |
-| Gray, J. "The Transaction Concept: Virtues and Limitations". *VLDB*, 1981 | Giới hạn transaction; chưa đọc phần liên quan. |
-| Tanenbaum, A. S.; Van Steen, M. *Distributed Systems*. 3rd hoặc 4th ed. | Chọn đúng edition/tác giả trước khi trích; R05 hiện hỗ trợ C05. |
-| Ferraiolo, D.; Kuhn, R. "Role-Based Access Controls". *15th NIST-NCSC National Computer Security Conference*, 1992 | Lịch sử RBAC; R06 hiện đủ cho phần mô hình được chọn. |
-| Meszaros, G. *xUnit Test Patterns: Refactoring Test Code*. Addison-Wesley, 2007 | Test doubles; cần phân biệt fake/mock/stub theo mục đã đọc. |
-| Beck, K. *Test-Driven Development: By Example*. Addison-Wesley, 2002 | TDD; không dùng nguồn để khẳng định dự án thực hành TDD khi thiếu lịch sử. |
-| Myers, G. J.; Sandler, C.; Badgett, T. *The Art of Software Testing*. 3rd ed., Wiley, 2011 | Thiết kế ca kiểm thử/biên; cần chọn chương và bản cụ thể. |
-| Sommerville, I. *Software Engineering*. 10th ed., Pearson, 2015 | Phương pháp phát triển; kiểm edition/năm phát hành trước khi trích. |
-| Kleppmann, M. và cộng sự. "Local-First Software: You Own Your Data, in Spite of the Cloud". *Onward!*, 2019 | Local-first chỉ là hướng hoãn, không là tính năng hiện có. |
-| Shapiro, M. và cộng sự. "Conflict-Free Replicated Data Types". *SSS*, 2011 | CRDT chỉ dùng nếu chọn luận điểm offline; chưa là kiến trúc triển khai. |
-| Fielding, R. T. *Architectural Styles and the Design of Network-based Software Architectures*. Luận án tiến sĩ, UC Irvine, 2000 | Kiểu kiến trúc mạng; không tự gọi mọi RPC qua HTTP là REST. |
-
-## Các diễn giải đã thu hẹp trong N3
-
-- Bỏ diễn đạt tuyệt đối “gửi đúng một lần là bất khả, thay bằng áp dụng đúng một lần” khỏi dòng Helland chưa đọc; C05 dùng phạm vi ngữ nghĩa cụ thể của nguồn R05 và phạm vi K trong source dự án.
-- Không dùng Berenson để giải thích “vì sao chọn mức cô lập đang dùng” khi chưa có hồ sơ lựa chọn/đo trên đích; không gọi expectedVersion là nguyên xi thuật toán OCC của Kung–Robinson khi chưa đối chiếu.
-- Không nhận boundary test đã kiểm đủ architectural fitness functions, hoặc chuẩn NIST/ASVS chứng minh sản phẩm đã đạt chuẩn. Các nguồn đó là hướng đọc/khung đối chiếu theo trạng thái riêng.
-- Giữ kết quả tra cứu Cockburn/Vernon ngày25/10/2026 trong [hồ sơ Q04–Q06](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#đối-chiếu-lịch-sử-và-thuật-ngữ-ngày-25102026); N3 đọc lại và mở rộng locator. Lịch sử quyết định/evidence gốc không thay đổi.
-
 ## Việc còn lại trước khi viết báo cáo
 
 1. Chốt mẫu trường và kiểu trích dẫn; chỉ đưa nguồn thực sự dùng vào danh mục cuối. Nếu yêu cầu nguồn tiếng Việt thì bổ sung theo yêu cầu đó, chưa tự coi là bắt buộc.
-2. Đọc bản gốc/bản in cho những chỗ cần trích nguyên văn, số trang in hoặc nguồn trong backlog. Tên mục/URL đã đủ để tra cứu hiện tại, không bịa số trang.
+2. Đọc bản gốc/bản in cho những chỗ cần trích nguyên văn hoặc số trang in. Tên mục/URL đã đủ để tra cứu hiện tại, không bịa số trang.
 3. Bổ sung lý thuyết cho luận điểm mới khi được chọn (ví dụ chuẩn hóa dữ liệu, kiểm soát đồng thời, hiệu năng, backup hoặc offline). N3 chưa phải khảo cứu mọi chủ đề trong đồ án.
 4. Khi nguồn code/DB thay đổi, kiểm lại cột liên hệ dự án và evidence; bài báo không tự cập nhật trạng thái thực thi. [Handoff N3](workflow/tasks/docs-academic-references-2026-10-26.md) giữ phạm vi kiểm và review.

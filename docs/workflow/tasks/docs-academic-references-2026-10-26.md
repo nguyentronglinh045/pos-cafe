@@ -2,6 +2,8 @@
 
 Ngày26/10/2026. [Nguồn chuẩn](../../references.md) · [Bản đồ báo cáo](../../report-source-map.md) · [N2 trước đó](docs-critical-flows-2026-10-26.md).
 
+**Trạng thái sau chỉnh gọn ngày26/10/2026:** chủ dự án chọn bỏ danh sách 26 nguồn chưa đọc để tránh loãng thông tin. `references.md` hiện chỉ giữ 8 nguồn nền tảng và 2 chuẩn có phần đã đọc, gắn C01–C11. Các con số backlog và receipt bên dưới ghi checkpoint N3 trước chỉnh gọn; xem cập nhật cuối hồ sơ.
+
 ## Đề bài và quyền thực hiện
 
 Chủ dự án yêu cầu push phần2 đã review rồi làm phần3, bổ sung tài liệu tham khảo học thuật theo từng luận điểm; chỉ docs, không sửa code hoặc DB. Đã push đúng tip N2 `d75e41ec40a3287da054b023594fb087d412d983` lên origin/docs và kiểm remote khớp. Gói N3 được viết, kiểm/review và commit local; chưa xem yêu cầu push N2 là quyền push phần mới.
@@ -44,3 +46,9 @@ Candidate đầu `8c1b0457200ed1b734915799ab1735c712c134c1` đã được cả h
 Kiểm cuối đúng candidate: **8 Markdown, 231 liên kết nội bộ, 75 tham chiếu code ghim, 11 luận điểm, 10 thẻ nguồn, 26 nguồn backlog**; diff-check sạch. Diff chỉ trong allowlist docs; main WIP, mọi spec/requirement và evidence cũ giữ nguyên. Checklist chỉ tích N3 và thêm nhật ký. Sau verdict chỉ bổ sung metadata receipt này, không đổi nội dung đã duyệt.
 
 Không nhận đã đọc toàn văn mọi sách/bài, kiểm bản in gốc R01, mọi trang ảnh PDF, runtime/DB/bảo mật hoặc tuân thủ. N3 hoàn tất đầu ra tài liệu, commit local và **chưa push**. Phần N2 đã xuất bản tại d75e41e theo yêu cầu ở đầu lượt. P1-03/N4/N5/H1–H4, mẫu trích dẫn và evidence sản phẩm còn theo trạng thái riêng.
+
+## Chỉnh gọn danh mục theo yêu cầu chủ dự án — 26/10/2026
+
+Chủ dự án hỏi sự cần thiết và đề xuất bỏ các nguồn chưa đọc để tránh loãng thông tin. Đã bỏ toàn bộ danh sách 26 mục cùng đoạn lịch sử biên tập không cần thiết khỏi trang tham khảo; cập nhật README/source map và chỉ dẫn đọc để không còn trỏ tới danh sách chờ. Danh sách cũ vẫn có trong Git tại commit b12fc03, không tạo thêm một trang backlog/archive thay thế. Chỉ bổ sung nguồn khi một luận điểm mới thực sự cần và đã đọc phần liên quan.
+
+Giữ nguyên bảng C01–C11, 8 thẻ R, 2 thẻ S và các giới hạn đọc/áp dụng/tuân thủ. Không đổi spec, evidence gốc, code, DB hoặc gate. Checklist local chỉ thêm nhật ký, không đổi tick. Đây là bảo trì tài liệu nhẹ: một reviewer độc lập kiểm toàn diff, tính nhất quán và bảo toàn; verdict/candidate ghi ở receipt sau kiểm. Các receipt N3 phía trên giữ nguyên ý nghĩa lịch sử, không nhận kiểm cũ thành kiểm mới. Chưa push gói N3 hoặc phần chỉnh gọn này.

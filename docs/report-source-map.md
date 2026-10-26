@@ -1,6 +1,6 @@
 # Thesis Report Source Map
 
-Nguồn phân tích/thiết kế bổ sung: [permission15](../openspec/changes/redesign-permission-model/proposal.md), [forced-PIN](../openspec/changes/force-default-pin-change/proposal.md), [catalog evidence](workflow/evidence/docs-wip-publication-20261025/catalog.md). [Nguồn theo luận điểm](references.md#claims) có tám nguồn R01–R08 đã đọc phần liên quan và hai chuẩn S01–S02 đối chiếu mục cụ thể; danh sách chưa đọc tách riêng. Kiểu trích dẫn cuối chờ mẫu trường; không suy danh mục là bằng chứng hệ thống đạt chuẩn.
+Nguồn phân tích/thiết kế bổ sung: [permission15](../openspec/changes/redesign-permission-model/proposal.md), [forced-PIN](../openspec/changes/force-default-pin-change/proposal.md), [catalog evidence](workflow/evidence/docs-wip-publication-20261025/catalog.md). [Nguồn theo luận điểm](references.md#claims) có tám nguồn R01–R08 đã đọc phần liên quan và hai chuẩn S01–S02 đối chiếu mục cụ thể. Danh mục chỉ giữ nguồn đã đọc phần liên quan và có luận điểm sử dụng. Kiểu trích dẫn cuối chờ mẫu trường; không suy danh mục là bằng chứng hệ thống đạt chuẩn.
 
 Nhánh `docs` là **nguồn dữ liệu để viết báo cáo**, không phải bản Word hoàn chỉnh. Nguồn implementation đối chiếu ngày **25/10/2026** là `main@711a22e`. Source code, expected của spec và kết quả kiểm là ba loại bằng chứng khác nhau; main không mặc nhiên là bản đã phát hành.
 
@@ -130,4 +130,4 @@ Khi chuyển thành báo cáo, dùng diễn giải nghiệp vụ/thuật toán v
 | Phân quyền và bảo mật | C06–C07 / R06–R07; C10–C11 / S01–S02 | F05–F07, catalog/overrides, enforcement, phạm vi metadata staging; không tuyên bố tuân thủ NIST/ASVS |
 | Chiến lược và kết quả kiểm thử | C08–C09 / R08 và R02 | Test strategy, evidence đúng source/môi trường; mock/coverage không thay acceptance backend |
 
-Nguồn học thuật và chuẩn không thay nguồn chính thức về hành vi React/PostgreSQL/Supabase. Khi viết, chọn đúng luận điểm trước, đọc vị trí đã ghi, giữ giới hạn áp dụng và dẫn evidence riêng cho kết quả dự án. Các nguồn backlog chưa được xác minh không tự vào danh mục cuối. [Handoff N3](workflow/tasks/docs-academic-references-2026-10-26.md).
+Nguồn học thuật và chuẩn không thay nguồn chính thức về hành vi React/PostgreSQL/Supabase. Khi viết, chọn đúng luận điểm trước, đọc vị trí đã ghi, giữ giới hạn áp dụng và dẫn evidence riêng cho kết quả dự án. [Handoff N3](workflow/tasks/docs-academic-references-2026-10-26.md).
