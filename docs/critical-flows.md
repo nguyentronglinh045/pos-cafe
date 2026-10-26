@@ -346,3 +346,7 @@ Nguồn: [emit trong transaction và tập trigger](https://github.com/nguyentro
 Hình cố ý rút gọn tầng adapter/HTTP và chi tiết lock/validation; bảng giải thích và source giữ các nhánh không vẽ. Không thay SHALL/expected của OpenSpec để hợp thức hóa code; các chênh lệch yêu cầu tiếp tục nằm ở [spec reconciliation](spec-reconciliation.md). Không có schema/code/config/app test được thay đổi hoặc thực chạy từ các hình này.
 
 Đã rà quan hệ, nhánh và tập cú pháp Mermaid sử dụng theo [flowchart](https://mermaid.js.org/syntax/flowchart.html), [sequence](https://mermaid.js.org/syntax/sequenceDiagram.html) và [state diagram](https://mermaid.js.org/syntax/stateDiagram.html); chưa chạy renderer/parser Mermaid đầy đủ hoặc xuất ảnh theo mẫu luận văn. Kiểm cấu trúc văn bản không thay visual QA. Giới hạn preview HTML cũ vẫn giữ nguyên.
+
+## Liên hệ tài liệu tham khảo — N3
+
+[Bản đồ luận điểm C04–C07/C10–C11](references.md#claims) nối F02–F07 với nguồn về giao dịch, RPC, RBAC, nguyên tắc bảo vệ và chuẩn đối chiếu. Lý thuyết hỗ trợ cách giải thích thiết kế; source và evidence riêng ở từng hình xác định hành vi dự án. F01 và F08 vẫn là mô tả thiết kế hiện hành, không gán thêm một nguồn học thuật chỉ để mỗi hình có trích dẫn.

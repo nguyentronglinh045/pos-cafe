@@ -1,6 +1,6 @@
 # Thesis Report Source Map
 
-Nguồn phân tích/thiết kế bổ sung: [permission15](../openspec/changes/redesign-permission-model/proposal.md), [forced-PIN](../openspec/changes/force-default-pin-change/proposal.md), [catalog evidence](workflow/evidence/docs-wip-publication-20261025/catalog.md). [Danh mục học thuật](references.md) vẫn là đề xuất chưa xác minh bản in/số trang/quy cách; không dùng như tài liệu đã đọc hoặc trích dẫn cuối.
+Nguồn phân tích/thiết kế bổ sung: [permission15](../openspec/changes/redesign-permission-model/proposal.md), [forced-PIN](../openspec/changes/force-default-pin-change/proposal.md), [catalog evidence](workflow/evidence/docs-wip-publication-20261025/catalog.md). [Nguồn theo luận điểm](references.md#claims) có tám nguồn R01–R08 đã đọc phần liên quan và hai chuẩn S01–S02 đối chiếu mục cụ thể; danh sách chưa đọc tách riêng. Kiểu trích dẫn cuối chờ mẫu trường; không suy danh mục là bằng chứng hệ thống đạt chuẩn.
 
 Nhánh `docs` là **nguồn dữ liệu để viết báo cáo**, không phải bản Word hoàn chỉnh. Nguồn implementation đối chiếu ngày **25/10/2026** là `main@711a22e`. Source code, expected của spec và kết quả kiểm là ba loại bằng chứng khác nhau; main không mặc nhiên là bản đã phát hành.
 
@@ -100,7 +100,7 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 - [Thuật ngữ](glossary.md): dùng cách gọi cửa hàng/tenant, owner, đơn/bill/payment/receipt, lệnh/retry/recovery nhất quán; giữ từ gốc khi trích lịch sử.
 - [ERD theo nhóm](data-model.md#erd-rút-gọn): quan hệ FK và cardinality từ source; liên kết logic audit/tín hiệu được ghi riêng. Các hình bao quát 35 bảng dự án của mô hình candidate sau chuyển đổi, không phải ảnh chụp DB đang chạy.
 - [Từ điển](data-dictionary.md): 332 cột với kiểu, NULL, PK/FK/UNIQUE/CHECK và nguồn; phân biệt constraint với invariant do luồng nghiệp vụ bảo đảm.
-- [Handoff N1](workflow/tasks/docs-data-model-2026-10-26.md) ghi cách kiểm, giới hạn và review. [Đối chiếu catalog staging](implementation-log/staging-schema-20261026/README.md) xác nhận phạm vi bảng/cột/khóa đã kiểm, phân biệt thêm bảng marker vận hành; không xác nhận mọi CHECK/default/function body, runtime hoặc production. Bộ sơ đồ luồng N2 được bổ sung bên dưới; nguồn học thuật theo luận điểm của N3 còn mở. Hình/bảng xuất sang báo cáo cần theo mẫu và nguồn được chọn lúc viết.
+- [Handoff N1](workflow/tasks/docs-data-model-2026-10-26.md) ghi cách kiểm, giới hạn và review. [Đối chiếu catalog staging](implementation-log/staging-schema-20261026/README.md) xác nhận phạm vi bảng/cột/khóa đã kiểm, phân biệt thêm bảng marker vận hành; không xác nhận mọi CHECK/default/function body, runtime hoặc production. Bộ sơ đồ luồng N2 được bổ sung bên dưới; nguồn học thuật theo luận điểm N3 được nối ở phần cuối trang. Hình/bảng xuất sang báo cáo cần theo mẫu và nguồn được chọn lúc viết.
 
 ## Nguyên liệu luồng bổ sung — 26/10/2026
 
@@ -117,4 +117,17 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 | [F07](critical-flows.md#f07) | Đồng bộ/thu hồi quyền và chặn response cũ | Chu kỳ và deadline là cấu hình source, chưa là số đo hiệu năng |
 | [F08](critical-flows.md#f08) | Đồng bộ theo signal và projection có quyền | Có giới hạn join-only menu, mất signal và poll chỉ ở một số purpose |
 
-Khi chuyển thành báo cáo, dùng diễn giải nghiệp vụ/thuật toán và sơ đồ phù hợp mẫu trường; bỏ chi tiết file/symbol/lệnh khỏi phần văn bản báo cáo theo quy tắc ở đầu trang. N2 chưa xuất ảnh hoặc visual-verify Mermaid; P1-03 còn các hình xuất bản, nguồn học thuật và công việc khác. [Handoff N2](workflow/tasks/docs-critical-flows-2026-10-26.md) giữ kiểm tra, review và commit.
+Khi chuyển thành báo cáo, dùng diễn giải nghiệp vụ/thuật toán và sơ đồ phù hợp mẫu trường; bỏ chi tiết file/symbol/lệnh khỏi phần văn bản báo cáo theo quy tắc ở đầu trang. N2 chưa xuất ảnh hoặc visual-verify Mermaid; P1-03 còn các hình xuất bản, định dạng tham khảo cuối và công việc khác. [Handoff N2](workflow/tasks/docs-critical-flows-2026-10-26.md) giữ kiểm tra, review và commit.
+
+## Nguồn lý thuyết theo luận điểm — 26/10/2026
+
+[Bản đồ C01–C11](references.md#claims) là điểm tra cứu; các thẻ R/S giữ đúng bản, mục/trang, ngày đọc và giới hạn. Bảng này chỉ dẫn đường, tránh tạo danh mục tham khảo thứ hai.
+
+| Phần báo cáo | Luận điểm / nguồn | Dữ liệu dự án cần đi kèm |
+| --- | --- | --- |
+| Lựa chọn kiến trúc | C01–C03 / R01–R03 | Hồ sơ người chốt, mục tiêu tách UI/DB, ranh giới port và SQL; không bịa lịch sử chọn/loại DDD |
+| Giao dịch và khôi phục | C04–C05 / R04–R05 | F02–F04, transaction riêng, K/R1, unknown và giới hạn hiệu ứng |
+| Phân quyền và bảo mật | C06–C07 / R06–R07; C10–C11 / S01–S02 | F05–F07, catalog/overrides, enforcement, phạm vi metadata staging; không tuyên bố tuân thủ NIST/ASVS |
+| Chiến lược và kết quả kiểm thử | C08–C09 / R08 và R02 | Test strategy, evidence đúng source/môi trường; mock/coverage không thay acceptance backend |
+
+Nguồn học thuật và chuẩn không thay nguồn chính thức về hành vi React/PostgreSQL/Supabase. Khi viết, chọn đúng luận điểm trước, đọc vị trí đã ghi, giữ giới hạn áp dụng và dẫn evidence riêng cho kết quả dự án. Các nguồn backlog chưa được xác minh không tự vào danh mục cuối. [Handoff N3](workflow/tasks/docs-academic-references-2026-10-26.md).

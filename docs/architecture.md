@@ -6,6 +6,8 @@
 
 [Sơ đồ luồng quan trọng](critical-flows.md) mở rộng thanh toán/tách đơn, mất phản hồi–khôi phục, phiên/PIN/quyền và signal–đọc lại dữ liệu, có nhánh lỗi và ranh giới transaction theo source hiện hành. Đây là sơ đồ Markdown độc lập; trạng thái preview HTML cũ không thay đổi.
 
+[Cơ sở tham khảo theo luận điểm](references.md#claims): C01–C03 cho kiến trúc, C04–C05 cho giao dịch/khôi phục, C06–C07 cho phân quyền. Các thẻ nguồn phân biệt lý thuyết, liên hệ dự án và giới hạn; không thay hồ sơ quyết định hoặc evidence.
+
 ## Hexagonal Architecture / Ports & Adapters
 
 UI gọi hook/flow, hook/flow phụ thuộc port, adapter thực hiện I/O. Đây là Ports & Adapters theo hướng Hexagonal; không phải mô hình textbook tuyệt đối vì tính nhất quán giao dịch nằm cả trong PostgreSQL.

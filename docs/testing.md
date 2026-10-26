@@ -4,6 +4,8 @@ Bộ [test plan/traceability permission15](../openspec/changes/redesign-permissi
 
 Đây là nơi tổng hợp kết quả theo **source + ngày + môi trường**. [Chiến lược](test-strategy.md) quy định cách kiểm; [workflow](workflow/README.md) quy định review/bàn giao. Trang này không biến kết quả cũ thành lần chạy mới.
 
+[Nguồn lý thuyết C08–C09](references.md#claims) giải thích cách đọc độ phủ và vai trò kiểm độc lập/tích hợp; [S02](references.md#s02) là điểm đối chiếu checklist quyền. Việc bổ sung nguồn không đổi ngưỡng test, acceptance hoặc trạng thái PASS/FAIL/NOT_RUN bên dưới.
+
 ## Bản đồ bằng chứng
 
 Bản đồ này nối nhóm tính năng với nguồn đã có, không tạo một lần chạy mới hoặc thay testplan. Xem [regression map](regression-map.md) để nối FR/NFR cũ; [spec reconciliation](spec-reconciliation.md) giữ expected hiện hành. “Chưa có bằng chứng ở nguồn đã khảo sát” không khẳng định artifact ngoài repo không tồn tại.

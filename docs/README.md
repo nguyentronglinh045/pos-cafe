@@ -24,6 +24,7 @@ Kho tri thức để AI tra cứu tính năng, thiết kế, quyết định và
 | Giải thích lựa chọn công nghệ | [Chỉ mục quyết định và nguồn chốt](workflow/decisions.md), [Tech stack](tech-stack.md); [trang giải thích kiến trúc hiện hành](architecture-explainer.html) có bản đồ tầng, ranh giới quyền và luồng đọc/thanh toán ghim source; không là bằng chứng runtime |
 | Tra nghĩa thuật ngữ, bảng/cột và ràng buộc | [Thuật ngữ](glossary.md) → [Mô hình/ERD](data-model.md) → [Từ điển dữ liệu](data-dictionary.md); mô hình source và [đối chiếu catalog staging](implementation-log/staging-schema-20261026/README.md); không thay nghiệm thu backend |
 | Hiểu luồng tiền, retry/recovery, PIN/quyền và realtime | [Tám sơ đồ luồng hiện hành](critical-flows.md), kèm ranh giới transaction và nguồn code/DB |
+| Tìm cơ sở học thuật cho một luận điểm | [C01–C11 và thẻ nguồn R/S](references.md#claims): phần đã đọc, vị trí, giới hạn; tách nguồn đề xuất chưa đọc |
 | Viết khóa luận | [Bản đồ nguồn báo cáo](report-source-map.md) |
 | Phát triển và kiểm thử | [CLAUDE.md](../CLAUDE.md), [chiến lược test](test-strategy.md), [quy trình task](workflow/README.md) |
 | Tiếp tục công việc đang mở | [Chỉ mục task](workflow/tasks/README.md) |

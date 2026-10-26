@@ -2,6 +2,8 @@
 
 ## Đang theo dõi
 
+- [N3 — Tài liệu tham khảo theo luận điểm — 26/10/2026](docs-academic-references-2026-10-26.md): tám nguồn nền tảng, hai chuẩn đối chiếu, C01–C11 và giới hạn; phần2 đã push tại d75e41e. Chỉ docs, không code/DB.
+
 - [N2 — Sơ đồ các luồng quan trọng — 26/10/2026](docs-critical-flows-2026-10-26.md): tám hình theo code và metadata DB staging, không sửa code/schema hoặc nghiệm thu runtime.
 - [N1 — Thuật ngữ, ERD và từ điển dữ liệu — 26/10/2026](docs-data-model-2026-10-26.md): chuẩn hóa mô hình source và ràng buộc; đã đối chiếu catalog staging qua MCP chỉ đọc, có marker vận hành ngoài mô hình; chưa refactor code hoặc đóng gate backend.
 
