@@ -24,3 +24,15 @@ Kiểm cuối: liên kết/anchor, source ghim/file/dòng, đủ29 dòng không 
 ## Theo dõi tiếp
 
 N5 chỉ đóng **đầu ra kiểm kê tài liệu** sau kiểm/review. N4, P1-03, H1–H4 và các gate sản phẩm không tự đóng. Khi được giao triển khai hoặc thu evidence, chọn đúng source/environment rồi bổ sung receipt vào ma trận, không chạy suite ngay trong phiên docs. Đường đọc được cung cấp ở ma trận và sơ đồ; chưa có phản hồi xác nhận chủ dự án đã đọc/hiểu code.
+
+## Receipt kiểm và review cuối — 26/10/2026
+
+Hai reviewer `/root/review_knowledge` và `/root/review_preservation` **APPROVE** toàn gói N3–N5 từ remote docs `d75e41ec40a3287da054b023594fb087d412d983` tới candidate `a206dfd17ac1a480d74cb62df1411de0cf7ccba7` (28 file). Checklist local candidate SHA256 `efde79967982f55e52212a72309d48f82d84a0134458b0c17943f49306b80e9c`; không đưa checklist vào Git.
+
+Reviewer knowledge kiểm semantics, UC/TC và assertion, phạm vi kết quả thực chạy và các khoảng thiếu. Reviewer preservation kiểm nguồn quyền, giữ evidence/spec/handoff, provenance, dữ liệu được xuất bản và trạng thái checklist/main. Cả hai kế thừa kiểm toàn gói trên candidate33554b16 rồi kiểm delta và xác nhận đúng candidate cuối nêu trên.
+
+Một finding precision đã đóng: FR-02 dùng mock runtime hiện hành qua `createAppPorts`; bỏ mô tả không chính xác “factory legacy”. Đối chiếu `sessionFlow.test.ts:3,24,54` và `runtimePorts.ts:37–55` ở source711a22e. Không còn finding sau xác nhận cuối; không đổi kết luận suite aggregate/backend.
+
+Kiểm cuối candidate: 559 liên kết nội bộ,234 nguồn ghim,29 dòng FR/NFR không trùng,107 bản ghi browser và5 SHA256/kích thước raw khớp; Git tree cf8e304 bằng711a22e; diff-check sạch. Evidence đã có, phần thân ba baseline và receipt N3/N4 giữ nguyên. 18 link local lịch sử được giữ, không nhận đã xác minh lại ngữ nghĩa. Main HEAD/status giữ nguyên; index chính khớp snapshot trước bước commit. N5 chỉ tích đầu ra kiểm kê tài liệu; N4/P1-03/H1–H4 và gate sản phẩm tiếp tục mở.
+
+Sau verdict chỉ thêm receipt metadata này. Quyền push do chủ dự án đã xác nhận; kiểm remote không trôi và kết quả push/remote SHA được ghi tại receipt ngoài Git cùng checklist local. Không ghi “đã push” trước khi thực hiện. Không chạy suite, gọi DB, refactor, deploy sản phẩm hoặc nhận evidence cũ thành kiểm runtime mới.
