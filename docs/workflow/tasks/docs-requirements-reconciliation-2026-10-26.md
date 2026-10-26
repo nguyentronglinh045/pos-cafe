@@ -45,3 +45,16 @@ Candidate được cả hai reviewer kiểm: `76add012358c2394fe0678d2e2cc4b8ea3
 Tác giả kiểm 11 file (8 Markdown, 3 JSON), 291 liên kết nội bộ, 95 tham chiếu code ghim, 14 body function/overload, 5 raw queries và 2 hash dữ liệu; không lỗi link/anchor/encoding/diff-check. Các file candidate khớp Git; spec và evidence cũ bất biến, status main khớp snapshot. Không dùng các kiểm này thay test sản phẩm.
 
 Không có vòng sửa finding. Sau hai verdict chỉ thêm metadata receipt này; nội dung đã review giữ nguyên. Hoàn tất **phần đối chiếu docs** của N4; R06-A/B/C vẫn chờ quyết định, N4 tổng thể chưa tích. Gói N3/N4 commit local, chưa push; không thay code/DB, refactor hoặc nhận nghiệm thu chức năng.
+
+## Receipt ghi quyết định được xác nhận — 26/10/2026
+
+Candidate `18a78dc87c07593add346bdec286bf1f9b58f1eb`, base `d89c85066ad4eb76134efd774478150e2e3b6355`. Checklist candidate SHA256 `6b126a3fdf0a6ad6c23b38f0818fe355ab18c347581724a82fe73a5418eb914a`, ngoài Git.
+
+| Reviewer / trọng tâm | Kiểm độc lập và giới hạn | Verdict / finding |
+| --- | --- | --- |
+| `/root/review_knowledge` — yêu cầu, nguồn xác nhận và nhất quán | Đọc toàn bộ delta 13 Markdown; R06-A chỉ đổi vị trí và giữ PIN-05, R06-B hoãn/chưa đáp ứng, R06-C còn câu hỏi chi tiết; không mở quyền code/DB/refactor/push hoặc nhận nghiệm thu. G05/G06 planned, receipt cũ có nhãn lịch sử, checklist nhất quán. Không DB/test/UI thực. | **APPROVE** đúng candidate/checklist; không có finding chặn hoặc đề nghị sửa. |
+| `/root/review_preservation` — bảo toàn, authority, evidence và checklist | Tự đối chiếu diff 13 Markdown với ba hướng được chủ dự án chấp thuận; ba baseline giữ bytes phần thân, proposal chỉ thêm note, PERM-23 thêm banner/sửa một THEN phù hợp PIN-05. Receipt cũ/evidence/code/SQL giữ nguyên; 342 link nội bộ và 81 nguồn ghim hợp lệ, diff-check sạch. Checklist live/main porcelain khớp snapshot theo cùng tùy chọn; mọi tick giữ nguyên. Không DB/MCP/runtime; 18 link local lịch sử giữ nguyên, chưa xác minh lại ngữ nghĩa; không có snapshot hash riêng để chứng nhận byte toàn index chính. | **APPROVE** đúng candidate/checklist; không có finding chặn hoặc đề nghị sửa. |
+
+Tác giả xác minh file candidate khớp Git, các phạm vi bảo toàn, link/source, diff-check và checklist; không có lỗi. Không có vòng sửa findings. Sau hai verdict chỉ bổ sung metadata receipt này; nội dung đã review giữ nguyên.
+
+Hoàn tất ghi quyết định trong docs và cập nhật nhật ký checklist. R06-A đã chốt vị trí; R06-B hoãn, chưa đáp ứng; R06-C giữ hướng G04 và còn đặc tả chi tiết. N4 tổng thể/N5/owner/P1-03/H1–H4 không được tích thêm. Commit local, chưa push N3/N4; không sửa code/DB hoặc nhận bằng chứng kiểm mới.
