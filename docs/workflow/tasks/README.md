@@ -2,6 +2,8 @@
 
 ## Đang theo dõi
 
+- [Xuất hình ERD/luồng — 26/10/2026](docs-diagram-exports-2026-10-26.md): 16 SVG từ Mermaid N1/N2 giữ nguyên; parser/render/kiểm hình và nguồn. P1-03 còn mở; không kiểm HTML cũ, code/DB hoặc runtime sản phẩm.
+
 - [N5 — Truy vết kiểm chứng và xuất bản N3–N5 — 26/10/2026](docs-test-traceability-2026-10-26.md): đủ21 FR/8 NFR có scenario/UC, ca kiểm, evidence hoặc khoảng thiếu; chỉ đọc source/artifact. Chủ dự án đã giao push toàn gói sau kiểm cuối với hai subagent; receipt review ở handoff. Các checkpoint “chưa push” của N3/N4 là lịch sử trước lượt này.
 
 - [N4 — Hòa giải seed/Settings và khóa store — 26/10/2026](docs-requirements-reconciliation-2026-10-26.md): đã đối chiếu và ghi quyết định chủ dự án — nhận vị trí retry hiện tại, hoãn reseed sau xóa, giữ khóa store trong G04; còn đặc tả/kiểm chứng khi triển khai, chỉ docs.

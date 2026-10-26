@@ -82,7 +82,7 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 ## Artefact Còn Cần Bổ Sung Ngoài Nhánh Docs
 
 - File Word theo mẫu của trường, trang bìa, thông tin sinh viên/giảng viên và quy định định dạng.
-- Screenshot mới theo source đã chọn và ghi ngày, sơ đồ kiến trúc/ERD đã render và hình minh họa demo.
+- Screenshot mới theo source đã chọn và ghi ngày, hình kiến trúc tổng thể và minh họa demo. [Bộ 16 SVG ERD/luồng](figures/README.md) đã render/kiểm hình; bản dàn trang báo cáo còn theo mẫu trường.
 - URL deployment live, ngày kiểm tra, cấu hình môi trường đã che secret.
 - Tài liệu tham khảo học thuật/chính thức cho React, PostgreSQL, Supabase, realtime, RLS và kiến trúc.
 - Kết quả khảo sát người dùng hoặc benchmark nếu báo cáo yêu cầu; lượt này chưa xác minh hồ sơ ngoài repo; không coi đây là yêu cầu mới của giảng viên.
@@ -119,7 +119,7 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 | [F07](critical-flows.md#f07) | Đồng bộ/thu hồi quyền và chặn response cũ | Chu kỳ và deadline là cấu hình source, chưa là số đo hiệu năng |
 | [F08](critical-flows.md#f08) | Đồng bộ theo signal và projection có quyền | Có giới hạn join-only menu, mất signal và poll chỉ ở một số purpose |
 
-Khi chuyển thành báo cáo, dùng diễn giải nghiệp vụ/thuật toán và sơ đồ phù hợp mẫu trường; bỏ chi tiết file/symbol/lệnh khỏi phần văn bản báo cáo theo quy tắc ở đầu trang. N2 chưa xuất ảnh hoặc visual-verify Mermaid; P1-03 còn các hình xuất bản, định dạng tham khảo cuối và công việc khác. [Handoff N2](workflow/tasks/docs-critical-flows-2026-10-26.md) giữ kiểm tra, review và commit.
+Khi chuyển thành báo cáo, dùng diễn giải nghiệp vụ/thuật toán và sơ đồ phù hợp mẫu trường; bỏ chi tiết file/symbol/lệnh khỏi phần văn bản báo cáo theo quy tắc ở đầu trang. [Bộ SVG 26/10](figures/README.md) đã được parser/renderer kiểm và rà 16 ảnh ở kích thước gốc. P1-03 còn hình kiến trúc tổng thể, dàn trang/định dạng tham khảo theo mẫu và các evidence runtime đang thiếu; không đóng chỉ từ bộ hình này. [Handoff N2](workflow/tasks/docs-critical-flows-2026-10-26.md) giữ kiểm tra, review và commit.
 
 ## Nguồn lý thuyết theo luận điểm — 26/10/2026
 

@@ -1,5 +1,7 @@
 # Các luồng quan trọng của POS Cafe
 
+[Bản SVG đã render và kiểm hình — 26/10/2026](figures/README.md): 8 ERD + 8 luồng, giữ nguyên Mermaid và phạm vi nguồn; chưa phải hình dàn trang theo mẫu báo cáo.
+
 Đối chiếu ngày **26/10/2026**, code `main@711a22e71983e3d6aa17799649af05ce4c762555`, DB staging `ineckiashpwloncxnbqx`. Đây là bản mô tả implementation để tra cứu và làm đầu vào báo cáo; không thêm requirement hoặc đề xuất refactor.
 
 **Trạng thái của cả tám hình:** luồng hiện hành trong source đã ghim, có đối chiếu metadata staging. [Evidence N2](implementation-log/critical-flows-20261026/README.md) xác nhận fingerprint body của **28 function/overload được chọn**, publication và trigger tín hiệu; [evidence N1](implementation-log/staging-schema-20261026/README.md) giữ đối chiếu bảng/cột/khóa. Đây không là kiểm chạy giao dịch, trình duyệt hoặc giao nhận realtime; backend acceptance vẫn HOLD. Mỗi hình dưới ghi phạm vi DB cụ thể; không suy mọi dependency/function đều đã đối chiếu.
@@ -17,6 +19,8 @@ Ký hiệu: **K = (storeId, operationId)** là định danh lệnh; **payload** 
 ## F01 — Chọn phần thanh toán và kết quả tách đơn
 
 Ngày26/10/2026 — implementation hiện hành. DB đã đối chiếu body planner/apply và dispatcher tài chính; chưa chạy payment/split thực tế trong lượt này. Tiền mặt là đường đang dùng. Đơn phải là đơn đang mở; `expectedVersion` được đóng băng cùng lựa chọn để DB kiểm lại.
+
+[Mở SVG của hình này](figures/2026-10-26/flow-01.svg)
 
 ```mermaid
 flowchart TD
@@ -65,6 +69,8 @@ Nguồn: [chọn toàn bộ/một phần](https://github.com/nguyentronglinh045/
 ## F02 — Đăng ký K và thực hiện giao dịch tài chính
 
 Ngày26/10/2026 — implementation hiện hành; DB fingerprint khớp các entry point tài chính, dispatcher, checkpoint, planner/apply được liệt kê trong evidence. Hình là đường thành công khi K mới/pending. **Register và execute là hai RPC, hai transaction riêng**; ký hiệu bắt đầu/commit dưới đây diễn tả ranh giới RPC, không phải UI gửi lệnh BEGIN/COMMIT.
+
+[Mở SVG của hình này](figures/2026-10-26/flow-02.svg)
 
 ```mermaid
 sequenceDiagram
@@ -116,6 +122,8 @@ Nguồn: [coordinator](https://github.com/nguyentronglinh045/pos-cafe/blob/711a2
 
 Ngày26/10/2026 — implementation hiện hành; đối chiếu body register/dispatcher/list trên staging. **Unknown không phải trạng thái DB**; nó là tình trạng nhận thức của client khi thiếu phản hồi. Các cạnh dưới chỉ có hiệu lực sau kiểm phiên/quyền/input tương ứng.
 
+[Mở SVG của hình này](figures/2026-10-26/flow-03.svg)
+
 ```mermaid
 stateDiagram-v2
     [*] --> pending: Register K mới hợp lệ
@@ -140,6 +148,8 @@ Nguồn: [terminal replay](https://github.com/nguyentronglinh045/pos-cafe/blob/7
 ## F04 — Mất phản hồi, thử lại và tra cứu khôi phục
 
 Ngày26/10/2026 — implementation hiện hành ở client, kết hợp các RPC tài chính đã fingerprint. Chưa chạy mất mạng/timeout/race trong lượt docs.
+
+[Mở SVG của hình này](figures/2026-10-26/flow-04.svg)
 
 ```mermaid
 flowchart TD
@@ -186,6 +196,8 @@ Nguồn: [attempt trong bộ nhớ, timeout](https://github.com/nguyentronglinh0
 
 Ngày26/10/2026 — implementation hiện hành; DB fingerprint khớp start_session, current_employee và required-PIN RPC. Tiền điều kiện: đã có phiên cửa hàng. Danh tính cửa hàng và phiên nhân viên là hai lớp; hình không mô tả owner email/recovery/ownership transfer chưa hoàn thiện.
 
+[Mở SVG của hình này](figures/2026-10-26/flow-05.svg)
+
 ```mermaid
 flowchart TD
     login["Chọn nhân viên và nhập PIN 6 chữ số"]
@@ -226,6 +238,8 @@ Nguồn: [kiểm input và gọi session port](https://github.com/nguyentronglin
 
 Ngày26/10/2026 — implementation hiện hành; body RPC complete_required_pin_change khớp staging. Hình là đường applied; không gửi PIN/token thật trong evidence.
 
+[Mở SVG của hình này](figures/2026-10-26/flow-06.svg)
+
 ```mermaid
 sequenceDiagram
     participant user as Chủ cửa hàng
@@ -256,6 +270,8 @@ Nguồn: [RPC và kiểm trước receipt](https://github.com/nguyentronglinh045
 ## F07 — Làm mới authority và mất quyền khi đang thao tác
 
 Ngày26/10/2026 — implementation hiện hành; DB fingerprint khớp get_revision/get_authority/current_employee, client lifecycle đọc trực tiếp từ source. Không suy đây là kết quả đo thời gian lan truyền quyền.
+
+[Mở SVG của hình này](figures/2026-10-26/flow-07.svg)
 
 ```mermaid
 flowchart TD
@@ -303,6 +319,8 @@ Nguồn: [khởi tạo và poll](https://github.com/nguyentronglinh045/pos-cafe/
 
 Ngày26/10/2026 — implementation hiện hành. Staging hiện có publication `supabase_realtime` gồm hai bảng signal; body emit/read RPC được chọn khớp source và trigger được quan sát enabled. **Chưa chạy subscription hoặc chứng minh giao nhận realtime** trong lượt này.
 
+[Mở SVG của hình này](figures/2026-10-26/flow-08.svg)
+
 ```mermaid
 sequenceDiagram
     participant deviceA as Thiết bị A
@@ -345,7 +363,7 @@ Nguồn: [emit trong transaction và tập trigger](https://github.com/nguyentro
 
 Hình cố ý rút gọn tầng adapter/HTTP và chi tiết lock/validation; bảng giải thích và source giữ các nhánh không vẽ. Không thay SHALL/expected của OpenSpec để hợp thức hóa code; các chênh lệch yêu cầu tiếp tục nằm ở [spec reconciliation](spec-reconciliation.md). Không có schema/code/config/app test được thay đổi hoặc thực chạy từ các hình này.
 
-Đã rà quan hệ, nhánh và tập cú pháp Mermaid sử dụng theo [flowchart](https://mermaid.js.org/syntax/flowchart.html), [sequence](https://mermaid.js.org/syntax/sequenceDiagram.html) và [state diagram](https://mermaid.js.org/syntax/stateDiagram.html); chưa chạy renderer/parser Mermaid đầy đủ hoặc xuất ảnh theo mẫu luận văn. Kiểm cấu trúc văn bản không thay visual QA. Giới hạn preview HTML cũ vẫn giữ nguyên.
+Đã rà quan hệ/nhánh và cú pháp theo [flowchart](https://mermaid.js.org/syntax/flowchart.html), [sequence](https://mermaid.js.org/syntax/sequenceDiagram.html) và [state diagram](https://mermaid.js.org/syntax/stateDiagram.html). Lượt [xuất hình 26/10](figures/README.md) đã chạy parser/renderer Mermaid12.2.0 và xem tám hình luồng ở kích thước gốc. Chưa dàn trang/in theo mẫu luận văn; không mở hoặc xác minh HTML kiến trúc cũ. Metadata và phạm vi review ở handoff xuất hình.
 
 ## Liên hệ tài liệu tham khảo — N3
 

@@ -1,5 +1,7 @@
 # Data Model
 
+[Bản SVG đã render và kiểm hình — 26/10/2026](figures/README.md): 8 ERD + 8 luồng, giữ nguyên Mermaid và phạm vi nguồn; chưa phải hình dàn trang theo mẫu báo cáo.
+
 Đối chiếu ngày **26/10/2026**, source `main@711a22e71983e3d6aa17799649af05ce4c762555`. Trang này giữ mô hình, ERD và giải thích nghiệp vụ; [từ điển dữ liệu](data-dictionary.md) giữ chi tiết bảng/cột/ràng buộc; [thuật ngữ](glossary.md) thống nhất cách gọi. Nhánh docs là nguồn viết báo cáo, không là bản báo cáo hoàn chỉnh.
 
 ## Phạm vi và cách đọc mô hình
@@ -27,6 +29,8 @@ Các hình là **ERD vật lý rút gọn theo source**, chỉ vẽ FK thật; k
 
 ### Cửa hàng, nhân viên và danh mục quyền
 
+[Mở SVG của hình này](figures/2026-10-26/erd-01.svg)
+
 ```mermaid
 erDiagram
     "auth.users" ||--o| "public.stores" : "id"
@@ -45,6 +49,8 @@ Một store có tối đa một settings theo PK/FK. Candidate kiểm đúng m�
 
 ### Thực đơn và tùy chọn dùng chung
 
+[Mở SVG của hình này](figures/2026-10-26/erd-02.svg)
+
 ```mermaid
 erDiagram
     "public.stores" ||..o{ "public.categories" : "store_id"
@@ -58,6 +64,8 @@ Nguồn: [001_schema_enums.sql:55](https://github.com/nguyentronglinh045/pos-caf
 
 ### Sơ đồ bàn
 
+[Mở SVG của hình này](figures/2026-10-26/erd-03.svg)
+
 ```mermaid
 erDiagram
     "public.stores" ||..o{ "public.floor_areas" : "store_id"
@@ -69,6 +77,8 @@ erDiagram
 Nguồn: [001_schema_enums.sql:126](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/001_schema_enums.sql#L126), [002_indexes_rls_triggers.sql:70](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/002_indexes_rls_triggers.sql#L70). Order có table_id nullable. Unique index có điều kiện chỉ cho tối đa một đơn open trên mỗi (store, bàn); lịch sử vẫn có nhiều đơn cho cùng bàn. DDL không CHECK cặp order_type–table_id; quy tắc dine-in/takeaway thuộc luồng ghi.
 
 ### Đơn, payment, lệnh ghi và event
+
+[Mở SVG của hình này](figures/2026-10-26/erd-04.svg)
 
 ```mermaid
 erDiagram
@@ -88,6 +98,8 @@ Schema cho phép nhiều payment/đơn vì không có unique order_id; đường
 
 ### Quản trị và grant in
 
+[Mở SVG của hình này](figures/2026-10-26/erd-05.svg)
+
 ```mermaid
 erDiagram
     "public.stores" ||--o{ "private.employee_admin_requests" : "store_id"
@@ -102,6 +114,8 @@ Nguồn: [017_permission_catalog_bridge.sql:112](https://github.com/nguyentrongl
 
 ### Khởi tạo cửa hàng và dữ liệu mẫu
 
+[Mở SVG của hình này](figures/2026-10-26/erd-06.svg)
+
 ```mermaid
 erDiagram
     "public.stores" ||--o{ "private.bootstrap_requests" : "store_id"
@@ -114,6 +128,8 @@ Nguồn: [017_permission_catalog_bridge.sql:129](https://github.com/nguyentrongl
 
 ### Ảnh món
 
+[Mở SVG của hình này](figures/2026-10-26/erd-07.svg)
+
 ```mermaid
 erDiagram
     "public.stores" ||..o{ "private.menu_image_uploads" : "store_id"
@@ -125,6 +141,8 @@ erDiagram
 Nguồn: [permission-images.sql:21](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-images.sql#L21). Upload có thể tham chiếu ID món nháp nên item_id chưa FK. Asset công bố có FK món và upload; object_key không FK storage.objects. FK upload_handle riêng lẻ không kiểm store/item của hai registry bằng nhau; function publish kiểm phần đó. Bytes Storage nằm ngoài transaction DB.
 
 ### Tín hiệu và cổng tương thích
+
+[Mở SVG của hình này](figures/2026-10-26/erd-08.svg)
 
 ```mermaid
 erDiagram
