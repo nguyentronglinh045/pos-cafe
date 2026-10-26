@@ -1,81 +1,60 @@
-> **Đối chiếu xuất bản 25/10/2026.** Phần server enforcement thuộc catalog15 đã được chuyển vào redesign-permission-model. Source hiện có không chứng minh activation/full backend acceptance; phần ngoài inventory vẫn cần khảo sát riêng. [Nguồn, trạng thái và giới hạn](../../../docs/workflow/tasks/docs-wip-publication-2026-10-25.md). Các yêu cầu SHALL/expected bên dưới được giữ; không đổi để hợp thức hóa code.
+# Kiểm quyền tại database — phạm vi còn lại
 
-# Siết ranh giới bảo mật quyền nhân viên xuống tầng database
+Đối chiếu 26/10/2026, main `711a22e`. Mục tiêu G04 giữ nguyên. Đây là proposal khảo sát cho phần ngoài phạm vi đã chuyển sang [redesign-permission-model](../redesign-permission-model/proposal.md#quyết-định-đã-chốt); chưa có bộ spec đầy đủ hoặc quyền triển khai phần dư. [Lịch sử và bảy câu hỏi gốc](history.md) giữ nguyên để truy vết.
 
-## Ranh giới cập nhật ngày 2026-09-15
+## Ánh xạ từng nhóm yêu cầu gốc
 
-Q1 của [permission model](../redesign-permission-model/proposal.md) đã chuyển bảo vệ đọc và ghi cho toàn bộ catalog của change đó (15 quyền sau Q12) vào cùng change: gồm RPC/projection, direct SELECT/DML, Storage ghi ảnh và Realtime liên quan. Phase 27 đã có phiên nhân viên và guard tài chính sau chờ khóa tại [016:56](D:/Workspace/pos-cafe/supabase/migrations/016_activate_write_protocol.sql:56). Không triển khai lại hai phần này trong change hiện tại; khi mở lại, kiểm inventory còn ngoài phạm vi và chốt các câu hỏi chỉ cho phần còn lại. Nội dung 08/09 dưới đây là nguồn gốc đề xuất, không phải kết luận rằng code sau phase 27 vẫn nhận employeeId tự khai làm danh tính. Task tài liệu 15/09 chỉ cập nhật dependency này, chưa hoàn thiện hay triển khai change.
+| Nhóm gốc | Nguồn tiếp nhận / ranh giới |
+| --- | --- |
+| Danh tính phiên nhân viên | [Permission session](../redesign-permission-model/specs/employee-session/spec.md) và [PIN delta](../force-default-pin-change/specs/employee-session/spec.md); Store Auth là tenant boundary, employee session phục vụ authority. Không dùng ID tự khai thay chứng minh phiên. |
+| Kiểm quyền đọc và ghi ở server | Q1–Q15 và [access-control](../redesign-permission-model/specs/access-control/spec.md) đã nhận toàn catalog15, gồm projection/RPC, direct SELECT/DML, ảnh và signal liên quan. Có source không chứng minh grants/schema đích đã activation. |
+| Inventory mọi bảng/lời gọi | Inventory trong change permission chỉ chứng minh phạm vi của change đó. Phải so inventory với bề mặt thực khi mở phần dư; giữ riêng vòng đời owner/email và trạng thái khóa store, không suy “toàn DB an toàn”. |
+| Audit thao tác nhạy cảm | [Employee-management](../redesign-permission-model/specs/employee-management/spec.md), financial contract và audit trong permission. Không thay bằng một báo cáo audit đầy đủ cho người dùng cuối; retention ngoài scope đã chốt cần xác định riêng. |
+| Cập nhật NFR-02 | [Requirements](../../../docs/requirements.md) và [kiến trúc](../../../docs/architecture.md#permission) đã phân biệt tenant/employee authority, implementation và backend HOLD. Không còn lấy câu “không claim per-employee” lịch sử làm mô tả hiện hành. |
 
-## Liên quan quyết định chống trùng 08/09/2026
+Nguồn implementation đã đọc: [authority/session](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/ports/permissions.ts#L12), [catalog](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/core/permissionCatalog.ts#L5), [runtime composition](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/adapters/supabase/repos.ts#L17). Spec/evidence chuyên biệt quyết định expected và scope kiểm, không lấy bảng này làm audit bảo mật runtime.
 
-Chủ dự án chọn server là nguồn tin cậy duy nhất và cho mọi người đủ quyền tiếp tục đơn/thao tác, không giới hạn quản lý. Yêu cầu được ghi theo nghĩa server xác minh danh tính và quyền người thực hiện, xem [quyết định 10](../../../docs/reviews/2026-09-07-idempotency/10-quyet-dinh-sau-review-va-chinh-sach-gia.md).
+## Bảy câu hỏi cũ đã đi tới đâu
 
-Nền tảng danh tính nhân viên server vì vậy liên quan trực tiếp đến việc nghiệm thu `add-idempotent-write-operations`. Cần xác định phần tối thiểu phục vụ những đường ghi/tra cứu trong phạm vi. **Chưa đồng nghĩa toàn bộ change siết quyền mọi bảng đã được duyệt hoặc triển khai**; các câu hỏi kiến trúc phía dưới chưa tự có câu trả lời.
+| Câu gốc | Trạng thái hiện nay |
+| --- | --- |
+| 1. Có cần làm không? | G04 nằm trong mục tiêu đã được GV xác nhận theo chủ dự án; catalog15 đã chọn server enforcement. Không hỏi lại có bỏ toàn bộ G04. Phạm vi dư phải khảo sát. |
+| 2–3. Danh tính và luồng Store Key/PIN | Catalog15 giữ Store Auth cùng employee session; owner email là change riêng. Không tự chuyển mọi nhân viên sang tài khoản email. |
+| 4. Chặn đọc hay cả ghi? | Q1 đã chọn cả đọc/ghi trong catalog; phần ngoài inventory chưa được nhận phủ. |
+| 5. Tương thích thiết bị | Compatibility/session/revision theo permission và PIN delta. Cách chuyển đổi đích thực vẫn theo gate release; trang này không duyệt migration. |
+| 6. Audit gì và giữ bao lâu? | Nghĩa vụ trong permission giữ nguyên; audit/retention ngoài phạm vi vẫn cần chốt khi xác định bề mặt còn thiếu. |
+| 7. Chỉ làm tiền trước? | Giao thức v1 là nền lịch sử; permission mở rộng catalog15. Không hạ scope đã duyệt về chỉ ba RPC tiền từ phương án cũ. |
 
-## Why
+## Phần còn mở và phụ thuộc
 
-Hiện chính sách bảo mật mức dòng chỉ cô lập theo cửa hàng: mọi nhân viên trong cùng một cửa hàng dùng chung một danh tính đã xác thực ở tầng database. Quyền theo từng nhân viên được chốt ở tầng nghiệp vụ, và ba lời gọi order cùng payment chính có kiểm tra lại quyền hiệu lực. Nhưng `docs/requirements.md` ghi rõ NFR-02 không đồng nghĩa bảo mật per-employee, và `pos-cafe-context.md` ghi rõ không claim bảo mật nhân viên ở tầng database, kèm ghi chú cần siết nếu triển khai ngoài môi trường demo tin cậy.
-
-Nghĩa là một người có Store Key và biết cách gọi thẳng vào database vẫn đọc và ghi được dữ liệu vượt quyền của mình. Với một quán thật, và với các tính năng sắp thêm như tồn kho, khuyến mãi, chấm công và loyalty, khoảng trống này trở thành rủi ro thật chứ không còn là giới hạn học thuật.
-
-## What Changes
-
-- Thiết lập danh tính phiên gắn với nhân viên đang đăng nhập, thay vì chỉ gắn với cửa hàng.
-- Đưa việc kiểm tra quyền vào chính sách bảo mật mức dòng và các lời gọi phía database, thay vì chỉ ở tầng nghiệp vụ.
-- Rà toàn bộ bảng và lời gọi hiện có, xác định thao tác nào phải bị chặn theo quyền nhân viên.
-- Bổ sung dấu vết kiểm toán cho các thao tác nhạy cảm, tối thiểu là ai làm và lúc nào.
-- Cập nhật tuyên bố NFR-02 trong tài liệu cho khớp mức bảo đảm mới.
-
-## Capabilities
-
-### New Capabilities
-
-Không có.
-
-### Modified Capabilities
-
-- `access-control`: nâng mức bảo đảm từ chốt ở tầng nghiệp vụ lên enforce ở tầng database cho quyền theo từng nhân viên.
-- `store-isolation`: đổi phạm vi hiện tại của mô hình cô lập, vốn đang ghi rõ không cô lập giữa các nhân viên trong cùng cửa hàng.
-- `employee-session`: có thể đổi cách thiết lập phiên nếu danh tính database phải gắn với nhân viên.
-
-## Impact
-
-- Chính sách bảo mật mức dòng trên toàn bộ bảng nghiệp vụ, kéo theo migration lớn.
-- Cơ chế xác thực: hiện thiết bị xác thực theo cửa hàng, cần bổ sung lớp danh tính nhân viên.
-- Mọi lời gọi phía database hiện có.
-- Nguy cơ cao làm hỏng luồng đang chạy nếu thiếu sót một bảng hoặc một lời gọi, nên cần bộ kiểm thử tốt trước khi làm.
-- Cập nhật `docs/requirements.md` (NFR-02), `docs/architecture.md`, `docs/limitations.md`, `pos-cafe-context.md`.
-
-## Ngoài phạm vi
-
-- Thiết kế lại mô hình quyền và vai trò. Việc đó thuộc `redesign-permission-model`.
-- Nhật ký kiểm toán đầy đủ dạng báo cáo cho người dùng cuối.
-- Mã hóa dữ liệu và các yêu cầu tuân thủ khác.
-
-## Phụ thuộc
-
-- `redesign-permission-model`: phải chốt mô hình quyền trước, nếu không sẽ phải viết lại chính sách database hai lần.
-- `expand-e2e-coverage`: cần bộ kiểm thử luồng nghiệp vụ trước khi đụng vào chính sách bảo mật, vì sai sót ở đây làm hỏng toàn bộ ứng dụng.
-- `add-owner-account-and-store-provisioning`: change đó bổ sung một nhánh chủ sở hữu vào chính sách bảo mật mức dòng. Nếu làm sau change này thì phải rà lại toàn bộ chính sách vừa viết, nên nên làm trước.
-
-## Ghi chú về phương án thu hẹp
-
-Trao đổi ngày 2026-08-28 nêu một phương án trung gian đáng cân nhắc khi trả lời câu hỏi số 1 và số 7: **giữ nguyên danh tính cấp cửa hàng, không làm danh tính riêng cho từng nhân viên, nhưng bắt mọi lời gọi nghiệp vụ nhạy cảm đọc lại quyền hiệu lực từ database** thay vì tin tham số client gửi lên, kèm nhật ký đầy đủ. Cách này đã áp dụng cho ba lời gọi order và payment chính, nên chỉ là mở rộng phạm vi chứ không phải đổi mô hình xác thực.
-
-**Đính chính 08/09/2026:** bản trước ghi phương án này chặn được “lời gọi thủ công có tham số giả”. Khẳng định đó quá rộng: server hiện đọc quyền của `p_employee_id` client gửi (`src/adapters/supabase/authRepo.ts:19–25`, `src/adapters/supabase/employeeRepo.ts:30–39`, `supabase/migrations/012_action_permission_guardrails.sql:1024–1045`). Đọc role từ DB chặn việc tự khai role/quyền không có trong DB, nhưng không chứng minh caller chính là nhân viên mang ID đó. Xem trích mã tại [08, E5](../../../docs/reviews/2026-09-07-idempotency/08-review-doc-lap-plan-07.md#e5--danh-tinh-nhan-vien-va-duong-ghi).
-
-Đánh đổi đúng: phương án giữ danh tính cửa hàng có phạm vi nhỏ hơn, nhưng không chống giả mạo ID nhân viên hoặc ghi thẳng bảng qua quyền cửa hàng. Nó không đủ để hoàn thành yêu cầu mới “server xác minh quyền thực tế của người tiếp tục” nếu không bổ sung ràng buộc danh tính server đáng tin cậy.
-
-## Câu hỏi phải chốt trước khi làm
-
-1. Đây có phải việc cần làm thật không, hay chấp nhận giữ nguyên và ghi rõ trong báo cáo là giới hạn đã biết? Phạm vi việc này lớn và rủi ro cao; nếu hệ thống chỉ dùng để demo và bảo vệ đồ án thì có thể không đáng.
-2. Nếu làm thì mô hình danh tính nhân viên ở tầng database là gì? Mỗi nhân viên có một tài khoản xác thực riêng, hay dùng token phiên mang theo định danh nhân viên? Hướng thứ nhất đổi hẳn luồng đăng nhập bằng PIN hiện tại.
-3. Nếu mỗi nhân viên có tài khoản riêng thì luồng Store Key kèm chọn nhân viên và nhập PIN có còn giữ không? Đây là điểm nhận diện của sản phẩm, đổi đi sẽ ảnh hưởng trải nghiệm thu ngân.
-4. Mức bảo đảm cần đạt tới đâu: chặn ghi vượt quyền là đủ, hay phải chặn cả đọc? Chặn đọc chặt hơn nhưng có thể làm hỏng các màn tổng hợp như báo cáo.
-5. Có chấp nhận thay đổi phá vỡ tương thích với các thiết bị đã ghép không? Việc đổi mô hình xác thực có thể buộc ghép lại toàn bộ thiết bị.
-6. Dấu vết kiểm toán cần lưu những gì và giữ bao lâu?
-7. Nếu không làm toàn bộ, có muốn làm một phần không, ví dụ chỉ siết các thao tác đụng tới tiền là thanh toán, hủy đơn và sau này là hoàn tiền cùng giảm giá?
+- So inventory phần dư: đặc biệt hành vi khóa store ở server, owner/email/provisioning và các capability tương lai. [R06](../../../docs/spec-reconciliation.md#phần-còn-thiếu-và-phân-loại) giữ chỗ chưa có kết luận.
+- Gắn từng bề mặt dư với actor/tenant/đọc/ghi, deny test, audit, lifecycle và gate trước khi lập spec triển khai; không tự khẳng định bề mặt đó đang bị hở.
+- Full backend/PIN/Storage/Realtime acceptance vẫn theo [bản đồ evidence](../../../docs/testing.md#bản-đồ-bằng-chứng). Không tạo lab hoặc chạy trên dữ liệu thật từ task tài liệu.
+- Không còn áp quy tắc chung “owner email luôn phải xong trước mọi enforcement”: catalog15 có quyết định/implementation riêng; thứ tự phần dư theo dependency thực.
 
 ## Quyết định đã chốt
 
-Chưa có. Ghi câu trả lời của người dùng vào mục này trước khi bắt đầu implement.
+Q1–Q15/PIN chỉ thay phần được nêu trong hồ sơ chính. Chủ dự án ngày26/10 cho phép tổ chức lại tài liệu theo hiện trạng, giữ evidence và chưa refactor code; đây không phải phê duyệt nghiệp vụ mới cho phần dư. Không xóa yêu cầu, hạ gate hoặc archive như hoàn tất.
+
+## Câu hỏi phải chốt trước khi làm
+
+Không còn câu hỏi chặn lượt tổ chức tài liệu26/10 đã được giao. Các vấn đề triển khai còn mở được nêu ở phần phạm vi/còn lại và hồ sơ chính; không nhận bộ spec phần dư đã sẵn sàng code. Câu hỏi cũ và bối cảnh câu trả lời giữ trong [lịch sử](history.md#câu-hỏi-phải-chốt-trước-khi-làm).
+
+## Tra cứu mục cũ
+
+Các điểm neo được giữ để liên kết cũ vẫn tới được đúng bối cảnh.
+
+| Mục lịch sử | Nguồn nguyên bản |
+| --- | --- |
+| <a id="siết-ranh-giới-bảo-mật-quyền-nhân-viên-xuống-tầng-database"></a>Siết ranh giới bảo mật quyền nhân viên xuống tầng database | [Đọc lịch sử](history.md#siết-ranh-giới-bảo-mật-quyền-nhân-viên-xuống-tầng-database) |
+| <a id="ranh-giới-cập-nhật-ngày-2026-09-15"></a>Ranh giới cập nhật ngày 2026-09-15 | [Đọc lịch sử](history.md#ranh-giới-cập-nhật-ngày-2026-09-15) |
+| <a id="liên-quan-quyết-định-chống-trùng-08092026"></a>Liên quan quyết định chống trùng 08/09/2026 | [Đọc lịch sử](history.md#liên-quan-quyết-định-chống-trùng-08092026) |
+| <a id="why"></a>Why | [Đọc lịch sử](history.md#why) |
+| <a id="what-changes"></a>What Changes | [Đọc lịch sử](history.md#what-changes) |
+| <a id="capabilities"></a>Capabilities | [Đọc lịch sử](history.md#capabilities) |
+| <a id="new-capabilities"></a>New Capabilities | [Đọc lịch sử](history.md#new-capabilities) |
+| <a id="modified-capabilities"></a>Modified Capabilities | [Đọc lịch sử](history.md#modified-capabilities) |
+| <a id="impact"></a>Impact | [Đọc lịch sử](history.md#impact) |
+| <a id="ngoài-phạm-vi"></a>Ngoài phạm vi | [Đọc lịch sử](history.md#ngoài-phạm-vi) |
+| <a id="phụ-thuộc"></a>Phụ thuộc | [Đọc lịch sử](history.md#phụ-thuộc) |
+| <a id="ghi-chú-về-phương-án-thu-hẹp"></a>Ghi chú về phương án thu hẹp | [Đọc lịch sử](history.md#ghi-chú-về-phương-án-thu-hẹp) |

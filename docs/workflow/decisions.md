@@ -37,3 +37,7 @@
 ## Cách bổ sung quyết định
 
 Sửa hồ sơ chính đã dẫn ở trên, ghi nguồn/ngày/người hoặc AI chọn theo phạm vi được giao, bối cảnh, phương án thật sự cân nhắc, lý do và hệ quả. Nếu bổ sung phân tích hiện nay, ghi là hồi cứu. Khi quyết định thay thế một phần, chỉ rõ phần đó và dẫn hai chiều; không xóa quyết định cũ hoặc xem danh sách ở trang này như sự phê duyệt mới. Những chỗ thiếu nguồn đã ghi rõ là việc truy vết, không được điền bằng suy đoán.
+
+## Tổ chức lại tài liệu26/10/2026
+
+Chủ dự án duyệt cả năm đề xuất tổ chức tài liệu, chọn cập nhật HTML theo kiến trúc hiện hành, giữ nguyên evidence gốc, chưa refactor code và cho push docs sau kiểm/review. [Handoff](tasks/docs-reorganization-2026-10-26.md) ghi lựa chọn giữ/cập nhật/chuyển lịch sử, không thay quyết định nghiệp vụ hoặc mở deploy.

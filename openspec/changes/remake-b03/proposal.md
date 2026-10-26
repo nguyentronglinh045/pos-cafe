@@ -1,3 +1,5 @@
+> **Điểm đọc26/10/2026:** [chỉ mục UI](../../../docs/ui-evolution.md) và [receipt tích hợp25/10](../../../docs/workflow/tasks/ui-main-docs-integration-2026-10-25.md) giữ trạng thái sau merge. Phần dưới giữ checkpoint/expected của batch; “chưa merge” chỉ thuộc ngày ghi, không là trạng thái hiện tại. Không thay scope, approval hoặc evidence gốc.
+
 # B03 — Remake giao diện thanh toán
 
 Ngày:2026-10-22. **Đã hiện thực trên worktree B03 và kiểm chứng local/mock; chưa nghiệm thu sản phẩm, chưa push/merge/deploy.** Xem biên bản kiểm chứng và giới hạn ở docs/workflow/tasks/remake-b03-2026-10-22-validation.md.

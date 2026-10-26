@@ -1,3 +1,5 @@
+[CI/CD hiện hành](changes/setup-project-ci-cd/proposal.md#điểm-vào-hiện-hành--26102026) · [Chỉ mục UI](../docs/ui-evolution.md) · [Enforcement còn lại](changes/enforce-permissions-at-database/proposal.md) — đối chiếu26/10/2026.
+
 # OpenSpec cho pos-cafe
 
 [Bản đồ hòa giải 16 capability](../docs/spec-reconciliation.md) dẫn baseline và delta theo từng chủ đề; đọc bảng này trước khi lấy một file baseline làm hợp đồng runtime hiện hành. Lượt chỉnh lý chỉ thêm điều hướng, giữ nguyên nội dung yêu cầu, không apply/archive change.
@@ -91,13 +93,13 @@ Lưu ý: phụ thuộc khái niệm ở đây **không phải** thứ tự thự
 
 Mỗi proposal có section `## Phụ thuộc`. Các quan hệ chính:
 
-- `define-test-strategy` nên làm trước `expand-e2e-coverage` và `setup-test-data-environment`; cả ba nên có trước `add-ci-pipeline`, và `add-ci-pipeline` trước `add-cd-deployment`.
+- Đường hiện hành cho CI/CD là [setup-project-ci-cd](changes/setup-project-ci-cd/proposal.md#điểm-vào-hiện-hành--26102026); proposal CI/CD cũ đã có bảng đối chiếu và lịch sử. Dependency/gate backend vẫn theo task hiện hành, không mở lại thứ tự kế hoạch cũ để kết luận CI chưa có.
 - `redesign-permission-model` nên làm trước mọi nhóm tính năng, vì nhóm nào cũng sinh quyền mới.
 - `add-discount-engine` bắt buộc trước mã giảm giá, giờ vàng và đổi điểm.
 - `add-customer-registry` bắt buộc trước `add-loyalty-points`.
 - `add-inventory-core` bắt buộc trước hai change tồn kho còn lại.
 - `add-owner-account-and-store-provisioning` bắt buộc trước `add-multi-store-ownership` và `add-provider-admin-console`.
-- Quan hệ giữa `add-owner-account-and-store-provisioning` và `enforce-permissions-at-database` tùy **phạm vi** của cái sau. Với bản đầy đủ có danh tính riêng cho từng nhân viên ở tầng chính sách bảo mật thì tài khoản chủ **bắt buộc** làm trước. Với bản thu hẹp, tức mọi lời gọi nhạy cảm đọc lại quyền từ cơ sở dữ liệu, thứ tự ngược lại rẻ hơn; xem phần "Vì sao thứ tự này" trong `docs/roadmap.md`.
+- Catalog15 đã đưa server enforcement vào [permission](changes/redesign-permission-model/proposal.md); [enforcement còn lại](changes/enforce-permissions-at-database/proposal.md) phải kiểm inventory/dependency riêng. Không áp lại dependency owner-email chung từ phương án lịch sử.
 - `add-multi-store-ownership` bắt buộc trước `add-cross-store-reporting`.
 - `add-idempotent-write-operations` phối hợp với `enforce-permissions-at-database`: phần xác minh danh tính nhân viên/quyền server tối thiểu là điều kiện nghiệm thu giao thức mới, không thể mặc định chống trùng luôn làm trước xác thực chỉ để tiết kiệm sửa chữ ký RPC. Nếu mở lại offline, change chống trùng vẫn bắt buộc trước `add-offline-data-layer`.
 - `measure-runtime-load` bắt buộc trước `optimize-runtime-load`.
@@ -127,7 +129,7 @@ Bốn change dưới đây mâu thuẫn với các quyết định đang ghi tro
 | `add-multi-store-ownership` | Không phải bài toán quản lý chuỗi đa chi nhánh |
 | `add-provider-admin-console` | Cô lập dữ liệu tuyệt đối giữa các cửa hàng (NFR-02) |
 | `add-offline-data-layer` | **Đã hoãn lại 2026-09-08.** Giữ ưu tiên online; không còn là phần phải làm trong giai đoạn 1 |
-| `enforce-permissions-at-database` | NFR-02 không đồng nghĩa bảo mật per-employee |
+| `enforce-permissions-at-database` | Catalog15 đã chuyển sang permission; inventory phần dư và backend acceptance còn phải kiểm |
 
 **Lịch sử 2026-08-30, đã được thay thế ngày 2026-09-08.** Khi đó nhóm offline được kéo vào đồ án theo ngân sách 16 tuần. Sau khi rà lại độ phức tạp khôi phục và nhiều thiết bị, chủ dự án chọn hoãn nhóm này để tập trung online. Các phụ thuộc offline ở trên chỉ còn áp dụng nếu mở lại nhóm trong tương lai.
 

@@ -1,3 +1,5 @@
+> **Điểm đọc26/10/2026:** [chỉ mục UI](../../../docs/ui-evolution.md) và [receipt tích hợp25/10](../../../docs/workflow/tasks/ui-main-docs-integration-2026-10-25.md) giữ trạng thái sau merge. Phần dưới giữ checkpoint/expected của batch; “chưa merge” chỉ thuộc ngày ghi, không là trạng thái hiện tại. Không thay scope, approval hoặc evidence gốc.
+
 # Remake B02 — Đề xuất
 
 B02 chọn món/giỏ hàng hiện dùng layout cũ, min-width620px và nhiều màu riêng. Owner giao remake presentation theo PNG B02, giữ nghiệp vụ và dữ liệu, hỗ trợ landscape từ568×320. Hiện mới dựng normalized độc lập để duyệt, chưa sửa ứng dụng.

@@ -21,7 +21,7 @@ Kho tri thức để AI tra cứu tính năng, thiết kế, quyết định và
 | Phần tiểu luận cũ còn được bảo toàn không? | [Bản đồ hồi quy](regression-map.md); không suy danh mục là PASS |
 | Viết yêu cầu, tìm mã FR/NFR | [Requirements](requirements.md); hợp đồng chi tiết ở [OpenSpec](../openspec/README.md) |
 | Hiểu màn hình và quyền mở màn | [Screens](screens.md) |
-| Giải thích lựa chọn công nghệ | [Chỉ mục quyết định và nguồn chốt](workflow/decisions.md), [Tech stack](tech-stack.md); [trang học kiến trúc](architecture-explainer.html) là tài liệu giảng giải; ví dụ raw repository còn theo kiến trúc cũ, cần đọc cùng architecture.md và không dùng làm bản kiểm chứng runtime |
+| Giải thích lựa chọn công nghệ | [Chỉ mục quyết định và nguồn chốt](workflow/decisions.md), [Tech stack](tech-stack.md); [trang giải thích kiến trúc hiện hành](architecture-explainer.html) có bản đồ tầng, ranh giới quyền và luồng đọc/thanh toán ghim source; không là bằng chứng runtime |
 | Viết khóa luận | [Bản đồ nguồn báo cáo](report-source-map.md) |
 | Phát triển và kiểm thử | [CLAUDE.md](../CLAUDE.md), [chiến lược test](test-strategy.md), [quy trình task](workflow/README.md) |
 | Tiếp tục công việc đang mở | [Chỉ mục task](workflow/tasks/README.md) |
@@ -61,3 +61,7 @@ Không đưa source ứng dụng vào docs hoặc merge nhánh docs vào main. N
 5. Kiểm liên kết/nguồn, review theo workflow, cập nhật handoff và trạng thái checklist. Phát hành/cleanup chỉ trong phạm vi được giao.
 
 [Lượt áp dụng ngày25/10](workflow/tasks/docs-knowledge-reconciliation-2026-10-25.md) dùng quy trình này cho danh mục/decision/spec/evidence, giữ lịch sử và danh sách đề nghị tổ chức lại riêng; không thêm gate hoặc bộ artifact mới cho sửa nhỏ.
+
+## Điểm vào sau tổ chức26/10
+
+[CI/CD](../openspec/changes/setup-project-ci-cd/proposal.md#điểm-vào-hiện-hành--26102026) · [Các đợt UI](ui-evolution.md) · [Enforcement còn lại](../openspec/changes/enforce-permissions-at-database/proposal.md) · [Lịch sử kế hoạch](roadmap-history.md) · [Checkpoint kiểm thử](testing-history.md). [Handoff26/10](workflow/tasks/docs-reorganization-2026-10-26.md) ghi quyền xử lý, nội dung thay thế và kiểm/review.

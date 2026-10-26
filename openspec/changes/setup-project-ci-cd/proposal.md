@@ -1,3 +1,13 @@
+# Điểm vào hiện hành — 26/10/2026
+
+Code đối chiếu `main@711a22e`. Đây là hồ sơ chính cho CI/CD; các checkpoint phía dưới giữ ngày/source riêng. Đọc [bản đồ evidence](../../../docs/testing.md#bản-đồ-bằng-chứng) và [integration mới nhất đã khảo sát](../../../docs/workflow/tasks/ui-main-docs-integration-2026-10-25.md) trước khi lấy một chữ “hiện hành” trong lịch sử làm trạng thái hôm nay.
+
+- CI nhẹ có source workflow/launcher; backend là manual theo profile/gate riêng. [CI cũ đã đối chiếu từng nhóm](../add-ci-pipeline/proposal.md), gồm cache, artifact, nhánh và schedule còn giới hạn.
+- Preview có quy trình manual; functional backend acceptance và production vẫn tách khỏi tích hợp code. [CD cũ đã đối chiếu](../add-cd-deployment/proposal.md), gồm migration/rollback/health check còn phải kiểm theo lần phát hành.
+- Không bật cache/upload/nightly/deploy từ lượt docs. Hồ sơ và raw evidence lịch sử bên dưới giữ nguyên; trạng thái FAIL/NOT_RUN và quyền cũ không được đổi thành PASS/quyền mới.
+
+---
+
 > **Đối chiếu xuất bản 25/10/2026.** Các mục “hiện hành”18/23-10 bên dưới là checkpoint của nguồn lúc đó. M24 ngày24/10 thay gate full-backend-before-merge riêng cho tích hợp mã; điều kiện đủ gate trước functional deployment vẫn giữ. A18 hoãn thực thi HP1, D19 điều chỉnh kiểm chứng/bàn giao; không xóa nghĩa vụ nghiệm thu. Các grant/counter/cutoff cũ không mở lại. [Nguồn, trạng thái và giới hạn](../../../docs/workflow/tasks/docs-wip-publication-2026-10-25.md). Các yêu cầu SHALL/expected bên dưới được giữ; không đổi để hợp thức hóa code.
 
 # Setup CI/CD POS-cafe

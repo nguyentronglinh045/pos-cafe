@@ -1,5 +1,8 @@
 # Màn hình và luồng vào
 
+[Chỉ mục các đợt UI](ui-evolution.md) nối quyết định/spec/reference và evidence trước–sau; mô tả hiện hành dùng source main711a22e.
+
+
 Bản đồ màn theo `main@711a22e`, đối chiếu 25/10/2026. Quyền và dữ liệu nêu dưới đây là contract trong code, chưa thay nghiệm thu backend. [Features](features.md) mô tả nghiệp vụ; [handoff UI](workflow/tasks/ui-main-docs-integration-2026-10-25.md) giữ kết quả và giới hạn thiết bị thật.
 
 Nguồn chung: [App.tsx:73](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/App.tsx#L73), [PasscodeScreen:42](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/screens/PasscodeScreen.tsx#L42), [registry:22](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/shell/AppShell.tsx#L22), [quyền mở màn:17](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/permissionUi.ts#L17).

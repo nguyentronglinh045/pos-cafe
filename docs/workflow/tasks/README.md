@@ -2,6 +2,8 @@
 
 ## Đang theo dõi
 
+- [Tổ chức năm nhóm docs — 26/10/2026](docs-reorganization-2026-10-26.md): CI/CD, UI, enforcement, lịch sử và HTML kiến trúc; giữ evidence, không refactor; được giao push sau kiểm/review.
+
 - [Chuẩn hóa đường tra cứu tri thức — 25/10/2026](docs-knowledge-reconciliation-2026-10-25.md): danh mục tính năng/G01–G12, quyết định, 16 baseline/delta và evidence; hồi quy tiểu luận21FR/8NFR; giữ các gap và đề nghị tổ chức lại, chưa refactor/push.
 
 - [Kế hoạch refactor an toàn — 25/10/2026](refactor-safety-2026-10-25/README.md): chốt nguồn/baseline, pilot Report presentation, 15 bất biến, phần việc nhỏ và gates/rollback; chưa triển khai. Hai review độc lập.

@@ -1,6 +1,8 @@
 # Kiến trúc
 
-Đối chiếu source `main@711a22e` ngày 25/10/2026. Các mô tả dưới đây là kiến trúc trong mã tích hợp; [testing](testing.md) và [giới hạn](limitations.md) xác định phạm vi đã kiểm, chưa xác nhận activation backend đích.
+Đối chiếu source `main@711a22e` ngày 26/10/2026. Các mô tả dưới đây là kiến trúc trong mã tích hợp; [testing](testing.md) và [giới hạn](limitations.md) xác định phạm vi đã kiểm, chưa xác nhận activation backend đích.
+
+[Bản giải thích trực quan](architecture-explainer.html) dẫn theo tầng, ranh giới tin cậy và luồng đọc/thanh toán trên cùng source; mô tả dưới đây giữ chi tiết và giới hạn.
 
 ## Hexagonal Architecture / Ports & Adapters
 
@@ -12,11 +14,14 @@ UI gọi hook/flow, hook/flow phụ thuộc port, adapter thực hiện I/O. Đ�
 | --- | --- |
 | `app` | Màn, drawer, điều hướng, tương tác và presentation |
 | `features` | Điều phối nghiệp vụ, query/mutation, vòng đời phiên và invalidation |
-| `core` / `domain` | Quy tắc thuần, validation, kiểu dữ liệu và lỗi |
+| `domain` | Kiểu dữ liệu và hợp đồng miền |
+| `core` | Quy tắc, validation, lỗi và lifecycle không phụ thuộc trực tiếp SDK/React; có callback I/O được inject |
 | `ports` | Hợp đồng dữ liệu/side effect, không chứa React |
 | `adapters` | Mock, Supabase, browser; mapping lỗi/DTO và I/O |
 
 Production `AppPorts` chỉ gồm **permission, write, auth, seed, print**. `permission` chứa authority, session, read projections, quản trị nhân viên, changes, signals, ảnh và quyền in. `LegacyAppPorts` giữ repository cũ cho test tương thích; sự tồn tại của nó không làm nó thành đường đọc/ghi UI hiện hành. Nguồn: [ports/index.ts:154](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/ports/index.ts#L154), [composition:24](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/runtimePorts.ts#L24), [Supabase factory:17](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/adapters/supabase/repos.ts#L17).
+
+[PermissionLifecycle:6](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/core/permissionLifecycle.ts#L6) nhận callback getRevision/getAuthority, dùng scheduler/timer; không mô tả toàn bộ core là hàm thuần. Ranh giới kiểm ở đây là phụ thuộc module, không phải cấm mọi side effect được inject.
 
 ## Folder Boundary Guard
 

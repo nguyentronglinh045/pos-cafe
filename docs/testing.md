@@ -11,7 +11,7 @@ Bản đồ này nối nhóm tính năng với nguồn đã có, không tạo m�
 | Mã / phần được hỗ trợ | Source, môi trường và kết quả | Giới hạn và nơi lấy hồ sơ |
 | --- | --- | --- |
 | **E-UI** — B01–03, local unit/browser/mock, guard và UI regression | Candidate cf8e304 ngày25/10, tree bằng main711a22e; bảng nguồn tích hợp phía dưới giữ counts/pass/skip riêng. | Không backend/thiết bị thật/deploy. [Handoff/source và đường raw](workflow/tasks/ui-main-docs-integration-2026-10-25.md), [review](implementation-log/ui-main-docs-integration-review-2026-10-25.md). Receipt/review trong Git; một phần raw là local, chưa coi toàn bộ đã có artifact truy cập chung. |
-| **E-PH27** — chống trùng, recovery và contract tài chính lịch sử | Source3ada48c ngày10/09; runtime loopback PostgreSQL/PostgREST/GoTrue; kết quả và coverage ở mục nghiệm thu phía dưới. | Không Storage/Realtime, không tự áp PASS cho permission/main mới. [Verification](implementation-log/phase-27-evidence/verification.md), [recipe lịch sử](implementation-log/phase-27-test-runtime.md). Không tự cài lại runtime đã dọn. |
+| **E-PH27** — chống trùng, recovery và contract tài chính lịch sử | Source3ada48c ngày10/09; runtime loopback PostgreSQL/PostgREST/GoTrue; kết quả và coverage ở [checkpoint nghiệm thu lịch sử](testing-history.md#nghiệm-thu-giao-thức-chống-trùng--2026-09-10). | Không Storage/Realtime, không tự áp PASS cho permission/main mới. [Verification](implementation-log/phase-27-evidence/verification.md), [recipe lịch sử](implementation-log/phase-27-test-runtime.md). Không tự cài lại runtime đã dọn. |
 | **E-BACKEND** — quyền, PIN, ảnh, signal, lifecycle và giao thức cùng nguồn | Nhiều candidate/slice và execution profile, phải đọc fingerprint của từng receipt. Main integration không tạo full acceptance mới. | [Backend/web23/10](workflow/tasks/permission-backend-web-release-2026-10-23.md), [integration24/10](workflow/tasks/permission-main-integration-2026-10-24.md), [catalog evidence WIP](workflow/evidence/docs-wip-publication-20261025/catalog.md). Giữ FAIL/spent/NOT_RUN; T04, bảy profiles và supplemental obligations chưa được miễn. |
 | **E-CICD** — pipeline và kiểm nguồn PR | Có CI/Preview/release tooling; E-UI dẫn CI source head/synthetic cụ thể; các mốc CI trước đó giữ riêng. | [CI/CD proposal và hồ sơ nguồn](../openspec/changes/setup-project-ci-cd/proposal.md), [completion18/10](workflow/tasks/project-ci-cd-completion-2026-10-18.md). CI xanh không chứng minh functional Vercel/backend hiện hành đã phát hành. |
 | **E-OPS** — backup, restore, vận hành | [Backup v2](workflow/tasks/permission-backup-v2-2026-10-14.md) và [backup audit](workflow/tasks/permission-backup-audit-2026-10-13.md) giữ source/phạm vi từng lần; LOCAL/hosted/provider readiness phải tách biệt. | Không nhận thành restore production nguồn cuối hoặc RPO/RTO đã đạt. Secrets/private artifacts không được sao chép vào docs; reader cần quyền truy cập theo hồ sơ. Performance source cuối chưa có kết quả đầy đủ tại bản đồ này. |
@@ -37,161 +37,15 @@ Main `711a22e71983e3d6aa17799649af05ce4c762555` có tree bằng candidate B03 `c
 
 [Handoff nguồn và lệnh/evidence](workflow/tasks/ui-main-docs-integration-2026-10-25.md), [review](implementation-log/ui-main-docs-integration-review-2026-10-25.md). Không cộng số B01/B02 cũ hoặc phase 27 vào tổng cf8e304. Raw local tại đường dẫn trong handoff không tự là artifact đã xuất bản.
 
-## Kiểm tài liệu — 25/10/2026
-
-Chỉnh lý docs dùng đối chiếu source, kiểm file/link/anchor, inventory OpenSpec và review độc lập. Kết quả và giới hạn ở [hồ sơ chỉnh lý](workflow/tasks/docs-normalization-2026-10-25.md). Không chạy app suite, dựng backend hay dispatch CI cho sửa tài liệu.
-
-## Kết quả lịch sử
-
-Các phần dưới giữ nguyên số liệu/môi trường tại ngày chạy. Mốc PASS/NOT_RUN cũ không đại diện baseline source hiện tại; recipe runtime cũ cần kiểm điều kiện máy trước tái lập, không tự cài WSL/Docker.
-
-## Nghiệm thu giao thức chống trùng — 2026-09-10
-
-Baseline code **main@3ada48c0c9c494d9b34838fd3739bda6091e0bb9**, đã push. Môi trường Windows/Node 24.16, PostgreSQL 16.15/PostgREST 16.2/GoTrue v2.197.0 loopback. Bốn stage dùng cùng fingerprint và report được verifier kiểm trước/sau commit.
-
-| Lệnh / nhóm | Kết quả |
-| --- | --- |
-| test:idempotency:unit | 57 file, 548/548 test PASS |
-| test:contracts | 415/415 PASS, HTTP + observer PostgreSQL thật |
-| test:idempotency:tools | 37/37 PASS, gồm 6 actual source mutants và controls fail-closed |
-| test:idempotency:e2e | 34/34 PASS qua browser/Auth/REST thật, 0 skip/0 flaky |
-| discover + verify-results | 93 TC gốc, 669/669 required, 1.034 discovered/executed, valid: true |
-| build | TypeScript/Vite PASS, 3215 module; JS 1.403,38 KB / gzip 387,60 KB; còn chunk warning |
-| test:coverage | 548 tests PASS; dòng 92,53% (744/804), câu lệnh 88,85%, nhánh 83,14%, hàm 95,07% |
-| smoke (mock hồi quy) | 35 PASS / 31 viewport exclusions / 0 fail / 0 flaky; không thuộc required manifest |
-
-Coverage vẫn giữ phạm vi logic nghiệp vụ thuần của chiến lược; không phải coverage toàn bộ UI/SQL. Runtime mới không có Storage API/Realtime, không dùng kết quả để thay cloud test. Ba reviewer độc lập có expected/actual và giới hạn riêng; [gói bằng chứng](implementation-log/phase-27-evidence/verification.md) ghi đủ 669 execution, provenance/hash và báo cáo. [Tái lập runtime](implementation-log/phase-27-test-runtime.md). Không chạy `smoke:supabase` lên remote và không apply migration thật trong lượt này.
-
-Các mục ngày cũ bên dưới là bằng chứng lịch sử, không được gộp với kết quả mới hoặc dùng số coverage cũ cho baseline mới.
-
 ## Chiến Lược
 
 Chiến lược kiểm thử — sáu tầng, tiêu chí "bao nhiêu là đủ" theo loại thay đổi, cổng chất lượng, ngưỡng độ phủ và quy ước đặt tên — nằm ở [test-strategy.md](test-strategy.md).
 
 File này chỉ chứa **nhật ký kết quả chạy** và **checklist thủ công**. Hai file tách nhau vì nhịp cập nhật khác nhau: chiến lược đổi hiếm, nhật ký đổi mỗi lần chạy lại.
 
-## Kịch Bản Demo Và Cổng Chất Lượng, Chạy Ngày 2026-09-07
-
-Baseline: `main@7183b31`. Môi trường cục bộ: Windows, Chromium do Playwright quản lý, adapter mock; project `demo-runbook` dùng viewport **1024×600**, timeout treo **120 giây** và một khẳng định riêng buộc hành trình hoàn tất dưới **90 giây**.
-
-**Bốn cổng chất lượng cục bộ**
-
-| Lệnh | Kết quả |
-| --- | --- |
-| `npm run build` | **Pass**; TypeScript strict + Vite production build, 3197 module trong 3,96 giây. Cảnh báo chunk trên 500 KB vẫn còn |
-| `npm test` | **49/49 test files, 260/260 tests pass** trong 28,62 giây |
-| `npm run test:coverage` | **49/49 test files, 260/260 tests pass** trong 28,15 giây; dòng 92,77%, câu lệnh 88,80%, nhánh 80,80%, hàm 95,95% |
-| `npm run smoke` | **35 passed, 31 skipped, 0 failed** trong 66 case/project combinations, 41,4 giây; runbook trong lần này mất 26,6 giây |
-
-`npm run smoke:supabase` không thuộc bốn cổng cục bộ trên.
-
-**Bằng chứng riêng cho script demo**
-
-- File `tests/smoke/demo-runbook.spec.ts` có đúng một `test()` và 14 `test.step`, chạy liền mạch toàn bộ hành trình trên adapter mock.
-- Hai lần chạy độc lập liên tiếp cuối cùng đều xanh: **28,9 giây** và **29,0 giây**; cả hai thấp hơn ngưỡng 90 giây.
-- Trace cuối có **789 entry**, đọc được dưới dạng ZIP Playwright tại `test-results/demo-runbook-kịch-bản-demo-chính-chạy-liền-mạch-qua-14-bước-demo-runbook/trace.zip`.
-- TC-TEST-09: tạm gỡ `data-testid="submit-order-button-footer"`, script đỏ đúng **Bước 5** sau 5 giây với `element(s) not found`; sau đó đã phục hồi hook và chạy lại xanh hai lần.
-
-**Bằng chứng cloud — ghi riêng, không gộp vào kết quả cục bộ**
-
-| Lệnh | Kết quả | Tác dụng phụ |
-| --- | --- | --- |
-| `npm run smoke:supabase` | **5/5 pass** trong 1,3 phút trên Supabase cloud | Tạo **5 cửa hàng thử** trong lần chạy này |
-
-Không thêm và không chạy bước dọn dữ liệu. Năm cửa hàng thử được giữ lại theo quyết định của chủ dự án; nghĩa vụ dọn thuộc change `setup-test-data-environment` và phải hoàn tất trước khi kết thúc tuần 9.
-
-**Kiểm chứng độc lập cùng ngày.** Chạy lại toàn bộ trên một worktree khác, cây phụ thuộc cài bằng `npm`: `npm test` 260/260 pass, `npm run test:coverage` dòng 92,77% khớp từng chữ số, `npm run smoke` 35 pass/31 skipped/0 failed, project `demo-runbook` xanh trong **28,2 giây**. TC-TEST-09 tái hiện độc lập: gỡ `data-testid="submit-order-button-footer"` làm script đỏ đúng **Bước 5** với `element(s) not found`, khôi phục xong chạy lại xanh.
-
-Một sai khác duy nhất: lần chạy độc lập báo **3196 module** thay vì 3197. Nguyên nhân là cây phụ thuộc khác nhau — bản gốc chạy ở checkout cài bằng `pnpm`, bản kiểm chứng ở worktree cài bằng `npm`. **Khi đưa số module vào báo cáo phải ghi kèm cách cài**, vì con số phụ thuộc vào đó chứ không phải vào mã nguồn.
-
-## Độ Phủ Nền, Đo Ngày 2026-09-07
-
-Lần đầu tiên đo được độ phủ, sau khi cài `@vitest/coverage-v8` theo `define-test-strategy`. Baseline: nhánh `claude/hopeful-albattani-42cb20`, xuất phát từ `main@c7f2f4e`.
-
-**Phạm vi đo** là logic nghiệp vụ thuần, không phải toàn bộ `src`: `src/core/**` cộng các module trong `src/features/**` không phải hook. Loại `src/domain` (chỉ khai kiểu), `src/app`, `src/adapters`, các hook `use*.ts`, các barrel `index.ts` và mọi file `.tsx`. Lý do chọn phạm vi này ghi ở quyết định 2 của `openspec/changes/define-test-strategy/proposal.md`.
-
-| Chỉ số | Kết quả | Ngưỡng đang đặt |
-| --- | --- | --- |
-| **Dòng** | **92,77%** (591/637) | **90%**, đã đạt |
-| Câu lệnh | 88,80% (674/759) | không đặt ngưỡng |
-| Nhánh | 80,80% (421/521) | không đặt ngưỡng |
-| Hàm | 95,95% (190/198) | không đặt ngưỡng |
-
-Số file trong phạm vi: **24**. Bộ kiểm thử tại lần đo: 49 file, 260 test, tất cả pass trong 13,9 giây.
-
-**Sáu file thấp nhất theo dòng**
-
-| File | Dòng |
-| --- | --- |
-| `features/admin/menuDraft.ts` | 0% trên 0 dòng — file chỉ khai `interface`, không ảnh hưởng tổng |
-| `features/pos/posInvalidation.ts` | 71,42% |
-| `features/admin/menuEditorDraft.ts` | 80% |
-| `features/admin/floorEditorDraft.ts` | 85,71% |
-| `features/admin/adminFlow.ts` | 86,48% |
-| `features/admin/draftUtils.ts` | 86,66% |
-
-**Ngưỡng đã được kiểm chứng là có tác dụng thật**, không phải chỉ nằm trong file cấu hình:
-
-| Phép thử | Ngưỡng đặt tạm | Kết quả |
-| --- | --- | --- |
-| Ngưỡng phải chặn khi không đạt | 96% | Thoát với mã 1, báo `Coverage for lines (92.77%) does not meet global threshold (96%)` |
-| Điều kiện là lớn hơn **hoặc bằng** | 92,77% | Thoát với mã 0 |
-| File chưa có test phải vào báo cáo với 0% | 90% | Tạo file thử chưa có test nào, file đó xuất hiện ở mức 0% và kéo tổng xuống |
-
-**Ghi chú kỹ thuật.** Reporter `text` **ẩn các file đạt 100% ở cả bốn cột**, nên bảng in ra màn hình chỉ có 16 dòng trong khi phạm vi thật là 24 file. Con số tổng vẫn đúng. Muốn thấy đủ danh sách thì đọc `coverage/coverage-summary.json`; đó là lý do `json-summary` được thêm vào danh sách reporter. Đã cân nhắc provider `istanbul` và loại: nó cho số liệu y hệt nhưng bỏ qua file chỉ khai kiểu và transform chậm hơn khoảng 8 giây.
-
-## Chạy Lại Ngày 2026-08-21
-
-Chạy lại trên cùng baseline `main@c7f2f4e` để xác nhận số liệu trước khi dùng cho báo cáo:
-
-| Lệnh | Kết quả | Ghi chú |
-| --- | --- | --- |
-| `npm test` | **49/49 test files, 260/260 tests pass** trong 22,89 giây | Khớp lần chạy 2026-08-12; thời gian chạy khác do máy |
-| `npm run build` | TypeScript strict + Vite production build pass, **3197 module** trong 2,43 giây | Tăng 1 module so với 2026-08-12 |
-| `npm run smoke` | **Không chạy được** | Playwright thiếu binary trình duyệt: `browserType.launch: Executable doesn't exist ... chrome-headless-shell.exe`. Không phải lỗi ứng dụng. Cần `npx playwright install` rồi chạy lại |
-
-Số liệu bundle cập nhật theo lần build 2026-08-21: một chunk JS duy nhất **1.347,25 KB minified / 368,88 KB gzip**, CSS 62,61 KB / 12,17 KB gzip. Chunk-size warning trên 500 KB vẫn còn.
-
-Kết quả mock smoke **34 pass/31 skipped/0 failed** dưới đây là của ngày **2026-08-12** và chưa được xác nhận lại; khi đưa vào báo cáo phải ghi đúng ngày đó, không gộp vào ngày 2026-08-21.
-
-## Baseline Local Lịch Sử 2026-08-12
-
-Kiểm tra trực tiếp ngày **2026-08-12** trên `main@c7f2f4e`:
-
-| Lệnh | Kết quả |
-| --- | --- |
-| `npm test` | **49/49 test files, 260/260 tests pass** trong 15,4 giây |
-| `npm run build` | TypeScript strict + Vite production build pass, 3196 module trong 1,62 giây |
-| `npm run smoke` | **34 passed, 31 skipped, 0 failed** trong 65 case/project combinations, 22,9 giây |
-
-Ghi chú:
-
-- 31 case skipped chủ yếu do test chỉ áp dụng cho một số viewport hoặc portrait guard; không phải 31 lỗi.
-- Build ngày 2026-08-12 tạo một chunk JS duy nhất 1.342,81 KB minified / 367,59 KB gzip (CSS 62,61 KB / 12,17 KB gzip) và còn Vite chunk-size warning trên 500 KB. Số liệu mới nhất xem mục chạy lại ngày 2026-08-21 ở trên.
-- `npm run smoke:supabase` không được chạy lại ngày 2026-08-12 vì phụ thuộc credential và cloud state; không được gộp với kết quả local ở trên.
-
-## Bằng Chứng Cloud Gần Nhất
-
-| Ngày/checkpoint | Bằng chứng | Phạm vi |
-| --- | --- | --- |
-| 2026-07-19, phase 20 | `npm run smoke:supabase`: **5/5 pass** | Tạo/pay/history/report, void paid, instant pay, realtime và deny `payment.take` qua RPC |
-| 2026-07-27, phase 23 | PostgREST read-only HTTP 200 | Migration 013, `tables.background_asset_key` và full floor-plan select |
-
-Không claim rằng toàn bộ 260 local tests đã chạy trên Supabase. Cloud suite là một tập flow E2E nhỏ hơn, có mục tiêu kiểm chứng integration/RPC.
-
-## Nhóm Bằng Chứng Quan Trọng
-
-- **Order/payment consistency:** `orderFlow`, `instantPay`, mock repo, Supabase repo contract và cloud E2E.
-- **Permission:** `guards`, employee drawer flow, permission UI và cloud deny-permission.
-- **Void paid:** feature flow, mock repo, adapter contract, history component và cloud E2E.
-- **Realtime:** invalidation/resubscribe unit tests và scenario hai browser; reconnect self-heal vẫn cần diễn tập thủ công định kỳ.
-- **Editor:** menu/floor changeset tests, asset resolver tests và mock smoke persist từ editor sang POS.
-- **Responsive:** Playwright projects cho 1366×768, 1024×600, 844×390, 740×360 và portrait 390×844.
-- **Architecture:** `src/architectureBoundaries.test.ts` ngăn dependency layer đi sai hướng và Supabase/browser leak.
-
 ## Checklist Thủ Công
 
-Hai việc dưới đây **về bản chất không tự động hóa được**. Mọi thứ khác đã hoặc đang được chuyển sang tự động; lý do giữ đúng hai việc này xem [test-strategy.md](test-strategy.md) mục "Phần Giữ Thủ Công".
+Hai việc dưới đây đang được giữ ở checklist thủ công của dự án; chưa có lần kiểm mới trong lượt docs. Phân tầng và phạm vi xem [test-strategy.md](test-strategy.md) mục "Phần Giữ Thủ Công".
 
 Chạy trước mỗi mốc đóng mục roadmap và trước ngày demo. Ghi ngày ngay khi chạy; **chưa chạy được thì ghi rõ lý do, không bỏ trống**.
 
@@ -218,7 +72,7 @@ Bốn lệnh đầu là cổng chất lượng, chạy được cục bộ và k
 
 ## Khoảng Trống Kiểm Thử
 
-- ~~Chưa có số liệu code coverage chính thức~~ **Đã có từ 2026-09-07**, xem mục "Độ Phủ Nền" ở trên. Khi ghi vào báo cáo phải kèm **phạm vi đo**, vì con số là của phần logic nghiệp vụ thuần chứ không phải của toàn bộ `src`.
+- ~~Chưa có số liệu code coverage chính thức~~ **Đã có từ 2026-09-07**, xem [checkpoint Độ Phủ Nền](testing-history.md#độ-phủ-nền-đo-ngày-2026-09-07). Khi ghi vào báo cáo phải kèm **phạm vi đo**, vì con số là của phần logic nghiệp vụ thuần chứ không phải của toàn bộ `src`.
 - Chưa có load/performance test hoặc đo latency realtime có kiểm soát.
 - Polling 5 giây là khoảng cấu hình, không phải cam kết mọi thiết bị hội tụ dưới 5 giây.
 - Reconnect self-heal có unit test nhưng lần kiểm chứng cross-device gần nhất vẫn cần diễn tập thủ công.
@@ -232,8 +86,24 @@ Bốn lệnh đầu là cổng chất lượng, chạy được cục bộ và k
 - Failure lịch sử đã được phase sau sửa phải ghi là “tại checkpoint”, không mô tả như lỗi hiện hành.
 - Phân biệt rõ automated test, manual verification và cấu hình/deployment readiness.
 
-## Tuần3 B01/B02
 
-Cập nhật25/10: [tích hợp UI vào main/docs](workflow/tasks/ui-main-docs-integration-2026-10-25.md) đã hoàn tất bốn PR và xóa bốn source branches local+remote; main711a22e là nguồn code mới. Source/check/review/giới hạn lấy ở handoff này. Các số liệu dưới đây giữ nguyên theo nguồn ngày24/10.
+## Kiểm tài liệu — 26/10/2026
 
-[Gate sourcehai màn](workflow/tasks/week03-b01-b02-final.md):642unit/149browser/35smokePASS31scope-skip; auditwholeappFAIL,baselinegiữ. Kiểm thủcôngWindowsNOT_RUN,capturehelpertimeout.
+[Handoff](workflow/tasks/docs-reorganization-2026-10-26.md) ghi kiểm liên kết/anchor, bảo toàn lịch sử/evidence, kiểm DOM/controls HTML cùng giới hạn chưa xác minh render/layout và review của lượt tổ chức docs. Đây không là một lần chạy app/backend hoặc kết quả chấp nhận sản phẩm.
+
+## Tra cứu mục cũ
+
+Các điểm neo được giữ để liên kết cũ vẫn tới được đúng bối cảnh.
+
+| Mục lịch sử | Nguồn nguyên bản |
+| --- | --- |
+| <a id="kiểm-tài-liệu--25102026"></a>Kiểm tài liệu — 25/10/2026 | [Đọc lịch sử](testing-history.md#kiểm-tài-liệu--25102026) |
+| <a id="kết-quả-lịch-sử"></a>Kết quả lịch sử | [Đọc lịch sử](testing-history.md#kết-quả-lịch-sử) |
+| <a id="nghiệm-thu-giao-thức-chống-trùng--2026-09-10"></a>Nghiệm thu giao thức chống trùng — 2026-09-10 | [Đọc lịch sử](testing-history.md#nghiệm-thu-giao-thức-chống-trùng--2026-09-10) |
+| <a id="kịch-bản-demo-và-cổng-chất-lượng-chạy-ngày-2026-09-07"></a>Kịch Bản Demo Và Cổng Chất Lượng, Chạy Ngày 2026-09-07 | [Đọc lịch sử](testing-history.md#kịch-bản-demo-và-cổng-chất-lượng-chạy-ngày-2026-09-07) |
+| <a id="độ-phủ-nền-đo-ngày-2026-09-07"></a>Độ Phủ Nền, Đo Ngày 2026-09-07 | [Đọc lịch sử](testing-history.md#độ-phủ-nền-đo-ngày-2026-09-07) |
+| <a id="chạy-lại-ngày-2026-08-21"></a>Chạy Lại Ngày 2026-08-21 | [Đọc lịch sử](testing-history.md#chạy-lại-ngày-2026-08-21) |
+| <a id="baseline-local-lịch-sử-2026-08-12"></a>Baseline Local Lịch Sử 2026-08-12 | [Đọc lịch sử](testing-history.md#baseline-local-lịch-sử-2026-08-12) |
+| <a id="bằng-chứng-cloud-gần-nhất"></a>Bằng Chứng Cloud Gần Nhất | [Đọc lịch sử](testing-history.md#bằng-chứng-cloud-gần-nhất) |
+| <a id="nhóm-bằng-chứng-quan-trọng"></a>Nhóm Bằng Chứng Quan Trọng | [Đọc lịch sử](testing-history.md#nhóm-bằng-chứng-quan-trọng) |
+| <a id="tuần3-b01b02"></a>Tuần3 B01/B02 | [Đọc lịch sử](testing-history.md#tuần3-b01b02) |

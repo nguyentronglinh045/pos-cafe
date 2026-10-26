@@ -195,6 +195,10 @@ Nguồn UI: [shell registry:22](https://github.com/nguyentronglinh045/pos-cafe/b
 
 ## Shared UI Behavior
 
+[Chỉ mục các đợt UI](ui-evolution.md) nối quyết định/spec/reference và evidence trước–sau; mô tả hiện hành dùng source main711a22e.
+
+
+
 B01 sơ đồ, B02 gọi món và B03 thanh toán đã merge; shell dùng theme chung và cổng authority. Đọc [screens](screens.md) cho bản đồ màn; [handoff tích hợp](workflow/tasks/ui-main-docs-integration-2026-10-25.md) cho source, kiểm và giới hạn. Mô tả thao tác ở trên giữ ý nghĩa nghiệp vụ; ảnh/bố cục phase cũ không đại diện giao diện mới.
 
 Nguồn nghiệp vụ đang dùng: [orderFlow.ts:250](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/features/pos/orderFlow.ts#L250), [PaymentDrawer.tsx:1](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/drawers/pos/PaymentDrawer.tsx#L1). Các tham chiếu phase 18/27 trong phần nghiệp vụ là lịch sử quyết định, không phải phép kiểm mới.

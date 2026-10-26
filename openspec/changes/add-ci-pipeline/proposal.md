@@ -1,58 +1,41 @@
-> **Điều hướng hiện hành25/10/2026:** proposal này giữ bối cảnh/backlog tại thời điểm lập; một phần đã có tại [hồ sơ hiện hành](../setup-project-ci-cd/proposal.md). Đối chiếu [bản đồ spec và phần còn thiếu](../../../docs/spec-reconciliation.md) trước khi dùng chữ “chưa có” bên dưới làm hiện trạng. Không tự archive hoặc nhận toàn proposal hoàn tất.
+# CI — đối chiếu proposal cũ với quy trình hiện hành
 
-# Dựng pipeline tích hợp liên tục
+Đối chiếu ngày 26/10/2026 với main `711a22e`. [Setup CI/CD](../setup-project-ci-cd/proposal.md#điểm-vào-hiện-hành--26102026) là hồ sơ chính. Proposal này giữ truy vết phạm vi CI ban đầu; không mở một pipeline thứ hai hoặc nhận cả backlog đã hoàn tất. Change công cụ, không sinh hành vi người dùng: không tạo usecases mới; testplan/traceability theo change setup. [Nội dung gốc](history.md) được giữ nguyên.
 
-## Why
+## Đối chiếu phạm vi
 
-Hiện mọi kiểm tra chất lượng đều chạy thủ công trên máy cá nhân: `npm test`, `npm run build`, `npm run smoke`. Kết quả được chép tay vào `docs/testing.md` kèm ngày chạy. Cách này không chứng minh được rằng trạng thái hiện tại của nhánh đang xanh, và với 8 nhóm tính năng mở rộng sắp làm thì việc phát hiện hồi quy sẽ ngày càng chậm. NFR-06 và NFR-07 đang được khẳng định bằng lời chứ chưa bằng bằng chứng tự động.
-
-## What Changes
-
-- Thêm pipeline chạy tự động trên mỗi push và mỗi pull request.
-- Pipeline chạy tối thiểu: cài dependency, kiểm tra kiểu, chạy unit test, build sản xuất.
-- Chạy bộ kiểm thử đầu-cuối theo mức đã chốt ở `define-test-strategy`.
-- Xuất kết quả và tạo tác kiểm thử để tra cứu khi thất bại.
-- Cấu hình cache dependency để thời gian chạy chấp nhận được.
-- Ghi tài liệu cách đọc kết quả pipeline và cách xử lý khi đỏ.
-
-## Capabilities
-
-### New Capabilities
-
-Không có. Đây là hạ tầng phát triển, không đổi hành vi quan sát được của hệ thống, nên `.openspec.yaml` đặt `skip_specs: true`.
-
-### Modified Capabilities
-
-Không có.
-
-## Impact
-
-- Thêm cấu hình pipeline vào worktree `D:\Workspace\pos-cafe` nhánh `main`.
-- Có thể cần thêm script trong `package.json` để gom các bước kiểm tra.
-- Cần bí mật cho môi trường kiểm thử nếu chạy E2E trên Supabase thật.
-- Cập nhật `docs/testing.md` và `docs/tech-stack.md`.
-
-## Ngoài phạm vi
-
-- Triển khai tự động lên môi trường chạy thật. Việc đó thuộc `add-cd-deployment`.
-- Viết thêm test. Việc đó thuộc `expand-e2e-coverage`.
-- Quét bảo mật, phân tích tĩnh nâng cao, đo hiệu năng.
-
-## Phụ thuộc
-
-- `define-test-strategy`: cần biết bước nào là cổng chặn, bước nào chỉ cảnh báo.
-- `setup-test-data-environment`: cần trước nếu pipeline phải chạy E2E trên Supabase thật.
-
-## Câu hỏi phải chốt trước khi làm
-
-1. Dùng nền tảng nào? GitHub Actions là lựa chọn hiển nhiên vì repo đã ở GitHub và có mức miễn phí, nhưng cần bạn xác nhận.
-2. Repo hiện có ba nhánh dùng cho ba mục đích khác nhau: `main` chứa code, `docs` chứa tài liệu, và các nhánh làm việc. Pipeline chạy trên nhánh nào? Nhánh `docs` không có `package.json` nên sẽ hỏng nếu cấu hình chạy trên mọi nhánh.
-3. Bước nào được phép chặn merge và bước nào chỉ cảnh báo?
-4. Có bật E2E trong pipeline ngay lần này không? Nếu có thì chạy trên mock hay Supabase thật, và bí mật kết nối lưu ở đâu?
-5. Thời gian chạy tối đa chấp nhận được là bao nhiêu? Con số này quyết định có tách nhóm chạy nhanh và nhóm chạy đầy đủ hay không.
-6. Trình quản lý gói dùng gì? Trong worktree hiện có cả `package-lock.json` và `pnpm-lock.yaml`, mà `docs/tech-stack.md` ghi là npm. Cần chốt một cái, nếu không pipeline sẽ cài khác với máy cá nhân.
-7. Có cần chạy pipeline theo lịch định kỳ ngoài lúc push không, ví dụ chạy E2E đầy đủ mỗi đêm?
+| Đề xuất gốc | Nguồn hiện hành / cách xử lý |
+| --- | --- |
+| Pipeline tự động push/PR | GitHub Actions đã có; push loại nhánh docs và evidence pattern, PR có trigger riêng. [Workflow ghim nguồn](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/.github/workflows/ci.yml#L1). Không diễn đạt “mọi push” hoặc tự thay branch rules. |
+| Cài dependency, type/build, unit, E2E | Light CI gọi launcher và profile theo source; mock UI và backend thật là các phạm vi khác nhau. [Strategy](../../../docs/test-strategy.md), [E-UI/E-CICD/E-BACKEND](../../../docs/testing.md#bản-đồ-bằng-chứng). Không nhận YAML là kết quả chạy. |
+| Artifact và xử lý CI đỏ | Safe summary và allowlist ảnh PIN được source kiểm soát; không upload toàn bộ raw. Operator guide đi cùng tooling trên main. [Quyết định setup](../setup-project-ci-cd/proposal.md), [allowlist hiện hành](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/.github/workflows/ci.yml#L34). |
+| Cache dependency | Là đề xuất tối ưu cũ, không là tính năng đã bật: workflow hiện đặt package-manager-cache=false. Giữ giới hạn dung lượng/chi phí; thay chính sách cần task riêng. |
+| Npm, thời lượng và lịch chạy | Source workflow dùng Node24.16.0, job timeout30phút; lock npm trong source. Đây là cấu hình, không là số đo hoặc deadline giảng viên. Chưa có schedule trong workflow light; không tự bật nightly. |
 
 ## Quyết định đã chốt
 
-Chưa có. Ghi câu trả lời của người dùng vào mục này trước khi bắt đầu implement.
+Các câu hỏi nền tảng/nhánh/phân tầng gate được nối tới [DEC-CICD và các cập nhật](../setup-project-ci-cd/proposal.md). Không hỏi lại lựa chọn đã có. Tham số của lần chạy phải lấy từ source/receipt; thay đổi acceptance, upload hoặc lịch chạy chưa được cấp quyền từ trang này.
+
+## Còn lại
+
+Backend acceptance và dịch vụ thật giữ gate trong hồ sơ chuyên biệt; benchmark thời gian/cache/schedule chưa tự được bổ sung. NFR-06/07 không được nhận đạt trên source mới bằng kết quả cũ. Không archive change như đã nghiệm thu toàn bộ chỉ vì đường đọc đã được hợp nhất.
+
+## Câu hỏi phải chốt trước khi làm
+
+Không còn câu hỏi chặn lượt tổ chức tài liệu26/10 đã được giao. Các vấn đề triển khai còn mở được nêu ở phần phạm vi/còn lại và hồ sơ chính; không nhận bộ spec phần dư đã sẵn sàng code. Câu hỏi cũ và bối cảnh câu trả lời giữ trong [lịch sử](history.md#câu-hỏi-phải-chốt-trước-khi-làm).
+
+## Tra cứu mục cũ
+
+Các điểm neo được giữ để liên kết cũ vẫn tới được đúng bối cảnh.
+
+| Mục lịch sử | Nguồn nguyên bản |
+| --- | --- |
+| <a id="dựng-pipeline-tích-hợp-liên-tục"></a>Dựng pipeline tích hợp liên tục | [Đọc lịch sử](history.md#dựng-pipeline-tích-hợp-liên-tục) |
+| <a id="why"></a>Why | [Đọc lịch sử](history.md#why) |
+| <a id="what-changes"></a>What Changes | [Đọc lịch sử](history.md#what-changes) |
+| <a id="capabilities"></a>Capabilities | [Đọc lịch sử](history.md#capabilities) |
+| <a id="new-capabilities"></a>New Capabilities | [Đọc lịch sử](history.md#new-capabilities) |
+| <a id="modified-capabilities"></a>Modified Capabilities | [Đọc lịch sử](history.md#modified-capabilities) |
+| <a id="impact"></a>Impact | [Đọc lịch sử](history.md#impact) |
+| <a id="ngoài-phạm-vi"></a>Ngoài phạm vi | [Đọc lịch sử](history.md#ngoài-phạm-vi) |
+| <a id="phụ-thuộc"></a>Phụ thuộc | [Đọc lịch sử](history.md#phụ-thuộc) |

@@ -1,3 +1,5 @@
+> **Điểm đọc26/10/2026:** [chỉ mục UI](../../../docs/ui-evolution.md) và [receipt tích hợp25/10](../../../docs/workflow/tasks/ui-main-docs-integration-2026-10-25.md) giữ trạng thái sau merge. Phần dưới giữ checkpoint/expected của batch; “chưa merge” chỉ thuộc ngày ghi, không là trạng thái hiện tại. Không thay scope, approval hoặc evidence gốc.
+
 # Tuần 3: tích hợp riêng B01 và B02
 
 Ngày 24/10/2026. Phạm vi được chủ dự án chốt: chỉ B01 và B02, repo nguyentronglinh045/pos-cafe, tác giả commit và người tạo PR 24tx610002-VoVanNgoc. Màu/font/reference đã duyệt giữ nguyên. Hai runtimecontract app5191/ref4185 được duyệt qua phản hồi “Duyệt hai hợp đồng runtime B01–B02”. Không merge/deploy.
