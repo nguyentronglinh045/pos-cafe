@@ -1,0 +1,348 @@
+{
+  "code": "711a22e71983e3d6aa17799649af05ce4c762555",
+  "method": "Compare MD5 of pg_proc.prosrc with SQL dollar-quoted body, normalizing CR only. Header/grants observed separately; not runtime or complete dependency proof.",
+  "functions": [
+    {
+      "schema_name": "private",
+      "function_name": "assert_store_owner",
+      "arguments": "",
+      "body_md5": "c34c7e2308fc63cab3b8647bc37a88c3",
+      "security_definer": true,
+      "volatility": "v",
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "private.assert_store_owner",
+          "arguments": "",
+          "body_md5": "c34c7e2308fc63cab3b8647bc37a88c3",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 24
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "permission_current_employee",
+      "arguments": "p_lock boolean",
+      "body_md5": "23b3986475cdc5899e063add0707c6e8",
+      "security_definer": true,
+      "volatility": "v",
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "private.permission_current_employee",
+          "arguments": "p_lock boolean default true",
+          "body_md5": "23b3986475cdc5899e063add0707c6e8",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 159
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "permission_initial_seed_status_json",
+      "arguments": "p_store uuid",
+      "body_md5": "2b13431eb679a8cb7e2bd932aca4b158",
+      "security_definer": false,
+      "volatility": "s",
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "private.permission_initial_seed_status_json",
+          "arguments": "p_store uuid",
+          "body_md5": "2b13431eb679a8cb7e2bd932aca4b158",
+          "path": "supabase/candidate/permission-seed.sql",
+          "line": 6
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "permission_read_guard",
+      "arguments": "required text[]",
+      "body_md5": "dd49a8a256de2c08209d6f24ebb06bb1",
+      "security_definer": false,
+      "volatility": "v",
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "private.permission_read_guard",
+          "arguments": "required text[]",
+          "body_md5": "dd49a8a256de2c08209d6f24ebb06bb1",
+          "path": "supabase/candidate/permission-read.sql",
+          "line": 5
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "permission_store_mutex",
+      "arguments": "sid uuid",
+      "body_md5": "a843cabd91836275bbfcd19953359979",
+      "security_definer": false,
+      "volatility": "v",
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "private.permission_store_mutex",
+          "arguments": "sid uuid",
+          "body_md5": "a843cabd91836275bbfcd19953359979",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 129
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "permission_begin_initial_seed",
+      "arguments": "p_request jsonb",
+      "body_md5": "06f744b68176f0f8962d26516e1c8b97",
+      "security_definer": true,
+      "volatility": "v",
+      "configuration": [
+        "search_path=pg_catalog",
+        "TimeZone=UTC"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "public.permission_begin_initial_seed",
+          "arguments": "p_request jsonb",
+          "body_md5": "06f744b68176f0f8962d26516e1c8b97",
+          "path": "supabase/candidate/permission-seed.sql",
+          "line": 101
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "permission_get_initial_seed_status",
+      "arguments": "",
+      "body_md5": "6a4bbd845e1400793c36cf7122872f5f",
+      "security_definer": true,
+      "volatility": "v",
+      "configuration": [
+        "search_path=pg_catalog",
+        "TimeZone=UTC"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "public.permission_get_initial_seed_status",
+          "arguments": "",
+          "body_md5": "6a4bbd845e1400793c36cf7122872f5f",
+          "path": "supabase/candidate/permission-seed.sql",
+          "line": 89
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "permission_get_store_session",
+      "arguments": "",
+      "body_md5": "349a8ea7675e9f160cc798c7e02ac799",
+      "security_definer": true,
+      "volatility": "s",
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "public.permission_get_store_session",
+          "arguments": "",
+          "body_md5": "349a8ea7675e9f160cc798c7e02ac799",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 523
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "permission_run_initial_seed_stage",
+      "arguments": "p_request jsonb",
+      "body_md5": "b7915f2c3338e7fbc3903f1ac84e30a6",
+      "security_definer": true,
+      "volatility": "v",
+      "configuration": [
+        "search_path=pg_catalog",
+        "TimeZone=UTC"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "public.permission_run_initial_seed_stage",
+          "arguments": "p_request jsonb",
+          "body_md5": "b7915f2c3338e7fbc3903f1ac84e30a6",
+          "path": "supabase/candidate/permission-seed.sql",
+          "line": 129
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "permission_start_session",
+      "arguments": "p_employee_id uuid, p_pin text",
+      "body_md5": "5bd1bdfb239cbb3d3f35bd28af2075b5",
+      "security_definer": true,
+      "volatility": "v",
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "public.permission_start_session",
+          "arguments": "p_employee_id uuid,p_pin text",
+          "body_md5": "5bd1bdfb239cbb3d3f35bd28af2075b5",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 226
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "is_verified_admin",
+      "arguments": "",
+      "body_md5": "f3d823878278ace13ed6c7cbc1160bd0",
+      "security_definer": true,
+      "volatility": "v",
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "private.is_verified_admin",
+          "arguments": "",
+          "body_md5": "f3d823878278ace13ed6c7cbc1160bd0",
+          "path": "supabase/migrations/016_activate_write_protocol.sql",
+          "line": 183
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "permission_identity_lock",
+      "arguments": "sid uuid, eid uuid, all_sessions boolean",
+      "body_md5": "e9b2a5d5c19c749e127a3e552976d232",
+      "security_definer": false,
+      "volatility": "v",
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "private.permission_identity_lock",
+          "arguments": "sid uuid,eid uuid,all_sessions boolean",
+          "body_md5": "e9b2a5d5c19c749e127a3e552976d232",
+          "path": "supabase/candidate/permission-identity.sql",
+          "line": 146
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "clear_demo_data",
+      "arguments": "p_employee_id uuid",
+      "body_md5": "1a93d879eeb9b9ae8564c4292828abc2",
+      "security_definer": true,
+      "volatility": "v",
+      "configuration": [
+        "search_path=pg_catalog",
+        "TimeZone=UTC"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "public.clear_demo_data",
+          "arguments": "p_employee_id uuid",
+          "body_md5": "1a93d879eeb9b9ae8564c4292828abc2",
+          "path": "supabase/migrations/016_activate_write_protocol.sql",
+          "line": 237
+        }
+      ],
+      "matched": true
+    },
+    {
+      "schema_name": "public",
+      "function_name": "clear_demo_data",
+      "arguments": "p_request_id uuid, p_confirmation boolean",
+      "body_md5": "9d11550f8d65d012895c39b85bc9642f",
+      "security_definer": true,
+      "volatility": "v",
+      "configuration": [
+        "search_path=pg_catalog"
+      ],
+      "anon_execute": true,
+      "authenticated_execute": true,
+      "service_role_execute": false,
+      "source_matches": [
+        {
+          "name": "public.clear_demo_data",
+          "arguments": "p_request_id uuid,p_confirmation boolean",
+          "body_md5": "9d11550f8d65d012895c39b85bc9642f",
+          "path": "supabase/candidate/permission-changes.sql",
+          "line": 269
+        }
+      ],
+      "matched": true
+    }
+  ],
+  "matched_count": 14,
+  "queried_count": 14
+}

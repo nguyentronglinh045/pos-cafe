@@ -20,7 +20,7 @@
 | [Menu Editor](#menu-editor) — Người có menu.manage; sửa danh mục/món/modifier/ảnh → lưu changes | FR-09/16; G04/G09 | [menu-management](spec-reconciliation.md#menu-management) | Ảnh cần gate dịch vụ thật; join-only sync có giới hạn. |
 | [Floor Editor](#floor-editor) — Người có floor.manage; chỉnh khu/bàn/decor → lưu layout | FR-17/18 | [floor-plan-editor](spec-reconciliation.md#floor-plan-editor) | Giữ trạng thái phục vụ; source/test server riêng. |
 | [Report](#report) — Người có report.view; chọn kỳ → đọc tổng hợp và các pane được phép | FR-19; NFR-01 | [reporting](spec-reconciliation.md#reporting) | Không export; quyền report không tự mở history detail. |
-| [Settings & Maintenance](#settings--maintenance) — Người có quyền settings; sửa thông tin; owner clear mẫu | FR-20; G04 | [store-settings](spec-reconciliation.md#store-settings) | Seed lại từ Settings còn cần hòa giải R06. |
+| [Settings & Maintenance](#settings--maintenance) — Người có quyền settings; sửa thông tin; owner clear mẫu | FR-20; G04 | [store-settings](spec-reconciliation.md#store-settings) | [R06-A/B](spec-reconciliation.md#r06-detail): retry ban đầu khác reseed sau xóa; còn quyết định. |
 | [Đồng bộ nhiều thiết bị](#đồng-bộ-nhiều-thiết-bị) — Nhân viên đang online; signal/reconnect → tải lại theo purpose | FR-21; G09 | [multi-device-sync](spec-reconciliation.md#multi-device-sync) | Có code signal/poll; chưa có SLA nguồn cuối. |
 | [Tài khoản chủ và sở hữu](#tài-khoản-chủ-và-sở-hữu) — Chủ email dự kiến; xác thực → tạo quán/khôi phục/chuyển chủ | G05/G06 | [store-onboarding](spec-reconciliation.md#store-onboarding) | Kế hoạch; 3 artifact owner còn khung. |
 
@@ -163,6 +163,8 @@ Nguồn: [EmployeesDrawer.tsx:150](https://github.com/nguyentronglinh045/pos-caf
 - Look mô phỏng Tremor nhưng dựng bằng Tailwind `pos-*` + Recharts, không thêm dependency.
 
 ## Settings & Maintenance
+
+[R06-A/B](spec-reconciliation.md#r06-detail) phân biệt retry workflow seed chưa xong với khôi phục mẫu sau khi xóa. Nút “Đặt lại dữ liệu mẫu” hiện mở dialog xóa; retry nằm ở thông báo chung sau đăng nhập owner. Chưa có luồng reseed sau xóa trong runtime đã kiểm, không nhận nghĩa vụ baseline là đã đạt. Nguồn: [GeneralSettingsDrawer:237](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/drawers/admin/GeneralSettingsDrawer.tsx#L237), [InitialSeedLifecycle:133](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/InitialSeedLifecycle.tsx#L133), [seedRepo:75](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/adapters/supabase/seedRepo.ts#L75).
 
 Thông tin quán phục vụ hiển thị/hóa đơn được đọc bằng purpose display, khác quyền quản lý settings. Settings và dữ liệu mẫu đi qua permission changes; đổi múi giờ và clear demo có ràng buộc owner phía server. Clear demo không là reset toàn bộ giao dịch, ledger hay audit.
 

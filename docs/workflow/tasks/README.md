@@ -2,6 +2,7 @@
 
 ## Đang theo dõi
 
+- [N4 — Hòa giải seed/Settings và khóa store — 26/10/2026](docs-requirements-reconciliation-2026-10-26.md): đã lập bảng R06-A/B/C theo source và catalog chỉ đọc; còn quyết định nghiệp vụ, giữ nguyên spec/evidence, không code/DB mutation.
 - [N3 — Tài liệu tham khảo theo luận điểm — 26/10/2026](docs-academic-references-2026-10-26.md): tám nguồn nền tảng, hai chuẩn đối chiếu, C01–C11 và giới hạn; phần2 đã push tại d75e41e. Chỉ docs, không code/DB.
 
 - [N2 — Sơ đồ các luồng quan trọng — 26/10/2026](docs-critical-flows-2026-10-26.md): tám hình theo code và metadata DB staging, không sửa code/schema hoặc nghiệm thu runtime.

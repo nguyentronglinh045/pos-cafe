@@ -17,6 +17,12 @@ Owner trong mô hình quyền không đồng nghĩa đã có tài khoản chủ 
 
 Các quyết định Q5/Q6 yêu cầu xác minh owner qua hồ sơ hỗ trợ ngoài app và audit operator; không coi Store Key/contact tự khai là bằng chứng sở hữu. [Spec recovery](../openspec/changes/redesign-permission-model/design.md) và [runbook snapshot](runbooks/README.md) giữ điều kiện lịch sử; không cấp quyền recovery live. N01–N03 giữ giới hạn ảnh/gateway và phép đo: private orphan do Storage/DB không cùng transaction, byte cached không thu hồi ngay, origin/revalidate có chi phí chưa đo và chưa có rate limit riêng cho public GET. Đây là rủi ro/điều kiện thiết kế, không chứng nhận sự cố hoặc số đo mới; [nguồn quyết định](../openspec/changes/redesign-permission-model/proposal.md).
 
+## Dữ liệu mẫu và trạng thái cửa hàng
+
+[Đối chiếu R06 ngày26/10](spec-reconciliation.md#r06-detail) giữ ba khoảng thiếu: retry seed có trong source nhưng chưa ở Settings như yêu cầu; reseed sau xóa chưa có luồng đáp ứng; đường phiên cửa hàng và guard nhân viên được kiểm không dùng `stores.is_active`. Đây là yêu cầu/khả năng còn mở, không là quyết định miễn thực hiện hoặc nghiệm thu có điều kiện.
+
+[Metadata mới](implementation-log/requirements-reconciliation-20261026/README.md) đối chiếu 14 body function/overload và catalog/ACL liên quan, không thử thao tác nghiệp vụ hoặc thay cờ store. Không suy cờ DB, RLS bật hay guard nhân viên thành đã khóa cả quán. Phương án hoãn/đổi/bỏ requirement còn chờ chủ dự án duyệt; spec gốc được giữ.
+
 ## Online Và Realtime
 
 Online-only, không local database/outbox để bán hàng offline. Query live poll 5 giây; authority revision poll 30 giây và refresh deadline 5 giây khi foreground. Đây không phải SLA mạng hoặc bảo đảm hội tụ khi server lỗi. Runtime mới dùng signal tables; lỗi thiếu subscription bảng nối ghi ở adapter legacy không tự là lỗi runtime mới. [Kiến trúc](architecture.md#realtime), [lifecycle:47](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/core/permissionLifecycle.ts#L47).

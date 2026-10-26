@@ -1,5 +1,7 @@
 # Thesis Report Source Map
 
+[R06-A/B/C](spec-reconciliation.md#r06-detail) là nguồn cho phân tích chênh lệch yêu cầu–hiện thực: retry seed, reseed sau xóa và khóa cửa hàng; chưa dùng các phần này làm tính năng đã nghiệm thu.
+
 Nguồn phân tích/thiết kế bổ sung: [permission15](../openspec/changes/redesign-permission-model/proposal.md), [forced-PIN](../openspec/changes/force-default-pin-change/proposal.md), [catalog evidence](workflow/evidence/docs-wip-publication-20261025/catalog.md). [Nguồn theo luận điểm](references.md#claims) có tám nguồn R01–R08 đã đọc phần liên quan và hai chuẩn S01–S02 đối chiếu mục cụ thể. Danh mục chỉ giữ nguồn đã đọc phần liên quan và có luận điểm sử dụng. Kiểu trích dẫn cuối chờ mẫu trường; không suy danh mục là bằng chứng hệ thống đạt chuẩn.
 
 Nhánh `docs` là **nguồn dữ liệu để viết báo cáo**, không phải bản Word hoàn chỉnh. Nguồn implementation đối chiếu ngày **25/10/2026** là `main@711a22e`. Source code, expected của spec và kết quả kiểm là ba loại bằng chứng khác nhau; main không mặc nhiên là bản đã phát hành.
