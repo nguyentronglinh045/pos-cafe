@@ -22,6 +22,7 @@ Kho tri thức để AI tra cứu tính năng, thiết kế, quyết định và
 | Viết yêu cầu, tìm mã FR/NFR | [Requirements](requirements.md); hợp đồng chi tiết ở [OpenSpec](../openspec/README.md) |
 | Hiểu màn hình và quyền mở màn | [Screens](screens.md) |
 | Giải thích lựa chọn công nghệ | [Chỉ mục quyết định và nguồn chốt](workflow/decisions.md), [Tech stack](tech-stack.md); [trang giải thích kiến trúc hiện hành](architecture-explainer.html) có bản đồ tầng, ranh giới quyền và luồng đọc/thanh toán ghim source; không là bằng chứng runtime |
+| Tra nghĩa thuật ngữ, bảng/cột và ràng buộc | [Thuật ngữ](glossary.md) → [Mô hình/ERD](data-model.md) → [Từ điển dữ liệu](data-dictionary.md); mô hình source, chưa là schema đích đã activate |
 | Viết khóa luận | [Bản đồ nguồn báo cáo](report-source-map.md) |
 | Phát triển và kiểm thử | [CLAUDE.md](../CLAUDE.md), [chiến lược test](test-strategy.md), [quy trình task](workflow/README.md) |
 | Tiếp tục công việc đang mở | [Chỉ mục task](workflow/tasks/README.md) |

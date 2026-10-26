@@ -53,7 +53,7 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 | Khảo sát/chức năng hệ thống | [features.md](features.md), [screens.md](screens.md) |
 | Phân tích yêu cầu và traceability | [requirements.md](requirements.md) |
 | Thiết kế kiến trúc | [architecture.md](architecture.md), [tech-stack.md](tech-stack.md) |
-| Thiết kế cơ sở dữ liệu | [data-model.md](data-model.md) |
+| Thiết kế cơ sở dữ liệu | [Mô hình và ERD](data-model.md), [từ điển dữ liệu](data-dictionary.md), [thuật ngữ](glossary.md); phân biệt mô hình source và DB đích |
 | Cài đặt và quyết định kỹ thuật | [Quyết định](workflow/decisions.md), [implementation log](implementation-log/README.md) |
 | Kiểm thử và đánh giá | [testing.md](testing.md), [demo-runbook.md](demo-runbook.md) |
 | Kế hoạch và trình tự thực hiện | [roadmap.md](roadmap.md) |
@@ -94,3 +94,10 @@ Không có thứ tự “code thắng spec” áp cho mọi câu hỏi. Khi ngu�
 - Chuyển evidence kỹ thuật thành mô tả thiết kế; không sao chép code, đường dẫn file, symbol, commit, migration hoặc lệnh terminal.
 - Chụp lại UI/diagram theo checklist và lưu trong artefact báo cáo riêng.
 - Rà lại deployment URL và cloud migration trước ngày nộp/bảo vệ.
+
+## Nguyên liệu dữ liệu bổ sung — 26/10/2026
+
+- [Thuật ngữ](glossary.md): dùng cách gọi cửa hàng/tenant, owner, đơn/bill/payment/receipt, lệnh/retry/recovery nhất quán; giữ từ gốc khi trích lịch sử.
+- [ERD theo nhóm](data-model.md#erd-rút-gọn): quan hệ FK và cardinality từ source; liên kết logic audit/tín hiệu được ghi riêng. Các hình bao quát 35 bảng dự án của mô hình candidate sau chuyển đổi, không phải ảnh chụp DB đang chạy.
+- [Từ điển](data-dictionary.md): 332 cột với kiểu, NULL, PK/FK/UNIQUE/CHECK và nguồn; phân biệt constraint với invariant do luồng nghiệp vụ bảo đảm.
+- [Handoff N1](workflow/tasks/docs-data-model-2026-10-26.md) ghi cách kiểm, giới hạn và review. Chưa xác nhận schema đích, chưa hoàn thiện bộ sơ đồ luồng của N2 hoặc nguồn học thuật theo luận điểm của N3. Hình/bảng xuất sang báo cáo cần theo mẫu và nguồn được chọn lúc viết.

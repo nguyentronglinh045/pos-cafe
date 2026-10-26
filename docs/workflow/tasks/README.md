@@ -2,6 +2,8 @@
 
 ## Đang theo dõi
 
+- [N1 — Thuật ngữ, ERD và từ điển dữ liệu — 26/10/2026](docs-data-model-2026-10-26.md): chuẩn hóa mô hình source và ràng buộc, phân biệt candidate/schema đích; chưa refactor code.
+
 - [Tổ chức năm nhóm docs — 26/10/2026](docs-reorganization-2026-10-26.md): CI/CD, UI, enforcement, lịch sử và HTML kiến trúc; giữ evidence, không refactor; được giao push sau kiểm/review.
 
 - [Chuẩn hóa đường tra cứu tri thức — 25/10/2026](docs-knowledge-reconciliation-2026-10-25.md): danh mục tính năng/G01–G12, quyết định, 16 baseline/delta và evidence; hồi quy tiểu luận21FR/8NFR; giữ các gap và đề nghị tổ chức lại, chưa refactor/push.

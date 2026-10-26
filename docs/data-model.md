@@ -1,32 +1,152 @@
 # Data Model
 
-Đối chiếu source `main@711a22e` ngày 25/10/2026; không phải snapshot database đang chạy. Nguồn có migrations 001–017 và SQL trong `supabase/candidate/`; backend activation/acceptance mới vẫn HOLD.
+Đối chiếu ngày **26/10/2026**, source `main@711a22e71983e3d6aa17799649af05ce4c762555`. Trang này giữ mô hình, ERD và giải thích nghiệp vụ; [từ điển dữ liệu](data-dictionary.md) giữ chi tiết bảng/cột/ràng buộc; [thuật ngữ](glossary.md) thống nhất cách gọi. Nhánh docs là nguồn viết báo cáo, không là bản báo cáo hoàn chỉnh.
 
-Data model dùng PostgreSQL/Supabase với nhóm bảng nghiệp vụ nền và các bảng giao thức/quyền bổ sung, thiết kế theo store-scoped multi-tenant: hầu hết bảng nghiệp vụ có `store_id`, UUID primary key, `created_at`, `updated_at`, và một số bảng editor có `deleted_at` để xóa mềm.
+## Phạm vi và cách đọc mô hình
 
-> **Quy tắc dùng cho báo cáo:** file này mô tả mô hình trong source; schema đích phải được xác minh riêng. Tên migration, tên file SQL và symbol code chỉ là nguồn kiểm chứng nội bộ, không đưa vào báo cáo. Báo cáo tập trung vào ERD, bảng, trường, kiểu dữ liệu, PK/FK, quan hệ, constraint và quy tắc nghiệp vụ.
+Mô hình gồm nền nghiệp vụ và phần mở rộng quyền/phiên/ledger/registry trong **source candidate**, sau các bước chuyển đổi mà controller mô tả. Backend activation/acceptance vẫn **HOLD**. Chưa kết nối hoặc introspect DB đích trong lượt này, vì vậy không gọi ERD là schema production đã triển khai.
+
+| Lớp nguồn | Vai trò và cách sử dụng |
+| --- | --- |
+| Nền migrations 001–016 | Store/menu/floor/order/payment, phiên nhân viên, ledger và audit tài chính; các thay đổi đã loại cột của mô hình partial-payment cũ. |
+| Catalog/bridge 017 | Thêm catalog quyền, registry quản trị và bridge legacy; không tự chuyển runtime sang role mới. |
+| Preparation + activation candidate | Chuẩn bị contract gate; controller áp 017, đổi employees.role sang text theo mapping được duyệt, áp fragments rồi dọn ba bảng legacy và enum cũ. Đây là mô tả source, không phải lệnh triển khai. |
+| Nền tảng và ngoài DB | auth.users và Storage do Supabase quản lý; bytes ảnh, credential client và dữ liệu UI không được cộng thành bảng nghiệp vụ. |
+
+Nguồn: [thứ tự bundle](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/scripts/permission-activation-bundle.mjs#L4), [controller](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/scripts/permission-activation-steps.mjs#L29), [contract gate](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-compatibility-prepare.sql#L4). Không lấy thứ tự tên file làm recipe chạy migration; giữ gate và hướng dẫn triển khai ở task backend.
+
+Kiểm kê mô hình source này: **35 bảng dự án, 332 cột**. Ba bảng legacy được controller loại và bảng do nền tảng quản lý không nằm trong số đó. [Chỉ mục từ điển](data-dictionary.md#chỉ-mục-bảng) bao phủ mọi bảng; các ERD dưới là các góc nhìn theo nhóm, không sao chép cùng entity thành nhiều bảng.
+
+> Khi viết báo cáo: trình bày thực thể, quan hệ, kiểu dữ liệu, ràng buộc và lý do thiết kế. Nguồn file/commit/SQL trong docs dùng để kiểm chứng nội bộ theo [source map](report-source-map.md). Mô hình source và schema đã kiểm trên môi trường đích phải ghi riêng.
 
 ## ERD Rút Gọn
 
+Các hình là **ERD vật lý rút gọn theo source**, chỉ vẽ FK thật; không vẽ ID audit/tín hiệu thành FK. `||` là đúng một, `|o`/`o|` là không hoặc một, `o{` là không hoặc nhiều. Nét liền dùng khi FK tham gia toàn bộ vào khóa chính của bản ghi con; nét đứt là quan hệ không định danh. Nét đứt vẫn là FK, không có nghĩa “chỉ liên kết logic”. FK ghép ghi đủ tên cột trong nhãn. Xem [cú pháp Mermaid](https://mermaid.js.org/syntax/entityRelationshipDiagram.html#relationship-syntax).
+
+Để hình gọn, một số FK tenant và actor xóa/sửa đã được lược khỏi từng hình; từ điển là nơi liệt kê đầy đủ. Cardinality ở đây lấy từ nullability/PK/UNIQUE; quy tắc thực thi chặt hơn được ghi dưới hình, không suy từ hình rằng sản phẩm đã được kiểm chứng.
+
+### Cửa hàng, nhân viên và danh mục quyền
+
 ```mermaid
 erDiagram
-    stores ||--o| store_settings : "có cấu hình"
-    stores ||--o{ employees : "có nhân viên"
-    stores ||--o{ categories : "có danh mục"
-    categories ||--o{ menu_items : "phân loại món"
-    menu_items ||--o{ menu_item_option_groups : "gắn nhóm chọn"
-    option_groups ||--o{ menu_item_option_groups : "được nhiều món dùng"
-    option_groups ||--o{ option_values : "có giá trị"
-    stores ||--o{ floor_areas : "có khu"
-    floor_areas ||--o{ tables : "chứa bàn"
-    floor_areas ||--o{ floor_decor_items : "chứa decor"
-    stores ||--o{ orders : "có đơn"
-    employees ||--o{ orders : "tạo đơn"
-    tables o|--o{ orders : "nhận đơn tại bàn"
-    orders ||--o{ order_items : "snapshot món"
-    order_items ||--o{ order_item_options : "snapshot modifier"
-    orders ||--o{ payments : "ghi thanh toán"
+    "auth.users" ||--o| "public.stores" : "id"
+    "public.stores" ||--o| "public.store_settings" : "store_id"
+    "public.stores" ||..o{ "public.employees" : "store_id"
+    "public.permission_roles" ||..o{ "public.employees" : "role"
+    "public.employees" ||..o{ "private.employee_sessions" : "store_id, employee_id"
+    "public.permission_roles" ||--o{ "public.role_permission_defaults" : "role_code"
+    "public.permission_catalog" ||--o{ "public.role_permission_defaults" : "permission_code"
+    "public.permission_catalog_state"
 ```
+
+Nguồn: [001_schema_enums.sql:18](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/001_schema_enums.sql#L18), [014_write_identity_and_ledger.sql:162](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/014_write_identity_and_ledger.sql#L162), [017_permission_catalog_bridge.sql:4](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/017_permission_catalog_bridge.sql#L4), [permission-identity.sql:11](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L11).
+
+Một store có tối đa một settings theo PK/FK. Candidate kiểm đúng một owner hoạt động bằng unique index, CHECK và constraint trigger cuối transaction; FK store–employee riêng lẻ vẫn cho 0..n nhân viên. Vai trò owner ở đây chưa phải tài khoản chủ dùng email thật. Catalog state là singleton độc lập, không có FK từ revision nhân viên/phiên.
+
+### Thực đơn và tùy chọn dùng chung
+
+```mermaid
+erDiagram
+    "public.stores" ||..o{ "public.categories" : "store_id"
+    "public.categories" ||..o{ "public.menu_items" : "store_id, category_id"
+    "public.menu_items" ||..o{ "public.menu_item_option_groups" : "store_id, menu_item_id"
+    "public.option_groups" ||..o{ "public.menu_item_option_groups" : "store_id, option_group_id"
+    "public.option_groups" ||..o{ "public.option_values" : "store_id, option_group_id"
+```
+
+Nguồn: [001_schema_enums.sql:55](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/001_schema_enums.sql#L55), [008_modifier_rework.sql:9](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/008_modifier_rework.sql#L9). Nhóm tùy chọn không còn menu_item_id/min_select/max_select. Không có UNIQUE của cặp món–nhóm trong DDL; không diễn giải bảng nối thành ràng buộc duy nhất chưa được khai báo.
+
+### Sơ đồ bàn
+
+```mermaid
+erDiagram
+    "public.stores" ||..o{ "public.floor_areas" : "store_id"
+    "public.floor_areas" ||..o{ "public.tables" : "store_id, area_id"
+    "public.floor_areas" ||..o{ "public.floor_decor_items" : "store_id, area_id"
+    "public.tables" |o..o{ "public.orders" : "store_id, table_id"
+```
+
+Nguồn: [001_schema_enums.sql:126](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/001_schema_enums.sql#L126), [002_indexes_rls_triggers.sql:70](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/002_indexes_rls_triggers.sql#L70). Order có table_id nullable. Unique index có điều kiện chỉ cho tối đa một đơn open trên mỗi (store, bàn); lịch sử vẫn có nhiều đơn cho cùng bàn. DDL không CHECK cặp order_type–table_id; quy tắc dine-in/takeaway thuộc luồng ghi.
+
+### Đơn, payment, lệnh ghi và event
+
+```mermaid
+erDiagram
+    "public.orders" ||..o{ "public.order_items" : "store_id, order_id"
+    "public.order_items" ||..o{ "public.order_item_options" : "store_id, order_item_id"
+    "public.orders" ||..o{ "public.payments" : "store_id, order_id"
+    "public.stores" ||--o{ "public.write_operations" : "store_id"
+    "public.write_operations" ||..o| "public.order_events" : "store_id, operation_id"
+    "public.orders" ||..o{ "public.order_events" : "store_id, source_order_id"
+    "public.orders" |o..o{ "public.order_events" : "store_id, result_order_id"
+    "public.payments" |o..o{ "public.order_events" : "store_id, payment_id"
+```
+
+Nguồn: [001_schema_enums.sql:189](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/001_schema_enums.sql#L189), [014_write_identity_and_ledger.sql:330](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/014_write_identity_and_ledger.sql#L330).
+
+Schema cho phép nhiều payment/đơn vì không có unique order_id; đường nghiệp vụ hiện tạo tối đa một payment cho một đơn paid. Một lệnh có tối đa một event theo UNIQUE(store_id,operation_id), không phải mọi lệnh đều có event. write_operations.order_id sinh từ payload và không FK tới orders, để đăng ký lệnh tạo đơn trước khi đơn tồn tại. ID nguồn/kết quả trong event mới là các FK thật.
+
+### Quản trị và grant in
+
+```mermaid
+erDiagram
+    "public.stores" ||--o{ "private.employee_admin_requests" : "store_id"
+    "private.permission_request_mac_keys" ||..o{ "private.employee_admin_requests" : "mac_key_version"
+    "public.write_operations" ||..o| "private.initial_receipt_print_grants" : "store_id, operation_id"
+    "public.orders" ||..o{ "private.initial_receipt_print_grants" : "store_id, order_id"
+    "public.employees" ||..o{ "private.initial_receipt_print_grants" : "store_id, executor_employee_id"
+    "public.employee_admin_audit"
+```
+
+Nguồn: [017_permission_catalog_bridge.sql:112](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/017_permission_catalog_bridge.sql#L112), [permission-identity.sql:47](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L47), [permission-print.sql:4](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-print.sql#L4). Audit quản trị cố ý không có FK nghiệp vụ/nhân viên; registry và audit liên kết bằng khóa logic theo contract. Hash phiên trong grant không có FK tới employee_sessions. Grant nằm ngoài R1, không biến quyền in lại thành quyền mặc định.
+
+### Khởi tạo cửa hàng và dữ liệu mẫu
+
+```mermaid
+erDiagram
+    "public.stores" ||--o{ "private.bootstrap_requests" : "store_id"
+    "public.stores" ||..o| "private.initial_seed_workflows" : "store_id"
+    "private.initial_seed_workflows" ||--o{ "private.initial_seed_stages" : "workflow_id"
+    "private.store_no_reservations"
+```
+
+Nguồn: [017_permission_catalog_bridge.sql:129](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/017_permission_catalog_bridge.sql#L129), [permission-identity.sql:67](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L67). Reservation có trước Auth/store nên không có FK tới store. bootstrap_requests.owner_id là ID logic, không FK. Workflow có tối đa một dòng/store; mỗi stage có khóa (workflow_id,stage) và stage_id duy nhất. Đây là seed ban đầu/retry, chưa hòa giải yêu cầu seed lại trong Settings (R06).
+
+### Ảnh món
+
+```mermaid
+erDiagram
+    "public.stores" ||..o{ "private.menu_image_uploads" : "store_id"
+    "public.employees" ||..o{ "private.menu_image_uploads" : "store_id, created_by_employee_id"
+    "private.menu_image_uploads" ||..o| "private.menu_image_assets" : "upload_handle"
+    "public.menu_items" ||..o{ "private.menu_image_assets" : "store_id, item_id"
+```
+
+Nguồn: [permission-images.sql:21](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-images.sql#L21). Upload có thể tham chiếu ID món nháp nên item_id chưa FK. Asset công bố có FK món và upload; object_key không FK storage.objects. FK upload_handle riêng lẻ không kiểm store/item của hai registry bằng nhau; function publish kiểm phần đó. Bytes Storage nằm ngoài transaction DB.
+
+### Tín hiệu và cổng tương thích
+
+```mermaid
+erDiagram
+    "public.store_change_signals"
+    "public.permission_catalog_signals"
+    "private.permission_contract_gate"
+```
+
+Nguồn: [permission-identity.sql:56](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L56), [permission-signals.sql:4](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-signals.sql#L4), [permission-compatibility-prepare.sql:4](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-compatibility-prepare.sql#L4). Ba bảng không có FK. store_id/target_id trong signal là dữ liệu định tuyến logic; revision không tự tạo FK tới catalog. Singleton chỉ có thể có tối đa một dòng theo PK/CHECK; không suy luôn có dòng hoặc strict đã bật ở đích.
+
+### Liên kết logic cần đọc riêng
+
+| Trường/nhóm | Vì sao không vẽ FK |
+| --- | --- |
+| write_operations.order_id, required_permission | Dữ liệu sinh từ payload/mã quyền; DDL không FK tới order/catalog. |
+| employee_admin_audit, actor_key/audit_keys của registry | Snapshot và khóa truy vết, không có FK nghiệp vụ tương ứng. |
+| bootstrap_requests.owner_id; số reservation | Tham chiếu theo quy trình bootstrap, không phải FK đã khai báo. |
+| uploads.item_id; image_asset_key/object_key | Món nháp hoặc khóa tài nguyên ngoài DB; chỉ asset registry có FK món thật. |
+| initial_receipt_print_grants.employee_session_hash | Hash phiên có kiểm ở function, không FK tới bảng phiên. |
+| signal target/store/revision; các revision quyền | Tín hiệu/phiên bản để đọc lại, không tự tạo quan hệ tham chiếu. |
+
+Nguồn chi tiết và ràng buộc còn lại ở [từ điển](data-dictionary.md). Không dùng các khoảng thiếu FK trên để tự đề xuất migration hoặc kết luận một lỗi bảo mật đã được tái hiện.
 
 ## Quan Hệ Và Ràng Buộc Chính
 
@@ -66,7 +186,7 @@ erDiagram
 | `store_change_signals`, `permission_catalog_signals` | Tín hiệu tối thiểu để invalidate/refresh |
 | `private.initial_seed_workflows`, `private.initial_seed_stages` | Tiến độ seed theo stage, retry có kiểm soát |
 
-Nguồn: [017:4](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/017_permission_catalog_bridge.sql#L4), [identity:13](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L13), [identity:47](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L47). ERD trên chỉ là nhóm nghiệp vụ nền, không phải toàn bộ catalog/quyền/audit. Không áp SQL candidate như migration tự động chỉ vì file nằm trên main.
+Nguồn: [017:4](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/017_permission_catalog_bridge.sql#L4), [identity:13](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L13), [identity:47](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L47). Các ERD ở trên đã bổ sung catalog/quyền/audit; từ điển giữ chi tiết ràng buộc. Không áp SQL candidate như migration tự động chỉ vì file nằm trên main.
 
 ## Nhóm Menu
 
@@ -113,7 +233,8 @@ Nguồn: [017:4](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e7198
 - `lock_version` dùng để phát hiện stale/conflict khi nhiều máy cùng thao tác (tách đơn instant pay cũng bump version đơn gốc).
 - Update khai rõ retainedLines và newLines. Dòng retained giữ ID, unit_price và options; giảm số lượng/sửa note giữ giá; xóa giữ raw quantity/options và mark removed. Tăng phần cũ tạo dòng mới theo giá/cấu hình hiện tại. Thiếu, trùng hoặc giả source ID bị từ chối, không tìm dòng bằng tên/giá để đoán.
 - `business_date` chốt lúc tạo đơn và không đổi khi sửa; đơn mở qua ngày vẫn thuộc business date cũ.
-- Hủy đơn có 2 đường khác nhau: (1) đơn `open` bị hủy trước thanh toán = submit toàn bộ quantity 0 (đặt `total=0`, trả bàn, `paid_at` vẫn null); (2) đơn `paid` bị hủy = action `void_paid` của giao thức v1 — **giữ nguyên** `total`/`order_no`/`business_date`/`paid_at` và payment row (audit + report tính đúng), chỉ đổi `status='void'`, ghi metadata hủy, bump `lock_version`, không đụng bàn. Dấu `paid_at is not null` phân biệt đơn "hủy sau khi đã thu tiền" với đơn "hủy trước thanh toán".
+- Hủy đơn mở: khi giỏ của đơn đã có không còn dòng có số lượng dương, flow gửi `kind: submit_order_changes`, `action: void_open`. DB đánh dấu các dòng là `removed`, giữ raw quantity/options, đặt subtotal/total về 0, đổi đơn sang `void`, tăng version và trả bàn; paid_at của đơn chưa thu tiền vẫn null. Nguồn: [orderFlow.ts:261](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/features/pos/orderFlow.ts#L261), [015_write_business_helpers.sql:254](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/015_write_business_helpers.sql#L254).
+- Hủy đơn đã thanh toán: giao thức v1 dùng `kind: void_order`, không có `action: void_paid`. DB giữ total/subtotal/order_no/business_date/paid_at và payment row, đổi status sang `void`, ghi metadata hủy và tăng lock_version, không đổi bàn. paid_at khác null phân biệt với hủy trước thanh toán. Nguồn: [writeOperations.ts:13](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/domain/writeOperations.ts#L13), [015_write_business_helpers.sql:273](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/015_write_business_helpers.sql#L273).
 
 ## Nhóm Payment & Report
 

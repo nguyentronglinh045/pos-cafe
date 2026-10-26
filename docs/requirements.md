@@ -1,5 +1,7 @@
 # Requirements & Traceability
 
+Cách dùng thuật ngữ trong phần tổng hợp: [thuật ngữ nghiệp vụ/dữ liệu](glossary.md). Đây là chỉ dẫn tra cứu, không đổi FR/NFR hoặc expected trong spec.
+
 Mã FR/NFR tổng quan được giữ để truy vết; cập nhật mô tả theo `main@711a22e` ngày 25/10/2026. “Đã triển khai” trong bảng nghĩa là có implementation trên main, **không** là backend acceptance hoặc phát hành. Kết quả theo [testing](testing.md); bộ hợp đồng15 quyền đã hòa giải từ WIP, xem [OpenSpec](../openspec/README.md). Baseline capability chưa apply/archive đầy đủ delta; backend acceptance vẫn HOLD.
 
 > Cột **Bằng chứng chính** là traceability nội bộ cho AI/developer. Khi viết báo cáo, không sao chép tên code, file, symbol hoặc migration từ cột này; chỉ dùng chúng để kiểm chứng rồi diễn đạt lại yêu cầu và thiết kế ở mức hệ thống.
