@@ -1,33 +1,37 @@
 # N4 — Hòa giải yêu cầu dữ liệu mẫu và khóa cửa hàng
 
-Ngày26/10/2026. [Bảng chuẩn R06-A/B/C](../../spec-reconciliation.md#r06-detail) · [Evidence mới](../../implementation-log/requirements-reconciliation-20261026/README.md).
+Ngày26/10/2026. [Đối chiếu hiện trạng](../../spec-reconciliation.md#r06-detail) · [Quyết định hiện hành](../../spec-reconciliation.md#r06-decisions) · [Evidence khảo sát](../../implementation-log/requirements-reconciliation-20261026/README.md).
 
 ## Phạm vi và nguồn quyền
 
-Chủ dự án trả lời “ok tiến hành đi” cho bước N4: đối chiếu yêu cầu seed từ Settings và khóa/trạng thái cửa hàng, ghi phần đã rõ và phần cần chốt; session chỉ cập nhật docs theo code/DB. Quyền này không là quyết định bỏ SHALL, triển khai owner G05/G06, sửa code/DB hay push phần mới. N3 và N4 giữ local; phần2 đã xuất bản tại `d75e41ec40a3287da054b023594fb087d412d983`.
+Lượt khảo sát bắt đầu từ xác nhận “ok tiến hành đi” của chủ dự án cho N4. Sau khi xem kết quả và hỏi đề xuất, chủ dự án đồng ý: giữ docs đúng thực tế, sửa/bổ sung lại khi triển khai sau. Đây là xác nhận ba hướng xử lý đã trình bày: chấp nhận vị trí retry hiện hành; hoãn reseed sau xóa; giữ khóa cửa hàng để hoàn thiện trong G04. Chỉ ghi quyết định và cập nhật docs; không sửa code/DB, refactor, chạy nghiệp vụ, hoàn thiện trước owner G05/G06 hoặc push phần mới.
 
-Docs base `669a27158032d585bef986be2145d6fc8d26a412`; source code remote main `711a22e71983e3d6aa17799649af05ce4c762555`. Local main HEAD `5156820f7d6679cd6f8051bdc38419737ffa0c7e` và WIP giữ nguyên. Dùng index riêng và snapshot ngoài repo, không switch/reset/stash/clean, tạo worktree docs hoặc sửa index chính. Không app/test run, DB mutation, dựng lab/cài gói hay refactor.
+Base lượt ghi quyết định `d89c85066ad4eb76134efd774478150e2e3b6355`; khảo sát trước đó dựa trên docs669a271 và code main`711a22e71983e3d6aa17799649af05ce4c762555`. Local main HEAD`5156820f7d6679cd6f8051bdc38419737ffa0c7e`/WIP giữ nguyên; index riêng, không switch/reset/stash/clean hoặc tạo docs worktree. N3/N4 chưa push; phần2 đã xuất bản tại d75e41ec40a3287da054b023594fb087d412d983.
 
-## Kết quả phân tích
+## Kết quả và phần còn lại
 
-- R06-A: retry seed ban đầu đã có workflow/receipt và UI chung cho normal owner, khác vị trí Settings trong baseline/PERM-23.
-- R06-B: baseline store-settings **có** yêu cầu khôi phục sau xóa; không được bỏ sót khi chỉ đọc scenario lỗi onboarding. Workflow hiện hành không đáp ứng reseed sau xóa. Giữ yêu cầu mở; đề xuất hoãn chỉ là đề xuất cần duyệt.
-- R06-C: các đường load/pair/store-session/start-session/guard đã đọc không dùng cờ store active. Metadata xác nhận cột còn có, không chứng minh hành vi khóa. Giữ requirement khóa app và câu hỏi server riêng.
-- G05/G06 giữ planned, ba khung chưa viết không đổi; chưa chọn triển khai nên không tự hoàn thiện chi tiết.
+- R06-A đã chốt vị trí thông báo chung; sửa đúng scenario PERM-23, giữ normal owner, explicit retry, receipts và bảo toàn dữ liệu/PIN.
+- R06-B hoãn khỏi phạm vi triển khai hiện tại, chưa đáp ứng. Baseline store-settings giữ nguyên phần thân và có chú thích quyết định; không đổi clear thành reseed hoặc nhận FR-20 phần này đã xong.
+- R06-C giữ yêu cầu, định hướng server + UI trong G04; còn tác nhân khóa/mở, phạm vi chặn, phiên đang dùng và khôi phục. Chưa có contract đủ để triển khai hoặc kết quả khóa app/DB.
+- G05/G06 vẫn planned; usecases/testplan/traceability còn “Chưa viết” và chỉ bổ sung khi change được chọn.
 
-Nguồn code/delta, khác biệt giữa quyết định chủ dự án với lựa chọn kỹ thuật PIN-D04, lựa chọn tiếp theo và giới hạn kiểm ở bảng chuẩn. N4 không biến design “không thêm reseed” thành quyết định bãi bỏ baseline. Không apply/archive change hoặc sửa evidence/spec lịch sử.
+[Bảng quyết định chính](../../spec-reconciliation.md#r06-decisions) giữ lý do, phương án khác và phạm vi thay thế; chỉ mục quyết định/requirements/features/limitations/baseline banners cùng trỏ tới đó. Không tạo bộ quyết định cạnh tranh hoặc apply/archive change.
 
 ## Kiểm nguồn và trạng thái
 
-MCP `supabase_pos_cafe` chạy SELECT metadata; role `supabase_read_only_user`, transaction_read_only on; comment marker khai báo staging `ineckiashpwloncxnbqx`. Không có API cung cấp URL/project provider trong bộ tool hiện tại; đây là binding metadata tại kết nối, không chứng thực độc lập phía provider. Không dùng cấu hình CLI khác ref để gọi DB. Body 14 function/overload khớp source; headers/ACL và policies liên quan được lưu riêng, không là full dependency audit, deny test hoặc runtime acceptance.
+Không gọi lại MCP/DB trong lượt ghi quyết định. Metadata khảo sát trước đó (14 body function/overload) giữ nguyên bytes và giới hạn: chỉ SELECT catalog; target dựa trên comment marker staging, không có xác thực provider độc lập; không test bypass/deny/runtime. Không nhận evidence cũ thành lượt kiểm mới.
 
-Kiểm tài liệu: link/anchor, source path/line ghim, body comparison/raw query/manifest, diff-check và bảo toàn status main/spec/evidence cũ/checklist. Hai reviewer độc lập: tính đúng requirement/source và ranh giới permission/evidence/bảo toàn. Receipt ghi candidate/hash và verdict sau review; không nhận kế hoạch kiểm thành kết quả.
+Kiểm lần này: diff-check, link/anchor, tham chiếu source, bảo toàn evidence và phần thân baseline, đúng một scenario PERM-23 đổi vị trí, trạng thái/chỉ mục nhất quán. Hai reviewer kiểm semantics/phạm vi và preservation/authority trước commit; receipt sau review ghi candidate/hash/verdict. Chưa kiểm sản phẩm hoặc tạo môi trường.
 
-Checklist `D:/Workspace/pos-cafe-docs-priorities.local.md` tiếp tục ngoài Git. N4 tổng thể giữ mở do R06-A/B/C chưa có quyết định; ghi riêng phần **đối chiếu tài liệu đã hoàn tất sau review**. N5, owner artifacts và H1–H4 không đóng.
+Checklist `D:/Workspace/pos-cafe-docs-priorities.local.md` nằm ngoài Git. Đã hoàn tất đối chiếu và ghi hướng xử lý; N4 tổng thể tiếp tục mở cho phần đặc tả khi triển khai, đặc biệt R06-C. N5, owner artifacts, P1-03 và H1–H4 không đóng. Chưa giao thêm N5 trong lượt này.
 
 ## Bước tiếp theo
 
-Chủ dự án xem ba phương án ở [bảng cần duyệt](../../spec-reconciliation.md#r06-detail). Chỉ sửa expected sau quyết định tương ứng; không cần code để ghi quyết định. N5 có thể kiểm kê requirement → TC → evidence độc lập khi được giao, nhưng không dùng để đóng những nghĩa vụ còn mở. Đã cung cấp đường đọc source; chưa nhận chủ dự án đã hiểu hoặc nghiệm thu. Chưa push N3/N4.
+Khi được giao triển khai một phần, làm rõ chi tiết còn thiếu, bổ sung spec/usecase/testplan và cập nhật docs theo source/DB/kết quả thực tế; không nâng planned/deferred thành đã làm. N5 có thể kiểm kê requirement → TC → evidence độc lập khi được giao. Không cần hỏi lại ba hướng đã được xác nhận; chỉ mở câu hỏi chi tiết chưa chốt hoặc có bằng chứng mới làm đổi phạm vi.
+
+## Checkpoint trước xác nhận — lịch sử
+
+Receipt bên dưới ghi đúng trạng thái khảo sát trước khi chủ dự án chốt hướng xử lý. Các câu “chờ quyết định” thuộc checkpoint này; trạng thái hiện hành ở phần đầu tài liệu và bảng quyết định.
 
 ## Receipt kiểm và review — 26/10/2026
 

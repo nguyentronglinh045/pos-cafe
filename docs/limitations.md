@@ -19,9 +19,9 @@ Các quyết định Q5/Q6 yêu cầu xác minh owner qua hồ sơ hỗ trợ ng
 
 ## Dữ liệu mẫu và trạng thái cửa hàng
 
-[Đối chiếu R06 ngày26/10](spec-reconciliation.md#r06-detail) giữ ba khoảng thiếu: retry seed có trong source nhưng chưa ở Settings như yêu cầu; reseed sau xóa chưa có luồng đáp ứng; đường phiên cửa hàng và guard nhân viên được kiểm không dùng `stores.is_active`. Đây là yêu cầu/khả năng còn mở, không là quyết định miễn thực hiện hoặc nghiệm thu có điều kiện.
+[Quyết định R06 ngày26/10](spec-reconciliation.md#r06-decisions) chấp nhận retry seed tại thông báo chung như source hiện hành; vị trí Settings không còn là nghĩa vụ của luồng retry lỗi. Reseed sau xóa được hoãn, vẫn chưa có luồng đáp ứng. Khóa store giữ là phần cần hoàn thiện trong G04: các đường phiên/guard được kiểm không dùng `stores.is_active`; chưa chứng minh đã khóa ở app hoặc DB.
 
-[Metadata mới](implementation-log/requirements-reconciliation-20261026/README.md) đối chiếu 14 body function/overload và catalog/ACL liên quan, không thử thao tác nghiệp vụ hoặc thay cờ store. Không suy cờ DB, RLS bật hay guard nhân viên thành đã khóa cả quán. Phương án hoãn/đổi/bỏ requirement còn chờ chủ dự án duyệt; spec gốc được giữ.
+[Metadata ngày26/10](implementation-log/requirements-reconciliation-20261026/README.md) đối chiếu 14 body function/overload và catalog/ACL liên quan, không thử nghiệp vụ hoặc thay cờ store. Quyết định docs không thay test runtime. Hướng khóa tại server và thông báo UI còn cần chốt tác nhân, phạm vi và khôi phục trước khi có spec triển khai; không xem trạng thái thiếu này là đã nghiệm thu. Giữ spec baseline và evidence gốc để truy vết.
 
 ## Online Và Realtime
 

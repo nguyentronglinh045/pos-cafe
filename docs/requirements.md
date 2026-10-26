@@ -42,7 +42,7 @@ Mã FR/NFR tổng quan được giữ để truy vết; cập nhật mô tả th
 | FR-17 | Quản lý khu, bàn, decor; kéo, resize, xoay, khóa và lưu changeset | Đã triển khai | [features.md](features.md#floor-editor), phase 17 và 21 |
 | FR-18 | Chọn asset decor và nền bàn built-in, render đồng nhất ở editor và POS | Đã triển khai | Phase 21 và 23, migration 013 |
 | FR-19 | Xem báo cáo doanh thu, số đơn, trung bình đơn, top món, giờ bán và số/tiền đơn hủy | Đã triển khai | [features.md](features.md#report), `src/ports/permissions.ts:67` |
-| FR-20 | Cập nhật thông tin cửa hàng và xóa dữ liệu mẫu có kiểm soát; seed/retry ban đầu thuộc workflow FR-01 | Đã triển khai | [features.md](features.md#settings--maintenance), `src/ports/permissionChanges.ts:4`, `src/ports/permissions.ts:24` |
+| FR-20 | Cập nhật thông tin cửa hàng và xóa dữ liệu mẫu có kiểm soát; seed/retry ban đầu thuộc workflow FR-01; khôi phục mẫu sau xóa hoãn theo [R06-B](spec-reconciliation.md#r06-decisions) | Có phần cài đặt/xóa mẫu; reseed hoãn, không nhận đã đáp ứng | [features.md](features.md#settings--maintenance), `src/ports/permissionChanges.ts:4`, `src/ports/permissions.ts:24` |
 | FR-21 | Đồng bộ thay đổi chính giữa nhiều thiết bị khi online bằng realtime invalidate/refetch | Đã triển khai có giới hạn | [architecture.md](architecture.md#realtime), `src/adapters/supabase/permissionSignalPort.ts:49` và [limitations.md](limitations.md) |
 
 ## Yêu Cầu Phi Chức Năng

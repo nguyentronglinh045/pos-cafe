@@ -1,5 +1,7 @@
 > **Đối chiếu xuất bản 25/10/2026.** Bộ yêu cầu 15 quyền/Q1–Q15 được khôi phục từ WIP đã ghi quyết định; thay bản 14 quyền/có Kế toán trên docs cũ. Các mô tả code 3 role/5 quyền, forced PIN chưa hiện thực, đường dẫn local và quyền triển khai tháng 9 bên dưới là baseline/checkpoint lịch sử. Main711a22e đã có catalog15 và forced-PIN; chưa nhận backend/PIN19/PERM60 trên source hiện hành đạt. M24 cho merge mã trước backend acceptance, không miễn gate hoặc cho deploy. [Nguồn, trạng thái và giới hạn](../../../../../docs/workflow/tasks/docs-wip-publication-2026-10-25.md). Các yêu cầu SHALL/expected bên dưới được giữ; không đổi để hợp thức hóa code.
 
+> **Quyết định26/10/2026 — R06-A:** chủ dự án chấp nhận retry seed lỗi tại thông báo chung sau đăng nhập normal owner, thay riêng vị trí “từ Cài đặt” trong scenario bên dưới. [Quyết định và giới hạn](../../../../../docs/spec-reconciliation.md#r06-decisions); các điều kiện PIN-05/receipt/quyền giữ nguyên, chưa là kết quả nghiệm thu.
+
 # Delta store-onboarding
 
 ## MODIFIED Requirements
@@ -29,7 +31,7 @@ Tên hiển thị trim1–120 Unicode code points, địa chỉ trim0–500 theo
 #### Scenario: Seed dữ liệu mẫu thất bại
 
 - **WHEN** seed lỗi sau bootstrap đã commit
-- **THEN** store/owner và Store Key trả về vẫn dùng được; cảnh báo kèm thử lại từ Cài đặt dưới quyền hiện hành, không gọi lại bootstrap để reset owner/PIN.
+- **THEN** store/owner và Store Key trả về vẫn dùng được; cảnh báo tại thông báo chung sau đăng nhập normal owner, kèm nút “Thử lại dữ liệu mẫu”. Chủ quán chủ động thử lại các stage chưa commit theo PIN-05, không chạy lại stage đã commit, không ghi đè dữ liệu/PIN đã sửa và không gọi lại bootstrap để reset owner/PIN. Vị trí này thay yêu cầu “từ Cài đặt” theo R06-A ngày26/10/2026.
 
 #### Scenario: Tạo store sau activation
 

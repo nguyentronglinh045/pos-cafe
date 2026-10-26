@@ -80,6 +80,8 @@ Ngày 2026-09-12 đã chốt chuyển/gộp bàn và giảm giá sẽ làm ở c
 
 ## Quyết định đã chốt
 
+**Cập nhật26/10/2026 — R06-A:** chủ dự án chấp nhận vị trí retry seed lỗi ở thông báo chung sau đăng nhập normal owner; scenario PERM-23 thay riêng yêu cầu “từ Cài đặt”. [Hồ sơ R06](../../../docs/spec-reconciliation.md#r06-decisions) giữ nguồn xác nhận, lý do và giới hạn; không đổi PIN-05/receipts/quyền hoặc nhận backend đã đạt. Reseed sau xóa hoãn, khóa store còn đặc tả trong G04; không thêm implementation vào change này.
+
 Các quyết định 28/08 và 12/09 được giữ khi không bị hàng mới dưới đây thay thế: năm role dựng sẵn theo quyết định bỏ Kế toán ngày 2026-09-15, không custom role; kitchen chưa bật; quyền nhị phân; cùng store; module suy từ quyền; thiếu quyền thì ẩn, trạng thái nghiệp vụ không hợp lệ thì disabled; owner duy nhất. Một owner là mô hình sở hữu đã chọn, không mô tả là hạn chế về góp vốn. Hồ sơ góp vốn ở ngoài POS.
 
 | ID/ngày | Quyết định hiện hành | Lý do / thay phần cũ |

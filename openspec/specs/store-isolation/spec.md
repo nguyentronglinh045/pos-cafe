@@ -1,5 +1,7 @@
 > **Điểm đọc ngày25/10/2026:** baseline này cần đọc cùng [đối chiếu store-isolation và delta hiện hành](../../../docs/spec-reconciliation.md#store-isolation). Banner chỉ dẫn nguồn; nội dung yêu cầu phía dưới được giữ nguyên, không là xác nhận nghiệm thu/runtime.
 
+> **Quyết định26/10/2026:** R06-C giữ yêu cầu khóa cửa hàng để hoàn thiện trong G04. Hiện trạng chưa chứng minh khóa app/DB; hướng server + thông báo UI còn cần đặc tả về tác nhân, phạm vi và khôi phục. Nội dung baseline phía dưới giữ nguyên để truy vết, không coi hướng mới là đã hiện thực. [Hồ sơ quyết định](../../../docs/spec-reconciliation.md#r06-decisions).
+
 # Cô lập dữ liệu giữa các cửa hàng
 
 > Phạm vi nguồn: baseline đặc tả lịch sử, chưa đồng bộ đầy đủ main711a22e. Đọc [trạng thái OpenSpec](../../README.md#trạng-thái-đọc-ngày-25102026) và change liên quan trước khi dùng làm hợp đồng runtime hiện hành. Requirement dưới đây được giữ nguyên để truy vết.
