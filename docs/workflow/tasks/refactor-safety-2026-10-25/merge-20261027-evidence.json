@@ -122,5 +122,111 @@
       "b756ceaa5b8a8f1422b3b78485bca75eda17ca93\trefs/heads/docs",
       "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571\trefs/heads/main"
     ]
+  },
+  "postMergeVerification": {
+    "scope": "Read-only source and CI recheck; documentation closeout of selected structural refactor, not product/backend/release acceptance.",
+    "requestedBy": "Owner request in chat 01a17892-41ab-7bc0-a7db-b488ce10ccac, 2026-10-27",
+    "workflow": {
+      "id": 40442640979,
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
+      "event": "push",
+      "run_attempt": 1,
+      "started": "2026-10-27T03:10:05Z",
+      "updated": "2026-10-27T03:25:48Z",
+      "url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/40442640979"
+    },
+    "jobs": [
+      {
+        "name": "Build, unit, tooling and mock UI",
+        "id": 121986346963,
+        "status": "completed",
+        "conclusion": "success",
+        "started": "2026-10-27T03:10:08Z",
+        "completed": "2026-10-27T03:25:48Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run bounded CI and publish safe summary",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Validate only the three safe synthetic PIN photos after unit release",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Retain only reviewed allowlist for PIN visual classification",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ],
+    "checkout": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+    "sourceTree": "46bc9ae7d7f5de3737a46f137e965ed0425a0873",
+    "sourceClean": true,
+    "localTestsRerun": false,
+    "inventory": {
+      "rootVitestConfigs": 32,
+      "rootPlaywrightConfigs": 20,
+      "nestedTsConfigs": 5,
+      "scriptsTrackedFiles": 298,
+      "scriptsTopLevelFiles": 297
+    },
+    "decisions": {
+      "selectedScope": "complete",
+      "RF03": "DONE_SELECTED_PRESENTATION",
+      "RF06": "DONE",
+      "RF07": "DONE_PURE_HELPERS_ONLY",
+      "RF04": "NO_CHANGE",
+      "RF05a": "NO_CHANGE",
+      "RF05b": "NO_CHANGE",
+      "RF09abc": "NO_CHANGE",
+      "RF08": "HOLD",
+      "RF09de": "HOLD"
+    },
+    "nextRecommendation": "Resolve reporting contract/range/aggregation findings separately before considering further path relocation.",
+    "preservationBefore": {
+      "head": "5156820f7d6679cd6f8051bdc38419737ffa0c7e",
+      "docs": "dbae18cae9554ddcb45762fb3de873714f9d278f",
+      "originMain": "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
+      "statusSha256": "49dfa08fe2a7639b9f2825dd28f2c1c150033966fc91dc684eea549ba4069f7c",
+      "entries": 553,
+      "indexSha256": "45849e5188d12f3f52a0354e354e0a8e8d836fa37d68223a1e455d2f8c429352",
+      "wipContentSha256": "8dc4f8b9cb19d78f99a61e3c2d2478f82df89b304fdd252aa19256a40ec567b6"
+    },
+    "recordedAtUTC": "2026-10-27T03:42:06.410930+00:00"
   }
 }
