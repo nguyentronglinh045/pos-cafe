@@ -1,6 +1,6 @@
 # Tài liệu POS Cafe
 
-Kho tri thức để AI tra cứu tính năng, thiết kế, quyết định và bằng chứng, kết hợp đối chiếu mã nguồn khi có implementation liên quan. Nội dung đồng thời là đầu vào để tổng hợp báo cáo sau này. [Mục đích và nguồn xác nhận](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-docs-01--ai-là-đối-tượng-khai-thác-trực-tiếp-chủ-yếu). **Nguồn code đối chiếu: `main@711a22e71983e3d6aa17799649af05ce4c762555`, ngày 25/10/2026.** Đây là trạng thái mã đã tích hợp; không phải xác nhận bản đang chạy trên cửa hàng thật.
+Kho tri thức để AI tra cứu tính năng, thiết kế, quyết định và bằng chứng, kết hợp đối chiếu mã nguồn khi có implementation liên quan. Nội dung đồng thời là đầu vào để tổng hợp báo cáo sau này. [Mục đích và nguồn xác nhận](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-docs-01--ai-là-đối-tượng-khai-thác-trực-tiếp-chủ-yếu). **Main hiện tại: `052a7d1e156425ea82ed1c9cf978d7ef4d4f3571`, merge PR15 ngày27/10/2026.** [Delta refactor và bằng chứng merge](workflow/tasks/refactor-safety-2026-10-25/merge-20261027.md). Các hồ sơ25–26/10 ghim711a22e giữ nguồn lịch sử, không được đổi nhãn thành kiểm chứng mới. Git main đã tích hợp không chứng minh bản đang chạy ở cửa hàng thật.
 
 [Rà soát theo 12 mục tiêu tốt nghiệp — 25/10/2026](workflow/tasks/docs-thesis-audit-2026-10-25.md): hiện trạng, khoảng thiếu, lỗi tài liệu và thứ tự chỉnh lý đề xuất; chưa là nghiệm thu sản phẩm.
 

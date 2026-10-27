@@ -2,7 +2,7 @@
 
 ## Cập nhật27/10/2026
 
-- [Refactor code và đồng bộ docs](refactor-safety-2026-10-25/implementation-20261027.md): nối kế hoạch25/10 và bàn giao26/10 với quyền triển khai27/10, các extraction/gates/review/rollback và quyết định NO_CHANGE/HOLD. Candidate `c6ff3c795616dfa84379be85feeca29927d173c9`, chưa merge/deploy.
+- [Refactor code và đồng bộ docs](refactor-safety-2026-10-25/implementation-20261027.md): nối kế hoạch25/10 và bàn giao26/10 với quyền triển khai27/10, các extraction/gates/review/rollback và quyết định NO_CHANGE/HOLD. Đã merge PR15 vào main `052a7d1e156425ea82ed1c9cf978d7ef4d4f3571`; nhánh refactor đã xóa, WIP giữ nguyên. [Biên bản](refactor-safety-2026-10-25/merge-20261027.md); không có thao tác deploy trong task.
 
 
 ## Đang theo dõi

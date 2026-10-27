@@ -2,7 +2,7 @@
 
 ## Bổ sung bằng chứng candidate ngày27/10/2026
 
-[Refactor implementation](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027.md) bổ sung characterization cho FR-19 (Report), FR-04 (query/session guard) và FR-07/09 (snapshot/cart), cùng NFR-03/04/06/07. Source `c6ff3c795616dfa84379be85feeca29927d173c9` chưa merge main. Hàng FR/NFR và gaps lịch sử bên dưới giữ nguyên; helper/mock PASS chỉ phủ những ca cụ thể, không đóng toàn IDEM-26/27, backend hay thiết bị thật.
+[Refactor implementation](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027.md) bổ sung characterization cho FR-19 (Report), FR-04 (query/session guard) và FR-07/09 (snapshot/cart), cùng NFR-03/04/06/07. Source `c6ff3c795616dfa84379be85feeca29927d173c9` đã vào main tại `052a7d1e156425ea82ed1c9cf978d7ef4d4f3571` qua PR15; xem [biên bản merge](workflow/tasks/refactor-safety-2026-10-25/merge-20261027.md). Hàng FR/NFR và gaps lịch sử bên dưới giữ nguyên; helper/mock PASS chỉ phủ những ca cụ thể, không đóng toàn IDEM-26/27, backend hay thiết bị thật.
 
 
 Cập nhật 26/10/2026 — N5. Có **21 dòng FR và 8 dòng NFR**: requirement/scenario → test có trong source → kết quả ở mức thực sự có → phần còn thiếu. Đây là kiểm kê tài liệu có chủ đích, **không là ma trận đầy đủ mọi biến thể hoặc nghiệm thu sản phẩm**.

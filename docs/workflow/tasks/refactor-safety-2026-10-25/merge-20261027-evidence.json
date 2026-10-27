@@ -1,0 +1,126 @@
+{
+  "docsBase": "b756ceaa5b8a8f1422b3b78485bca75eda17ca93",
+  "preflight": {
+    "at": "2026-10-27T02:58:14.024Z",
+    "code": "c6ff3c795616dfa84379be85feeca29927d173c9",
+    "base": "711a22e71983e3d6aa17799649af05ce4c762555",
+    "docs": "b756ceaa5b8a8f1422b3b78485bca75eda17ca93",
+    "tree": "46bc9ae7d7f5de3737a46f137e965ed0425a0873",
+    "sourceFiles": 1193,
+    "sourceUnchanged": true,
+    "evidenceManifestsVerified": 14,
+    "priorFullGates": [
+      {
+        "label": "build",
+        "code": 0,
+        "endedAt": "2026-10-27T02:27:28.226Z",
+        "receiptSha256": "b31f403525d8fc18cb1575bea4837712f50466f5246e0bda5ec02093cd1f2490"
+      },
+      {
+        "label": "unit",
+        "code": 0,
+        "endedAt": "2026-10-27T02:28:35.348Z",
+        "receiptSha256": "e1e09dc578556c4e9b9db0a1fe61cd1bc405fc4ad5198797526099d16eafe34a"
+      },
+      {
+        "label": "coverage",
+        "code": 0,
+        "endedAt": "2026-10-27T02:26:37.617Z",
+        "receiptSha256": "c27befffe57e393adabe756db7c9d3777dd1fae73fdd950e47a825637118a8d3"
+      },
+      {
+        "label": "smoke",
+        "code": 0,
+        "endedAt": "2026-10-27T02:31:57.956Z",
+        "receiptSha256": "63e4cc4fe4a03a3d7215ef86deab822a0ee23edea8d953a8d8a9f810657ebb06"
+      },
+      {
+        "label": "audit-selftest",
+        "code": 0,
+        "endedAt": "2026-10-27T02:30:26.910Z",
+        "receiptSha256": "3ed483576d3fce91e786409ff89571922a58dc5f3597b4bb11afafaf9eb8b2de"
+      },
+      {
+        "label": "audit-all",
+        "code": 0,
+        "endedAt": "2026-10-27T02:34:09.651Z",
+        "receiptSha256": "86c159e451a7d1fdb8fac4541b59517c62a8e26c43f052b9edcb9db8c634530a"
+      }
+    ],
+    "mergeTree": "46bc9ae7d7f5de3737a46f137e965ed0425a0873",
+    "newRuntimeTests": false,
+    "interpretation": "Final source/evidence comparison; prior local gates retained with original timestamps, required GitHub PR CI must pass separately."
+  },
+  "merge": {
+    "at": "2026-10-27T03:09:45.825Z",
+    "pr": 15,
+    "url": "https://github.com/nguyentronglinh045/pos-cafe/pull/15",
+    "merged": true,
+    "mergeCommit": "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
+    "parents": [
+      "711a22e71983e3d6aa17799649af05ce4c762555",
+      "c6ff3c795616dfa84379be85feeca29927d173c9"
+    ],
+    "tree": "46bc9ae7d7f5de3737a46f137e965ed0425a0873",
+    "sourceCommit": "c6ff3c795616dfa84379be85feeca29927d173c9",
+    "requiredChecks": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-27T03:08:53Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/40441371913/job/121982262532",
+        "name": "Build, unit, tooling and mock UI",
+        "startedAt": "2026-10-27T02:56:59Z",
+        "status": "COMPLETED",
+        "workflowName": "POS light CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-27T03:02:44Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/40440508202/job/121979464843",
+        "name": "Build, unit, tooling and mock UI",
+        "startedAt": "2026-10-27T02:47:53Z",
+        "status": "COMPLETED",
+        "workflowName": "POS light CI"
+      }
+    ],
+    "remoteMainVerified": true,
+    "remoteBranchDeleted": true,
+    "localBranchDeleted": true,
+    "deletedBranch": "refactor/structure-safe-20261027",
+    "deletedTip": "c6ff3c795616dfa84379be85feeca29927d173c9",
+    "secondaryCheckout": {
+      "path": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "head": "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
+      "detached": true,
+      "clean": true
+    },
+    "localMainPreservedAt": "5156820f7d6679cd6f8051bdc38419737ffa0c7e",
+    "preservationVerified": true,
+    "preservationBefore": {
+      "at": "2026-10-27T02:55:47.4820010Z",
+      "head": "5156820f7d6679cd6f8051bdc38419737ffa0c7e",
+      "indexSha256": "45849E5188D12F3F52A0354E354E0A8E8D836FA37D68223A1E455D2F8C429352",
+      "wipEntries": 553,
+      "files": 551,
+      "deletions": 2,
+      "statusEntries": 553,
+      "errors": []
+    },
+    "preservationAfter": {
+      "at": "2026-10-27T03:09:55.7167493Z",
+      "head": "5156820f7d6679cd6f8051bdc38419737ffa0c7e",
+      "indexSha256": "45849E5188D12F3F52A0354E354E0A8E8D836FA37D68223A1E455D2F8C429352",
+      "wipEntries": 553,
+      "files": 551,
+      "deletions": 2,
+      "statusEntries": 553,
+      "errors": []
+    },
+    "finalRemoteRefs": [
+      "b756ceaa5b8a8f1422b3b78485bca75eda17ca93\trefs/heads/docs",
+      "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571\trefs/heads/main"
+    ]
+  }
+}

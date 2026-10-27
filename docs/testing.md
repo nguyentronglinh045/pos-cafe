@@ -2,8 +2,9 @@
 
 ## Kiểm chứng refactor ngày27/10/2026
 
-Kết quả mới của candidate `c6ff3c795616dfa84379be85feeca29927d173c9` ở [hồ sơ triển khai](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027.md), [receipt/hash](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027-evidence.json) và [review độc lập](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027-review.md). Các lần chạy local mock, skip/config và failure ban đầu được giữ riêng theo source. Không đổi nhãn bằng chứng lịch sử bên dưới thành PASS của candidate; coverage chỉ theo scope core/non-hook hiện hành và không là backend acceptance.
+Kết quả local của source `c6ff3c795616dfa84379be85feeca29927d173c9` (đã vào main qua PR15 tại `052a7d1e156425ea82ed1c9cf978d7ef4d4f3571`) ở [hồ sơ triển khai](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027.md), [receipt/hash](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027-evidence.json) và [review độc lập](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027-review.md). Các lần chạy local mock, skip/config và failure ban đầu được giữ riêng theo source. Không đổi nhãn bằng chứng lịch sử bên dưới thành PASS của lần chạy mới; coverage chỉ theo scope core/non-hook hiện hành và không là backend acceptance.
 
+Required GitHub CI trước merge được ghi riêng tại [biên bản merge](workflow/tasks/refactor-safety-2026-10-25/merge-20261027.md); không gộp với counts local hoặc nghiệm thu backend.
 
 Bộ [test plan/traceability permission15](../openspec/changes/redesign-permission-model/testplan.md) và [hồ sơ lịch sử WIP](workflow/tasks/docs-wip-publication-2026-10-25.md) đã được hòa giải. Kế hoạch không là kết quả; FAIL/spent/NOT_RUN giữ source riêng, không đóng gate backend hiện hành.
 

@@ -60,3 +60,7 @@ Ngày27/10/2026, cả hai reviewer **APPROVE** đúng docs tree `221f7fa3ad14df6
 - `refactor_verification`: evidence/boundaries/source links/preservation. Đã kiểm56receipts,14evidence manifests,15hash rows,1193source files khớp code cuối, case identity1201→1240 và81→86,20relative links cùng commit:file:line; main index giữ nguyên, không còn finding.
 
 Hai bên chỉ đọc và cho phép thêm metadata ghi chính verdict này; không chạy lại suite/backend/browser. Nội dung candidate đã duyệt không đổi ngoài đoạn ghi kết quả review. Status review/xuất bản đang chờ trong checkpoint viết trước được thay bằng verdict này; push được xác minh riêng ở bàn giao cuối. Approval không nhận chủ dự án đã nghiệm thu, không merge/deploy hoặc mở backend HOLD.
+
+## Delta merge ngày27/10/2026
+
+Approval tree/hash trước merge ở trên giữ nguyên. [Biên bản merge](merge-20261027.md) và review riêng của delta docs/merge ghi phạm vi mới; không đổi các approval cũ thành chứng nhận deployment hoặc backend.

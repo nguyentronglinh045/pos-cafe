@@ -1,6 +1,6 @@
 # Triển khai refactor — 27/10/2026
 
-**Đã hoàn tất phạm vi code được chọn và kiểm chứng tại `c6ff3c795616dfa84379be85feeca29927d173c9`; chưa merge/deploy.** Docs đang qua review/xuất bản riêng. Đây là bản ghi mới, không đổi trạng thái lịch sử của kế hoạch25/10 và bàn giao26/10; không nhận toàn backlog hoặc sản phẩm đã nghiệm thu.
+**Đã kiểm chứng source `c6ff3c795616dfa84379be85feeca29927d173c9` và merge PR15 vào main tại `052a7d1e156425ea82ed1c9cf978d7ef4d4f3571` ngày27/10/2026.** [Biên bản merge](merge-20261027.md) ghi check bắt buộc, bảo toàn WIP và xóa nhánh. Không có thao tác deploy trong task. Các checkpoint25–27 bên dưới giữ nguồn/thời điểm ban đầu; không nhận toàn backlog hoặc sản phẩm đã nghiệm thu.
 
 ## Quyền thực hiện và nguồn
 
@@ -99,6 +99,8 @@ Raw logs/source manifests/ảnh giữ ngoài repo tại kho task; [evidence comp
 
 ## Hướng dẫn đọc và hoàn tác
 
+Sau khi đã merge, hoàn tác tích hợp phải đi qua PR mới và các gate bảo vệ main. Không reset/force-push main hoặc checkout WIP. Các lựa chọn revert từng slice bên dưới mô tả phạm vi source; không là lệnh tự chạy sau merge.
+
 1. Đọc `ReportDrawer` trước, rồi `report/ReportChart` và `ReportSummary`: dữ liệu đi xuống bằng props, callback hour đi lên; state/effect/query vẫn ở drawer.
 2. Đọc `usePurposeQuery`, POS compatibility export và admin import: một owner cho query policy, cùng function identity. So14case contract và existing permission/cache suite.
 3. Đọc `orderDraft` rồi phần import/re-export trong `orderFlow`: helper nhận dữ liệu và trả dữ liệu; luồng async không di chuyển. So12case mới, retained-price/tombstone và lifecycle tests cũ.
@@ -106,7 +108,7 @@ Raw logs/source manifests/ảnh giữ ngoài repo tại kho task; [evidence comp
 
 Walkthrough được cung cấp bằng đường đọc này và bàn giao cuối; chưa có phản hồi xác nhận chủ dự án đã đọc/hiểu hoặc nghiệm thu. Rollback mặc định dùng revert nguyên từng commit trên nhánh refactor phù hợp, từ mới đến cũ khi hoàn tác toàn đợt; không reset mainWIP. RF-03b4cffac4 phụ thuộc charta4a84dc; hoàn tác summary trước chart. Shared08bac49 độc lập presentation. Revert nguyên RF-03b/RF-06/RF-07 cũng gỡ test bổ sung đi kèm; test đã có ở parent vẫn giữ. Nếu muốn giữ characterization mới, đó là phương án khác: khôi phục riêng bản test pre-move từ patch/file đã lưu (summary-before/unit-focused, shared-before/unit-final-3 hoặc draft-before/unit-focused), không giữ identity imports/assertions trỏ tới module đã gỡ, rồi chạy lại gates và review. Không tuyên bố revert tự giữ mọi test, không copy runtime/DB cũ để rollback code.
 
-Code cuối `c6ff3c795616dfa84379be85feeca29927d173c9` có5commit/12file thay đổi so với main711a22e. Source giữa các gate không đổi; commit chỉ ghi đúng candidate đã review. Checkout gốc giữ551file WIP cùng hash/ACL,2deletions,553status,HEAD và index theo kiểm lại cuối. Không cài dependency/runtime, không sửa config/trust/SQL, không mở backend HOLD. Nhánh refactor và docs được xuất bản sau review; main vẫn711a22e, chưa merge/deploy. Trạng thái push cụ thể được xác minh trong bàn giao cuối.
+Code cuối `c6ff3c795616dfa84379be85feeca29927d173c9` có5commit/12file thay đổi so với main711a22e; đã tích hợp bằng merge commit `052a7d1e156425ea82ed1c9cf978d7ef4d4f3571`. Tree sau merge bằng đúng candidate đã kiểm. Nhánh refactor đã xóa remote/local sau ancestry và expected-tip checks; checkout phụ detached sạch ở merge commit. Checkout gốc vẫn main5156820 với551file WIP cùng hash/ACL,2deletions,553status,HEAD/index nguyên. [Receipt merge/bảo toàn](merge-20261027.md); không cài runtime, đổi config/trust/SQL hay mở backend HOLD.
 
 <!-- generated-source-map -->
 ## Nguồn code có mốc và dòng

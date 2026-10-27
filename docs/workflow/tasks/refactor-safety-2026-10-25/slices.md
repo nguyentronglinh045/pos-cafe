@@ -2,7 +2,7 @@
 
 ## Quyết định thực hiện ngày27/10/2026
 
-Xem [kết quả theo slice](implementation-20261027.md): RF-02/03 bổ sung oracle và tách Report chart/summary; RF-06 chuyển shared query với export tương thích; RF-07 tách snapshot/cart thuần. RF-04/05 và RF-09a–c NO_CHANGE vì chưa có lợi ích đủ rõ từ migration tiếp; RF-08/09d–e cùng security/payment/backend gates giữ HOLD. Candidate `c6ff3c795616dfa84379be85feeca29927d173c9` chưa merge. Bảng kế hoạch dưới đây là lựa chọn/điều kiện mở lại, không phải checklist buộc tách mọi file.
+Xem [kết quả theo slice](implementation-20261027.md): RF-02/03 bổ sung oracle và tách Report chart/summary; RF-06 chuyển shared query với export tương thích; RF-07 tách snapshot/cart thuần. RF-04/05 và RF-09a–c NO_CHANGE vì chưa có lợi ích đủ rõ từ migration tiếp; RF-08/09d–e cùng security/payment/backend gates giữ HOLD. Đã tích hợp source `c6ff3c795616dfa84379be85feeca29927d173c9` vào main `052a7d1e156425ea82ed1c9cf978d7ef4d4f3571` qua PR15; [biên bản](merge-20261027.md). Bảng kế hoạch dưới đây là lựa chọn/điều kiện mở lại, không phải checklist buộc tách mọi file.
 
 
 Nguồn mọi đường code tương đối trong tài liệu: main711a22e71983e3d6aa17799649af05ce4c762555 tại D:/Workspace/pos-cafe-permission-timeonly-20261022/code. Các tên file đích là đề xuất; chốt bằng consumer map trước triển khai. Không tạo cây thư mục trống hàng loạt. Xem [kế hoạch](README.md) và [matrix](regression-matrix.md).
