@@ -207,6 +207,8 @@ Nguồn nghiệp vụ đang dùng: [orderFlow.ts:250](https://github.com/nguyent
 
 ## Đối chiếu 12 mục tiêu tốt nghiệp
 
+**Ưu tiên ngày27/10:** hiện tập trung G01–G10; công việc chuyên biệt G11/G12 dành cho khoảng hai tuần cuối hoặc bước cuối cùng. Docs/spec/quyết định/evidence vẫn cập nhật theo từng phần G01–G10. [DEC-THESIS-02](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-thesis-02) ghi nguồn và phạm vi; bảng dưới giữ trạng thái từng mục tiêu, không xem G11/G12 đã hoàn tất.
+
 Đây là góc nhìn của cùng danh mục, giữ G01–G12 từ bản audit và không tạo mã requirement thay FR/NFR. Khung mục tiêu, 15 tuần và mức bàn giao đã được [chủ dự án làm rõ](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-thesis-01--thời-gian-và-mức-hoàn-thành-đồ-án). Không đưa đề xuất UAT/rubric trong hồ sơ cũ thành yêu cầu bổ sung của giảng viên.
 
 | Mục tiêu | Điểm tra cứu chính | Trạng thái / việc còn lại |

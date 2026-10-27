@@ -169,3 +169,13 @@ Q10 **đã trả lời về giai đoạn và sự kiện demo**, kèm thời gia
 - Đã đối chiếu ngày/quan hệ Git, snapshot 21/08, 21 FR/8 NFR, thay đổi source/UI tháng 9 và migration 014–016. `c7f2f4e` giữ đúng là ứng viên do AI suy luận, chưa xác nhận source/ngày/deployment bản demo; danh mục lịch sử chưa thành ma trận hoặc PASS hồi quy. Expected/gate hiện hành giữ nguyên.
 - Kiểm tác giả: diff-check đạt; 58 liên kết tương đối trong 5 file sửa không có lỗi path/anchor; đếm lại snapshot khớp 21 FR và 8 NFR. Reviewer kiểm diff/link/hash, chỉ đọc; không chạy ứng dụng/backend hoặc push.
 - Sau APPROVE chỉ bổ sung metadata review này và metadata tương ứng vào checklist. Docs lưu local, chưa push; checklist ngoài Git, các mục P0 vẫn mở.
+
+<a id="dec-thesis-02"></a>
+## DEC-THESIS-02 — Ưu tiên G01–G10, G11–G12 ở giai đoạn cuối — 27/10/2026
+
+- **Nguồn/quyền:** chủ dự án xác nhận trong chat ngày27/10/2026: “phần G11 và G12 sẽ dành cho khoảng 2 tuần cuối hoặc là bước cuối cùng, hiện tại ta sẽ chỉ ưu tiên xử lý các phần khác (bao gồm cập nhật luôn docs)”.
+- **Quyết định:** công việc hiện tại ưu tiên G01–G10. Dành phần hoàn thiện G11 (nguồn học thuật/trích dẫn) và G12 (báo cáo, slide, trình bày tài liệu để bàn giao) cho khoảng hai tuần cuối hoặc bước cuối cùng. Đây là thứ tự ưu tiên, chưa phải lịch ngày cụ thể hoặc hạn nộp mới.
+- **Docs vẫn đi cùng công việc:** cập nhật yêu cầu/spec, quyết định, kiến trúc, trạng thái implementation, kết quả kiểm thử, giới hạn và handoff ngay theo từng phần G01–G10. Ghi lại nguồn kỹ thuật và bằng chứng cần cho công việc khi phát sinh; không để việc truy vết này dồn đến giai đoạn viết báo cáo.
+- **Hệ quả:** các nguyên liệu học thuật, hình và mapping đã có được giữ để dùng về sau. G11/G12 vẫn thuộc mục tiêu đồ án; chỉ hoãn công việc chuyên biệt của hai mục này, không đánh dấu hoàn tất hoặc bỏ khỏi phạm vi. Hướng ưu tiên nguyên liệu học thuật/báo cáo trước trong mục “Làm gì tiếp” của roadmap được thay bằng thứ tự mới.
+- **Giới hạn:** lựa chọn từng phần G01–G10 vẫn theo dependency, yêu cầu đã chốt và gate phù hợp. Quyết định ưu tiên không tự chốt câu hỏi nghiệp vụ còn mở, không thay tiêu chí kiểm chứng hoặc gỡ các HOLD backend/phát hành. Khung15tuần/tuần16 bảo vệ theo DEC-THESIS-01 giữ nguyên.
+- **Áp dụng:** [roadmap](../../roadmap.md#priority-g01-g10-20261027), [bảng G01–G12](../../features.md#đối-chiếu-12-mục-tiêu-tốt-nghiệp), [chỉ mục quyết định](../decisions.md). Lượt này chỉ ghi nhận và đồng bộ tài liệu; chưa triển khai thêm chức năng.

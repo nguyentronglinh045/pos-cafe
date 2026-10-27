@@ -6,6 +6,15 @@ Chủ dự án xác nhận **15 tuần thực hiện từ 2026-10-05**, sau đó
 
 Đầu ra cần đạt: **các chức năng đã đăng ký chạy được trên Vercel và có thể chứng minh chạy kiểm thử ở local**; chủ dự án cũng nêu định hướng bảo toàn các tính năng của đợt trước. [Hồ sơ Q07–Q09](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-thesis-01--thời-gian-và-mức-hoàn-thành-đồ-án) giữ nguồn và phần chưa rõ. Chưa tự phân bổ lại công việc theo tuần hoặc nhận toàn hệ thống đã đạt; các gate triển khai/kiểm thử hiện hành vẫn áp dụng.
 
+<a id="priority-g01-g10-20261027"></a>
+## Ưu tiên hiện hành — 27/10/2026
+
+**Tập trung G01–G10; dành công việc chuyên biệt của G11–G12 cho khoảng hai tuần cuối hoặc bước cuối cùng**, theo [quyết định trực tiếp của chủ dự án](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-thesis-02). Chưa ấn định ngày bắt đầu giai đoạn cuối hoặc đổi hạn nộp.
+
+Docs phục vụ phát triển vẫn cập nhật theo từng phần: spec, quyết định, kiến trúc, kết quả kiểm, giới hạn và bàn giao. Giữ nguồn/bằng chứng phát sinh để dùng cho báo cáo sau này; việc hoàn thiện học thuật/trích dẫn, Word/slide và dàn trang thuộc giai đoạn cuối. Các nguyên liệu G11/G12 đã chuẩn bị tiếp tục được giữ.
+
+Mốc mới sau bảng trạng thái26/10 bên dưới: [đợt refactor cấu trúc đã chọn đã hoàn tất](workflow/tasks/refactor-safety-2026-10-25/merge-20261027.md#closure-20261027) trên main052a7d1; CI sau merge PASS. Các phần NO_CHANGE/HOLD và mục tiêu sản phẩm chưa đạt vẫn theo hồ sơ riêng.
+
 <a id="đang-ở-đâu--25102026"></a>
 ## Đang ở đâu — đối chiếu 26/10/2026
 
@@ -23,10 +32,10 @@ Chủ dự án xác nhận **15 tuần thực hiện từ 2026-10-05**, sau đó
 
 ## Làm gì tiếp
 
-1. Dùng [features/G01–G12](features.md#đối-chiếu-12-mục-tiêu-tốt-nghiệp), [quyết định](workflow/decisions.md), [spec reconciliation](spec-reconciliation.md) và [testing](testing.md) làm bộ đầu vào hiện hành.
-2. Hoàn thiện nguyên liệu còn thiếu: mô hình/hình, luận điểm và nguồn học thuật; lịch báo cáo chi tiết chưa được phân bổ lại. Docs chưa phải bản luận văn.
-3. Các gap sản phẩm (backend acceptance, owner/email, sync, mang đi, triển khai/backup/hiệu năng) giữ trạng thái ở danh mục. Mỗi việc cần scope/kiểm chứng riêng; lượt docs không mở triển khai hoặc refactor code.
-4. [Đợt tổ chức26/10](workflow/tasks/docs-reorganization-2026-10-26.md) xử lý CI/CD, UI, enforcement, lịch sử và trang kiến trúc theo quyền đã giao. Checklist theo dõi vẫn local.
+1. Dùng [bảng G01–G12](features.md#đối-chiếu-12-mục-tiêu-tốt-nghiệp), [quyết định](workflow/decisions.md), [spec reconciliation](spec-reconciliation.md) và [testing](testing.md) để chọn từng phần G01–G10 theo dependency và khoảng thiếu đã xác minh.
+2. Ưu tiên công việc sản phẩm/kiểm chứng trong G01–G10: tài khoản chủ/email, quyền và giao dịch, UI/mang đi, đồng bộ, triển khai/backup/bảo mật/hiệu năng. Mỗi phần cần phạm vi, expected, kiểm chứng và điều kiện môi trường phù hợp; các HOLD giữ nguyên cho đến khi được xử lý đúng phạm vi.
+3. Cập nhật docs ngay theo từng phần G01–G10, giữ nguồn code/evidence và trạng thái đã làm/đã kiểm/đã nghiệm thu/đã phát hành riêng biệt. Không dồn cập nhật spec hoặc hồ sơ kỹ thuật đến cuối.
+4. Khi tới khoảng hai tuần cuối hoặc bước cuối cùng, tập trung hoàn thiện G11/G12 từ nguồn đã tích lũy: học thuật/trích dẫn, báo cáo/slide và trình bày theo mẫu trường. Đây là thứ tự đã chốt; ngày cụ thể chưa được ấn định.
 
 Khung thời gian hiện hành là xác nhận 2026-10-25 ở đầu trang. Lịch gốc bắt đầu 2026-08-28, hạn 2026-12-21 và bốn ngày đệm dưới đây được giữ để truy vết, không còn là lịch chính dùng cho đồ án. Chưa tự chuyển các tuần/công việc cũ sang ngày mới hoặc phân bổ lại quỹ giờ. Xác nhận thời gian mới không tự thay quyết định ngân sách dịch vụ miễn phí.
 
