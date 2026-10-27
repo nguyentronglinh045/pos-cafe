@@ -1,5 +1,10 @@
 # Chỉ mục công việc
 
+## Cập nhật27/10/2026
+
+- [Refactor code và đồng bộ docs](refactor-safety-2026-10-25/implementation-20261027.md): nối kế hoạch25/10 và bàn giao26/10 với quyền triển khai27/10, các extraction/gates/review/rollback và quyết định NO_CHANGE/HOLD. Candidate `c6ff3c795616dfa84379be85feeca29927d173c9`, chưa merge/deploy.
+
+
 ## Đang theo dõi
 
 - [Hoàn thiện gói đầu vào báo cáo — 26/10/2026](docs-report-inputs-2026-10-26.md): mapping chủ đề/luận điểm/nguồn/evidence và chú thích 18 hình; sửa trạng thái G11/G12/R06 còn cũ. Rà điều kiện hoàn tất P1-03 riêng với Word/runtime, không đổi gate sản phẩm hoặc sửa code/DB.

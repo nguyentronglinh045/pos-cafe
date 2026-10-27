@@ -1,5 +1,10 @@
 # Hướng dẫn kỹ thuật POS Cafe
 
+## Candidate refactor ngày27/10/2026
+
+Nhánh code `c6ff3c795616dfa84379be85feeca29927d173c9` có các extraction đã ghi trong [hồ sơ triển khai](docs/workflow/tasks/refactor-safety-2026-10-25/implementation-20261027.md). Chưa merge vào main; các nguồn main711a22e bên dưới vẫn là mốc đã tích hợp. Trên candidate, ReportDrawer dùng ReportChart/ReportSummary thuần props; query policy có owner ở features/shared/usePurposeQuery; snapshot/cart helpers ở features/pos/orderDraft, giữ façade orderFlow và POS barrel. core/orderDraft vẫn là validation khác trách nhiệm. Không đổi hướng tầng, guard, write/payment/receipt hoặc runtime adapter. Khi merge mới cập nhật mốc main và các line pins toàn tài liệu.
+
+
 Quy tắc agent chung nằm ở [AGENTS.md](AGENTS.md); quy trình thực hiện và review ở [workflow](docs/workflow/README.md); chuẩn đặc tả ở [SPEC-STANDARD](openspec/SPEC-STANDARD.md). File ở code root chỉ là con trỏ. Đối chiếu kỹ thuật ngày 25/10/2026 với `main@711a22e`; xem [điểm vào tài liệu](docs/README.md) trước khi lấy thông tin từ phase log.
 
 ## Dự án và giới hạn

@@ -1,5 +1,11 @@
 # Kế hoạch refactor cấu trúc và file lớn — 25/10/2026
 
+<a id="implementation-20261027"></a>
+## Triển khai theo quyền mới — 27/10/2026
+
+Chủ dự án đã giao triển khai code và cập nhật docs trong chat bàn giao ngày27/10. [Kết quả/checkpoint triển khai](implementation-20261027.md), [evidence](implementation-20261027-evidence.json) và [review](implementation-20261027-review.md) là trạng thái mới; các mục25/26 bên dưới giữ tính lịch sử. Candidate `c6ff3c795616dfa84379be85feeca29927d173c9` chưa merge/deploy. Phạm vi đã chọn gồm Report chart/summary, shared query và pure snapshot/cart; History/Menu/Floor cùng tooling09a–c NO_CHANGE sau đánh giá, security/trust/backend vẫn HOLD. Không hiểu NO_CHANGE là đã refactor hết backlog.
+
+
 <a id="handoff-20261026"></a>
 ## Bàn giao đầu vào docs — 26/10/2026
 

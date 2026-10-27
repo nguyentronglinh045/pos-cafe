@@ -1,5 +1,10 @@
 # Phụ lục B — Bất biến, kiểm thử và bằng chứng
 
+## Bằng chứng thực hiện ngày27/10/2026
+
+[Hồ sơ triển khai](implementation-20261027.md) và [receipt/hash](implementation-20261027-evidence.json) gắn từng gate với candidate `c6ff3c795616dfa84379be85feeca29927d173c9`, environment local mock, test identity, configured skips và failure đã điều tra. Matrix dưới đây giữ nguyên bất biến/acceptance; các gate backend hoặc scope chưa chọn không được biến thành PASS bằng coverage/UI. [Review](implementation-20261027-review.md) ghi hai phạm vi độc lập và những gap đã đóng.
+
+
 Nguồn code và test: main711a22e71983e3d6aa17799649af05ce4c762555. Trạng thái mọi phép chạy dưới đây: **CHƯA CHẠY trong lượt lập kế hoạch**. Đọc tên/nội dung test chỉ xác nhận test tồn tại và phạm vi dự kiến; không nhận test PASS hay coverage đầy đủ. [Kế hoạch](README.md) · [Phần việc](slices.md).
 
 **Bổ sung đầu vào ngày 26/10/2026:** đọc [bàn giao nguồn](README.md#handoff-20261026), dùng [regression map 21 FR/8 NFR](../../../regression-map.md), [spec reconciliation](../../../spec-reconciliation.md) và [testing](../../../testing.md#bản-đồ-bằng-chứng) để hoàn thiện RF-I15/impact map. Các mốc docs7e29287 bên dưới giữ nguồn khảo sát cũ; ưu tiên quyết định hiện hành đã truy vết trong bảng hòa giải. FIN-WIP-02 và delta ACL gắn snapshot WIP, chưa gán cho source main. Lượt cập nhật chỉ chuẩn bị tài liệu, không chạy lại baseline, miễn gate hay đổi expected.

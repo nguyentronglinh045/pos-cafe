@@ -1,0 +1,1980 @@
+{
+  "date": "2026-10-27",
+  "codeBase": "711a22e71983e3d6aa17799649af05ce4c762555",
+  "docsBase": "c8073a9edceac208ec299eb80eac23afa04e2ef1",
+  "candidate": "c6ff3c795616dfa84379be85feeca29927d173c9",
+  "environment": "Windows; local mock; existing Node24.16.0/Chromium; no backend acceptance",
+  "rawRoot": "D:/Workspace/pos-cafe-archive/_refactor-20261027",
+  "interpretation": "All attempts retained. A failed iteration is not a final gate pass. Source manifests bind uncommitted candidate files as well as HEAD. Raw local evidence is not bundled into docs.",
+  "finalSource": {
+    "commit": "c6ff3c795616dfa84379be85feeca29927d173c9",
+    "clean": true,
+    "fileCount": 1193,
+    "allFileHashesMatchFinalTestManifest": true
+  },
+  "preservation": {
+    "at": "2026-10-27T02:34:41.8675778Z",
+    "head": "5156820f7d6679cd6f8051bdc38419737ffa0c7e",
+    "indexSha256": "45849E5188D12F3F52A0354E354E0A8E8D836FA37D68223A1E455D2F8C429352",
+    "wipEntries": 553,
+    "files": 551,
+    "deletions": 2,
+    "statusEntries": 553,
+    "errors": []
+  },
+  "inventory": {
+    "unit": {
+      "before": 1201,
+      "after": 1240,
+      "retained": 1201,
+      "added": [
+        {
+          "id": "src/app/reportDrawer.presentation.test.tsx:Report presentation contract before extraction clears selection on any section click and toggles item details without opening history",
+          "status": "passed"
+        },
+        {
+          "id": "src/app/reportDrawer.presentation.test.tsx:Report presentation contract before extraction keeps totals and chart/table hour selection in sync, with repeat clicks clearing selection",
+          "status": "passed"
+        },
+        {
+          "id": "src/app/reportDrawer.presentation.test.tsx:Report presentation contract before extraction keeps zero-revenue spark bars at the minimum height without marking a peak when there are no paid orders",
+          "status": "passed"
+        },
+        {
+          "id": "src/app/reportDrawer.presentation.test.tsx:Report presentation contract before extraction omits the sparkline with 0 hourly buckets",
+          "status": "passed"
+        },
+        {
+          "id": "src/app/reportDrawer.presentation.test.tsx:Report presentation contract before extraction omits the sparkline with 1 hourly buckets",
+          "status": "passed"
+        },
+        {
+          "id": "src/app/reportDrawer.presentation.test.tsx:Report presentation contract before extraction refreshes empty today data and offers return to today for another range",
+          "status": "passed"
+        },
+        {
+          "id": "src/app/reportDrawer.presentation.test.tsx:Report presentation contract before extraction retains selection for the same date bounds and clears it when normalized bounds change",
+          "status": "passed"
+        },
+        {
+          "id": "src/app/reportDrawer.presentation.test.tsx:Report presentation contract before extraction retries both sources after a daily failure without showing a partial chart",
+          "status": "passed"
+        },
+        {
+          "id": "src/app/reportDrawer.presentation.test.tsx:Report presentation contract before extraction retries both sources after a orders failure without showing a partial chart",
+          "status": "passed"
+        },
+        {
+          "id": "src/app/reportDrawer.presentation.test.tsx:Report presentation contract before extraction retries every day and the order projection when one day in a seven-day range fails",
+          "status": "passed"
+        },
+        {
+          "id": "src/app/reportDrawer.presentation.test.tsx:Report presentation contract before extraction shows summary money/count/average, range labels and proportional peak bars",
+          "status": "passed"
+        },
+        {
+          "id": "src/app/reportDrawer.presentation.test.tsx:Report presentation contract before extraction waits for the daily source before showing the chart",
+          "status": "passed"
+        },
+        {
+          "id": "src/app/reportDrawer.presentation.test.tsx:Report presentation contract before extraction waits for the orders source before showing the chart",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/pos/orderDraft.test.ts:order draft presentation contracts copies immutable source identity, prices and nested options without sharing mutable objects",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/pos/orderDraft.test.ts:order draft presentation contracts displays missing identities without validating submission, catalog={ categories: [], optionGroups: [], menuItemOptionGroups: [], menuItems: [ { id: 'coffee', categoryId: 'drinks', name: 'Cà phê mới', price: 50000, imageAssetKey: null, sortOrder: 1, isAvailable: true } ], optionValues: [ { id: 'shot', optionGroupId: 'extras', name: 'Shot mới', priceDelta: 9000, sortOrder: 1 } ] }",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/pos/orderDraft.test.ts:order draft presentation contracts displays missing identities without validating submission, catalog=undefined",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/pos/orderDraft.test.ts:order draft presentation contracts excludes nonpositive draft quantities and sums only displayed lines, including the empty case",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/pos/orderDraft.test.ts:order draft presentation contracts preserves each function identity through the existing flow and POS barrel",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/pos/orderDraft.test.ts:order draft presentation contracts preserves note normalization for ",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/pos/orderDraft.test.ts:order draft presentation contracts preserves note normalization for Ít đá",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/pos/orderDraft.test.ts:order draft presentation contracts preserves note normalization for null",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/pos/orderDraft.test.ts:order draft presentation contracts preserves note normalization for undefined",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/pos/orderDraft.test.ts:order draft presentation contracts retains historical quotes across catalog changes and multiplies both option and item quantities",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/pos/orderDraft.test.ts:order draft presentation contracts treats quoted zero as a price rather than falling back to the nonzero catalog",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/pos/orderDraft.test.ts:order draft presentation contracts uses current catalog values only when quotes are absent, without changing the input draft",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner allows a verified display query with no permission codes",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner allows any granted code and keys the result by identity, generation, purpose and arguments",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner discards a late read after catalog revision changes",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner discards a late read after generation changes",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner discards a late read after revision changes",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner discards a late read after revocation changes",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner does not poll a nonlive read or refetch merely on focus/reconnect",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner does not read when denied",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner does not read when disabled",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner does not read when unverified",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner guards a manual refetch before reading when denied",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner guards a manual refetch before reading when unverified",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner polls live reads every five seconds only in the foreground",
+          "status": "passed"
+        },
+        {
+          "id": "src/features/shared/usePurposeQuery.test.tsx:shared purpose query contract before moving its owner preserves one function identity through shared, legacy POS and barrel exports",
+          "status": "passed"
+        }
+      ],
+      "beforeDigest": "b84b2358d11f29f13318ea693b90af6f700b1aac1c41e469b58c85d97eeba29f",
+      "afterDigest": "cb9afaf9d23471037e4b51809e5ccceea82683cff228f7c773933ea98af8e8fd",
+      "filesBefore": 113,
+      "filesAfter": 116,
+      "passed": 1240,
+      "failed": 0
+    },
+    "smoke": {
+      "before": 81,
+      "after": 86,
+      "retained": 81,
+      "added": [
+        {
+          "id": "report-presentation.spec.ts:4:1:report chart preserves selection, tooltip, ranges and compact landscape layout:desktop",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "id": "report-presentation.spec.ts:4:1:report chart preserves selection, tooltip, ranges and compact landscape layout:phone-landscape",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "id": "report-presentation.spec.ts:4:1:report chart preserves selection, tooltip, ranges and compact landscape layout:portrait",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "id": "report-presentation.spec.ts:4:1:report chart preserves selection, tooltip, ranges and compact landscape layout:small-landscape",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "id": "report-presentation.spec.ts:4:1:report chart preserves selection, tooltip, ranges and compact landscape layout:tablet-landscape",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "beforeDigest": "5d04aa81723180b1f5aeca43b554b596c450b4be637910acd1e1b39c2e3513cc",
+      "afterDigest": "e20dfeb23cec4cee744204ce3535408c709141644bb8b0ca3e36d8428a232db2",
+      "stats": {
+        "startTime": "2026-10-27T02:30:25.983Z",
+        "duration": 91665.39,
+        "expected": 49,
+        "skipped": 37,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "errors": []
+    },
+    "interpretation": "Exact prior identities/statuses retained; counts do not certify every product requirement. New browser case runs five configured projects; original skips retained."
+  },
+  "artifactManifests": [
+    {
+      "localPath": "baseline-fixed-outputs/manifest.json",
+      "sha256": "01e9db0c73aa5f27d5f6ca116765c1556966ec386e90d9fb65e2d8d365660db5"
+    },
+    {
+      "localPath": "characterization-fixed-outputs/manifest.json",
+      "sha256": "64b0056fe1fda82554eb5586a9833ef73873ef1860b9ab258dd578ce809f3439"
+    },
+    {
+      "localPath": "chart-fixed-outputs/manifest.json",
+      "sha256": "9ff8c1e97a46a29bc6d57800322af9ce98f11988b82818230975c680ab0b0965"
+    },
+    {
+      "localPath": "summary-fixed-outputs/manifest.json",
+      "sha256": "b63ffe9d78ee2943d973cc89dddcaa34f8c890304cc1006852a1b64a09296251"
+    },
+    {
+      "localPath": "shared-before-fixed-outputs/manifest.json",
+      "sha256": "00c87edfb6473eba683126af082fc3718b92011e16ece83c06e676dfcf5dd8f2"
+    },
+    {
+      "localPath": "shared-before-fixed-outputs/pin-photos-supplement.json",
+      "sha256": "0b7e367823a479d72ce4e52895c7a9e523baf4d25e6aa6966890cb3637da2677"
+    },
+    {
+      "localPath": "shared-fixed-outputs/manifest.json",
+      "sha256": "6b357dd9d112ae6ea41b4c5a64a1139215230ae5aaf76c8b4a9ee6250c7e9f97"
+    },
+    {
+      "localPath": "shared-fixed-outputs/pin-photos-supplement.json",
+      "sha256": "6d378946c3f5472961a335adb80a67bebe2239be2f6a343b3310f344ca6c8c39"
+    },
+    {
+      "localPath": "draft-fixed-outputs/manifest.json",
+      "sha256": "0a783a8b63784a6edf3abf40f16041f3c79474bcadd189494a3be1399722a04d"
+    },
+    {
+      "localPath": "draft-coverage-output/manifest.json",
+      "sha256": "c877fbbaca8258449607063980e7955842d522db3d3f60a514d69d4ce6fa775c"
+    },
+    {
+      "localPath": "draft-dist-output/manifest.json",
+      "sha256": "d37445e38c8130dfcb5d6fca70344bbe3c7a47226a4577437ed70b51961aab8e"
+    },
+    {
+      "localPath": "final-inventory.json",
+      "sha256": "4b117fa6791296a769233cfdb24986a275f7d7900d84f50f225fd5ed119fed15"
+    },
+    {
+      "localPath": "shared-function-compare.json",
+      "sha256": "6323659da5a99d795878e1e10d760d3ab6ddddc4d05df329ee286129f1219884"
+    },
+    {
+      "localPath": "draft-extraction-compare.json",
+      "sha256": "d91c89358c3b2516f65c0ddb3e330af17ee970b48dde8a14d6dfe925c5e318d3"
+    }
+  ],
+  "runs": [
+    {
+      "label": "baseline/audit-report",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit",
+        "--",
+        "--state",
+        "report"
+      ],
+      "startedAt": "2026-10-27T01:12:41.125Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:13:02.888Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/baseline/audit-report",
+      "sourceManifestSha256": "83d9740cd6c75dc19c1d0de33baf045c42e9a8efb1685dc0c9e5ec446829435f",
+      "sourceAfterManifestSha256": "83d9740cd6c75dc19c1d0de33baf045c42e9a8efb1685dc0c9e5ec446829435f",
+      "sourceFileCount": 1185,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "e22590eaa27ace66915e9442740e5ebd79e19d90ec474086bd7e318518809330"
+    },
+    {
+      "label": "baseline/audit-selftest",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit:selftest",
+        "--",
+        "--selftest-report",
+        "artifacts/ui-audit/refactor-20261027-baseline-selftest.json"
+      ],
+      "startedAt": "2026-10-27T01:12:32.159Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:12:35.960Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/baseline/audit-selftest",
+      "sourceManifestSha256": "83d9740cd6c75dc19c1d0de33baf045c42e9a8efb1685dc0c9e5ec446829435f",
+      "sourceAfterManifestSha256": "83d9740cd6c75dc19c1d0de33baf045c42e9a8efb1685dc0c9e5ec446829435f",
+      "sourceFileCount": 1185,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "82a7d2b2abf053a68ffa6171da2f597e630b0446e14d01c5e8b67e4ec888d4fd"
+    },
+    {
+      "label": "baseline/build",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "build",
+        "--",
+        "--outDir",
+        "artifacts/refactor-safety-20261027/baseline/build"
+      ],
+      "startedAt": "2026-10-27T01:07:50.406Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:07:59.469Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/baseline/build",
+      "sourceManifestSha256": "83d9740cd6c75dc19c1d0de33baf045c42e9a8efb1685dc0c9e5ec446829435f",
+      "sourceAfterManifestSha256": "83d9740cd6c75dc19c1d0de33baf045c42e9a8efb1685dc0c9e5ec446829435f",
+      "sourceFileCount": 1185,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "e5b8c03cc268222de17ec0062c75f1f6c44a11f2f3c2119dd1267e03d583a070"
+    },
+    {
+      "label": "baseline/smoke",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "smoke",
+        "--",
+        "--workers=2",
+        "--reporter=line,json",
+        "--output=artifacts/refactor-safety-20261027/baseline/smoke-output"
+      ],
+      "startedAt": "2026-10-27T01:09:36.019Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {
+        "PLAYWRIGHT_JSON_OUTPUT_FILE": "D:\\Workspace\\pos-cafe-archive\\_refactor-20261027\\runs\\baseline\\smoke\\smoke.json"
+      },
+      "endedAt": "2026-10-27T01:10:52.371Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/baseline/smoke",
+      "sourceManifestSha256": "83d9740cd6c75dc19c1d0de33baf045c42e9a8efb1685dc0c9e5ec446829435f",
+      "sourceAfterManifestSha256": "83d9740cd6c75dc19c1d0de33baf045c42e9a8efb1685dc0c9e5ec446829435f",
+      "sourceFileCount": 1185,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "ec9beffc62c8cf31b16861c19865d9f77ed8ba24485fb449362132e9b3eeabbb"
+    },
+    {
+      "label": "baseline/unit",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/baseline-unit.json"
+      ],
+      "startedAt": "2026-10-27T01:08:08.905Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:08:34.460Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/baseline/unit",
+      "sourceManifestSha256": "83d9740cd6c75dc19c1d0de33baf045c42e9a8efb1685dc0c9e5ec446829435f",
+      "sourceAfterManifestSha256": "83d9740cd6c75dc19c1d0de33baf045c42e9a8efb1685dc0c9e5ec446829435f",
+      "sourceFileCount": 1185,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "e1f5028d13d542d5a6d9c83d447cbf254bc76bcf64ae3ed36ba24d71e00b0137"
+    },
+    {
+      "label": "characterization-final/audit-report",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit",
+        "--",
+        "--state",
+        "report"
+      ],
+      "startedAt": "2026-10-27T01:32:03.269Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:32:24.948Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization-final/audit-report",
+      "sourceManifestSha256": "01a63077515154faaccef3b38e2695e658ccca053676717268a019eaf7a1e0b3",
+      "sourceAfterManifestSha256": "01a63077515154faaccef3b38e2695e658ccca053676717268a019eaf7a1e0b3",
+      "sourceFileCount": 1187,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "e22590eaa27ace66915e9442740e5ebd79e19d90ec474086bd7e318518809330"
+    },
+    {
+      "label": "characterization-final/audit-selftest",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit:selftest",
+        "--",
+        "--selftest-report",
+        "artifacts/ui-audit/refactor-20261027-characterization-selftest.json"
+      ],
+      "startedAt": "2026-10-27T01:32:01.129Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:32:02.633Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization-final/audit-selftest",
+      "sourceManifestSha256": "01a63077515154faaccef3b38e2695e658ccca053676717268a019eaf7a1e0b3",
+      "sourceAfterManifestSha256": "01a63077515154faaccef3b38e2695e658ccca053676717268a019eaf7a1e0b3",
+      "sourceFileCount": 1187,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "5507b68c000ca116821b7460eda0bc7b23f674237a078ff89fbcdcac753c80d0"
+    },
+    {
+      "label": "characterization-final/build",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "build",
+        "--",
+        "--outDir",
+        "artifacts/refactor-safety-20261027/characterization-final/build"
+      ],
+      "startedAt": "2026-10-27T01:30:58.083Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:31:12.617Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization-final/build",
+      "sourceManifestSha256": "01a63077515154faaccef3b38e2695e658ccca053676717268a019eaf7a1e0b3",
+      "sourceAfterManifestSha256": "01a63077515154faaccef3b38e2695e658ccca053676717268a019eaf7a1e0b3",
+      "sourceFileCount": 1187,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "25f0c0056ebc84739394d9d2b463aa428ed30a9f108ea12c05b80038decb5be4"
+    },
+    {
+      "label": "characterization-final/smoke",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "smoke",
+        "--",
+        "--workers=2",
+        "--reporter=line,json",
+        "--output=artifacts/refactor-safety-20261027/characterization-final/smoke"
+      ],
+      "startedAt": "2026-10-27T01:30:05.807Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {
+        "PLAYWRIGHT_JSON_OUTPUT_FILE": "D:\\Workspace\\pos-cafe-archive\\_refactor-20261027\\runs\\characterization-final\\smoke\\smoke.json"
+      },
+      "endedAt": "2026-10-27T01:31:39.147Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization-final/smoke",
+      "sourceManifestSha256": "01a63077515154faaccef3b38e2695e658ccca053676717268a019eaf7a1e0b3",
+      "sourceAfterManifestSha256": "01a63077515154faaccef3b38e2695e658ccca053676717268a019eaf7a1e0b3",
+      "sourceFileCount": 1187,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "405629556cd01f3739d95087a474f1b29a8446ed494d9262c0767cfb9e9016a6"
+    },
+    {
+      "label": "characterization-final/unit",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/characterization-final-unit.json"
+      ],
+      "startedAt": "2026-10-27T01:30:58.083Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:31:24.450Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization-final/unit",
+      "sourceManifestSha256": "01a63077515154faaccef3b38e2695e658ccca053676717268a019eaf7a1e0b3",
+      "sourceAfterManifestSha256": "01a63077515154faaccef3b38e2695e658ccca053676717268a019eaf7a1e0b3",
+      "sourceFileCount": 1187,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "09378ac99057a6a006dbc079fb28e03d9318060ef26e775adaf74cf4a69184d6"
+    },
+    {
+      "label": "characterization/build",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "build",
+        "--",
+        "--outDir",
+        "artifacts/refactor-safety-20261027/characterization/build"
+      ],
+      "startedAt": "2026-10-27T01:28:00.879Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:28:15.765Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization/build",
+      "sourceManifestSha256": "33677561a8e883492b2f885202c19ef50d5f4796efbe77381094ad1c4fd2b3c6",
+      "sourceAfterManifestSha256": "33677561a8e883492b2f885202c19ef50d5f4796efbe77381094ad1c4fd2b3c6",
+      "sourceFileCount": 1187,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "76ac173498dde89fc5f3534ee80998e87a5f7f47bb9a08380235ebdf9dc4e728"
+    },
+    {
+      "label": "characterization/smoke-all",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "smoke",
+        "--",
+        "--workers=2",
+        "--reporter=line,json",
+        "--output=artifacts/refactor-safety-20261027/characterization/smoke-all"
+      ],
+      "startedAt": "2026-10-27T01:27:39.834Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {
+        "PLAYWRIGHT_JSON_OUTPUT_FILE": "D:\\Workspace\\pos-cafe-archive\\_refactor-20261027\\runs\\characterization\\smoke-all\\smoke.json"
+      },
+      "endedAt": "2026-10-27T01:29:04.796Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization/smoke-all",
+      "sourceManifestSha256": "33677561a8e883492b2f885202c19ef50d5f4796efbe77381094ad1c4fd2b3c6",
+      "sourceAfterManifestSha256": "33677561a8e883492b2f885202c19ef50d5f4796efbe77381094ad1c4fd2b3c6",
+      "sourceFileCount": 1187,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "8a73968fffb72dcf39fcdb624a44d3e1508e0b4ecdefdd7e75ce592f4c999902"
+    },
+    {
+      "label": "characterization/smoke-focused-2",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "smoke",
+        "--",
+        "tests/smoke/report-presentation.spec.ts",
+        "--project=desktop",
+        "--workers=1",
+        "--reporter=line,json",
+        "--output=artifacts/refactor-safety-20261027/characterization/smoke-focused-2"
+      ],
+      "startedAt": "2026-10-27T01:24:37.163Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {
+        "PLAYWRIGHT_JSON_OUTPUT_FILE": "D:\\Workspace\\pos-cafe-archive\\_refactor-20261027\\runs\\characterization\\smoke-focused-2\\smoke.json"
+      },
+      "endedAt": "2026-10-27T01:25:39.932Z",
+      "code": 1,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization/smoke-focused-2",
+      "sourceManifestSha256": "f498631d348698c8023a10c78a10903b017e47970de2524a1bc908cdfef93f2d",
+      "sourceAfterManifestSha256": "f498631d348698c8023a10c78a10903b017e47970de2524a1bc908cdfef93f2d",
+      "sourceFileCount": 1187,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "bad3afd55fd1c1f71fa34d640a40136590835352787845b70649616682f5b4b8"
+    },
+    {
+      "label": "characterization/smoke-focused-3",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "smoke",
+        "--",
+        "tests/smoke/report-presentation.spec.ts",
+        "--project=desktop",
+        "--workers=1",
+        "--reporter=line,json",
+        "--output=artifacts/refactor-safety-20261027/characterization/smoke-focused-3"
+      ],
+      "startedAt": "2026-10-27T01:27:01.904Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {
+        "PLAYWRIGHT_JSON_OUTPUT_FILE": "D:\\Workspace\\pos-cafe-archive\\_refactor-20261027\\runs\\characterization\\smoke-focused-3\\smoke.json"
+      },
+      "endedAt": "2026-10-27T01:27:06.974Z",
+      "code": 1,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization/smoke-focused-3",
+      "sourceManifestSha256": "e07d5d4bd9e22e57e611e98ac4da8ffaa32d66108f2fde943c5eb9c2ec76a528",
+      "sourceAfterManifestSha256": "e07d5d4bd9e22e57e611e98ac4da8ffaa32d66108f2fde943c5eb9c2ec76a528",
+      "sourceFileCount": 1187,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "4a7ab7cc25325828d60fe4fd5195c96902b11f004937cb43ec3e886030a6ea8c"
+    },
+    {
+      "label": "characterization/smoke-focused",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "smoke",
+        "--",
+        "tests/smoke/report-presentation.spec.ts",
+        "--project=desktop",
+        "--workers=1",
+        "--reporter=line,json",
+        "--output=artifacts/refactor-safety-20261027/characterization/smoke-focused"
+      ],
+      "startedAt": "2026-10-27T01:24:03.122Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {
+        "PLAYWRIGHT_JSON_OUTPUT_FILE": "D:\\Workspace\\pos-cafe-archive\\_refactor-20261027\\runs\\characterization\\smoke-focused\\smoke.json"
+      },
+      "endedAt": "2026-10-27T01:24:12.718Z",
+      "code": 1,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization/smoke-focused",
+      "sourceManifestSha256": "62b49682f9ca03ebbb2de169be7209bf0925487ec1213fd2a563e99f26e1d7e1",
+      "sourceAfterManifestSha256": "62b49682f9ca03ebbb2de169be7209bf0925487ec1213fd2a563e99f26e1d7e1",
+      "sourceFileCount": 1187,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "9adb4553dcaf960622787319dd3a052a205b0a695c0f872748f0b2d65d51207b"
+    },
+    {
+      "label": "characterization/unit-all",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/characterization-unit-all.json"
+      ],
+      "startedAt": "2026-10-27T01:28:00.879Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:28:28.937Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization/unit-all",
+      "sourceManifestSha256": "33677561a8e883492b2f885202c19ef50d5f4796efbe77381094ad1c4fd2b3c6",
+      "sourceAfterManifestSha256": "33677561a8e883492b2f885202c19ef50d5f4796efbe77381094ad1c4fd2b3c6",
+      "sourceFileCount": 1187,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "e47444efcb96a37ea29bd6e3d22f8a1ed23d35d6559b7dbd3225e236b181cd8b"
+    },
+    {
+      "label": "characterization/unit-focused-2",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "src/app/reportDrawer.presentation.test.tsx",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/characterization-unit-focused-2.json"
+      ],
+      "startedAt": "2026-10-27T01:22:21.354Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:22:28.223Z",
+      "code": 1,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization/unit-focused-2",
+      "sourceManifestSha256": "bf8759b7ffe32b84d81ebd6b48714b9639956048f15cec96cd8ef7d988fd6bd5",
+      "sourceAfterManifestSha256": "bf8759b7ffe32b84d81ebd6b48714b9639956048f15cec96cd8ef7d988fd6bd5",
+      "sourceFileCount": 1186,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "6b1c56a974819ea1dc9db5bab51d340c4b8ef1864926c909144520edd50b7807"
+    },
+    {
+      "label": "characterization/unit-focused-3",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "src/app/reportDrawer.presentation.test.tsx",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/characterization-unit-focused-3.json"
+      ],
+      "startedAt": "2026-10-27T01:22:41.897Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:22:48.219Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization/unit-focused-3",
+      "sourceManifestSha256": "442ccb8fb90df5071d735830c4d4f5dd844891fba8fc1118a6a5a464de1372cb",
+      "sourceAfterManifestSha256": "442ccb8fb90df5071d735830c4d4f5dd844891fba8fc1118a6a5a464de1372cb",
+      "sourceFileCount": 1186,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "8ccee363ad6b15b293180450a71dd243a2a585e66fd1430d4f1beea460f126a6"
+    },
+    {
+      "label": "characterization/unit-focused",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "src/app/reportDrawer.presentation.test.tsx",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/characterization-unit-focused.json"
+      ],
+      "startedAt": "2026-10-27T01:21:41.260Z",
+      "sourceHead": "711a22e71983e3d6aa17799649af05ce4c762555",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:21:49.324Z",
+      "code": 1,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/characterization/unit-focused",
+      "sourceManifestSha256": "b940b15a22f03a93421c457117372040a218d9114eb7cce69c883c79bfba94a4",
+      "sourceAfterManifestSha256": "b940b15a22f03a93421c457117372040a218d9114eb7cce69c883c79bfba94a4",
+      "sourceFileCount": 1186,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "eae44a3e716182b371e01d72ec548916fdb146de6c188aec2c28114cd51c42dd"
+    },
+    {
+      "label": "chart/audit-report",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit",
+        "--",
+        "--state",
+        "report"
+      ],
+      "startedAt": "2026-10-27T01:39:00.932Z",
+      "sourceHead": "fd7ccb0173da694f3c5852872a1fb717d9ce9432",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:39:22.716Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/chart/audit-report",
+      "sourceManifestSha256": "aaa86da50e7e3d2b57933942f2b2837918009e76d2e041804ce07ef7b7d6e52c",
+      "sourceAfterManifestSha256": "aaa86da50e7e3d2b57933942f2b2837918009e76d2e041804ce07ef7b7d6e52c",
+      "sourceFileCount": 1188,
+      "patchSha256": "b89de59edf7a0e256222f7586d484d0e17ec5927936ba3addbe9deaa9e2a9048",
+      "consoleSha256": "e22590eaa27ace66915e9442740e5ebd79e19d90ec474086bd7e318518809330"
+    },
+    {
+      "label": "chart/audit-selftest",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit:selftest",
+        "--",
+        "--selftest-report",
+        "artifacts/ui-audit/refactor-20261027-chart-selftest.json"
+      ],
+      "startedAt": "2026-10-27T01:38:58.827Z",
+      "sourceHead": "fd7ccb0173da694f3c5852872a1fb717d9ce9432",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:39:00.292Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/chart/audit-selftest",
+      "sourceManifestSha256": "aaa86da50e7e3d2b57933942f2b2837918009e76d2e041804ce07ef7b7d6e52c",
+      "sourceAfterManifestSha256": "aaa86da50e7e3d2b57933942f2b2837918009e76d2e041804ce07ef7b7d6e52c",
+      "sourceFileCount": 1188,
+      "patchSha256": "b89de59edf7a0e256222f7586d484d0e17ec5927936ba3addbe9deaa9e2a9048",
+      "consoleSha256": "d146f2b6aeebb5142a52a8415d91127ec1cf3cf0652718ecf0a05f5009765004"
+    },
+    {
+      "label": "chart/build",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "build",
+        "--",
+        "--outDir",
+        "artifacts/refactor-safety-20261027/chart/build"
+      ],
+      "startedAt": "2026-10-27T01:37:03.168Z",
+      "sourceHead": "fd7ccb0173da694f3c5852872a1fb717d9ce9432",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:37:17.977Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/chart/build",
+      "sourceManifestSha256": "aaa86da50e7e3d2b57933942f2b2837918009e76d2e041804ce07ef7b7d6e52c",
+      "sourceAfterManifestSha256": "aaa86da50e7e3d2b57933942f2b2837918009e76d2e041804ce07ef7b7d6e52c",
+      "sourceFileCount": 1188,
+      "patchSha256": "b89de59edf7a0e256222f7586d484d0e17ec5927936ba3addbe9deaa9e2a9048",
+      "consoleSha256": "34d04fa5ca8e697890fef4f65bda3b4075b6ebb8e4dfe09eef54767f3c656f8e"
+    },
+    {
+      "label": "chart/smoke",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "smoke",
+        "--",
+        "--workers=2",
+        "--reporter=line,json",
+        "--output=artifacts/refactor-safety-20261027/chart/smoke"
+      ],
+      "startedAt": "2026-10-27T01:37:03.202Z",
+      "sourceHead": "fd7ccb0173da694f3c5852872a1fb717d9ce9432",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {
+        "PLAYWRIGHT_JSON_OUTPUT_FILE": "D:\\Workspace\\pos-cafe-archive\\_refactor-20261027\\runs\\chart\\smoke\\smoke.json"
+      },
+      "endedAt": "2026-10-27T01:38:39.897Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/chart/smoke",
+      "sourceManifestSha256": "aaa86da50e7e3d2b57933942f2b2837918009e76d2e041804ce07ef7b7d6e52c",
+      "sourceAfterManifestSha256": "aaa86da50e7e3d2b57933942f2b2837918009e76d2e041804ce07ef7b7d6e52c",
+      "sourceFileCount": 1188,
+      "patchSha256": "b89de59edf7a0e256222f7586d484d0e17ec5927936ba3addbe9deaa9e2a9048",
+      "consoleSha256": "5717e85786604feccad7a873a1cf8d882fd44340918456f2265083f723f56ddc"
+    },
+    {
+      "label": "chart/unit-focused",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "src/app/reportDrawer.presentation.test.tsx",
+        "src/app/reportHistoryDrawer.test.tsx",
+        "src/features/admin/reportHelpers.test.ts",
+        "src/app/permissionUi.test.tsx",
+        "src/app/permissionPurposeCache.test.tsx",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/chart-unit-focused.json"
+      ],
+      "startedAt": "2026-10-27T01:36:43.697Z",
+      "sourceHead": "fd7ccb0173da694f3c5852872a1fb717d9ce9432",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:36:50.728Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/chart/unit-focused",
+      "sourceManifestSha256": "aaa86da50e7e3d2b57933942f2b2837918009e76d2e041804ce07ef7b7d6e52c",
+      "sourceAfterManifestSha256": "aaa86da50e7e3d2b57933942f2b2837918009e76d2e041804ce07ef7b7d6e52c",
+      "sourceFileCount": 1188,
+      "patchSha256": "b89de59edf7a0e256222f7586d484d0e17ec5927936ba3addbe9deaa9e2a9048",
+      "consoleSha256": "f2cf10f5f11959cff2038566b36a04b668725e932934c766a2571395964ce1fa"
+    },
+    {
+      "label": "chart/unit",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/chart-unit.json"
+      ],
+      "startedAt": "2026-10-27T01:37:03.190Z",
+      "sourceHead": "fd7ccb0173da694f3c5852872a1fb717d9ce9432",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:37:30.574Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/chart/unit",
+      "sourceManifestSha256": "aaa86da50e7e3d2b57933942f2b2837918009e76d2e041804ce07ef7b7d6e52c",
+      "sourceAfterManifestSha256": "aaa86da50e7e3d2b57933942f2b2837918009e76d2e041804ce07ef7b7d6e52c",
+      "sourceFileCount": 1188,
+      "patchSha256": "b89de59edf7a0e256222f7586d484d0e17ec5927936ba3addbe9deaa9e2a9048",
+      "consoleSha256": "acaf4c593535bf1e14daf4dcc52a3c47ea17615e594aeaac8531575774e460d7"
+    },
+    {
+      "label": "draft-before/unit-focused",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "--run",
+        "src/features/pos/orderDraft.test.ts",
+        "src/features/pos/orderFlow.test.ts",
+        "src/features/pos/writeOperationFlow.test.ts",
+        "src/features/pos/modifier.test.ts",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/draft-before-unit.json"
+      ],
+      "startedAt": "2026-10-27T02:23:33.550Z",
+      "sourceHead": "08bac495f15c2c909c280ddf3253b75513954377",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:23:35.175Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/draft-before/unit-focused",
+      "sourceManifestSha256": "b4781ac0d58092ad29f04dd47e3bc1c456867da6f8e598d115a1273e95ce3e91",
+      "sourceAfterManifestSha256": "b4781ac0d58092ad29f04dd47e3bc1c456867da6f8e598d115a1273e95ce3e91",
+      "sourceFileCount": 1192,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "ec0df6104661388b6c893e8097417a44cb075939b7619e0c287841b2fc7a7b88"
+    },
+    {
+      "label": "draft/audit-all",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit"
+      ],
+      "startedAt": "2026-10-27T02:30:27.308Z",
+      "sourceHead": "08bac495f15c2c909c280ddf3253b75513954377",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:34:09.651Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/draft/audit-all",
+      "sourceManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceAfterManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceFileCount": 1193,
+      "patchSha256": "5963ba47451baa2102e56267fa7f78ab73d3b3af9d0c700c64950386f7f388f4",
+      "consoleSha256": "00b31164bf913963fa764c28c19a03ee48f98c90a065ad94929feefc1dac261d"
+    },
+    {
+      "label": "draft/audit-selftest",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit:selftest",
+        "--",
+        "--selftest-report",
+        "artifacts/ui-audit/refactor-20261027-draft-selftest.json"
+      ],
+      "startedAt": "2026-10-27T02:30:25.381Z",
+      "sourceHead": "08bac495f15c2c909c280ddf3253b75513954377",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:30:26.910Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/draft/audit-selftest",
+      "sourceManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceAfterManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceFileCount": 1193,
+      "patchSha256": "5963ba47451baa2102e56267fa7f78ab73d3b3af9d0c700c64950386f7f388f4",
+      "consoleSha256": "66a4128e8b158d3a64d4e64aae70f58eac38c69f39df33b3e6e9b9c3487b88d2"
+    },
+    {
+      "label": "draft/build",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "build"
+      ],
+      "startedAt": "2026-10-27T02:27:19.350Z",
+      "sourceHead": "08bac495f15c2c909c280ddf3253b75513954377",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:27:28.226Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/draft/build",
+      "sourceManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceAfterManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceFileCount": 1193,
+      "patchSha256": "5963ba47451baa2102e56267fa7f78ab73d3b3af9d0c700c64950386f7f388f4",
+      "consoleSha256": "543455cb95f856c9ce9a8d4a0815b711c527c5d73614e2bdaf6850e345581cd5"
+    },
+    {
+      "label": "draft/coverage",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test:coverage",
+        "--",
+        "--maxWorkers=2",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/draft-coverage-tests.json"
+      ],
+      "startedAt": "2026-10-27T02:25:08.473Z",
+      "sourceHead": "08bac495f15c2c909c280ddf3253b75513954377",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:26:37.617Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/draft/coverage",
+      "sourceManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceAfterManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceFileCount": 1193,
+      "patchSha256": "5963ba47451baa2102e56267fa7f78ab73d3b3af9d0c700c64950386f7f388f4",
+      "consoleSha256": "e7cd229dfac8f7229a30824f59eaf945933ca4bf3817a6cb8726047119867b1f"
+    },
+    {
+      "label": "draft/smoke",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "smoke",
+        "--",
+        "--workers=2",
+        "--reporter=line,json",
+        "--output=artifacts/refactor-safety-20261027/draft/smoke"
+      ],
+      "startedAt": "2026-10-27T02:30:25.379Z",
+      "sourceHead": "08bac495f15c2c909c280ddf3253b75513954377",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {
+        "PLAYWRIGHT_JSON_OUTPUT_FILE": "D:\\Workspace\\pos-cafe-archive\\_refactor-20261027\\runs\\draft\\smoke\\smoke.json"
+      },
+      "endedAt": "2026-10-27T02:31:57.956Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/draft/smoke",
+      "sourceManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceAfterManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceFileCount": 1193,
+      "patchSha256": "5963ba47451baa2102e56267fa7f78ab73d3b3af9d0c700c64950386f7f388f4",
+      "consoleSha256": "6aaf1e2c5a9d5b9409840b164fb71129460ff72e822d3017421760dbf56de63b"
+    },
+    {
+      "label": "draft/unit-focused",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "--run",
+        "src/features/pos/orderDraft.test.ts",
+        "src/features/pos/orderFlow.test.ts",
+        "src/features/pos/writeOperationFlow.test.ts",
+        "src/features/pos/modifier.test.ts",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/draft-unit-focused.json"
+      ],
+      "startedAt": "2026-10-27T02:24:54.391Z",
+      "sourceHead": "08bac495f15c2c909c280ddf3253b75513954377",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:24:56.002Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/draft/unit-focused",
+      "sourceManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceAfterManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceFileCount": 1193,
+      "patchSha256": "5963ba47451baa2102e56267fa7f78ab73d3b3af9d0c700c64950386f7f388f4",
+      "consoleSha256": "2356bcb84a19fda7c5ee15b5cb45c2f8389b001e53b0035d276b09fb16da43c2"
+    },
+    {
+      "label": "draft/unit",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "--maxWorkers=2",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/draft-unit.json"
+      ],
+      "startedAt": "2026-10-27T02:27:19.351Z",
+      "sourceHead": "08bac495f15c2c909c280ddf3253b75513954377",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:28:35.348Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/draft/unit",
+      "sourceManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceAfterManifestSha256": "7df868809e13c6aa9fa966edd54a4e1b39878b627cdb5b28c1ff1edb746bdfaa",
+      "sourceFileCount": 1193,
+      "patchSha256": "5963ba47451baa2102e56267fa7f78ab73d3b3af9d0c700c64950386f7f388f4",
+      "consoleSha256": "ba80301cd35b637876a763f7a01b9373ba66b8041436ee697a06d4aa01b034be"
+    },
+    {
+      "label": "shared-before/audit-all",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit"
+      ],
+      "startedAt": "2026-10-27T01:56:58.378Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:00:43.123Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared-before/audit-all",
+      "sourceManifestSha256": "cd069331b58609c815be9d18397735b121bf8c46e7cd552b794d86a8b72f201f",
+      "sourceAfterManifestSha256": "cd069331b58609c815be9d18397735b121bf8c46e7cd552b794d86a8b72f201f",
+      "sourceFileCount": 1190,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "00b31164bf913963fa764c28c19a03ee48f98c90a065ad94929feefc1dac261d"
+    },
+    {
+      "label": "shared-before/audit-selftest",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit:selftest",
+        "--",
+        "--selftest-report",
+        "artifacts/ui-audit/refactor-20261027-shared-before-selftest.json"
+      ],
+      "startedAt": "2026-10-27T01:56:56.211Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:56:57.715Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared-before/audit-selftest",
+      "sourceManifestSha256": "cd069331b58609c815be9d18397735b121bf8c46e7cd552b794d86a8b72f201f",
+      "sourceAfterManifestSha256": "cd069331b58609c815be9d18397735b121bf8c46e7cd552b794d86a8b72f201f",
+      "sourceFileCount": 1190,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "2a5387e1f5cdb4ed3676a0253b4c9876e2c08d0f0ccf8b199de92fec9e941f11"
+    },
+    {
+      "label": "shared-before/coverage-bounded",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test:coverage",
+        "--",
+        "--maxWorkers=2",
+        "--coverage.reportsDirectory=artifacts/refactor-safety-20261027/shared-before/coverage-bounded",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/shared-before-coverage-bounded-tests.json"
+      ],
+      "startedAt": "2026-10-27T02:01:25.741Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:02:54.736Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared-before/coverage-bounded",
+      "sourceManifestSha256": "cd069331b58609c815be9d18397735b121bf8c46e7cd552b794d86a8b72f201f",
+      "sourceAfterManifestSha256": "cd069331b58609c815be9d18397735b121bf8c46e7cd552b794d86a8b72f201f",
+      "sourceFileCount": 1190,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "7bead7a70a2d91098a66e994f71e871eb0c02dd7b2e9e8ec3c5f193aa6877595"
+    },
+    {
+      "label": "shared-before/coverage",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test:coverage",
+        "--",
+        "--coverage.reportsDirectory=artifacts/refactor-safety-20261027/shared-before/coverage",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/shared-before-coverage-tests.json"
+      ],
+      "startedAt": "2026-10-27T01:56:58.378Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:57:26.372Z",
+      "code": 1,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared-before/coverage",
+      "sourceManifestSha256": "cd069331b58609c815be9d18397735b121bf8c46e7cd552b794d86a8b72f201f",
+      "sourceAfterManifestSha256": "cd069331b58609c815be9d18397735b121bf8c46e7cd552b794d86a8b72f201f",
+      "sourceFileCount": 1190,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "b5fdee3b50f1d43a99b09ac85bad724e86e7d6aec6dcdb7acc576c790a44036b"
+    },
+    {
+      "label": "shared-before/unit-final-2",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "src/features/shared/usePurposeQuery.test.tsx",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/shared-before-unit-final-2.json"
+      ],
+      "startedAt": "2026-10-27T02:03:41.243Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:03:45.217Z",
+      "code": 1,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared-before/unit-final-2",
+      "sourceManifestSha256": "87038bc5ea7a6ac0e82bafa721d8c1a588e270e53b2bc47c2f2e3c29f14f8091",
+      "sourceAfterManifestSha256": "87038bc5ea7a6ac0e82bafa721d8c1a588e270e53b2bc47c2f2e3c29f14f8091",
+      "sourceFileCount": 1190,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "936628b9b6094d7b4b9aea5fb75da6b05e46b22a75b834f10f31d79b0dbe0e5f"
+    },
+    {
+      "label": "shared-before/unit-final-3",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "src/features/shared/usePurposeQuery.test.tsx",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/shared-before-unit-final-3.json"
+      ],
+      "startedAt": "2026-10-27T02:04:47.624Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:04:49.636Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared-before/unit-final-3",
+      "sourceManifestSha256": "a66b1a30e833c02776beeca051d12c95805c990c8f3a65c2270c33d9775ebca2",
+      "sourceAfterManifestSha256": "a66b1a30e833c02776beeca051d12c95805c990c8f3a65c2270c33d9775ebca2",
+      "sourceFileCount": 1190,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "827cb63323756884512b79d07de9463a750ff4fd6c26f94dca8abec0177f1280"
+    },
+    {
+      "label": "shared-before/unit-final",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "src/features/shared/usePurposeQuery.test.tsx",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/shared-before-unit-final.json"
+      ],
+      "startedAt": "2026-10-27T02:03:24.831Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:03:26.738Z",
+      "code": 1,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared-before/unit-final",
+      "sourceManifestSha256": "9879040848537960e3a17222a6bc36458f16766ed5cc24a5d384869ed9b0dccb",
+      "sourceAfterManifestSha256": "9879040848537960e3a17222a6bc36458f16766ed5cc24a5d384869ed9b0dccb",
+      "sourceFileCount": 1190,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "c18c408a0aad29da2333368f697e7cca22d2e13d82596317884bf977f5566c01"
+    },
+    {
+      "label": "shared-before/unit-focused",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "src/features/shared/usePurposeQuery.test.tsx",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/shared-before-unit-focused.json"
+      ],
+      "startedAt": "2026-10-27T01:56:36.869Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:56:38.780Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared-before/unit-focused",
+      "sourceManifestSha256": "cd069331b58609c815be9d18397735b121bf8c46e7cd552b794d86a8b72f201f",
+      "sourceAfterManifestSha256": "cd069331b58609c815be9d18397735b121bf8c46e7cd552b794d86a8b72f201f",
+      "sourceFileCount": 1190,
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "consoleSha256": "45256796762adb40643cd11f1e4b50c7ee1bd858d0a764ba8b5e26f32561c467"
+    },
+    {
+      "label": "shared/audit-all",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit"
+      ],
+      "startedAt": "2026-10-27T02:16:32.473Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:20:14.732Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared/audit-all",
+      "sourceManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceAfterManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceFileCount": 1191,
+      "patchSha256": "470faff3276e1fae8fa428a466e913a4709ee463723da606f6ced82f447c12d4",
+      "consoleSha256": "00b31164bf913963fa764c28c19a03ee48f98c90a065ad94929feefc1dac261d"
+    },
+    {
+      "label": "shared/audit-selftest-final",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit:selftest",
+        "--",
+        "--selftest-report",
+        "artifacts/ui-audit/refactor-20261027-shared-selftest.json"
+      ],
+      "startedAt": "2026-10-27T02:16:30.623Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:16:32.107Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared/audit-selftest-final",
+      "sourceManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceAfterManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceFileCount": 1191,
+      "patchSha256": "470faff3276e1fae8fa428a466e913a4709ee463723da606f6ced82f447c12d4",
+      "consoleSha256": "f46129fd5d6ad0fdc0686099b906c9bb0830e81f98de70387a6e61b8ee5ab7fc"
+    },
+    {
+      "label": "shared/audit-selftest",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit:selftest",
+        "--",
+        "--",
+        "--selftest-report",
+        "artifacts/ui-audit/refactor-20261027-shared-selftest.json"
+      ],
+      "startedAt": "2026-10-27T02:16:09.405Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:16:09.849Z",
+      "code": 1,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared/audit-selftest",
+      "sourceManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceAfterManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceFileCount": 1191,
+      "patchSha256": "470faff3276e1fae8fa428a466e913a4709ee463723da606f6ced82f447c12d4",
+      "consoleSha256": "f8a5c7fc1a4aa0f0910573b1fdd4457cb2fd6bc1a6585125bc2e2059a4e22e35"
+    },
+    {
+      "label": "shared/build",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "build",
+        "--",
+        "--outDir",
+        "artifacts/refactor-safety-20261027/shared/build"
+      ],
+      "startedAt": "2026-10-27T02:09:09.045Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:09:23.819Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared/build",
+      "sourceManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceAfterManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceFileCount": 1191,
+      "patchSha256": "470faff3276e1fae8fa428a466e913a4709ee463723da606f6ced82f447c12d4",
+      "consoleSha256": "9c04e63af986b5dd7cd4fed7e632ad0a5f9cc36ebfb75c999bdd38e26254f382"
+    },
+    {
+      "label": "shared/coverage",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test:coverage",
+        "--",
+        "--maxWorkers=2",
+        "--coverage.reportsDirectory=artifacts/refactor-safety-20261027/shared/coverage",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/shared-coverage-tests.json"
+      ],
+      "startedAt": "2026-10-27T02:06:36.952Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:08:05.383Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared/coverage",
+      "sourceManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceAfterManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceFileCount": 1191,
+      "patchSha256": "470faff3276e1fae8fa428a466e913a4709ee463723da606f6ced82f447c12d4",
+      "consoleSha256": "e341bdc25f2dbc4ffbb76b965552eb2b97f62e2fdd492e8d19e1689e8f83fc07"
+    },
+    {
+      "label": "shared/smoke",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "smoke",
+        "--",
+        "--workers=2",
+        "--reporter=line,json",
+        "--output=artifacts/refactor-safety-20261027/shared/smoke"
+      ],
+      "startedAt": "2026-10-27T02:09:09.046Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {
+        "PLAYWRIGHT_JSON_OUTPUT_FILE": "D:\\Workspace\\pos-cafe-archive\\_refactor-20261027\\runs\\shared\\smoke\\smoke.json"
+      },
+      "endedAt": "2026-10-27T02:10:46.328Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared/smoke",
+      "sourceManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceAfterManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceFileCount": 1191,
+      "patchSha256": "470faff3276e1fae8fa428a466e913a4709ee463723da606f6ced82f447c12d4",
+      "consoleSha256": "9db7fd632a90c0b206a9d0b16b555c40f5997c6746c3c3b48e5165aa490daef9"
+    },
+    {
+      "label": "shared/unit-focused",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "src/features/shared/usePurposeQuery.test.tsx",
+        "src/features/shared/permissionSession.test.ts",
+        "src/app/permissionPurposeCache.test.tsx",
+        "src/app/permissionUi.test.tsx",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/shared-unit-focused.json"
+      ],
+      "startedAt": "2026-10-27T02:05:47.475Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:05:52.386Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared/unit-focused",
+      "sourceManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceAfterManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceFileCount": 1191,
+      "patchSha256": "470faff3276e1fae8fa428a466e913a4709ee463723da606f6ced82f447c12d4",
+      "consoleSha256": "1dd968dd99677fec732973b81b0c7f22824de6f0166608f1604ea89db1c5f790"
+    },
+    {
+      "label": "shared/unit",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/shared-unit.json"
+      ],
+      "startedAt": "2026-10-27T02:09:09.045Z",
+      "sourceHead": "4cffac4a9cce86fb9e33e61c79f5006955ba4e9d",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T02:09:36.737Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/shared/unit",
+      "sourceManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceAfterManifestSha256": "538e4e21b266eeb20aa7798e436f8638e9cbaa58beaabf29c77a39fe92e39402",
+      "sourceFileCount": 1191,
+      "patchSha256": "470faff3276e1fae8fa428a466e913a4709ee463723da606f6ced82f447c12d4",
+      "consoleSha256": "1abb7771ac95cc09c8903d251a42e1996daadb2653aebd9263ed7d702eacefef"
+    },
+    {
+      "label": "summary-before/browser",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "smoke",
+        "--",
+        "tests/smoke/report-presentation.spec.ts",
+        "--workers=2",
+        "--reporter=line,json",
+        "--output=artifacts/refactor-safety-20261027/summary-before/browser"
+      ],
+      "startedAt": "2026-10-27T01:46:33.307Z",
+      "sourceHead": "a4a84dcb67a3fc1546569d3ad3093068b5f776c5",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {
+        "PLAYWRIGHT_JSON_OUTPUT_FILE": "D:\\Workspace\\pos-cafe-archive\\_refactor-20261027\\runs\\summary-before\\browser\\smoke.json"
+      },
+      "endedAt": "2026-10-27T01:46:59.462Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/summary-before/browser",
+      "sourceManifestSha256": "decec3bf76874d3bf85f7d67b661d9acfff3f91dd783cebc67fbdc6aa7e820de",
+      "sourceAfterManifestSha256": "decec3bf76874d3bf85f7d67b661d9acfff3f91dd783cebc67fbdc6aa7e820de",
+      "sourceFileCount": 1188,
+      "patchSha256": "8fc867525e1d938f718a717a0e16eb7c727ca7d8b0109bb0dbd2c0bde7763eb5",
+      "consoleSha256": "8d3acd8ee9830eb531b3b6b358bdc10409f6ef29d87b49153dd487959993d032"
+    },
+    {
+      "label": "summary-before/unit-focused",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "src/app/reportDrawer.presentation.test.tsx",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/summary-before-unit.json"
+      ],
+      "startedAt": "2026-10-27T01:46:18.833Z",
+      "sourceHead": "a4a84dcb67a3fc1546569d3ad3093068b5f776c5",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:46:26.055Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/summary-before/unit-focused",
+      "sourceManifestSha256": "decec3bf76874d3bf85f7d67b661d9acfff3f91dd783cebc67fbdc6aa7e820de",
+      "sourceAfterManifestSha256": "decec3bf76874d3bf85f7d67b661d9acfff3f91dd783cebc67fbdc6aa7e820de",
+      "sourceFileCount": 1188,
+      "patchSha256": "8fc867525e1d938f718a717a0e16eb7c727ca7d8b0109bb0dbd2c0bde7763eb5",
+      "consoleSha256": "c3c092385d22744e8db9302237bd0d5e94a44b7ca39739badc356c9e8eeb7053"
+    },
+    {
+      "label": "summary/audit-report",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit",
+        "--",
+        "--state",
+        "report"
+      ],
+      "startedAt": "2026-10-27T01:50:39.732Z",
+      "sourceHead": "a4a84dcb67a3fc1546569d3ad3093068b5f776c5",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:51:01.530Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/summary/audit-report",
+      "sourceManifestSha256": "ab1f469c25b55fd0c8f90ce450e82bf12d7450dfca5e38d3a3f635e955f2f976",
+      "sourceAfterManifestSha256": "ab1f469c25b55fd0c8f90ce450e82bf12d7450dfca5e38d3a3f635e955f2f976",
+      "sourceFileCount": 1189,
+      "patchSha256": "c00623bde4e5a6eedf679e7ddf6feeae1bf0f176ab9853528f89f47f0fc6fc01",
+      "consoleSha256": "e22590eaa27ace66915e9442740e5ebd79e19d90ec474086bd7e318518809330"
+    },
+    {
+      "label": "summary/audit-selftest",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "ui-audit:selftest",
+        "--",
+        "--selftest-report",
+        "artifacts/ui-audit/refactor-20261027-summary-selftest.json"
+      ],
+      "startedAt": "2026-10-27T01:50:37.615Z",
+      "sourceHead": "a4a84dcb67a3fc1546569d3ad3093068b5f776c5",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:50:39.090Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/summary/audit-selftest",
+      "sourceManifestSha256": "ab1f469c25b55fd0c8f90ce450e82bf12d7450dfca5e38d3a3f635e955f2f976",
+      "sourceAfterManifestSha256": "ab1f469c25b55fd0c8f90ce450e82bf12d7450dfca5e38d3a3f635e955f2f976",
+      "sourceFileCount": 1189,
+      "patchSha256": "c00623bde4e5a6eedf679e7ddf6feeae1bf0f176ab9853528f89f47f0fc6fc01",
+      "consoleSha256": "a9039baf0798e0950a81a68cec9c62b59bb45d873e1b8ced9da81aaa67c1fafc"
+    },
+    {
+      "label": "summary/build",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "build",
+        "--",
+        "--outDir",
+        "artifacts/refactor-safety-20261027/summary/build"
+      ],
+      "startedAt": "2026-10-27T01:48:49.290Z",
+      "sourceHead": "a4a84dcb67a3fc1546569d3ad3093068b5f776c5",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:49:03.866Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/summary/build",
+      "sourceManifestSha256": "ab1f469c25b55fd0c8f90ce450e82bf12d7450dfca5e38d3a3f635e955f2f976",
+      "sourceAfterManifestSha256": "ab1f469c25b55fd0c8f90ce450e82bf12d7450dfca5e38d3a3f635e955f2f976",
+      "sourceFileCount": 1189,
+      "patchSha256": "c00623bde4e5a6eedf679e7ddf6feeae1bf0f176ab9853528f89f47f0fc6fc01",
+      "consoleSha256": "856ebe60d9f16c52677f0cad8653e7a2c94a47a10e0d77ba8d1545c44dc99a3b"
+    },
+    {
+      "label": "summary/smoke",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "smoke",
+        "--",
+        "--workers=2",
+        "--reporter=line,json",
+        "--output=artifacts/refactor-safety-20261027/summary/smoke"
+      ],
+      "startedAt": "2026-10-27T01:48:49.296Z",
+      "sourceHead": "a4a84dcb67a3fc1546569d3ad3093068b5f776c5",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {
+        "PLAYWRIGHT_JSON_OUTPUT_FILE": "D:\\Workspace\\pos-cafe-archive\\_refactor-20261027\\runs\\summary\\smoke\\smoke.json"
+      },
+      "endedAt": "2026-10-27T01:50:25.897Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/summary/smoke",
+      "sourceManifestSha256": "ab1f469c25b55fd0c8f90ce450e82bf12d7450dfca5e38d3a3f635e955f2f976",
+      "sourceAfterManifestSha256": "ab1f469c25b55fd0c8f90ce450e82bf12d7450dfca5e38d3a3f635e955f2f976",
+      "sourceFileCount": 1189,
+      "patchSha256": "c00623bde4e5a6eedf679e7ddf6feeae1bf0f176ab9853528f89f47f0fc6fc01",
+      "consoleSha256": "42832f7e1551df1d23c1213d5e6bafb1548a92cda8566c8dc4e213da0031bb7e"
+    },
+    {
+      "label": "summary/unit",
+      "cwd": "D:/Workspace/pos-cafe-permission-timeonly-20261022/code",
+      "node": "D:\\tools\\nodejs\\node.exe",
+      "nodeVersion": "v24.16.0",
+      "command": [
+        "D:/tools/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test",
+        "--",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=D:/Workspace/pos-cafe-archive/_refactor-20261027/summary-unit.json"
+      ],
+      "startedAt": "2026-10-27T01:48:49.290Z",
+      "sourceHead": "a4a84dcb67a3fc1546569d3ad3093068b5f776c5",
+      "lockSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+      "envOverrides": {},
+      "endedAt": "2026-10-27T01:49:16.556Z",
+      "code": 0,
+      "signal": null,
+      "sourceUnchanged": true,
+      "localDirectory": "D:/Workspace/pos-cafe-archive/_refactor-20261027/runs/summary/unit",
+      "sourceManifestSha256": "ab1f469c25b55fd0c8f90ce450e82bf12d7450dfca5e38d3a3f635e955f2f976",
+      "sourceAfterManifestSha256": "ab1f469c25b55fd0c8f90ce450e82bf12d7450dfca5e38d3a3f635e955f2f976",
+      "sourceFileCount": 1189,
+      "patchSha256": "c00623bde4e5a6eedf679e7ddf6feeae1bf0f176ab9853528f89f47f0fc6fc01",
+      "consoleSha256": "47a6c8cd1bdbe17a01a22f6ba452245db524843d304f6796e20348f5dcd44204"
+    }
+  ]
+}

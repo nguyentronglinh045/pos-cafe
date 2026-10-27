@@ -1,5 +1,10 @@
 # Kiến trúc
 
+## Delta cấu trúc trên nhánh refactor — 27/10/2026
+
+[Hồ sơ triển khai](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027.md) gắn candidate `c6ff3c795616dfa84379be85feeca29927d173c9` và gates cụ thể; chưa phải main đã merge. Bốn owner được làm rõ: ReportChart, ReportSummary, shared/usePurposeQuery và pos/orderDraft. Drawer giữ state/query/lifecycle; orderFlow giữ orchestration và compatibility exports. Admin đọc shared query trực tiếp, không phụ thuộc module POS cho policy generic. A01/A02 giữ hướng app → features → ports → adapters; đây là thay đổi owner bên trong tầng, chưa cần đổi mô hình dữ liệu hay vẽ lại cạnh toàn hệ thống. Xem mapping và giới hạn trước khi dùng cấu trúc candidate làm kiến trúc đã phát hành.
+
+
 Đối chiếu source `main@711a22e` ngày 26/10/2026. Các mô tả dưới đây là kiến trúc trong mã tích hợp; [testing](testing.md) và [giới hạn](limitations.md) xác định phạm vi đã kiểm, không thay nghiệm thu backend đích. [Đối chiếu staging N1](implementation-log/staging-schema-20261026/README.md) và [fingerprint function N2](implementation-log/critical-flows-20261026/README.md) ghi riêng phạm vi metadata đã kiểm.
 
 [Hai hình kiến trúc](architecture-diagrams.md) bổ sung góc nhìn lời gọi và phụ thuộc module, ghim nguồn code và ranh giới kiểm quyền. Có SVG/Mermaid độc lập để tra cứu; trạng thái HTML cũ giữ riêng.

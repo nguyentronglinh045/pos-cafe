@@ -1,5 +1,10 @@
 # Bản đồ hồi quy từ tiểu luận tới đồ án
 
+## Bổ sung bằng chứng candidate ngày27/10/2026
+
+[Refactor implementation](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027.md) bổ sung characterization cho FR-19 (Report), FR-04 (query/session guard) và FR-07/09 (snapshot/cart), cùng NFR-03/04/06/07. Source `c6ff3c795616dfa84379be85feeca29927d173c9` chưa merge main. Hàng FR/NFR và gaps lịch sử bên dưới giữ nguyên; helper/mock PASS chỉ phủ những ca cụ thể, không đóng toàn IDEM-26/27, backend hay thiết bị thật.
+
+
 Cập nhật 26/10/2026 — N5. Có **21 dòng FR và 8 dòng NFR**: requirement/scenario → test có trong source → kết quả ở mức thực sự có → phần còn thiếu. Đây là kiểm kê tài liệu có chủ đích, **không là ma trận đầy đủ mọi biến thể hoặc nghiệm thu sản phẩm**.
 
 Mốc **khảo sát** tiểu luận là code`c7f2f4e` và [requirements snapshot21/08](https://github.com/nguyentronglinh045/pos-cafe/blob/7c77688937f632b4a4bc2b60ffd613fea52d7134/docs/requirements.md), chưa xác nhận source đúng của lần demo. [Nguồn Q10](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-regression-01--mốc-chức-năng-từ-tiểu-luận). N5 đối chiếu code`711a22e71983e3d6aa17799649af05ce4c762555`; không đọc WIP local làm baseline.
