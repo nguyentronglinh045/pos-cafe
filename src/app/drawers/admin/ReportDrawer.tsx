@@ -2,7 +2,6 @@ import clsx from "clsx";
 import { AlertTriangle, BarChart3, Download, RefreshCw, ShieldAlert } from "lucide-react";
 import { Button, TextField, Tooltip } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, XAxis, YAxis } from "recharts";
 import type { CoreReport } from "@/domain";
 import { usePermission } from "@/features/shared/permissionSession";
 import { formatCompactVnd, formatVnd } from "@/core/money";
@@ -27,6 +26,7 @@ import {
 } from "@/features/admin/reportHelpers";
 import { Metric } from "../../components/Metric";
 import { PortalDrawer } from "../../components/PortalDrawer";
+import { ReportChart } from "./report/ReportChart";
 
 export function ReportDrawer() {
   const closeDrawer = useAppStore((state) => state.closeDrawer);
@@ -92,31 +92,6 @@ export function ReportDrawer() {
   const pickItem = (name: string) => {
     setSelected((prev) => (prev?.type === "item" && prev.key === name ? null : { type: "item", key: name }));
   };
-
-  const renderChart = (height: number) => (
-    <ResponsiveContainer width="100%" height={height}>
-      <BarChart data={dataset.hourly} margin={{ top: 8, right: 6, left: 6, bottom: 0 }}>
-        <XAxis dataKey="label" tick={{ fontSize: 11 }} interval={0} />
-        <YAxis hide />
-        <RechartsTooltip formatter={(v: number) => formatVnd(v)} cursor={{ fill: "rgba(15,118,110,0.06)" }} labelStyle={{ fontWeight: 700 }} />
-        <Bar dataKey="revenue" radius={[4, 4, 0, 0]} onClick={(d: { label?: string }) => d?.label && pickHour(d.label)}>
-          {dataset.hourly.map((h) => (
-            <Cell
-              key={h.label}
-              cursor="pointer"
-              fill={
-                selected?.type === "hour" && selected.key === h.label
-                  ? "#0b5d57"
-                  : hasData && h.label === maxHour.label
-                    ? "#f59e0b"
-                    : "#0F766E"
-              }
-            />
-          ))}
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
-  );
 
   const metricsRow = (
     <div className="grid grid-cols-2 gap-2.5 [&_strong]:block [&_strong]:overflow-hidden [&_strong]:text-ellipsis [&_strong]:whitespace-nowrap [&_strong]:text-lg">
@@ -405,7 +380,14 @@ export function ReportDrawer() {
                   {kpiTiles}
                   <div className="grid gap-2 rounded-pos border border-pos-line bg-white p-3">
                     <div className="text-[13px] font-extrabold">Doanh thu theo {range === "today" ? "giờ" : range === "month" ? "tuần" : "ngày"}</div>
-                    {renderChart(210)}
+                    <ReportChart
+                      hourly={dataset.hourly}
+                      height={210}
+                      selectedHour={selected?.type === "hour" ? selected.key : null}
+                      hasData={hasData}
+                      peakHourLabel={maxHour.label}
+                      onSelectHour={pickHour}
+                    />
                   </div>
                   <div className="grid gap-2 rounded-pos border border-pos-line bg-white p-3">
                     <div className="text-[13px] font-extrabold">Món bán chạy</div>
@@ -433,7 +415,14 @@ export function ReportDrawer() {
                 <>
                   <div className="grid gap-2 rounded-pos border border-pos-line bg-white p-3">
                     <div className="text-[13px] font-extrabold">Doanh thu theo {range === "today" ? "giờ" : range === "month" ? "tuần" : "ngày"}</div>
-                    {renderChart(260)}
+                    <ReportChart
+                      hourly={dataset.hourly}
+                      height={260}
+                      selectedHour={selected?.type === "hour" ? selected.key : null}
+                      hasData={hasData}
+                      peakHourLabel={maxHour.label}
+                      onSelectHour={pickHour}
+                    />
                   </div>
                   <div className="overflow-auto rounded-pos border border-pos-line">
                     <table className="w-full border-collapse text-[13px] [&_tbody_tr]:cursor-pointer [&_tbody_tr:hover]:bg-pos-surface2 [&_td]:whitespace-nowrap [&_td]:border-b [&_td]:border-pos-line [&_td]:px-2.5 [&_td]:py-2 [&_td]:text-left [&_td:last-child]:text-right [&_th]:sticky [&_th]:top-0 [&_th]:whitespace-nowrap [&_th]:border-b [&_th]:border-pos-line [&_th]:bg-[#fbfcfd] [&_th]:px-2.5 [&_th]:py-2 [&_th]:text-left [&_th]:font-extrabold [&_th:last-child]:text-right">
