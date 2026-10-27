@@ -1,6 +1,6 @@
 import type { ReportFilter } from "@/domain";
 import { usePermissionPorts } from "@/features/shared/portsContext";
-import { usePurposeQuery } from "@/features/pos/usePosData";
+import { usePurposeQuery } from "@/features/shared/usePurposeQuery";
 
 export const useAdminEmployeesQuery = (enabled = true) => {
   const ports = usePermissionPorts();

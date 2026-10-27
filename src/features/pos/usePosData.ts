@@ -1,19 +1,11 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import type { OrderHistoryFilter, ReportFilter } from "@/domain";
-import type { PermissionCode } from "@/domain/permissions";
 import type { ReportSummaryFilter } from "@/ports/permissions";
 import { usePermissionPorts } from "@/features/shared/portsContext";
 import { permissionQueryKey, permissionRead, sessionHasPermission, usePermissionSession } from "@/features/shared/permissionSession";
+import { usePurposeQuery } from "@/features/shared/usePurposeQuery";
 
-export function usePurposeQuery<T>(purpose: string, codes: readonly PermissionCode[], args: unknown[], read: () => Promise<T>, enabled = true, live = false) {
-  const session = usePermissionSession();
-  return useQuery({
-    queryKey: permissionQueryKey(purpose, ...args), queryFn: () => permissionRead(codes, read),
-    enabled: enabled && session.status === "verified" && !!session.bundle && (codes.length === 0 || codes.some(code => sessionHasPermission(code, session))),
-    refetchInterval: live ? 5_000 : false, refetchIntervalInBackground: false,
-    refetchOnWindowFocus: false, refetchOnReconnect: false,
-  });
-}
+export { usePurposeQuery } from "@/features/shared/usePurposeQuery";
 const useOperationalFloor = () => {
   const ports = usePermissionPorts();
   return usePurposeQuery("floor", ["floor.view"], [], () => ports.read.getFloorOperational(), true, true);
