@@ -211,4 +211,57 @@ describe("Report presentation contract before extraction", () => {
     ]);
     expect(orders).toHaveBeenCalledExactlyOnceWith({ fromDate: "2026-10-21", toDate: today });
   });
+
+  it("shows summary money/count/average, range labels and proportional peak bars", async () => {
+    const user = userEvent.setup();
+    await openReport();
+    const summary = screen.getByTestId("report-summary");
+    const content = within(summary);
+    expect(await content.findByText(/^90\.000\s₫$/)).toBeInTheDocument();
+    expect(content.getByText(/^3 đơn · TB 30\.000\s₫$/)).toBeInTheDocument();
+    expect(content.getByText("Doanh thu hôm nay")).toBeInTheDocument();
+    const bars = [...summary.querySelectorAll<HTMLSpanElement>("span[style]")];
+    expect(bars.map((bar) => bar.style.height)).toEqual(["50%", "100%"]);
+    expect(bars[0]).toHaveClass("bg-white/45");
+    expect(bars[1]).toHaveClass("bg-white");
+
+    await user.click(screen.getByRole("button", { name: "7 ngày" }));
+    expect(await content.findByText(/^630\.000\s₫$/)).toBeInTheDocument();
+    expect(content.getByText("Doanh thu 7 ngày qua")).toBeInTheDocument();
+    expect(content.getByText(/^21 đơn · TB 30\.000\s₫$/)).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Tháng này" }));
+    expect(await content.findByText(/^2\.430\.000\s₫$/)).toBeInTheDocument();
+    expect(content.getByText("Doanh thu tháng này")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Tuỳ chọn" }));
+    expect(await content.findByText(/^90\.000\s₫$/)).toBeInTheDocument();
+    expect(content.getByText("Doanh thu khoảng đã chọn")).toBeInTheDocument();
+  });
+
+  it("keeps zero-revenue spark bars at the minimum height without marking a peak when there are no paid orders", async () => {
+    await openReport((read) => {
+      vi.mocked(read.getSalesReport).mockImplementation(async ({ businessDate }) => ({
+        ...dailyReport(businessDate), revenue: 0, paidOrders: 0, averageTicket: 0, topItemName: "-",
+        hourlyRevenue: [{ label: "08", revenue: 0 }, { label: "09", revenue: 0 }],
+      }));
+      vi.mocked(read.listReportOrders).mockResolvedValue([]);
+    });
+    await screen.findByText("Chưa có đơn đã thanh toán trong khoảng này.");
+    const summary = screen.getByTestId("report-summary");
+    const bars = [...summary.querySelectorAll<HTMLSpanElement>("span[style]")];
+    expect(bars.map((bar) => bar.style.height)).toEqual(["8%", "8%"]);
+    bars.forEach((bar) => expect(bar).toHaveClass("bg-white/45"));
+    expect(within(summary).getByText(/^0 đơn · TB 0\s₫$/)).toBeInTheDocument();
+  });
+
+  it.each([0, 1])("omits the sparkline with %i hourly buckets", async (count) => {
+    await openReport((read) => {
+      vi.mocked(read.getSalesReport).mockImplementation(async ({ businessDate }) => ({
+        ...dailyReport(businessDate), revenue: count ? 90000 : 0, paidOrders: count ? 3 : 0,
+        hourlyRevenue: count ? [{ label: "09", revenue: 90000 }] : [],
+      }));
+    });
+    if (count) await screen.findByText("Doanh thu theo giờ");
+    else await screen.findByText("Chưa có đơn đã thanh toán trong khoảng này.");
+    expect(screen.getByTestId("report-summary").querySelectorAll("span[style]")).toHaveLength(0);
+  });
 });

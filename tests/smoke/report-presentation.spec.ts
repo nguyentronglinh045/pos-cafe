@@ -17,6 +17,7 @@ test("report chart preserves selection, tooltip, ranges and compact landscape la
   const summary = page.getByTestId("report-summary");
   await expect(summary).toHaveAttribute("data-revenue", "77000");
   await expect(summary).toHaveAttribute("data-paid-orders", "1");
+  await expect(summary).toContainText(/1 đơn · TB 77\.000\s₫/);
   await expect(report.getByRole("button", { name: "Xuất" })).toBeDisabled();
   const chart = report.locator(".recharts-responsive-container");
   const bar = report.locator(".recharts-bar-rectangle path");
@@ -61,6 +62,16 @@ test("report chart preserves selection, tooltip, ranges and compact landscape la
   await expect(page.getByTestId("report-from-date")).toBeHidden();
   await expect(report.getByRole("button", { name: "Đóng chi tiết" })).toBeHidden();
   await page.setViewportSize({ width: 568, height: 320 });
+  await summary.scrollIntoViewIfNeeded();
+  await expect(summary).toBeInViewport();
+  await expect(summary).toContainText("Doanh thu hôm nay");
+  await expect(summary).toContainText(/1 đơn · TB 77\.000\s₫/);
+  const summaryBox = await summary.boundingBox();
+  expect(summaryBox).not.toBeNull();
+  expect(summaryBox!.x).toBeGreaterThanOrEqual(0);
+  expect(summaryBox!.x + summaryBox!.width).toBeLessThanOrEqual(568);
+  expect(await summary.locator(".tabular-nums").evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+  await page.screenshot({ path: testInfo.outputPath("report-summary-568x320.png") });
   // Resize recreates animated SVG paths; scroll the stable container instead.
   await chart.scrollIntoViewIfNeeded();
   await expect(bar).toBeInViewport();
