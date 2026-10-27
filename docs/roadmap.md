@@ -32,7 +32,7 @@ Mốc mới sau bảng trạng thái26/10 bên dưới: [đợt refactor cấu t
 
 ## Làm gì tiếp
 
-1. Dùng [bảng G01–G12](features.md#đối-chiếu-12-mục-tiêu-tốt-nghiệp), [quyết định](workflow/decisions.md), [spec reconciliation](spec-reconciliation.md) và [testing](testing.md) để chọn từng phần G01–G10 theo dependency và khoảng thiếu đã xác minh.
+1. Bắt đầu từ [bảng công việc G01–G10](workflow/g01-g10-plan.md#next) và [phiếu cho Ngọc/Lâm](workflow/g01-g10-team-tasks.md); đây là nguồn trạng thái/dependency để tư vấn việc tiếp theo. Dùng [bảng G01–G12](features.md#đối-chiếu-12-mục-tiêu-tốt-nghiệp), [quyết định](workflow/decisions.md), [spec reconciliation](spec-reconciliation.md) và [testing](testing.md) để chọn từng phần G01–G10 theo dependency và khoảng thiếu đã xác minh.
 2. Ưu tiên công việc sản phẩm/kiểm chứng trong G01–G10: tài khoản chủ/email, quyền và giao dịch, UI/mang đi, đồng bộ, triển khai/backup/bảo mật/hiệu năng. Mỗi phần cần phạm vi, expected, kiểm chứng và điều kiện môi trường phù hợp; các HOLD giữ nguyên cho đến khi được xử lý đúng phạm vi.
 3. Cập nhật docs ngay theo từng phần G01–G10, giữ nguồn code/evidence và trạng thái đã làm/đã kiểm/đã nghiệm thu/đã phát hành riêng biệt. Không dồn cập nhật spec hoặc hồ sơ kỹ thuật đến cuối.
 4. Khi tới khoảng hai tuần cuối hoặc bước cuối cùng, tập trung hoàn thiện G11/G12 từ nguồn đã tích lũy: học thuật/trích dẫn, báo cáo/slide và trình bày theo mẫu trường. Đây là thứ tự đã chốt; ngày cụ thể chưa được ấn định.

@@ -1,5 +1,10 @@
 # Chỉ mục công việc
 
+## Điều phối G01–G10 — cập nhật 27/10/2026
+
+- [Bảng công việc và việc nên làm tiếp](../g01-g10-plan.md#next): kế hoạch còn lại G01–G10, thứ tự phụ thuộc, trạng thái và cách cập nhật. Đây là điểm đọc trước khi hỏi cần làm gì; các hồ sơ dưới giữ source/trạng thái tại checkpoint của chúng.
+- [Phiếu công việc nhẹ cho Võ Văn Ngọc và Trần Thị Lâm](../g01-g10-team-tasks.md): kịch bản/kiểm UI, đường đọc/minh chứng và inventory nhỏ; kết quả thực phải được Linh xác minh. G11/G12 tiếp tục để giai đoạn cuối; docs kỹ thuật cập nhật xuyên suốt.
+
 ## Cập nhật27/10/2026
 
 - [Refactor code và đồng bộ docs](refactor-safety-2026-10-25/implementation-20261027.md): nối kế hoạch25/10 và bàn giao26/10 với quyền triển khai27/10, các extraction/gates/review/rollback và quyết định NO_CHANGE/HOLD. Đã merge PR15 vào main `052a7d1e156425ea82ed1c9cf978d7ef4d4f3571`; nhánh refactor đã xóa, WIP giữ nguyên. [Biên bản](refactor-safety-2026-10-25/merge-20261027.md); [kiểm lại sau merge](refactor-safety-2026-10-25/merge-20261027.md#closure-20261027) xác nhận CI PASS và đủ điều kiện chốt phạm vi refactor đã chọn. NO_CHANGE/HOLD và nghiệp vụ Report giữ riêng; không có thao tác deploy trong task.

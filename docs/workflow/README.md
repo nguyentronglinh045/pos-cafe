@@ -23,10 +23,10 @@ Task phân tích chỉ cần đầu ra phân tích/spec trong phạm vi được
 ## Khởi động và tiếp tục một task
 
 1. Đọc `AGENTS.md`, chuẩn spec và tài liệu này từ ref `docs` đã xác minh bằng Git; nếu có worktree thì kiểm đúng ref/trạng thái trước khi đọc. Checkout thiếu con trỏ hướng dẫn dùng [câu mở đầu](start-task.md).
-2. Đọc chỉ mục bàn giao, chọn đúng task; đọc đề bài, quyết định còn hiệu lực và các nguồn được liên kết. Nếu chưa có bàn giao, lập từ nguồn thực tế và đánh dấu điều chưa xác minh.
+2. Với công việc G01–G10 hoặc câu hỏi cần làm gì tiếp, đọc [bảng công việc hiện hành](g01-g10-plan.md#next), đối chiếu trạng thái/dependency và quyền đã có; phần nhẹ của Ngọc/Lâm theo [phiếu nhóm](g01-g10-team-tasks.md). Đọc chỉ mục bàn giao, chọn đúng task; đọc đề bài, quyết định còn hiệu lực và các nguồn được liên kết. Nếu chưa có bàn giao, lập từ nguồn thực tế và đánh dấu điều chưa xác minh.
 3. Kiểm tra nhánh/HEAD/trạng thái thay đổi của code và docs. Chỉ khảo sát code, tests, migrations và tài liệu liên quan. Bàn giao là chỉ dẫn, không thay việc kiểm tra phần đã thay đổi từ lần trước.
 4. Tóm tắt kết quả cần tạo, phạm vi được giao, điều đã biết/chưa biết, dependency và tiêu chí hoàn thành. Dùng mẫu đề bài; người dùng không phải tự điền mọi trường.
-5. Ghi trạng thái task và tiếp tục bước phù hợp bên dưới. Không buộc task đang làm quay lại từ đầu; chỉ bổ sung khoảng trống cần thiết cho phần tiếp theo.
+5. Ghi trạng thái task và tiếp tục bước phù hợp bên dưới. Ở checkpoint/bàn giao có thay đổi, cập nhật hàng tương ứng trong bảng G01–G10 cùng source/evidence, blocker và việc đủ điều kiện tiếp theo; không đổi trạng thái từ kế hoạch hoặc kết quả chưa được xác minh. Không buộc task đang làm quay lại từ đầu; chỉ bổ sung khoảng trống cần thiết cho phần tiếp theo.
 
 Code là bằng chứng về hành vi đang có; spec đã duyệt là chuẩn cho hành vi mong muốn. Khi chúng khác nhau, xác định đó là lỗi, spec cũ hay thay đổi chưa được duyệt; không tự sửa yêu cầu để hợp thức hóa code. Những nhận định về hành vi hiện tại phải có nguồn file/dòng. Với câu hỏi kỹ thuật chưa chắc, tra tài liệu gốc hoặc thực nghiệm có kiểm soát; phân biệt bằng chứng với giả thuyết.
 

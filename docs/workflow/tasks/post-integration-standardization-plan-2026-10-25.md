@@ -1,5 +1,9 @@
 # Kế hoạch rà soát và chuẩn hóa sau tích hợp — 25/10/2026
 
+## Điểm điều phối mới — 27/10/2026
+
+Khi hỏi cần làm gì tiếp, đọc [bảng G01–G10 hiện hành](../g01-g10-plan.md#next) và handoff task được chọn. Kế hoạch NC bên dưới giữ phạm vi/tiêu chí và lịch sử; không dùng các dòng chưa thực hiện ngày25/10 để yêu cầu làm lại merge UI, dọn worktree hoặc [đợt refactor đã chốt](refactor-safety-2026-10-25/merge-20261027.md#closure-20261027). Các gap nghiệp vụ/kiểm chứng, inventory và HOLD được nối vào bảng mới, không tự đóng hoặc mở quyền thực hiện.
+
 ## Ưu tiên đang áp dụng — docs trước refactor
 
 Ngày25/10/2026, sau tích hợp UI, chủ dự án giao **kiểm tra và chỉnh lý nhánh docs**, không chỉ lập kế hoạch. [Handoff docs-first](docs-normalization-2026-10-25.md) ghi source, phạm vi, kết quả và phần WIP/evidence cần giữ. Quyết định này đưa NC-10 và **phần kiểm kê tài liệu của NC-02** lên trước refactor. Không mở NC-04…08, deploy, backend acceptance hoặc cleanup worktree.
