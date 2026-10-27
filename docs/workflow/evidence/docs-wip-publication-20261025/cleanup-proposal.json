@@ -6058,27 +6058,6 @@
       "condition": "Only after remote docs publication and exact Git blob byte verification; source file must still match SHA256."
     },
     {
-      "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/weekly-report-linh-2026-10-24.md",
-      "bytes": 13207,
-      "sha256": "72965e4275304995b3bd344ed5947b0456c0764ab6c1bf4e051074c72d10a308",
-      "publishedPath": "docs/workflow/tasks/weekly-report-linh-2026-10-24.md",
-      "condition": "Only after remote docs publication and exact Git blob byte verification; source file must still match SHA256."
-    },
-    {
-      "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/weekly-report-rejection-2026-10-25.md",
-      "bytes": 5377,
-      "sha256": "686b5a008def8e45392d1209619369476383c0ba7faf2800a3e7019f4d124edb",
-      "publishedPath": "docs/workflow/tasks/weekly-report-rejection-2026-10-25.md",
-      "condition": "Only after remote docs publication and exact Git blob byte verification; source file must still match SHA256."
-    },
-    {
-      "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/weekly-report-summary-reference-2026-10-25.md",
-      "bytes": 3364,
-      "sha256": "2c7240e3e7df8d245cf97782b3124b4ffd7bf16b1945b5229b3f94e076979b94",
-      "publishedPath": "docs/workflow/tasks/weekly-report-summary-reference-2026-10-25.md",
-      "condition": "Only after remote docs publication and exact Git blob byte verification; source file must still match SHA256."
-    },
-    {
       "path": "D:/Workspace/pos-cafe-docs/docs/workflow/tasks/worktree-cleanup-2026-10-23.md",
       "bytes": 12035,
       "sha256": "d6807799db42875d3d72d3d8c259f3ff60cdbd4670a504621748baaec7db0839",
@@ -6144,5 +6123,13 @@
   ],
   "supersededBy": "docs/workflow/tasks/docs-worktree-sync-2026-10-25.md",
   "resolution": "User authorized cleanup and sync on 2026-10-25. All877 originally untracked exact copies are now canonical tracked files after syncing to remote5cf681d. Preserve this historical list/hash; never execute it as a current deletion allowlist.",
-  "originalScope": "Exact untracked originals already preserved in the reviewed publication; never whole directories/worktree."
+  "originalScope": "Exact untracked originals already preserved in the reviewed publication; never whole directories/worktree.",
+  "visibility": {
+    "updated": "2026-10-27",
+    "view": "technical-records-only",
+    "omittedLocalNotes": 3,
+    "originalEntryCount": 877,
+    "displayedEntryCount": 874,
+    "note": "Filtered display of historical records; complete original snapshot is retained locally. Historical totals and review refer to the original snapshot. This is not a current deletion allowlist."
+  }
 }

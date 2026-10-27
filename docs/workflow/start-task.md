@@ -14,6 +14,8 @@ sau lượt dọn25/10/2026; đọc bản đã commit qua git show docs:<path>
 từ D:/Workspace/pos-cafe nếu chưa có checkout docs mới được xác minh.
 Đọc AGENTS.md, openspec/SPEC-STANDARD.md, docs/workflow/README.md
 và bàn giao đúng task trong docs/workflow/tasks/.
+Xác định common Git directory bằng git rev-parse --path-format=absolute --git-common-dir;
+đọc local-notes/README.md nếu có và giữ ghi chú local ngoài Git.
 Với G01–G10, đọc docs/workflow/g01-g10-plan.md và phần việc được chọn;
 đối chiếu trạng thái/dependency trước khi đề xuất hoặc tiếp tục.
 Đối chiếu remote/commit và WIP local; ghi rõ phần chưa commit, không mặc nhiên lấy WIP làm current truth hoặc ghi đè checkout bẩn.
@@ -35,7 +37,7 @@ chỉ kết luận hoàn tất khi mọi reviewer bắt buộc chấp thuận ca
 
 ```text
 Tiếp tục task [mã task/change] của POS-cafe theo quy trình trên nhánh docs.
-Đọc bảng G01–G10 và bàn giao/quyết định liên quan; cập nhật trạng thái,
+Đọc bảng G01–G10, ghi chú local theo AGENTS và bàn giao/quyết định liên quan; cập nhật trạng thái,
 blocker và việc tiếp theo ở checkpoint. Kiểm tra phần code/docs đã đổi
 từ checkpoint, rồi tiếp tục trong phạm vi đã được tôi cho phép.
 Nếu có thông tin mới làm đổi nghiệp vụ hoặc nghiệm thu, giải thích lựa chọn

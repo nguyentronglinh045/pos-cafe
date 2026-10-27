@@ -52,15 +52,10 @@ Các gói dưới đây là kế hoạch thực hiện riêng; lượt rà khôn
 
 Đề xuất bước kế tiếp là **gói 1**, vì đây là blocker quyết định tính khả thi phát hành, và đầu ra đầu tiên chỉ cần đọc đúng đích. Khôi phục MCP là một vấn đề kênh công cụ; không cần viết lại chức năng để chữa việc tool không được nạp. Nếu có kênh triển khai khác phù hợp, phải xác minh và ghi rõ thay vì giả định MCP là cách duy nhất.
 
-## Phạm vi chuyển sang cách làm của nhóm
+## Phạm vi kỹ thuật tiếp theo
 
-Chat **“Đọc yêu cầu đồ án”** biết nhóm có ba người: chủ dự án đọc được code; hai thành viên còn lại chưa biết code nhưng dùng được AI theo lệnh được giao. Khuyến nghị trong chat là gói việc nhỏ, một người chịu trách nhiệm, tự kiểm trước PR, chủ dự án review và kiểm tích hợp. Chưa có danh tính thành viên, assignment cụ thể hoặc quyết định nhận mọi đề xuất rubric.
-
-- Phần quyền/tiền/database và tích hợp còn lại tiếp tục do chủ dự án phụ trách cùng AI. Không giao nguyên khối còn dở cho thành viên chưa đọc được code.
-- Sau baseline đã phát hành và ghi rõ, có thể giao thành viên 2 một sửa UI đã được xác định, theo một màn/thành phần; thành viên 3 một gói kiểm thử thủ công/thu minh chứng. Đây là cách phân công đề xuất, chưa phải assignment đã duyệt.
-- Mỗi gói cần mục tiêu, phạm vi file, acceptance criteria, điều kiện lỗi, lệnh tự kiểm, evidence, nhật ký AI, PR bằng tài khoản người thực hiện và phần giải thích được. Chủ dự án kiểm tích hợp sau tự kiểm; không tạo lịch sử commit giả cho code đã có.
 - Các lỗi UI layout/checkbox/font/contrast đã được chủ dự án hoãn sang task sau. Giữ quyết định này; phát hiện mới làm hỏng chức năng bắt buộc phải xử lý theo tác động thực tế.
-- Tài khoản chủ qua email/khôi phục/chuyển chủ, thiết kế lại bốn màn POS, CI/CD đầy đủ, khảo sát người dùng và các mục rubric khác thuộc kế hoạch tiếp theo. Không thêm chúng thành điều kiện đóng task phân quyền hiện tại. Tuy vậy phải đóng gói code hiện tại và giữ evidence thật để kế hoạch mới có baseline có thể chia việc.
+- Tài khoản chủ qua email/khôi phục/chuyển chủ, thiết kế lại bốn màn POS, CI/CD đầy đủ, khảo sát người dùng và các mục rubric khác thuộc kế hoạch tiếp theo. Không thêm chúng thành điều kiện đóng task phân quyền hiện tại. Tuy vậy phải đóng gói code hiện tại và giữ evidence thật để kế hoạch mới có baseline đã kiểm chứng.
 
 ## Kiểm chứng và giới hạn lượt rà
 

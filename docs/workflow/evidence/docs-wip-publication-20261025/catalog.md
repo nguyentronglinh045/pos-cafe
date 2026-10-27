@@ -1,6 +1,6 @@
 # Danh mục hồ sơ khôi phục từ WIP — 25/10/2026
 
-Đây là chỉ mục lịch sử theo đường dẫn. [Handoff xuất bản](../../tasks/docs-wip-publication-2026-10-25.md) xác định trạng thái, nguồn và giới hạn; tiêu đề file không là trạng thái hiện tại. Inventory JSON giữ đường dẫn/hash gốc, kể cả binary và source snapshot.
+Đây là chỉ mục lịch sử theo đường dẫn. [Handoff xuất bản](../../tasks/docs-wip-publication-2026-10-25.md) xác định trạng thái, nguồn và giới hạn; tiêu đề file không là trạng thái hiện tại. Inventory JSON giữ đường dẫn/hash của các mục kỹ thuật, kể cả binary và source snapshot. Bản hiển thị ngày 27/10/2026 lược ba ghi chú local; snapshot đầy đủ được giữ tại máy. Đây là bản lọc của hồ sơ lịch sử, không thay kết quả hay allowlist thực thi.
 
 ## Spec/decisions
 
@@ -510,9 +510,6 @@
 - [docs/workflow/tasks/supabase-skills-install-2026-10-22.md](../../tasks/supabase-skills-install-2026-10-22.md)
 - [docs/workflow/tasks/thesis-rubric-gap-review-2026-10-04.md](../../tasks/thesis-rubric-gap-review-2026-10-04.md)
 - [docs/workflow/tasks/vercel-binding-inventory-2026-10-07.md](../../tasks/vercel-binding-inventory-2026-10-07.md)
-- [docs/workflow/tasks/weekly-report-linh-2026-10-24.md](../../tasks/weekly-report-linh-2026-10-24.md)
-- [docs/workflow/tasks/weekly-report-rejection-2026-10-25.md](../../tasks/weekly-report-rejection-2026-10-25.md)
-- [docs/workflow/tasks/weekly-report-summary-reference-2026-10-25.md](../../tasks/weekly-report-summary-reference-2026-10-25.md)
 - [docs/workflow/tasks/worktree-cleanup-2026-10-23.md](../../tasks/worktree-cleanup-2026-10-23.md)
 
 ## Runbook snapshot

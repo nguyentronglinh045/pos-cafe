@@ -22,8 +22,8 @@ Task phân tích chỉ cần đầu ra phân tích/spec trong phạm vi được
 
 ## Khởi động và tiếp tục một task
 
-1. Đọc `AGENTS.md`, chuẩn spec và tài liệu này từ ref `docs` đã xác minh bằng Git; nếu có worktree thì kiểm đúng ref/trạng thái trước khi đọc. Checkout thiếu con trỏ hướng dẫn dùng [câu mở đầu](start-task.md).
-2. Với công việc G01–G10 hoặc câu hỏi cần làm gì tiếp, đọc [bảng công việc hiện hành](g01-g10-plan.md#next), đối chiếu trạng thái/dependency và quyền đã có; phần nhẹ của Ngọc/Lâm theo [phiếu nhóm](g01-g10-team-tasks.md). Đọc chỉ mục bàn giao, chọn đúng task; đọc đề bài, quyết định còn hiệu lực và các nguồn được liên kết. Nếu chưa có bàn giao, lập từ nguồn thực tế và đánh dấu điều chưa xác minh.
+1. Đọc `AGENTS.md`, chuẩn spec và tài liệu này từ ref `docs` đã xác minh bằng Git; nếu có worktree thì kiểm đúng ref/trạng thái trước khi đọc. Checkout thiếu con trỏ hướng dẫn dùng [câu mở đầu](start-task.md). Đọc `local-notes/README.md` trong common Git directory nếu có, theo AGENTS; giữ nội dung local ngoài tài liệu được theo dõi.
+2. Với công việc G01–G10 hoặc câu hỏi cần làm gì tiếp, đọc [bảng công việc hiện hành](g01-g10-plan.md#next), đối chiếu trạng thái/dependency và quyền đã có. Đọc chỉ mục bàn giao, chọn đúng task; đọc đề bài, quyết định còn hiệu lực và các nguồn được liên kết. Nếu chưa có bàn giao, lập từ nguồn thực tế và đánh dấu điều chưa xác minh.
 3. Kiểm tra nhánh/HEAD/trạng thái thay đổi của code và docs. Chỉ khảo sát code, tests, migrations và tài liệu liên quan. Bàn giao là chỉ dẫn, không thay việc kiểm tra phần đã thay đổi từ lần trước.
 4. Tóm tắt kết quả cần tạo, phạm vi được giao, điều đã biết/chưa biết, dependency và tiêu chí hoàn thành. Dùng mẫu đề bài; người dùng không phải tự điền mọi trường.
 5. Ghi trạng thái task và tiếp tục bước phù hợp bên dưới. Ở checkpoint/bàn giao có thay đổi, cập nhật hàng tương ứng trong bảng G01–G10 cùng source/evidence, blocker và việc đủ điều kiện tiếp theo; không đổi trạng thái từ kế hoạch hoặc kết quả chưa được xác minh. Không buộc task đang làm quay lại từ đầu; chỉ bổ sung khoảng trống cần thiết cho phần tiếp theo.
