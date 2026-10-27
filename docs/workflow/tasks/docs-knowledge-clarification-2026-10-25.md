@@ -179,3 +179,7 @@ Q10 **đã trả lời về giai đoạn và sự kiện demo**, kèm thời gia
 - **Hệ quả:** các nguyên liệu học thuật, hình và mapping đã có được giữ để dùng về sau. G11/G12 vẫn thuộc mục tiêu đồ án; chỉ hoãn công việc chuyên biệt của hai mục này, không đánh dấu hoàn tất hoặc bỏ khỏi phạm vi. Hướng ưu tiên nguyên liệu học thuật/báo cáo trước trong mục “Làm gì tiếp” của roadmap được thay bằng thứ tự mới.
 - **Giới hạn:** lựa chọn từng phần G01–G10 vẫn theo dependency, yêu cầu đã chốt và gate phù hợp. Quyết định ưu tiên không tự chốt câu hỏi nghiệp vụ còn mở, không thay tiêu chí kiểm chứng hoặc gỡ các HOLD backend/phát hành. Khung15tuần/tuần16 bảo vệ theo DEC-THESIS-01 giữ nguyên.
 - **Áp dụng:** [roadmap](../../roadmap.md#priority-g01-g10-20261027), [bảng G01–G12](../../features.md#đối-chiếu-12-mục-tiêu-tốt-nghiệp), [chỉ mục quyết định](../decisions.md). Lượt này chỉ ghi nhận và đồng bộ tài liệu; chưa triển khai thêm chức năng.
+
+### Kiểm và review DEC-THESIS-02
+
+Reviewer độc lập `review_goal_priority_docs` **APPROVE** candidate `dcd3e1a63185407c4fc65712f23c4cc1d903cc8c`, tree `79f25e6e83f508e5ba45648c6cfdade43064b064`, trên base `65a94d7b8c743c1c2d7baa7e1700bf7b4752fa98`; đủ bốn file quyết định/roadmap/features/chỉ mục. Đã đối chiếu yêu cầu chủ dự án, thứ tự ưu tiên, docs liên tục, giới hạn ngày và gate; không có finding chặn. Diff-check và 12 liên kết tương đối mới/anchor đạt. Review chỉ đọc, không chạy app/backend tests. Commit con chỉ ghi verdict đã nhận, giữ nguyên nội dung được duyệt.
