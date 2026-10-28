@@ -53,7 +53,7 @@ Nguồn chi tiết: [features/G01–G12](../features.md#đối-chiếu-12-mục-
 | ID | Ưu tiên / việc | Trạng thái ngày 28/10/2026 | Phụ thuộc để thực hiện | Đầu ra phải có |
 | --- | --- | --- | --- | --- |
 | T01 | P0 — Ma trận khoảng thiếu, source và môi trường | HOÀN TẤT KHẢO SÁT — [kết quả 28/10](tasks/g01-g10-t01-2026-10-28.md) | Source052a7d1/docs9fbd đã đối chiếu; không chạy kiểm thử mới | Có bảng kiểm chứng, 35 stage/config và 12 nghĩa vụ bổ sung, nguồn/fixture/điều kiện môi trường; không đóng acceptance sản phẩm. |
-| T02 | P1 — Khép chẩn đoán CI cũ | SẴN SÀNG PHÂN TÍCH — T01 xác nhận attribution cũ vẫn hiện diện; app root cause UNKNOWN | Ma trận T01 cho bước kiểm thử; phân tích có thể tiến hành độc lập | Đối chiếu failure40089941679 với source/tests/reporter hiện tại; correction có regression trong phạm vi được phê duyệt, hoặc giữ UNKNOWN có phép thử tiếp theo. CI xanh không xóa lỗi lịch sử. |
+| T02 | P1 — Khép chẩn đoán CI cũ | PHÂN TÍCH HOÀN TẤT — chưa triển khai/kiểm chứng; nguyên nhân UI UNKNOWN | [Hồ sơ T02](tasks/g01-g10-t02-2026-10-28.md); chốt schema và phạm vi triển khai trước bước code | Triển khai phương án A và regression theo kế hoạch khi được chấp thuận; kiểm TC-T02-17, các tầng U/P/C và recipe UI theo điều kiện tương ứng. Không mở lại phần khảo sát đã hoàn tất hoặc nhận CI xanh là đã sửa lỗi cũ. |
 | T03 | P2 — Inventory source/script/config | SẴN SÀNG PHÂN TÍCH | Dùng kết quả kiểm đường đọc/inventory khi có; không bắt buộc đợi | Bảng consumer/owner/lifecycle KEEP/REMOVE-CANDIDATE/ARCHIVE/UNKNOWN. Không có phần đủ căn cứ thì kết luận NO_CHANGE; không buộc relocation. |
 | T04 | P0 — Hoàn thiện spec owner và thống nhất khóa store/PIN | SẴN SÀNG PHÂN TÍCH — việc chính tiếp theo | [Ma trận T01](tasks/g01-g10-t01-2026-10-28.md); phần đọc/spec không chờ lab | Rà proposal/design theo runtime mới; viết usecases/testplan/traceability còn khung, cập nhật đủ bộ spec theo phần; chốt câu hỏi thật sự còn mở. |
 | T05 | P0 — Môi trường, email và dữ liệu thử | CHỜ ĐIỀU KIỆN — chưa có backend admission/credential/đích được xác minh lại; có recipe GitHub synthetic | T01; contract email từ T04; đích/quyền/ngân sách được xác minh | Recipe một môi trường cô lập, email test, fixture hai store/roles, cấu hình đã redacted; đo dung lượng và chứng minh chạy lane cần thiết. Môi trường phải được xác nhận trước khi dựng. |
@@ -74,7 +74,7 @@ T07 kiểm thử theo từng phần triển khai T06–T10. T15 kiểm tích h�
 <a id="sequence"></a>
 ## Trình tự và mốc kiểm chứng
 
-1. **Chuẩn bị đặc tả:** dùng kết quả T01 để hoàn thiện T04. T02 và phần phân tích T03 có thể tiến hành độc lập. T03 không chặn T04 khi chưa có phát hiện liên quan.
+1. **Chuẩn bị đặc tả:** dùng kết quả T01 để hoàn thiện T04. Phân tích T02 đã hoàn tất; bước triển khai tiếp theo chờ schema và phạm vi được chấp thuận. Phân tích T03 có thể tiến hành độc lập và không chặn T04 khi chưa có phát hiện liên quan.
 2. **Chuẩn bị môi trường:** T05 sau khi xác nhận đích, quyền, contract email, fixture và ngân sách. Việc chuẩn bị môi trường không chặn phần đặc tả của T04.
 3. **G05 và nền khóa store:** T06 gồm contract/backend, ports/mock, UI và tích hợp; T07 kiểm mỗi phần. Giai đoạn 1 phải có trạng thái store, DB enforce, ngoại lệ owner đọc metadata/trạng thái và audit theo quyết định 11/18. T08/T09 phụ thuộc cổng này.
 4. **G06/G04:** sau T06, thực hiện T08 → T09. T10 chỉ xử lý R06-C và hành vi còn thiếu sau đối chiếu T04; phần chưa chốt của T10 không làm hoãn nền khóa store thuộc T06. Provider-admin console nằm ngoài phạm vi.
@@ -87,7 +87,7 @@ Thời lượng T05–T16 còn phụ thuộc môi trường, các quyết địn
 ## Ràng buộc kỹ thuật theo nhóm
 
 - **T01/T05/T07:** [testing](../testing.md), [chiến lược](../test-strategy.md), [permission/PIN reconciliation](../spec-reconciliation.md) và [backend handoff](tasks/permission-backend-web-release-2026-10-23.md) xác định các cổng bắt buộc. `SUPABASE_T04`, bảy service profiles, PIN19/PERM60 và các nghĩa vụ bổ sung phải có bằng chứng đúng nguồn, fixture và môi trường. Tên runner hoặc config có sẵn chưa chứng minh đã thực thi.
-- **T02:** [chẩn đoán lịch sử](../implementation-log/permission-backend-web-release-20261023/permission-main-main01-diagnosis.md) tách vấn đề quy kết lỗi của reporter khỏi nguyên nhân ứng dụng còn UNKNOWN. Kết quả CI xanh hiện tại chưa khép lỗi cũ; expected, timeout và retries giữ theo contract.
+- **T02:** [hồ sơ phân tích](tasks/g01-g10-t02-2026-10-28.md) và [chẩn đoán lịch sử](../implementation-log/permission-backend-web-release-20261023/permission-main-main01-diagnosis.md) tách lỗi gán thông tin của reporter khỏi nguyên nhân UI còn UNKNOWN. Phương án và ma trận kiểm đã có; chưa sửa code/chạy recipe. Expected, timeout và retries giữ theo contract.
 - **T03:** tiếp nối NC-02/08 và RF-09; operator guides đi cùng công cụ trên main. Kiểm consumer qua CLI, glob, CI, trust, phase và đường dùng ngoài import tĩnh. NO_CHANGE là kết luận hợp lệ khi chưa đủ căn cứ thay đổi; bằng chứng cần giữ được phân biệt với dữ liệu có thể tái tạo.
 - **T04/T06/T08/T09:** dùng [change owner hiện hữu](../../openspec/changes/add-owner-account-and-store-provisioning/proposal.md). `usecases.md`, `testplan.md` và `traceability.md` còn khung tại nguồn khảo sát. Các quyết định đã chốt là cơ sở hoàn thiện bộ đặc tả theo [SPEC-STANDARD](../../openspec/SPEC-STANDARD.md); các mô tả runtime cũ cần đối chiếu với contract quyền hiện hành.
 - **Owner/PIN/store:** [PIN delta](../../openspec/changes/force-default-pin-change/proposal.md), [R06-C](../spec-reconciliation.md#r06-decisions) và [store-isolation](../../openspec/changes/add-owner-account-and-store-provisioning/specs/store-isolation/spec.md) cùng tác động lifecycle. Quyết định 11/18 đã đặt nền khóa DB, ngoại lệ owner metadata và audit vào T06. T04 làm rõ hành vi phiên đang mở/khôi phục, actor/đường đổi trạng thái còn mở và các trường chủ ngoài email. Ngưỡng OTP/quota giữ theo quyết định hiện hành.
@@ -107,8 +107,9 @@ Một công việc hoàn tất khi đầu ra, kiểm chứng và rà soát đáp
 | --- | --- | --- |
 | 27/10/2026 | DEC-THESIS-02 | Lập thứ tự kỹ thuật G01–G10; G11/G12 dành cho giai đoạn cuối. |
 | 28/10/2026 | [Khảo sát T01](tasks/g01-g10-t01-2026-10-28.md), code052a7d1/docs đầu vào9fbd | Hoàn tất ma trận khảo sát. Phân biệt bằng chứng hiện có với 29 stage dịch vụ chưa có execution được xác minh trên nguồn này và 12 nghĩa vụ bổ sung chưa đủ closure. Ưu tiên T04; T02 còn mở. Không có lần chạy app/backend mới. |
+| 28/10/2026 | [Phân tích T02](tasks/g01-g10-t02-2026-10-28.md), code052a7d1/docs7df10ad | Hoàn tất phân tích reporter/collector và kế hoạch kiểm chứng; chưa triển khai hoặc chạy test mới. Schema còn mở; nguyên nhân UI UNKNOWN. T04 tiếp tục là hướng chính. |
 
 <a id="verification"></a>
 ## Phạm vi kết luận
 
-Kế hoạch được đối chiếu với nguồn, đặc tả và hồ sơ kiểm chứng được dẫn. Các trạng thái ngày 28/10/2026 phản ánh kết quả khảo sát T01; cập nhật tài liệu không thay đổi kết quả kiểm thử lịch sử, tiêu chí nghiệm thu hoặc trạng thái phát hành sản phẩm.
+Kế hoạch được đối chiếu với source, đặc tả và hồ sơ được dẫn. Mốc 28/10/2026 gồm khảo sát T01 và phân tích T02; không có execution mới từ việc cập nhật tài liệu. Kết quả kiểm thử lịch sử, tiêu chí nghiệm thu và trạng thái phát hành giữ nguyên.

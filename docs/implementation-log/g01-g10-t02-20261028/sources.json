@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-28",
+  "scope": "Source and historical evidence analysis; no new application, test or CI execution",
+  "codeSource": "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
+  "docsSource": "7df10ada2b66628ab14b51f953fc7dd111d762dc",
+  "historicalDocsSource": "9fbd68657884155feb9f7680875f5da1356919e9",
+  "failureSource": "0dd63ea81b27a38800044a55a7f9c8f12f87cad0",
+  "failureTree": "12e8e64bd3df60ee3b1be55ec42f3cd5de35b746",
+  "runs": {
+    "failure": "40089941679/a1 push 0dd63ea failure",
+    "prSameTree": "40088569310/a1 pull_request head a028cc5b07bf3a02e3b837d8aec2b832325503a2 success",
+    "currentMain": "40442640979/a1 push 052a7d1 success"
+  },
+  "archivedEvidence": {
+    "summary": {
+      "fileName": "permission-main-main01-summary.json",
+      "sha256": "4077a48c71e2f9626ee4b8b883c0bed14985a4b4fba26bc7aceb079c5454582d",
+      "storage": "retained evidence archive; not included in this documentation package"
+    },
+    "collection": {
+      "fileName": "permission-main-main01-collection.json",
+      "sha256": "a4ae874731d17dbf56964a81db871afb0d645f9410f2d410c19e6ef998c28fd7",
+      "storage": "retained evidence archive; not included in this documentation package"
+    },
+    "workflowLog": {
+      "fileName": "permission-main-main01-workflow.log",
+      "sha256": "cbd23d4eb673e31474652c3187bdb93d9fcf57c8397cf1a89a6cfbaea2408820",
+      "storage": "retained evidence archive; not included in this documentation package"
+    }
+  },
+  "libraryInspection": {
+    "playwright": "1.60.0",
+    "reactHotToast": "2.6.0",
+    "versionMatchesLock": true,
+    "packageIntegrityVerified": false,
+    "method": "Static inspection of installed library files; source locations in analysis.md"
+  },
+  "runtimeTestsRun": false,
+  "codeImplemented": false,
+  "uiRootCause": "UNKNOWN",
+  "schemaDecision": "PENDING",
+  "documents": {
+    "analysis.md": {
+      "bytes": 64897,
+      "sha256": "17e77280c879f65a96078264b0f733ef80cf68620db4263271792a44755e8d14"
+    },
+    "verification-plan.md": {
+      "bytes": 46747,
+      "sha256": "50be30ca12f01cd0673ba16940731c3c34f608fb39d6fb4b641dbc0ba5b63e9a"
+    }
+  }
+}
