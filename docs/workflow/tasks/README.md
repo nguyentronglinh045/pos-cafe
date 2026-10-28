@@ -1,9 +1,13 @@
 # Chỉ mục công việc
 
-## Điều phối G01–G10 — cập nhật 27/10/2026
+## Kế hoạch G01–G10 — cập nhật 28/10/2026
 
-- [Bảng công việc và việc nên làm tiếp](../g01-g10-plan.md#next): kế hoạch còn lại G01–G10, thứ tự phụ thuộc, trạng thái và cách cập nhật. Đây là điểm đọc trước khi hỏi cần làm gì; các hồ sơ dưới giữ source/trạng thái tại checkpoint của chúng.
+- [Kế hoạch kỹ thuật G01–G10](../g01-g10-plan.md#next): ưu tiên, phụ thuộc, trạng thái và tiêu chí hoàn thành. Các hồ sơ bên dưới ghi nguồn và kết quả tại từng mốc kiểm chứng.
 G11/G12 tiếp tục để giai đoạn cuối; docs kỹ thuật cập nhật xuyên suốt.
+
+## Cập nhật28/10/2026
+
+- [T01 — Khảo sát phần kiểm chứng còn thiếu](g01-g10-t01-2026-10-28.md): đối chiếu source052a7d1, CI/artifact có sẵn, 35 stage/config và điều kiện môi trường. Đã hoàn tất ma trận khảo sát; không chạy app/backend mới. Ưu tiên T04 đặc tả owner; T02 chẩn đoán CI lịch sử còn mở.
 
 ## Cập nhật27/10/2026
 

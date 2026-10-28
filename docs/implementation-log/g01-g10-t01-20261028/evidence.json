@@ -1,0 +1,859 @@
+{
+  "date": "2026-10-28",
+  "observedAtUTC": "2026-10-28T00:58:42.425153+00:00",
+  "scope": "T01 read-only source/evidence/environment audit; not a runtime execution or release authorization",
+  "docsBase": "9fbd68657884155feb9f7680875f5da1356919e9",
+  "codeSource": "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
+  "tree": "46bc9ae7d7f5de3737a46f137e965ed0425a0873",
+  "refactorCandidateTreeEqual": true,
+  "lock": {
+    "gitBlobSha256": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+    "windowsFileSha256": "2126d979a7a6c3146cd2ed7b0d718558d5f695efb2707b13a9ec8dd519328477",
+    "equalAfterCRLFToLF": true
+  },
+  "source1193Check": {
+    "count": 1193,
+    "mismatches": [],
+    "method": "read existing final source manifest against clean checkout bytes; compare tracked tree to refactor commit; no app tests rerun"
+  },
+  "artifactChecks": {
+    "manifestChecks": [
+      {
+        "path": "baseline-fixed-outputs/manifest.json",
+        "sha256": "01e9db0c73aa5f27d5f6ca116765c1556966ec386e90d9fb65e2d8d365660db5",
+        "matches": true
+      },
+      {
+        "path": "characterization-fixed-outputs/manifest.json",
+        "sha256": "64b0056fe1fda82554eb5586a9833ef73873ef1860b9ab258dd578ce809f3439",
+        "matches": true
+      },
+      {
+        "path": "chart-fixed-outputs/manifest.json",
+        "sha256": "9ff8c1e97a46a29bc6d57800322af9ce98f11988b82818230975c680ab0b0965",
+        "matches": true
+      },
+      {
+        "path": "summary-fixed-outputs/manifest.json",
+        "sha256": "b63ffe9d78ee2943d973cc89dddcaa34f8c890304cc1006852a1b64a09296251",
+        "matches": true
+      },
+      {
+        "path": "shared-before-fixed-outputs/manifest.json",
+        "sha256": "00c87edfb6473eba683126af082fc3718b92011e16ece83c06e676dfcf5dd8f2",
+        "matches": true
+      },
+      {
+        "path": "shared-before-fixed-outputs/pin-photos-supplement.json",
+        "sha256": "0b7e367823a479d72ce4e52895c7a9e523baf4d25e6aa6966890cb3637da2677",
+        "matches": true
+      },
+      {
+        "path": "shared-fixed-outputs/manifest.json",
+        "sha256": "6b357dd9d112ae6ea41b4c5a64a1139215230ae5aaf76c8b4a9ee6250c7e9f97",
+        "matches": true
+      },
+      {
+        "path": "shared-fixed-outputs/pin-photos-supplement.json",
+        "sha256": "6d378946c3f5472961a335adb80a67bebe2239be2f6a343b3310f344ca6c8c39",
+        "matches": true
+      },
+      {
+        "path": "draft-fixed-outputs/manifest.json",
+        "sha256": "0a783a8b63784a6edf3abf40f16041f3c79474bcadd189494a3be1399722a04d",
+        "matches": true
+      },
+      {
+        "path": "draft-coverage-output/manifest.json",
+        "sha256": "c877fbbaca8258449607063980e7955842d522db3d3f60a514d69d4ce6fa775c",
+        "matches": true
+      },
+      {
+        "path": "draft-dist-output/manifest.json",
+        "sha256": "d37445e38c8130dfcb5d6fca70344bbe3c7a47226a4577437ed70b51961aab8e",
+        "matches": true
+      },
+      {
+        "path": "final-inventory.json",
+        "sha256": "4b117fa6791296a769233cfdb24986a275f7d7900d84f50f225fd5ed119fed15",
+        "matches": true
+      },
+      {
+        "path": "shared-function-compare.json",
+        "sha256": "6323659da5a99d795878e1e10d760d3ab6ddddc4d05df329ee286129f1219884",
+        "matches": true
+      },
+      {
+        "path": "draft-extraction-compare.json",
+        "sha256": "d91c89358c3b2516f65c0ddb3e330af17ee970b48dde8a14d6dfe925c5e318d3",
+        "matches": true
+      }
+    ],
+    "finalOutputChecks": [
+      {
+        "folder": "draft-fixed-outputs",
+        "files": 15,
+        "failures": []
+      },
+      {
+        "folder": "draft-coverage-output",
+        "files": 56,
+        "failures": []
+      },
+      {
+        "folder": "draft-dist-output",
+        "files": 160,
+        "failures": []
+      }
+    ],
+    "finalRunChecks": [
+      {
+        "label": "draft/audit-all",
+        "startedAt": "2026-10-27T02:30:27.308Z",
+        "endedAt": "2026-10-27T02:34:09.651Z",
+        "exitCode": 0,
+        "receiptSha256": "86c159e451a7d1fdb8fac4541b59517c62a8e26c43f052b9edcb9db8c634530a",
+        "receiptFieldsMatch": true,
+        "hashChecks": {
+          "source-before.json": true,
+          "source-after.json": true,
+          "console.log": true
+        }
+      },
+      {
+        "label": "draft/audit-selftest",
+        "startedAt": "2026-10-27T02:30:25.381Z",
+        "endedAt": "2026-10-27T02:30:26.910Z",
+        "exitCode": 0,
+        "receiptSha256": "3ed483576d3fce91e786409ff89571922a58dc5f3597b4bb11afafaf9eb8b2de",
+        "receiptFieldsMatch": true,
+        "hashChecks": {
+          "source-before.json": true,
+          "source-after.json": true,
+          "console.log": true
+        }
+      },
+      {
+        "label": "draft/build",
+        "startedAt": "2026-10-27T02:27:19.350Z",
+        "endedAt": "2026-10-27T02:27:28.226Z",
+        "exitCode": 0,
+        "receiptSha256": "b31f403525d8fc18cb1575bea4837712f50466f5246e0bda5ec02093cd1f2490",
+        "receiptFieldsMatch": true,
+        "hashChecks": {
+          "source-before.json": true,
+          "source-after.json": true,
+          "console.log": true
+        }
+      },
+      {
+        "label": "draft/coverage",
+        "startedAt": "2026-10-27T02:25:08.473Z",
+        "endedAt": "2026-10-27T02:26:37.617Z",
+        "exitCode": 0,
+        "receiptSha256": "c27befffe57e393adabe756db7c9d3777dd1fae73fdd950e47a825637118a8d3",
+        "receiptFieldsMatch": true,
+        "hashChecks": {
+          "source-before.json": true,
+          "source-after.json": true,
+          "console.log": true
+        }
+      },
+      {
+        "label": "draft/smoke",
+        "startedAt": "2026-10-27T02:30:25.379Z",
+        "endedAt": "2026-10-27T02:31:57.956Z",
+        "exitCode": 0,
+        "receiptSha256": "63e4cc4fe4a03a3d7215ef86deab822a0ee23edea8d953a8d8a9f810657ebb06",
+        "receiptFieldsMatch": true,
+        "hashChecks": {
+          "source-before.json": true,
+          "source-after.json": true,
+          "console.log": true
+        }
+      },
+      {
+        "label": "draft/unit",
+        "startedAt": "2026-10-27T02:27:19.351Z",
+        "endedAt": "2026-10-27T02:28:35.348Z",
+        "exitCode": 0,
+        "receiptSha256": "e1e09dc578556c4e9b9db0a1fe61cd1bc405fc4ad5198797526099d16eafe34a",
+        "receiptFieldsMatch": true,
+        "hashChecks": {
+          "source-before.json": true,
+          "source-after.json": true,
+          "console.log": true
+        }
+      }
+    ]
+  },
+  "githubRuns": {
+    "totalCount": 1,
+    "returned": 1,
+    "runs": [
+      {
+        "id": 40442640979,
+        "name": "POS light CI",
+        "head_sha": "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "created_at": "2026-10-27T03:10:05Z",
+        "updated_at": "2026-10-27T03:25:48Z",
+        "html_url": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/40442640979"
+      }
+    ],
+    "limit": "Current SHA only; no dispatch, no claim about deleted or external runs"
+  },
+  "catalog": {
+    "permissionCases": 60,
+    "permissionOccurrences": 726,
+    "permissionStages": 27,
+    "pinCases": 19,
+    "pinMappings": 111,
+    "stages": 35,
+    "requiredStageIdentities": 760,
+    "interpretation": "Expected catalog, not total executed tests or 760 unique requirements; full files may execute additional cases",
+    "rows": [
+      {
+        "stage": "candidate-unit",
+        "profile": "STATIC",
+        "required": 171,
+        "config": "vitest.config.ts",
+        "configSha256": "1cb32e60581f3bc8c6f2a6e487e2c337a89d40f3ae966b82896792ce5b077042",
+        "files": [
+          "src/adapters/mock/permissionAdminRepo.test.ts",
+          "src/adapters/mock/permissionRepos.test.ts",
+          "src/adapters/supabase/permissionMenuImagePort.test.ts",
+          "src/app/components/ReceiptPrintLifecycle.test.tsx",
+          "src/app/drawers/admin/EmployeeDetailPane.permission.test.tsx",
+          "src/app/drawers/admin/EmployeesDrawer.permission.test.tsx",
+          "src/app/drawers/pos/OrderMenuPane.test.tsx",
+          "src/app/permissionErrorCatalog.test.ts",
+          "src/app/permissionPurposeCache.test.tsx",
+          "src/app/permissionUi.test.tsx",
+          "src/core/permissionCatalog.test.ts",
+          "src/core/permissionInputs.test.ts",
+          "src/core/permissionLifecycle.test.ts",
+          "src/core/permissionOverrides.test.ts",
+          "src/core/receiptPrintClick.test.ts",
+          "src/features/admin/permissionEmployeeFlow.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "STATIC",
+        "status": "PASS_AGGREGATE_CI",
+        "evidence": "ci-summary.json#permission-static; staticProfileCounts source verifies all five ordered stages, per-stage raw not re-fetched"
+      },
+      {
+        "stage": "foundation-unit",
+        "profile": "STATIC",
+        "required": 108,
+        "config": "vitest.config.ts",
+        "configSha256": "1cb32e60581f3bc8c6f2a6e487e2c337a89d40f3ae966b82896792ce5b077042",
+        "files": [
+          "src/architectureBoundaries.test.ts",
+          "src/core/permissionCatalog.test.ts",
+          "src/core/permissionInputs.test.ts",
+          "src/core/permissionOverrides.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "STATIC",
+        "status": "PASS_AGGREGATE_CI",
+        "evidence": "ci-summary.json#permission-static; staticProfileCounts source verifies all five ordered stages, per-stage raw not re-fetched"
+      },
+      {
+        "stage": "legacy-t01-tools",
+        "profile": "STATIC",
+        "required": 28,
+        "config": "tests/contracts/tooling.config.ts",
+        "configSha256": "b778af6f78cf2452fe2c0f7853ee397ef7578ff0771495dd8bb1ff61c4a0eb3c",
+        "files": [
+          "tests/contracts/harness.tool.test.ts",
+          "tests/contracts/permissionBridgeOracle.tool.test.ts",
+          "tests/contracts/permissionInventory.tool.test.ts",
+          "tests/contracts/permissionMigrationPlan.tool.test.ts",
+          "tests/contracts/permissionPreflight.tool.test.ts",
+          "tests/contracts/permissionVerify.tool.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "STATIC",
+        "status": "PASS_AGGREGATE_CI",
+        "evidence": "ci-summary.json#permission-static; staticProfileCounts source verifies all five ordered stages, per-stage raw not re-fetched"
+      },
+      {
+        "stage": "candidate-seed-tools",
+        "profile": "STATIC",
+        "required": 4,
+        "config": "vitest.permission-seed.config.ts",
+        "configSha256": "f75a0487c8ec9a06878d33ad4b39e9bab9dc14de85a301b69c06f0be6183da53",
+        "files": [
+          "tests/contracts/permissionSeed.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "STATIC",
+        "status": "PASS_AGGREGATE_CI",
+        "evidence": "ci-summary.json#permission-static; staticProfileCounts source verifies all five ordered stages, per-stage raw not re-fetched"
+      },
+      {
+        "stage": "legacy-t01-database",
+        "profile": "PG16_T01",
+        "required": 30,
+        "config": "vitest.permission.config.ts",
+        "configSha256": "15c2ef7eaff78fea90196979f06aadb3ae1b0f15eae21131273d719981b02ae4",
+        "files": [
+          "tests/contracts/permissionMigration.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "PG16_T01",
+        "status": "PASS",
+        "evidence": "pg16-summary.json"
+      },
+      {
+        "stage": "bridge-bridge-database",
+        "profile": "SUPABASE_T02",
+        "required": 10,
+        "config": "vitest.permission-bridge.config.ts",
+        "configSha256": "02d30da5cca14fc2a66434fe5abe6ab4a2d7abcdae6faa75ca71748859d4c6e5",
+        "files": [
+          "tests/contracts/permissionBridge.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T02",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "candidate-bridge-database",
+        "profile": "SUPABASE_T02",
+        "required": 3,
+        "config": "vitest.permission-bridge.config.ts",
+        "configSha256": "02d30da5cca14fc2a66434fe5abe6ab4a2d7abcdae6faa75ca71748859d4c6e5",
+        "files": [
+          "tests/contracts/permissionBridge.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T02",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "foundation-database",
+        "profile": "SUPABASE_T02",
+        "required": 4,
+        "config": "vitest.permission-foundation.config.ts",
+        "configSha256": "7d07e4ae348297e0741194d2ecdc8dc464548954d2cfdd00794ae8051e3043c2",
+        "files": [
+          "tests/contracts/permissionFoundation.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T02",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "identity-database",
+        "profile": "SUPABASE_T04",
+        "required": 42,
+        "config": "vitest.permission-identity.config.ts",
+        "configSha256": "7736497355a111e55efb85d105ff595495b17e35d1d7d5de109baad0ac01e9b5",
+        "files": [
+          "tests/contracts/permissionIdentity.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "candidate-images-service",
+        "profile": "SUPABASE_T04",
+        "required": 1,
+        "config": "vitest.permission-images-runtime.config.ts",
+        "configSha256": "4ed8571267910a368f61b176615b8eb56027d5d2a57b72459d69e64eaa15d8aa",
+        "files": [
+          "tests/contracts/permissionImagesRuntime.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "administration-database",
+        "profile": "SUPABASE_T04",
+        "required": 55,
+        "config": "vitest.permission-administration.config.ts",
+        "configSha256": "c8603422fa9fa6265a9adbe1b034210e55a405c74848d82d6cd7207e5d3cc21b",
+        "files": [
+          "tests/contracts/permissionAdministration.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "read-database",
+        "profile": "SUPABASE_T04",
+        "required": 120,
+        "config": "vitest.permission-read.config.ts",
+        "configSha256": "c858ed4a7a9f5723d21d6560092b25a7c81841853e4afdc724f7fd6b9f42c4e4",
+        "files": [
+          "tests/contracts/permissionRead.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "clear-demo-database",
+        "profile": "SUPABASE_T04",
+        "required": 9,
+        "config": "vitest.permission-clear-demo.config.ts",
+        "configSha256": "f3049d4f893964f58975d97652316e48673ed304419977896102c90762a53fc5",
+        "files": [
+          "tests/contracts/permissionClearDemo.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "candidate-signals-database",
+        "profile": "SUPABASE_T04",
+        "required": 3,
+        "config": "vitest.permission-signals.config.ts",
+        "configSha256": "d9f61348f2653383f00b96b04d3745bfc8dc7ea2aa6b380661057031373c8acc",
+        "files": [
+          "tests/contracts/permissionSignals.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "financial-database",
+        "profile": "SUPABASE_T04",
+        "required": 37,
+        "config": "vitest.permission-financial.config.ts",
+        "configSha256": "19903ae2e4abdf05e0656e9a98f31c7d0a92bbfa80635bc030df7b8d2e651efc",
+        "files": [
+          "tests/contracts/permissionFinancial.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "candidate-print-database",
+        "profile": "SUPABASE_T04",
+        "required": 4,
+        "config": "vitest.permission-print.config.ts",
+        "configSha256": "502da99a9a94badba4bb50bf2558b561e4a1cb504318223622cda055b5503d6d",
+        "files": [
+          "tests/contracts/permissionPrint.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "candidate-bulk-concurrency-database",
+        "profile": "SUPABASE_T04",
+        "required": 4,
+        "config": "vitest.permission-bulk-concurrency.config.ts",
+        "configSha256": "05463088f02d7eec92707996da1ec629407e729dd36c3fa80eca8fd6c27e7d7d",
+        "files": [
+          "tests/contracts/permissionBulkConcurrency.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "candidate-e2e",
+        "profile": "SUPABASE_T04",
+        "required": 2,
+        "config": "playwright.permission-candidate.config.ts",
+        "configSha256": "3e6721450d4384c65b5f96e8c865d939d3cedf7cc6cd792223e7c59f307459d7",
+        "files": [
+          "tests/supabase/permissionCandidate.spec.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "candidate-seed-recovery-database",
+        "profile": "SUPABASE_T04",
+        "required": 1,
+        "config": "vitest.permission-seed-recovery.config.ts",
+        "configSha256": "f9ccbf19f0345481a740e8196c1f499a16f7788d84d18baeb23691dbb909f4ad",
+        "files": [
+          "tests/contracts/permissionSeedRecovery.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "candidate-roles-e2e",
+        "profile": "SUPABASE_T04",
+        "required": 1,
+        "config": "playwright.permission-roles.config.ts",
+        "configSha256": "9db2abfce2a8cf494719a8827b01ebb900ace58e962f37bfe5d46cbc66384778",
+        "files": [
+          "tests/supabase/permissionRoles.spec.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "realtime-e2e",
+        "profile": "SUPABASE_T04",
+        "required": 1,
+        "config": "playwright.permission-realtime.config.ts",
+        "configSha256": "d6e6d1de9be27e9d6b93dccf266311682402fa825ec72802842d53b9c6fc77d6",
+        "files": [
+          "tests/supabase/permissionRealtime.spec.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "rollback-additive-database",
+        "profile": "SUPABASE_T04",
+        "required": 1,
+        "config": "vitest.permission-rollback.config.ts",
+        "configSha256": "e1ce9099fc3d4f26d1cf99ebeaa17e753546c2ef785273c6d31a1b7f706ca261",
+        "files": [
+          "tests/contracts/permissionRollbackAdditive.contract.test.ts"
+        ],
+        "rollbackVariant": "Additive",
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "rollback-preflight-database",
+        "profile": "SUPABASE_T04",
+        "required": 1,
+        "config": "vitest.permission-rollback.config.ts",
+        "configSha256": "e1ce9099fc3d4f26d1cf99ebeaa17e753546c2ef785273c6d31a1b7f706ca261",
+        "files": [
+          "tests/contracts/permissionRollbackPreflight.contract.test.ts"
+        ],
+        "rollbackVariant": "Preflight",
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "rollback-recovery-database",
+        "profile": "SUPABASE_T04",
+        "required": 1,
+        "config": "vitest.permission-rollback.config.ts",
+        "configSha256": "e1ce9099fc3d4f26d1cf99ebeaa17e753546c2ef785273c6d31a1b7f706ca261",
+        "files": [
+          "tests/contracts/permissionRollbackRecovery.contract.test.ts"
+        ],
+        "rollbackVariant": "Recovery",
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "transition-database",
+        "profile": "SUPABASE_T04",
+        "required": 4,
+        "config": "vitest.permission-transition.config.ts",
+        "configSha256": "c435ab5bf7cb14d81e5753c444cf833e0476c88569ad1fe636d0504dffa59964",
+        "files": [
+          "tests/contracts/permissionTransition.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "transition-e2e",
+        "profile": "SUPABASE_T04",
+        "required": 1,
+        "config": "playwright.permission-legacy-transition.config.ts",
+        "configSha256": "7852e623e9f7ec71c12a203824a10a47034112efb4c6de893271024a500cb62b",
+        "files": [
+          "tests/supabase/permissionLegacyTransition.spec.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "transition-compatibility-database",
+        "profile": "SUPABASE_T04",
+        "required": 3,
+        "config": "vitest.permission-compatibility.config.ts",
+        "configSha256": "79c93debb573f94d76b1679c3162cf95966d12380a45e7c248051b97437b1ea3",
+        "files": [
+          "tests/contracts/permissionCompatibility.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "SUPABASE_T04",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "pin-identity-server",
+        "profile": "PIN_IDENTITY",
+        "required": 41,
+        "config": "vitest.owner-pin-server.config.ts",
+        "configSha256": "de3cb6d61c112dae0de7f6bb96bf8655d6b2de4108cfc026cbf3ecfa247beefc",
+        "files": [
+          "tests/contracts/ownerPinServer.contract.test.ts",
+          "tests/contracts/ownerPinServerRuntime.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "PIN_IDENTITY_SERVER",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "pin-onboard-closeout",
+        "profile": "PIN_ONBOARD",
+        "required": 48,
+        "config": "playwright.pin-onboard-closeout.config.ts",
+        "configSha256": "05203e6f86fb0b6e4e25099725a232e1155ad2de325356a5a628d1a637fe9d73",
+        "files": [
+          "tests/supabase/ownerPinOnboardingCloseout.spec.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "PIN_ONBOARD",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "pin-tc18-wrapper",
+        "profile": "PIN_ONBOARD",
+        "required": 7,
+        "config": "playwright.pin-tc18.config.ts",
+        "configSha256": "a268f4913f6f9309389de21958363181ff54f82b5355c1298a9cf91cc9d23fc1",
+        "files": [
+          "tests/supabase/ownerPinOnboardingCloseout.spec.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "PIN_ONBOARD",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "pin-identity-onboarding",
+        "profile": "PIN_IDENTITY",
+        "required": 9,
+        "config": "playwright.owner-pin-onboarding.config.ts",
+        "configSha256": "a0ffdff6d1d495ff0ad667e3626b8d06e4f3de19f687f330a7220fae935741fb",
+        "files": [
+          "tests/supabase/ownerPinOnboarding.spec.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "PIN_IDENTITY_ONBOARDING",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "pin-canary-empty",
+        "profile": "PIN_CANARY",
+        "required": 1,
+        "config": "vitest.permission-canary-empty-runtime.config.ts",
+        "configSha256": "bb6ddecb5d0b8f111c4bd54c807f857f15443134752c896da3796c0e99b5b0b1",
+        "files": [
+          "tests/contracts/permissionCanaryEmptyRuntime.contract.test.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "PIN_CANARY",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "pin-onboard-race",
+        "profile": "PIN_ONBOARD",
+        "required": 2,
+        "config": "playwright.permission-pin-race.config.ts",
+        "configSha256": "08f3fd61434d6746ba6d16c94471f056565bc14c7576c3393dadeb59406fe681",
+        "files": [
+          "tests/supabase/permissionPinCompletionRace.spec.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "PIN_RACE",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "pin-onboard-expiry",
+        "profile": "PIN_ONBOARD",
+        "required": 1,
+        "config": "playwright.permission-pin-expiry.config.ts",
+        "configSha256": "f89601f033482495ba757115bbd512bfc30e69f730615352368887961a987b92",
+        "files": [
+          "tests/supabase/permissionPinExpiryWait.spec.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "PIN_EXPIRY",
+        "status": "NOT_RUN_CURRENT_SOURCE",
+        "evidence": "No current-source backend run in queried GitHub results or reviewed docs; historical slices retained separately"
+      },
+      {
+        "stage": "pin-static-operator",
+        "profile": "STATIC",
+        "required": 2,
+        "config": "playwright.owner-recovery-operator.config.ts",
+        "configSha256": "b6e201334e611fafd5e04c97f77a0b7a1f547e4d494a53b440506d78119f60bf",
+        "files": [
+          "tests/operator/ownerRecoveryOperator.spec.ts"
+        ],
+        "rollbackVariant": null,
+        "configPinMatches": true,
+        "filesPresent": true,
+        "executionEnvelope": "STATIC",
+        "status": "PASS_AGGREGATE_CI",
+        "evidence": "ci-summary.json#permission-static; staticProfileCounts source verifies all five ordered stages, per-stage raw not re-fetched"
+      }
+    ]
+  },
+  "supplementalFields": [
+    "TC-PIN-02.no-skip-control",
+    "TC-PIN-03.exact-three-allowed-routes",
+    "TC-PIN-05.exact-messages-no-effects",
+    "TC-PIN-11.exact-error-contexts",
+    "TC-PIN-12.no-persistence-URL-log-or-marker",
+    "TC-PIN-17.unit-build-permission-regression",
+    "TC-PIN-17.ui-selftest-23",
+    "TC-PIN-17.PIN-3-viewports-photos-classified",
+    "TC-PIN-17.no-ui-baseline-update",
+    "TC-PIN-18.MAC-no-secret-audit-projection",
+    "TC-PIN-18.exact-error-context-triggers",
+    "TC-PIN-18.operator-loopback-unlock-CSRF-Origin-body-role"
+  ],
+  "environment": {
+    "node": "24.16.0",
+    "npm": "11.13.0",
+    "installedPackages": {
+      "vitest": "4.1.11",
+      "vite": "8.0.16",
+      "@playwright/test": "1.60.0",
+      "typescript": "5.9.3",
+      "@supabase/supabase-js": "2.108.1"
+    },
+    "backendToolsOnPath": {
+      "docker": false,
+      "psql": false,
+      "supabase": false
+    },
+    "backendProcessNamesObserved": [],
+    "wslDistributionsListed": [],
+    "scopedEnvironmentVariableNamesObserved": [],
+    "dotenvNamesChecked": [
+      ".env",
+      ".env.local",
+      ".env.test"
+    ],
+    "dotenvFilesInCleanCheckoutObserved": [],
+    "credentialValidity": "NOT_CHECKED; no secrets opened or live connection attempted",
+    "backendReadiness": "NOT_ESTABLISHED",
+    "installations": 0,
+    "heavyRuntimesCreated": 0,
+    "applicationTestsExecutedInT01": 0
+  },
+  "publication": {
+    "form": "TECHNICAL_EXTRACT",
+    "rawEvidenceSha256": "044a5be14786b19ceedbbc6ee08f286a1f66c84ce2cf1bfbe341ef760529a1c2",
+    "omittedFields": [
+      "sourcePreservationBaseline",
+      "artifactChecks.rawRoot",
+      "environment.location"
+    ],
+    "note": "Original audit retained separately. Technical source, observations, counts and artifact hashes are unchanged. Artifact-relative paths identify files within the original refactor archive; they are not public download URLs."
+  }
+}

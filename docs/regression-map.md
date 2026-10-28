@@ -1,5 +1,9 @@
 # Bản đồ hồi quy từ tiểu luận tới đồ án
 
+## Đối chiếu khoảng thiếu — 28/10/2026
+
+[T01 trên main052a7d1](workflow/tasks/g01-g10-t01-2026-10-28.md) bổ sung checkpoint mới: build/unit/mock/UI có evidence và coverage local cùng tree đạt92,70% (1.208/1.303 dòng, scope core/features thuần). Vì vậy gap “cần coverage hiện hành” ở hàng NFR07 của khảo sát26/10 bên dưới đã có bằng chứng cho nguồn này; không đổi timestamp/số liệu của bảng lịch sử hoặc suy NFR07/full sản phẩm đã đạt. Backend/services/supplemental closure và các assertion/hành trình còn thiếu được nối task tiếp nhận trong T01. Không có lần chạy app mới trong lượt28/10.
+
 ## Bổ sung bằng chứng candidate ngày27/10/2026
 
 [Refactor implementation](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027.md) bổ sung characterization cho FR-19 (Report), FR-04 (query/session guard) và FR-07/09 (snapshot/cart), cùng NFR-03/04/06/07. Source `c6ff3c795616dfa84379be85feeca29927d173c9` đã vào main tại `052a7d1e156425ea82ed1c9cf978d7ef4d4f3571` qua PR15; xem [biên bản merge](workflow/tasks/refactor-safety-2026-10-25/merge-20261027.md). Hàng FR/NFR và gaps lịch sử bên dưới giữ nguyên; helper/mock PASS chỉ phủ những ca cụ thể, không đóng toàn IDEM-26/27, backend hay thiết bị thật.

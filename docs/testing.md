@@ -1,5 +1,9 @@
 # Kiểm thử và kiểm chứng
 
+## Rà soát khoảng thiếu — 28/10/2026
+
+[T01](workflow/tasks/g01-g10-t01-2026-10-28.md) đối chiếu main052a7d1 với CI40442640979 và raw refactor đã có; **không chạy test mới**. CI có 1.240 unit PASS, 49 smoke PASS/37 configured skip và 48 audit PASS; 480 kiểm tĩnh cùng 30 kiểm native PG16 chỉ phủ phạm vi đã cấu hình. Coverage local cùng tree đạt 92,70% được kiểm lại hash, chỉ scope core/features thuần. Whole SUPABASE_T04 và 7 service profiles chưa có execution source052a7d1 được xác minh; supplemental closure, owner/email, hardware, realtime/performance/restore/web functional giữ mở. [Evidence có mốc](implementation-log/g01-g10-t01-20261028/evidence.json) và [CI safe summary](implementation-log/g01-g10-t01-20261028/ci-summary.json) tách kết quả source hiện hành khỏi FAIL lịch sử. Các phần cần kiểm tiếp được tổng hợp trong [kế hoạch G01–G10](workflow/g01-g10-plan.md#next).
+
 ## Kiểm chứng refactor ngày27/10/2026
 
 Kết quả local của source `c6ff3c795616dfa84379be85feeca29927d173c9` (đã vào main qua PR15 tại `052a7d1e156425ea82ed1c9cf978d7ef4d4f3571`) ở [hồ sơ triển khai](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027.md), [receipt/hash](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027-evidence.json) và [review độc lập](workflow/tasks/refactor-safety-2026-10-25/implementation-20261027-review.md). Các lần chạy local mock, skip/config và failure ban đầu được giữ riêng theo source. Không đổi nhãn bằng chứng lịch sử bên dưới thành PASS của lần chạy mới; coverage chỉ theo scope core/non-hook hiện hành và không là backend acceptance.
