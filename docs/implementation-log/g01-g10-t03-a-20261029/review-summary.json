@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "t03a-review-summary-v1",
+  "date": "2026-10-29",
+  "revision": 3,
+  "codeSource": "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
+  "docsSource": "4e85598f6f788f094bc424df14e66ea982a2e018",
+  "assessment": "APPROVE",
+  "t03aSurveyComplete": true,
+  "t03OverallComplete": false,
+  "codeChanged": false,
+  "runtimeTests": "NOT_RUN",
+  "sourceArtifacts": {
+    "analysis.md": {
+      "bytes": 46895,
+      "sha256": "f356d4e7dc08ef8df5cfcdac9a017b095b01601d92bc8725651783367a2a2baa"
+    },
+    "handoff.md": {
+      "bytes": 29899,
+      "sha256": "e141125cab88d85eb2d1f30b57ba9186c5d0713ffda01374513ffb5f8b85a380"
+    },
+    "inventory.json": {
+      "bytes": 1125593,
+      "sha256": "d76a6bfbb0965970f1bbd93158f8f1c704f63f85d25206a7ccc5ca10cf8c8b04"
+    },
+    "manifest.json": {
+      "bytes": 17808,
+      "sha256": "0673f1fde7e7fd4096050b7f863eb9f7f998082db4eb56fc61c1afa23d134635"
+    }
+  },
+  "verified": {
+    "rows": 374,
+    "identityErrors": 0,
+    "selection": {
+      "scripts": 298,
+      "rootConfigs": 52,
+      "nestedConfigs": 5,
+      "directSetup": 10,
+      "entryPoints": 9
+    },
+    "trustedPathsInTarget": 48,
+    "trustedPathsTotal": 64,
+    "moduleRoles": {
+      "MODULE_PROGRAM": 96,
+      "MODULE_LIBRARY": 104,
+      "REPORTER": 11
+    },
+    "recommendationCounts": {
+      "KEEP": 354,
+      "UNKNOWN": 20
+    },
+    "strongConsumerArraysComplete": true,
+    "identityLifecycleRecommendationsUnchanged": true,
+    "roleBasisOnlyChangedRows": 20,
+    "changedMarkerRoleCounts": {
+      "MODULE_PROGRAM": 18,
+      "MODULE_LIBRARY": 2
+    },
+    "oldActiveInitMarkersRemaining": 0,
+    "allOtherRowFieldsUnchanged": true
+  },
+  "resolvedFindings": [
+    "R-I-01",
+    "FAM-01",
+    "R-I-02"
+  ],
+  "resolvedNonBlocking": [
+    "R-I-N01"
+  ],
+  "openBlockingFindings": [],
+  "limitations": [
+    "Static survey and review; no discovery or runtime execution.",
+    "Role scanning is not a JavaScript parser or proof of side-effect-free imports.",
+    "Text graph is an overapproximation, not an execution trace.",
+    "Weak consumer lists are samples; strong lists are complete for the graph method.",
+    "No dead file or deletion authorization established."
+  ],
+  "sourceNote": "Original survey and prior reviews retained by hash. This technical excerpt supersedes the incorrect CLI output-directory sentence in the original source, not its unchanged inventory. No personal coordination included.",
+  "assessmentScope": "Technical excerpt with the R3-D01 correction recorded in its companion task handoff; not unqualified approval of the unchanged source submission.",
+  "sourceSubmissionAssessment": {
+    "inventory": "APPROVE",
+    "documentation": "CHANGES_REQUESTED",
+    "finding": "R3-D01",
+    "disposition": "Original preserved; corrected interpretation is authoritative in this technical excerpt and companion handoff."
+  },
+  "resolvedInTechnicalExcerpt": [
+    {
+      "id": "R3-D01",
+      "issue": "CLI JSON reporter still needs a filename: OUTPUT_DIR alone does not produce a file; without OUTPUT_FILE or OUTPUT_NAME the CLI JSON output goes to stdout.",
+      "sourceLocations": [
+        "analysis.md:276",
+        "handoff.md:138",
+        "manifest.json:reviews"
+      ],
+      "runtime": "NOT_RUN"
+    }
+  ]
+}

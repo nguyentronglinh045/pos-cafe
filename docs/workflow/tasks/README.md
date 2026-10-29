@@ -1,9 +1,13 @@
 # Chỉ mục công việc
 
-## Kế hoạch G01–G10 — cập nhật 28/10/2026
+## Kế hoạch G01–G10 — cập nhật 29/10/2026
 
 - [Kế hoạch kỹ thuật G01–G10](../g01-g10-plan.md#next): ưu tiên, phụ thuộc, trạng thái và tiêu chí hoàn thành. Các hồ sơ bên dưới ghi nguồn và kết quả tại từng mốc kiểm chứng.
 G11/G12 tiếp tục để giai đoạn cuối; docs kỹ thuật cập nhật xuyên suốt.
+
+## Cập nhật29/10/2026
+
+- [T03-A — Kiểm kê script/config và nơi sử dụng](g01-g10-t03-a-2026-10-29.md): hoàn tất khảo sát sau kiểm tra revision 3 và hiệu đính bản tổng hợp; R-I-02 đã đóng. 374 mục, 354 KEEP/20 UNKNOWN; kết luận NO_CHANGE, runtime NOT_RUN, chưa triển khai T03. T04 là việc chính tiếp theo.
 
 ## Cập nhật28/10/2026
 
