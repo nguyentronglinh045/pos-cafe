@@ -1,0 +1,17 @@
+import { chromium, newPage, shot, login } from "./lib.mjs";
+const browser = await chromium.launch();
+const { page } = await newPage(browser, 1366, 768);
+await login(page, "Thu ngân", "111111");
+await page.locator('[data-testid^="table-"][data-table-status="empty"]').first().click();
+await page.getByTestId("order-drawer").waitFor();
+await page.waitForTimeout(500);
+const items = await page.locator('[data-testid^="menu-item-"]').evaluateAll(els => els.map(e => `${e.getAttribute("data-testid")} | ${e.textContent.replace(/\s+/g, " ").trim().slice(0, 50)}`));
+console.log(items.join("\n"));
+await page.locator('[data-testid^="menu-item-"]').filter({ hasText: "Cà phê sữa" }).first().click();
+await page.getByTestId("b02-modifier-dialog").waitFor();
+await page.waitForTimeout(300);
+await shot(page, "X-modifier-caphesua");
+console.log("DIALOG:", (await page.getByTestId("b02-modifier-dialog").textContent()).replace(/\s+/g, " ").slice(0, 400));
+console.log("VALUES:", await page.locator('[data-testid^="modifier-value-"]').evaluateAll(els => els.map(e => `${e.getAttribute("data-testid")}:${e.textContent.trim()}`)));
+console.log("CONFIRM disabled:", await page.getByTestId("modifier-confirm").isDisabled(), "text:", await page.getByTestId("modifier-confirm").textContent());
+await browser.close();
