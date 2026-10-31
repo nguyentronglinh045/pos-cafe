@@ -1,0 +1,89 @@
+# L04 — Lâm góp ý kịch bản Ngọc bằng góc nhìn người mới
+
+> **TRẠNG THÁI: ĐÃ CÓ BẢN N01 r02 ĐỂ ĐỐI CHIẾU NỘI DUNG / ĐÃ CẬP NHẬT PHẢN HỒI 8 CA / LÂM ĐÃ ĐỒNG Ý R02 THEO THÔNG TIN NGƯỜI DÙNG; ĐÃ ĐƯỢC BÁO LÂM XÁC NHẬN TOÀN BỘ; GIỜ NHẬN/ĐỌC/GỬI CHƯA ĐƯỢC CUNG CẤP.** Đây là bản L04 được AI cập nhật theo file N01 r02 người dùng cung cấp và thông tin chuyển tiếp “Lâm báo OK r02 lúc 21:47”. Không giả định rằng AI là Lâm hoặc rằng Lâm đã tự mở Sxx. **Không chạy app/backend, không PASS/FAIL.**
+
+## 1. Tiếp nhận và giới hạn xác nhận
+
+- **Người được phân công đọc/góp ý:** Lâm.
+- **Bản N01 dùng để cập nhật L04:** `N01 — Kịch bản hồi quy chuẩn bị từ spec`, tự khai phiên bản **r02**, Ngọc hoàn tất tự đối chiếu **29/10/2026 21:36**; tài liệu N01 r02 được cung cấp trong cuộc trò chuyện này. Bản N01 tự ghi 8/8 ca đã được **Ngọc** đối chiếu, còn chờ Lâm rà và chưa chạy.
+- **Lâm thực nhận N01 r02 lúc (Asia/Bangkok):** CHƯA CÓ xác nhận trực tiếp. N01 r02 đang ghi thời điểm gửi r02 cho Lâm là **chưa xác nhận đã gửi**; r01 đã gửi 21:06.
+- **Thông tin chuyển tiếp bổ sung:** Người dùng xác nhận “Lâm đã xác nhận”; theo thông tin chuyển tiếp, Lâm báo OK r02 (21:47) cho 8 góp ý. **File N01 r02 vừa cung cấp vẫn ghi cột Lâm kiểm lại là `CHƯA CÓ` và trạng thái `CHỜ LÂM RÀ`**. Do đó **21:47 là mốc được báo lại, chưa thể coi là chữ ký xác nhận trên file N01 này**.
+- **Phạm vi hiện có để đọc:** N01-01…N01-08, đủ 8 ID, không có ID không áp dụng. **Đã đọc bằng AI nội dung 8 ca trong N01 r02; việc Lâm tự đọc/tự mở spec chưa được xác nhận.**
+- **Sxx/dòng:** Các tham chiếu trong bảng dưới đây được lấy từ N01 r02 và trao đổi trước đó; **chưa có bằng chứng Lâm tự mở Sxx**. Không ghi là “đã tự đối chiếu nguồn” thay Lâm.
+- **Phần tự đọc/diễn đạt lại và AI:** AI ChatGPT hỗ trợ tổng hợp, so sánh lời Ngọc với góp ý L04; bản L04 này để Lâm kiểm tra và xác nhận. Actual của toàn bộ ca: **CHƯA CHẠY**.
+
+## 2. Bảng rà N01 r02 và phản hồi góp ý
+
+**Quy ước trạng thái:** Trạng thái dưới đây thể hiện *đánh giá nội dung từ văn bản N01 r02*, chưa phải dấu xác nhận chính thức của Lâm. `RÕ THEO NGUỒN` ở đây vẫn cần Lâm tự mở Sxx; các vấn đề Q-N01 vẫn giữ `CẦN LÀM RÕ`. Cột cuối ghi rõ chứng cứ phản hồi r02 và giới hạn xác nhận.
+
+| Ca N01 | Trạng thái nội dung | Tôi diễn đạt lại bước/expected / chỗ chưa hiểu | Source/dòng cần tự mở đối chiếu | ID góp ý / đề nghị | Ngọc trả lời/sửa ở bản nào | Tôi đọc lại bản sửa / kết quả-thời điểm thật |
+| --- | --- | --- | --- | --- | --- | --- |
+| N01-01 | CẦN LÀM RÕ | Sơ đồ hiển thị bàn/vật trang trí theo khu; lọc làm nổi bật bàn đang phục vụ; chậu cây không mở đơn; bàn trống tạo đơn. Chữ “số đơn” chưa xác định là mã hay số lượng. | S02 L020–L021, L025, L029–L030, L034–L035, L039, L048–L049, L057–L058; S05 L023; S08 L072 | L04-01 / Q-N01-5: giữ nguyên “số đơn”; hỏi Linh xác định nghĩa. | r02: Ngọc giữ nguyên expected và Q-N01-5. | Theo thông tin chuyển tiếp, Lâm báo OK r02 lúc 21:47; CHƯA CÓ xác nhận trực tiếp thời điểm Lâm tự mở nguồn. |
+| N01-02 | CẦN LÀM RÕ | Bàn đang phục vụ mở đơn; Americano vào giỏ trực tiếp; Cà phê sữa phải chọn option; hủy không đổi draft; chọn hợp lệ thì thêm. B4 chỉ dựa S06 lịch sử. | S02 L062–L063; S03 L030, L034–L035, L039–L040, L054; S06 L007 | L04-02 / Q-N01-6: cần xác nhận hiệu lực B02 trong S06 (đặc biệt B4). | r02: Ngọc phân tách B2/B3 có S03, B4 chỉ S06, giữ Q-N01-6. | Thông tin chuyển tiếp: OK r02 21:47; chưa xác nhận trực tiếp tự rà. |
+| N01-03 | CẦN LÀM RÕ | Đơn 125.000đ thêm Americano thành nháp 160.000đ; đóng dirty phải xác nhận; giữ nháp thì tiếp tục sửa. Sau bỏ nháp chưa có căn cứ chắc chắn về việc màn đơn đóng. | S03 L072, L076–L077; S06 L005, L011 | L04-03 / Q-N01-4, Q-N01-6: tách phần có spec S03 và chi tiết chỉ S06; không tự kết luận màn đơn đóng. | r02: Ngọc đã bỏ expected “màn đơn đóng” ở B5; chỉ giữ “thay đổi chưa gửi bị bỏ”. | Thông tin chuyển tiếp: OK r02 21:47; chưa xác nhận trực tiếp tự rà. |
+| N01-04 | RÕ THEO NGUỒN (đối chiếu văn bản N01 r02) | Thanh toán toàn bộ: chọn tất cả, 125.000đ; Thẻ/QR không khả dụng; khách đưa 200.000đ thối 75.000đ; +20k đặt 145.000đ; thanh toán xong bàn trống. | S04 L016, L020–L021, L058, L077, L081–L082; S07 L003, L027, L036, L040–L041, L045; S01 L023 | L04-04: xác định S07 không bị gọi proposal lịch sử như S06; chỉ lưu ý code chưa nghiệm thu/merge/deploy. | r02: Ngọc ghi đã kiểm S07 L003, giữ expected; chưa chạy ứng dụng. | Thông tin chuyển tiếp: OK r02 21:47; chưa xác nhận trực tiếp tự rà. |
+| N01-05 | RÕ THEO NGUỒN (đối chiếu văn bản N01 r02) | Thiếu 1đ thì nút hoàn tất hiện nhưng disabled và không ghi lệnh; đúng tiền = 125.000đ; bỏ chọn hết thì due=0 và không cho thanh toán. Không có bước refetch. | S04 L025–L026, L030–L031; S07 L027, L032, L036, L041, L045; S08 L089 | L04-05: bỏ expected “không tự chọn lại tất cả”, vì S07 L027 chỉ nói refetch cùng đơn. | r02: Ngọc đã bỏ ý tự chọn lại khỏi B5; không thêm bước refetch. | Thông tin chuyển tiếp: OK r02 21:47; chưa xác nhận trực tiếp tự rà. |
+| N01-06 | RÕ THEO NGUỒN (đối chiếu văn bản N01 r02) | Bỏ chọn tất cả → 0đ; tick cà phê 1/2 = 29.000đ; + tăng 2/2 rồi quay 1/2; split 29.000đ, đơn gốc 96.000đ, selection rỗng và refetch, không tự chọn phần còn lại. | S04 L035–L040, L062–L063; S07 L027, L032, L045, L050; S01 L023; S02 L025–L030 | L04-06: giữ “không tự chọn phần còn lại”, vì sau split S07 L045 nêu rõ xóa lựa chọn/refetch và S01 L023 giới hạn chọn tất cả. | r02: Ngọc giữ expected với nguồn S07 L045/L050 và S01 L023. | Thông tin chuyển tiếp: OK r02 21:47; chưa xác nhận trực tiếp tự rà. |
+| N01-07 | CẦN LÀM RÕ | Đơn mang đi không chiếm bàn; sau khi thêm món và gửi thì xuất hiện trong danh sách đang mở; hoàn tất thanh toán thì rời danh sách và xem ở lịch sử. | S03 L016, L020–L021, L025–L026; S05 L017; S08 L039–L040; S09 L046–L048 | L04-07 / Q-N01-1: S09 chỉ tìm màn; chưa rõ đơn xuất hiện ngay khi tạo hay sau gửi món, nhưng B2 có gửi trước B3 nên không chặn ca. | r02: Ngọc giữ B2 tạo/thêm/gửi rồi B3 quan sát, ghi Q-N01-1. | Thông tin chuyển tiếp: OK r02 21:47; chưa xác nhận trực tiếp tự rà. |
+| N01-08 | CẦN LÀM RÕ | Waiter có floor.view, order.create/update nên xem sơ đồ, mở đơn, thêm món; không có payment.take/void/history/... nên lối vào/nút tương ứng không render. Khác trường hợp có quyền nhưng không đủ điều kiện thì disabled. | S08 L033–L049, L072, L089; S02 L062–L063; S07 L014; S01 L013 | L04-08 / Q-N01-2,3: cần mapping nút chính và design quyền; không dùng S05 L029 nav admin/cashier để suy quyền Waiter. | r02: Ngọc ghi thiếu quyền → không render, giữ Q-N01-2/3. | Thông tin chuyển tiếp: OK r02 21:47; chưa xác nhận trực tiếp tự rà. |
+
+## 3. Diễn đạt lại để tự kiểm đã hiểu
+
+**N01-05 (thiếu tiền / không chọn món):** Tôi hiểu đây là hai điều kiện chặn nghiệp vụ dù Cashier có quyền thanh toán: khi cần thu 125.000đ nhưng chỉ nhập 124.999đ thì thiếu 1đ và nút hoàn tất phải disabled; khi bỏ hết món đã chọn thì số phải trả là 0đ và cũng không thể hoàn tất. Trong r02, Ngọc đã bỏ ý “không tự chọn lại tất cả” vì S07 L027 nói đến **refetch cùng đơn**, còn N01-05 không có thao tác refetch. Đây là góp ý về **căn cứ expected**, không phải bug phần mềm.
+
+**N01-06 (phân biệt với N01-05):** Sau split thành công, S07 L045 ghi xóa selection và refetch đơn nguồn; S01 L023 nêu không tự coi phần còn lại là lựa chọn thanh toán. Vì có sự kiện refetch thực sự, expected “không tự chọn phần còn lại” giữ được.
+
+**N01-08 (phân quyền):** Thiếu quyền `payment.take` thì nút thanh toán không được render. Cashier có quyền nhưng đưa thiếu tiền thì nút vẫn xuất hiện ở trạng thái disabled và có lý do. Không sử dụng nav admin/cashier của S05 L029 để cấp quyền cho Waiter.
+
+## 4. Độ phủ và điểm còn mở
+
+- **Số ca thực soạn trong N01 r02:** 8. **Sơ đồ:** N01-01 (cộng N01-08 có thao tác sơ đồ); **gọi món:** N01-02, N01-03; **thanh toán:** N01-04, N01-05, N01-06; **mang đi:** N01-07; **lỗi/biên:** N01-02, N01-03, N01-05; **thiếu quyền:** N01-08. **ID không dùng:** không có.
+- **Đã có nội dung và nguồn dẫn trong N01 r02:** 8/8 ca. **Lâm tự xác nhận đã rà nguồn:** CHƯA CÓ. **Chưa nhận/chưa đọc ở mức văn bản N01 r02:** 0. **Chưa chạy:** 8/8.
+- **Ca có expected chưa được quyết định đầy đủ:** N01-01 (Q-N01-5), N01-02 (Q-N01-6), N01-03 (Q-N01-4/6), N01-07 (Q-N01-1), N01-08 (Q-N01-2/3). Các ca này không vì thế mà toàn bộ bước đều sai; chỉ đánh dấu phần bị ảnh hưởng.
+- **Q-N01-1:** S03 L020–L021 chưa nói đơn mang đi xuất hiện ngay khi tạo hay sau gửi món đầu; N01-07 B2 đã gửi trước B3 nên phần quan sát B3–B6 vẫn có thể soạn.
+- **Q-N01-2,3:** S06 L009 / S08 L072,L089 và phần design mapping nút–quyền chưa có; ảnh hưởng N01-08.
+- **Q-N01-4:** S03 L077 / S06 L011 chưa đủ làm rõ tên nút bỏ nháp và trạng thái màn sau khi bỏ; ảnh hưởng N01-03.
+- **Q-N01-5:** S02 L025,L030 mơ hồ “số đơn” là số thứ tự hay số lượng; ảnh hưởng N01-01.
+- **Q-N01-6:** S01 L021 vẫn gọi S06 làm delta B02 nhưng S06 L018–L020 ghi proposal lịch sử; ảnh hưởng một phần N01-02, N01-03 và tham chiếu B02 ở N01-08. **Chờ Linh quyết định yêu cầu, không dùng việc Ngọc hay Lâm OK để tự thay quyết định nghiệp vụ.**
+
+## 5. Bàn giao phản hồi và checklist
+
+- [x] Đã nhận **nội dung file N01 r02 trong cuộc trò chuyện**, xác định đủ N01-01…N01-08; **chưa xác thực Ngọc đã gửi r02 cho Lâm qua kênh nhóm**.
+- [x] Đã ghi 8 nội dung góp ý L04-01…08 và phần Ngọc trả lời/sửa ở r02; không sửa N01 của Ngọc.
+- [x] Đã diễn đạt lại các expected và phân biệt `source` / suy luận; actual vẫn CHƯA CHẠY.
+- [ ] Lâm tự mở từng nguồn Sxx và đánh dấu chính thức trạng thái ca sau khi đối chiếu; chỉ Lâm ghi thời gian đọc thật.
+- [ ] Lâm tự xác nhận đã nhận r02, giờ nhận, giờ rà, các thay đổi đã đọc lại; thông tin “OK r02 lúc 21:47” đang là lời chuyển tiếp.
+- [ ] Lâm thực gửi file L04 bản đã xác nhận cho Ngọc và ghi thời điểm thực tế.
+- [ ] Ngọc đính kèm L04 đã xác nhận để bàn giao Linh; các câu hỏi nghiệp vụ giữ chờ Linh trả lời.
+
+**Thời điểm gửi Ngọc / file và phiên bản thực gửi:** CHƯA XÁC NHẬN.  
+**Thời điểm bàn giao Linh:** CHƯA GỬI.  
+**Việc tiếp theo:** Lâm xác nhận trực tiếp giờ nhận/rà r02 và nguồn đã mở, trạng thái từng ca, cột đọc lại bản sửa; sau đó gửi L04 cho Ngọc.
+
+## 6. AI hỗ trợ và phạm vi thực hiện
+
+- **Công cụ:** ChatGPT.
+- **AI hỗ trợ:** Đọc nội dung N01 r02 được cung cấp, tổng hợp 8 góp ý, diễn đạt lại expected và cập nhật bản L04 Markdown.
+- **Con người cần xác nhận:** Lâm phải tự đọc r02, mở nguồn Sxx và xác nhận kết quả/thời điểm bằng chứng thật. Ngọc chịu trách nhiệm sửa N01; Linh quyết định nghiệp vụ. Không ghi AI đã chạy hồi quy hay xét duyệt kỹ thuật.
+
+## 7. Xác nhận của Lâm (cập nhật r06 theo lời người cung cấp)
+
+- **Bản N01 được xác nhận:** r02; gồm N01-01 đến N01-08, Ngọc tự đối chiếu xong 21:36 ngày 29/10/2026.
+- **Giờ Lâm nhận N01 r02 (Asia/Bangkok):** chưa có giờ riêng được cung cấp; không dùng 21:47 làm giờ nhận.
+- **Giờ Lâm tự đọc và nguồn Sxx thực mở:** người cung cấp báo “Lâm đã xác nhận tất cả”; chưa có danh sách nguồn và nhật ký giờ Lâm tự mở được gửi kèm. Danh sách tham chiếu của 8 ca nằm ở bảng mục 2.
+- **Kết quả 8 ca:** theo xác nhận được người cung cấp chuyển lại, **Lâm đồng ý với 8/8 ca N01-01…N01-08 trên r02**, mốc báo OK **21:47 ngày 29/10/2026**. Các điểm Q-N01-1…6 vẫn chờ Linh làm rõ, không xem là duyệt nghiệp vụ.
+- **Đọc lại hai sửa đổi r02:** theo thông tin “đã xác nhận tất cả”, ghi nhận Lâm đồng ý với nội dung N01-03 B5 (bỏ expected màn đơn đóng) và N01-05 B5 (bỏ ý tự chọn lại nếu không có refetch); **không có biên bản riêng về giờ đọc lại**.
+- **Đồng ý / ngoại lệ:** theo báo cáo, **đồng ý 8/8 góp ý r02**; ngoại lệ nghiệp vụ còn mở là Q-N01-1…6.
+- **Giờ gửi L04 cho Ngọc / phiên bản:** **chưa được cung cấp bằng chứng đã gửi**. Bản này là **L04 r06 do ChatGPT cập nhật theo lời người cung cấp**, không tự nhận Lâm đã trực tiếp gõ nội dung này.
+
+> Xác nhận qua người cung cấp được ghi nhận đúng như được báo; không quy đổi thành giờ tự nhận, tự đọc, tự mở URL hay gửi file. Actual của các ca: CHƯA CHẠY.
+
+## Phụ lục cập nhật xác nhận qua trao đổi (không thay xác nhận do Lâm tự điền)
+
+- **Nguồn ghi nhận:** Người dùng báo trực tiếp trong cuộc trò chuyện rằng “Lâm đã xác nhận”; thông tin trước đó: Lâm OK 8/8 góp ý N01 r02 lúc **21:47 ngày 29/10/2026** (Asia/Bangkok). Đây là xác nhận **qua trao đổi**, không phải chữ ký điện tử hoặc bản L04 do Lâm tự ghi.
+- **Phạm vi đồng ý được báo:** L04-01 đến L04-08, dựa N01 r02. Các Q-N01-1…6 vẫn phải để Linh quyết định; không ghi tất cả expected đã được nghiệp vụ duyệt.
+- **Trạng thái lưu hồ sơ:** Có thể lưu L04 ở vị trí `lam/L04-ra-kich-ban.md` với chú thích này. Để coi là bản Lâm tự bàn giao, Lâm vẫn cần đọc lại, điền mục xác nhận thực tế, thời điểm nhận/đọc, và gửi bản của mình.
+- **Actual:** CHƯA CHẠY. **AI hỗ trợ:** ChatGPT soạn và chỉnh nội dung theo N01 r02 và các trích dẫn Sxx đã đối chiếu, không tự nhận là Lâm.
+
+
+**Cập nhật sau phụ lục (r06):** Người cung cấp tiếp tục xác nhận “Lâm đã xác nhận tất cả”. Mục 7 là trạng thái mới nhất; các dòng mô tả “chờ” trong phần lịch sử bên trên phản ánh thời điểm trước thông tin mới này.
