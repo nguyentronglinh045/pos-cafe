@@ -1,5 +1,21 @@
 # Backend acceptance và web dùng Supabase — 23/10/2026
 
+<a id="branch-retirement-20261102"></a>
+## Rà nhánh staging — 02/11/2026
+
+Nhánh `review/permission-staging-20261023` tại `4e78a8c11d2d895ccebaccd2b2f7d3b2c69bcb3e` đã nằm đầy đủ trong `main@28a3dc54a846463ba150d50ab323658d6ed1372c` qua [PR #6](https://github.com/nguyentronglinh045/pos-cafe/pull/6), không còn commit riêng ngoài main/docs. Không thấy code ở main gọi tên nhánh này, worktree checkout nhánh, PR mở hoặc CI của nhánh đang chạy/chờ tại checkpoint. Đây là kết quả rà Git/phụ thuộc trong repo, không phải một lượt nghiệm thu backend.
+
+Link cho người đọc ở [bàn giao publication](permission-final-push-2026-10-23.md) trỏ đến commit `e42215044b4faf7e90f787ae8e975937ad3e4479`, đúng source publication ban đầu; không thay bằng head cuối4e78 vì đó là mốc khác. Cả hai commit còn reachable từ main nên việc dọn nhánh không xóa lịch sử code hoặc nguồn minh chứng.
+
+Tại docs@22498d3 trước bản cập nhật này, ghi nhận108 dòng khớp tên nhánh trong75file của các lượt cũ. Chỉ một URL trong Markdown cho người đọc cần ghim; năm URL khác nằm trong JSON snapshot/intent/receipt, gồm nguyên văn handoff đã review. Giữ nguyên toàn bộ JSON/log/diff và các tên nhánh ghi lịch sử, không thay hàng loạt hoặc cập nhật hash cũ theo file hiện hành. Snapshot `final-review01.json` vẫn đối chiếu đúng handoff SHA256 `901795ec28c938f050f8942681b7ec71e230ff7c3b90a5243cbc9371042c9267`.
+
+Tám packet đã kiểm đều gắn `expectedMain=2da0d7e10d65ed4e79c8628d65220582a6cbd32b`, khác main28a3dc5. Chúng ghi phạm vi và binding của các lượt được giao ngày23–24/10; kết quả thực thi từng lượt giữ ở receipt tương ứng. Không dùng nguyên trạng để chạy trên main hiện tại hoặc làm mới ngân sách/quyền chạy. Một packet có source4e78, nhưng expectedMain vẫn là mốc2da cũ. Giữ các binding và ledger lịch sử như đã ghi.
+
+[Diagnostic cuối40082616309/a1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/40082616309) vẫn **DIAGNOSTIC_FAIL** trên4e78; [outcome](../../implementation-log/permission-backend-web-release-20261023/t04-final-origin-outcome-20261024.md) ghi wholeT04 chưa được nghiệm thu. Không đổi FAIL/NOT_RUN thành PASS, không miễn full35/760 hoặc các nghĩa vụ bổ sung; production/release/backend gates giữ nguyên. T04/diagnostic backend trong hồ sơ này khác task đặc tả owner/email T04 của kế hoạch G01–G10.
+
+Về Git và phụ thuộc đã kiểm, nhánh tạm đủ điều kiện dọn sau khi chủ dự án xác nhận và link ghim đã được công bố trên docs. Chỉ xóa đúng remote ref với lease head4e78; nếu ref hoặc phụ thuộc đổi thì kiểm lại. `main`, nhánh `run/permissions-20261020` và các nhánh khác nằm ngoài phạm vi. Không merge docs vào main, không chạy lại CI/DB/shutdown từ chỉ đạo lịch sử bên dưới trong lượt dọn nhánh này. Các mục tiếp theo giữ nguyên checkpoint ngày23–24/10.
+
+
 ## Bàn giao lúc dừng để tắt máy — 24/10/2026
 
 **Full gate CHƯA hoàn thành. Pha hiện hành dừng ở FAIL đã kiểm chứng**, theo yêu cầu owner tắt máy cả khi phase thất bại/cần lựa chọn. Không có third CI/T04, không merge hoặc deploy. Lệnh tắt20s chỉ được đặt sau khi lưu bàn giao; trạng thái thực ghi shutdown-observed01.json (chưa gọi tại thời điểm ghi đoạn này).

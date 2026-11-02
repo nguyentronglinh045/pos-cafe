@@ -1,5 +1,8 @@
 # Rà cuối và xuất bản candidate permission — 23/10/2026
 
+> **Rà nhánh 02/11/2026:** nguồn ban đầu `e422150…` và head cuối `4e78a8c…` đều đã nằm trong main28a3dc5 qua PR #6. Link cây mã nguồn bên dưới được ghim đúng source của lần publication ban đầu. Các trạng thái/quyền ngày23/10 là lịch sử, không phải lệnh chạy lại trong lượt rà nhánh. Xem [đối chiếu và điều kiện dọn](permission-backend-web-release-2026-10-23.md#branch-retirement-20261102). Việc dọn ref không đóng full backend acceptance.
+
+
 ## Phạm vi và quyền
 
 Owner yêu cầu: “kiểm tra nhanh code lần cuối, sau khi ổn thì push lên main hoặc nhánh mới, sau đó làm tiếp phần cần thiết tiếp theo”. Chọn nhánh review mới, không merge `main`: diff thực gồm683files/81commits, full release gates còn mở. Quyền mới này cho phép publication nhánh và CI tự động; không lấy các giới hạn no-push của nhiệm vụ lịch sử làm lệnh cấm publication mới.
@@ -16,7 +19,7 @@ Build và unit trên đúng e422 đã đạt ở lượt trước:110files,1177t
 
 ## Publication và CI
 
-Đã non-force push đúng e422 lên [review/permission-staging-20261023](https://github.com/nguyentronglinh045/pos-cafe/tree/review/permission-staging-20261023); remote readback trùng SHA. `main` vẫn2da0d7e. [Receipt](../../implementation-log/permission-final-push-20261023/publication01.json).
+Đã non-force push đúng e422 lên [review/permission-staging-20261023](https://github.com/nguyentronglinh045/pos-cafe/tree/e42215044b4faf7e90f787ae8e975937ad3e4479); remote readback trùng SHA. `main` vẫn2da0d7e. [Receipt](../../implementation-log/permission-final-push-20261023/publication01.json).
 
 Một push kích hoạt [POS light CI run39967856503](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/39967856503), event push, exact e422, attempt1. **Terminal success**,14:13:55–14:27:53UTC,18phases PASS, sourcePreserved=true. [API terminal](../../implementation-log/permission-final-push-20261023/ci-terminal01.json), [actual log](../../implementation-log/permission-final-push-20261023/ci-completed01.log), [summary trích nguyên JSON từ log](../../implementation-log/permission-final-push-20261023/ci-summary01.json).
 
