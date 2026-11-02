@@ -45,7 +45,7 @@ export function validateAdmissionEvidence({manifest:m,packet,reviews,light,nativ
  check(prior?.reclaim?.length===1&&prior.reclaim[0].status==='RECLAIMED'&&prior.reclaim[0].imageUnlinked===true&&prior.reclaim[0].measuredHostFreeDeltaBytes>0,'PRIOR_RECLAIM');
  if(kind==='heavy'){
   check(profiles.includes(m.profile),'PROFILE');
-  check(light?.schemaVersion==='pos-cafe-light-ci-v1'&&light.repository===m.repository&&light.repositoryID===PROJECT_REPOSITORY_ID&&light.event==='push'
+  check(['pos-cafe-light-ci-v1','pos-cafe-light-ci-v2'].includes(light?.schemaVersion)&&light.repository===m.repository&&light.repositoryID===PROJECT_REPOSITORY_ID&&light.event==='push'
    &&light.sourceSHA===m.sourceSHA&&light.workflowSHA===m.sourceSHA&&/^[1-9][0-9]{0,19}$/.test(light.runId??'')&&Number.isSafeInteger(light.attempt)&&light.attempt>=1
    &&light.sourcePreserved===true&&light.overallStatus==='PASS'&&JSON.stringify(light.phases?.map(p=>p.id))===JSON.stringify(PROJECT_PHASES)
    &&light.phases.every(p=>p.status==='PASS'&&p.exitCode===0)&&Number.isSafeInteger(light.peakOwnedBytes)&&light.peakOwnedBytes>=0&&light.peakOwnedBytes<=5*1024**3,'OWN_CI');

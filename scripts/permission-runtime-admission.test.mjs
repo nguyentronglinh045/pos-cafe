@@ -158,3 +158,15 @@ test('admission fails closed for stale CI, missing controls/review/binding, unre
   const p=base();change(p);assert.throws(()=>validateAdmissionEvidence(p,'heavy'),/REFUSED/);
  }
 });
+
+
+test('T02 summary v1/v2 admission retains every source, phase and reclaim gate',()=>{
+ for(const schemaVersion of ['pos-cafe-light-ci-v1','pos-cafe-light-ci-v2']){
+  const p=base();p.light.schemaVersion=schemaVersion;assert.equal(validateAdmissionEvidence(p,'heavy').status,'ADMITTED');
+  for(const mutate of [x=>x.light.sourceSHA='e'.repeat(40),x=>x.light.workflowSHA='e'.repeat(40),x=>x.light.overallStatus='FAIL',
+   x=>x.light.phases.pop(),x=>x.light.phases[0].exitCode=1,x=>x.native.rootRemoved=false,x=>x.packet.budget.sha256='0'.repeat(64)]){
+   const bad=base();bad.light.schemaVersion=schemaVersion;mutate(bad);assert.throws(()=>validateAdmissionEvidence(bad,'heavy'),/REFUSED/);
+  }
+ }
+ for(const schemaVersion of ['pos-cafe-light-ci-v3','v2','',null]){const p=base();p.light.schemaVersion=schemaVersion;assert.throws(()=>validateAdmissionEvidence(p,'heavy'),/REFUSED/);}
+});

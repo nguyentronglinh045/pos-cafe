@@ -240,7 +240,7 @@ export async function main() {
     let diagnostic = null;
     if (!valid && info?.isFile()) {
       let report = null; try { report = diagnosticReport ? json(diagnosticReport) : null; } catch { /* missing report stays unknown */ }
-      diagnostic = privateDiagnostics(readFileSync(output, 'utf8'), report, paths, root);
+      diagnostic = privateDiagnostics(readFileSync(output, 'utf8'), report, paths, root, result.blocked === false);
       if (id === 'smoke-preflight') {
         const trace = smokeTraceDiagnostics(report, root, paths);
         diagnostic.codes.push(...trace.codes);

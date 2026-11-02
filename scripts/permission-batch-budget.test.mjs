@@ -383,3 +383,30 @@ test('postgate main wrong merged SHA, tree, PR identity and source cleanup never
   const main=postPacket(f,'main_push'),r2=reservePostGateCi(f.file,{...f.context,purpose:'main_push',identity:'main-ci',...main});assert.throws(()=>settleBatchDispatch(f.file,postTerminal(f,r2,main,{purpose:'main_push',change})));assert.equal(inspectBatch(f.file,{now:f.context.now}).pending.length,1);
  });
 });
+
+
+test('T02 terminal publication accepts v1/v2 only and keeps source/status/phases/budget claims',async()=>{
+ for(const schemaVersion of ['pos-cafe-light-ci-v1','pos-cafe-light-ci-v2','pos-cafe-light-ci-v3'])
+  for(const mutation of ['none','source','workflow','status','phase','reclaim'])await v4Fixture(f=>{
+   initializeBatch(f.file);const r=reservePublicationPair(f.file,f.context);
+   const proof=terminal(f,r,{kind:'publication',conclusion:'success',mutate:({observation:o,reclaim})=>{
+    o.schemaVersion=schemaVersion;if(mutation==='source')o.sourceSHA='0'.repeat(40);if(mutation==='workflow')o.workflowSHA='0'.repeat(40);
+    if(mutation==='status')o.overallStatus='FAIL';if(mutation==='phase')o.phases.pop();if(mutation==='reclaim')reclaim.rootRemoved=false;
+   }});
+   if(schemaVersion!=='pos-cafe-light-ci-v3'&&mutation==='none'){settleBatchDispatch(f.file,proof);assert.equal(inspectBatch(f.file,{now:f.context.now}).pending.length,0);}
+   else{assert.throws(()=>settleBatchDispatch(f.file,proof),/REFUSED/);assert.equal(inspectBatch(f.file,{now:f.context.now}).pending.length,1);}
+  });
+});
+
+test('T02 postgate v1/v2 keeps binding, workflow, phase and reclaim checks; unknown version refused',async()=>{
+ for(const schemaVersion of ['pos-cafe-light-ci-v1','pos-cafe-light-ci-v2','pos-cafe-light-ci-v3'])
+  for(const mutation of ['none','source','status','phase','reclaim'])await v4Fixture(f=>{
+   addPostGate(f);initializeBatch(f.file);const packet=postPacket(f),r=reservePostGateCi(f.file,{...f.context,purpose:'pull_request',...packet});
+   const proof=postTerminal(f,r,packet,{change:({observation:o,reclaim})=>{
+    o.schemaVersion=schemaVersion;if(mutation==='source')o.sourceSHA='0'.repeat(40);if(mutation==='status')o.overallStatus='FAIL';
+    if(mutation==='phase')o.phases.pop();if(mutation==='reclaim')reclaim.rootRemoved=false;
+   }});
+   if(schemaVersion!=='pos-cafe-light-ci-v3'&&mutation==='none'){settleBatchDispatch(f.file,proof);assert.equal(inspectBatch(f.file,{now:f.context.now}).pending.length,0);}
+   else{assert.throws(()=>settleBatchDispatch(f.file,proof),/REFUSED/);assert.equal(inspectBatch(f.file,{now:f.context.now}).pending.length,1);}
+  });
+});
