@@ -2,7 +2,7 @@ import { backendInvocation } from './project-backend.mjs';
 import { ci1TrustedRepository } from './permission-ci1-policy.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { readFileSync, writeFileSync, mkdtempSync, mkdirSync, existsSync, linkSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdtempSync, mkdirSync, existsSync, linkSync, rmSync, lstatSync } from 'node:fs';
 import { crc32 } from 'node:zlib';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -12,6 +12,166 @@ import SmokeFailureReporter, { smokeStepDiagnostic, smokeTraceDiagnostics, smoke
 import { capturedCommand, trackedFingerprint, lightEnvironment, checkoutGit, allocatedBytes, coreLimitDisabled, browserRuntimeControlCanStart, gitCommitParents } from './project-ci.mjs';
 import { lightService, lightOwnerMatches, withLightCorePattern, stopLightUnit, coreDumpDisabled, linuxCorePatternAdapter } from './project-ci-launch.mjs';
 import { verifyReleaseRun, verifyReleaseEnvironment, verifyReleaseFiles, productionCommands, PRODUCTION_ENABLED } from './project-release.mjs';
+
+// T02 fixtures follow the JSON serializer: errors[] has location/message only;
+// raw error.stack and errorLocation describe that same first error.
+function t02Error(line=31, message='FAKE_PRIVATE_TOKEN expected false to be true') {
+  return {message,stack:`Error: ${message}\n    at /source/tests/smoke/pos-cafe.spec.ts:${line}:3`};
+}
+function t02Fixture({file='pos-cafe.spec.ts',title='case',projectName='desktop',status='failed',retry=0,line=20,errorLine=31}={}) {
+  const error=t02Error(errorLine), filePath='/source/tests/smoke/'+file;
+  const result={status,retry,duration:250,error,errors:[{message:error.message,location:{file:filePath,line:errorLine,column:3}}]};
+  const testEntry={projectName,timeout:60000,results:[result]},spec={file,title,line,tests:[testEntry]};
+  return {report:{suites:[{specs:[spec]}],stats:{expected:0,unexpected:1,skipped:0,flaky:0}},spec,testEntry,result,file:filePath,
+    files:['tests/smoke/pos-cafe.spec.ts','tests/smoke/helpers.ts','tests/smoke/permission-ui-closeout.spec.ts','tests/smoke/demo-runbook.spec.ts','tests/smoke/report-presentation.spec.ts']};
+}
+function t02TestCase(f) { return {title:f.spec.title,location:{file:f.file,line:f.spec.line},parent:{project:()=>({name:f.testEntry.projectName})}}; }
+function t02Record(f, changes={}) {
+  return {schemaVersion:'pos-smoke-terminal-v1',caseDigest:hash(`${f.testEntry.projectName}|${f.spec.file}|${f.spec.line}|${f.spec.title}`),
+    retry:f.result.retry,statusOrdinal:['failed','timedOut','interrupted'].indexOf(f.result.status)+1,
+    step:{categoryOrdinal:2,apiOrdinal:7,locatorOrdinal:1,durationMs:11},...changes};
+}
+function t02Line(f,changes={}) {return 'PROJECT_SMOKE_TERMINAL_STEP '+JSON.stringify(t02Record(f,changes));}
+function t02Parse(f,output=t02Line(f),complete=true) {return privateDiagnostics(output,f.report,f.files,'/source',complete);}
+function t02NoStep(d) {for(const key of ['smokeStepCategoryOrdinal','smokeStepApiOrdinal','smokeStepLocatorOrdinal','smokeStepDurationMs','browserCrashBeforeFailedStep'])assert.equal(d.metrics[key],undefined,key);}
+
+test('T02 TC08: buffer boundaries, 10000-result lifecycle and terminal-only output cap',t=>{
+  const lines=[];t.mock.method(console,'log',line=>lines.push(line));const r=new SmokeFailureReporter();r.onBegin({rootDir:'/source/tests/smoke'});
+  const f=t02Fixture(),tc=t02TestCase(f),error=t02Error(),step={category:'expect',title:'expect.toBeVisible',duration:11,error};
+  const results=Array.from({length:64},()=>({status:'failed',retry:0,errors:[error]}));
+  for(const result of results){r.onTestBegin(tc,result);r.onStepEnd(tc,result,step);
+    for(let n=0;n<127;n++)r.onStepEnd(tc,result,{...step,error:t02Error(n+100)});
+    assert.equal(r.buffers.get(result).size,128);}
+  assert.equal(r.buffers.size,64);
+  for(const result of results)r.onTestEnd(tc,result);
+  assert.equal(r.buffers.size,0);assert.equal(lines.length,32);
+  for(const line of lines){assert.ok(Buffer.byteLength(line)<=512);assert.notEqual(JSON.parse(line.slice('PROJECT_SMOKE_TERMINAL_STEP '.length)).step,null);}
+  const quiet=new SmokeFailureReporter();quiet.onBegin({rootDir:'/source/tests/smoke'});
+  for(let n=0;n<10000;n++){const result={status:'passed',retry:0,errors:[]};quiet.onTestBegin(tc,result);
+    for(let k=0;k<20;k++)quiet.onStepEnd(tc,result,{...step,error:t02Error(k+100)});
+    assert.ok(quiet.buffers.size<=64);quiet.onTestEnd(tc,result);assert.equal(quiet.buffers.size,0);}
+  assert.equal(quiet.emitted,0);
+  const late=t02Fixture({title:'not-emitted'});t02NoStep(t02Parse(late,lines.join('\n')));assert.equal(t02Parse(late,lines.join('\n')).metrics.smokeFailureLine,31);
+
+});
+
+test('T02 TC01-03b: successful transient errors emit nothing; terminal result owns every metric', t=>{
+  const lines=[];t.mock.method(console,'log',line=>lines.push(line));
+  const reporter=new SmokeFailureReporter();reporter.onBegin({rootDir:'/source/tests/smoke'});
+  const a=t02Fixture({title:'passed',status:'passed'}),b=t02Fixture({title:'failed',errorLine:70});
+  for(const f of [a,b]){const tc=t02TestCase(f),reported={...f.result,errors:[f.result.error]};reporter.onTestBegin(tc,reported);
+    reporter.onStepEnd(tc,reported,{category:'expect',title:'expect.toBeVisible',duration:11,error:f.result.error});
+    reporter.onTestEnd(tc,reported);}
+  assert.equal(lines.length,1);assert.equal(reporter.buffers.size,0);
+  b.report.suites[0].specs.unshift(a.spec);
+  for(const output of [lines.join('\n'),t02Line(a)+'\n'+lines[0],lines[0]+'\n'+t02Line(a)]) {
+    const d=t02Parse(b,output);assert.equal(d.metrics.smokeFailureLine,70);assert.equal(d.metrics.smokeStepDurationMs,11);
+  }
+  a.report.suites[0].specs=[a.spec];t02NoStep(t02Parse(a,''));
+});
+
+test('T02 TC03c/d/e: same first error, exact inner step, duplicate keys and bounded buffers',t=>{
+  const lines=[];t.mock.method(console,'log',line=>lines.push(line));
+  const run=(steps,errors,setup=()=>{})=>{const r=new SmokeFailureReporter(),f=t02Fixture();r.onBegin({rootDir:'/source/tests/smoke'});
+    setup(r);r.onTestBegin(t02TestCase(f),f.result);for(const s of steps)r.onStepEnd(t02TestCase(f),f.result,s);
+    f.result.errors=errors;r.onTestEnd(t02TestCase(f),f.result);return {r,record:JSON.parse(lines.at(-1).slice('PROJECT_SMOKE_TERMINAL_STEP '.length))};};
+  const x=t02Error(40),y=t02Error(50),step=(error,duration=11)=>({category:'expect',title:'expect.toBeVisible',duration,error});
+  assert.equal(run([step(x),step(y,29)],[x,y]).record.step.durationMs,11);
+  assert.equal(run([step(x),step(y,29)],[y]).record.step.durationMs,29);
+  assert.equal(run([step(x),step(x,29)],[x]).record.step,null);
+  const parent={...step(x,99),category:'test.step'},child={...step(x),parent};
+  assert.equal(run([child,parent],[x]).record.step.durationMs,11);
+  const softParent={...parent},softChild={...child,parent:softParent};
+  assert.equal(run([softChild,softParent],[x,y]).record.step.categoryOrdinal,2);
+  // Boxed stack equality is the contract; missing-name box changes the stack.
+  assert.equal(run([child,parent],[{...x}]).record.step.durationMs,11);
+  assert.equal(run([child,parent],[{...x,stack:': '+x.stack}]).record.step,null);
+  for(const bad of [{message:'x'},{...x,stack:'Error: no frame'},{...x,message:'x'.repeat(1048577)},{...x,stack:x.stack+'x'.repeat(1048577)}])
+    assert.equal(run([step(x)],[bad]).record.step,null);
+  const many=Array.from({length:128},(_,i)=>step(t02Error(i+100)));
+  assert.equal(run([...many,step(x)],[x]).record.step,null);
+  assert.equal(run([step(x),...many],[x]).record.step.durationMs,11);
+  const full=run([step(x)],[x],r=>{for(let i=0;i<64;i++)r.onTestBegin({},{});});
+  assert.equal(full.record.step,null);assert.equal(full.r.buffers.size,64);
+  const r=new SmokeFailureReporter();r.onBegin({rootDir:'/source/tests/smoke'});const f=t02Fixture();r.onTestBegin({},f.result);
+  for(const s of many)r.onStepEnd({},f.result,s);r.onStepEnd({},f.result,step(x));
+  const map=r.buffers.get(f.result);assert.equal(map.size,128);
+  for(const [key,value]of map){assert.match(key,/^[a-f0-9]{64}$/);assert.ok([1,2].includes(value.count));
+    assert.ok(Object.values(value.fields).every(v=>v===null||Number.isInteger(v)));}
+});
+
+test('T02 TC04-07c: final attempt, interrupted fallback and unique discovery identity',()=>{
+  const interrupted=t02Fixture({title:'interrupted',status:'interrupted'}),failed=t02Fixture({title:'failure',errorLine:80});
+  failed.report.suites[0].specs.unshift(interrupted.spec);
+  assert.equal(t02Parse(failed).metrics.smokeFailureLine,80);
+  interrupted.result.errors=[];delete interrupted.result.error;
+  const d=t02Parse(interrupted);assert.equal(d.metrics.smokeResultStatusOrdinal,3);assert.equal(d.metrics.smokeFailureLine,undefined);
+  for(const status of ['passed','skipped','failed']){
+    const f=t02Fixture();f.testEntry.results.push({...f.result,retry:1,status,duration:999});
+    const d=t02Parse(f);t02NoStep(d);
+    assert.equal(d.metrics.smokeResultStatusOrdinal,status==='failed'?1:undefined);
+    if(status==='failed'){assert.equal(d.metrics.smokeResultDurationMs,999);f.result=f.testEntry.results[1];assert.equal(t02Parse(f).metrics.smokeStepDurationMs,11);}
+    assert.throws(()=>smokeCounts(f.report,f.report,[]));
+  }
+  const a=t02Fixture(), variants=[t02Fixture({file:'demo-runbook.spec.ts',errorLine:55}),t02Fixture({title:'parameter2',errorLine:56}),t02Fixture({projectName:'phone-landscape',errorLine:57})];
+  for(const b of variants)for(const reverseReport of [false,true])for(const reverseOutput of [false,true]){
+    const f=reverseReport?b:a;f.report={suites:[{specs:reverseReport?[b.spec,a.spec]:[a.spec,b.spec]}]};
+    const d=t02Parse(f,(reverseOutput?[t02Line(b,{step:{categoryOrdinal:2,apiOrdinal:0,locatorOrdinal:0,durationMs:29}}),t02Line(a)]:[t02Line(a),t02Line(b,{step:{categoryOrdinal:2,apiOrdinal:0,locatorOrdinal:0,durationMs:29}})]).join('\n'));
+    assert.equal(d.metrics.smokeStepDurationMs,reverseReport?29:11);assert.deepEqual([...new Set(d.failedFiles)].sort(),[...new Set([a.spec.file,b.spec.file].map(file=>'tests/smoke/'+file))].sort());
+  }
+  const dup=t02Fixture();dup.report.suites[0].specs.push(structuredClone(dup.spec));t02NoStep(t02Parse(dup));
+});
+
+test('T02 TC05a-d/17/24: only error0 locations, strict paths, no timeout error1 fallback',()=>{
+  const f=t02Fixture(),loc=f.result.errors[0].location;
+  for(const file of ['/source/node_modules/x.ts','/source/tests/smoke/../pos-cafe.spec.ts','tests/smoke/%2e/x.ts','file://host/source/tests/smoke/pos-cafe.spec.ts','file:///source/tests/smoke/pos-cafe.spec.ts?q=1']){
+    f.result.errors[0].location={...loc,file};assert.equal(t02Parse(f).metrics.smokeFailureLine,31);
+  }
+  delete f.result.errors[0].location;f.result.errorLocation={...loc,line:44};assert.equal(t02Parse(f).metrics.smokeFailureLine,44);
+  delete f.result.errorLocation;assert.equal(t02Parse(f).metrics.smokeFailureLine,31);
+  f.result.error={message:'timeout',stack:'Error: timeout'};f.result.errors=[{message:'timeout'},{message:'click',location:loc}];f.result.status='timedOut';
+  const d=t02Parse(f,t02Line(f,{step:null}));assert.equal(d.metrics.smokeResultStatusOrdinal,2);t02NoStep(d);
+  for(const k of ['smokeFailureLine','smokeFailureColumn','smokeStepSourceOrdinal','smokeHelperLine'])assert.equal(d.metrics[k],undefined);
+  f.result.errors=[];f.result.error={...t02Error(31),location:loc};assert.equal(t02Parse(f).metrics.smokeFailureLine,31);
+  f.result.errors=[{location:{...loc,file:'/source/tests/smoke/helpers.ts',line:6}}];assert.equal(t02Parse(f).metrics.smokeHelperLine,6);
+  f.result.errors[0].location=loc;f.result.error.stack+='\n    at /source/tests/smoke/helpers.ts:19:7';assert.equal(t02Parse(f).metrics.smokeHelperLine,19);
+  const presentation=t02Fixture({file:'report-presentation.spec.ts'});assert.equal(t02Parse(presentation).metrics.smokeStepSourceOrdinal,5);
+});
+
+test('T02 TC08/10/11/25/26: complete, unique, bounded terminal records only',()=>{
+  const f=t02Fixture(),good=t02Line(f),other=t02Line(f,{caseDigest:'a'.repeat(64)}),crash='pw:browser Received signal 11';
+  for(const records of [[good,good],[t02Line(f,{retry:1})],[t02Line(f,{statusOrdinal:2})],[t02Line(f,{extra:1})],
+    [t02Line(f,{schemaVersion:'other'})],['prefix '+good],[good+'x'.repeat(1024)],['PROJECT_SMOKE_FAILED_STEP {}'],
+    [t02Line(f,{step:{categoryOrdinal:999,apiOrdinal:0,locatorOrdinal:0,durationMs:1}})]])t02NoStep(t02Parse(f,records.join('\n')));
+  assert.equal(t02Parse(f,[good,...Array(63).fill(other)].join('\n')).metrics.smokeStepDurationMs,11);
+  const malformed='XPROJECT_SMOKE_TERMINAL_STEP'+ 'x'.repeat(1050);
+  assert.equal(t02Parse(f,[good,...Array(63).fill(malformed)].join('\n')).metrics.smokeStepDurationMs,11);
+  for(const records of [[good,...Array(63).fill(other),good],[good,...Array(64).fill(other)],[...Array(64).fill(other),good],[good,crash,...Array(64).fill(malformed)]]){
+    const d=t02Parse(f,records.join('\n'));t02NoStep(d);assert.equal(d.metrics.smokeFailureLine,31);}
+  t02NoStep(t02Parse(f,good,false));assert.equal(t02Parse(f,good).metrics.smokeStepDurationMs,11);
+  const huge=t02Fixture();huge.report.suites.push(...Array.from({length:10000},()=>({})));t02NoStep(t02Parse(huge));assert.equal(t02Parse(huge).metrics.smokeFailureLine,31);
+  const child=t02Fixture();child.report.suites[0].suites=Array.from({length:10001},()=>({}));t02NoStep(t02Parse(child));
+  huge.result.status='interrupted';assert.equal(t02Parse(huge).metrics.smokeResultStatusOrdinal,undefined);
+  const d=t02Parse(f,'[81/81]\ntests/smoke/helpers.ts:99:3\n'+good);assert.equal(d.metrics.smokeProgressIndex,undefined);assert.equal(d.metrics.smokeHelperLine,undefined);
+  const defaultComplete=privateDiagnostics(good,f.report,f.files,'/source');assert.equal(defaultComplete.metrics.smokeStepDurationMs,11);
+  assert.match(readFileSync(new URL('./project-ci.mjs',import.meta.url),'utf8'),/diagnostic = privateDiagnostics\(readFileSync\(output, 'utf8'\), report, paths, root, result\.blocked === false\);/);
+});
+
+test('T02 TC18/20-23/25: output/report separation for CR, LF, ANSI and crash ordering',()=>{
+  const f=t02Fixture(),good=t02Line(f),crash='pw:browser Received signal 11';
+  for(const ending of ['\r','\n','\r\n','']){
+    f.result.errors[0].message=crash+'\n'+good;
+    assert.equal(t02Parse(f,good+ending).metrics.smokeStepDurationMs,11);assert.equal(t02Parse(f,good+ending).metrics.browserCrashBeforeFailedStep,undefined);
+    t02NoStep(t02Parse(f,'ordinary output'+ending));
+    assert.equal(t02Parse(f,crash+'\r'+good+ending).metrics.browserCrashBeforeFailedStep,1);
+  }
+  assert.equal(t02Parse(f,good+'\r'+crash).metrics.browserCrashBeforeFailedStep,0);
+  assert.equal(t02Parse(f,'X\r\x1b[0m\n'+crash+'\r'+good).metrics.browserCrashBeforeFailedStep,1);
+  const missing=privateDiagnostics(good+'\n'+crash,null,f.files,'/source');t02NoStep(missing);assert.equal(missing.metrics.browserCrashSignal,11);assert.ok(missing.codes.includes('REPORT_MISSING'));
+  for(const report of [{suites:{}},{testResults:[],numFailedTests:1}]){const d=privateDiagnostics(good+'\n[1/2]\ntests/smoke/helpers.ts:99:3',report,f.files,'/source');t02NoStep(d);assert.equal(d.metrics.smokeHelperLine,undefined);}
+  const preflight=publicSummary(binding,[{id:'install',status:'FAIL',exitCode:1,elapsedMs:1,invocationSHA:digest,reportSHA:digest,diagnostic:t02Parse(f,good)}],{source:digest,lock:digest});
+  assert.equal(preflight.overallStatus,'FAIL');assert.equal(preflight.phases[0].diagnostic.metrics.smokeStepDurationMs,11);
+});
 
 const sha = '1'.repeat(40), other = '2'.repeat(40), digest = '3'.repeat(64);
 const env = { GITHUB_REPOSITORY: 'nguyentronglinh045/pos-cafe', GITHUB_REPOSITORY_ID: '1263057386', GITHUB_ACTIONS: 'true', RUNNER_ENVIRONMENT: 'github-hosted',
@@ -185,8 +345,8 @@ test('protocol source strings do not become application errors and only top-leve
   const marker='PROJECT_SMOKE_FAILED_STEP {}';
   const observed=privateDiagnostics(event+'\n'+marker+'\npw:browser [pid=123][err] Received signal 11 FAKE_PRIVATE',null);
   assert.equal(observed.metrics.browserTargetCrashStatusOrdinal,1); assert.equal(observed.metrics.browserTargetCrashErrorCode,139);
-  assert.equal(observed.metrics.browserCrashBeforeFailedStep,1); assert.equal(observed.metrics.browserCrashSignal,11);
-  assert.equal(privateDiagnostics(marker+'\n'+event,null).metrics.browserCrashBeforeFailedStep,0);
+  assert.equal(observed.metrics.browserCrashBeforeFailedStep,undefined); assert.equal(observed.metrics.browserCrashSignal,11);
+  assert.equal(privateDiagnostics(marker+'\n'+event,null).metrics.browserCrashBeforeFailedStep,undefined);
   const safe=publicSummary(binding,[{id:'install',status:'FAIL',exitCode:1,elapsedMs:1,invocationSHA:digest,reportSHA:digest,diagnostic:observed}],{source:digest,lock:digest});
   assert.equal(safe.overallStatus,'FAIL'); assert.equal(safe.phases[0].diagnostic.metrics.browserTargetCrashErrorCode,139);
   assert.equal(JSON.stringify(safe).includes('PRIVATE'),false);
@@ -223,7 +383,7 @@ test('actual debug formatter CR prefixes and colored duration suffixes preserve 
     const receive=prefix+'◀ RECV '+JSON.stringify({method:'Inspector.targetCrashed',params:{}})+suffix;
     const observed=privateDiagnostics('\r'+send+'\r\n'+receive+'\rPROJECT_SMOKE_FAILED_STEP {}',null);
     for(const code of ['TYPE_ERROR','REFERENCE_ERROR','TEST_TIMEOUT']) assert.equal(observed.codes.includes(code),false);
-    assert.equal(observed.metrics.browserInspectorCrashObserved,1); assert.equal(observed.metrics.browserCrashBeforeFailedStep,1);
+    assert.equal(observed.metrics.browserInspectorCrashObserved,1); assert.equal(observed.metrics.browserCrashBeforeFailedStep,undefined);
     assert.equal(privateDiagnostics(receive+' FAKE_PRIVATE',null).metrics.browserInspectorCrashObserved,undefined);
   }
 });
@@ -384,7 +544,7 @@ test('smoke timeout exposes only finite API stage and a known failing source loc
     const report = { suites: [{ specs: [{ file: 'pos-cafe.spec.ts', line: 119, tests: [{ projectName: 'desktop',
       results: [{ status: 'timedOut', error: { message: message + ' FAKE_PRIVATE_TOKEN https://private.example',
         stack: 'at /private/source/tests/smoke/pos-cafe.spec.ts:121:14' } }] }] }] }] };
-    const info = privateDiagnostics('', report, ['tests/smoke/pos-cafe.spec.ts']);
+    const info = privateDiagnostics('', report, ['tests/smoke/pos-cafe.spec.ts'], '/private/source');
     assert.ok(info.codes.includes(codes[i]));
     assert.equal(info.metrics.smokeFailureLine, 121); assert.equal(info.metrics.smokeFailureColumn, 14);
     const safe = publicSummary(binding, [{ id: 'install', status: 'FAIL', elapsedMs: 1, exitCode: 1,
@@ -393,7 +553,7 @@ test('smoke timeout exposes only finite API stage and a known failing source loc
     for (const secret of ['FAKE_PRIVATE_TOKEN', 'private.example', '/private/source']) assert.equal(JSON.stringify(safe).includes(secret), false);
     assert.equal(privateDiagnostics('', report, []).metrics.smokeFailureLine, undefined);
     report.suites[0].specs[0].tests[0].results[0].error.stack = 'at /private/source/tests/smoke/pos-cafe.spec.ts:1000001:14';
-    assert.equal(privateDiagnostics('', report, ['tests/smoke/pos-cafe.spec.ts']).metrics.smokeFailureLine, undefined);
+    assert.equal(privateDiagnostics('', report, ['tests/smoke/pos-cafe.spec.ts'], '/private/source').metrics.smokeFailureLine, undefined);
   }
 });
 
@@ -406,34 +566,27 @@ test('shared core adapter rejects arbitrary units and requires zero limits plus 
   for(const unit of ['ssh.service','pos-cafe-ci1-r123-a1.service\n','../arbitrary']) assert.throws(()=>linuxCorePatternAdapter(unit));
 });
 
-test('failure reporter retains the actual failed step location and finite locator while removing raw data', t => {
-  const step = { title: 'expect.toBeVisible', category: 'expect', duration: 5000,
-    location: { file: process.cwd() + '/tests/smoke/pos-cafe.spec.ts', line: 122, column: 49 },
-    error: { message: "FAKE_PRIVATE_TOKEN\nLocator: getByTestId('landing-screen')\nhttps://private.example" }, raw: 'FAKE_PRIVATE_TOKEN' };
-  const lines = []; t.mock.method(console, 'log', line => lines.push(line));
-  const reporter = new SmokeFailureReporter();
-  reporter.onStepEnd({}, {}, { ...step, error: undefined }); assert.equal(lines.length, 0);
-  reporter.onStepEnd({}, {}, step);
-  reporter.onTestEnd({}, { duration: 60000, errors: [{ ...step.error, location: step.location }] });
-  assert.equal(reporter.onEnd, undefined);
-  const info = privateDiagnostics('tests/smoke/pos-cafe.spec.ts:119:1\n' + lines.join('\n'), null, ['tests/smoke/pos-cafe.spec.ts']);
-  assert.equal(info.metrics.smokeFailureLine, 122); assert.equal(info.metrics.smokeStepSourceOrdinal, 1);
-  assert.equal(info.metrics.smokeStepLocatorOrdinal, 1); assert.equal(info.metrics.smokeStepCategoryOrdinal, 2);
-  assert.equal(info.metrics.smokeStepApiOrdinal, 7);
-  assert.equal(info.metrics.smokeStepDurationMs, 5000);
-  const safe = publicSummary(binding, [{ id: 'install', status: 'FAIL', elapsedMs: 1, exitCode: 1,
-    invocationSHA: digest, reportSHA: digest, diagnostic: info }], { source: digest, lock: digest });
-  assert.equal(safe.overallStatus, 'FAIL'); assert.equal(safe.phases[0].diagnostic.metrics.smokeStepLocatorOrdinal, 1);
-  for (let i = 0; i < 40; i++) reporter.onStepEnd({}, {}, step);
-  assert.equal(lines.length, 32);
-  for (const value of ['FAKE_PRIVATE_TOKEN', 'private.example', process.cwd()]) assert.equal(lines.join('\n').includes(value), false);
-  const unknown = smokeStepDiagnostic({ ...step, title: 'FAKE_PRIVATE_TOKEN', category: 'FAKE_PRIVATE_TOKEN', duration: Infinity,
-    location: { file: '/private/unknown.ts', line: 1, column: 1 }, error: { message: "Locator: getByTestId('FAKE_PRIVATE_TOKEN')" } }, process.cwd());
-  assert.equal(unknown.file, null); assert.equal(unknown.categoryOrdinal, 0); assert.equal(unknown.locatorOrdinal, 0); assert.equal(unknown.durationMs, null);
-  const hostile = privateDiagnostics('PROJECT_SMOKE_FAILED_STEP ' + JSON.stringify({ ...unknown, categoryOrdinal: 999, apiOrdinal: 999,
-    locatorOrdinal: 999, file: '/private/unknown.ts', line: 1, column: 1, raw: 'FAKE_PRIVATE_TOKEN' }), null, []);
-  assert.equal(hostile.metrics.smokeStepLocatorOrdinal, undefined); assert.equal(hostile.metrics.smokeStepSourceOrdinal, undefined);
-  assert.equal(JSON.stringify(hostile).includes('FAKE_PRIVATE_TOKEN'), false);
+test('failure reporter retains only the terminal error step and finite fields, without raw data', t => {
+  const f=t02Fixture(), error=t02Error(122), step={title:'expect.toBeVisible',category:'expect',duration:5000,
+    error:{...error,message:"FAKE_PRIVATE_TOKEN\nLocator: getByTestId('landing-screen')"}};
+  f.result.errors=[{location:{file:f.file,line:122,column:3},message:step.error.message}];f.result.error=step.error;
+  const lines=[];t.mock.method(console,'log',line=>lines.push(line));
+  const reporter=new SmokeFailureReporter();reporter.onBegin({rootDir:'/source/tests/smoke'});
+  const testCase=t02TestCase(f);const reported={...f.result,errors:[step.error]};reporter.onTestBegin(testCase,reported);
+  reporter.onStepEnd(testCase,reported,{...step,error:undefined});reporter.onStepEnd(testCase,reported,step);
+  assert.equal(lines.length,0);reporter.onTestEnd(testCase,reported);assert.equal(reporter.onEnd,undefined);
+  const info=privateDiagnostics(lines.join('\n'),f.report,f.files,'/source');
+  assert.equal(info.metrics.smokeFailureLine,122);assert.equal(info.metrics.smokeStepSourceOrdinal,1);
+  assert.equal(info.metrics.smokeStepLocatorOrdinal,1);assert.equal(info.metrics.smokeStepCategoryOrdinal,2);
+  assert.equal(info.metrics.smokeStepApiOrdinal,7);assert.equal(info.metrics.smokeStepDurationMs,5000);
+  const safe=publicSummary(binding,[{id:'install',status:'FAIL',elapsedMs:1,exitCode:1,invocationSHA:digest,reportSHA:digest,diagnostic:info}],{source:digest,lock:digest});
+  assert.equal(safe.overallStatus,'FAIL');assert.equal(safe.schemaVersion,'pos-cafe-light-ci-v2');
+  for(let i=0;i<40;i++){const r={...f.result,errors:[step.error]};reporter.onTestBegin(testCase,r);reporter.onStepEnd(testCase,r,step);reporter.onTestEnd(testCase,r);}
+  assert.equal(lines.length,32);assert.equal(reporter.buffers.size,0);
+  for(const secret of ['FAKE_PRIVATE_TOKEN','/source',process.cwd()])assert.equal(JSON.stringify(safe).includes(secret)||lines.join('\n').includes(secret),false);
+  const unknown=smokeStepDiagnostic({...step,title:'FAKE_PRIVATE_TOKEN',category:'FAKE_PRIVATE_TOKEN',duration:Infinity,
+    location:{file:'/private/unknown.ts',line:1,column:1},error:{message:"Locator: getByTestId('FAKE_PRIVATE_TOKEN')"}},'/source');
+  assert.equal(unknown.file,null);assert.equal(unknown.categoryOrdinal,0);assert.equal(unknown.locatorOrdinal,0);assert.equal(unknown.durationMs,null);
 });
 
 test('core restore requires stopped unit plus recursively empty or confirmed absent cgroup', () => {
@@ -639,12 +792,12 @@ test('smoke preflight requires the one original desktop case and never substitut
 
 test('failed Playwright diagnostics expose known source locations and counts without raw errors or titles', () => {
   const report={suites:[{specs:[{file:'pos-cafe.spec.ts',line:119,title:'FAKE_UNIT_SECRET',tests:[{projectName:'desktop',results:[{
-    status:'timedOut',errors:[{message:'Test timeout FAKE_UNIT_SECRET',stack:'/source/tests/smoke/helpers.ts:19:3'}]}]}]}]}],
+    status:'timedOut',errors:[{message:'Test timeout FAKE_UNIT_SECRET'}],error:{message:'Test timeout FAKE_UNIT_SECRET',stack:'at /source/tests/smoke/helpers.ts:19:3'}}]}]}]}],
     stats:{expected:0,unexpected:1,skipped:0,flaky:0}};
   const d=privateDiagnostics('[9/81] FAKE_UNIT_SECRET',report,['tests/smoke/pos-cafe.spec.ts','tests/smoke/helpers.ts'],'/source');
   assert.deepEqual(d.failedFiles,['tests/smoke/pos-cafe.spec.ts']);
   assert.equal(d.metrics.smokeUnexpected,1);assert.equal(d.metrics.smokeHelperLine,19);assert.equal(d.metrics.smokeTestLine,119);
-  assert.equal(d.metrics.smokeFailureProjectOrdinal,1);assert.equal(d.metrics.smokeProgressIndex,9);
+  assert.equal(d.metrics.smokeFailureProjectOrdinal,1);assert.equal(d.metrics.smokeProgressIndex,undefined);
   assert.equal(JSON.stringify(d).includes('FAKE_UNIT_SECRET'),false);
   const bad=structuredClone(report);bad.suites[0].specs[0].file='../private/FAKE_UNIT_SECRET';bad.stats.unexpected=-1;
   const safe=privateDiagnostics('',bad,[]);assert.deepEqual(safe.failedFiles,[]);assert.equal(safe.metrics.smokeUnexpected,undefined);
@@ -748,8 +901,9 @@ test('light supervisor constrains descendants and passes no credential environme
   assert.equal(args.join(' ').includes('FAKE_PRIVATE_TOKEN'), false);
 });
 
-test('allocation facts deduplicate overlapping roots and hardlinks without treating logical bytes as allocated bytes', () => {
+test('allocation facts deduplicate overlapping roots and hardlinks without treating logical bytes as allocated bytes', t => {
   const root=mkdtempSync(join(tmpdir(),'pos-ci-owned-'));
+  t.after(()=>rmSync(root,{recursive:true,force:true}));
   writeFileSync(join(root,'core.1'),Buffer.alloc(32));linkSync(join(root,'core.1'),join(root,'core.2'));
   const facts={},bytes=allocatedBytes([root,root],facts);
   assert.equal(facts.coreFileCount,1);
@@ -907,4 +1061,59 @@ test('backend manual guard requires confirmation, immutable workflow/source and 
   assert.equal(ci1TrustedRepository(env.GITHUB_REPOSITORY), true);
   assert.equal(ci1TrustedRepository('nguyentronglinh045/pos-cafe-ci-preflight'), true);
   assert.equal(ci1TrustedRepository('attacker/pos-cafe'), false);
+});
+
+
+function t02PhaseRows(id) {
+  return PROJECT_PHASES.slice(0,PROJECT_PHASES.indexOf(id)).map(id=>({id,status:'PASS',exitCode:0,elapsedMs:1,invocationSHA:digest,reportSHA:digest,counts:null,diagnostic:null}));
+}
+function t02Phase(root,rows,overrides={}) {
+  // Execute the production closure with local unit dependencies, not copied
+  // fail/stop decisions. The GitHub/cgroup service itself is not run here.
+  const source=readFileSync(new URL('./project-ci.mjs',import.meta.url),'utf8');
+  const body=source.slice(source.indexOf('  const phase = async ('),source.indexOf('  const json = name =>'));
+  assert.ok(body.startsWith('  const phase = async (')&&body.endsWith('  };\n'));
+  const dependencies={root,task:root,rows,binding,fingerprints:{source:digest,lock:digest},paths:[],env:process.env,
+    capturedCommand,hash,trackedFingerprint:()=>digest,guard(){},guardFacts:{},guardFailureCode,lstatSync,readFileSync,
+    privateDiagnostics,join,json:name=>JSON.parse(readFileSync(join(root,name+'.json'),'utf8')),
+    refuse(){throw Error('PROJECT_CI_REFUSED');},guardRefuse(){throw Error('RESOURCE_SOURCE_DRIFT');},...overrides};
+  return new Function(...Object.keys(dependencies),body+'\nreturn phase;')(...Object.values(dependencies));
+}
+
+test('T02 TC13: reporter throw in a real child cannot pass collector or run later phases',async t=>{
+  const root=mkdtempSync(join(tmpdir(),'t02-reporter-throw-'));t.after(()=>rmSync(root,{recursive:true,force:true}));
+  const child=`import R from ${JSON.stringify(new URL('./project-ci-results.mjs',import.meta.url).href)};
+    const reporter=new R(), error={message:'CONTROL',stack:'Error: CONTROL\\n at /source/spec.ts:1:1'};
+    const result={status:'failed',retry:0,errors:[error]}, test={title:'control',location:{file:process.cwd()+'/spec.ts',line:1},parent:{project:()=>({name:'desktop'})}};
+    reporter.onBegin({rootDir:process.cwd()});reporter.onTestBegin(test,result);
+    reporter.onStepEnd(test,result,{error,title:'expect.toBe',category:'expect',duration:1});
+    console.log=()=>{throw Error('REPORTER_INTERNAL_CONTROL')};reporter.onTestEnd(test,result);`;
+  const rows=t02PhaseRows('smoke'),phase=t02Phase(root,rows);
+  let continued=false;
+  await assert.rejects(async()=>{await phase('smoke',process.execPath,['--input-type=module','--eval',child]);continued=true;},/PROJECT_CI_REFUSED/);
+  assert.equal(continued,false);assert.equal(rows.at(-1).id,'smoke');assert.equal(rows.at(-1).status,'FAIL');assert.equal(rows.at(-1).exitCode,1);
+  assert.match(readFileSync(join(root,'smoke.log'),'utf8'),/REPORTER_INTERNAL_CONTROL/);
+  const safe=publicSummary(binding,rows,{source:digest,lock:digest});assert.equal(safe.overallStatus,'FAIL');
+  assert.equal(safe.phases.some(p=>p.id==='ui-selftest'||p.id==='ui-audit'),false);
+  assert.equal(JSON.stringify(safe).includes('REPORTER_INTERNAL_CONTROL'),false);assert.equal(SmokeFailureReporter.prototype.onEnd,undefined);
+});
+
+test('T02 TC19: failed desktop preflight keeps terminal attribution and trace diagnostics',async t=>{
+  const root=mkdtempSync(join(tmpdir(),'t02-preflight-'));t.after(()=>rmSync(root,{recursive:true,force:true}));
+  const folder=join(root,'test-results','case');mkdirSync(folder,{recursive:true});const file=join(folder,'trace.zip');
+  writeFileSync(file,storedTraceZip({'0-trace.trace':traceLines([{type:'console',messageType:'error',text:'ReferenceError FAKE_TRACE_PRIVATE_TOKEN'}])}));
+  const f=t02Fixture();f.result.errors[0].location.file=join(root,'tests','smoke','pos-cafe.spec.ts');
+  f.result.attachments=[{name:'trace',contentType:'application/zip',path:file}];writeFileSync(join(root,'smoke-preflight.json'),JSON.stringify(f.report));
+  const cgroup=join(root,'cgroup');mkdirSync(cgroup);for(const name of ['cgroup.procs','cgroup.stat'])writeFileSync(join(cgroup,name),'');
+  const unzip=process.platform==='win32'?'D:/Git/usr/bin/unzip.exe':'unzip';
+  const rows=t02PhaseRows('smoke-preflight'),phase=t02Phase(root,rows,{paths:f.files,cgroup,browserRuntimeControlCanStart:()=>false,
+    smokeTraceDiagnostics:(report,root,files)=>smokeTraceDiagnostics(report,root,files,(_command,args,options)=>execFileSync(unzip,args,options))});
+  const child='console.log('+JSON.stringify(t02Line(f))+');process.exitCode=1;';
+  await assert.rejects(()=>phase('smoke-preflight',process.execPath,['--eval',child],undefined,'smoke-preflight'),/PROJECT_CI_REFUSED/);
+  const diagnostic=rows.at(-1).diagnostic;assert.equal(rows.at(-1).status,'FAIL');assert.equal(diagnostic.metrics.smokeFailureLine,31);
+  assert.equal(diagnostic.metrics.smokeFailureProjectOrdinal,1);assert.equal(diagnostic.metrics.smokeStepDurationMs,11);
+  assert.equal(diagnostic.metrics.traceReadable,1);assert.equal(diagnostic.metrics.traceConsoleErrors,1);assert.ok(diagnostic.codes.includes('JS_REFERENCE_ERROR'));
+  const safe=publicSummary(binding,rows,{source:digest,lock:digest});assert.equal(safe.overallStatus,'FAIL');
+  assert.equal(safe.phases.at(-1).id,'smoke-preflight');assert.equal(safe.phases.at(-1).diagnostic.metrics.traceConsoleErrors,1);
+  assert.equal(safe.phases.some(p=>p.id==='smoke'),false);assert.equal(JSON.stringify(safe).includes('FAKE_TRACE_PRIVATE_TOKEN'),false);
 });

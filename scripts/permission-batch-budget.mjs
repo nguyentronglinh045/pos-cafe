@@ -240,7 +240,7 @@ function verifyTerminal(p,intent,ref){
  check(m.repository?.full_name===p.scope.repository&&m.repository?.id===PROJECT_REPOSITORY_ID&&m.head_repository?.full_name===p.scope.repository&&m.head_repository?.id===PROJECT_REPOSITORY_ID&&m.head_branch===p.scope.branch,'V4_TERMINAL_REPOSITORY');
  if(intent.kind==='publication'){
   check(r.schemaVersion==='permission-pg16-reclaim-v1'&&r.status==='NOT_PRESENT'&&r.rootRemoved===true&&r.processReleased===true&&r.sourceSHA===t.sourceSHA&&r.runId===t.runId,'V4_TERMINAL_RECLAIM');
-  if(t.conclusion==='success')check(o?.schemaVersion==='pos-cafe-light-ci-v1'&&o.repository===p.scope.repository&&o.sourceSHA===t.sourceSHA&&o.workflowSHA===t.sourceSHA&&o.runId===t.runId&&o.attempt===1&&o.sourcePreserved===true&&o.overallStatus==='PASS'
+  if(t.conclusion==='success')check(['pos-cafe-light-ci-v1','pos-cafe-light-ci-v2'].includes(o?.schemaVersion)&&o.repository===p.scope.repository&&o.sourceSHA===t.sourceSHA&&o.workflowSHA===t.sourceSHA&&o.runId===t.runId&&o.attempt===1&&o.sourcePreserved===true&&o.overallStatus==='PASS'
    &&same(o.phases?.map(x=>x.id),PROJECT_PHASES)&&o.phases.every(x=>x.status==='PASS'&&x.exitCode===0),'V4_TERMINAL_OBSERVATION');
  }else{
   check(o&&o.schemaVersion===(intent.profile==='SUPABASE_T04'?'t04-observed-checkpoint-v1':'service-observed-checkpoint-v1')&&o.sourceSHA===t.sourceSHA&&o.runId===t.runId&&o.conclusion===t.conclusion
@@ -320,7 +320,7 @@ function verifyPostGateTerminal(p,intent,ref){
   eventData={repository:{id:PROJECT_REPOSITORY_ID,full_name:p.scope.repository},after:t.testedSourceSHA};
  }
  const binding=sourceBinding({GITHUB_REPOSITORY:p.scope.repository,GITHUB_REPOSITORY_ID:String(PROJECT_REPOSITORY_ID),GITHUB_SHA:t.testedSourceSHA,GITHUB_WORKFLOW_SHA:o.workflowSHA,GITHUB_RUN_ID:t.runId,GITHUB_RUN_ATTEMPT:'1',GITHUB_EVENT_NAME:event},eventData,t.testedSourceSHA,commit.parents?.map(x=>x.sha)??[]);
- check(o.schemaVersion==='pos-cafe-light-ci-v1'&&o.repository===p.scope.repository&&o.repositoryID===PROJECT_REPOSITORY_ID&&o.event===event&&o.sourceSHA===binding.sourceSHA&&o.prHeadSHA===binding.prHeadSHA&&o.runId===t.runId&&o.attempt===1,'POST_GATE_CI_BINDING');
+ check(['pos-cafe-light-ci-v1','pos-cafe-light-ci-v2'].includes(o.schemaVersion)&&o.repository===p.scope.repository&&o.repositoryID===PROJECT_REPOSITORY_ID&&o.event===event&&o.sourceSHA===binding.sourceSHA&&o.prHeadSHA===binding.prHeadSHA&&o.runId===t.runId&&o.attempt===1,'POST_GATE_CI_BINDING');
  const wf=pinnedJSON(t.workflowCommit),tree=pinnedJSON(t.workflowTree),blob=owned(resolve(t.workflowBlob?.path??''),1024**2);check(hash(blob)===t.workflowBlob?.sha256&&hash(blob)===gate.workflowSHA256,'POST_GATE_WORKFLOW');
  const gitBlob=createHash('sha1').update('blob '+Buffer.byteLength(blob)+'\0').update(blob).digest('hex');
  check(wf.sha===o.workflowSHA&&tree.sha===wf.tree?.sha&&tree.truncated===false&&Array.isArray(tree.tree)&&tree.tree.length<=10000

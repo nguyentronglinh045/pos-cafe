@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { stripVTControlCharacters } from 'node:util';
 import { lstatSync, realpathSync } from 'node:fs';
-import { resolve, sep } from 'node:path';
+import { resolve, sep, relative } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import {publicEdgeResolution,edgeProbeFailureMetrics,EDGE_PROBE_PUBLIC_LIMITS} from './permission-edge-resolution.mjs';
@@ -87,7 +87,7 @@ export function nodeTapFailureDiagnostics(output, expectedFiles = [], root = '')
   return result;
 }
 const SMOKE_STEP_FILES = Object.freeze(['tests/smoke/pos-cafe.spec.ts', 'tests/smoke/helpers.ts',
-  'tests/smoke/permission-ui-closeout.spec.ts', 'tests/smoke/demo-runbook.spec.ts']);
+  'tests/smoke/permission-ui-closeout.spec.ts', 'tests/smoke/demo-runbook.spec.ts', 'tests/smoke/report-presentation.spec.ts']);
 const SMOKE_STEP_LOCATORS = Object.freeze(['landing-screen', 'store-pairing-screen', 'passcode-screen',
   'floor-page', 'order-drawer', 'submit-order-button']);
 const TRACE_SCREENS = Object.freeze(['landing-screen', 'store-pairing-screen', 'passcode-screen', 'floor-view',
@@ -122,17 +122,115 @@ export function smokeStepDiagnostic(step, root) {
 // Optional Playwright reporter, loaded from this already pinned checker module.
 // It only observes failures; it has no onEnd/status override or test mutation.
 export default class SmokeFailureReporter {
-  constructor() { this.emitted = 0; }
-  emit(step) {
-    if (this.emitted >= 32) return;
-    const record = smokeStepDiagnostic(step, process.cwd());
-    if (record) { this.emitted++; console.log('PROJECT_SMOKE_FAILED_STEP ' + JSON.stringify(record)); }
+  constructor() { this.emitted = 0; this.buffers = new Map(); }
+  onBegin(config) { this.rootDir = config.rootDir; }
+  onTestBegin(_test, result) {
+    if (this.buffers.size < 64) this.buffers.set(result, new Map());
   }
-  onStepEnd(_test, _result, step) { this.emit(step); }
-  onTestEnd(_test, result) {
-    for (const error of Array.isArray(result.errors) ? result.errors : [])
-      this.emit({ error, location: error.location, category: 'test.error', duration: result.duration });
+  onStepEnd(_test, result, step) {
+    const map = this.buffers.get(result), key = smokeErrorKey(step?.error);
+    if (!map || !key) return;
+    const entry = map.get(key);
+    if (entry) {
+      let parent = entry.step;
+      for (let depth = 0; parent && depth < 64; depth++, parent = parent.parent)
+        if (parent === step) return;
+      entry.count = Math.min(2, entry.count + 1);
+    } else if (map.size < 128) {
+      const fields = smokeStepDiagnostic(step, this.rootDir);
+      map.set(key, { count: 1, step, fields: { categoryOrdinal: fields.categoryOrdinal,
+        apiOrdinal: fields.apiOrdinal, locatorOrdinal: fields.locatorOrdinal, durationMs: fields.durationMs } });
+    }
   }
+  onTestEnd(test, result) {
+    const map = this.buffers.get(result);
+    this.buffers.delete(result);
+    const statusOrdinal = ['failed', 'timedOut', 'interrupted'].indexOf(result.status) + 1;
+    if (!statusOrdinal || this.emitted >= 32) return;
+    const entry = map?.get(smokeErrorKey(result.errors?.[0]));
+    const record = { schemaVersion: 'pos-smoke-terminal-v1',
+      caseDigest: hash(`${test.parent.project()?.name}|${relative(this.rootDir, test.location.file).replaceAll('\\', '/')}|${test.location.line}|${test.title}`),
+      retry: result.retry, statusOrdinal, step: entry?.count === 1 ? entry.fields : null };
+    const line = 'PROJECT_SMOKE_TERMINAL_STEP ' + JSON.stringify(record);
+    if (Buffer.byteLength(line) <= 512) { this.emitted++; console.log(line); }
+  }
+}
+
+function smokeErrorKey(error) {
+  if (typeof error?.message !== 'string' || typeof error?.stack !== 'string'
+    || Buffer.byteLength(error.message) > 1024 ** 2 || Buffer.byteLength(error.stack) > 1024 ** 2
+    || !/^\s*at\s+/m.test(error.stack)) return null;
+  return hash(JSON.stringify([error.message, error.stack]));
+}
+
+function smokeCaseDigest(spec, test) {
+  return typeof spec.file === 'string' && typeof spec.title === 'string' && typeof test.projectName === 'string'
+    && integer(spec.line) && spec.line > 0 ? hash(`${test.projectName}|${spec.file}|${spec.line}|${spec.title}`) : null;
+}
+
+function smokeErrorLocation(location, expectedFiles, root) {
+  if (typeof location?.file !== 'string' || !integer(location.line) || location.line < 1 || location.line > 1000000
+    || !integer(location.column) || location.column < 1 || location.column > 1000000) return null;
+  let path = location.file.replaceAll('\\', '/');
+  if (path.split('/').some(part => part === '.' || part === '..') || /%(?:2e|2f|5c)/i.test(path)) return null;
+  if (path.startsWith('file:')) {
+    try { const url = new URL(path); if (url.hostname || url.search || url.hash) return null; path = fileURLToPath(url).replaceAll('\\', '/'); }
+    catch { return null; }
+  }
+  const prefix = root.replaceAll('\\', '/').replace(/\/$/, '') + '/';
+  const file = root && path.startsWith(prefix) ? path.slice(prefix.length) : path;
+  return /^tests\/smoke\/[A-Za-z0-9_./-]+\.(?:ts|mjs)$/.test(file) && expectedFiles.includes(file) && SMOKE_STEP_FILES.includes(file)
+    ? { file, line: location.line, column: location.column } : null;
+}
+
+function smokeStackLocations(stack, expectedFiles, root) {
+  const locations = [];
+  for (const line of typeof stack === 'string' ? stack.split(/\r\n|\r|\n/) : []) {
+    if (!/^\s*at\s/.test(line)) continue;
+    let frame = line.replace(/^\s*at\s+(?:async\s+)?/, '').trim();
+    if (frame.endsWith(')')) frame = frame.slice(frame.lastIndexOf('(') + 1, -1);
+    const match = /^(.*):([0-9]+):([0-9]+)$/.exec(frame);
+    const location = match && smokeErrorLocation({file: match[1], line: Number(match[2]), column: Number(match[3])}, expectedFiles, root);
+    if (location) locations.push(location);
+  }
+  return locations;
+}
+
+function smokeTerminalRecord(outputLines, digest, result) {
+  const candidates = [];
+  let candidateCount = 0;
+  for (const [index, line] of outputLines.entries()) if (line.includes('PROJECT_SMOKE_TERMINAL_STEP')) {
+    candidateCount++;
+    if (candidateCount <= 64) candidates.push({line, index});
+  }
+  if (!digest || candidateCount > 64) return null;
+  const exact = (value, keys) => value && !Array.isArray(value) && typeof value === 'object'
+    && Object.keys(value).sort().join(',') === keys;
+  const ordinal = (value, max) => integer(value) && value <= max;
+  const matches = [];
+  for (const {line, index} of candidates) {
+    if (Buffer.byteLength(line) > 1024 || !line.trimStart().startsWith('PROJECT_SMOKE_TERMINAL_STEP ')) continue;
+    let r; try { r = JSON.parse(line.trimStart().slice('PROJECT_SMOKE_TERMINAL_STEP '.length)); } catch { continue; }
+    if (!exact(r, 'caseDigest,retry,schemaVersion,statusOrdinal,step') || r.schemaVersion !== 'pos-smoke-terminal-v1'
+      || typeof r.caseDigest !== 'string' || !/^[a-f0-9]{64}$/.test(r.caseDigest) || !ordinal(r.retry, 100)
+      || !ordinal(r.statusOrdinal, 3) || r.statusOrdinal < 1) continue;
+    if (r.step !== null && (!exact(r.step, 'apiOrdinal,categoryOrdinal,durationMs,locatorOrdinal')
+      || !ordinal(r.step.categoryOrdinal, SMOKE_STEP_CATEGORIES.length) || !ordinal(r.step.apiOrdinal, SMOKE_STEP_APIS.length)
+      || !ordinal(r.step.locatorOrdinal, SMOKE_STEP_LOCATORS.length)
+      || !(r.step.durationMs === null || ordinal(r.step.durationMs, 480000)))) continue;
+    if (r.caseDigest === digest && r.retry === result.retry && r.statusOrdinal === ['failed', 'timedOut', 'interrupted'].indexOf(result.status) + 1)
+      matches.push({record:r, index});
+  }
+  return matches.length === 1 ? matches[0] : null;
+}
+
+function smokeOutputCrashIndex(lines) {
+  return lines.findIndex(line => {
+    if (/^[^\r\n{]*\bpw:browser\b[^\r\n]{0,160}Received signal (4|5|6|11)\b/.test(line)) return true;
+    if (line.length > 4096 || !/^[^\r\n{]*\bpw:protocol\b[^\r\n{]{0,64}\bRECV[^\r\n{]{0,16}\{/.test(line)) return false;
+    try { const event = JSON.parse(line.slice(line.indexOf('{')).replace(/\s+\+[0-9]+(?:\.[0-9]+)?(?:ms|s|m|h)\s*$/, ''));
+      return event?.method === 'Inspector.targetCrashed' || event?.method === 'Target.targetCrashed'; } catch { return false; }
+  });
 }
 
 // Read only the failed preflight's own trace. unzip streams selected JSONL to
@@ -377,7 +475,7 @@ export function pg16FailureMetrics(output){
       pg16RootRemoved:Number(v.rootRemoved),pg16ProcessReleased:Number(v.processReleased)};
   }catch{return{};}
 }
-export function privateDiagnostics(output, report, expectedFiles = [], root = '') {
+export function privateDiagnostics(output, report, expectedFiles = [], root = '', outputComplete = true) {
   // TAP comments and YAML bodies can contain passing negative-control fixtures.
   // Never run the generic error-signature scanner over a Node TAP report.
   const node = !report && nodeTapFailureDiagnostics(output, expectedFiles, root);
@@ -391,27 +489,53 @@ export function privateDiagnostics(output, report, expectedFiles = [], root = ''
   if (metrics.numFailedTests > 0) codes.push('VITEST_ASSERTION');
   if (metrics.numRuntimeErrorTestSuites > 0) codes.push('VITEST_RUNTIME');
   const messages = [output];
-  const smokeFailedFiles = [], queue = (Array.isArray(report?.suites) ? report.suites : []).slice(0, 10000);
+  const smokeFailedFiles = [], suites = Array.isArray(report?.suites) ? report.suites : [];
+  const queue = suites.slice(0, 10000), cases = new Map();
+  let reportComplete = Array.isArray(report?.suites) && suites.length <= 10000, selected = null, interrupted = null;
   for (let n = 0; queue.length && n < 10000; n++) {
     const suite = queue.shift();
-    if (Array.isArray(suite?.suites)) queue.push(...suite.suites.slice(0, 10000 - queue.length));
+    if (Array.isArray(suite?.suites)) {
+      const room = 10000 - queue.length;
+      if (suite.suites.length > room) reportComplete = false;
+      queue.push(...suite.suites.slice(0, room));
+    }
     for (const spec of Array.isArray(suite?.specs) ? suite.specs : []) for (const test of Array.isArray(spec.tests) ? spec.tests : []) {
-      const failed = (Array.isArray(test.results) ? test.results : []).filter(r => ['failed', 'timedOut', 'interrupted'].includes(r.status));
-      if (!failed.length) continue;
-      if (integer(test.timeout) && test.timeout <= 480000) metrics.smokeConfiguredTimeoutMs ??= test.timeout;
-      if (integer(failed[0].duration) && failed[0].duration <= 480000) metrics.smokeResultDurationMs ??= failed[0].duration;
-      metrics.smokeResultStatusOrdinal ??= ['failed', 'timedOut', 'interrupted'].indexOf(failed[0].status) + 1;
+      const results = Array.isArray(test.results) ? test.results : [], last = results.at(-1);
+      const digest = smokeCaseDigest(spec, test);
+      if (digest) cases.set(digest, Math.min(2, (cases.get(digest) ?? 0) + 1));
       const file = typeof spec.file === 'string' ? `tests/smoke/${spec.file}` : '';
-      if (expectedFiles.includes(file) && /^tests\/smoke\/[A-Za-z0-9_./-]+\.(?:ts|mjs)$/.test(file)) {
-        smokeFailedFiles.push(file);
-        if (metrics.smokeTestLine === undefined && integer(spec.line) && spec.line > 0 && spec.line <= 1000000) {
-          metrics.smokeTestLine = spec.line;
-          if (PROJECTS.includes(test.projectName)) metrics.smokeFailureProjectOrdinal = PROJECTS.indexOf(test.projectName) + 1;
-        }
+      const known = expectedFiles.includes(file) && /^tests\/smoke\/[A-Za-z0-9_./-]+\.(?:ts|mjs)$/.test(file);
+      if (known && ['failed', 'timedOut', 'interrupted'].includes(last?.status)) {
+        const entry = {spec, test, result:last, digest};
+        if (last.status === 'interrupted') interrupted ??= entry;
+        else selected ??= entry;
       }
+      const failed = results.filter(r => ['failed', 'timedOut', 'interrupted'].includes(r.status));
+      if (!failed.length) continue;
+      if (known) smokeFailedFiles.push(file);
       for (const result of failed) for (const error of [result.error, ...(Array.isArray(result.errors) ? result.errors : [])])
         for (const value of [error?.message, error?.stack]) if (typeof value === 'string') messages.push(value);
     }
+  }
+  if (queue.length) reportComplete = false;
+  if (!selected && reportComplete) selected = interrupted;
+  if (selected) {
+    const {spec, test, result} = selected;
+    if (integer(test.timeout) && test.timeout <= 480000) metrics.smokeConfiguredTimeoutMs = test.timeout;
+    if (integer(result.duration) && result.duration <= 480000) metrics.smokeResultDurationMs = result.duration;
+    metrics.smokeResultStatusOrdinal = ['failed', 'timedOut', 'interrupted'].indexOf(result.status) + 1;
+    if (integer(spec.line) && spec.line > 0 && spec.line <= 1000000) metrics.smokeTestLine = spec.line;
+    if (PROJECTS.includes(test.projectName)) metrics.smokeFailureProjectOrdinal = PROJECTS.indexOf(test.projectName) + 1;
+    const first = Array.isArray(result.errors) && result.errors.length ? result.errors[0] : result.error;
+    const frames = smokeStackLocations(result.error?.stack, expectedFiles, root);
+    const location = smokeErrorLocation(first?.location, expectedFiles, root)
+      ?? smokeErrorLocation(result.errorLocation, expectedFiles, root) ?? frames[0];
+    if (location) {
+      metrics.smokeFailureLine = location.line; metrics.smokeFailureColumn = location.column;
+      metrics.smokeStepSourceOrdinal = SMOKE_STEP_FILES.indexOf(location.file) + 1;
+    }
+    const helper = location?.file === 'tests/smoke/helpers.ts' ? location : frames.find(f => f.file === 'tests/smoke/helpers.ts');
+    if (helper) metrics.smokeHelperLine = helper.line;
   }
   for (const [name, key] of Object.entries({expected:'smokeExpected',unexpected:'smokeUnexpected',skipped:'smokeSkipped',flaky:'smokeFlaky'}))
     if (integer(report?.stats?.[name])) metrics[key] = report.stats[name];
@@ -440,7 +564,16 @@ export function privateDiagnostics(output, report, expectedFiles = [], root = ''
   }
   Object.assign(metrics, browserRuntimeControlFacts(rawPrivateText));
   Object.assign(metrics, browserNativeFatalFacts(privateText));
-  const failedStepIndex = rawLines.findIndex(line => line.trimStart().startsWith('PROJECT_SMOKE_FAILED_STEP '));
+  // Only the output stream defines terminal record/crash ordering. Report text
+  // stays in rawLines for the existing codes and crash facts, never for matching.
+  const outputLines = stripVTControlCharacters(output).split(/\r\n|\r|\n/);
+  const terminal = outputComplete === true && reportComplete && selected && cases.get(selected.digest) === 1
+    ? smokeTerminalRecord(outputLines, selected.digest, selected.result) : null;
+  if (terminal?.record.step) for (const [field, key] of Object.entries({categoryOrdinal:'smokeStepCategoryOrdinal',
+    apiOrdinal:'smokeStepApiOrdinal', locatorOrdinal:'smokeStepLocatorOrdinal', durationMs:'smokeStepDurationMs'})) {
+    const value = terminal.record.step[field];
+    if (integer(value) && (field === 'durationMs' || value > 0)) metrics[key] = value;
+  }
   let firstCrashIndex = -1;
   for (const [lineIndex,line] of rawLines.entries()) {
     const signal = /^[^\r\n{]*\bpw:browser\b[^\r\n]{0,160}Received signal (4|5|6|11)\b/.exec(line);
@@ -460,43 +593,10 @@ export function privateDiagnostics(output, report, expectedFiles = [], root = ''
         metrics.browserTargetCrashErrorCode = event.params.errorCode;
     }
   }
-  if (firstCrashIndex >= 0 && failedStepIndex >= 0) metrics.browserCrashBeforeFailedStep = firstCrashIndex < failedStepIndex ? 1 : 0;
+  const outputCrashIndex = terminal ? smokeOutputCrashIndex(outputLines) : -1;
+  if (terminal && outputCrashIndex >= 0) metrics.browserCrashBeforeFailedStep = outputCrashIndex < terminal.index ? 1 : 0;
   if (metrics.browserInspectorCrashObserved || metrics.browserTargetCrashObserved || metrics.browserCrashSignal
     || /^[^\r\n{]*\bpw:api\b[^\r\n]{0,160}Page crashed/im.test(privateText)) codes.push('BROWSER_RENDERER_CRASH');
-  for (const file of [...new Set(smokeFailedFiles)]) {
-    const escaped = file.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const location = new RegExp(escaped + ':(\\d+):(\\d+)').exec(privateText.replaceAll('\\', '/'));
-    if (location && Number(location[1]) > 0 && Number(location[1]) <= 1000000
-      && Number(location[2]) > 0 && Number(location[2]) <= 1000000) {
-      metrics.smokeFailureLine = Number(location[1]); metrics.smokeFailureColumn = Number(location[2]); break;
-    }
-  }
-  if (expectedFiles.includes('tests/smoke/helpers.ts')) {
-    const helper = /tests[/\\]smoke[/\\]helpers\.ts:(\d+):\d+/.exec(privateText);
-    if (helper && Number(helper[1]) > 0 && Number(helper[1]) <= 1000000) metrics.smokeHelperLine = Number(helper[1]);
-  }
-  const progress = [...privateText.matchAll(/\[(\d+)\/(\d+)\]/g)].filter(m => Number(m[1]) <= Number(m[2]) && Number(m[2]) <= 10000).at(-1);
-  if (progress) { metrics.smokeProgressIndex = Number(progress[1]); metrics.smokeProgressTotal = Number(progress[2]); }
-  let stepLocation = false;
-  for (const line of privateText.split('\n')) {
-    const marker = line.indexOf('PROJECT_SMOKE_FAILED_STEP ');
-    if (marker < 0 || line.length - marker > 4096) continue;
-    let step; try { step = JSON.parse(line.slice(marker + 'PROJECT_SMOKE_FAILED_STEP '.length)); } catch { continue; }
-    if (step?.schemaVersion !== 'pos-smoke-step-v1') continue;
-    if (integer(step.locatorOrdinal) && step.locatorOrdinal > 0 && step.locatorOrdinal <= SMOKE_STEP_LOCATORS.length)
-      metrics.smokeStepLocatorOrdinal ??= step.locatorOrdinal;
-    if (integer(step.categoryOrdinal) && step.categoryOrdinal > 0 && step.categoryOrdinal <= SMOKE_STEP_CATEGORIES.length)
-      metrics.smokeStepCategoryOrdinal ??= step.categoryOrdinal;
-    if (integer(step.apiOrdinal) && step.apiOrdinal > 0 && step.apiOrdinal <= SMOKE_STEP_APIS.length)
-      metrics.smokeStepApiOrdinal ??= step.apiOrdinal;
-    if (integer(step.durationMs) && step.durationMs <= 480000) metrics.smokeStepDurationMs ??= step.durationMs;
-    if (!stepLocation && SMOKE_STEP_FILES.includes(step.file) && expectedFiles.includes(step.file)
-      && integer(step.line) && step.line > 0 && step.line <= 1000000 && integer(step.column) && step.column > 0 && step.column <= 1000000) {
-      stepLocation = true; metrics.smokeStepSourceOrdinal = SMOKE_STEP_FILES.indexOf(step.file) + 1;
-      metrics.smokeFailureLine = step.line; metrics.smokeFailureColumn = step.column;
-      if (step.file === 'tests/smoke/helpers.ts') metrics.smokeHelperLine = step.line;
-    }
-  }
   for (const [code, pattern] of Object.entries({ TEST_TIMEOUT: /timed\s*out|test timeout|timeout\s+(?:of|(?:[0-9]+(?:ms)?\s+)?exceeded)|^Timeout:\s*[0-9]+ms/im,
     ASSERTION_ERROR: /AssertionError|expected .{0,100} to /i, TYPE_ERROR: /TypeError/, REFERENCE_ERROR: /ReferenceError/,
     MODULE_NOT_FOUND: /ERR_MODULE_NOT_FOUND|MODULE_NOT_FOUND|cannot find (?:module|package)/i,
@@ -777,7 +877,7 @@ export function publicSummary(binding, rows, fingerprints) {
           &&(!Object.hasOwn(NODE_FAILURE_PUBLIC_LIMITS,key)||id==='node-tools'&&nodeFailureFiles.has(diagnostic)&&value>0&&value<=NODE_FAILURE_PUBLIC_LIMITS[key]))),
       failedFiles: diagnostic.failedFiles.filter(path => /^(?:src|tests)\/[A-Za-z0-9_./-]+\.(?:ts|tsx|mjs)$/.test(path)
         || id==='node-tools'&&scriptTestPath(path)&&nodeFailureFiles.get(diagnostic)?.has(path)).slice(0, 32) } : null }));
-  return { schemaVersion: 'pos-cafe-light-ci-v1', verificationScope: 'LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY', repository: PROJECT_REPOSITORY, repositoryID: PROJECT_REPOSITORY_ID,
+  return { schemaVersion: 'pos-cafe-light-ci-v2', verificationScope: 'LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY', repository: PROJECT_REPOSITORY, repositoryID: PROJECT_REPOSITORY_ID,
     event: binding.event, sourceSHA: binding.sourceSHA, prHeadSHA: binding.prHeadSHA, workflowSHA: binding.workflowSHA,
     runId: binding.runId, attempt: binding.attempt,
     sourceFingerprint: fingerprints.source, lockSHA: fingerprints.lock,
