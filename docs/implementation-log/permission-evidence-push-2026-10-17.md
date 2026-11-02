@@ -8,7 +8,7 @@ Một invocation `git push --atomic` thành công, exit0 lúc `2026-10-17T02:38:
 
 | Ref đã xuất bản | SHA được owner chốt và remote xác nhận | Link xem |
 | --- | --- | --- |
-| `refs/heads/evidence/permission-20261016` | `43921c7ebd957bf926bb45411eed849874ade446` | [Nhánh code](https://github.com/24tx810010-hcmute/pos-cafe/tree/evidence/permission-20261016), [commit/diff](https://github.com/24tx810010-hcmute/pos-cafe/commit/43921c7ebd957bf926bb45411eed849874ade446) |
+| `refs/heads/evidence/permission-20261016` | `43921c7ebd957bf926bb45411eed849874ade446` | [Nhánh code](https://github.com/nguyentronglinh045/pos-cafe/tree/43921c7ebd957bf926bb45411eed849874ade446), [commit/diff](https://github.com/24tx810010-hcmute/pos-cafe/commit/43921c7ebd957bf926bb45411eed849874ade446) |
 | `refs/heads/evidence/permission-docs-20261016` | `d62aa4b50a44fbbf69796d37d9f0dda62b3cd805` | [Nhánh docs](https://github.com/24tx810010-hcmute/pos-cafe/tree/evidence/permission-docs-20261016), [commit/diff](https://github.com/24tx810010-hcmute/pos-cafe/commit/d62aa4b50a44fbbf69796d37d9f0dda62b3cd805) |
 
 Code509paths/docs333paths và hai trees giữ đúng gói trước; không thay840 source blobs đã review. Nhánh docs mang hai ancestor local cũ đã được chốt và rà history, không chỉ commit tip mới. [Bàn giao hai commit](permission-git-local-commits-2026-10-17.md). SHA cụ thể là căn cứ; nhánh có thể đổi sau checkpoint bởi thao tác được cấp quyền khác.
