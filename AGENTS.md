@@ -45,6 +45,7 @@ For reworking existing screens from Stitch, read [the shared operator workflow o
   - `docs`: contains project information, including implemented features, planned or deferred features, technologies used, architecture decisions, and related project notes.
 - The `main` branch must not contain project documentation that belongs on `docs`.
 - The `docs` branch must not contain application code from `main`.
+- **Never merge the `docs` branch into `main`.** Do not open or merge a PR with `docs` as its head and `main` as its base. Publish each branch independently; documentation updates do not authorize combining their histories. This permanent owner rule was reaffirmed on 2026-11-02.
 - **Operator-documentation rule, approved 2026-10-19:** instructions, templates and setup/measurement contracts that ship with a tool live beside that tool on `main`, versioned with its code. For Stitch remake, start with `ui-remake/README.md` in the code checkout or [the published workflow](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/README.md). Specs, decisions, implementation/review evidence and handoffs remain on `docs`. Keep pointers, not duplicate operator documents. Project-wide rules and OpenSpec artifacts stay on `docs`.
 
 ## Documentation workflow

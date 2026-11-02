@@ -1,9 +1,15 @@
 # Chỉ mục công việc
 
-## Kế hoạch G01–G10 — cập nhật 29/10/2026
+## Kế hoạch G01–G10 — cập nhật 02/11/2026
 
 - [Kế hoạch kỹ thuật G01–G10](../g01-g10-plan.md#next): ưu tiên, phụ thuộc, trạng thái và tiêu chí hoàn thành. Các hồ sơ bên dưới ghi nguồn và kết quả tại từng mốc kiểm chứng.
 G11/G12 tiếp tục để giai đoạn cuối; docs kỹ thuật cập nhật xuyên suốt.
+
+## Cập nhật02/11/2026
+
+- [T02 — Attribution đã merge và kiểm chứng](g01-g10-t02-2026-10-28.md): phương án A/summary v2 đã vào main28a3dc5 qua PR16; U/P và CI nhánh/PR/main đều đạt, main CI18/18PASS. Consumer v1/v2 giữ gate; R-APP NOT_RUN, nguyên nhân UI UNKNOWN; chưa đóng toàn T02.
+
+Các mục phía dưới ghi checkpoint theo ngày; trạng thái chưa triển khai/schema còn mở ngày28/10 là lịch sử, không phải trạng thái T02 hiện tại.
 
 ## Cập nhật29/10/2026
 

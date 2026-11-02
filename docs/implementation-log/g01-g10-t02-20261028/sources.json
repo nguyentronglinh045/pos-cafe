@@ -1,15 +1,15 @@
 {
-  "date": "2026-10-28",
-  "scope": "Source and historical evidence analysis; no new application, test or CI execution",
-  "codeSource": "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
-  "docsSource": "7df10ada2b66628ab14b51f953fc7dd111d762dc",
+  "date": "2026-11-02",
+  "scope": "Current T02 attribution implementation and verified merge; historical analysis/checkpoints retained separately",
+  "codeSource": "28a3dc54a846463ba150d50ab323658d6ed1372c",
+  "docsSource": "991652224afcd125065d92ad0d657abf289f1842",
   "historicalDocsSource": "9fbd68657884155feb9f7680875f5da1356919e9",
   "failureSource": "0dd63ea81b27a38800044a55a7f9c8f12f87cad0",
   "failureTree": "12e8e64bd3df60ee3b1be55ec42f3cd5de35b746",
   "runs": {
     "failure": "40089941679/a1 push 0dd63ea failure",
     "prSameTree": "40088569310/a1 pull_request head a028cc5b07bf3a02e3b837d8aec2b832325503a2 success",
-    "currentMain": "40442640979/a1 push 052a7d1 success"
+    "currentMain": "41385640659/a1 push 28a3dc54a846463ba150d50ab323658d6ed1372c success"
   },
   "archivedEvidence": {
     "summary": {
@@ -35,11 +35,65 @@
     "packageIntegrityVerified": false,
     "method": "Static inspection of installed library files; source locations in analysis.md"
   },
-  "runtimeTestsRun": false,
-  "codeImplemented": false,
+  "runtimeTestsRun": true,
+  "codeImplemented": true,
   "uiRootCause": "UNKNOWN",
-  "schemaDecision": "PENDING",
+  "schemaDecision": {
+    "status": "CONFIRMED",
+    "producer": "pos-cafe-light-ci-v2",
+    "consumersAccept": [
+      "pos-cafe-light-ci-v1",
+      "pos-cafe-light-ci-v2"
+    ],
+    "gates": "UNCHANGED"
+  },
   "documents": {
+    "analysis.md": {
+      "bytes": 92778,
+      "sha256": "ea7b3df253722bdd69af13601f41ecd06786b146be8a3d5a442f21a48066b635"
+    },
+    "verification-plan.md": {
+      "bytes": 57091,
+      "sha256": "1a2c432e73103192eacdf78cf39a108c4ff605eb4d312ff653ec8422d0a9d20f"
+    }
+  },
+  "checkpoint20261101": {
+    "status": "CANDIDATE_INTAKE_PENDING_DECISIONS",
+    "codeSource": "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
+    "docsBase": "991652224afcd125065d92ad0d657abf289f1842",
+    "remoteRefsVerifiedOn": "2026-11-01",
+    "sourceCheck": "24 targeted working files match main canonical bytes; not a new full tracked-tree rehash",
+    "productionImplemented": false,
+    "runtimeTestsExecutedThisCheckpoint": false,
+    "analyzerExecutedThisCheckpoint": false,
+    "tc17": {
+      "acceptedStatus": "PASS",
+      "executionDate": "2026-10-30",
+      "scope": "Single Windows library/probe matrix; not production reporter/parser or CI Linux",
+      "manifestSHA256": "0d3c5e9380c485a292c0e3dbffef27bb89e95b99b42ea6215faf52d6bf452f1c",
+      "manifestFilesVerified": 32,
+      "identities": 8,
+      "failedByDesign": 6,
+      "timedOutByDesign": 2,
+      "limitations": [
+        "CI env absent",
+        "G9 subset",
+        "parent-walk and box not exercised",
+        "production ordinals/parser not exercised"
+      ],
+      "specClarifications": [
+        "poll child steps have no key",
+        "timeout first error has no key so step is null",
+        "timeout first error has no location; never borrow errors[1]"
+      ]
+    },
+    "schemaDecision": "SUMMARY_V2_SELECTED_BY_OWNER_2026-11-01",
+    "scopeDecision": "PENDING",
+    "acceptanceDecision": "PENDING",
+    "uiRootCause": "UNKNOWN",
+    "v1CompatibilityDecision": "ACCEPT_V1_AND_V2_WITH_UNCHANGED_GATES_BY_OWNER_2026-11-01"
+  },
+  "historicalDocuments20261028": {
     "analysis.md": {
       "bytes": 64897,
       "sha256": "17e77280c879f65a96078264b0f733ef80cf68620db4263271792a44755e8d14"
@@ -48,5 +102,1073 @@
       "bytes": 46747,
       "sha256": "50be30ca12f01cd0673ba16940731c3c34f608fb39d6fb4b641dbc0ba5b63e9a"
     }
+  },
+  "checkpoint20261102": {
+    "status": "LOCAL_U_P_VERIFIED_C_NOT_RUN",
+    "authorization": "Owner direct reply2026-11-02 approves A1-A11/corecleanup/3pins and local U/P first; no push/GitHubCI; acceptance unchanged",
+    "codeBaseline": "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
+    "sourceRepresentation": "baseline + exact working-byte manifests and recoverable patch/new harness",
+    "ci": "NOT_RUN_NOT_AUTHORIZED",
+    "rApp": "NOT_RUN",
+    "uiRootCause": "UNKNOWN",
+    "codeManifestSHA256": "3df9cb93199a959332a020446244002fd2cb1193bde0aad481d28a18a9041dda",
+    "trackedRawFingerprintSHA256": "e1027b31573f167e898ded3c888a100eb9442cd421d728fabd66d0efbd5a72a2",
+    "runtime": {
+      "node": "v24.16.0",
+      "platform": "win32",
+      "playwright": "1.60.0",
+      "playwrightCore": "1.60.0",
+      "channel": "chromium",
+      "CI": true,
+      "chromiumRevision": "1223",
+      "chromiumProductVersion": "148.0.7778.96"
+    },
+    "localNodeCounts": {
+      "run": 1056,
+      "pass": 1056,
+      "fail": 0,
+      "skip": 0
+    },
+    "localToolingCounts": {
+      "discovered": 568,
+      "run": 567,
+      "pass": 567,
+      "fail": 0,
+      "skip": 1,
+      "manualDeferred": 1
+    },
+    "pExecutions": [
+      32,
+      32,
+      2
+    ],
+    "productionDiscovery": 86,
+    "coreFilesAfter": 0,
+    "rawOutputExported": false,
+    "publicMetricsApplyOnMainSHA": "NOT_PUBLISHED",
+    "windowsEnvironment": "Eight unchanged fixtures/workers use exact HEAD raw bytes; no additional Git diff; owned D temp; no assertion/skip/gate changes",
+    "initialFullNodeResult": {
+      "pass": 1020,
+      "fail": 36,
+      "skip": 0,
+      "retained": true
+    }
+  },
+  "historicalDocuments20261101": {
+    "analysis.md": {
+      "bytes": 78245,
+      "sha256": "1ffa78e7bae6c003bb348672e9c42a48eadb309937f70051319042e5e0d38572"
+    },
+    "verification-plan.md": {
+      "bytes": 50232,
+      "sha256": "b1516967a62465eec29dc622f01dabaecbbc49ea4dadd0ecfac03c040d2e33b3"
+    }
+  },
+  "checkpoint20261102CI": {
+    "status": "U_P_C_VERIFIED_UNMERGED",
+    "ownerAuthorization": "Direct reply2026-11-02 accepts local checkpoint; commit/push T02 branch and one C18-phase run, no merge; unchanged gates",
+    "commitSHA": "9ec6b056eeecc2be0cbedcb0f19282b8e30d9955",
+    "parentSHA": "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
+    "branch": "work/t02-attribution-local-20261102",
+    "runId": "41379094743",
+    "attempt": 1,
+    "runURL": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/41379094743",
+    "jobId": "125065734473",
+    "event": "push",
+    "ciRunCount": 1,
+    "conclusion": "success",
+    "phaseResults": [
+      {
+        "id": "install",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": null
+      },
+      {
+        "id": "build",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": null
+      },
+      {
+        "id": "unit",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "discovered": 1240,
+          "run": 1240,
+          "pass": 1240,
+          "fail": 0,
+          "skip": 0,
+          "manualDeferred": 0
+        }
+      },
+      {
+        "id": "tooling",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "discovered": 568,
+          "run": 567,
+          "pass": 567,
+          "fail": 0,
+          "skip": 1,
+          "manualDeferred": 1
+        }
+      },
+      {
+        "id": "node-tools",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "run": 1056,
+          "pass": 1056,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "id": "browser",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": null
+      },
+      {
+        "id": "runtime-reporters",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "run": 4,
+          "pass": 4,
+          "fail": 0,
+          "skip": 0,
+          "positiveControls": 2,
+          "negativeControls": 2,
+          "diagnosticControls": {
+            "sourceSHA": "9ec6b056eeecc2be0cbedcb0f19282b8e30d9955",
+            "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+            "run": 7,
+            "pass": 7,
+            "fullPipeline": true,
+            "mutationChecks": 20,
+            "states": [
+              "failed",
+              "timedOut",
+              "interrupted",
+              "runner-error",
+              "metadata-absent",
+              "wrapper-failure",
+              "transport-refusal"
+            ]
+          }
+        }
+      },
+      {
+        "id": "edge-resolution",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "run": 3,
+          "pass": 3,
+          "fail": 0,
+          "skip": 0,
+          "positiveControls": 2,
+          "negativeControls": 1,
+          "edgeResolution": {
+            "cacheSHA256": "1df7fb17d9bb2ada72c1817187bcf645f6e0fccdc5d91c5e6c765fc5aa61db3a",
+            "configSHA256": "5025713c1c4444d4bbf4994ec1aed8b8d4995c489ff84d8142c2cec706b06201",
+            "lockSHA256": "391857845b8f8174e4abf59a6f04efefc61423ade4db0334efbfa9bc74148e93",
+            "metadataOnly": 3,
+            "observed": 17,
+            "packages": 20,
+            "processReleased": true,
+            "rootRemoved": true,
+            "runtimeBadSRIControls": 1,
+            "schemaVersion": "permission-edge-resolution-v1",
+            "scope": "NATIVE_RESOLVER_ONLY",
+            "sourceSHA": "9ec6b056eeecc2be0cbedcb0f19282b8e30d9955",
+            "warmBundles": 2
+          }
+        }
+      },
+      {
+        "id": "permission-static",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "run": 480,
+          "pass": 480,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "id": "permission-pg16",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "run": 30,
+          "pass": 30,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "id": "ui-tools",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "run": 103,
+          "pass": 103,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "id": "ui-remake-selftest",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "run": 11,
+          "pass": 11,
+          "fail": 0,
+          "skip": 0,
+          "positiveControls": 5,
+          "negativeControls": 6
+        }
+      },
+      {
+        "id": "ui-audit-selftest",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "run": 1,
+          "pass": 1,
+          "fail": 0,
+          "skip": 0,
+          "detectedFindings": 23,
+          "targetControls": 16
+        }
+      },
+      {
+        "id": "smoke-discovery",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": null
+      },
+      {
+        "id": "smoke-preflight",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "run": 1,
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "id": "smoke",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "run": 86,
+          "pass": 49,
+          "fail": 0,
+          "skip": 37
+        }
+      },
+      {
+        "id": "ui-selftest",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "detectedFindings": 23
+        }
+      },
+      {
+        "id": "ui-audit",
+        "status": "PASS",
+        "exitCode": 0,
+        "counts": {
+          "run": 48,
+          "pass": 48,
+          "fail": 0,
+          "skip": 0,
+          "acceptedFindings": 0
+        }
+      }
+    ],
+    "sourceFingerprint": "7cdf824ee6008dbe56c081137b5a25569c805d38fb136b89519f54a3c7051189",
+    "sourceFingerprintMethod": "SHA256 of committed Git blobs using trackedFingerprint algorithm; all1193paths",
+    "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+    "sourcePreserved": true,
+    "pg16": {
+      "run": 30,
+      "pass": 30,
+      "fail": 0,
+      "skip": 0,
+      "serverVersionNum": 160015,
+      "stageCleanup": {
+        "rootRemoved": true,
+        "processReleased": true,
+        "allocatedBeforeBytes": 50741248,
+        "measuredFreeDeltaBytes": 50741248
+      },
+      "postUnitReclaimObserved": {
+        "schemaVersion": "permission-pg16-reclaim-v1",
+        "status": "NOT_PRESENT",
+        "rootRemoved": true,
+        "processReleased": true
+      },
+      "postUnitBindingFromRun": {
+        "sourceSHA": "9ec6b056eeecc2be0cbedcb0f19282b8e30d9955",
+        "runId": "41379094743",
+        "jobId": "125065734473",
+        "attempt": 1
+      }
+    },
+    "corePatternRestored": true,
+    "peakOwnedBytes": 1429712896,
+    "operatingCapBytes": 5368709120,
+    "minimumFreeBytes": 32212254720,
+    "logs": {
+      "storage": "Full decoded job log retained local only; not included in published docs",
+      "sha256": "71c9525c7ad1f9755ac43fdceba11ddce32a727665c7e6bc8085bcdb0c3078b7",
+      "bytes": 42175,
+      "rawExported": false,
+      "safeSummarySHA256": "8946c54b46fce950f9ddde0ec0ec4e1ae8660b9e3036aba65deb28ac6d074903",
+      "nativeReceiptSHA256": "306099dd6032a9d6e33933346ac2df3612c65212181cd57542f9937ca28a3911"
+    },
+    "mainMerge": "NOT_DONE_NOT_AUTHORIZED",
+    "docsPublication": "NOT_DONE_NOT_AUTHORIZED",
+    "publicMetricsApplyOnMainSHA": "NOT_MERGED",
+    "publicMetricsBranchCommitSHA": "9ec6b056eeecc2be0cbedcb0f19282b8e30d9955",
+    "rApp": "NOT_RUN",
+    "uiRootCause": "UNKNOWN",
+    "full35BusinessRuntime": "NOT_RUN"
+  },
+  "historicalDocumentsBeforeCI20261102": {
+    "analysis.md": {
+      "bytes": 84464,
+      "sha256": "b16087f9a1246b978d9e7855c4ed3808ff99ee1d0260e359591f9b61e60514bc"
+    },
+    "verification-plan.md": {
+      "bytes": 53823,
+      "sha256": "850ec0e62e283d369e3a74680c2d9e799b5f51c158a822014a01fa151ad6b0b6"
+    }
+  },
+  "historicalAnalysis20261028": {
+    "date": "2026-10-28",
+    "scope": "Source and historical evidence analysis; no new application, test or CI execution",
+    "codeSource": "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
+    "docsSource": "7df10ada2b66628ab14b51f953fc7dd111d762dc",
+    "runtimeTestsRun": false,
+    "codeImplemented": false
+  },
+  "historicalSchemaDecision20261028": "PENDING",
+  "historicalRuns20261028": {
+    "failure": "40089941679/a1 push 0dd63ea failure",
+    "prSameTree": "40088569310/a1 pull_request head a028cc5b07bf3a02e3b837d8aec2b832325503a2 success",
+    "currentMain": "40442640979/a1 push 052a7d1 success"
+  },
+  "historicalDocumentsBeforeMerge20261102": {
+    "analysis.md": {
+      "bytes": 87909,
+      "sha256": "5a9cb27600c1bdff31d3ddff5ef01a1a9e8c38a1f9818bf34a8a901c959bf18d"
+    },
+    "verification-plan.md": {
+      "bytes": 55309,
+      "sha256": "b1346768c6c665d19c2567364cfb83ca5e113d9baff53c8660413049731ff5c4"
+    }
+  },
+  "runtimeExecutionInThisDocsPublication": false,
+  "publicMetricsApplyOnMainSHA": "28a3dc54a846463ba150d50ab323658d6ed1372c",
+  "checkpoint20261102Merged": {
+    "status": "ATTRIBUTION_MERGED_AND_VERIFIED; RAPP_OPEN",
+    "implementationSHA": "9ec6b056eeecc2be0cbedcb0f19282b8e30d9955",
+    "mainSHA": "28a3dc54a846463ba150d50ab323658d6ed1372c",
+    "tree": "472590b8df3c40359b7e4e9dddb98b64a544ad4a",
+    "parents": [
+      "052a7d1e156425ea82ed1c9cf978d7ef4d4f3571",
+      "9ec6b056eeecc2be0cbedcb0f19282b8e30d9955"
+    ],
+    "pullRequest": "https://github.com/nguyentronglinh045/pos-cafe/pull/16",
+    "remoteAndLocalT02BranchDeleted": true,
+    "schemaProducer": "pos-cafe-light-ci-v2",
+    "schemaConsumers": [
+      "pos-cafe-light-ci-v1",
+      "pos-cafe-light-ci-v2"
+    ],
+    "trustedPaths": 64,
+    "trustHashesUpdated": 3,
+    "gatesCoverageAcceptanceRetryTimeoutSkip": "UNCHANGED",
+    "rApp": "NOT_RUN",
+    "uiRootCause": "UNKNOWN",
+    "fullBusinessBackendAcceptance": "NOT_RUN",
+    "rawLogsPublished": false,
+    "verificationRuns": [
+      {
+        "schemaVersion": "pos-cafe-light-ci-v2",
+        "runId": "41379094743",
+        "attempt": 1,
+        "event": "push",
+        "sourceSHA": "9ec6b056eeecc2be0cbedcb0f19282b8e30d9955",
+        "workflowSHA": "9ec6b056eeecc2be0cbedcb0f19282b8e30d9955",
+        "prHeadSHA": null,
+        "sourceFingerprint": "7cdf824ee6008dbe56c081137b5a25569c805d38fb136b89519f54a3c7051189",
+        "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+        "sourcePreserved": true,
+        "verificationScope": "LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY",
+        "peakOwnedBytes": 1429712896,
+        "operatingCapBytes": 5368709120,
+        "minimumFreeBytes": 32212254720,
+        "jobId": "125065734473",
+        "runURL": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/41379094743",
+        "status": "PASS",
+        "log": {
+          "sha256": "71c9525c7ad1f9755ac43fdceba11ddce32a727665c7e6bc8085bcdb0c3078b7",
+          "bytes": 42175,
+          "storage": "LOCAL_ONLY",
+          "rawExported": false
+        },
+        "phases": [
+          {
+            "id": "install",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "build",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "unit",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "discovered": 1240,
+              "run": 1240,
+              "pass": 1240,
+              "fail": 0,
+              "skip": 0,
+              "manualDeferred": 0
+            }
+          },
+          {
+            "id": "tooling",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "discovered": 568,
+              "run": 567,
+              "pass": 567,
+              "fail": 0,
+              "skip": 1,
+              "manualDeferred": 1
+            }
+          },
+          {
+            "id": "node-tools",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 1056,
+              "pass": 1056,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "browser",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "runtime-reporters",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 4,
+              "pass": 4,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "edge-resolution",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 3,
+              "pass": 3,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "permission-static",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 480,
+              "pass": 480,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "permission-pg16",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 30,
+              "pass": 30,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "ui-tools",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 103,
+              "pass": 103,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "ui-remake-selftest",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 11,
+              "pass": 11,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "ui-audit-selftest",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 1,
+              "pass": 1,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "smoke-discovery",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "smoke-preflight",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 1,
+              "pass": 1,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "smoke",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 86,
+              "pass": 49,
+              "fail": 0,
+              "skip": 37
+            }
+          },
+          {
+            "id": "ui-selftest",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "ui-audit",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 48,
+              "pass": 48,
+              "fail": 0,
+              "skip": 0,
+              "acceptedFindings": 0
+            }
+          }
+        ],
+        "postUnitReclaimObserved": {
+          "schemaVersion": "permission-pg16-reclaim-v1",
+          "status": "NOT_PRESENT",
+          "rootRemoved": true,
+          "processReleased": true
+        },
+        "postUnitReclaimBindingFromRun": {
+          "sourceSHA": "9ec6b056eeecc2be0cbedcb0f19282b8e30d9955",
+          "runId": "41379094743",
+          "jobId": "125065734473",
+          "attempt": 1
+        },
+        "corePatternRestored": true
+      },
+      {
+        "schemaVersion": "pos-cafe-light-ci-v2",
+        "runId": "41384287830",
+        "attempt": 1,
+        "event": "pull_request",
+        "sourceSHA": "a7fdd306d4d728b610642688847cbe9f51a423ee",
+        "workflowSHA": "a7fdd306d4d728b610642688847cbe9f51a423ee",
+        "prHeadSHA": "9ec6b056eeecc2be0cbedcb0f19282b8e30d9955",
+        "sourceFingerprint": "7cdf824ee6008dbe56c081137b5a25569c805d38fb136b89519f54a3c7051189",
+        "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+        "sourcePreserved": true,
+        "verificationScope": "LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY",
+        "peakOwnedBytes": 1300078592,
+        "operatingCapBytes": 5368709120,
+        "minimumFreeBytes": 32212254720,
+        "jobId": "125081575896",
+        "runURL": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/41384287830",
+        "status": "PASS",
+        "log": {
+          "sha256": "1bc2f08501a6ca82eb6086253e54e18d2315d890171fc15609ce9205a33b5c39",
+          "bytes": 42693,
+          "storage": "LOCAL_ONLY",
+          "rawExported": false
+        },
+        "phases": [
+          {
+            "id": "install",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "build",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "unit",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "discovered": 1240,
+              "run": 1240,
+              "pass": 1240,
+              "fail": 0,
+              "skip": 0,
+              "manualDeferred": 0
+            }
+          },
+          {
+            "id": "tooling",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "discovered": 568,
+              "run": 567,
+              "pass": 567,
+              "fail": 0,
+              "skip": 1,
+              "manualDeferred": 1
+            }
+          },
+          {
+            "id": "node-tools",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 1056,
+              "pass": 1056,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "browser",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "runtime-reporters",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 4,
+              "pass": 4,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "edge-resolution",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 3,
+              "pass": 3,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "permission-static",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 480,
+              "pass": 480,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "permission-pg16",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 30,
+              "pass": 30,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "ui-tools",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 103,
+              "pass": 103,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "ui-remake-selftest",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 11,
+              "pass": 11,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "ui-audit-selftest",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 1,
+              "pass": 1,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "smoke-discovery",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "smoke-preflight",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 1,
+              "pass": 1,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "smoke",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 86,
+              "pass": 49,
+              "fail": 0,
+              "skip": 37
+            }
+          },
+          {
+            "id": "ui-selftest",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "ui-audit",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 48,
+              "pass": 48,
+              "fail": 0,
+              "skip": 0,
+              "acceptedFindings": 0
+            }
+          }
+        ],
+        "postUnitReclaimObserved": {
+          "schemaVersion": "permission-pg16-reclaim-v1",
+          "status": "NOT_PRESENT",
+          "rootRemoved": true,
+          "processReleased": true
+        },
+        "postUnitReclaimBindingFromRun": {
+          "sourceSHA": "a7fdd306d4d728b610642688847cbe9f51a423ee",
+          "runId": "41384287830",
+          "jobId": "125081575896",
+          "attempt": 1
+        },
+        "corePatternRestored": true
+      },
+      {
+        "schemaVersion": "pos-cafe-light-ci-v2",
+        "runId": "41385640659",
+        "attempt": 1,
+        "event": "push",
+        "sourceSHA": "28a3dc54a846463ba150d50ab323658d6ed1372c",
+        "workflowSHA": "28a3dc54a846463ba150d50ab323658d6ed1372c",
+        "prHeadSHA": null,
+        "sourceFingerprint": "7cdf824ee6008dbe56c081137b5a25569c805d38fb136b89519f54a3c7051189",
+        "lockSHA": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
+        "sourcePreserved": true,
+        "verificationScope": "LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY",
+        "peakOwnedBytes": 1290739712,
+        "operatingCapBytes": 5368709120,
+        "minimumFreeBytes": 32212254720,
+        "jobId": "125085740889",
+        "runURL": "https://github.com/nguyentronglinh045/pos-cafe/actions/runs/41385640659",
+        "status": "PASS",
+        "log": {
+          "sha256": "f6c4e1a9560ed492911a90080ff553b545caccac096dcb48ff9ee783e78198cd",
+          "bytes": 41864,
+          "storage": "LOCAL_ONLY",
+          "rawExported": false
+        },
+        "phases": [
+          {
+            "id": "install",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "build",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "unit",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "discovered": 1240,
+              "run": 1240,
+              "pass": 1240,
+              "fail": 0,
+              "skip": 0,
+              "manualDeferred": 0
+            }
+          },
+          {
+            "id": "tooling",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "discovered": 568,
+              "run": 567,
+              "pass": 567,
+              "fail": 0,
+              "skip": 1,
+              "manualDeferred": 1
+            }
+          },
+          {
+            "id": "node-tools",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 1056,
+              "pass": 1056,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "browser",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "runtime-reporters",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 4,
+              "pass": 4,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "edge-resolution",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 3,
+              "pass": 3,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "permission-static",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 480,
+              "pass": 480,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "permission-pg16",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 30,
+              "pass": 30,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "ui-tools",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 103,
+              "pass": 103,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "ui-remake-selftest",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 11,
+              "pass": 11,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "ui-audit-selftest",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 1,
+              "pass": 1,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "smoke-discovery",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "smoke-preflight",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 1,
+              "pass": 1,
+              "fail": 0,
+              "skip": 0
+            }
+          },
+          {
+            "id": "smoke",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 86,
+              "pass": 49,
+              "fail": 0,
+              "skip": 37
+            }
+          },
+          {
+            "id": "ui-selftest",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {}
+          },
+          {
+            "id": "ui-audit",
+            "status": "PASS",
+            "exitCode": 0,
+            "counts": {
+              "run": 48,
+              "pass": 48,
+              "fail": 0,
+              "skip": 0,
+              "acceptedFindings": 0
+            }
+          }
+        ],
+        "postUnitReclaimObserved": {
+          "schemaVersion": "permission-pg16-reclaim-v1",
+          "status": "NOT_PRESENT",
+          "rootRemoved": true,
+          "processReleased": true
+        },
+        "postUnitReclaimBindingFromRun": {
+          "sourceSHA": "28a3dc54a846463ba150d50ab323658d6ed1372c",
+          "runId": "41385640659",
+          "jobId": "125085740889",
+          "attempt": 1
+        },
+        "corePatternRestored": true
+      }
+    ]
+  },
+  "docsPublication": {
+    "branch": "docs",
+    "parent": "991652224afcd125065d92ad0d657abf289f1842",
+    "mainAtPublication": "28a3dc54a846463ba150d50ab323658d6ed1372c",
+    "docsIntoMain": "PROHIBITED",
+    "applicationOrCIExecuted": false
   }
 }

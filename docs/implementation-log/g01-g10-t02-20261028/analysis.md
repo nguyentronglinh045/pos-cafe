@@ -1,6 +1,8 @@
 # T02 — Chẩn đoán CI payment cũ: gán lỗi của reporter và lỗi UI
 
-Ngày lập: 28/10/2026. Phạm vi: đối chiếu source và bằng chứng CI hiện có, phân tích cách gán thông tin lỗi và đề xuất sửa. **Phân tích đã hoàn tất; chưa sửa code, chưa chạy test/app/CI/backend và chưa cập nhật trust pin.** Mọi lệnh trong [kế hoạch kiểm chứng](verification-plan.md) ở trạng thái `NOT_RUN`. [Bản bàn giao kỹ thuật](../../workflow/tasks/g01-g10-t02-2026-10-28.md) ghi phần việc tiếp theo.
+> **Hiện trạng 02/11/2026:** bản sửa phương án A đã merge qua [PR #16](https://github.com/nguyentronglinh045/pos-cafe/pull/16) vào `main@28a3dc54a846463ba150d50ab323658d6ed1372c`; U/P local, C trên nhánh, PR CI và CI sau merge đã kiểm. CI sau merge đủ **18/18 phase PASS**. Xem [checkpoint hiện hành](#merged-20261102). Nguyên nhân UI lịch sử vẫn UNKNOWN; R-APP NOT_RUN. Mục 1–11 là hồ sơ lịch sử, các câu “chưa triển khai/chưa merge” trong đó chỉ áp dụng tại mốc tương ứng.
+
+Ngày lập: 28/10/2026. Phạm vi: đối chiếu source và bằng chứng CI hiện có, phân tích cách gán thông tin lỗi và đề xuất sửa. **Phân tích ban đầu đã hoàn tất ngày 28/10; checkpoint tiếp nhận 01/11/2026 ở mục 9. Chưa sửa production hoặc trust pin.** TC-T02-17 đã PASS trong lượt probe Windows ngày 30/10; các ca kiểm bản sửa U/P/C và R-APP chưa chạy. Không coi probe là kiểm reporter production. [Bản bàn giao kỹ thuật](../../workflow/tasks/g01-g10-t02-2026-10-28.md) ghi phần việc tiếp theo.
 
 Ký hiệu dùng trong tài liệu:
 
@@ -199,11 +201,11 @@ Phase `runtime-reporters` kiểm một reporter khác của permission runtime. 
     - `retry`: `result.retry`, số nguyên 0..100;
     - `statusOrdinal`: 1/2/3 cho `failed`/`timedOut`/`interrupted`;
     - `step`: `fields` của khóa `errorKey(result.errors[0])`, chỉ gồm `categoryOrdinal`, `apiOrdinal`, `locatorOrdinal`, `durationMs`. Chỉ có giá trị khi đồng thời: result đã được đệm, `result.errors[0]` có khóa, map có khóa đó và `count = 1`.
-    - Mọi trường hợp khác cho `null`. Cụ thể: error đầu không có khóa (thiếu stack, dài hơn 1 MiB, giá trị ném ra không phải `Error`); khóa không có trong map (không step nào mang error đó, ví dụ test timeout, hoặc map đầy trước khi step đó kết thúc); `count = 2` (hai step không lồng nhau có cùng message và stack, ví dụ assertion lặp ở cùng dòng); result không được đệm.
+    - Mọi trường hợp khác cho `null`. Cụ thể: error đầu không có khóa (thiếu stack, dài hơn 1 MiB, giá trị ném ra không phải `Error`); khóa không có trong map (không step nào mang error đó, hoặc map đầy trước khi step đó kết thúc). Riêng timeout đã đo ở TC17, error đầu không có khóa vì stack không có frame; không phải có khóa nhưng thiếu trong map; `count = 2` (hai step không lồng nhau có cùng message và stack, ví dụ assertion lặp ở cùng dòng); result không được đệm.
     - Không chọn theo thứ tự "mới nhất" hay "đầu tiên". Thứ tự chỉ dùng để biết step nào kết thúc trước khi so quan hệ cha–con.
   - Các trường hợp cần phân biệt:
     - Hai soft assertion cùng message ở dòng X và Y có stack khác nhau, nên khóa khác nhau. Error đầu là X, nên `step` là step của X, không bao giờ là của Y.
-    - Poll hết hạn: mỗi vòng poll là một step con với lỗi riêng (`PW/lib/matchers/expect.js:12947-12957`), còn step poll tổng mang message cuối có thêm call log (:12958-12965). Error đầu của test là error của step poll tổng, nên khóa khớp step poll tổng; các vòng con có khóa khác và không ảnh hưởng.
+    - Poll hết hạn: mỗi vòng poll là một step con với lỗi riêng (`PW/lib/matchers/expect.js:12947-12957`), còn step poll tổng mang message cuối có thêm call log (:12958-12965). Error đầu của test là error của step poll tổng, nên khóa khớp step poll tổng; các vòng con không có khóa theo quan sát TC17 (stack không có frame), nên không ảnh hưởng khóa của step tổng.
     - Poll lỗi tạm ở dòng X rồi PASS, sau đó lỗi cuối cùng message ở dòng Y: hai stack khác dòng nên khóa khác nhau, `step` là step của Y. Nếu lỗi tạm và lỗi cuối cùng dòng, cùng message và không lồng nhau thì `count = 2`, `step = null`.
   - Mỗi dòng tối đa 512 byte. Trần 32 dòng mỗi lượt chỉ tính dòng terminal. Không thêm `onEnd`, không đổi status.
 - **A6 — Parser khớp bản ghi với T.**
@@ -238,7 +240,7 @@ Phase `runtime-reporters` kiểm một reporter khác của permission runtime. 
 - **A10 — `smoke-preflight`.** Dùng cùng reporter với `--workers=1`, một test, `DEBUG` có `pw:protocol` (`scripts/project-ci.mjs:356-359`). Diagnostics preflight theo A2–A8; phần trace diagnostics (:244-248) không đổi. Kiểm bằng TC-T02-19.
 - **A11 — Report thiếu hoặc hỏng.** Khi report `null` (thiếu file, JSON lỗi, :241-242) hoặc `suites` không phải mảng: không chọn được T, nên mọi metric smoke đơn trị, kể cả metric step từ bản ghi, vắng mặt. `REPORT_MISSING`, codes và crash facts giữ như hiện tại, trừ `browserCrashBeforeFailedStep` vắng mặt vì không có bản ghi khớp T (A7). So với code hiện tại, việc này mất metric step khi thiếu report. Chấp nhận mất mát này vì không xác minh được bản ghi thuộc test nào.
 
-Điều kiện tiên quyết của A (TC-T02-17): trên Playwright 1.60.0 thật, xác nhận hình dạng `errors[0].location`, `errorLocation`, `error.stack` cho poll hết hạn, `toHaveAttribute` hết hạn và test timeout. Đồng thời xác nhận `caseDigest` của reporter bằng `digest(T)` tính từ JSON, với cùng test chạy ở ít nhất hai project. Xác nhận thêm rằng khóa error của step mang lỗi bằng khóa của `result.errors[0]` với poll hết hạn, `toHaveAttribute` hết hạn và soft assertion, và ghi số step cùng khóa. Nếu nguồn vị trí không có, metric vắng mặt theo A3. Nếu khóa không bằng ở loại lỗi nào, metric step của loại đó vắng theo A5; ghi lại và báo trước khi viết code, không nới quy tắc, không quay lại marker toàn lượt.
+Điều kiện tiên quyết của A (TC-T02-17, đã PASS trong phạm vi probe Windows ngày 30/10; giới hạn ở mục 9): trên Playwright 1.60.0 thật, xác nhận hình dạng `errors[0].location`, `errorLocation`, `error.stack` cho poll hết hạn, `toHaveAttribute` hết hạn và test timeout. Đồng thời xác nhận `caseDigest` của reporter bằng `digest(T)` tính từ JSON, với cùng test chạy ở ít nhất hai project. Xác nhận thêm rằng khóa error của step mang lỗi bằng khóa của `result.errors[0]` với poll hết hạn, `toHaveAttribute` hết hạn và soft assertion, và ghi số step cùng khóa. Nếu nguồn vị trí không có, metric vắng mặt theo A3. Nếu khóa không bằng ở loại lỗi nào, metric step của loại đó vắng theo A5; ghi lại và báo trước khi viết code, không nới quy tắc, không quay lại marker toàn lượt.
 
 Metric core (S6): sửa ở test, không sửa collector. Dọn thư mục fixture bằng `t.after` trong `scripts/project-ci-results.test.mjs:751-759`, hoặc tạo fixture ngoài cây được guard quét. Không đổi `allocatedBytes`. Ghi rõ trong docs rằng `coreFileCount` chỉ là đếm theo tên.
 
@@ -254,7 +256,7 @@ Metric core (S6): sửa ở test, không sửa collector. Dọn thư mục fixtu
 | Consumer khác của `project-ci-results.mjs` | Không đổi code; phải chạy lại node-tools | `permission-edge-probe.test.mjs`, `permission-runtime-pg16.test.mjs`, `permission-runtime-admission(.test).mjs`, `permission-batch-budget(.test).mjs`, `permission-runtime-pin-ui(.test).mjs`, `permission-runtime-pg16-cleanup.mjs`, `permission-full-target-policy.test.mjs`, `project-preview(.test).mjs`, `project-release.mjs` |
 | Docs (`testing.md`, `regression-map.md`, kế hoạch G01–G10) | Ghi ngữ nghĩa mới của metric smoke đơn trị, `browserCrashBeforeFailedStep`, giới hạn dòng helper và việc bỏ `smokeProgressIndex` kể từ SHA áp dụng | Không so metric trước/sau như cùng nghĩa |
 
-**Schema: cần chủ dự án chốt trước khi giao triển khai** (điều kiện G10 trong kế hoạch kiểm chứng). Tài liệu đề xuất giữ `schemaVersion: pos-cafe-light-ci-v1`, kèm mốc SHA ghi trong docs.
+**Schema — cập nhật 01/11/2026:** chủ dự án đã chọn summary `pos-cafe-light-ci-v2`, mở rộng hai consumer và test. Consumer nhận v1 và v2 với nguyên gate theo xác nhận cùng ngày; phạm vi A và acceptance còn chờ (mục9). Đề xuất v1 ngày28/10 dưới đây giữ để truy vết phương án đã cân nhắc, không còn là lựa chọn hiện hành.
 
 - Lý do: `scripts/permission-batch-budget.mjs:243,323` và `scripts/permission-runtime-admission.mjs:48` chỉ chấp nhận đúng `v1`. Nâng version buộc sửa thêm hai consumer này và test của chúng.
 - Đánh đổi: với `v1`, các key `smokeFailureLine/Column`, `smokeStepSourceOrdinal`, `smokeStep*`, `smokeHelperLine`, `browserCrashBeforeFailedStep` đổi nghĩa và `smokeProgressIndex/Total` thôi xuất hiện, trong khi tên schema không đổi. Người đọc summary phải đối chiếu `sourceSHA` với mốc trong docs. Nếu chủ dự án muốn tách bạch bằng version, chọn `v2` và mở rộng phạm vi sửa sang hai consumer đó.
@@ -283,7 +285,7 @@ Nguyên nhân ứng dụng giữ **UNKNOWN** cho tới khi recipe R-APP trong [v
 - Fail ở `toHaveAttribute/toBeDisabled` hoặc thao tác lỗi nhanh, không kèm che khuất: ủng hộ H4.
 - Không tái hiện sau số lượt đã định: giữ UNKNOWN; không coi là đã sửa.
 
-## 8. Trạng thái và bước tiếp theo
+## 8. Trạng thái và bước tiếp theo — checkpoint lịch sử 28/10
 
 Phân tích source/evidence và phương án kiểm chứng đã hoàn tất. Cơ chế gán sai thông tin lỗi vẫn còn tại `@052`; nguyên nhân lỗi UI lịch sử vẫn **UNKNOWN**. Kết quả CI PASS về sau không chứng minh lỗi cũ đã được xác định hoặc sửa.
 
@@ -293,3 +295,152 @@ Phân tích source/evidence và phương án kiểm chứng đã hoàn tất. C�
 4. Sau khi có bản sửa và kết quả kiểm chứng, cập nhật `docs/testing.md` và `docs/regression-map.md` với TC-T02-01…26, nghĩa mới của metric, giới hạn dòng helper, việc bỏ `smokeProgressIndex` và ý nghĩa của `coreFileCount`/`TEST_TIMEOUT`.
 
 Chi tiết trạng thái ở [bản bàn giao T02](../../workflow/tasks/g01-g10-t02-2026-10-28.md); mọi expected trong kế hoạch vẫn là tiêu chí chưa thực thi.
+
+
+## 9. Tiếp nhận 01/11/2026 — candidate, chờ quyết định trước triển khai
+
+### 9.1 Nguồn và kết luận hiện hành
+
+Remote main vẫn `052a7d1e156425ea82ed1c9cf978d7ef4d4f3571`, docs vẫn `991652224afcd125065d92ad0d657abf289f1842`, xác minh trực tiếp refs ngày 01/11. Đối chiếu byte canonical của 24 file runtime/caller/consumer/config/lock liên quan với main052: khớp. Đây là kiểm source và integrity, không phải execution test mới. Các nguồn và nhận định lịch sử ở mục 1–8 giữ provenance ngày 28/10; không đổi kết quả run cũ.
+
+Reporter hiện tại phát từ `onStepEnd` không giữ test/result (`scripts/project-ci-results.mjs:124–135`); parser chọn marker trên text toàn phase (`:480–499`), có thể ghép vị trí/step từ poll trung gian với test thất bại. Collector chưa truyền cờ đầy đủ output (`scripts/project-ci.mjs:230–243`); output sau khi blocked bị bỏ (`:116–128`). Chưa có bản sửa A trên main. `TEST_TIMEOUT` vẫn quét text cả phase (`scripts/project-ci-results.mjs:500`); core fixture hiện chưa cleanup (`scripts/project-ci-results.test.mjs:751–759`). Nguyên nhân UI lịch sử giữ **UNKNOWN**; TC17 không tái hiện ứng dụng.
+
+TC17 đã được tiếp nhận PASS: một ma trận, 8 identities/2 project, 6 `failed` và 2 `timedOut` có chủ đích; digest/report/probe/observer khớp, không truncation. Hash manifest checkpoint `0d3c5e9380c485a292c0e3dbffef27bb89e95b99b42ea6215faf52d6bf452f1c`; 32/32 file manifest được kiểm lại chỉ đọc ở checkpoint này. Evidence trước đó đã băm 1.193 file tracked trước/sau; lượt tiếp nhận này kiểm targeted 24 file, không gọi đó là băm lại toàn bộ repo. Không chạy lại matrix/analyzer, không sửa gói TC17.
+
+Ba hiệu đính giữ nguyên oracle và quy tắc duy nhất: poll con **không có khóa**; timeout đã đo có `step=null` vì **error đầu không có khóa**; error đầu timeout không có location/errorLocation/frame nên metric vị trí vắng, không lấy error thứ hai để bù. Giới hạn probe: Windows, một lượt, `CI` chưa đặt, chỉ tập con G9; thiếu ordinal production, chưa đi qua parser production, chưa thực thi nhánh parent-walk, box và các trần buffer. Không suy nghiệm thu CI Linux.
+
+### 9.2 Đã chốt summary v2; consumer nhận v1 và v2, giữ nguyên gate
+
+| Lựa chọn | Phạm vi code dự kiến | Hệ quả và kiểm chứng |
+| --- | --- | --- |
+| Giữ `pos-cafe-light-ci-v1` | Ba file tooling/test đã nêu + policy ba hash | Consumer hiện tại tiếp tục nhận. Nghĩa metric thay đổi mà version giữ nguyên: phải công bố mốc source áp dụng, không so metric cũ/mới như cùng nghĩa. U phải kiểm public allowlist, omission và consumer không đổi. |
+| Nâng `pos-cafe-light-ci-v2` | Phạm vi trên + `permission-runtime-admission.mjs`/`.test.mjs` + `permission-batch-budget.mjs`/`.test.mjs` | Version phân biệt nghĩa mới; cần sửa đủ ba vị trí literal v1 ở admission:48, budget:243,323; test producer/consumer, trường hợp version không hỗ trợ và giả mạo source/status/phase. Hai consumer không nằm trong trustedFiles hiện tại nên không phát sinh pin/path mới cho chúng. |
+
+Ngày01/11/2026, chủ dự án xác nhận **nâng summary v2, mở rộng consumer/tests**. Nguồn quyết định: trả lời trực tiếp của chủ dự án trong chat tiếp nhận. Đề xuất ban đầu v1 giúp giữ scope hẹp nhưng đổi nghĩa metric dưới cùng version; v2 phân biệt ngữ nghĩa bằng version, đổi lại thêm hai consumer và hai test. Khuyến nghị v1 trước đó đã được thay bởi lựa chọn v2; chưa triển khai.
+
+Cùng ngày01/11, chủ dự án xác nhận **admission/budget nhận cả v1 và v2, giữ nguyên gate**, từ chối version khác. Nguồn: trả lời trực tiếp trong chat tiếp nhận. Phương án v2-only bị loại vì làm summary lịch sử bị từ chối dù hai consumer không dựa vào metric attribution đổi nghĩa (`permission-runtime-admission.mjs:48–58`, `permission-batch-budget.mjs:243–244,323–329`). Mở rộng version không nới source/status/phase/reclaim/budget, không làm evidence cũ thành PASS source mới, không chỉnh raw artifact cũ.
+
+Acceptance consumer dự kiến: summary producer phát đúngv2; input v1/v2 cùng binding hợp lệ được nhận; version khác bị từ chối; giả mạo source/workflow/run/status/phase/cleanup hoặc claim/budget vẫn bị từ chối cho cả hai version. Test phủ cả budget terminal publication (:243) lẫn post-gate (:323) và admission heavy (:48), không chỉ thay fixture xanh sangv2.
+
+Không đổi schema marker theo lựa chọn summary: A5 vẫn `pos-smoke-terminal-v1`; hai version giải quyết hai hợp đồng khác nhau. Không đổi version của admission/budget, không reset/spend lại claim hoặc ledger vì nâng summary version.
+
+### 9.3 Public metrics và trust cần review
+
+- Cùng T/final R: test line, project, status, duration, timeout; không lấy attempt fail trước khi kết quả cuối PASS. Vị trí/helper chỉ cùng error đầu theo A3/A4; không có nguồn thì vắng.
+- Step category/API/locator/duration chỉ từ bản ghi terminal khớp duy nhất theo A5/A6; output/report thiếu, digest trùng, vượt trần hoặc không chứng minh được step duy nhất thì vắng.
+- `browserCrashBeforeFailedStep` chỉ là thứ tự dòng crash output với bản ghi `onTestEnd` của T; không chứng minh crash thuộc T, xảy ra trước assertion hay gây lỗi. Crash facts khác giữ phạm vi cũ.
+- Ngừng phát progress metric ở mọi phase, giữ key trong allowlist; vị trí/step/helper không rơi sang phase khác. Giữ codes đa trị, stats, failedFiles và TAP/Vitest/PG16/edge, trừ thay đổi đã khai báo A1/A7/A8/A11.
+- A4 chỉ append `report-presentation.spec.ts` vào bảng ordinal smoke; **khác** trustedFiles. Tập trustedFiles vẫn đúng 64 đường dẫn. Chỉ cập nhật hash tại `ci/release-policy.json:13,14,39` theo canonical bytes của ba file sau diff review, trong cùng candidate đã kiểm; không thay pin hoặc path-set trong bước điều tra.
+- Public output chỉ finite codes/ordinal/integer/digest được allowlist; raw message/stack/title/DOM/secret/đường dẫn máy không xuất bản. Khóa error trong RAM không làm oracle của chính reporter.
+
+### 9.4 Kế hoạch hữu hạn — tất cả là dự kiến, chưa giao triển khai
+
+| Phần | File/caller và đầu vào → đầu ra | Expected, phép kiểm và điều kiện hoàn tất |
+| --- | --- | --- |
+| S0 — khóa hợp đồng | Quyết định schema, A1–A11, acceptance → cập nhật đúng phần analysis/verification/handoff đang có | Ghi nguồn xác nhận và phạm vi. Chưa có quyết định thì không sửa production. Không tạo lại bộ bảy artifact. |
+| S1 — reporter | `project-ci-results.mjs:89–136`; events PW → một marker terminal theo result | A5: error đầu, buffer 64×128, parent≤64, count bão hòa2, ≤32 dòng/512B; PASS poll tạm không emit; không onEnd/status override. U: TC01–03e/08/10/13. Giữ TC17 probe nguyên vẹn. |
+| S2 — parser/collector | `privateDiagnostics:380–499`, caller `project-ci.mjs:243`; output riêng + JSON + outputComplete → metrics | A2–A4/A6–A11: cùng T, same-error, unique digest/record, strip trước split, 64/65 candidate, BFS10000, thiếu output/report fail closed; codes/guard giữ nguyên. U: TC02–11/18–26, fixture đúng serializer, so baseline các trường bất biến. Collector diff đúng một đối số `result.blocked === false`; caller probe:263 và edge/pg16 tests giữ tương thích default true. |
+| S3 — fixture/trust/schema | Test core:751–759; publicSummary:780; policy:13,14,39; consumer v2/v1 đã chốt → candidate nhất quán | Cleanup fixture bằng hook test; TC12/14/16 cùng negative pin/version/privacy. Review diff ba file trước nhận pin; tính canonical bytes (CRLF không là SHA Git), kiểm đủ64 path giữ nguyên, pin đúng/old-pin âm; `productionEnabled:false`. Bổ sung bốn file consumer/test như 9.2, không lỏng gate. |
+| S4 — U tích hợp | Toàn bộ node-tools theo collector:300 và tooling Vitest:298–299 → receipts U mới | TC15: không giảm ca cũ/skip, không dùng tổng1044 làm expected cố định sau thêm ca. Chạy focused tests trước rồi toàn bộ node-tools/tooling, bind source+lock+command+exit+counts; không gọi U là C. |
+| S5 — P production | Harness G9 bổ sung + reporter đã sửa + JSON + parser → diagnostics đối chiếu observer | Phủ mọi hàng P trong ma trận hiện có: 01/02/03/03b/03c/03d/04(a,b,c)/07/07b/24, hai thứ tự, interrupted, soft cùng/khác dòng, thrown/soft trong test.step để đi qua parent-walk. Chọn step bằng vị trí observer, so production duration bằng đúng observer duration; nếu duration giữa hai step X/Y trong observer chênh<100ms thì INCONCLUSIVE theo TC03c/d (không phải dung sai production-vs-observer); không dùng A5 key làm oracle. Box/trần còn U theo TC03e/08. Discovery production không đổi (baseline86), source/harness fingerprint, bounded raw, no truncation. |
+| S6 — C và đóng phạm vi | Candidate đã review → fresh GitHub light CI đúng source/lock/runner → safe summary+cleanup receipts | Chỉ khi được giao commit/push/chạy tương ứng. Đủ18phase, gồm PG16 native/edge/static/cgroup/cleanup; fail dừng, phase sau NOT_RUN. U/P không thay C, CI PASS không chứng minh UI root cause. Hai review độc lập trust/privacy và verification/oracle; mọi finding chặn đóng, chủ dự án nghiệm thu riêng. R-APP là phần độc lập chưa chạy. |
+
+Lệnh U dự kiến tại checkout triển khai sau khi đã chốt: `node --test scripts/project-ci-results.test.mjs`; `node --test scripts/permission-full-target-policy.test.mjs`; node-tools bằng danh sách `git ls-files` lọc `scripts/*.test.mjs` đúng `--test-concurrency=2 --test-reporter=tap`; tooling Vitest với `vitest.project-tooling.config.ts` và JSON output riêng như collector. Capture raw output ở raw-local có trần; không công bố transcript TAP có title/error. Không chạy config import/discovery hay kiểm thử trong lượt tiếp nhận.
+
+### 9.5 Khả thi môi trường và điều kiện chuyển bước
+
+Checkout code phụ hiện detached main052, tracked sạch, chỉ gói TC17 untracked; tại lúc kiểm không thấy process command line dùng checkout. Node24.16.0 và package PW1.60.0 đã có. Lượt TC17 dùng Chromium1223/148.0.7778.96; kiểm lại executable/dependency thực và lock trước P, không lấy receipt cũ thay preflight mới. Chưa có reservation lâu dài; kiểm lại sử dụng trước bất kỳ mutation nào.
+
+Không tạo worktree/runtime mới, không cài dependency, không dựng DB/WSL/Docker. Có thể đề nghị tái dùng checkout phụ sau khi được giao triển khai, giữ gói TC17 read-only; harness production P dùng thư mục untracked mới riêng, xem G9 đã bổ sung. Một runtime nặng, giới hạn task20GiB và C/ổ runtime trống≥30GiB. Mỗi lần cài/copy/build lớn phải ước tính download/tăng/đỉnh và đo Windows thực, không lấy số đo checkpoint làm bảo đảm tương lai. Full C chạy Ubuntu24.04 GitHub-hosted theo workflow:20–31, không thay bằng Windows hoặc lane bỏ PG16.
+
+Đã chốt summaryv2 và consumer nhậnv1/v2 giữ nguyên gate. Hai quyết định còn chặn bước triển khai: (Q2) chấp thuận toàn A với omission/đổi nghĩa metrics đã liệt kê, cleanup và pin, R-APP riêng; (Q3) chốt acceptance bản sửa attribution U/P/C hay checkpoint local U/P (C vẫn NOT_RUN). Summary v2 đã được chọn trực tiếp ngày01/11; khuyến nghị A đầy đủ + U/P/C, còn scope A/acceptance chưa được mặc nhận. Chốt tiêu chí không tự cấp quyền commit/push/merge/dispatch hoặc chạy R-APP. Agent tự xử lý chi tiết triển khai bên trong hợp đồng đã duyệt, không hỏi lại facts trong source/evidence. Khi được giao triển khai, cung cấp walkthrough reporter → parser → collector → public summary/tests; hiện chưa có walkthrough bản sửa và chưa ghi chủ dự án đã hiểu/duyệt.
+
+
+<a id="local-20261102"></a>
+## 10. Triển khai local 02/11/2026 — checkpoint U/P, C chưa được giao
+
+Chủ dự án chấp thuận toàn A1–A11, cleanup core fixture và ba trust pin cùng diff đã review; giao thực hiện và kiểm U/P local trước. Nguồn: trả lời trực tiếp ngày02/11. Summaryv2/consumer nhậnv1-v2 giữ nguyên gate theo quyết định01/11. Hai câu hỏi phạm vi và thứ tự kiểm đã được trả lời; không hỏi lại.
+
+Đây là thứ tự thực hiện, không miễn full C hoặc giảm coverage/acceptance/retry/timeout/gate. C đủ18phase và R-APP chưa chạy; UI root cause UNKNOWN. Báo kết quả local/phần thiếu trước chuyển bước; không tự commit/push/merge/dispatch. Nếu sau này được giao CI, không lặp cùng lỗi hai lần mà chưa có bằng chứng mới.
+
+Runtime đã sửa: reporter theo result/error đầu; parser theo T/final result và unique terminal với outputComplete/reportComplete; collector chỉ thêm cờ outputComplete. Producer phátv2; admission/budget nhậnv1-v2 cùng gate. Core fixture cleanup bằng hook test. Harness P riêng dùng production reporter/parser và observer theo vị trí/category/exact duration, không error-key oracle. GóiTC17 giữ nguyên. Kết quả cuối phải gắn manifest source mới, không dùng lượt thiếu receipt làm PASS. Các trạng thái chưa triển khai trong mục1–9 thuộc checkpoint trước.
+
+Test nhỏ trong lúc sửa; full local khi candidate ổn. U full gồm node-tools và tooling đúng phase; P gồm thường/đảo và fail-interrupted, same/differentfile/title/project, soft/caught/parent/timeout. Giới hạn Windows phải ghi đúng, không sửa expected/skip/gate để xanh. C và R-APP không được chạy trong checkpoint này. Walkthrough reporter→parser→collector→summary/tests chưa diễn ra với chủ dự án.
+
+
+### 10.1 Nguồn và kết quả local
+
+Source là baseline main`052a7d1e156425ea82ed1c9cf978d7ef4d4f3571` + working candidate, không phải main đã phát hành. Manifest code/harness `3df9cb93199a959332a020446244002fd2cb1193bde0aad481d28a18a9041dda`; fingerprint raw1193file tracked `e1027b31573f167e898ded3c888a100eb9442cd421d728fabd66d0efbd5a72a2`. Snapshot gồm8file Git đổi,8file harness mới và patch phục hồi; recipe8file môi trường bên dưới không tạo thêm Git diff. Source trước/sau mỗi lượt cuối khớp; rootWIP và góiTC17 manifest32/32 giữ nguyên. Docs base`991652224afcd125065d92ad0d657abf289f1842`.
+
+| Kiểm | Kết quả và giới hạn |
+| --- | --- |
+| U node-tools đầy đủ | 1056/1056 PASS,0fail/skip,exit0; nodeCounts hiện hành chấp nhận. Sau suite,corefixture còn0 trong temp riêng. |
+| U tooling đầy đủ | Discovery568,run567/pass567,fail0; đúng1manual-defer theo policy hiện hành, không thêm skip. vitestCounts kiểm đủ tracked full files. |
+| Pin | Testpolicy PASS; dùng pin cũ trên bytes mới bị từ chối như expected; giữ64trustedpaths,productionEnabled=false; chỉ3hash đã review cập nhật. |
+| P production | 32executions thứ tự thường +32đảo +2failed/interrupted =66executions. Các lỗi có chủ đích khớp expected; checker PASS cả3lượt, không truncation/source drift. Observer không dùng error-key làm oracle. |
+| Discovery smoke production | 86executions như baseline; harness ngoài discovery. Không chạy app smoke. |
+| C / R-APP / UI root cause | NOT_RUN / NOT_RUN / UNKNOWN. Không dùng U/P thay full18phaseGitHub/LinuxPG16 hoặc tái hiệnUI lịch sử. |
+
+Runtime mới: Windows,Node24.16.0,Playwright test/core1.60.0,Chromium1223; binary ProductVersion148.0.7778.96 đã đọc,channelchromium,CI=true. Không cài gói/DB/WSL/Docker, không đổi coverage config hoặc fresh đo coverage app.
+
+Lịch sử giữ nguyên: fullnode lần đầu1056test,1020PASS/36FAIL/0skip;9filetest nền bị lỗi exact-byte LF/CRLF và thiếu PERMISSION_STATIC_TEST_TMP. Probe nhỏ chứng minh cùng fixture rawCRLF→PERM_PLAN_MANIFEST, byteGitLF→MATCH. Đưa5JSONfixture và3worker chưa đổi source về đúng byteHEAD, lưu bảnrawtrước; kiểm không thêm Git diff. Đặt PERMISSION_STATIC_TEST_TMP vào temp riêng do task sở hữu trênD. Nhóm9file kiểm nhỏPASS rồi fullnode chạy lạiPASS; không sửa expected/skip/pin nền để làm xanh. Lượt collector sớm mất receipt do race với fixture đang dọn được đánh dấuINCOMPLETE, không dùng làm PASS. Logđầyđủ/hash và recipe giữ local, không xuất bản raw.
+
+### 10.2 Đường đọc bản sửa và phần còn thiếu
+
+- `scripts/project-ci-results.mjs:124`: buffer theo TestResult; onStepEnd chỉ quan sát; onTestEnd chọn error0, in một terminal có digest và fields hữu hạn; không onEnd/status override.
+- `scripts/project-ci-results.mjs:478`: chọn T/finalR; vị trí chỉ cùng errorđầu; outputLines riêng và bản ghi duy nhất/đầyđủ; thiếu điều kiện thì vắng step/crash-order.
+- `scripts/project-ci.mjs:243`: chỉ thêm result.blocked===false; fail/stop/capture/phase không đổi. TC13/TC19 U thực thi nguyên phase closure với dependencies local, không chạy mainservice/GitHub.
+- `scripts/project-ci-results.mjs:880`, admission`:48`,budget`:243,323`: producer v2; consumer nhậnv1/v2 nhưng mọi binding/status/phase/reclaim/budget gate giữ nguyên.
+
+Walkthrough đã chuẩn bị, chưa có phản hồi chủ dự án đã đọc/hiểu. Tiếp theo là báo checkpointlocal, reviewdelta cuối và chờ quyền bướcC. Không tự commit/push/merge/dispatch. FullC đủ18phase vẫn bắt buộc cho kết luận CI; R-APP riêng. Khi được giaoCI, không lặp cùng lỗi hai lần nếu chưa có bằng chứng mới. Không nhận toànT02 XONG.
+
+
+<a id="ci-20261102"></a>
+## 11. C trên nhánh T02 — 02/11/2026
+
+Chủ dự án chấp nhận checkpoint local, cho commit/push riêng nhánhT02 và chạyC đủ18phase một lần, chưamerge; nguồn: trả lời trực tiếp02/11. Đã commit`9ec6b056eeecc2be0cbedcb0f19282b8e30d9955` (parentmain052a7d1), push`work/t02-attribution-local-20261102` đúng1lần, khôngPR/dispatch/rerun. TámGitfile và bytecommit bằng candidate local đã review, không thêm docs/harness/raw vào commit; main052/docs9916522 giữ nguyên. Docs hiện là candidate local chưa xuất bản.
+
+[C41379094743/a1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/41379094743)/job125065734473: **18/18phasePASS**, run/jobconclusionsuccess. SourceSHA/workflowSHA=`9ec6b056eeecc2be0cbedcb0f19282b8e30d9955`, sourcePreserved=true; Git1193blobfingerprint`7cdf824ee6008dbe56c081137b5a25569c805d38fb136b89519f54a3c7051189`, lock`85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18` khớp tính độc lập từ commit. Fingerprint này là byteGit/Linux, không đồng nhất fingerprintWindowsraw củaU/P.
+
+| Phần | Kết quả nguồn9ec6b05 |
+| --- | --- |
+| Unit | 1240/1240PASS,0skip; phasecoveragegiữconfig/ngưỡng, không suy tỷlệ mới từsummary |
+| Tooling | discovery568/run567/pass567/fail0;1manual-defer hiện hành |
+| Node-tools | 1056PASS,0fail/skip |
+| Permissionstatic | 480PASS,0fail/skip |
+| PG16native | 30PASS,0fail/skip/retry; serverVersionNum=160015; receipt tựbind source/fingerprint/lock/run |
+| Smoke | 86executions:49PASS/37configuredskip/0fail; giữapplicability,không retry |
+| UIaudit | 48PASS,0findings; không thay appacceptance |
+
+Còn cácphaseinstall/build/browser/runtime-reporters/edge-resolution/ui-tools/ui-remake-selftest/ui-audit-selftest/smoke-discovery/smoke-preflight/ui-selftest cũngPASS theo đúng18phase vàthứtựPROJECT_PHASES. Không bỏPG16 hoặc phase đểgọiPASS.
+
+PG16stagecleanup rootRemoved/processReleased=true; post-unitreclaimNOT_PRESENT/rootRemoved=true/processReleased=true và corepatternrestored. ReceiptpostunitkhôngtựmangsourceSHA; binding riêng lấy từjob/run nguồn đã xác minh, không giảthêmtrườngquan sát. Peakowned=1429712896bytes dưới guard5GiB,minimumfree30GiB;không cài/dựng DB/WSL/Docker ởmáylocal.
+
+Log đầyđủ42175bytesđược giữraw-local riêng, SHA256`71c9525c7ad1f9755ac43fdceba11ddce32a727665c7e6bc8085bcdb0c3078b7`; summary/PG16/reclaim là projection cấu trúc hữu hạn,không công bố rawerror/message/stack/đườngdẫnmáy. BộđọclogCLI từchốiANSIchứakhông chạyCIthêm; connectorGitHub cungcấp logđầyđủđược lưuUTF8 rồiđối chiếu. Đây là thu lại dữ liệu cùngrun,a1,khôngruntestlại.
+
+**Trạng thái:** phươngánA đãhiệnthực, U/P local và C đủ18phase đãkiểmtrênsourcechỉrõ. Chưa merge/release;chưapublish7candidate docs. R-APP chưa đượcgiao/chưa chạy,UIlịchsửUNKNOWN; Cpass không xác định nguyênnhân lỗi40089941679. Full35businessruntime/backendenvelopes không thuộc laneC này. Báo checkpoint trước bước tiếp;không tựmerge/mởR-APP/T04 hoặc lặpCI.
+
+<a id="merged-20261102"></a>
+## 12. Merge, CI trên main và công bố hồ sơ — 02/11/2026
+
+Chủ dự án lần lượt giao merge T02 vào main và xóa nhánh, sau đó giao cập nhật nhánh docs; quy tắc được nhắc rõ: **không bao giờ merge docs vào main**. Hồ sơ này cập nhật độc lập trên docs, không đưa tài liệu dự án vào cây mã nguồn main.
+
+Bản sửa `9ec6b056eeecc2be0cbedcb0f19282b8e30d9955` gồm đúng tám file đã review. [PR #16](https://github.com/nguyentronglinh045/pos-cafe/pull/16) merge thành `28a3dc54a846463ba150d50ab323658d6ed1372c` với hai parent `052a7d1e156425ea82ed1c9cf978d7ef4d4f3571` và `9ec6b056eeecc2be0cbedcb0f19282b8e30d9955`. Tree `472590b8df3c40359b7e4e9dddb98b64a544ad4a` của main, head đã review và synthetic merge được PR CI kiểm đều bằng nhau. Nhánh T02 remote/local đã xóa sau khi xác minh merge; dữ liệu làm việc và hai harness được bảo toàn. Không có thay đổi code bổ sung trong bước công bố docs.
+
+| Lượt | Event / attempt | Source và workflow SHA | Kết quả |
+| --- | --- | --- | --- |
+| [41379094743](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/41379094743) | push nhánh / 1 | `9ec6b056eeecc2be0cbedcb0f19282b8e30d9955` | 18/18 PASS; checkpoint C ban đầu |
+| [41384287830](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/41384287830) | pull_request / 1 | `a7fdd306d4d728b610642688847cbe9f51a423ee` | 18/18 PASS; prHeadSHA=`9ec6b056eeecc2be0cbedcb0f19282b8e30d9955` |
+| [41385640659](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/41385640659) | push main / 1 | `28a3dc54a846463ba150d50ab323658d6ed1372c` | 18/18 PASS; bằng chứng source main sau merge |
+
+Ba lượt là ba event tự động khác nhau trong các bước push/PR/merge đã được giao, mỗi lượt attempt 1; không phải ba lần rerun cùng CI. Cột source của PR là synthetic merge, không phải PR head. G1/G4b được giữ: kiểm required check thành công, strict và review trước merge; không bypass gate.
+
+CI sau merge: unit 1240 PASS/0 skip; tooling discovery 568, chạy 567 PASS và đúng 1 manual-defer theo policy; node-tools 1056 PASS/0 skip; static 480 PASS; PG16 native 30 PASS/0 fail/skip/retry; smoke 49 PASS/37 configured skip/0 fail; UI audit 48 PASS/0 findings. Cả 18 phase theo PROJECT_PHASES PASS/exit0. Post-unit reclaim quan sát NOT_PRESENT/rootRemoved=true/processReleased=true; binding source/run của reclaim được ghi riêng từ run đã kiểm, không thêm sourceSHA giả vào receipt quan sát. Core pattern được khôi phục. Peak owned sau merge 1290739712 bytes, dưới guard 5 GiB; ngưỡng free 30 GiB giữ nguyên.
+
+Source fingerprint Git của cả ba lượt là `7cdf824ee6008dbe56c081137b5a25569c805d38fb136b89519f54a3c7051189` trên 1193 tracked blobs; lock SHA `85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18`. SourcePreserved=true. Không gán fingerprint Windows raw của U/P cho Git/Linux, hoặc nhận PASS nguồn cũ là PASS nguồn main mới.
+
+Public summary chuyển v2; admission/budget nhận v1/v2 nhưng giữ mọi binding/status/phase/reclaim/budget gate và từ chối version khác. Chỉ ba trust hash đã review được đổi, trusted path-set vẫn 64. Mốc public main để diễn giải metric mới là `28a3dc54a846463ba150d50ab323658d6ed1372c`. Không sửa ứng dụng, SQL, quyền, expected, coverage, retry/timeout/skip hoặc điều kiện nghiệm thu. Crash-order là thứ tự quan sát so với terminal onTestEnd, không là kết luận nguyên nhân crash; signal TEST_TIMEOUT vẫn có giới hạn regex toàn phase đã nêu.
+
+Log đầy đủ giữ riêng, không công bố raw error/message/stack, đường dẫn máy hoặc transcript điều phối. Hash log PR `1bc2f08501a6ca82eb6086253e54e18d2315d890171fc15609ce9205a33b5c39` (42693 bytes); log main `f6c4e1a9560ed492911a90080ff553b545caccac096dcb48ff9ee783e78198cd` (41864 bytes). Nguồn máy đọc và projection hữu hạn nằm ở [sources.json](sources.json); [biên bản công bố/review](publication-20261102.md) ghi phạm vi chốt.
+
+**Kết luận:** đóng phần triển khai/kiểm chứng attribution của phương án A. T02 tổng thể còn R-APP NOT_RUN và nguyên nhân lỗi UI lịch sử UNKNOWN; các mục đó không được tự đóng hoặc đổi acceptance. Full 35 business runtime stages, bảy service profiles và các nghĩa vụ bổ sung không thuộc light lane này. Hướng dẫn đọc code đã chuẩn bị, chưa có xác nhận chủ dự án đã đọc/hiểu. Không tự chạy thêm CI, R-APP hoặc chuyển sang triển khai task khác từ việc cập nhật trạng thái.

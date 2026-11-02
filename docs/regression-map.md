@@ -1,5 +1,27 @@
 # Bản đồ hồi quy từ tiểu luận tới đồ án
 
+## T02 — bản sửa đã merge và kiểm chứng, 02/11/2026
+
+[PR #16](https://github.com/nguyentronglinh045/pos-cafe/pull/16) đã đưa bản sửa attribution vào `main@28a3dc54a846463ba150d50ab323658d6ed1372c`. [CI sau merge 41385640659/a1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/41385640659) đạt **18/18 phase PASS** trên đúng source/workflow SHA này: unit 1240, tooling 567 PASS + 1 manual-defer theo policy, node-tools 1056, kiểm tĩnh 480, PG16 native 30/30, smoke 49 PASS/37 configured skip và UI audit 48 PASS/0 findings. PG16 cleanup, post-unit reclaim và khôi phục core pattern đã kiểm; fingerprint Git và lock khớp nguồn đã review.
+
+Producer phát `pos-cafe-light-ci-v2`; admission/budget tiếp tục nhận v1/v2 cùng các gate source/status/phase/reclaim/budget. Mốc áp dụng metric mới trên main là `28a3dc54a846463ba150d50ab323658d6ed1372c`; khi đọc evidence cũ phải dùng source SHA, không so các metric đã đổi nghĩa như cùng một phép đo. Coverage, acceptance, expected, retry, timeout, skip và trusted path-set giữ nguyên.
+
+Phần triển khai bản sửa CI đã hoàn tất. Nguyên nhân lỗi UI lịch sử vẫn **UNKNOWN**, R-APP **NOT_RUN**; full business backend acceptance chưa chạy. Đây là các phạm vi riêng. Các mục ngày 28/10–02/11 phía dưới giữ trạng thái tại từng checkpoint lịch sử, không phải trạng thái hiện tại. [Nguồn, lineage và giới hạn](implementation-log/g01-g10-t02-20261028/analysis.md#merged-20261102).
+
+## T02 — C18phase trênnhánhriêng,02/11/2026
+
+[C41379094743/a1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/41379094743) **18/18PASS**,source/workflow9ec6b05,PG16native30/30+cleanup,source/lockđúngGit. Unit1240PASS,tooling567+1policydefer,node1056PASS,static480PASS,smoke49PASS/37configuredskip,audit48PASS/0findings. ScopeNFR03/06/tooling/CI; khôngđổi appassertion/coverage/gate hoặc tựnhậnwholebackend/UIrootcause. Chưamerge/mainvẫn052,docs chưa xuấtbản. [Chi tiết/source/giớihạn](implementation-log/g01-g10-t02-20261028/analysis.md#ci-20261102).
+
+Các mục local phía dưới làcheckpoint trướcpush/C. R-APPNOT_RUN,UIUNKNOWN; khôngretag PASS/FAILlịchsử.
+
+## T02 local — 02/11/2026
+
+[T02](workflow/tasks/g01-g10-t02-2026-10-28.md) đã kiểm candidate working baseline052+manifest, **chưa commit/push hoặc chạyCI**. [Source/kết quả](implementation-log/g01-g10-t02-20261028/analysis.md#local-20261102), [TC01–26](implementation-log/g01-g10-t02-20261028/verification-plan.md) giữ phạm vi. Node-tools1056/1056PASS/0skip; tooling567PASS+1policy manual-defer; P32+32+2executions khớp expected; discovery86. Đây là kiểm tooling/attribution hỗ trợNFR03/06, không thêm bằng chứng hành trìnhFR hoặc nghiệm thuUI/backend.
+
+Producer summaryv2; consumer nhậnv1/v2 giữ nguyên source/status/phase/reclaim/budget gate. Vị trí/step cùng T/error0, ambiguity/incomplete thì vắng, progress không phát; crash-order so với terminalonTestEnd, không là nhân quả. Metriccore chỉ đếm theo tên; TEST_TIMEOUT vẫn là textsignal cảphase. Hiệu lực publicmain phải ghi bằng SHA áp dụng sau khi được xuất bản; không gán candidate này cho main052 hoặc so metricv1/v2 như cùng nghĩa.
+
+C đủ18phase/PG16native và R-APP NOT_RUN; UIrootcauseUNKNOWN. Coverageconfig/ngưỡng không đổi, chưa đo coverageapp mới ở checkpoint này. FullnodeFAILWindowsbanđầu và recipeexactGitbytes/ownedtemp giữ trong hồ sơ, không thay expected/skip/pin nền để xanh. TC17 probe cũ giữ riêng, không thay proofbản sửa.
+
 ## Đối chiếu khoảng thiếu — 28/10/2026
 
 [T01 trên main052a7d1](workflow/tasks/g01-g10-t01-2026-10-28.md) bổ sung checkpoint mới: build/unit/mock/UI có evidence và coverage local cùng tree đạt92,70% (1.208/1.303 dòng, scope core/features thuần). Vì vậy gap “cần coverage hiện hành” ở hàng NFR07 của khảo sát26/10 bên dưới đã có bằng chứng cho nguồn này; không đổi timestamp/số liệu của bảng lịch sử hoặc suy NFR07/full sản phẩm đã đạt. Backend/services/supplemental closure và các assertion/hành trình còn thiếu được nối task tiếp nhận trong T01. Không có lần chạy app mới trong lượt28/10.
