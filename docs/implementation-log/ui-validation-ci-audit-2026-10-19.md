@@ -1,5 +1,15 @@
 # D7 — CI cho bộ đo UI và publish ui-audit, 19/10/2026
 
+## Lưu lịch sử nhánh UI audit gốc — 03/11/2026
+
+Lịch sử gốc được giữ bằng tag `archive/ui-audit-kit-setup-3752a4` tại commit `d78c929c9ce6f6c09790bbfa4135b1cc47d0f1b1`, gồm harnessbccec3a và baseline d78c929. Hai commit này chưa thuộc lịch sử main/docs; không gọi là đã merge. Việc dọn chỉ xóa remote ref `claude/ui-audit-kit-setup-3752a4` sau khi tag được verify, ghi chú docs được công bố và kiểm lại head/PR/CI/worktree; không xóa localbranch hoặc nhập lại harness cũ. Các checkpoint ngày19/10 bên dưới giữ nguyên.
+
+Đối chiếu main28a3dc54/docs04dc7170:10đường dẫn nguồn đều có;9file đã đổi, baseline chỉ khác LF/CRLF nhưng cùng36key/cùng thứ tự. Tám state cũ vẫn có trong16state hiện tại và ba npm aliases giữ nguyên. Không updatebaseline, không nhận ledger hoặc đối chiếu source là UI/business/backend acceptance mới.
+
+Delta ignore được chốt giữ: `ui-audit/auth.json` là đường dẫn file phiên Playwright tùy chọn; runner vẫn hỗ trợ cfg.storageState. File không có trong6worktree đã kiểm và không thấy tracked trong lịch sử các ref hiện có. Không có nội dung auth thực tế để đọc hoặc bằng chứng file đã bị công bố. Bản sửa riêng chỉ thêm một dòng ignore đã được kiểm bằng Git trong fixture riêng (globalignore tắt):sourceignored/mainNOTignored/candidateignored. Commit bản sửa `fee3acd110895976813ab18536d435ad600befda` đã chuẩn bị trên nhánh riêng `fix/ui-audit-auth-ignore-20261103`; **chưa push nhánh code, chưa có PR/CI và main vẫn28a3dc54 chưa nhận bản sửa**. Không nhận F1 đã sửa trên main hoặc dùng CI cũ làm PASS source mới. Ignore không bảo vệ file đã tracked hoặc mọi đường dẫn storageState tùy chỉnh.
+
+Gói cleanup giữ main và các nhánh khác, không đổi coverage/acceptance/retry/timeout/gates hoặc production. Nợ nguồn/version/license kit ngoài vẫn chưa xác minh; tag không xử lý nợ đó. Giữ UPSTREAM-README và ghi nhận nguồn, không thêm attribution/license chưa có căn cứ.
+
 Trạng thái cuối của code: [PR#9](https://github.com/nguyentronglinh045/pos-cafe/pull/9) đã merge vào main2da0d7e, tree khớp candidate đã review; cả hai CI trước merge và CI trên main sau merge đều SUCCESS đủ12phase. Bộ đo/calibration đã kiểm trên checkout Linux sạch. Operational audit COMPLETE39/39 và findings được phân loại, không nhận thành nghiệm thu UI. Hồ sơ11Markdown được phát hành riêng qua [PR#10→docs](https://github.com/nguyentronglinh045/pos-cafe/pull/10); kết quả merge/readback chính hồ sơ này xem metadata PR sau thực thi. Các checkpoint bên dưới giữ đúng lịch sử từng source, không thay kết quả cuối.
 
 ## Phạm vi được giao
