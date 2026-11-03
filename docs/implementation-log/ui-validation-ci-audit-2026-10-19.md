@@ -1,5 +1,20 @@
 # D7 — CI cho bộ đo UI và publish ui-audit, 19/10/2026
 
+## Bản sửa ignore — PR và CI, 03/11/2026
+
+F1 đã có thay đổi riêng trong [PR#17](https://github.com/nguyentronglinh045/pos-cafe/pull/17):head `fee3acd110895976813ab18536d435ad600befda`, parent main `28a3dc54a846463ba150d50ab323658d6ed1372c`, chỉ thêm `ui-audit/auth.json` vào `.gitignore`. **PR còn mở/chưa merge; main28a3dc54 chưa nhận bản sửa.** Chín kiểm tra Git local với globalignore tắt xác nhận sourceignored/mainNOTignored/candidateignored cho auth, code không bị ignore và output vẫn được ignore. Không tạo/đọc auth state; không có bằng chứng file đã bị công bố.
+
+|Lượt tự động|Run|Source thực kiểm|Light CI|NativePG16 T01|Cleanup/core pattern|
+|---|---|---|---|---|---|
+|Push nhánh|[41562533045/a1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/41562533045/attempts/1)|`fee3acd110895976813ab18536d435ad600befda`|18/18PASS|30/30PASS|PASS|
+|PR|[41564333373/a1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/41564333373/attempts/1)|`906b417d34718d0667681bd25def08e9e59eda2a`|18/18PASS|30/30PASS|PASS|
+
+Hai lượt đều attempt1, mỗi trigger chỉ chạy một lượt, không dispatch/rerun. Fingerprint1193committedGitblobs `513e8dc25ac7d3d117c781257439b08b0c513618fc55b92c2b2d80e48ffb1a44`, lockSHA `85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18`. PR kiểm source merge riêng với orderedparents main28/headfee3 và tree bằng head; không nhận pushCI là PRCI. SourcePreserved=true, đủ18phase và thứ tự đúng đã đối chiếu từng lượt. PG16 runtime receipt và reclaim sau unit đều đạt; reclaim binding được suy từ cùng run/job/log, không nhận receipt tự có các trường source. Log đầy đủ giữ riêng.
+
+Scope CI là LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY; nativePG16chỉT01. Không dùng18phase/30case để đóng fullbackend/business/UI acceptance, nợ nguồn/license kit hoặc production. Coverage/acceptance/retry/timeout/gates giữ nguyên; merge main cần quyết định riêng. Không nhập harness cũ hoặc updatebaseline.
+
+Mục “Lưu lịch sử nhánh UI audit gốc” ngay dưới là checkpoint trước push/PR; các câu “chưa push/chưa PR/CI” ở mục đó ghi mốc lịch sử, được cập nhật bởi mục này. Tag archive và việc xóa remote nhánh harness cũ đã hoàn tất; không xóa nhánh fix đang có PR.
+
 ## Lưu lịch sử nhánh UI audit gốc — 03/11/2026
 
 Lịch sử gốc được giữ bằng tag `archive/ui-audit-kit-setup-3752a4` tại commit `d78c929c9ce6f6c09790bbfa4135b1cc47d0f1b1`, gồm harnessbccec3a và baseline d78c929. Hai commit này chưa thuộc lịch sử main/docs; không gọi là đã merge. Việc dọn chỉ xóa remote ref `claude/ui-audit-kit-setup-3752a4` sau khi tag được verify, ghi chú docs được công bố và kiểm lại head/PR/CI/worktree; không xóa localbranch hoặc nhập lại harness cũ. Các checkpoint ngày19/10 bên dưới giữ nguyên.
