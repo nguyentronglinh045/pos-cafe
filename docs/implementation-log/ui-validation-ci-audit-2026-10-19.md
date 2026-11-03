@@ -1,5 +1,15 @@
 # D7 — CI cho bộ đo UI và publish ui-audit, 19/10/2026
 
+## Đã merge bản sửa ignore và dọn nhánh — 03/11/2026
+
+[PR#17](https://github.com/nguyentronglinh045/pos-cafe/pull/17) đã merge vào remote main tại `f2b486e8998dd5577f3e79eefe70b908da1e3d62`. Main đã có lại dòng `ui-audit/auth.json` trong `.gitignore`; chỉ một dòng thay đổi. Merge có orderedparents main28a3dc54/headfee3acd, tree `6202cad6d424cf380fdca747a4813ce60b4fc4d4` bằng head đã review và source merge PR đã kiểm. Đây là khôi phục guard file phiên tùy chọn, không phải xác nhận đã có auth state bị công bố.
+
+[CI tự động sau merge 41567448948/a1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/41567448948/attempts/1) đã được kiểm log đầy đủ:18/18phasePASS, nativePG16T01 30/30, sourcePreserved=true, cleanup và reclaim sau unit đạt, core pattern restored. Source/workflowSHA đúngmainmới;1193Gitblobs có fingerprint `513e8dc25ac7d3d117c781257439b08b0c513618fc55b92c2b2d80e48ffb1a44`, lockSHA `85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18`. Tree bằng bản PR không thay cho CI source mới: runmain được thu/kiểm riêng.
+
+Nhánh `fix/ui-audit-auth-ignore-20261103` đã xóa remote bằng exactheadleasefee3 và xóa local sau khi kiểm reachable từ main, không có worktree dùng nhánh. Lịch sử code còn trên main/PR; tag archive của nhánh harness gốc giữ nguyên. Các nhánh còn chờ quyết định không bị xóa; không merge docs vào main. Các lượt pushnhánh/PR/main đều là trigger tự động ban đầu, attempt1, không dispatch/rerun. Gate/coverage/acceptance/retry/timeout và production giữ nguyên.
+
+F1 thiếu ignore đã được sửa trên remote main. Việc này không đóng fullbackend/business/UI acceptance hoặc nợ nguồn/version/license kit. Scope CI vẫn LIGHT_NATIVE_PG16_AND_EDGE_RESOLUTION_ONLY, nativePG16chỉT01;full35BusinessRuntime NOT_RUN. Các mục PR còn mở/chưa merge và local-only bên dưới là checkpoint trước merge, được cập nhật bởi mục này.
+
 ## Bản sửa ignore — PR và CI, 03/11/2026
 
 F1 đã có thay đổi riêng trong [PR#17](https://github.com/nguyentronglinh045/pos-cafe/pull/17):head `fee3acd110895976813ab18536d435ad600befda`, parent main `28a3dc54a846463ba150d50ab323658d6ed1372c`, chỉ thêm `ui-audit/auth.json` vào `.gitignore`. **PR còn mở/chưa merge; main28a3dc54 chưa nhận bản sửa.** Chín kiểm tra Git local với globalignore tắt xác nhận sourceignored/mainNOTignored/candidateignored cho auth, code không bị ignore và output vẫn được ignore. Không tạo/đọc auth state; không có bằng chứng file đã bị công bố.
