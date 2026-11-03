@@ -3,6 +3,7 @@ artifacts/
 ui-audit/out/
 ui-audit/report.json
 ui-audit/report.md
+ui-audit/auth.json
 .tmp-full-test.log
 .tmp-full-test-ui.log
 supabase/.temp/
