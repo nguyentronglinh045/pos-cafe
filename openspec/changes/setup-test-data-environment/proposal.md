@@ -41,6 +41,8 @@ Ghi ngày 2026-09-07. Hai khoản dưới đây **do change khác tạo ra và g
 
 **Hạn chót: trước khi kết thúc tuần 9** của `docs/roadmap.md`, tức trước khi `add-owner-account-and-store-provisioning` giai đoạn 1 hoàn tất. Quá mốc đó mà chưa xử lý thì cổng cloud E2E tự khóa, và nó là cổng duy nhất chứng minh được chính sách bảo mật mức dòng.
 
+Cập nhật 2026-11-05: `add-owner-account-and-store-provisioning` chọn cho `npm run smoke:supabase` dùng quán thử tạo sẵn trên staging, không tạo quán mỗi lần, nên không còn chạm trần 5 quán. Hai hướng dưới đây chỉ còn cho việc dọn dữ liệu thử.
+
 Hai hướng xử lý, chốt khi làm change này:
 
 - Thêm bước dọn vào chính bộ cloud E2E, xóa cửa hàng thử ở cuối mỗi lần chạy.

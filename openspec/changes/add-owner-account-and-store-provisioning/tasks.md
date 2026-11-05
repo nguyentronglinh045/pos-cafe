@@ -1,12 +1,14 @@
 # Danh sách việc
 
+Cập nhật 2026-11-05: chủ không còn đăng nhập web; thao tác của chủ làm trên POS (quyết định 23, 24). Đặc tả các luồng giai đoạn 2 đã viết trong đợt này; giai đoạn triển khai không đổi. Chưa có việc nào được giao triển khai.
+
 Chia hai giai đoạn theo quyết định 18. Kết thúc giai đoạn 1 là một điểm dừng an toàn: hệ thống chạy đầy đủ và đã trả lời trọn vấn đề ai cũng tạo được cửa hàng. Phần thiếu duy nhất là khôi phục, mà hiện tại cũng chưa có, nên dừng ở đó không làm hệ thống tệ hơn trước.
 
-Ánh xạ sang `docs/roadmap.md`: giai đoạn 1 là mục 5 (tuần 7–9), giai đoạn 2 là mục 6 (tuần 10).
+Thứ tự tổng thể xem `docs/roadmap.md` và `docs/workflow/g01-g10-plan.md`. Reset dữ liệu xếp ở giai đoạn 2 trong kế hoạch, chưa thực hiện ngay (quyết định 36).
 
 ---
 
-# Giai đoạn 1 — Danh tính và gate tạo cửa hàng
+# Giai đoạn 1 — Danh tính và kiểm soát việc tạo cửa hàng
 
 ## 1. Đường gửi email — làm ngay, không có việc nào phải chờ duyệt
 
@@ -14,7 +16,7 @@ Mốc phải đạt là mức 1 ở quyết định 15. Mức 3 là phần thư�
 
 - [ ] 1.1 Tạo một tài khoản Gmail riêng của dự án, không dùng tài khoản cá nhân
 - [ ] 1.2 Bật xác thực hai bước cho tài khoản đó, rồi tạo App Password
-- [ ] 1.3 Cấu hình SMTP tùy chỉnh trong Supabase trỏ tới `smtp.gmail.com` cổng 587 bằng App Password vừa tạo
+- [ ] 1.3 Đặt thông tin SMTP `smtp.gmail.com` cổng 587 và App Password vừa tạo vào biến môi trường của hàm phía server; không dùng cho thư mặc định của Supabase Auth
 - [ ] 1.4 Gửi thử tới ít nhất một nhà cung cấp hộp thư phổ biến, xác nhận vào hộp thư chính chứ không vào thư rác
 - [ ] 1.5 Ghi lại hạn mức gửi mỗi ngày, đối chiếu với nhu cầu của giai đoạn phát triển và buổi demo
 
@@ -23,103 +25,112 @@ Mốc phải đạt là mức 1 ở quyết định 15. Mức 3 là phần thư�
 - [ ] 1b.1 Kiểm tra chương trình cấp tên miền `.id.vn` hoặc `.io.vn` miễn phí còn hiệu lực không, nộp hồ sơ nếu có
 - [ ] 1b.2 Đăng ký GitHub Student Developer Pack bằng email trường, nhận tên miền kèm theo
 - [ ] 1b.3 Xin được tên miền thì xác minh nó ở nhà cung cấp gửi email và cấu hình bản ghi xác thực người gửi
-- [ ] 1b.4 Chuyển cấu hình SMTP sang tên miền mới, chạy lại phép thử ở mục 1.4
+- [ ] 1b.4 Chuyển thông tin SMTP sang tên miền mới, chạy lại phép thử ở mục 1.4
 - [ ] 1b.5 Không xin được trước tuần 14 thì giữ mức 1 và ghi lý do vào `docs/limitations.md`
+
+## 1c. Chặn thư mẫu của Supabase Auth
+
+- [ ] 1c.1 Đối chiếu tài liệu chính thức của Supabase, chọn cơ chế chặn
+- [ ] 1c.2 Cài cơ chế chặn trước khi phát hành giai đoạn 1; xác nhận Store Key và POS vẫn hoạt động
+- [ ] 1c.3 Ghi vào `docs/limitations.md` rủi ro đã chấp nhận khi cơ chế chặn bị tắt
+- [ ] 1c.4 Kiểm thử: TC-OWNER-78
+- [ ] 1c.5 Chủ dự án quyết định có tắt đăng ký công khai của Supabase không
 
 ## 2. Lược đồ và migration
 
+- [ ] 2.0 Xác nhận cấu hình ứng dụng, CLI và hàm phía server đều trỏ tới staging, không còn trỏ database gốc
 - [ ] 2.1 Thêm enum `store_status` gồm `active` và `suspended`
-- [ ] 2.2 Thêm enum `store_admin_action` gồm sáu giá trị ở `design.md`
-- [ ] 2.3 Thêm cột `owner_id` vào `stores`, kiểu `uuid not null references auth.users (id)`, **không** đặt ràng buộc duy nhất
-- [ ] 2.4 Thêm cột `status` vào `stores`, bỏ cột `is_active`
-- [ ] 2.5 Thêm cột `key_secret_encrypted` và `key_encryption_version` vào `stores`
-- [ ] 2.6 Tạo bảng `store_admin_log` theo lược đồ ở `design.md`
-- [ ] 2.7 Viết kiểm thử khẳng định không tồn tại ràng buộc duy nhất nào trên `stores.owner_id`
+- [ ] 2.2 Thêm enum `store_admin_action` gồm các giá trị ở `design.md`
+- [ ] 2.3 Tạo bảng `owner_accounts`
+- [ ] 2.4 Thêm cột `owner_account_id` vào `stores`, bắt buộc, **không** đặt ràng buộc duy nhất
+- [ ] 2.5 Thêm cột `status` vào `stores`, bỏ cột `is_active`
+- [ ] 2.6 Thêm cột `key_secret_encrypted` và `key_encryption_version` vào `stores`
+- [ ] 2.7 Tạo các bảng `otp_challenges`, `otp_request_outcomes`, `otp_attempts`, `create_intents`, `create_operations`, `mail_dispatches`, `store_admin_log` theo `design.md`
+- [ ] 2.8 Viết kiểm thử khẳng định không tồn tại ràng buộc duy nhất nào trên `stores.owner_account_id`
 
 ## 3. Chính sách bảo mật mức dòng
 
-- [ ] 3.1 Bổ sung nhánh `owner_id = auth.uid()` trên `stores`, **không** kèm điều kiện trạng thái, để chủ đọc được cửa hàng đang bị tạm ngưng của mình
-- [ ] 3.2 Bổ sung nhánh chủ ở mức đọc trên `store_settings`
-- [ ] 3.3 Bổ sung nhánh chủ trên `store_admin_log`
-- [ ] 3.4 Bổ sung nhánh chủ trên `employees` ở phạm vi đủ để đặt lại PIN vai trò `owner`
-- [ ] 3.5 Thêm điều kiện `status = 'active'` vào chính sách của mọi bảng nghiệp vụ
-- [ ] 3.6 Xác nhận nhánh thiết bị đã ghép giữ nguyên, không sửa một chữ nào
-- [ ] 3.7 Kiểm thử: thiết bị của cửa hàng `suspended` gọi thẳng database bị trả về rỗng
-- [ ] 3.8 Kiểm thử: chủ vẫn đọc được bản ghi và trạng thái của cửa hàng `suspended` của mình
-- [ ] 3.9 Kiểm thử: chủ không đọc được cửa hàng của chủ khác
+- [ ] 3.1 Thêm điều kiện `status = 'active'` vào chính sách của mọi bảng nghiệp vụ
+- [ ] 3.2 Cho thiết bị đã ghép đọc được bản ghi và trạng thái của chính quán mình kể cả khi bị tạm ngưng
+- [ ] 3.3 Xác nhận nhánh thiết bị đã ghép giữ nguyên; không thêm nhánh chủ
+- [ ] 3.4 Các bảng mới của `design.md` không cấp quyền cho máy người dùng; các cột bí mật mới trên `stores` không cho thiết bị đọc
+- [ ] 3.5 Thu hồi quyền của máy người dùng trên `permission_reserve_store_no` và hàm khởi tạo quán
+- [ ] 3.6 Kiểm thử: thiết bị của quán `suspended` gọi thẳng database bị trả về rỗng; gọi thẳng các hàm ở 3.5 bị từ chối
 
 ## 4. Hàm phía server
 
-- [ ] 4.1 Dựng khung hàm tại `supabase/functions/`, gồm phần xác thực phiên chủ dùng chung
-- [ ] 4.2 Khai báo hai biến môi trường: khóa quản trị nền tảng và khóa mã hóa Store Key
+- [ ] 4.1 Dựng khung hàm tại `supabase/functions/`
+- [ ] 4.2 Khai báo biến môi trường: khóa quản trị nền tảng, khóa mã hóa Store Key, khóa băm mã xác nhận và thông tin SMTP; tất cả không bao giờ xuống máy người dùng
 - [ ] 4.3 Viết tiện ích mã hóa và giải mã phần bí mật, có mang định danh phiên bản khóa
-- [ ] 4.4 Cài giới hạn tần suất theo email và theo địa chỉ mạng, dùng các con số ở quyết định 20
-- [ ] 4.5 Cài hạn mức 5 cửa hàng và 3 lần tạo mỗi ngày, đọc từ cấu hình chứ không phải hằng số trong mã
-- [ ] 4.6 Hành động `createStore`: kiểm hạn mức, tạo service account, ghi `stores`, `store_settings`, nhân viên vai trò `owner`, trả Store Key một lần
-- [ ] 4.7 Bảo đảm `createStore` chạy trọn vẹn hoặc không để lại gì; nếu nền tảng không gói được việc tạo tài khoản xác thực vào giao dịch thì tự dọn tài khoản đã tạo khi bước sau thất bại
-- [ ] 4.8 Ghi `store_created` vào `store_admin_log`
-- [ ] 4.9 Kiểm thử: hàm không bao giờ trả khóa quản trị hay khóa mã hóa ra ngoài
-- [ ] 4.10 Kiểm thử: lỗi giữa chừng không để lại service account mồ côi
+- [ ] 4.4 Dựng phần gửi và kiểm mã dùng chung theo thứ tự ở `design.md`: giới hạn theo email riêng từng loại thao tác, giới hạn theo địa chỉ mạng và trần toàn dự án tính chung
+- [ ] 4.5 Cài hạn mức 5 cửa hàng, đọc từ cấu hình chứ không phải hằng số trong mã, kiểm sau khi mã đúng; không giới hạn số lần tạo trong ngày
+- [ ] 4.6 Hành động `requestCreateStoreOtp`, `verifyAndAcceptCreate`, `confirmStoreKeySaved`
+- [ ] 4.7 Tạo quán theo các bước ở `design.md`: lượt chạy và thẻ lượt chạy, dữ liệu tạm, tài khoản kỹ thuật có dấu hiệu, giao dịch ghi quán, thư gửi sau khi đã lưu
+- [ ] 4.8 Tiến trình đối soát: làm tiếp hoặc dọn dẹp, gửi thư còn thiếu, quét tài khoản kỹ thuật mồ côi, báo người vận hành
+- [ ] 4.9 Ghi `store_created` vào `store_admin_log`
+- [ ] 4.10 Kiểm thử: hàm không bao giờ trả khóa ra ngoài; lỗi giữa chừng không để lại tài khoản kỹ thuật mồ côi vĩnh viễn
+- [ ] 4.11 Kiểm thử: tạo xong thì có email chứa Store Key; gửi thư lỗi không làm hỏng cửa hàng và không hoàn hạn mức
+- [ ] 4.12 Đối chiếu tài liệu Supabase về tạo user bằng API quản trị và `app_metadata` trước khi tạo tài khoản thật
+- [ ] 4.13 Tách phần gửi thư và phần lưu trữ khỏi các quy tắc, để chạy test trên máy với database giả và đường gửi thư giả; hàm thật không có chế độ test, không có mã xác nhận dùng chung, có kiểm cận dưới của các giá trị cấu hình
 
 ## 5. Ports và adapters
 
-- [ ] 5.1 Thêm `IOwnerAccountPort` và `IStoreProvisioningPort` vào `src/ports`, khai bằng type của `domain`
+- [ ] 5.1 Thêm `IOwnerActionPort` và `IStoreProvisioningPort` vào `src/ports`, khai bằng type của `domain`
 - [ ] 5.2 Thêm type tương ứng vào `src/domain`
 - [ ] 5.3 Hiện thực adapter Supabase gọi hàm phía server
-- [ ] 5.4 Hiện thực adapter mock đủ để dựng mọi kịch bản mà không cần hàm thật
+- [ ] 5.4 Hiện thực adapter mock đóng vai server, database và thư, đủ để dựng mọi kịch bản mà không cần hàm thật; thời gian là cấu hình, ví dụ 10 phút xuống 15 giây; test đọc được mã
 - [ ] 5.5 Nối hai port mới vào `AppPorts` và `src/app/runtimePorts.ts`
 - [ ] 5.6 Chạy `src/architectureBoundaries.test.ts`, xác nhận không vi phạm ranh giới
 
-## 6. Mặt web của chủ, phần giai đoạn 1
+## 6. Màn hình giai đoạn 1
 
-- [ ] 6.1 Màn nhập email
-- [ ] 6.2 Màn nhập mã một lần, kèm xử lý hết hạn và quá số lần sai
-- [ ] 6.3 Màn danh sách cửa hàng, hiển thị dạng danh sách kể cả khi chỉ có một dòng
-- [ ] 6.4 Màn tạo cửa hàng: tên hiển thị bắt buộc, địa chỉ tùy chọn, PIN chủ quán
-- [ ] 6.5 Thông báo khi chạm trần cửa hàng, kèm hướng dẫn liên hệ nhà cung cấp
-- [ ] 6.6 Đăng xuất, và hết hạn phiên sau 7 ngày không dùng
-- [ ] 6.7 Xác nhận mọi thao tác nhận định danh cửa hàng làm tham số, không suy ra cửa hàng duy nhất của chủ
+- [ ] 6.1 Màn tạo quán: nhập email, tên hiển thị bắt buộc, địa chỉ tùy chọn, PIN chủ quán, tùy chọn dữ liệu mẫu
+- [ ] 6.2 Màn nhập mã, kèm xử lý hết hạn, quá số lần sai và khóa nút Gửi lại tới mốc hẹn
+- [ ] 6.3 Biên nhận và bản nháp tên quán, địa chỉ, tùy chọn dữ liệu mẫu trong IndexedDB, không lưu PIN; quay lại đúng bước sau khi tải lại trang; không ghi được thì vẫn cho làm tiếp kèm cảnh báo; chỉnh đồng hồ theo giờ server
+- [ ] 6.4 Thông báo khi chạm trần cửa hàng, kèm hướng dẫn liên hệ nhà cung cấp
+- [ ] 6.5 Màn kết quả tạo quán: hiển thị Store Key kèm nút sao chép và nút "Tôi đã lưu Store Key", nhắc chủ sao chép và lưu lại ngay
+- [ ] 6.6 Chốt thời hạn xóa biên nhận và bản nháp của luồng bỏ dở
 
 ## 7. Gỡ luồng tạo cửa hàng cũ
 
-- [ ] 7.1 Gỡ luồng tạo cửa hàng phía client ở `src/app/screens/CreateStoreScreen.tsx`
+- [ ] 7.1 Gỡ luồng tạo cửa hàng phía client ở `src/app/screens/CreateStoreScreen.tsx`, gồm đường `auth.signUp` và gọi bootstrap trực tiếp
 - [ ] 7.2 Cập nhật `src/adapters/supabase/authRepo.ts` cho khớp hợp đồng mới
 - [ ] 7.3 Xác nhận màn ghép thiết bị bằng Store Key giữ nguyên hành vi, theo quyết định 13
 - [ ] 7.4 Cập nhật các kiểm thử đang dựa vào luồng tạo cửa hàng cũ
+- [ ] 7.5 Sửa `tests/supabase/pos-cafe-supabase.spec.ts`: bỏ bước tạo quán, ghép vào quán thử tạo sẵn trên staging với Store Key qua biến môi trường
 
 ## 8. Cổng chặn — xóa dữ liệu cũ
 
 > Không được vượt qua mục này nếu chưa đủ điều kiện. Đây là thao tác không hoàn tác được.
 
-- [ ] 8.1 **Xin xác nhận rõ ràng của chủ dự án.** Không suy đoán, không mặc định là đã đồng ý
+- [ ] 8.1 **Xin xác nhận rõ ràng của chủ dự án.** Không suy đoán, không mặc định là đã đồng ý. Nêu rõ staging đang giữ dữ liệu của các đợt kiểm thử trước
 - [ ] 8.2 Sao lưu toàn bộ database
 - [ ] 8.3 Sao lưu toàn bộ kho ảnh
 - [ ] 8.4 Sao lưu khóa mã hóa Store Key, cất tách khỏi bản sao lưu database
-- [ ] 8.5 Xóa dữ liệu cũ
+- [ ] 8.5 Xóa dữ liệu cũ trên staging, không đụng database gốc
 - [ ] 8.6 Ghi lại thời điểm thực hiện và phạm vi đã xóa
 - [ ] 8.7 Dựng lại dữ liệu demo theo `docs/demo-runbook.md`
 - [ ] 8.8 Thông báo mọi Store Key hiện có đã mất hiệu lực và mọi thiết bị phải ghép lại
 
 ## 9. Kiểm thử giai đoạn 1
 
-- [ ] 9.1 Đăng ký lần đầu và đăng nhập lần sau đi chung một luồng
-- [ ] 9.2 Mã hết hạn sau 10 phút, hủy sau 5 lần nhập sai
-- [ ] 9.3 Phản hồi giống hệt nhau cho email đã tồn tại và chưa tồn tại
-- [ ] 9.4 Vượt giới hạn tần suất theo email và theo địa chỉ mạng đều bị chặn
-- [ ] 9.5 Không có phiên chủ thì không tạo được cửa hàng
-- [ ] 9.6 Chạm trần 5 cửa hàng và chạm giới hạn 3 lần mỗi ngày
-- [ ] 9.7 Một chủ tạo được nhiều cửa hàng, và cả hai đều hiện trong danh sách
-- [ ] 9.8 Kiểm thử smoke trên môi trường thật: tạo cửa hàng từ đầu tới lúc ghép được thiết bị
+Chạy các ca trong `testplan.md` thuộc giai đoạn 1 theo mục Cách chạy của file đó. Nhóm bảo mật và quyền là bắt buộc.
+
+- [ ] 9.1 Chạy nhóm luồng chính TC-OWNER-01…10
+- [ ] 9.2 Chạy nhóm luồng ngoại lệ TC-OWNER-11…30
+- [ ] 9.3 Chạy nhóm biên TC-OWNER-31…36
+- [ ] 9.4 Chạy nhóm bảo mật TC-OWNER-37…48, cùng TC-OWNER-78, 80, 81, 82, 91…95, 101
+- [ ] 9.5 Test tay trên staging, chỉ trên quán thử: các ca được liệt kê ở mục Cách chạy; tạo cửa hàng từ đầu tới lúc ghép được thiết bị; dọn quán thử sau khi chủ dự án xác nhận
 
 ## 10. Tài liệu giai đoạn 1
 
 - [ ] 10.1 Cập nhật `docs/requirements.md`: FR-01, FR-02, mở rộng phạm vi NFR-02
 - [ ] 10.2 Cập nhật `docs/architecture.md`: thêm thành phần chạy phía server
 - [ ] 10.3 Cập nhật `docs/data-model.md`: cột mới và bảng mới
-- [ ] 10.4 Cập nhật `docs/screens.md`: mặt web của chủ
-- [ ] 10.5 Cập nhật `docs/limitations.md`: rủi ro mất khóa mã hóa, và Store Key nằm lại trong hộp thư
+- [ ] 10.4 Cập nhật `docs/screens.md`: màn tạo quán và màn kết quả
+- [ ] 10.5 Cập nhật `docs/limitations.md`: rủi ro mất khóa mã hóa, Store Key nằm lại trong hộp thư, thư mặc định của Supabase Auth khi cơ chế chặn bị tắt
 - [ ] 10.6 Cập nhật `pos-cafe-context.md` và `docs/features.md`
-- [ ] 10.7 Đánh dấu mục 5 trong `docs/roadmap.md` là đã xong, ghi ngày
+- [ ] 10.7 Cập nhật tiến độ trong `docs/roadmap.md`, ghi ngày
 
 ---
 
@@ -127,64 +138,86 @@ Mốc phải đạt là mức 1 ở quyết định 15. Mức 3 là phần thư�
 
 ## 11. Quên Store Key
 
-- [ ] 11.1 Hành động `forgotStoreKey` ở hàm phía server, **không** đòi phiên chủ
+- [ ] 11.1 Hành động `forgotStoreKey`, không cần đăng nhập, không cần mã
 - [ ] 11.2 Luôn trả phản hồi chung chung, không tiết lộ email có tồn tại hay không
-- [ ] 11.3 Giới hạn 3 lần mỗi giờ tính theo email
+- [ ] 11.3 Giới hạn 3 lần mỗi giờ tính theo email, cộng giới hạn theo địa chỉ mạng và trần toàn dự án; trả phản hồi trước rồi mới tra chủ và gửi thư; bỏ quán đang cấp lại key ra khỏi thư
 - [ ] 11.4 Dựng email liệt kê dạng danh sách: tên cửa hàng, địa chỉ lấy từ `store_settings`, Store Key
 - [ ] 11.5 Thêm câu nhắc dùng chức năng cấp lại nếu nghi hộp thư đã bị lộ
-- [ ] 11.6 Một thành phần giao diện dùng chung, gắn ở hai lối vào: màn ghép thiết bị và màn Cài đặt
-- [ ] 11.7 Kiểm thử: Store Key và phần bí mật không xuất hiện trong bất kỳ nhật ký nào
+- [ ] 11.6 Một thành phần giao diện dùng chung, gắn ở hai lối vào: màn ghép thiết bị và mục Cài đặt
+- [ ] 11.7 Kiểm thử: TC-OWNER-49…51, 100
+
+## 11b. Gửi mã theo loại thao tác
+
+- [ ] 11b.1 Hành động `requestOwnerActionOtp`: kiểm phiên hoặc máy đã ghép, kiểm quán tạm ngưng, gửi mã về email đã đăng ký; phản hồi không chứa email
+- [ ] 11b.2 Gắn mỗi mã với đúng đối tượng theo bảng trong `design.md`
+- [ ] 11b.3 Thời gian chờ và lượt gửi tính riêng từng loại thao tác; mã reset không có thời gian chờ và không có giới hạn theo email
+- [ ] 11b.4 Kiểm thử: TC-OWNER-75, 76, 83, 97
 
 ## 12. Cấp lại Store Key
 
-- [ ] 12.1 Hành động `regenerateStoreKey`, đòi phiên chủ
-- [ ] 12.2 Lớp 1: cảnh báo nêu rõ hậu quả, nút xác nhận tách khỏi nút mở hộp thoại
-- [ ] 12.3 Lớp 2: gõ lại đúng tên cửa hàng
-- [ ] 12.4 Lớp 3: nhập mã một lần mới gửi tới email chủ
-- [ ] 12.5 Sinh bí mật mới, đổi mật khẩu service account, mã hóa và ghi lại
-- [ ] 12.6 Gửi email chứa key mới
+- [ ] 12.1 Hiện trong mục Cài đặt, chỉ với tài khoản chủ quán
+- [ ] 12.2 Bước 1: cảnh báo nêu rõ hậu quả, gồm máy đang thao tác cũng bị đăng xuất
+- [ ] 12.3 Bước 2: gõ lại đúng tên quán
+- [ ] 12.4 Bước 3 và 4: gửi mã tới email đã đăng ký, nhập mã
+- [ ] 12.5 Hành động `regenerateStoreKey`: sinh bí mật mới, đổi mật khẩu tài khoản kỹ thuật, mã hóa và ghi lại
+- [ ] 12.6 Hiển thị key mới kèm nút sao chép; gửi thêm thư như một hỗ trợ
 - [ ] 12.7 Ghi `store_key_regenerated` vào nhật ký, không kèm giá trị key
-- [ ] 12.8 Cảnh báo trên giao diện rằng thiết bị của chính chủ cũng sẽ bị đăng xuất
-- [ ] 12.9 Xác nhận ứng dụng POS **không có** lối vào nào cho chức năng này
-- [ ] 12.10 Kiểm thử: người ngồi vào phiên chủ bỏ ngỏ bị chặn ở lớp 3
+- [ ] 12.8 Tạo bảng `store_key_rotations`, mỗi quán tối đa một bản ghi `pending`; trong lúc này chặn các thao tác khác của chủ. Bước làm dở: ghi bảng này, đổi mật khẩu, ghi bí mật, đối soát làm tiếp; thu hồi phiên tài khoản kỹ thuật, dừng trước bước này thì đối soát làm tiếp; lỗi lặp lại thì báo người vận hành
+- [ ] 12.9 Kiểm thử: TC-OWNER-52…55, 87
+- [ ] 12.10 Đối chiếu tài liệu Supabase về thu hồi phiên: đổi mật khẩu bằng API quản trị có chặn được việc làm mới token không, và đăng xuất theo tài khoản làm thế nào khi không có JWT của máy. Ghi hạn token thực tế của project. Nếu không chặn được thì người giữ key cũ không bị đẩy ra; phải báo chủ dự án
 
-## 13. Đặt lại PIN của vai trò chủ quán
+## 13. Quên PIN của chủ quán
 
-- [ ] 13.1 Hành động `resetOwnerPin`, đòi phiên chủ kèm mã một lần
-- [ ] 13.2 Giao diện đặt PIN mới trên mặt web
-- [ ] 13.3 Chặn mọi vai trò khác tác động lên bản ghi nhân viên vai trò `owner`, kể cả vai trò có `employee.manage`
+- [ ] 13.1 Lối "Quên mã PIN" trên màn nhập PIN, chỉ khi chọn tài khoản chủ quán
+- [ ] 13.2 Hành động `resetOwnerPin`: có mã, không cần đăng nhập, cần máy đã ghép
+- [ ] 13.3 Chặn mọi vai trò khác tác động lên PIN của nhân viên vai trò `owner`
 - [ ] 13.4 Ghi `owner_pin_reset` vào nhật ký
-- [ ] 13.5 Kiểm thử: PIN mới có hiệu lực ngay trên thiết bị đã ghép
+- [ ] 13.5 Kiểm thử: TC-OWNER-56…59
 
 ## 14. Đổi email chủ
 
-- [ ] 14.1 Gửi mã xác nhận tới **địa chỉ mới**, không phải địa chỉ cũ
-- [ ] 14.2 Từ chối nếu địa chỉ mới đã gắn với tài khoản chủ khác
-- [ ] 14.3 Sau khi đổi, gửi thư thông báo về địa chỉ cũ
-- [ ] 14.4 Ghi `owner_email_changed` vào nhật ký
+- [ ] 14.1 Hiện trong mục Cài đặt, chỉ với tài khoản chủ quán; không hiển thị email đã đăng ký
+- [ ] 14.2 Nhập email đã đăng ký; phản hồi giống nhau dù đúng hay sai; chỉ gửi mã khi đúng
+- [ ] 14.3 Tạo bảng `owner_action_proofs`. Hành động `verifyOwnerProof`: ghi xác nhận chính chủ, hiệu lực 10 phút
+- [ ] 14.4 Nhập email mới; gửi mã tới email mới; thiếu xác nhận chính chủ thì từ chối
+- [ ] 14.5 Hành động `changeOwnerEmail`: sau khi mã đúng mới kiểm email đã thuộc chủ khác; đổi cho mọi quán của chủ; hủy mã và xác nhận còn dở
+- [ ] 14.6 Gửi thư báo về email cũ; ghi `owner_email_changed` vào nhật ký
+- [ ] 14.7 Kiểm thử: TC-OWNER-60…64, 88, 96, 97, 99
 
 ## 15. Chuyển quyền sở hữu cửa hàng
 
-- [ ] 15.1 Tạo bảng `store_ownership_transfer`
-- [ ] 15.2 Hành động `startOwnershipTransfer`: ghi bản ghi chờ, gửi email mời tiếp nhận
-- [ ] 15.3 Hành động `acceptOwnershipTransfer`: kiểm hạn mức người nhận trước
-- [ ] 15.4 Đổi `owner_id` và gắn kết nhân viên vai trò `owner` **trong cùng một giao dịch**
-- [ ] 15.5 Ghi `ownership_transferred` vào nhật ký
-- [ ] 15.6 Kiểm thử: chưa xác thực tiếp nhận thì cửa hàng vẫn thuộc chủ cũ
-- [ ] 15.7 Kiểm thử: người nhận đã đầy hạn mức thì bị từ chối
-- [ ] 15.8 Kiểm thử: nhật ký cũ của cửa hàng không mất sau khi đổi chủ
+- [ ] 15.0 Ghi ngoại lệ chuyển quyền vào quy tắc PERM-13 của `redesign-permission-model` khi đưa hai change vào đặc tả chính; nếu change đó được lưu trữ trước thì thêm delta MODIFIED cho `employee-management`
+- [ ] 15.1 Dùng `owner_action_proofs` đã tạo ở 14.3; mỗi quán tối đa một lần chuyển đang dở
+- [ ] 15.2 Màn chuyển quyền trong mục Cài đặt, chỉ với tài khoản chủ quán; không hiển thị email đã đăng ký
+- [ ] 15.3 Nhập email đã đăng ký, nhập mã, ghi xác nhận chính chủ
+- [ ] 15.4 Chọn tài khoản POS của người nhận trong danh sách nhân viên đang hoạt động, trừ chủ quán và tài khoản mẫu có PIN công khai; không có ai đủ điều kiện thì báo trước khi gửi mã
+- [ ] 15.5 Cảnh báo người nhận phải tự nhập và tự đọc mã; nhập email mới, khác email hiện tại; gửi mã tới email mới; mỗi xác nhận chỉ có một mã email mới còn hiệu lực
+- [ ] 15.6 Hành động `transferOwnership`: sau khi mã đúng mới kiểm hạn mức của email mới
+- [ ] 15.7 Trong một giao dịch: kiểm lại tài khoản được chọn, đổi chủ, đổi A thành tài khoản thường rồi B thành `owner`, đặt cờ buộc đổi PIN cho B, hủy phiên của hai người, hủy mã còn dở, ghi `ownership_transferred`
+- [ ] 15.8 Gửi thư báo tới hai email
+- [ ] 15.9 Kiểm thử: TC-OWNER-65…69, 84, 88, 89, 90, 96, 97, 98, 99
+
+## 15b. Reset dữ liệu quán
+
+- [ ] 15b.1 Hiện trong mục Cài đặt, chỉ với tài khoản chủ quán; bốn bước theo quyết định 30
+- [ ] 15b.2 Chốt cách đưa dữ liệu về rỗng, gồm dữ liệu chỉ thêm không sửa của sổ thanh toán
+- [ ] 15b.3 Hành động `resetStoreData` trong một giao dịch; giữ những gì quyết định 29 liệt kê; không đặt giới hạn riêng cho số lần reset; không tự tạo lại dữ liệu mẫu, đóng luồng dữ liệu mẫu trong `private.initial_seed_workflows` và đồng bộ `seed_status`; báo cho các máy tải lại
+- [ ] 15b.4 Hủy phiên của mọi nhân viên trước khi xóa, gồm cả người đang thao tác; các máy quay về màn nhập PIN; chặn giao dịch thanh toán đến muộn
+- [ ] 15b.5 Ghi `store_data_reset` vào nhật ký
+- [ ] 15b.6 Ghi danh sách ảnh cần xóa trong giao dịch; xóa sau giao dịch, lỗi thì tiến trình đối soát thử lại
+- [ ] 15b.7 Kiểm thử: TC-OWNER-70…74, 85, 86, 102
 
 ## 16. Kiểm thử giai đoạn 2
 
-- [ ] 16.1 Quên Store Key không làm thiết bị nào mất phiên
-- [ ] 16.2 Cấp lại Store Key làm mọi thiết bị mất phiên, gồm cả thiết bị của chủ
-- [ ] 16.3 Xoay khóa mã hóa: bản ghi mã hóa bằng khóa cũ vẫn giải mã được nhờ cột phiên bản
-- [ ] 16.4 Kiểm thử smoke trên môi trường thật: quên key, cấp lại key, ghép lại thiết bị
+- [ ] 16.1 Chạy các ca TC-OWNER-49…77, 79, 83…90, 96…100, 102 theo mục Cách chạy của `testplan.md`
+- [ ] 16.2 Xoay khóa mã hóa: bản ghi mã hóa bằng khóa cũ vẫn giải mã được nhờ cột phiên bản
+- [ ] 16.3 Sao lưu staging trước lần đầu chạy reset và chuyển quyền. Test tay trên staging, chỉ trên quán thử: quên key, cấp lại key, ghép lại thiết bị, quên PIN, đổi email, chuyển quyền, reset; dọn quán thử sau khi chủ dự án xác nhận
 
 ## 17. Tài liệu giai đoạn 2
 
-- [ ] 17.1 Cập nhật `docs/features.md` và `docs/screens.md` cho năm luồng khôi phục
+- [ ] 17.1 Cập nhật `docs/features.md` và `docs/screens.md` cho các luồng khôi phục, chuyển quyền và reset
 - [ ] 17.2 Ghi quy trình xoay khóa mã hóa vào tài liệu vận hành
 - [ ] 17.3 Cập nhật `docs/demo-runbook.md` với kịch bản demo phần khôi phục
-- [ ] 17.4 Đánh dấu mục 6 trong `docs/roadmap.md` là đã xong, ghi ngày
-- [ ] 17.5 Chạy `openspec archive add-owner-account-and-store-provisioning` sau khi cả hai giai đoạn xong
+- [ ] 17.4 Cập nhật tiến độ trong `docs/roadmap.md`, ghi ngày
+- [ ] 17.5 Cập nhật `docs/data-model.md` cho `owner_action_proofs`, `store_key_rotations`; cập nhật `docs/limitations.md`: token còn dùng được sau khi cấp lại key, chủ cũ còn biết Store Key, email thứ hai của người bán, giả lập không chứng minh được bảo mật
+- [ ] 17.6 Chạy `openspec archive add-owner-account-and-store-provisioning` sau khi cả hai giai đoạn xong
