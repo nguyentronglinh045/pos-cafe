@@ -8,48 +8,52 @@ Hệ thống SHALL phân biệt rõ ba tầng danh tính, mỗi tầng có cơ c
 
 | Tầng | Là ai | Xác thực bằng | Dùng ở đâu |
 | --- | --- | --- | --- |
-| Chủ cửa hàng | Người sở hữu cửa hàng | Email thật, mã một lần, không mật khẩu | Mặt web của chủ |
+| Chủ cửa hàng | Người đứng tên cửa hàng | Mã xác nhận gửi về email thật, cho từng thao tác; không mật khẩu, không phiên đăng nhập | Bước xác nhận của các thao tác quan trọng |
 | Thiết bị đã ghép | Một máy đặt tại quán | Phần bí mật trong Store Key | Ứng dụng POS |
 | Nhân viên | Người đang trực máy | PIN | Ứng dụng POS, sau khi thiết bị đã ghép |
 
-Thiết bị tại quán MUST NOT giữ credential của tài khoản chủ. Việc đăng nhập tài khoản chủ trên một thiết bị MUST NOT tự cấp cho thiết bị đó phiên cửa hàng, và ngược lại việc thiết bị đã ghép MUST NOT tự cấp phiên chủ.
+Thiết bị tại quán MUST NOT lưu mã xác nhận hay bất kỳ bằng chứng nào của chủ. Thiết bị đã ghép và PIN chủ quán MUST NOT tự thay được mã xác nhận gửi về email.
 
-Một người có thể đồng thời là chủ cửa hàng và là nhân viên vai trò `owner` của cửa hàng đó. Hai vai trò này SHALL được xác thực riêng: chủ dùng email và mã một lần trên mặt web, nhân viên vai trò `owner` dùng PIN trên thiết bị đã ghép.
+Một người có thể đồng thời là chủ cửa hàng và là nhân viên vai trò `owner` của cửa hàng đó. Hai vai trò này SHALL được xác thực riêng: vào POS bằng PIN trên thiết bị đã ghép; thao tác quan trọng thì nhập thêm mã gửi về email.
+
+Mã truy vết: REQ-SESSION-01.
 
 #### Scenario: Chủ thao tác nghiệp vụ tại quán
 
 - **WHEN** chủ muốn xem báo cáo và sửa thực đơn
-- **THEN** chủ ghép thiết bị của mình bằng Store Key rồi đăng nhập bằng PIN của vai trò `owner`, chứ không dùng phiên tài khoản chủ để thao tác nghiệp vụ
+- **THEN** chủ ghép thiết bị của mình bằng Store Key rồi đăng nhập bằng PIN của vai trò `owner`
 
-#### Scenario: Đăng nhập chủ không mở khóa thiết bị
+#### Scenario: Mã xác nhận không mở khóa thiết bị
 
-- **WHEN** một người đăng nhập tài khoản chủ trên một thiết bị chưa ghép
+- **WHEN** một người nhận mã xác nhận tạo quán trên một thiết bị chưa ghép
 - **THEN** thiết bị đó vẫn chưa có phiên cửa hàng và vẫn phải nhập Store Key để ghép
 
-#### Scenario: Thiết bị đã ghép không có quyền của chủ
+#### Scenario: Biết PIN chủ là chưa đủ
 
-- **WHEN** một thiết bị đã ghép và có nhân viên vai trò `owner` đang đăng nhập
-- **THEN** thiết bị đó vẫn không thực hiện được các thao tác thuộc mặt web của chủ, gồm tạo cửa hàng, cấp lại Store Key, đổi email chủ và chuyển quyền sở hữu
+- **WHEN** một thiết bị đã ghép có nhân viên vai trò `owner` đang đăng nhập nhưng không có mã gửi về email
+- **THEN** thiết bị đó không thực hiện được cấp lại Store Key, đổi email, chuyển quyền hay reset dữ liệu
 
 ### Requirement: Bản ghi nhân viên vai trò chủ quán gắn với tài khoản chủ
 
-Mỗi cửa hàng SHALL có đúng một nhân viên vai trò `owner`, và bản ghi đó MUST gắn với tài khoản chủ sở hữu cửa hàng. Hệ thống MUST NOT cho phép ủy quyền vai trò `owner` cho một người khác, và MUST NOT cho phép xóa hoặc vô hiệu hóa bản ghi nhân viên vai trò `owner`.
+Mỗi cửa hàng SHALL có đúng một nhân viên vai trò `owner`. Liên kết với tài khoản chủ nằm ở bản ghi cửa hàng (`stores.owner_account_id`), bản ghi nhân viên không lưu liên kết riêng. Vai trò `owner` chỉ đổi người qua luồng chuyển quyền (REQ-OWNER-13). Đây là ngoại lệ duy nhất của quy tắc cấm đổi vai trò chủ quán trong `redesign-permission-model` (PERM-13). Hệ thống MUST NOT cho phép xóa hoặc vô hiệu hóa nhân viên đang giữ vai trò `owner`.
 
-PIN của nhân viên vai trò `owner` SHALL chỉ đặt lại được từ phiên tài khoản chủ. Các vai trò khác, kể cả vai trò có quyền `employee.manage`, MUST NOT tác động lên bản ghi này.
+PIN của nhân viên vai trò `owner`, khi đã quên, SHALL tự đặt lại được bằng mã gửi về email chủ (REQ-OWNER-11); khôi phục do người vận hành thực hiện là việc riêng. Các vai trò khác, kể cả vai trò có quyền `employee.manage`, MUST NOT tác động lên bản ghi này.
 
-Khi cửa hàng được chuyển sang chủ mới, ràng buộc gắn kết này MUST chuyển theo trong cùng một giao dịch.
+Khi cửa hàng được chuyển sang chủ mới, vai trò `owner` MUST chuyển sang tài khoản được chọn trong cùng một giao dịch; chủ cũ thành tài khoản thường; mỗi người giữ PIN của mình (quyết định 28).
+
+Mã truy vết: REQ-SESSION-02.
 
 #### Scenario: Không xóa được nhân viên chủ quán
 
 - **WHEN** một nhân viên vai trò `manager` có quyền `employee.manage` thử xóa hoặc vô hiệu hóa nhân viên vai trò `owner`
-- **THEN** hệ thống từ chối và nêu rõ bản ghi này gắn với tài khoản chủ của cửa hàng
+- **THEN** hệ thống từ chối với mã có sẵn `OWNER_PROTECTED`
 
 #### Scenario: Cửa hàng luôn có đúng một chủ quán
 
 - **WHEN** kiểm tra danh sách nhân viên của một cửa hàng bất kỳ
-- **THEN** có đúng một nhân viên vai trò `owner`, và bản ghi đó trỏ tới tài khoản chủ sở hữu cửa hàng
+- **THEN** có đúng một nhân viên vai trò `owner`, và bản ghi cửa hàng trỏ tới tài khoản chủ sở hữu
 
 #### Scenario: Chuyển quyền sở hữu kéo theo bản ghi chủ quán
 
 - **WHEN** một cửa hàng được chuyển sang chủ mới
-- **THEN** nhân viên vai trò `owner` của cửa hàng đó gắn với tài khoản chủ mới ngay trong cùng giao dịch, không có khoảnh khắc nào cửa hàng thuộc chủ này còn bản ghi chủ quán thuộc chủ kia
+- **THEN** tài khoản được chọn thành vai trò `owner` và chủ cũ thành tài khoản thường trong cùng giao dịch, không có khoảnh khắc nào cửa hàng có hai hoặc không có chủ quán

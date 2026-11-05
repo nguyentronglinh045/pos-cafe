@@ -63,7 +63,7 @@ Change này **lật lại một quyết định đã chốt**. Baseline spec `st
 9. Chủ cửa hàng có được biết là hệ thống tồn tại một tài khoản nhìn thấy được cửa hàng của mình không? Đây là câu hỏi về minh bạch, và nó ảnh hưởng tới cách phát biểu lại NFR-02.
 10. Có cần thao tác khôi phục ngược lại không, ví dụ mở lại cửa hàng đã tạm ngưng và hoàn tác việc xóa mềm?
 11. Hạn mức số cửa hàng nới theo từng tài khoản chủ, hay theo nhóm hạn mức dựng sẵn? Nới theo từng tài khoản linh hoạt hơn nhưng khó theo dõi khi số tài khoản tăng.
-12. Nhà cung cấp có được gán lại chủ sở hữu cho một cửa hàng không? Đây là **lối thoát duy nhất** khi chủ mất hẳn quyền truy cập email: `add-owner-account-and-store-provisioning` đã làm luồng đổi email chủ và chuyển quyền sở hữu, nhưng cả hai đều yêu cầu chủ đăng nhập được. Nếu có làm thì cần quy trình xác minh danh tính chủ ngoài phần mềm, vì thao tác này trao toàn bộ một cửa hàng cho một người khác.
+12. Nhà cung cấp có được gán lại chủ sở hữu cho một cửa hàng không? Đây là **lối thoát duy nhất** khi chủ mất hẳn quyền truy cập email: `add-owner-account-and-store-provisioning` đã làm luồng đổi email chủ và chuyển quyền sở hữu, nhưng cả hai đều yêu cầu chủ còn đọc được email đã đăng ký. Nếu có làm thì cần quy trình xác minh danh tính chủ ngoài phần mềm, vì thao tác này trao toàn bộ một cửa hàng cho một người khác.
 
 ## Quyết định đã chốt
 

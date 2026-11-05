@@ -108,6 +108,8 @@ Nên có nếu còn thời gian: món bị xóa giữa chừng trả `MENU_ITEM_
 
 **Nhưng khoản nợ này có hạn dùng.** Trần 5 cửa hàng mỗi tài khoản chủ sẽ làm **lần chạy thứ sáu đỏ vì chạm trần**, tính từ khi `add-owner-account-and-store-provisioning` lên. Phải xử lý **trước khi kết thúc tuần 9**, nếu không cổng cloud E2E tự khóa chính nó — và tại checkpoint lập kế hoạch đây là cổng cloud chứng minh chính sách bảo mật mức dòng. Hiện đã có thêm các contract trực tiếp SQL/Auth/REST; phải đọc bản đồ suite và evidence đúng source, không coi riêng lệnh này là toàn bộ kiểm backend. Nghĩa vụ ghi ở `setup-test-data-environment`, mục "Nợ kỹ thuật thừa hưởng".
 
+**Cập nhật 2026-11-05:** chủ dự án chuyển hẳn sang project staging, không dùng database gốc nữa, nên project riêng cho cloud E2E chính là staging. Với `add-owner-account-and-store-provisioning`, cách chạy ghi ở [testplan của change đó](../openspec/changes/add-owner-account-and-store-provisioning/testplan.md): giả lập tự động trên máy, rồi test tay trên staging, chỉ trên quán thử. `npm run smoke:supabase` sẽ dùng quán thử tạo sẵn thay vì tạo quán mỗi lần, nên không còn chạm trần 5 quán.
+
 ## Quy Ước Đặt Tên Và Vị Trí
 
 - File test **đặt cạnh file nó kiểm**, cùng thư mục, tên `<tên>.test.ts` hoặc `.test.tsx`.

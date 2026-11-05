@@ -22,6 +22,8 @@ Kế hoạch triển khai đầy đủ gồm kiểm kê coverage → guard riên
 - Khảo sát độc lập xác nhận cả30backend stage/447runtime row chưa chạy unchanged trên hosted. T04 kiểm `supabase_admin`/`rolsuper=true` và dùng Docker dump/restore/drop schema (`scripts/permission-runtime-t04-fixture.mjs:238`,`:325`); module tên hosted hiện có `CERTIFIED_HOSTED_PROFILES=[]` (`scripts/permission-hosted-profile.mjs:6`) và executor luôn từ chối (`scripts/permission-hosted-runtime.mjs:79`). Không nhận đây là adapter sẵn dùng.
 - DB gốc bị cấm: `kfqjdfwxhkdwihjobpny`, origin `https://kfqjdfwxhkdwihjobpny.supabase.co`; không SQL/API, kể cả read-only, vào project này trong workstream mới.
 
+Cập nhật 2026-11-05: chủ dự án chuyển hẳn sang staging, không dùng database gốc nữa; sau này có thể dùng staging làm database chính. Xem [quyết định 44 của owner](../add-owner-account-and-store-provisioning/proposal.md#quyết-định-đã-chốt).
+
 ## Quyết định đã chốt
 
 - DEC-STG-01, 21/10: owner chọn project staging riêng; dữ liệu tổng hợp, không clone dữ liệu/tài khoản/secret production; giữ schema, chính sách và assertions cần kiểm.

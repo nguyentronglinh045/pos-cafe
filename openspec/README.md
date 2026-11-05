@@ -12,7 +12,7 @@
 | `add-idempotent-write-operations` | Bộ đầy đủ, quyết định/acceptance lịch sử phase27; kết quả mới đọc [testing](../docs/testing.md) |
 | `redesign-permission-model` | Bộ15 quyền/Q1–Q15, 7 capability delta, usecases/testplan/traceability được khôi phục từ WIP; có banner phân biệt yêu cầu và checkpoint lịch sử. Backend acceptance vẫn HOLD |
 | `force-default-pin-change` | Đủ7 loại; code forced-PIN đã có trên main, full acceptance phải theo đúng source |
-| `add-owner-account-and-store-provisioning` | Có khung7 loại nhưng còn placeholder; role owner không chứng minh email provisioning đã làm |
+| `add-owner-account-and-store-provisioning` | Đủ bảy phần, viết lại ngày 2026-11-05; chưa triển khai, test chưa chạy |
 | `setup-project-ci-cd`, `bound-permission-test-iterations`, `use-supabase-staging-for-permission-tests`, `permission-provider-capability-guard`, `adopt-ai-task-workflow` | Bộ tooling/process6 loại; usecases theo ngoại lệ trong proposal. Lịch sử grant/cutoff không cấp quyền mới |
 | `optimize-store-data-access` | Bộ7 loại cho kế hoạch; còn câu hỏi/ngưỡng/lịch, ước lượng legacy không là số đo main hiện hành |
 | `remake-b01`, `remake-b02`, `remake-b03`, `week03-b01-b02` | Giữ spec/decision; trạng thái merge ở [handoff25/10](../docs/workflow/tasks/ui-main-docs-integration-2026-10-25.md) |
@@ -59,7 +59,7 @@ Các proposal trỏ tới phần đã di chuyển đã được cập nhật the
 
 Các số đếm dưới đây là mốc kiểm kê cũ; thay đổi mới nhất của chống trùng được ghi ở đầu trang. Không dùng số lỗi validate tổng cũ để kết luận bộ chống trùng hiện còn thiếu delta.
 
-27 trong 29 change đang ở trạng thái **mới có `proposal.md`**, chưa có các artifact còn lại. Đây là chủ ý, không phải thiếu sót. Hai change đã có đủ bốn artifact và sẵn sàng implement: `redesign-permission-model` và `add-owner-account-and-store-provisioning` (viết ngày 2026-08-31).
+27 trong 29 change đang ở trạng thái **mới có `proposal.md`**, chưa có các artifact còn lại. Đây là chủ ý, không phải thiếu sót. Cập nhật 2026-11-05: `add-owner-account-and-store-provisioning` nay có đủ bảy phần. Trước đó, hai change đã có đủ bốn artifact và sẵn sàng implement: `redesign-permission-model` và `add-owner-account-and-store-provisioning` (viết ngày 2026-08-31).
 
 `define-test-strategy` đã hoàn tất và archive ngày 2026-09-07 thành `changes/archive/2026-09-07-define-test-strategy`. Nó là **khuôn mẫu** của chuẩn bảy artifact.
 
@@ -70,7 +70,7 @@ Vì vậy `openspec validate --changes` báo lỗi `Change must have at least on
 Hai change đã có mục `## Quyết định đã chốt` được điền:
 
 - `redesign-permission-model`: **đã chốt hết và đã có đủ artifact** gồm `specs/`, `design.md` và `tasks.md`. Chờ implement.
-- `add-owner-account-and-store-provisioning`: **đã chốt hết**, 21 quyết định, không còn câu hỏi bỏ ngỏ. Bốn artifact đã viết xong ngày 2026-08-31, delta chia bốn capability là `owner-account` (mới), `store-onboarding`, `store-isolation` và `employee-session`. Chờ implement.
+- `add-owner-account-and-store-provisioning`: 44 quyết định; đã viết lại đủ bảy phần ngày 2026-11-05 theo hướng không có đăng nhập web riêng cho chủ. Không còn câu hỏi mở về nghiệp vụ; bốn việc chờ lúc triển khai ghi ở `proposal.md`. Chưa triển khai.
 
 Hai change này phải làm nối tiếp: `redesign-permission-model` đưa vào vai trò chủ quán, `add-owner-account-and-store-provisioning` sau đó gắn vai trò đó với tài khoản chủ đã xác thực email. `add-provider-admin-console` tách ra từ trao đổi ngày 2026-08-28 và làm sau cùng.
 
@@ -141,4 +141,4 @@ Tóm tắt: mỗi change cần bảy file thay vì bốn. Ba file bổ sung là 
 
 `define-test-strategy` là change đầu tiên viết trọn theo chuẩn này và đóng vai **khuôn mẫu** — cần biết một file nên trông như thế nào thì mở change đó ra xem.
 
-Trong bản đã xuất bản, hai change viết trước ngày 2026-09-07 là `redesign-permission-model` và `add-owner-account-and-store-provisioning` đã có khung ba file mới nhưng để trống, sẽ điền khi bắt đầu thực hiện.
+Trong bản đã xuất bản, hai change viết trước ngày 2026-09-07 là `redesign-permission-model` và `add-owner-account-and-store-provisioning` đã có khung ba file mới nhưng để trống, sẽ điền khi bắt đầu thực hiện. Cập nhật 2026-11-05: `add-owner-account-and-store-provisioning` đã điền.
