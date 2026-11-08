@@ -22,12 +22,12 @@ Màn sơ đồ bàn SHALL hiển thị các bàn theo từng khu hoặc tầng, 
 
 ### Requirement: Biểu diễn trạng thái bàn
 
-Mỗi bàn SHALL biểu diễn rõ trạng thái trống hoặc đang phục vụ. Bàn đang phục vụ SHALL hiển thị thêm số đơn và tổng tiền của đơn đang mở.
+Mỗi bàn SHALL biểu diễn rõ trạng thái trống hoặc đang phục vụ. Bàn đang phục vụ SHALL hiển thị thêm tổng tiền của đơn đang mở; số đơn của đơn đó SHALL xem được ở danh sách đơn đang mở.
 
 #### Scenario: Bàn đang phục vụ
 
 - **WHEN** một bàn có đơn đang mở
-- **THEN** bàn hiển thị trạng thái đang phục vụ kèm số đơn và tổng tiền hiện tại
+- **THEN** bàn hiển thị trạng thái đang phục vụ kèm tổng tiền hiện tại, và số đơn hiện ở danh sách đơn đang mở
 
 #### Scenario: Lọc theo trạng thái
 

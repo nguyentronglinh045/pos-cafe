@@ -17,8 +17,13 @@ Hệ thống SHALL hỗ trợ hai loại đơn: đơn tại bàn gắn với m�
 
 #### Scenario: Tạo đơn mang đi
 
-- **WHEN** nhân viên tạo một đơn mang đi mới
+- **WHEN** nhân viên tạo một đơn mang đi mới và gửi món lần đầu
 - **THEN** đơn được tạo mà không chiếm bàn nào, và xuất hiện trong danh sách đơn mang đi đang mở
+
+#### Scenario: Thoát trước khi gửi món
+
+- **WHEN** nhân viên tạo đơn mang đi mới rồi thoát khi chưa gửi món nào
+- **THEN** không có đơn nào được tạo, và danh sách đơn mang đi đang mở không đổi
 
 #### Scenario: Đơn mang đi đã thanh toán
 

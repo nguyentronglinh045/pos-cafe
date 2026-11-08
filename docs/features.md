@@ -50,8 +50,8 @@ Nguồn: [permissionCatalog.ts:5](https://github.com/nguyentronglinh045/pos-cafe
 ## POS Floor
 
 - Xem sơ đồ bàn theo khu/tầng.
-- Lọc bàn theo trạng thái.
-- Xem bàn trống/đang phục vụ, order number và tổng tiền khi có order mở.
+- Lọc bàn theo trạng thái. Hiện bộ lọc ẩn bàn không khớp; chủ dự án đã chốt đổi sang làm sáng bàn khớp, bàn khác vẫn hiện ([CX-01](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý), chưa làm).
+- Xem bàn trống/đang phục vụ. Ô bàn đang phục vụ hiện tên bàn và tổng tiền; số đơn (ví dụ #24) xem ở danh sách Đơn đang mở.
 - Render nền bàn từ catalog built-in khi bàn đã chọn mẫu; bàn không có `backgroundAssetKey` dùng nền trắng. Viền xanh/cam tiếp tục biểu diễn trạng thái bàn.
 - Mở order tại bàn.
 - Refresh floor/open orders từ toolbar sơ đồ khi cần.
@@ -66,7 +66,7 @@ Nguồn: [permissionCatalog.ts:5](https://github.com/nguyentronglinh045/pos-cafe
 - Sau lần gửi thành công đầu tiên còn đúng màn/phiên, popup `Phiếu gửi bếp` chỉ gồm phần mới không có `sourceItemId`; draft phần cũ giữ ID. Dữ liệu phiếu lấy từ xác nhận local, chỉ tên/số lượng, không giá; đây vẫn là seam preview, chưa có phiếu bếp bền trên server. Replay/recovery không tự mở lại. Nguồn: [src/features/pos/orderFlow.ts:132](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/features/pos/orderFlow.ts#L132), [src/app/drawers/pos/OrderDrawer.tsx](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/drawers/pos/OrderDrawer.tsx#L1).
 - Sau thành công, invalidate/refetch dữ liệu; không patch cache. Polling 5 giây khi active là cấu hình hồi phục, không phải cam kết mọi máy hội tụ trong 5 giây.
 - Mở lại order đang mở để chỉnh sửa.
-- Dirty close confirm cho draft/chỉnh sửa chưa lưu.
+- Đóng màn đơn khi còn thay đổi chưa gửi thì hỏi "Bỏ đơn chưa gửi?" với "Tiếp tục chỉnh sửa" và "Bỏ đơn". Bỏ nghĩa là trở về bản đã lưu gần nhất trên server: đơn mới chưa gửi thì mất hẳn; đơn đã gửi thì về bản mới nhất trên server, kể cả phần máy khác vừa gửi. Áp dụng cho thêm, giảm, xóa món, đổi tùy chọn và ghi chú. Tải lại trang hoặc đóng tab thì phần chưa gửi mất luôn, hiện chưa có cảnh báo ([CX-09](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý), chưa làm). Với đơn đã gửi, chữ nút sẽ đổi thành "Bỏ thay đổi" ([CX-03](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý), chưa làm).
 - Nếu order đã đóng/stale, UI hiển thị trạng thái không thể thanh toán/chỉnh như order mở.
 
 ## Ghi chống trùng và khôi phục
@@ -85,7 +85,7 @@ Nguồn: [src/features/pos/writeOperationFlow.ts:25](https://github.com/nguyentr
 - Thanh toán tiền mặt toàn đơn hoặc chọn món/số lượng để tách thành đơn độc lập paid ngay; phần còn lại tiếp tục là order mở.
 - B03 đặt danh sách món/summary bên trái và console thu tiền bên phải. Header ghi vị trí, số đơn và số món; tên thu ngân nằm trong console.
 - Khi mở order mới, mặc định chọn tất cả. Bỏ chọn rồi tick dòng chọn1 sản phẩm; nút+ tăng và xoay vòng khi đến trần. Chọn đủ100% thì tương ứng trả toàn bộ.
-- Tiền khách đưa tự điền theo phần đang chọn, có input/keypad và quick cash. Chặn khi không chọn món, thiếu tiền, order lỗi/đóng, mất quyền hoặc thao tác đang chưa rõ kết quả.
+- Tiền khách đưa tự điền theo phần đang chọn, có input/keypad và quick cash. Chặn khi không chọn món, thiếu tiền, order lỗi/đóng, mất quyền hoặc thao tác đang chưa rõ kết quả. Hiện khi thiếu tiền, hàng nút nhanh bị thay bằng dòng "Còn thiếu…"; chủ dự án đã chốt luôn hiện nút nhanh, bỏ dòng cảnh báo đó, giữ ô "Còn thiếu" bên dưới, tô đỏ ô nhập khi thiếu tiền và thêm nút x để xóa về 0 ([CX-02](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý), chưa làm).
 - Trước register, flow chốt kind `pay_order` hoặc `pay_order_items`. Sau register giữ K/kind/selection/version/IDs; refetch không tự thay ý định.
 - **Sau split thành công, selection về rỗng**; lần thanh toán kế tiếp cần chủ động chọn lại. Refetch cũng không tự biến lựa chọn rỗng thành trả toàn bộ.
 - Bill trả trước mang số nhỏ hơn: đơn tách kế thừa order_no, phần còn lại nhận số mới. Có thể sửa/thêm/hủy phần còn lại theo quyền; tiền đã thu ở đơn paid riêng. Xem [ADR Instant Pay](architecture.md#adr-instant-pay--tách-đơn-độc-lập-split-order).
@@ -98,7 +98,7 @@ Nguồn: [PaymentDrawer.tsx:47](https://github.com/nguyentronglinh045/pos-cafe/b
 
 - Xem danh sách order takeaway đang mở.
 - Mở chi tiết takeaway, tiếp tục chỉnh order hoặc chuyển sang thanh toán.
-- Tạo takeaway mới từ drawer.
+- Tạo takeaway mới từ drawer. Đơn chỉ được tạo trên server và xuất hiện trong danh sách khi gửi món lần đầu; tạo rồi thoát khi chưa gửi món thì không có đơn nào.
 - Chỉ liệt kê đơn takeaway đang mở thật (đã bỏ dữ liệu paid takeaway hardcode); xem đơn đã thanh toán ở màn Lịch sử đơn.
 
 ## Order History
@@ -107,7 +107,7 @@ Nguồn: [PaymentDrawer.tsx:47](https://github.com/nguyentronglinh045/pos-cafe/b
 - Chỉ hiển thị đơn đã kết thúc (`Đã thanh toán`, `Đã hủy`); đơn đang mở thuộc màn Bàn/Mang đi.
 - **Instant pay**: mỗi lần tách thanh toán là một ĐƠN độc lập → tự nhiên là một dòng lịch sử riêng, hiện **ngay sau khi thu tiền** (không chờ bàn đóng). Bàn trả 2 lần = 2 đơn độc lập về trạng thái, cùng nhãn bàn; ledger/audit lưu liên kết nguồn/kết quả của lần tách; số đơn tăng theo thứ tự thanh toán.
 - Bộ lọc ngày là một nút `Filter date`, mở popup chọn `Gần đây` (mặc định), `Hôm nay`, `7 ngày`, `Tháng này` hoặc khoảng ngày tùy chọn.
-- **Số hiển thị trong lịch sử KHÔNG phải số bill, và đây là chủ ý.** Vì danh sách trải nhiều ngày mà `order_no` chỉ duy nhất trong phạm vi một `business_date`, hiển thị `order_no` sẽ sinh nhiều dòng trùng số. Nên cả cột trái lẫn cột phải hiển thị `displayNo` — số thứ tự đếm giảm theo tập đơn khớp bộ lọc (`total - (page-1) * pageSize - index`). Đổi bộ lọc thì `displayNo` được tính lại. `order_no` giữ đúng vai trò số bill và **chỉ xuất hiện trên hóa đơn in**; màn lịch sử cố ý không hiển thị nó.
+- **Số hiển thị trong lịch sử KHÔNG phải số bill, và đây là chủ ý.** Vì danh sách trải nhiều ngày mà `order_no` chỉ duy nhất trong phạm vi một `business_date`, hiển thị `order_no` sẽ sinh nhiều dòng trùng số. Nên cả cột trái lẫn cột phải hiển thị `displayNo` — số thứ tự đếm giảm theo tập đơn khớp bộ lọc (`total - (page-1) * pageSize - index`). Đổi bộ lọc thì `displayNo` được tính lại. `order_no` giữ đúng vai trò số bill và **chỉ xuất hiện trên hóa đơn in**; màn lịch sử cố ý không hiển thị nó. Cập nhật 08/11/2026: cách này khiến người dùng không đối chiếu được Lịch sử với hóa đơn (#2, #3 so với #27, #28). Chủ dự án đã chọn bỏ số thứ tự dòng; cách đánh số mới đang cân nhắc, nghiêng về đánh số theo thứ tự trong database ([CX-04](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý), chưa chốt); mô tả trên là hiện trạng.
 - Danh sách đơn dùng phân trang để giữ payload ổn định (`PAGE_SIZE = 20`); date/status/type được áp dụng ở repository trước khi cắt trang.
 - **Chưa dùng trên UI:** ô tìm kiếm và bộ lọc theo bàn. Repository hỗ trợ `search` và `tableIds` nhưng màn hình không có entry point cho cả hai. Xem mục [Seam: Có Code Nhưng CHƯA Dùng Trên UI](#seam-có-code-nhưng-chưa-dùng-trên-ui).
 - Layout chính là 2 cột: cột trái hiển thị thông tin nhanh của đơn, cột phải hiển thị chi tiết dạng receipt.
@@ -154,7 +154,7 @@ Nguồn: [EmployeesDrawer.tsx:150](https://github.com/nguyentronglinh045/pos-caf
 ## Report
 
 - Core report theo `business_date`.
-- Doanh thu, số đơn đã thanh toán, average ticket, top item.
+- Doanh thu, số đơn đã thanh toán, average ticket, top item. Hàng Món bán chạy đang lấy doanh thu cả ngày của những ngày món đứng đầu, nên "Americano 145K" dễ hiểu nhầm là doanh thu của món; chủ dự án đã chốt bỏ số tiền, chỉ ghi số ngày món đứng đầu ([CX-05](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý), chưa làm).
 - Biểu đồ doanh thu theo giờ.
 - Report chỉ tính order đã thanh toán và loại order hủy. Đơn `paid` bị hủy tự động rời khỏi doanh thu (report tính live, không có bảng tổng hợp).
 - Tổng hợp đơn hủy cho người có quyền báo cáo: `CoreReport.voidCount`/`voidAmount` đếm các đơn **paid-rồi-hủy** theo `business_date`; hiển thị ở rail trái (số đơn huỷ + tiền hủy). Nguồn lấy từ CoreReport chứ không đếm từ mảng orders phân trang.
@@ -202,6 +202,8 @@ Nguồn UI: [shell registry:22](https://github.com/nguyentronglinh045/pos-cafe/b
 
 
 B01 sơ đồ, B02 gọi món và B03 thanh toán đã merge; shell dùng theme chung và cổng authority. Đọc [screens](screens.md) cho bản đồ màn; [handoff tích hợp](workflow/tasks/ui-main-docs-integration-2026-10-25.md) cho source, kiểm và giới hạn. Mô tả thao tác ở trên giữ ý nghĩa nghiệp vụ; ảnh/bố cục phase cũ không đại diện giao diện mới.
+
+**Nút theo quyền** (chốt 08/11/2026): thiếu quyền làm việc gì thì nút hoặc lối vào dẫn tới việc đó phải bị ẩn hoặc vô hiệu hóa, không cho truy cập; server vẫn kiểm lại quyền. Ví dụ Waiter không có `payment.take` mở đơn đã gửi chỉ có nút "Đóng". Bảng quyền ↔ màn hình và cách tra ở [hồ sơ 08/11](workflow/tasks/team-week05-answers-2026-11-08.md#nút-theo-quyền).
 
 Nguồn nghiệp vụ đang dùng: [orderFlow.ts:250](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/features/pos/orderFlow.ts#L250), [PaymentDrawer.tsx:1](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/drawers/pos/PaymentDrawer.tsx#L1). Các tham chiếu phase 18/27 trong phần nghiệp vụ là lịch sử quyết định, không phải phép kiểm mới.
 

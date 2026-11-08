@@ -3,6 +3,8 @@
 > Cập nhật điều hướng 25/10/2026: Runbook thao tác được giữ để chuẩn bị demo. Với main711a22e, chọn role theo catalog; owner mới phải đổi PIN tạm trước POS. Chỉ chạy trên môi trường/fixture được giao; tạo quán/seed/thu tiền có ghi dữ liệu. Kết quả chạy cũ không chứng minh source mới; xem [testing](testing.md).
 
 
+> Cập nhật 08/11/2026: dời việc xem Báo cáo xuống bước 11, thêm lưu ý bộ lọc ở bước 6 và cách đối chiếu số đơn ở bước 11, theo câu trả lời cho Lâm ([hồ sơ](workflow/tasks/team-week05-answers-2026-11-08.md)). 20 góp ý cách viết của Lâm và ảnh minh họa sẽ được đưa vào sau.
+
 Runbook này dùng để chuẩn bị demo/bảo vệ phase tiểu luận.
 
 ## Flow Demo Chính
@@ -12,12 +14,12 @@ Runbook này dùng để chuẩn bị demo/bảo vệ phase tiểu luận.
 3. Vào passcode, chọn nhân viên có quyền cần cho demo và nhập PIN.
 4. Ở floor view, chọn khu/tầng, mở một bàn trống.
 5. Tạo order dine-in: chọn món, option/topping, chỉnh số lượng/ghi chú, gửi đơn.
-6. Quay lại floor, thấy bàn chuyển sang đang phục vụ.
+6. Quay lại floor, thấy bàn chuyển sang đang phục vụ. Nếu đang lọc `Trống`, bấm `Tất cả` để thấy lại bàn.
 7. Mở lại order, chuyển sang payment.
-8. **Demo instant pay (điểm nhấn):** bỏ `Chọn tất cả`, tick 1-2 món (chỉnh số lượng bằng nút `+`), hoàn tất → preview bill riêng mở khi có initial grant và bật checkbox in (kế thừa số đơn gốc), đơn gốc còn lại trên bàn với số mới; mở report thấy doanh thu vào NGAY.
+8. **Demo instant pay (điểm nhấn):** bỏ `Chọn tất cả`, tick 1-2 món (chỉnh số lượng bằng nút `+`), hoàn tất → preview bill riêng mở khi có initial grant và bật checkbox in (kế thừa số đơn gốc), đơn gốc còn lại trên bàn với số mới. Chưa mở Báo cáo ở bước này; xem ở bước 11.
 9. Chủ động chọn phần còn lại sau split (selection lúc này rỗng), rồi nhập tiền khách đưa, kiểm tra trạng thái thiếu/đủ tiền, hoàn tất thanh toán.
 10. Xem receipt preview, quay lại floor thấy bàn trống.
-11. Mở report/history: 2 đơn độc lập từ cùng một bàn, số đơn tăng theo thứ tự thanh toán.
+11. Sau khi trả xong cả hai phần, mở Báo cáo và Lịch sử đơn: doanh thu tăng đúng tổng hai lần trả, có 2 đơn độc lập từ cùng một bàn. Hóa đơn in số đơn thật theo thứ tự thanh toán (ví dụ #27, #28); Lịch sử hiện số thứ tự dòng (ví dụ #2, #3), nên đối chiếu theo bàn, số tiền và giờ thanh toán.
 12. **Demo hủy đơn đã thanh toán:** đăng nhập nhân viên có `orderHistory.view` và `order.voidPaid` (owner/manager theo defaults catalog), chọn một đơn paid trong Lịch sử, bấm `Hủy đơn`, chọn lý do (nếu chọn `Lý do khác` phải nhập ghi chú), xác nhận badge `Đã hủy`, người/thời điểm/lý do hủy và nút in lại bị khóa.
 13. Mở Report: xác nhận đơn vừa hủy bị loại khỏi doanh thu/số đơn paid, đồng thời `Đơn đã huỷ` và `Tiền hủy` tăng đúng để đối soát.
 14. **Demo phân quyền per-employee:** dùng owner hoặc actor có `employee.permission.edit` mở Nhân viên, chọn đúng nhân viên fixture thu ngân, bỏ quyền `payment.take` và lưu. Ở phiên nhân viên đích, chờ authority được xác minh theo lifecycle rồi kiểm vẫn tạo/sửa đơn nhưng không thực hiện được thanh toán. Khôi phục quyền bằng actor có quyền sửa trong fixture nếu kịch bản yêu cầu; không sửa quyền cửa hàng thật để demo.
