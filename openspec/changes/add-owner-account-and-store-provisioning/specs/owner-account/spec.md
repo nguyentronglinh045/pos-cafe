@@ -1,216 +1,303 @@
 # Tài khoản chủ cửa hàng
 
+Cập nhật 2026-11-05. Chủ quán được nhận diện bằng email thật. Không có mật khẩu và không có đăng nhập web riêng cho chủ: chủ vào POS bằng PIN như mọi nhân viên, còn các thao tác quan trọng phải xác nhận thêm bằng mã gửi về email. Mã `REQ-…` dùng để đối chiếu trong `traceability.md`.
+
 ## ADDED Requirements
 
-### Requirement: Tài khoản chủ dùng email thật, xác thực bằng mã một lần, không có mật khẩu
+### Requirement: REQ-OWNER-01 — Xác minh email riêng cho mỗi lần tạo quán
 
-Hệ thống SHALL cung cấp một loại danh tính riêng gọi là tài khoản chủ, định danh bằng một địa chỉ email thật đã xác thực. Tài khoản chủ MUST NOT có mật khẩu. Việc đăng ký lần đầu và đăng nhập các lần sau SHALL dùng chung một luồng: nhập email, nhận mã một lần sáu chữ số qua email, nhập mã. Tài khoản SHALL được tạo ở lần nhập đúng mã đầu tiên của một email chưa từng có tài khoản.
+Mỗi lần tạo quán, kể cả quán thứ hai trở đi của cùng một chủ, hệ thống SHALL yêu cầu xác minh email bằng mã gửi riêng cho đúng lần tạo đó. Bước xác minh chỉ cho phép tạo đúng quán với đúng thông tin đã nhập; nó MUST NOT mở phiên đăng nhập web, MUST NOT phát token hay cookie. PIN POS, Store Key và việc email đã từng được xác minh trước đây MUST NOT thay cho mã của lần này.
 
-Mã một lần SHALL hết hạn sau 10 phút. Hệ thống SHALL hủy mã sau 5 lần nhập sai và bắt người dùng yêu cầu mã mới.
+#### Scenario: Quán thứ hai vẫn cần mã mới
 
-Danh tính này SHALL tách biệt với service account của cửa hàng và với nhân viên trong cửa hàng. Service account MUST tiếp tục xác thực bằng phần bí mật trong Store Key, và nhân viên MUST tiếp tục xác thực bằng PIN.
+- **WHEN** chủ đã có một quán bắt đầu tạo quán thứ hai
+- **THEN** hệ thống gửi mã mới cho lần tạo này và không chấp nhận PIN POS hay Store Key của quán cũ thay cho mã
 
-#### Scenario: Đăng ký lần đầu
+### Requirement: REQ-OWNER-02 — Gửi mã tạo quán
 
-- **WHEN** một người nhập email chưa từng có tài khoản chủ và nhập đúng mã một lần vừa nhận
-- **THEN** hệ thống tạo tài khoản chủ cho email đó, đánh dấu email đã xác thực, và mở phiên đăng nhập
+Hệ thống SHALL nhận yêu cầu gửi mã gồm email, thông tin tạo quán và hai mã định danh do máy người dùng sinh ra. Email SHALL là ký tự ASCII, tối đa 254 byte, phần trước dấu @ tối đa 64 byte; được bỏ khoảng trắng đầu cuối và đổi về chữ thường, nhưng giữ nguyên dấu chấm và phần `+tag`. Tên quán SHALL dài 1–120 ký tự sau khi bỏ khoảng trắng đầu cuối, địa chỉ 0–500 ký tự, tùy chọn dữ liệu mẫu là có hoặc không, PIN chủ đúng 6 chữ số.
 
-#### Scenario: Đăng nhập các lần sau
+Khi email đã đủ điều kiện gửi, chưa đủ điều kiện gửi (đang chờ hết 10 phút hoặc đã hết lượt), hay yêu cầu tạo quán đã được chấp nhận, phản hồi SHALL giống hệt nhau về dạng, để người ngoài không dò được email nào đã có quán. Các lỗi về mã định danh (`A_REQUEST_ID_STALE`, `A_REQUEST_ID_REUSED`, `CREATE_INTENT_ID_REUSED`) và lỗi hệ thống (`A_SEND_UNAVAILABLE`) chỉ phụ thuộc mã định danh hoặc tình trạng hệ thống, không phụ thuộc PIN hay việc email đã có quán hay chưa.
 
-- **WHEN** một người nhập email đã có tài khoản chủ và nhập đúng mã một lần vừa nhận
-- **THEN** hệ thống mở phiên đăng nhập cho tài khoản đó và không tạo tài khoản mới
+#### Scenario: Bấm gửi lại trong 10 phút
 
-#### Scenario: Mã hết hạn
+- **WHEN** người dùng yêu cầu mã tạo quán lần nữa cho cùng email trước khi hết 10 phút kể từ lần phát
+- **THEN** hệ thống trả phản hồi cùng dạng, không gửi thư, không tính lượt, và nút Gửi lại vẫn bị khóa tới mốc hẹn
 
-- **WHEN** người dùng nhập một mã đã được gửi quá 10 phút trước
-- **THEN** hệ thống từ chối, nêu rõ mã đã hết hạn, và cho phép yêu cầu mã mới
+### Requirement: REQ-OWNER-03 — Kiểm mã trước, kiểm thông tin sau
 
-#### Scenario: Nhập sai quá số lần cho phép
+Hệ thống SHALL kiểm mã trước. Trước khi mã được xác nhận đúng, mọi phản hồi, dữ liệu lưu, số lượt, thư và bộ đếm sai MUST NOT phụ thuộc giá trị PIN hay nội dung thông tin tạo quán, ngoài việc kiểm đúng dạng. Lý do: nếu kiểm PIN trước thì người không có mã vẫn dò được PIN.
 
-- **WHEN** người dùng nhập sai mã 5 lần cho cùng một mã
-- **THEN** hệ thống hủy mã đó, và mọi lần nhập tiếp theo với mã đó bị từ chối kể cả khi gõ đúng
+Mã sai SHALL tăng bộ đếm sai. Mã đúng nhưng thông tin khác lúc gửi mã SHALL bị từ chối, tăng bộ đếm sai và không làm mất hiệu lực mã. Việc dùng mã và ghi nhận yêu cầu tạo quán SHALL nằm trong cùng một giao dịch database; mỗi yêu cầu tạo quán tạo ra tối đa một quán.
 
-#### Scenario: Không có đường đăng nhập thay thế
+#### Scenario: Đổi PIN sau khi gửi mã
 
-- **WHEN** người dùng tìm cách đăng nhập tài khoản chủ mà không qua mã một lần
-- **THEN** hệ thống không cung cấp đường nào khác, và không tồn tại luồng đặt hoặc khôi phục mật khẩu cho tài khoản chủ
+- **WHEN** người dùng nhập đúng mã nhưng PIN khác PIN đã nhập lúc gửi mã
+- **THEN** hệ thống trả `CREATE_INTENT_CONFLICT`, tăng bộ đếm sai và không tạo quán
 
-### Requirement: Chống dò email và chống gửi mã dồn dập
+### Requirement: REQ-OWNER-04 — Gửi lại an toàn khi mất phản hồi
 
-Hệ thống SHALL giới hạn tần suất gửi mã một lần ở mức 3 lần mỗi 15 phút và 10 lần mỗi ngày tính theo địa chỉ email, đồng thời 10 lần mỗi giờ tính theo địa chỉ mạng của người gọi. Các giới hạn này MUST được enforce ở phía server.
+Gửi lại đúng yêu cầu cũ SHALL nhận lại đúng kết quả đã lưu, không tạo thêm thư, mã, lượt tính, quán hay lần tạo nào. "Đúng yêu cầu cũ" nghĩa là cùng mã định danh, cùng loại thao tác và cùng đối tượng; với lần nhập mã đã được so thì còn phải cùng mã. PIN và thông tin tạo quán MUST NOT nằm trong phần so này, để việc gửi lại không thành cách dò PIN. Cùng mã định danh nhưng khác các phần trên SHALL bị từ chối.
 
-Phản hồi của điểm cuối gửi mã SHALL giống hệt nhau bất kể email có tồn tại tài khoản chủ hay không. Hệ thống MUST NOT tiết lộ qua nội dung phản hồi, mã trạng thái hay thời gian phản hồi rằng một email đã có tài khoản.
+Ngoại lệ: chuyển quyền và reset hủy chính phiên đang gọi, nên gửi lại sau đó nhận `EMPLOYEE_SESSION_REQUIRED` thay vì kết quả cũ. Thao tác không chạy lần hai, và người dùng đăng nhập lại để thấy kết quả.
 
-#### Scenario: Phản hồi không phân biệt email đã tồn tại
+Mã định danh chưa từng được ghi nhận mà có thời điểm tạo lệch quá 30 phút so với đồng hồ database SHALL bị từ chối `A_REQUEST_ID_STALE`. Bản ghi phục vụ gửi lại SHALL được giữ ít nhất 90 phút, nên yêu cầu quá cũ không bao giờ bị coi nhầm là yêu cầu mới.
 
-- **WHEN** một người gửi yêu cầu mã cho một email chưa từng đăng ký và cho một email đã đăng ký
-- **THEN** hai phản hồi giống nhau về nội dung và mã trạng thái
+#### Scenario: Gửi lại sau khi mất phản hồi
 
-#### Scenario: Vượt giới hạn theo email
+- **WHEN** lời gọi xác minh đã xong nhưng phản hồi bị mất, và máy gửi lại đúng yêu cầu đó sau 30 phút
+- **THEN** hệ thống trả kết quả đã lưu, không tăng bộ đếm sai và không tạo gì mới
 
-- **WHEN** một email đã được gửi mã 3 lần trong 15 phút và có yêu cầu thứ tư
-- **THEN** hệ thống không gửi thêm email nào và trả về cùng dạng phản hồi chung chung
+### Requirement: REQ-OWNER-05 — Mỗi email làm chủ tối đa 5 quán
 
-#### Scenario: Vượt giới hạn theo địa chỉ mạng
+Mỗi email SHALL đứng tên tối đa 5 quán. Con số này SHALL là giá trị cấu hình phía server. Hệ thống MUST NOT giới hạn số lần tạo quán trong ngày: một ngày có thể tạo đủ 5 quán, đủ 5 thì không tạo thêm được.
 
-- **WHEN** một địa chỉ mạng gửi yêu cầu mã cho nhiều email khác nhau vượt 10 lần trong một giờ
-- **THEN** hệ thống từ chối các yêu cầu tiếp theo từ địa chỉ đó cho tới khi hết cửa sổ
+Số đếm SHALL gồm các quán đang đứng tên, kể cả quán bị tạm ngưng, và các yêu cầu tạo quán đang xử lý hoặc chưa rõ kết quả. Việc kiểm và giữ chỗ SHALL diễn ra sau khi mã và thông tin đã đúng; MUST NOT kiểm ở bước gửi mã, vì như vậy sẽ lộ số quán của một email cho người ngoài. Chỗ đã giữ chỉ được trả lại khi việc tạo thất bại chắc chắn.
 
-### Requirement: Phiên đăng nhập của chủ có hạn
+Trong phạm vi đồ án giữ trần 5. Khi vận hành thực tế có thể nới theo nhu cầu, qua nhà cung cấp.
 
-Phiên đăng nhập của tài khoản chủ SHALL hết hạn sau 7 ngày kể từ lần sử dụng gần nhất, và SHALL được gia hạn mỗi lần chủ thao tác. Hệ thống SHALL cung cấp thao tác đăng xuất chủ động.
+#### Scenario: Đủ 5 quán
 
-#### Scenario: Phiên bỏ ngỏ quá lâu
+- **WHEN** chủ đã có 5 quán nhập đúng mã để tạo quán thứ sáu
+- **THEN** hệ thống dừng lại, thông báo "Bạn đã có đủ 5 quán. Liên hệ nhà cung cấp nếu cần nới hạn mức." và mã không bị tiêu thụ
 
-- **WHEN** một phiên chủ không được dùng trong hơn 7 ngày
-- **THEN** phiên hết hiệu lực và lần truy cập tiếp theo phải đăng nhập lại bằng mã một lần
+#### Scenario: Tạo đủ 5 quán trong một ngày
 
-### Requirement: Quan hệ giữa chủ và cửa hàng, kèm hạn mức
+- **WHEN** một email chưa có quán nào tạo lần lượt 5 quán trong cùng một ngày, mỗi lần gửi mã cách nhau ít nhất 10 phút
+- **THEN** cả 5 lần đều được chấp nhận
 
-Mỗi cửa hàng SHALL thuộc về đúng một tài khoản chủ, và trường chủ sở hữu trên bản ghi cửa hàng MUST là bắt buộc. Một tài khoản chủ SHALL sở hữu được nhiều cửa hàng; hệ thống MUST NOT đặt ràng buộc duy nhất khiến một chủ chỉ giữ được một cửa hàng.
+### Requirement: REQ-OWNER-06 — Biên nhận trên máy người dùng
 
-Hệ thống SHALL giới hạn mỗi tài khoản chủ tối đa 5 cửa hàng và tối đa 3 lần tạo cửa hàng mỗi ngày. Hai giới hạn này MUST được enforce ở phía server và SHALL là giá trị cấu hình, không phải hằng số nằm trong mã.
+Máy người dùng SHALL lưu biên nhận của mỗi lần gửi mã trong IndexedDB, mỗi biên nhận là một bản ghi riêng, ghi trong một giao dịch cùng nhật ký yêu cầu. Biên nhận MUST NOT chứa mã, PIN hay Store Key, và MUST NOT bị loại bớt để giới hạn số lượng. Biên nhận chỉ giúp giao diện quay lại đúng bước; nó không phải bằng chứng và không mang quyền gì.
 
-Việc sở hữu nhiều cửa hàng MUST NOT được hiểu là tính năng quản lý chuỗi. Hệ thống không cung cấp thực đơn dùng chung, báo cáo hợp nhất hay màn chuyển đổi cửa hàng đang làm việc.
+Máy SHALL giữ thêm cho mỗi luồng một bản nháp gồm tên quán, địa chỉ và tùy chọn dữ liệu mẫu, để sau khi tải lại trang không phải nhập lại. Bản nháp MUST NOT chứa PIN, mã hay Store Key, và được xóa cùng lúc với biên nhận.
 
-#### Scenario: Chạm trần số cửa hàng
+Nếu không ghi được vào IndexedDB, máy SHALL vẫn cho làm tiếp, giữ dữ liệu trong bộ nhớ và hiện cảnh báo `STORAGE_UNAVAILABLE`.
 
-- **WHEN** một tài khoản chủ đã sở hữu 5 cửa hàng và yêu cầu tạo cửa hàng thứ sáu
-- **THEN** hệ thống từ chối, nêu rõ đã đạt số cửa hàng tối đa, và hướng dẫn liên hệ nhà cung cấp để nới hạn mức
+#### Scenario: Tải lại trang khi đang nhập mã
 
-#### Scenario: Tạo cửa hàng dồn dập trong ngày
+- **WHEN** người dùng tải lại trang ở màn nhập mã
+- **THEN** tên quán, địa chỉ và tùy chọn dữ liệu mẫu đã điền sẵn, còn PIN phải nhập lại
 
-- **WHEN** một tài khoản chủ đã tạo 3 cửa hàng trong cùng một ngày và yêu cầu tạo tiếp
-- **THEN** hệ thống từ chối và nêu rõ giới hạn theo ngày
+#### Scenario: Không ghi được biên nhận
 
-#### Scenario: Danh sách cửa hàng vẫn là danh sách khi chỉ có một
+- **WHEN** trình duyệt không ghi được vào IndexedDB
+- **THEN** người dùng vẫn làm tiếp được và thấy cảnh báo; nếu tải lại trang thì phải bắt đầu lại từ màn nhập thông tin
 
-- **WHEN** một chủ chỉ sở hữu một cửa hàng và mở mặt web của mình
-- **THEN** hệ thống hiển thị danh sách cửa hàng gồm một dòng, không phải màn chi tiết của một cửa hàng cố định
+#### Scenario: Bốn phản hồi về sai thứ tự
 
-### Requirement: Quên Store Key gửi lại đúng key hiện tại
+- **WHEN** hai tab cùng một lần tạo quán nhận bốn phản hồi theo thứ tự đảo
+- **THEN** cả bốn biên nhận đều được lưu, không cái nào ghi đè cái nào
 
-Hệ thống SHALL cung cấp luồng quên Store Key: chủ nhập email, hệ thống gửi về email đã xác thực danh sách các cửa hàng thuộc chủ đó, mỗi dòng gồm tên cửa hàng, địa chỉ cửa hàng và Store Key hiện tại. Store Key MUST NOT đổi và các thiết bị đã ghép MUST NOT bị ảnh hưởng.
+### Requirement: REQ-OWNER-07 — Quy tắc chung của mã xác nhận theo từng loại thao tác
 
-Luồng này SHALL có hai lối vào dùng chung một thành phần giao diện: một ở màn tạo cửa hàng và ghép thiết bị, một ở màn Cài đặt trong ứng dụng.
+Mã xác nhận SHALL gồm 6 chữ số, hết hạn sau 10 phút, bị hủy sau 5 lần nhập sai và chỉ dùng được một lần. Mỗi mã SHALL chỉ dùng được cho đúng loại thao tác và đúng đối tượng mà nó được phát. Các loại thao tác gồm: tạo quán, quên PIN chủ, cấp lại Store Key, đổi email (xác nhận email đã đăng ký), đổi email (xác nhận email mới), chuyển quyền (xác nhận email đã đăng ký), chuyển quyền (xác nhận email mới), reset dữ liệu.
 
-Hệ thống SHALL giới hạn 3 lần gửi mỗi giờ tính theo email. Lối vào công khai SHALL trả phản hồi chung chung không tiết lộ email có tồn tại hay không. Hệ thống MUST NOT ghi Store Key hoặc phần bí mật vào bất kỳ nhật ký nào.
+Mỗi mã SHALL gắn với đúng đối tượng của nó: quán, tài khoản chủ, và với mã gửi tới email mới thì gắn cả địa chỉ đó. Khi kiểm mã, server MUST so quán trong mã với quán của máy đang gọi. Với mã gửi về email đã đăng ký, server MUST so email trong mã với email chủ hiện tại. Với mã gửi tới email mới, server MUST kiểm bước xác nhận email đã đăng ký gắn với mã chưa được dùng, chưa bị hủy, chưa bị thay, và tài khoản của bước đó đang là chủ quán này. Không đạt thì coi như không có mã. Mã tạo quán gắn với intent, không so với chủ nào.
 
-#### Scenario: Chủ quên key và cần ghép thêm thiết bị
+Mỗi bước xác nhận email đã đăng ký SHALL chỉ có một mã email mới còn hiệu lực; khi mã cho địa chỉ khác thực sự được phát thì mã trước bị hủy. Tạo bước xác nhận mới thì bước trước cùng loại của quán và mã email mới của nó bị hủy.
 
-- **WHEN** chủ nhập đúng email đã xác thực vào hộp thoại quên Store Key
-- **THEN** hệ thống gửi email chứa Store Key hiện tại của các cửa hàng thuộc chủ đó, và thiết bị đang ghép vẫn hoạt động bình thường
+Thời gian chờ 10 phút giữa hai lần gửi và giới hạn theo email (3 lần mỗi 15 phút, 10 lần mỗi ngày theo giờ Việt Nam) SHALL tính **riêng cho từng loại thao tác**. Giới hạn theo địa chỉ mạng (10 lần mỗi giờ) và trần toàn dự án (400 lần gửi mỗi ngày theo giờ Việt Nam) SHALL tính chung cho mọi loại, vì hai giới hạn này bảo vệ sức chứa gửi thư của cả dự án chứ không nhằm vào một thao tác (quyết định 39). Thời gian chờ tính theo email và loại thao tác, không theo quán. Trong 10 phút kể từ lần phát, hệ thống MUST NOT gửi thêm thư cho cùng email và cùng loại thao tác, kể cả khi mã đã dùng hoặc đã bị hủy. Ngoại lệ: mã reset dữ liệu không có thời gian chờ và không có giới hạn theo email (quyết định 43); gửi mã mới thì mã trước bị hủy, và giới hạn theo địa chỉ mạng cùng trần toàn dự án vẫn áp dụng. Lượt đã chấp nhận phát vẫn tính khi gửi thư lỗi. Vì đã có thời gian chờ 10 phút, giới hạn 3 lần mỗi 15 phút trên thực tế không chạm tới; vẫn giữ làm lớp phòng vệ. Phản hồi của các lời gọi này MUST NOT chứa email chủ.
 
-#### Scenario: Email không thuộc tài khoản chủ nào
+Khi quán đổi chủ hoặc chủ đổi email, các mã và bước xác nhận còn dở của quán và của email cũ MUST bị hủy.
 
-- **WHEN** một người nhập email không gắn với tài khoản chủ nào
-- **THEN** hệ thống không gửi email nào và trả về cùng phản hồi như trường hợp thành công
+#### Scenario: Hai loại thao tác không chờ lẫn nhau
 
-#### Scenario: Chỉ gửi cửa hàng của chính chủ đó
+- **WHEN** chủ vừa nhận mã quên PIN và ngay sau đó bắt đầu chuyển quyền
+- **THEN** hệ thống vẫn gửi mã chuyển quyền, vì hai loại thao tác tính thời gian chờ riêng
 
-- **WHEN** hệ thống dựng nội dung email quên Store Key
-- **THEN** nội dung chỉ gồm các cửa hàng có trường chủ sở hữu trỏ tới đúng tài khoản chủ của email đó
+#### Scenario: Mã của loại này không dùng cho loại khác
 
-### Requirement: Cấp lại Store Key chỉ thực hiện được trong phiên chủ và qua ba lớp rào chắn
+- **WHEN** người dùng nhập mã quên PIN vào bước xác nhận reset dữ liệu
+- **THEN** hệ thống từ chối và không có gì thay đổi
 
-Hệ thống SHALL cung cấp luồng cấp lại Store Key, sinh phần bí mật mới, đổi mật khẩu service account của cửa hàng rồi gửi Store Key mới về email chủ. Key cũ MUST hết hiệu lực ngay, và mọi thiết bị đã ghép MUST phải ghép lại.
+#### Scenario: Mã của quán này không dùng cho quán khác
 
-Luồng này SHALL chỉ khả dụng khi có phiên tài khoản chủ đang đăng nhập. Ứng dụng POS MUST NOT cung cấp lối vào nào cho luồng này, kể cả cho nhân viên vai trò `owner`. Hệ thống MUST NOT thêm quyền hành động nào vào danh mục quyền để phục vụ luồng này.
+- **WHEN** một máy của quán B gửi mã được phát cho quán A
+- **THEN** hệ thống coi như không có mã và không có gì thay đổi
 
-Trước khi thực hiện, hệ thống SHALL yêu cầu đủ ba lớp theo thứ tự: cảnh báo nêu rõ hậu quả với nút xác nhận tách khỏi nút mở hộp thoại; gõ lại đúng tên cửa hàng; và nhập một mã một lần mới gửi tới email chủ.
+### Requirement: REQ-OWNER-08 — Thao tác của chủ quán nằm trong Cài đặt trên POS
+
+Cấp lại Store Key, đổi email, chuyển quyền và reset dữ liệu SHALL nằm trong mục Cài đặt của POS và SHALL chỉ hiện với tài khoản chủ quán đang đăng nhập bằng PIN. Hệ thống MUST NOT thêm quyền mới vào danh mục quyền cho các thao tác này; điều kiện duy nhất là vai trò `owner`. Server MUST kiểm lại vai trò, không chỉ dựa vào việc giao diện có hiện nút hay không. Mỗi thao tác vẫn phải nhập mã gửi về email đã đăng ký: biết PIN chủ là chưa đủ. Mục Cài đặt MUST NOT hiển thị email chủ đã đăng ký, kể cả dạng che bớt.
+
+Mỗi quán SHALL chỉ chạy một thao tác của chủ tại một thời điểm; thao tác đến sau chờ thao tác trước xong rồi mới kiểm lại điều kiện. Khi quán đang tạm ngưng, các thao tác này SHALL bị từ chối với `STORE_SUSPENDED`; quên Store Key vẫn dùng được.
+
+Hệ thống MUST NOT có mặt web riêng cho chủ để làm các việc này.
+
+#### Scenario: Quản lý không thấy các thao tác của chủ
+
+- **WHEN** nhân viên vai trò `manager` có quyền quản lý cài đặt mở mục Cài đặt
+- **THEN** các thao tác của chủ quán không hiện ra, và gọi thẳng vào server cũng bị từ chối với `OWNER_ROLE_REQUIRED`
+
+### Requirement: REQ-OWNER-09 — Quên Store Key
+
+Hệ thống SHALL cung cấp luồng quên Store Key: người dùng nhập email, hệ thống gửi về đúng email đó danh sách các quán đang đứng tên, mỗi dòng gồm tên quán, địa chỉ và Store Key hiện tại. Luồng này không cần mã xác nhận, vì key chỉ đi vào hộp thư của chủ. Store Key MUST NOT đổi và các máy đã ghép MUST NOT bị ảnh hưởng.
+
+Luồng này SHALL có hai lối vào dùng chung một thành phần giao diện: màn ghép thiết bị và mục Cài đặt. Hệ thống SHALL giới hạn 3 lần gửi mỗi giờ theo email. Giới hạn theo địa chỉ mạng và trần toàn dự án ở REQ-OWNER-07 cũng áp dụng: giới hạn theo địa chỉ mạng đếm mọi yêu cầu đúng dạng, trước khi xét giới hạn theo email, kể cả khi email không có quán, để không ai suy ra được email nào có quán qua số thư nhận được; trần toàn dự án chỉ đếm thư thực sự gửi. Phản hồi SHALL giống nhau dù email có quán hay không; việc tra chủ, giải mã key và gửi thư SHALL làm sau khi đã trả phản hồi để thời gian phản hồi không để lộ. Quán đang có lần cấp lại Store Key làm dở SHALL được bỏ khỏi thư, vì key đó có thể đã hết tác dụng; thư cấp lại sẽ tới sau. Store Key MUST NOT xuất hiện trong nhật ký.
+
+#### Scenario: Chủ quên key và cần ghép thêm máy
+
+- **WHEN** chủ nhập đúng email đã đăng ký vào hộp thoại quên Store Key
+- **THEN** hệ thống gửi thư chứa Store Key hiện tại của các quán, và các máy đang ghép vẫn hoạt động bình thường
+
+#### Scenario: Email không có quán nào
+
+- **WHEN** một người nhập email không đứng tên quán nào
+- **THEN** phản hồi giống hệt trường hợp có quán, và không có thư nào được gửi
+
+### Requirement: REQ-OWNER-10 — Cấp lại Store Key
+
+Hệ thống SHALL cho chủ quán cấp lại Store Key qua bốn bước theo thứ tự: (1) đọc cảnh báo nêu rõ mọi máy của quán sẽ bị đăng xuất và phải ghép lại; (2) gõ lại đúng tên quán; (3) bấm gửi mã, mã đi tới email đã đăng ký; (4) nhập mã. Khi mã đúng, hệ thống SHALL sinh phần bí mật mới, đổi mật khẩu tài khoản kỹ thuật của quán và lưu bí mật mới ở dạng mã hóa. Key cũ MUST NOT ghép thêm được máy nào nữa, và khoảng nhận lại Store Key còn mở MUST đóng. Mỗi quán SHALL chỉ có một lần cấp lại đang làm dở. Trong lúc key mới chưa ghi xong, yêu cầu cấp lại khác chỉ nhận trạng thái, còn đổi email, chuyển quyền và reset phải đợi, và thư quên Store Key bỏ quán này ra. Khi key mới đã ghi xong, các thao tác này làm được bình thường, kể cả khi còn bước thu hồi phiên. Nếu đổi mật khẩu lỗi lặp lại khi key mới chưa ghi xong, hệ thống SHALL báo người vận hành và giữ nguyên trạng thái chặn. Nếu thu hồi phiên lỗi lặp lại, hệ thống SHALL báo người vận hành nhưng không chặn. Vì đổi mật khẩu và ghi database không gói chung một giao dịch được, hệ thống SHALL ghi lại việc đang làm để tiến trình đối soát làm tiếp nếu dừng giữa chừng; key mới chỉ được hiện và gửi sau khi cả hai việc đã xong, trước đó trả trạng thái "chưa rõ". Phiên của các máy đang ghép SHALL bị thu hồi, và dừng trước bước này thì tiến trình đối soát làm tiếp; token đang dùng có thể còn tác dụng tới khi hết hạn, mặc định khoảng 1 giờ theo tài liệu Supabase, hoặc tới khi người dùng đăng xuất. Chủ dự án chấp nhận khoảng này và ghi vào giới hạn của hệ thống (quyết định 42).
+
+Key mới SHALL hiện trên màn hình kèm nút sao chép, và được gửi thêm tới email chủ như một hỗ trợ kèm theo. Gửi lại đúng lần nhập mã khi mất phản hồi MUST NOT sinh key lần hai; lúc đó chỉ trả trạng thái, và key mới có trong thư.
 
 #### Scenario: Cấp lại thành công
 
-- **WHEN** chủ đang đăng nhập vượt qua đủ ba lớp rào chắn
-- **THEN** hệ thống sinh Store Key mới, vô hiệu key cũ, gửi key mới về email chủ, và mọi thiết bị đang ghép mất phiên cửa hàng
+- **WHEN** chủ quán qua đủ bốn bước
+- **THEN** key mới hiện trên màn hình, key cũ không ghép được nữa, và mọi máy đang ghép, gồm cả máy đang thao tác, phải ghép lại
 
-#### Scenario: Phiên bỏ ngỏ trên máy dùng chung
+#### Scenario: Biết PIN chủ nhưng không đọc được email
 
-- **WHEN** một người ngồi vào máy có sẵn phiên chủ đang đăng nhập và thử cấp lại Store Key
-- **THEN** hệ thống chặn ở lớp thứ ba vì người đó không đọc được mã một lần gửi tới email chủ
+- **WHEN** một người biết PIN chủ làm tới bước nhập mã nhưng không đọc được hộp thư của chủ
+- **THEN** Store Key không đổi
 
-#### Scenario: Không có lối vào từ ứng dụng POS
+### Requirement: REQ-OWNER-11 — Quên PIN chỉ dành cho chủ quán
 
-- **WHEN** một nhân viên vai trò `owner` đăng nhập trên thiết bị tại quán và tìm chức năng cấp lại Store Key
-- **THEN** ứng dụng không hiển thị chức năng đó ở bất kỳ màn nào
+Trên màn nhập PIN của máy đã ghép, khi chọn tài khoản chủ quán, hệ thống SHALL hiện lối "Quên mã PIN". Hệ thống SHALL gửi mã tới email đã đăng ký của quán; nhập đúng mã thì chủ đặt PIN mới gồm 6 chữ số. PIN mới SHALL có hiệu lực ngay trên mọi máy đã ghép. Đây MUST là đường tự phục vụ duy nhất để đặt lại PIN chủ khi đã quên; khôi phục do người vận hành thực hiện là việc riêng. Các vai trò khác, kể cả vai trò có quyền quản lý nhân viên, MUST NOT tác động lên PIN của chủ quán.
 
-#### Scenario: Thiết bị của chính chủ cũng bị đăng xuất
+Khi quán đang tạm ngưng, lối này SHALL bị từ chối với `STORE_SUSPENDED`. Phản hồi MUST NOT chứa email đã đăng ký, kể cả dạng che bớt.
 
-- **WHEN** chủ cấp lại Store Key từ một thiết bị đã ghép bằng key cũ
-- **THEN** thiết bị đó cũng mất phiên cửa hàng, và giao diện đã cảnh báo trước điều này ở lớp thứ nhất
+Nhân viên MUST NOT có lối quên PIN qua email. Nhân viên quên PIN SHALL nhờ chủ quán hoặc người có quyền `employee.manage` đặt lại trong phần quản lý nhân viên.
 
-### Requirement: Đặt lại PIN của vai trò chủ quán qua email chủ
+#### Scenario: Chủ quên PIN
 
-Hệ thống SHALL cho phép chủ đang đăng nhập đặt lại PIN của nhân viên vai trò `owner` trong cửa hàng của mình. Đây MUST là đường duy nhất đặt lại PIN đó; quyền quản lý nhân viên của các vai trò khác MUST NOT tác động lên bản ghi nhân viên vai trò `owner`.
+- **WHEN** chủ chọn "Quên mã PIN", nhập đúng mã gửi về email và đặt PIN mới
+- **THEN** PIN mới có hiệu lực ngay, PIN cũ không còn dùng được
 
-#### Scenario: Chủ quên PIN chủ quán
+#### Scenario: Nhân viên quên PIN
 
-- **WHEN** chủ đăng nhập mặt web và yêu cầu đặt lại PIN của vai trò chủ quán
-- **THEN** hệ thống cho đặt PIN mới sau khi xác nhận qua mã một lần, và PIN mới có hiệu lực ngay trên mọi thiết bị đã ghép
+- **WHEN** nhân viên không phải chủ quán chọn tài khoản của mình trên màn nhập PIN
+- **THEN** không có lối "Quên mã PIN", và nhân viên phải nhờ chủ quán hoặc người có quyền `employee.manage` đặt lại
 
-#### Scenario: Quản lý không đặt lại được PIN chủ quán
+#### Scenario: Máy chưa ghép
 
-- **WHEN** một nhân viên vai trò `manager` có quyền `employee.manage` thử đặt lại PIN của nhân viên vai trò `owner`
-- **THEN** hệ thống từ chối và nêu rõ PIN của chủ quán chỉ đặt lại được từ tài khoản chủ
+- **WHEN** chủ quên cả Store Key và PIN trên một máy chưa ghép
+- **THEN** chủ dùng luồng quên Store Key để ghép máy trước, rồi mới dùng luồng quên PIN
 
-### Requirement: Đổi email của tài khoản chủ
+### Requirement: REQ-OWNER-12 — Đổi email chủ
 
-Hệ thống SHALL cho phép chủ đang đăng nhập đổi sang một địa chỉ email khác. Mã xác nhận MUST được gửi tới **địa chỉ mới**. Sau khi đổi thành công, hệ thống SHALL gửi thư thông báo về địa chỉ cũ.
+Trong mục Cài đặt, chủ quán SHALL đổi email theo thứ tự: (1) nhập email đã đăng ký; (2) nhập mã gửi về email đó; (3) nhập email mới; (4) nhập mã gửi về email mới. Bước 3 và 4 MUST NOT làm được nếu chưa xong bước 2, và kết quả bước 2 chỉ có hiệu lực 10 phút, cho đúng phiên đăng nhập đó.
+
+Phản hồi ở bước 1 SHALL giống nhau dù email nhập vào có đúng hay không, và chỉ khi đúng mới có thư. Email mới trùng email đang dùng SHALL bị từ chối ngay. Email mới đã đứng tên chủ khác, hoặc đang có yêu cầu tạo quán chưa xong, chỉ bị từ chối **sau** khi mã của email mới đúng, để không ai dùng màn này dò email nào đã có quán.
+
+Việc đổi SHALL có hiệu lực với tất cả các quán đứng tên email đó. Sau khi đổi, hệ thống SHALL gửi thư báo về email cũ.
 
 #### Scenario: Đổi email thành công
 
-- **WHEN** chủ nhập địa chỉ mới và nhập đúng mã gửi tới địa chỉ mới đó
-- **THEN** tài khoản chủ chuyển sang địa chỉ mới, và một thư thông báo được gửi tới địa chỉ cũ
+- **WHEN** chủ nhập đúng mã của email đã đăng ký rồi đúng mã của email mới
+- **THEN** các quán chuyển sang email mới, và email cũ nhận thư báo
 
-#### Scenario: Địa chỉ mới đã thuộc tài khoản chủ khác
+#### Scenario: Gõ sai email mới
 
-- **WHEN** chủ nhập một địa chỉ đã gắn với tài khoản chủ khác
-- **THEN** hệ thống từ chối và không gửi mã tới địa chỉ đó
+- **WHEN** chủ gõ sai địa chỉ email mới nên không nhận được mã
+- **THEN** email của quán vẫn là email cũ, không có gì thay đổi
 
-### Requirement: Chuyển quyền sở hữu cửa hàng
+#### Scenario: Email mới đã thuộc chủ khác
 
-Hệ thống SHALL cho phép chủ hiện tại chuyển quyền sở hữu một cửa hàng cho một tài khoản chủ khác, xác định bằng địa chỉ email. Việc chuyển SHALL chỉ hoàn tất khi người nhận xác thực để tiếp nhận. Khi hoàn tất, trường chủ sở hữu của cửa hàng và ràng buộc gắn nhân viên vai trò `owner` MUST chuyển sang chủ mới trong cùng một giao dịch.
+- **WHEN** chủ nhập đúng mã gửi tới một email đang đứng tên chủ khác
+- **THEN** hệ thống báo `NEW_EMAIL_UNAVAILABLE` và không đổi gì
 
-Việc chuyển MUST bị từ chối nếu chủ nhận đã chạm trần số cửa hàng.
+#### Scenario: Bỏ qua bước xác nhận email đã đăng ký
 
-#### Scenario: Chuyển quyền sở hữu thành công
+- **WHEN** một người biết PIN chủ yêu cầu gửi mã tới email mới mà chưa qua bước 2
+- **THEN** hệ thống từ chối với `OWNER_PROOF_REQUIRED` và không gửi thư
 
-- **WHEN** chủ hiện tại chỉ định email chủ mới và chủ mới xác thực tiếp nhận
-- **THEN** cửa hàng đổi chủ sở hữu, nhân viên vai trò `owner` gắn với tài khoản chủ mới, và chủ cũ không còn thấy cửa hàng đó trong danh sách của mình
+### Requirement: REQ-OWNER-13 — Chuyển quyền sở hữu quán
 
-#### Scenario: Chủ nhận đã đầy hạn mức
+Chuyển quyền SHALL là đổi vai trò giữa hai tài khoản POS của cùng một quán. Ví dụ chủ A nhượng quán cho B: A phải tạo sẵn tài khoản POS cho B; sau khi xong, B là chủ quán, A thành tài khoản thường.
 
-- **WHEN** chủ nhận đã sở hữu 5 cửa hàng
-- **THEN** hệ thống từ chối việc chuyển và nêu rõ lý do
+Trong mục Cài đặt, chủ quán SHALL chuyển quyền theo thứ tự: (1) vào màn chuyển quyền, đọc cảnh báo; (2) nhập email đã đăng ký để xác nhận chính chủ; POS MUST NOT hiển thị email này; (3) nhập mã gửi về email đó; (4) chọn tài khoản POS của người nhận; (5) nhập email mới, khác email hiện tại; (6) nhập mã gửi về email mới. Bước 4 trở đi MUST NOT làm được nếu chưa xong bước 3, và kết quả bước 3 chỉ có hiệu lực 10 phút, cho đúng phiên đăng nhập đó. Tài khoản được chọn SHALL đang hoạt động, thuộc quán này và không phải chủ quán; tài khoản mẫu có PIN công khai MUST NOT được chọn. Nếu quán không có tài khoản nào đủ điều kiện, màn hình SHALL báo cần tạo tài khoản POS cho người nhận trước, và chưa gửi mã nào. Màn hình SHALL cảnh báo rằng email mới phải là email của người nhận, và người nhận phải tự đọc mã.
 
-#### Scenario: Người nhận chưa xác thực
+Sau khi mã của email mới đúng, hệ thống SHALL kiểm email đó đang đứng tên bao nhiêu quán; đủ 5 thì dừng và báo rõ, quán vẫn thuộc chủ cũ. Nếu còn chỗ, và tài khoản được chọn vẫn hợp lệ, trong một giao dịch database hệ thống SHALL: chuyển quán sang đứng tên email mới; đổi A thành vai trò `cashier` và bỏ các quyền riêng của A; đổi tài khoản được chọn thành vai trò `owner`; hủy các phiên đang mở của hai tài khoản này; ghi nhật ký. Sau giao dịch, hai email nhận thư báo.
 
-- **WHEN** chủ hiện tại đã gửi lời chuyển nhưng người nhận chưa xác thực tiếp nhận
-- **THEN** cửa hàng vẫn thuộc chủ hiện tại và mọi truy cập giữ nguyên
+Mỗi người SHALL giữ PIN của mình. Vì A là người tạo tài khoản cho B nên A có thể biết PIN của B; để chặn việc này, B SHALL phải đổi PIN ở lần đăng nhập đầu sau khi nhận quyền. Store Key và các máy đã ghép không bị ảnh hưởng. Hệ thống MUST NOT tự xóa tài khoản của A; nếu cần, B tự xóa trong phần quản lý nhân viên. Mọi mã xác nhận về sau SHALL đi tới email của chủ mới. Mỗi quán chỉ có tối đa một lần chuyển quyền đang dở.
 
-### Requirement: Nhật ký thao tác quản trị cửa hàng
+#### Scenario: Chuyển quyền thành công
 
-Hệ thống SHALL ghi nhật ký các thao tác quản trị cửa hàng gồm tạo cửa hàng, cấp lại Store Key, đổi trạng thái cửa hàng, đặt lại PIN chủ quán, đổi email chủ và chuyển quyền sở hữu. Mỗi bản ghi SHALL gắn với một cửa hàng cụ thể và ghi thời điểm, loại thao tác và tài khoản chủ thực hiện.
+- **WHEN** A qua đủ các bước và email mới chưa đủ 5 quán
+- **THEN** quán đứng tên email mới, B là chủ quán, A là tài khoản thường, mỗi người vẫn đăng nhập bằng PIN của mình, Store Key giữ nguyên, và hai email đều nhận thư báo
 
-Nhật ký MUST NOT chứa Store Key, phần bí mật, mã một lần hay PIN ở bất kỳ dạng nào.
+#### Scenario: Email mới đã đủ 5 quán
 
-#### Scenario: Cấp lại Store Key để lại dấu vết
+- **WHEN** mã của email mới đúng nhưng email đó đã đứng tên 5 quán
+- **THEN** hệ thống dừng, báo `RECIPIENT_STORE_LIMIT_REACHED`, và quán vẫn thuộc chủ cũ
 
-- **WHEN** một cửa hàng được cấp lại Store Key
-- **THEN** nhật ký có một bản ghi cho cửa hàng đó với loại thao tác và thời điểm, và không chứa giá trị key nào
+#### Scenario: Chưa xác nhận email mới
 
-#### Scenario: Nhật ký gắn với cửa hàng, không gắn với chủ
+- **WHEN** A đã xác nhận chính chủ nhưng chưa nhập được mã của email mới
+- **THEN** quán vẫn thuộc A và mọi truy cập giữ nguyên
 
-- **WHEN** một cửa hàng được chuyển sang chủ mới
-- **THEN** các bản ghi nhật ký trước đó vẫn thuộc về cửa hàng đó và không bị mất khi đổi chủ
+#### Scenario: A thử đăng nhập bằng PIN của B
 
-### Requirement: Phạm vi của mặt web dành cho chủ
+- **WHEN** A dùng PIN của B để đăng nhập sau khi chuyển quyền
+- **THEN** người đăng nhập phải đổi PIN ngay; B lấy lại tài khoản bằng lối "Quên mã PIN" qua email mới, và phiên của A hết hiệu lực
 
-Mặt web của tài khoản chủ SHALL chỉ gồm các việc mà thiết bị POS không làm được: đăng nhập và đăng xuất, xem danh sách cửa hàng của mình, tạo cửa hàng mới, quên Store Key, cấp lại Store Key, đặt lại PIN của vai trò chủ quán, đổi email chủ và chuyển quyền sở hữu.
+#### Scenario: B xóa tài khoản của A
 
-Mặt web MUST NOT dựng lại các màn quản trị nghiệp vụ đã có trong ứng dụng POS, gồm báo cáo, cài đặt cửa hàng, quản lý thực đơn, quản lý sơ đồ và quản lý nhân viên.
+- **WHEN** chuyển quyền đã xong và B muốn A không vào quán nữa
+- **THEN** B xóa hoặc khóa tài khoản của A trong phần quản lý nhân viên, và phiên của A hết hiệu lực
 
-#### Scenario: Chủ muốn xem báo cáo từ xa
+### Requirement: REQ-OWNER-14 — Reset dữ liệu quán
 
-- **WHEN** chủ muốn xem báo cáo doanh thu mà không có mặt tại quán
-- **THEN** chủ ghép thiết bị của mình bằng Store Key rồi đăng nhập bằng PIN chủ quán, và mặt web không cung cấp màn báo cáo riêng
+Chủ quán SHALL reset dữ liệu qua bốn bước theo thứ tự: (1) đọc cảnh báo nêu rõ những gì bị xóa và không khôi phục được; (2) gõ lại đúng tên quán; (3) bấm gửi mã, mã đi tới email đã đăng ký; (4) nhập mã. Khi mã đúng, hệ thống SHALL đưa dữ liệu của quán về rỗng trong một giao dịch: đơn, thanh toán, hóa đơn, số liệu báo cáo, thực đơn, khu và bàn, mọi nhân viên trừ chủ quán; các cấu hình còn lại về mặc định. Phiên đang mở của mọi nhân viên, gồm cả người đang thao tác, SHALL hết hiệu lực.
+
+Mục đích thường gặp là bỏ dữ liệu demo đã chọn lúc tạo quán để tự nhập dữ liệu của quán. Hệ thống MUST NOT đặt giới hạn riêng cho số lần reset và MUST NOT đặt thời gian chờ giữa các lần; giới hạn chung ở REQ-OWNER-07 vẫn áp dụng. Sau reset, hệ thống MUST NOT tự tạo lại dữ liệu mẫu và POS không nhắc thử lại việc tạo dữ liệu mẫu, kể cả khi lúc reset dữ liệu mẫu chưa chạy hoặc vừa lỗi. Không có bước xuất dữ liệu trước khi xóa; màn cảnh báo ghi rõ dữ liệu không khôi phục được.
+
+Ảnh trong kho ảnh nằm ngoài database nên SHALL được xóa sau giao dịch; xóa lỗi thì thử lại và không ảnh hưởng kết quả reset. Hệ thống SHALL giữ lại: tên và địa chỉ quán, Store Key, các máy đã ghép, tài khoản chủ quán cùng PIN hiện tại, và nhật ký quản trị. Reset khác với thao tác xóa dữ liệu mẫu đã có: xóa dữ liệu mẫu không đụng tới dữ liệu tài chính và dữ liệu do quán tự tạo.
+
+#### Scenario: Reset thành công
+
+- **WHEN** chủ quán qua đủ bốn bước
+- **THEN** quán còn đúng một nhân viên là chủ quán, không còn đơn hay thực đơn, và nhật ký có bản ghi reset
+
+#### Scenario: Reset nhiều lần
+
+- **WHEN** chủ quán vừa reset xong và muốn reset lần nữa ngay
+- **THEN** hệ thống gửi mã mới mà không bắt chờ, và quán không tự có lại dữ liệu mẫu
+
+#### Scenario: Máy khác đang đăng nhập
+
+- **WHEN** một máy khác của quán đang có nhân viên đăng nhập lúc reset hoàn tất
+- **THEN** máy đó vẫn ghép với quán nhưng phiên nhân viên hết hiệu lực và quay về màn nhập PIN
+
+#### Scenario: Gõ sai tên quán
+
+- **WHEN** chủ quán gõ tên không đúng ở bước 2
+- **THEN** hệ thống báo `STORE_NAME_MISMATCH`, không gửi mã và không xóa gì
+
+### Requirement: REQ-OWNER-15 — Nhật ký thao tác quản trị
+
+Hệ thống SHALL ghi nhật ký các thao tác: tạo quán, cấp lại Store Key, đổi trạng thái quán, đặt lại PIN chủ, đổi email, chuyển quyền, reset dữ liệu. Mỗi bản ghi SHALL gắn với một quán, kèm thời điểm và loại thao tác. Nhật ký MUST NOT chứa Store Key, phần bí mật, mã xác nhận hay PIN ở bất kỳ dạng nào.
+
+#### Scenario: Nhật ký đi theo quán
+
+- **WHEN** một quán được chuyển sang chủ mới hoặc được reset dữ liệu
+- **THEN** các bản ghi nhật ký trước đó vẫn còn và vẫn thuộc quán đó
+
+### Requirement: REQ-OWNER-16 — Chặn thư mặc định của Supabase Auth
+
+Trước khi phát hành giai đoạn 1, hệ thống SHALL có cơ chế chặn các thư mẫu do Supabase Auth tự gửi (xác nhận đăng ký, mã đăng nhập, đặt lại mật khẩu, đổi email, mời). Các thư của hệ thống trong tài liệu này đi đường gửi riêng của dự án, không dùng các thư mặc định đó. Nếu cơ chế chặn bị tắt, dự án chấp nhận rủi ro còn lại và không coi đây là điều kiện chặn phát hành: người ngoài có thể kích hoạt thư mẫu tới hộp thư của nhóm và tạo tài khoản rác, nhưng không có quyền gì của chủ quán.
+
+#### Scenario: Thư mặc định không mang quyền chủ
+
+- **WHEN** một người kích hoạt được thư mặc định của Supabase Auth
+- **THEN** nội dung hay mã trong thư đó không dùng được cho bất kỳ thao tác nào của chủ quán
+
+## Các yêu cầu đã bỏ so với bản trước
+
+Ghi lại để biết vì sao tài liệu đổi; đây không phải yêu cầu của hệ thống.
+
+- **Đăng nhập chủ bằng mã một lần:** chủ dự án chốt ngày 2026-11-03: đăng nhập thường bằng PIN POS; mã qua email chỉ dùng cho từng thao tác. Email chủ vẫn là căn cứ xác định sở hữu và hạn mức (REQ-OWNER-05).
+- **Phiên đăng nhập của chủ có hạn 7 ngày:** không còn phiên web của chủ (quyết định 23).
+- **Mặt web dành cho chủ:** các thao tác của chủ chuyển vào POS (quyết định 24).
+- **Giới hạn 3 lần tạo cửa hàng mỗi ngày:** bỏ theo quyết định 14.
