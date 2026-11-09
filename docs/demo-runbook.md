@@ -1,30 +1,51 @@
 # Demo Runbook
 
-> Cập nhật điều hướng 25/10/2026: Runbook thao tác được giữ để chuẩn bị demo. Với main711a22e, chọn role theo catalog; owner mới phải đổi PIN tạm trước POS. Chỉ chạy trên môi trường/fixture được giao; tạo quán/seed/thu tiền có ghi dữ liệu. Kết quả chạy cũ không chứng minh source mới; xem [testing](testing.md).
-
-
-> Cập nhật 08/11/2026: dời việc xem Báo cáo xuống bước 11, thêm lưu ý bộ lọc ở bước 6 và cách đối chiếu số đơn ở bước 11, theo câu trả lời cho Lâm ([hồ sơ](workflow/tasks/team-week05-answers-2026-11-08.md)). 20 góp ý cách viết của Lâm và ảnh minh họa sẽ được đưa vào sau.
+> Cập nhật 09/11/2026: viết lại bước 1–11 theo 20 góp ý cách viết của Lâm (HD-01…HD-20) và câu trả lời ngày 08/11/2026 ([hồ sơ](workflow/tasks/team-week05-answers-2026-11-08.md)). Tên nút và tên màn lấy đúng chữ trên app ở main `f2b486e`. Các bước viết lại theo kết quả Lâm chạy thử trên bản demo dữ liệu giả ngày 06/11/2026, khi mã `src/` giống main hiện tại; bản viết lại này chưa được chạy lại nguyên văn. Ảnh minh họa thêm sau khi sửa giao diện ([CX-06](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý)). Ghi chú cho người chuẩn bị môi trường nằm ở mục [Ghi Chú Kỹ Thuật](#ghi-chú-kỹ-thuật).
 
 Runbook này dùng để chuẩn bị demo/bảo vệ phase tiểu luận.
 
 ## Flow Demo Chính
 
-1. Mở app ở landscape.
-2. Nếu chưa paired, tạo store mới hoặc ghép Store Key.
-3. Vào passcode, chọn nhân viên có quyền cần cho demo và nhập PIN.
-4. Ở floor view, chọn khu/tầng, mở một bàn trống.
-5. Tạo order dine-in: chọn món, option/topping, chỉnh số lượng/ghi chú, gửi đơn.
-6. Quay lại floor, thấy bàn chuyển sang đang phục vụ. Nếu đang lọc `Trống`, bấm `Tất cả` để thấy lại bàn.
-7. Mở lại order, chuyển sang payment.
-8. **Demo instant pay (điểm nhấn):** bỏ `Chọn tất cả`, tick 1-2 món (chỉnh số lượng bằng nút `+`), hoàn tất → preview bill riêng mở khi có initial grant và bật checkbox in (kế thừa số đơn gốc), đơn gốc còn lại trên bàn với số mới. Chưa mở Báo cáo ở bước này; xem ở bước 11.
-9. Chủ động chọn phần còn lại sau split (selection lúc này rỗng), rồi nhập tiền khách đưa, kiểm tra trạng thái thiếu/đủ tiền, hoàn tất thanh toán.
-10. Xem receipt preview, quay lại floor thấy bàn trống.
-11. Sau khi trả xong cả hai phần, mở Báo cáo và Lịch sử đơn: doanh thu tăng đúng tổng hai lần trả, có 2 đơn độc lập từ cùng một bàn. Hóa đơn in số đơn thật theo thứ tự thanh toán (ví dụ #27, #28); Lịch sử hiện số thứ tự dòng (ví dụ #2, #3), nên đối chiếu theo bàn, số tiền và giờ thanh toán. Khi làm xong việc CX-04, Lịch sử sẽ hiện đúng số trên hóa đơn.
+1. Mở app ở chế độ màn hình ngang.
+2. Nếu máy chưa kết nối với quán: chọn **Đã có quán**, nhập Store Key do người phụ trách demo cung cấp, rồi bấm **Ghép thiết bị**. Muốn tạo quán mới thì chọn **Tạo quán mới**.
+3. Ở màn chọn nhân viên, chọn **Chủ quán** để có đủ quyền cho các bước dưới, nhập PIN do người phụ trách demo cung cấp, rồi bấm **Mở khoá**. Bước 11 cần quyền xem Báo cáo: Chủ quán và Quản lý có, Thu ngân không có.
+4. Ở **Sơ đồ bàn**, bấm tên khu ở dải trên (ví dụ **Tầng trệt**), rồi bấm một bàn đang trống (ví dụ **B01**). Màn **Gọi món** của bàn đó mở ra. Có thể bấm **Trống** để chỉ hiện bàn trống; nếu dùng bộ lọc này, xem lưu ý ở bước 6.
+5. Gọi món:
+   1. Chọn danh mục ở cột trái, ví dụ **Cà phê** hoặc **Trà & trà sữa**. Không thấy món thì gõ tên vào ô **Tìm món**. Bấm **+ Thêm** trên thẻ món.
+   2. Món ghi **Có tùy chọn** sẽ mở cửa sổ để chọn size, lượng đá hoặc topping; chọn xong bấm **Thêm vào đơn**. Món không có tùy chọn vào **Giỏ hàng** ngay.
+   3. Trong **Giỏ hàng** bên phải, bấm **+** hoặc **−** để tăng giảm số lượng. Khách có yêu cầu riêng thì bấm **Ghi chú** và gõ nội dung, ví dụ "ít ngọt"; không cần bấm lưu.
+   4. Kiểm tra lại các món rồi bấm **In/Gửi đơn**. Cửa sổ **Phiếu gửi bếp** hiện ra; bấm **Đóng** để tiếp tục, hoặc **In** nếu cần in phiếu.
+6. App tự quay về **Sơ đồ bàn**. Nếu đang lọc **Trống**, bấm **Tất cả** để thấy lại bàn vừa gọi, vì hiện bộ lọc ẩn các bàn không khớp ([CX-01](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý) sẽ đổi thành làm sáng bàn khớp). Kiểm tra bàn vừa gọi đã chuyển sang đang phục vụ, ghi tổng tiền (ví dụ **B01 145K**) và có trong danh sách **Đơn đang mở** bên phải.
+7. Bấm lại bàn đó, hoặc bấm **Mở đơn hàng** ở danh sách **Đơn đang mở**, rồi bấm **Thanh toán**. Màn **Thanh toán đơn hàng** mở ra, đã chọn sẵn toàn bộ món.
+8. **Thanh toán một phần món (tách đơn), điểm nhấn của demo:** khách trả trước một số món, các món còn lại vẫn giữ trên bàn.
+   1. Bỏ chọn **Chọn tất cả**, rồi đánh dấu những món khách muốn trả.
+   2. Món có số lượng từ 2 trở lên hiện số đã chọn trên số trong đơn, ví dụ **1/2**. Bấm **+** để chọn thêm; khi đã chọn đủ, bấm tiếp sẽ quay về 1.
+   3. Ô **Tiền khách đưa** đã điền sẵn đúng số cần trả. Kiểm tra rồi bấm **Thanh toán món đã chọn (…)**.
+   4. Nếu ô **In hóa đơn sau khi thanh toán** đang bật, cửa sổ **Hoá đơn thanh toán** hiện ra cho phần vừa trả, mang số đơn cũ (ví dụ **#27**); bấm **Đóng**. Nếu ô này tắt thì không hiện hóa đơn.
+   5. Màn thanh toán vẫn mở cho phần còn lại. Phần này đã thành một đơn mới mang số mới (ví dụ **#28**), chưa món nào được chọn.
+
+   Chưa mở Báo cáo ở bước này: khi màn thanh toán đang mở thì không bấm được **Báo cáo**. Xem ở bước 11.
+9. Trả phần còn lại, vẫn ở màn thanh toán:
+   1. Bấm **Chọn tất cả** để chọn các món còn lại. Nếu đã rời màn thanh toán rồi mở lại, **Chọn tất cả** đã bật sẵn; kiểm tra lại trước khi trả.
+   2. Ô **Tiền khách đưa** đã điền sẵn đúng số phải trả. Muốn nhập số khác: bấm vào ô và gõ trực tiếp; hoặc bấm nút ⌫ ở hàng cuối bàn phím số để xóa rồi bấm số (ở màn 1366×768 có thể phải cuộn mới thấy nút này, màn 1920×1080 thấy ngay); hoặc dùng các nút nhanh **Đúng tiền**, **+20k**, **+50k**, **200k**, **500k**. Hiện khi đang thiếu tiền, hàng nút nhanh bị thay bằng dòng "Còn thiếu…" ([CX-02](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý) sẽ sửa).
+   3. Nhập thiếu tiền thì app báo số tiền còn thiếu và không cho hoàn tất. Nhập đủ hoặc dư thì app cho thanh toán và hiện **Tiền trả lại khách** nếu có.
+   4. Bấm **Hoàn tất thanh toán (…)**.
+10. Nếu ô **In hóa đơn sau khi thanh toán** đang bật, cửa sổ **Hoá đơn thanh toán** hiện ra; bấm **Đóng**. Nếu ô này tắt, màn thanh toán đóng ngay. App tự quay về **Sơ đồ bàn**; kiểm tra bàn vừa thanh toán đã trở lại trống và không còn trong **Đơn đang mở**.
+11. Kiểm tra kết quả bằng vai có quyền xem Lịch sử đơn và Báo cáo, ví dụ Chủ quán:
+    1. Mở **Lịch sử đơn**: thấy 2 đơn độc lập của cùng một bàn, đều **Đã thanh toán** (ví dụ 70.000đ và 75.000đ). Hóa đơn in số đơn theo thứ tự thanh toán (ví dụ #27, #28), còn Lịch sử hiện ghi số thứ tự dòng (ví dụ #2, #3), nên đối chiếu theo bàn, số tiền và giờ thanh toán. Khi làm xong [CX-04](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý), Lịch sử sẽ hiện đúng số trên hóa đơn, chia nhóm theo ngày.
+    2. Mở **Báo cáo**: doanh thu hôm nay tăng đúng tổng hai lần trả. Hàng **Món bán chạy** hiện ghi doanh thu cả ngày chứ không phải doanh thu của món; [CX-05](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý) sẽ sửa.
 12. **Demo hủy đơn đã thanh toán:** đăng nhập nhân viên có `orderHistory.view` và `order.voidPaid` (owner/manager theo defaults catalog), chọn một đơn paid trong Lịch sử, bấm `Hủy đơn`, chọn lý do (nếu chọn `Lý do khác` phải nhập ghi chú), xác nhận badge `Đã hủy`, người/thời điểm/lý do hủy và nút in lại bị khóa.
 13. Mở Report: xác nhận đơn vừa hủy bị loại khỏi doanh thu/số đơn paid, đồng thời `Đơn đã huỷ` và `Tiền hủy` tăng đúng để đối soát.
 14. **Demo phân quyền per-employee:** dùng owner hoặc actor có `employee.permission.edit` mở Nhân viên, chọn đúng nhân viên fixture thu ngân, bỏ quyền `payment.take` và lưu. Ở phiên nhân viên đích, chờ authority được xác minh theo lifecycle rồi kiểm vẫn tạo/sửa đơn nhưng không thực hiện được thanh toán. Khôi phục quyền bằng actor có quyền sửa trong fixture nếu kịch bản yêu cầu; không sửa quyền cửa hàng thật để demo.
 15. Demo quản trị với quyền tương ứng: `menu.manage`, `floor.manage`, `settings.manage`.
 16. Owner có `data.clearDemo` demo clear dữ liệu mẫu khi không còn order mở; nếu còn order mở thì giải thích trạng thái blocked.
+
+## Ghi Chú Kỹ Thuật
+
+- Các hành vi ghi ở bước 1–11 đã thấy khi Lâm chạy thử bản demo dữ liệu giả (`VITE_DATA_MODE=mock`) ngày 06/11/2026, màn 1366×768 và 1920×1080; bản viết lại chưa được chạy lại nguyên văn. Chưa kiểm với backend thật, chưa in vật lý, chưa thử nhánh **Tạo quán mới** và nút **In**.
+- Chọn vai theo catalog quyền; chủ quán mới phải đổi PIN tạm trước khi vào POS.
+- Chỉ chạy trên môi trường hoặc fixture được giao; tạo quán, seed và thu tiền đều ghi dữ liệu.
+- Kết quả chạy cũ không chứng minh source mới; xem [testing](testing.md).
 
 ## Checklist Trước Demo
 
