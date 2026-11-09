@@ -23,6 +23,12 @@ context: |
   Đồng bộ đa thiết bị hiện là online-only qua Supabase Realtime.
 
   Quy ước viết artifact:
+  - Đọc AGENTS.md, openspec/SPEC-STANDARD.md và docs/workflow/README.md từ ref `docs`
+    đã xác minh trước task; đọc `local-notes/README.md` trong common Git directory nếu có;
+    dùng docs/workflow/templates.md và bàn giao đúng task để tiếp tục.
+  - Hỏi theo nhóm có bối cảnh/phương án/đánh đổi/khuyến nghị/tác động của việc chốt,
+    không đặt trần tổng.
+    Ghi quyết định và lý do trên docs; chỉ dừng phần phụ thuộc câu hỏi quan trọng.
   - NỘI DUNG viết bằng TIẾNG VIỆT.
   - GIỮ NGUYÊN tiếng Anh: heading cấu trúc của schema (Why, What Changes,
     Capabilities, New Capabilities, Modified Capabilities, Impact), keyword
@@ -52,13 +58,16 @@ rules:
     - "Nội dung tiếng Việt."
     - "Chia task tối đa khoảng 2 giờ mỗi mục."
     - "Phải có mục cập nhật tài liệu nhánh `docs` và mục kiểm thử tương ứng."
+    - "Mỗi task ghi đầu vào, đầu ra, dependency, tiêu chí nghiệm thu, phạm vi đã được giao; cập nhật bàn giao và bằng chứng gắn source/môi trường theo docs/workflow/README.md."
+    - "Trước bàn giao hoàn tất phải có review độc lập bằng subagent: ít nhất 1, task nhạy cảm ít nhất 2; mọi reviewer bắt buộc APPROVE candidate cuối theo docs/workflow/README.md#review-doc-lap. Không lấy tự review hoặc đa số thay thế."
 
 operations:
   apply:
     guidance:
-      - "TRƯỚC KHI viết code hoặc artifact chi tiết, phải đọc section `## Câu hỏi phải chốt trước khi làm` trong proposal và hỏi người dùng toàn bộ câu hỏi chưa được trả lời. Không bắt đầu implement khi còn câu hỏi bỏ ngỏ ảnh hưởng phạm vi hoặc hành vi."
+      - "Đọc proposal (mục `## Câu hỏi phải chốt trước khi làm`) và bàn giao hiện hành. Chốt các câu hỏi quan trọng của phạm vi sẽ làm trước artifact chi tiết/code phụ thuộc; có thể cập nhật proposal khảo sát trong lúc hỏi. Câu hỏi thuộc phần hoãn không chặn phần độc lập, nhưng phải ghi ranh giới và dependency. Không tự đổi nghiệp vụ hoặc nghiệm thu."
       - "Ghi câu trả lời của người dùng ngược lại vào proposal, dưới mục Quyết định đã chốt, trước khi tiếp tục."
-      - "Code nằm ở worktree `D:\\Workspace\\pos-cafe` (nhánh `main`); artifact OpenSpec nằm ở `D:\\Workspace\\pos-cafe-docs` (nhánh `docs`)."
+      - "Kiểm thử từng phần; kết quả và nguồn ủy quyền phải được ghi đúng. Không nới gate của feature, không coi mock là backend thật, không suy quyền deploy từ quyền code; tránh hỏi lại điều đã được cho phép và còn hiệu lực."
+      - "Code nằm ở nhánh `main` (checkout `D:\\Workspace\\pos-cafe`); artifact OpenSpec nằm ở nhánh `docs`. Không còn worktree docs thường trực từ 25/10/2026: đọc bản đã commit qua `git -C D:/Workspace/pos-cafe show docs:<path>` và xác minh ref với remote."
   archive:
     guidance:
       - "Cập nhật `docs/requirements.md`, `docs/features.md` và `pos-cafe-context.md` cho khớp trạng thái mới trước khi archive."
