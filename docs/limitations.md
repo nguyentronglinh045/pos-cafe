@@ -55,12 +55,12 @@ Landscape-first; portrait hiển thị hướng dẫn xoay. Không dùng số bu
 
 ## Việc chưa xử lý từ kiểm thử demo tuần 5
 
-Ngày 08/11/2026 chủ dự án chốt các thay đổi dưới đây sau khi Ngọc và Lâm chạy thử bản demo, trừ CX-04 còn đang cân nhắc. Chưa làm, dự kiến phase tới. Hiện trạng, phương án và tài liệu phải sửa khi làm ở [hồ sơ 08/11](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý).
+Ngày 08/11/2026 chủ dự án chốt các thay đổi dưới đây sau khi Ngọc và Lâm chạy thử bản demo; CX-04 chốt ngày 09/11/2026. Chưa làm, dự kiến phase tới. Hiện trạng, phương án và tài liệu phải sửa khi làm ở [hồ sơ 08/11](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý).
 
 - CX-01: bộ lọc sơ đồ làm sáng bàn khớp, không ẩn bàn khác.
 - CX-02: luôn hiện nút tiền nhanh, bỏ dòng cảnh báo thay chỗ hàng nút; thiếu tiền thì tô đỏ ô nhập; thêm nút x xóa về 0.
 - CX-03: với đơn đã gửi, nút bỏ thay đổi ghi "Bỏ thay đổi".
-- CX-04: Lịch sử đơn bỏ số thứ tự dòng; cách đánh số mới chưa chốt.
+- CX-04: Lịch sử đơn hiện số đơn do database cấp như hóa đơn, chia nhóm theo ngày kinh doanh.
 - CX-05: Món bán chạy bỏ số tiền đang lấy từ doanh thu cả ngày.
 - CX-06: thêm ảnh vào hướng dẫn demo sau khi CX-01…05 xong.
 - CX-07: bản trên Vercel là bản 17–18/10, cần deploy lại từ main.

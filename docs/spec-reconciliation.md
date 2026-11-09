@@ -36,7 +36,7 @@ Ngày 08/11/2026 chủ dự án trả lời câu hỏi của Ngọc và Lâm. Ch
 | [floor-operations](#floor-operations) | Spec ghi bộ lọc chỉ làm nổi bật bàn khớp, app đang ẩn bàn không khớp. Spec ghi ô bàn hiện số đơn, app chỉ hiện tổng tiền | Giữ spec cho bộ lọc, sửa app ở CX-01. Đã sửa spec: số đơn xem ở danh sách đơn đang mở |
 | [order-management](#order-management) | Đơn mang đi xuất hiện trong danh sách khi nào | Đã làm rõ spec: sau lần gửi món đầu |
 | [payment](#payment) | Thiếu tiền thì app ẩn hàng nút nhanh | Đổi ở CX-02, sửa spec khi làm |
-| [order-history](#order-history) | Lịch sử dùng số thứ tự dòng, khác số trên hóa đơn | Bỏ số thứ tự dòng; cách đánh số mới chưa chốt (CX-04) |
+| [order-history](#order-history) | Lịch sử dùng số thứ tự dòng, khác số trên hóa đơn | Đổi sang số đơn do database cấp, chia nhóm theo ngày (CX-04); sửa requirement số thứ tự hiển thị khi làm |
 | [reporting](#reporting) | Món bán chạy lấy doanh thu cả ngày | Đổi ở CX-05 |
 
 ## Phần còn thiếu và phân loại
