@@ -62,9 +62,9 @@ Ngày 08/11/2026 chủ dự án chốt các thay đổi dưới đây sau khi Ng
 - CX-03: với đơn đã gửi, nút bỏ thay đổi ghi "Bỏ thay đổi".
 - CX-04: Lịch sử đơn hiện số đơn do database cấp như hóa đơn, chia nhóm theo ngày kinh doanh.
 - CX-05: Món bán chạy bỏ số tiền đang lấy từ doanh thu cả ngày.
-- CX-06: thêm ảnh vào hướng dẫn demo sau khi CX-01…05 xong.
+- CX-06: thêm ảnh vào hướng dẫn demo sau khi CX-01…05 xong; 20 góp ý cách viết của Lâm đã vào runbook ngày 09/11/2026.
 - CX-07: bản trên Vercel là bản 17–18/10, cần deploy lại từ main.
-- CX-08: đưa minh chứng tuần 4, 5 của Lâm và Ngọc lên repo sau khi review.
+- CX-08: Lâm và Ngọc tự đưa minh chứng tuần 4, 5 lên repo qua PR: script vào `main`, phần còn lại vào `docs`; Linh review rồi merge.
 - CX-09: cảnh báo trước khi tải lại trang lúc đơn còn món chưa gửi.
 
 Thứ tự xử lý theo [roadmap](roadmap.md); trang này không tự mở lại scope hoặc cho phép deploy.
