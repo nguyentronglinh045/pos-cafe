@@ -27,6 +27,18 @@ Ngày 25/10/2026, bổ sung R06 và quyết định chủ dự án ngày26/10/20
 | <a id="store-onboarding"></a>[store-onboarding](../openspec/specs/store-onboarding/spec.md) | Admin PIN/seed legacy được bổ sung owner bootstrap, restricted PIN, context retry và seed receipts. Email thật/chủ sở hữu chưa hiện thực. | [Permission onboarding](../openspec/changes/redesign-permission-model/specs/store-onboarding/spec.md) + [PIN delta](../openspec/changes/force-default-pin-change/specs/employee-session/spec.md). [Owner proposal](../openspec/changes/add-owner-account-and-store-provisioning/proposal.md) không thay runtime bằng việc đã có design. |
 | <a id="store-settings"></a>[store-settings](../openspec/specs/store-settings/spec.md) | Display/settings tách purpose; clearDemo owner-only, giữ dữ liệu tự tạo/tài chính/audit. Seed từ Settings trong baseline khác workflow seed ban đầu hiện hành. | [Permission Q3 và delta](../openspec/changes/redesign-permission-model/proposal.md#quyết-định-đã-chốt), PIN seed workflow. [R06-A/B](#r06-decisions): đã chấp nhận retry tại thông báo chung, reseed sau xóa được hoãn; giữ yêu cầu cũ để truy vết, không nhận đã đáp ứng. QR local preview vẫn không phải processing. |
 
+## Lệch phát hiện khi chạy thử demo tuần 5
+
+Ngày 08/11/2026 chủ dự án trả lời câu hỏi của Ngọc và Lâm. Chi tiết ở [hồ sơ 08/11](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý).
+
+| Capability | Lệch hoặc làm rõ | Xử lý |
+| --- | --- | --- |
+| [floor-operations](#floor-operations) | Spec ghi bộ lọc chỉ làm nổi bật bàn khớp, app đang ẩn bàn không khớp. Spec ghi ô bàn hiện số đơn, app chỉ hiện tổng tiền | Giữ spec cho bộ lọc, sửa app ở CX-01. Đã sửa spec: số đơn xem ở danh sách đơn đang mở |
+| [order-management](#order-management) | Đơn mang đi xuất hiện trong danh sách khi nào | Đã làm rõ spec: sau lần gửi món đầu |
+| [payment](#payment) | Thiếu tiền thì app ẩn hàng nút nhanh | Đổi ở CX-02, sửa spec khi làm |
+| [order-history](#order-history) | Lịch sử dùng số thứ tự dòng, khác số trên hóa đơn | Đổi sang số đơn do database cấp, chia nhóm theo ngày (CX-04); sửa requirement số thứ tự hiển thị khi làm |
+| [reporting](#reporting) | Món bán chạy lấy doanh thu cả ngày | Đổi ở CX-05 |
+
 ## Phần còn thiếu và phân loại
 
 | Mã / loại | Kết quả đối chiếu | Xử lý đã làm / bước còn lại |

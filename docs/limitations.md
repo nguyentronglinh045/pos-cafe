@@ -53,4 +53,18 @@ Chưa có gộp/chuyển bàn, kho/nguyên liệu, khách hàng/loyalty, chấm 
 
 Landscape-first; portrait hiển thị hướng dẫn xoay. Không dùng số bundle/độ phủ tháng 8 làm số đo source tháng 10. Dirty-exit Employees Drawer là điểm cần rà theo kế hoạch NC-07, chưa coi mọi màn đã đồng nhất. Hiệu năng dài hạn, tải đa thiết bị và ngân sách dịch vụ cần phép đo riêng trước tối ưu. [Kế hoạch chuẩn hóa](workflow/tasks/post-integration-standardization-plan-2026-10-25.md).
 
+## Việc chưa xử lý từ kiểm thử demo tuần 5
+
+Ngày 08/11/2026 chủ dự án chốt các thay đổi dưới đây sau khi Ngọc và Lâm chạy thử bản demo; CX-04 chốt ngày 09/11/2026. Chưa làm, dự kiến phase tới. Hiện trạng, phương án và tài liệu phải sửa khi làm ở [hồ sơ 08/11](workflow/tasks/team-week05-answers-2026-11-08.md#việc-chưa-xử-lý).
+
+- CX-01: bộ lọc sơ đồ làm sáng bàn khớp, không ẩn bàn khác.
+- CX-02: luôn hiện nút tiền nhanh, bỏ dòng cảnh báo thay chỗ hàng nút; thiếu tiền thì tô đỏ ô nhập; thêm nút x xóa về 0.
+- CX-03: với đơn đã gửi, nút bỏ thay đổi ghi "Bỏ thay đổi".
+- CX-04: Lịch sử đơn hiện số đơn do database cấp như hóa đơn, chia nhóm theo ngày kinh doanh.
+- CX-05: Món bán chạy bỏ số tiền đang lấy từ doanh thu cả ngày.
+- CX-06: thêm ảnh vào hướng dẫn demo sau khi CX-01…05 xong.
+- CX-07: bản trên Vercel là bản 17–18/10, cần deploy lại từ main.
+- CX-08: đưa minh chứng tuần 4, 5 của Lâm và Ngọc lên repo sau khi review.
+- CX-09: cảnh báo trước khi tải lại trang lúc đơn còn món chưa gửi.
+
 Thứ tự xử lý theo [roadmap](roadmap.md); trang này không tự mở lại scope hoặc cho phép deploy.

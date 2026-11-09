@@ -7,6 +7,8 @@ Bản đồ màn theo `main@711a22e`, đối chiếu 25/10/2026. Quyền và d�
 
 Nguồn chung: [App.tsx:73](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/App.tsx#L73), [PasscodeScreen:42](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/screens/PasscodeScreen.tsx#L42), [registry:22](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/shell/AppShell.tsx#L22), [quyền mở màn:17](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/permissionUi.ts#L17).
 
+**Quy tắc chung về quyền** (chốt 08/11/2026): thiếu quyền làm việc gì thì nút hoặc lối vào dẫn tới việc đó phải bị ẩn hoặc vô hiệu hóa, không cho truy cập; server vẫn kiểm lại quyền. Chi tiết và bảng tra ở [hồ sơ 08/11](workflow/tasks/team-week05-answers-2026-11-08.md#nút-theo-quyền).
+
 ## 1. Landing
 
 Chọn ghép quán hoặc tạo quán. Đây là pre-login, chưa có authority nhân viên.

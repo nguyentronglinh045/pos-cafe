@@ -8,7 +8,7 @@
 | B02-04 | Giữ đúng saved+ → thêm dòng currentquote, saved−/new± → clamp0…999; ghi chú từng dòng, sourceItemId/options/snapshot giá và calculateCartTotal. | Saved+ không tăng dòng snapshot cũ, thêm dòng giá/options hiện hành. Saved0 còn trong draft, cart ẩn dòng0; giá cũ không bị thay. |
 | B02-05 | Giữ primaryAction, permission, disabled/blockers, submit/recovery/preview/payment transition. | Clean mở payment; dirty gửi; thiếu quyền hoặc stale/price/write blocked không được ghi. |
 | B02-06 | Giữ loading/error/retry/empty/paid/void và notices, không giấu lỗi để giống ảnh. | Query fail có Thử lại, closed có Đơn đã được cập nhật và CTA disabled. |
-| B02-07 | Giữ dirty exit Giữ/Bỏ nháp; bảo toàn pending-navigation/write coordinator. | Đóng dirty → Bỏ đơn chưa gửi?; Tiếp tục chỉnh sửa giữ draft. |
+| B02-07 | Giữ dirty exit Giữ/Bỏ nháp; bảo toàn pending-navigation/write coordinator. | Đóng dirty → Bỏ đơn chưa gửi?; Tiếp tục chỉnh sửa giữ draft. Bỏ = về bản đã lưu gần nhất trên server: đơn mới mất hẳn, đơn đã gửi về bản mới nhất (cập nhật 08/11/2026). Với đơn đã gửi, chữ nút sẽ đổi thành "Bỏ thay đổi", chưa làm. |
 | B02-08 | Dùng được mọi viewport ngang≥568×320; menu/cart/categories scroll riêng, controls44 và focus/touch. | Matrix23viewport, breakpoint±1, sweep và long/list/qty biên theo contract. |
 | B02-09 | Dùng chung canonical Palette A JSON→CSS/Tailwind/MUI và Be Vietnam Pro local; không hardcode màu component. | Đổi token chung làm CSS/Tailwind/MUI portal đổi cùng lúc; B01/B02 không có palette tách riêng. |
 | B02-10 | Gate/reference/source binding và independent review theo workflow; không tự baseline/merge/deploy. | Hai fidelity cases đạt thresholds đã duyệt, audit chạy/xem/phân loại, mỗi gate có snapshot/log. |
