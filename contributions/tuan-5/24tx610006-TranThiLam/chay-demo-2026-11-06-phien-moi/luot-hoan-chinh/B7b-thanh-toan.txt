@@ -1,0 +1,160 @@
+POS Café
+
+POS Demo
+
+Không gian bán hàng
+Sơ đồ bàn
+Tra cứu thao tác
+Bán mang đi
+Lịch sử đơn
+Thực đơn
+Nhân viên
+Sơ đồ cửa hàng
+Báo cáo
+Cấu hình thanh toán
+Cài đặt
+C
+Chủ quán
+Chủ quán
+Khoá
+POS Demo
+›
+Vận hành bán hàng
+Tự động cập nhật
+Sơ đồ bàn
+
+Chọn bàn để xem và quản lý đơn hàng.
+
+Tất cả
+Trống
+Đang phục vụ
+Tầng trệt
+8
+Lầu 1
+6
+Tầng trệt
+34 chỗ ngồi
+63% sử dụng
+B01
+145K
+B02
+125K
+B03
+B04
+B05
+86K
+B06
+B07
+B08
+Chọn bàn để mở giao diện gọi món
+8/8 bàn
+Đơn đang mở
+4
+
+TẠI BÀN · 3
+
+B02
+#24
+Đang phục vụ
+125.000đ
+Mở đơn hàng →
+B05
+#25
+Đang phục vụ
+86.000đ
+Mở đơn hàng →
+B01
+#27
+Đang phục vụ
+145.000đ
+Mở đơn hàng →
+
+MANG ĐI · 1
+
+Mang đi
+#26
+Đang phục vụ
+84.000đ
+Mở đơn hàng →
+Chọn một đơn để tiếp tục phục vụ.
+ Quay lại
+Thanh toán đơn hàng
+
+Bàn B01 · Đơn #27 · 4 món
+
+Hoàn tất thanh toán
+Chi tiết hóa đơn
+
+3 dòng món · 4 món trong đơn
+
+Bàn B01 · Khách lẻ
+Chọn tất cả
+4 món đã chọn
+Cà phê sữa
+
+Size M, Ít đá · Ghi chú: ít ngọt
+
+29.000 ₫ / món
+
+29.000 ₫
+
+1/1
+Trà sữa truyền thống
+
+Trân châu
+
+46.000 ₫ / món
+
+46.000 ₫
+
+1/1
+Americano
+35.000 ₫ / món
+
+70.000 ₫
+
+2/2
+Tổng đơn
+145.000 ₫
+Thanh toán lần này
+145.000 ₫
+ In tạm tính
+Phương thức thanh toán
+
+Chủ quán kiểm tra và nhập số tiền khách đưa
+
+Tiền mặt
+Đang chọn
+Thẻ
+Chưa bật
+Chuyển khoản
+Chưa bật
+QR
+Chưa bật
+Tiền khách đưa
+VND
+Đúng tiền
++20k
++50k
+200k
+500k
+Tiền trả lại khách
+145.000 ₫ − 145.000 ₫
+0 ₫
+7
+8
+9
+4
+5
+6
+1
+2
+3
+00
+0
+In hóa đơn sau khi thanh toán
+
+Chọn món và số lượng bên trái để thanh toán một phần.
+
+ Hoàn tất thanh toán (145.000 ₫)
+ Quay lại

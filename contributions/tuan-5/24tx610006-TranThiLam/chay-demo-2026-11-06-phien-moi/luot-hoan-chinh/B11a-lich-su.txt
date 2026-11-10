@@ -1,0 +1,147 @@
+POS Café
+
+POS Demo
+
+Không gian bán hàng
+Sơ đồ bàn
+Tra cứu thao tác
+Bán mang đi
+Lịch sử đơn
+Thực đơn
+Nhân viên
+Sơ đồ cửa hàng
+Báo cáo
+Cấu hình thanh toán
+Cài đặt
+C
+Chủ quán
+Chủ quán
+Khoá
+POS Demo
+›
+Vận hành bán hàng
+Tự động cập nhật
+Sơ đồ bàn
+
+Chọn bàn để xem và quản lý đơn hàng.
+
+Tất cả
+Trống
+Đang phục vụ
+Tầng trệt
+8
+Lầu 1
+6
+Tầng trệt
+34 chỗ ngồi
+50% sử dụng
+B01
+B02
+125K
+B03
+B04
+B05
+86K
+B06
+B07
+B08
+Chọn bàn để mở giao diện gọi món
+8/8 bàn
+Đơn đang mở
+3
+
+TẠI BÀN · 2
+
+B02
+#24
+Đang phục vụ
+125.000đ
+Mở đơn hàng →
+B05
+#25
+Đang phục vụ
+86.000đ
+Mở đơn hàng →
+
+MANG ĐI · 1
+
+Mang đi
+#26
+Đang phục vụ
+84.000đ
+Mở đơn hàng →
+Chọn một đơn để tiếp tục phục vụ.
+Đã thanh toán. Bàn đã trống.
+Lịch sử đơn
+
+Xem nhanh đơn đã thực hiện theo ngày, trạng thái và loại đơn
+
+Thời gian: Gần đây
+Tất cả
+Đã thanh toán
+Đã hủy
+Tất cả loại
+Tại bàn
+Mang đi
+Danh sách đơn
+
+Toàn bộ thời gian · mới nhất trước
+
+3/3
+#3
+Đã thanh toán
+B01
+·
+06/11/2026
+75.000đ
+Tại bàn
+#2
+Đã thanh toán
+B01
+·
+06/11/2026
+70.000đ
+Tại bàn
+#1
+Đã thanh toán
+L01
+·
+11/06/2026
+77.000đ
+Tại bàn
+Trước
+Trang 1/1
+Sau
+Chi tiết đơn #3
+
+B01 · 06/11/2026
+
+#3
+Đã thanh toán
+
+Ngày bán 06/11/2026 · Thanh toán 14:40 06/11/2026
+
+Khách hàng
+Khách lẻ
+Nhân viên thanh toán
+Chủ quán
+Phương thức
+Tiền mặt
+Danh sách món
+2 món
+x1
+Cà phê sữa
+Size M · Ít đá · ghi chú: ít ngọt
+29.000đ
+x1
+Trà sữa truyền thống
+Trân châu
+46.000đ
+Khách đưa
+100.000đ
+Tiền thừa
+25.000đ
+Tổng tiền
+75.000đ
+Hủy đơn
+ 
