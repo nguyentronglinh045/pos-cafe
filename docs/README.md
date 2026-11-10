@@ -1,6 +1,6 @@
 # Tài liệu POS Cafe
 
-Kho tri thức để AI tra cứu tính năng, thiết kế, quyết định và bằng chứng, kết hợp đối chiếu mã nguồn khi có implementation liên quan. Nội dung đồng thời là đầu vào để tổng hợp báo cáo sau này. [Mục đích và nguồn xác nhận](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-docs-01--ai-là-đối-tượng-khai-thác-trực-tiếp-chủ-yếu). **Main hiện tại: `052a7d1e156425ea82ed1c9cf978d7ef4d4f3571`, merge PR15 ngày27/10/2026.** [Delta refactor và bằng chứng merge](workflow/tasks/refactor-safety-2026-10-25/merge-20261027.md). Các hồ sơ25–26/10 ghim711a22e giữ nguồn lịch sử, không được đổi nhãn thành kiểm chứng mới. Git main đã tích hợp không chứng minh bản đang chạy ở cửa hàng thật.
+Kho tri thức để AI tra cứu tính năng, thiết kế, quyết định và bằng chứng, kết hợp đối chiếu mã nguồn khi có implementation liên quan. Nội dung đồng thời là đầu vào để tổng hợp báo cáo sau này. [Mục đích và nguồn xác nhận](workflow/tasks/docs-knowledge-clarification-2026-10-25.md#dec-docs-01--ai-là-đối-tượng-khai-thác-trực-tiếp-chủ-yếu). [Nhánh main hiện tại](https://github.com/nguyentronglinh045/pos-cafe/tree/main). **Mốc đối chiếu của đợt refactor ngày 27/10/2026 là `052a7d1` (PR #15).** [Delta refactor và bằng chứng merge](workflow/tasks/refactor-safety-2026-10-25/merge-20261027.md). Các hồ sơ25–26/10 ghim711a22e giữ nguồn lịch sử, không được đổi nhãn thành kiểm chứng mới. Git main đã tích hợp không chứng minh bản đang chạy ở cửa hàng thật.
 
 [Rà soát theo 12 mục tiêu tốt nghiệp — 25/10/2026](workflow/tasks/docs-thesis-audit-2026-10-25.md): hiện trạng, khoảng thiếu, lỗi tài liệu và thứ tự chỉnh lý đề xuất; chưa là nghiệm thu sản phẩm.
 
@@ -36,7 +36,7 @@ Kho tri thức để AI tra cứu tính năng, thiết kế, quyết định và
 
 ## Đọc đúng trạng thái
 
-- **Đã tích hợp:** có trong source main nêu trên. Code chứng minh cấu trúc/hành vi được hiện thực, không tự chứng minh triển khai hoặc nghiệm thu.
+- **Đã tích hợp:** có trong source `main` tại SHA được ghi ở hồ sơ tương ứng. Code chứng minh cấu trúc/hành vi được hiện thực, không tự chứng minh triển khai hoặc nghiệm thu.
 - **Đã kiểm chứng:** có kết quả gắn source, lệnh, môi trường và phạm vi cụ thể tại [testing](testing.md).
 - **Đã nghiệm thu:** cần quyết định chấp nhận đúng phạm vi; không suy từ merge hay một bộ test xanh.
 - **Đã phát hành:** cần version và môi trường đích được xác minh riêng. Backend acceptance, migration và live activation của đợt phân quyền/UI vẫn HOLD.

@@ -1,11 +1,11 @@
 # Trả lời câu hỏi kiểm thử tuần 5 và việc chưa xử lý — 08/11/2026
 
-Chủ dự án (Linh) trả lời các câu hỏi phát sinh khi Ngọc và Lâm chạy thử bản demo trong tuần 5. Hồ sơ này ghi quyết định, quy tắc áp dụng ngay cho tài liệu và danh sách việc chưa xử lý. **Chưa sửa code.** Các thay đổi giao diện dưới đây dự kiến làm ở phase tới.
+Chủ dự án (Linh) trả lời các câu hỏi phát sinh khi Ngọc và Lâm chạy thử bản demo trong tuần 5. Hồ sơ này ghi quyết định, quy tắc áp dụng ngay cho tài liệu và danh sách việc chưa xử lý. Các thay đổi giao diện bên dưới thuộc phần việc đã chốt sau lượt demo. Trạng thái lưu minh chứng được cập nhật riêng ở [CX-08](#cx-08).
 
 ## Nguồn câu hỏi
 
-- Ngọc chạy 8 ca N01 bản r03 (44 bước: 41 đúng, 2 lệch so với kịch bản, 1 chưa kết luận), câu hỏi Q-N01-1…8: [nhánh tuần 5 của Ngọc](https://github.com/nguyentronglinh045/pos-cafe/blob/eedc79b914d3b0aa6b5a7c17787239010c0d5462/N01/N01-kich-ban.md).
-- Lâm làm theo hướng dẫn demo ở hai luồng gọi món và thanh toán, 20 góp ý cách viết, câu hỏi H-Q1…4 và điểm Món bán chạy: [nhánh tuần 5 của Lâm](https://github.com/nguyentronglinh045/pos-cafe/blob/2e24c29c2ec08797acbe2099a3b289190de69e6a/README.md).
+- Ngọc chạy 8 ca N01 bản r03 (44 bước: 41 đúng, 2 lệch so với kịch bản, 1 chưa kết luận), câu hỏi Q-N01-1…8: [N01 r03 của Ngọc](../../implementation-log/student-week-4-5/tuan-5/24tx610002-VoVanNgoc/N01/N01-kich-ban.md).
+- Lâm làm theo hướng dẫn demo ở hai luồng gọi món và thanh toán, 20 góp ý cách viết, câu hỏi H-Q1…4 và điểm Món bán chạy: [hồ sơ tuần 5 của Lâm](../../implementation-log/student-week-4-5/tuan-5/24tx610006-TranThiLam/README.md).
 - Cả hai chạy bản demo trên máy với dữ liệu giả (`VITE_DATA_MODE=mock`), mã nguồn `src/` giống main `052a7d1`. Đây không phải nghiệm thu với backend thật.
 - Theo hồ sơ của hai bạn, các lượt chạy tự động do Claude Code thực hiện theo yêu cầu của từng bạn; Ngọc và Lâm đã xem ảnh và tự chạy tay lại một phần.
 - Hai lỗi số đơn ở Lịch sử và Món bán chạy cũng được giảng viên nêu trong nhận xét tuần 5, chủ dự án chuyển lại ngày 08/11/2026.
@@ -37,19 +37,23 @@ Tra nhanh các nút hay gặp ([permissionUi.ts:6-23](https://github.com/nguyent
 | Máy khác vừa sửa đơn này | Về bản mới nhất trên server, tức có cả phần máy khác vừa gửi |
 | Tải lại trang hoặc đóng tab | Hiện app không hỏi, phần chưa gửi mất luôn. Sẽ thêm cảnh báo trước khi tải lại hoặc đóng tab, xem [CX-09](#việc-chưa-xử-lý) |
 
-Chữ nút sẽ đổi theo loại đơn, xem [CX-03](#việc-chưa-xử-lý).
+Với ca N01-03 B5 trên bản demo r03, bấm **Bỏ đơn** sẽ đóng màn đơn. Khi mở lại, đơn #24 vẫn là 125.000đ vì phần thêm chưa gửi đã được bỏ. Đây là kết quả r03 đã ghi, được đối chiếu với bản trả lời của chủ dự án. Với đơn đã gửi, [CX-03](#việc-chưa-xử-lý) chỉ đổi nhãn nút thành **Bỏ thay đổi**.
 
 ### Các câu khác
 
 | Câu | Quyết định |
 | --- | --- |
 | Q-N01-1 đơn mang đi | Đơn mang đi chỉ được tạo trên server và xuất hiện trong danh sách "Đơn mang đi đang mở" khi gửi món lần đầu. Tạo đơn rồi thoát khi chưa gửi món thì không có đơn nào |
+| Q-N01-2 nút của Waiter | Với đơn đã gửi, Waiter thiếu `payment.take` chỉ thấy nút **Đóng**. Xem [quy tắc nút theo quyền](#nút-theo-quyền) |
+| Q-N01-3 bảng nút và quyền | Xem [bảng 15 quyền và cột Module/UI](../../../openspec/changes/redesign-permission-model/design.md) và [PERM-04](../../../openspec/changes/redesign-permission-model/specs/access-control/spec.md#requirement-ẩn-phần-tử-điều-khiển-khi-thiếu-quyền). Ví dụ, nút Thanh toán ở danh sách mang đi cần `payment.take`. Khi người dùng có quyền nhưng thiếu tiền, nút hoàn tất vẫn hiện ở trạng thái khóa kèm lý do |
+| Q-N01-4 bỏ nháp | [Hành vi đóng màn và quay về bản đã lưu](#bỏ-thay-đổi-chưa-gửi), kèm CX-03 và CX-09 |
 | Q-N01-5 số đơn trên bàn | "Số đơn" là số thứ tự đơn như #24, xem ở danh sách Đơn đang mở. Ô bàn chỉ ghi tên bàn và tổng tiền. Đã sửa [floor-operations](../../../openspec/specs/floor-operations/spec.md) |
 | Q-N01-6 nguồn kịch bản gọi món | Dùng [remake-b02](../../../openspec/changes/remake-b02/specs/order-workspace/spec.md) (B02-01…10) làm nguồn expected, vì bản này khớp giao diện hiện tại; không dùng bảng B02 cũ đã chuyển thành lịch sử |
+| Q-N01-7 nút nhanh khi thiếu tiền | N01-05 B4 giữ expected **Đúng tiền** đưa số tiền về 125.000đ trong fixture. Lượt r03 ghi lệch, chờ sửa [CX-02](#việc-chưa-xử-lý) |
+| Q-N01-8 lọc bàn | N01-01 B4 giữ expected làm nổi bật bàn khớp và vẫn hiển thị các bàn khác. Lượt r03 ghi lệch, chờ sửa [CX-01](#việc-chưa-xử-lý) |
 | H-Q1 hướng dẫn | "Hướng dẫn hiện có" là [demo-runbook](../../demo-runbook.md), mục Flow Demo Chính. 20 góp ý của Lâm dùng để sửa file này |
 | H-Q3 thứ tự Báo cáo | Xem Báo cáo ở bước 11, sau khi trả xong cả hai phần; đã sửa runbook |
 | H-Q4 ảnh hướng dẫn | Thêm ảnh trên nhánh docs, cạnh runbook, nhưng chụp sau khi làm xong CX-01…05 để ảnh khớp giao diện mới |
-| Minh chứng nhánh cá nhân | Sau khi review: script chạy được vào `main`, ảnh và phiếu kết quả vào `docs`, không để lẫn |
 
 ## Việc chưa xử lý
 
@@ -65,7 +69,13 @@ Chủ dự án đã chốt hướng làm cho tất cả các mục; chưa có co
 | CX-06 | Ảnh trong hướng dẫn demo (H-Q4) | 20 góp ý cách viết của Lâm đã đưa vào bước 1–11 của runbook ngày 09/11/2026; runbook chưa có ảnh | Chụp sau khi CX-01…05 xong, lưu trên nhánh docs cạnh runbook; phần này Lâm làm sau | demo-runbook |
 | CX-07 | Bản trên Vercel | Lần deploy thành công gần nhất là 17/10 (production) và 18/10 (preview), trước khi giao diện mới vào main ngày 25/10; hai lần deploy production sau đó lỗi; `vercel.json` tắt tự deploy | Deploy lại từ main. Xem nguyên nhân hai lần lỗi trước, hỏi lại chủ dự án trước khi chạy | testing hoặc limitations, ghi bản đang chạy |
 | CX-09 | Cảnh báo khi tải lại trang lúc còn món chưa gửi (Q-N01-4) | Trình duyệt chỉ hỏi trước khi tải lại ở màn tạo quán và màn kết quả tạo quán ([CreateStoreScreen.tsx:88](https://github.com/nguyentronglinh045/pos-cafe/blob/f2b486e8998dd5577f3e79eefe70b908da1e3d62/src/app/screens/CreateStoreScreen.tsx#L88), [App.tsx:38](https://github.com/nguyentronglinh045/pos-cafe/blob/f2b486e8998dd5577f3e79eefe70b908da1e3d62/src/app/App.tsx#L38)). Ở màn đơn, tải lại hoặc đóng tab làm mất phần chưa gửi mà không có cảnh báo | Khi còn thay đổi chưa gửi, trình duyệt hỏi xác nhận trước khi tải lại hoặc đóng tab | features mục Order |
-| CX-08 | Minh chứng tuần 4, 5 của Lâm và Ngọc | Đang ở nhánh cá nhân, chưa vào repo chung | Chốt 09/11/2026: mỗi bạn tự đưa lên bằng commit của mình, qua một PR vào `main` và một PR vào `docs`; Linh review rồi merge. Script `.mjs` vào `main`, thư mục `tests/team/<tuần>-<tên>-<việc>/`. Mọi file còn lại (ghi chú, ảnh, JSON, text) vào `docs`, thư mục `docs/workflow/evidence/<tuần>-<tên>-<việc>-<ngày>/`, với ngày là ngày commit cuối của nhánh tuần đó, ví dụ `week05-ngoc-n01-20261106/` | testing, bản đồ minh chứng |
+
+<a id="cx-08"></a>
+## CX-08 Minh chứng tuần 4–5
+
+**Đã lưu ngày 10/11/2026.** Cả bốn snapshot của Lâm và Ngọc, gồm các script dùng để tạo minh chứng, nằm trong [chỉ mục kiểm thử của nhóm](../../implementation-log/README.md#team-week-4-5) trên `docs`. [PR #23](https://github.com/nguyentronglinh045/pos-cafe/pull/23) đã gỡ bản sao từng nằm trên `main`.
+
+Phương án ngày 09/11 từng tách script sang `main` và phần minh chứng sang `docs`. Lần nhập thực tế lưu nguyên trạng các snapshot trên `docs`. Trạng thái chờ trả lời và kết quả r03 trong snapshot là ghi nhận tại ngày chạy.
 
 ## Giới hạn
 

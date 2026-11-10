@@ -64,7 +64,8 @@ Ngày 08/11/2026 chủ dự án chốt các thay đổi dưới đây sau khi Ng
 - CX-05: Món bán chạy bỏ số tiền đang lấy từ doanh thu cả ngày.
 - CX-06: thêm ảnh vào hướng dẫn demo sau khi CX-01…05 xong; 20 góp ý cách viết của Lâm đã vào runbook ngày 09/11/2026.
 - CX-07: bản trên Vercel là bản 17–18/10, cần deploy lại từ main.
-- CX-08: Lâm và Ngọc tự đưa minh chứng tuần 4, 5 lên repo qua PR: script vào `main`, phần còn lại vào `docs`; Linh review rồi merge.
 - CX-09: cảnh báo trước khi tải lại trang lúc đơn còn món chưa gửi.
+
+CX-08 đã hoàn tất việc lưu [minh chứng tuần 4–5 trên `docs`](workflow/tasks/team-week05-answers-2026-11-08.md#cx-08). Các thay đổi giao diện được theo dõi riêng ở danh sách trên.
 
 Thứ tự xử lý theo [roadmap](roadmap.md); trang này không tự mở lại scope hoặc cho phép deploy.
