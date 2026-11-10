@@ -1,0 +1,51 @@
+[
+  {
+    "caseId": "N01-02",
+    "title": "Gọi món — nhóm bắt buộc",
+    "steps": [
+      {
+        "id": "CB",
+        "expected": "Chuẩn bị dữ liệu: nhóm Size của Cà phê sữa là bắt buộc",
+        "observed": "Vai Chủ quán vào Thực đơn → Cà phê sữa → Sửa nhóm \"Size\" → bấm \"Không bắt buộc\" thành \"Bắt buộc chọn\" (đã đổi) → Lưu (nhãn \"Bắt buộc\" hiện ở nhóm: không) → Thoát. Sau đó khóa, đăng nhập lại vai Thu ngân.",
+        "status": "ĐÃ CHUẨN BỊ",
+        "shot": "N01-02/CB.png"
+      },
+      {
+        "id": "B1",
+        "expected": "Mở đơn 24 của Bàn 2",
+        "observed": "Đầu màn: \"Gọi món — Bàn B02Tầng trệt · Tại bànĐơn #24 · Đã gửiĐóngHủy đơn mởThan\"; tổng 125000đ.",
+        "status": "ĐÚNG",
+        "shot": "N01-02/B1.png"
+      },
+      {
+        "id": "B2",
+        "expected": "Americano vào giỏ ngay, không mở hộp thoại tùy chọn",
+        "observed": "Hộp thoại tùy chọn: không mở; số dòng giỏ 3 → 4; tổng 160000đ.",
+        "status": "ĐÚNG",
+        "shot": "N01-02/B2.png"
+      },
+      {
+        "id": "B3",
+        "expected": "Bấm Cà phê sữa, chưa chọn: hộp thoại mở, nút thêm bị khóa",
+        "observed": "Hộp thoại mở (\"Cà phê sữa29.000 ₫SizeChọn 1Bắt buộcSize MSize L+7.000 ₫ĐáChọn 1Ít đáKhông đáTạm tính29.00…\"); nút \"Thêm vào đơn\" bị khóa.",
+        "status": "ĐÚNG",
+        "shot": "N01-02/B3.png"
+      },
+      {
+        "id": "B4",
+        "expected": "Bấm Hủy: hộp thoại đóng, giỏ không đổi so với sau B2",
+        "observed": "Hộp thoại KHÔNG có nút chữ \"Hủy\"; đã dùng nút đóng (X, tên \"Đóng\"). Sau khi đóng: hộp thoại đã đóng; giỏ 4 dòng (sau B2: 4), tổng 160000đ.",
+        "status": "ĐÚNG (dùng nút Đóng thay cho Hủy)",
+        "shot": "N01-02/B4.png"
+      },
+      {
+        "id": "B5",
+        "expected": "Chọn giá trị hợp lệ: nút thêm mở khóa; dòng Cà phê sữa vào giỏ, hiện tùy chọn",
+        "observed": "Sau khi chọn \"Size M\": nút thêm mở khóa. Dòng cuối giỏ: \"Cà phê sữa29.000 ₫Phần gọi thêm29.000 ₫ / mónSize M−1+Ghi ch\".",
+        "status": "ĐÚNG",
+        "shot": "N01-02/B5.png"
+      }
+    ],
+    "pageErrors": []
+  }
+]
