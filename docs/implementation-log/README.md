@@ -15,6 +15,11 @@ Folder này ghi nhật ký implement theo phase. Mục tiêu là track nhanh nh�
 
 [Handoff xuất bản25/10](../workflow/tasks/docs-wip-publication-2026-10-25.md) và [catalog lịch sử](../workflow/evidence/docs-wip-publication-20261025/catalog.md#implementationevidence) dẫn các kết quả15/09–24/10, review và package nguyên byte. Đọc source/môi trường của từng kết quả; không cộng các PASS ở nhiều SHA thành full acceptance trên main hiện tại.
 
+## Minh chứng kiểm thử của nhóm tuần 4–5
+
+- Tuần 4 có [hồ sơ của Trần Thị Lâm](student-week-4-5/tuan-4/24tx610006-TranThiLam/README.md) và [hồ sơ của Võ Văn Ngọc](student-week-4-5/tuan-4/24tx610002-VoVanNgoc/README.md), gồm kịch bản N01 r02.
+- Tuần 5 có [hồ sơ của Trần Thị Lâm](student-week-4-5/tuan-5/24tx610006-TranThiLam/README.md) và [hồ sơ của Võ Văn Ngọc](student-week-4-5/tuan-5/24tx610002-VoVanNgoc/README.md), gồm kịch bản N01 r03.
+
 ## Khi Nào Nên Đọc
 
 - Khi cần biết phase nào đã xong, phase nào còn gap.

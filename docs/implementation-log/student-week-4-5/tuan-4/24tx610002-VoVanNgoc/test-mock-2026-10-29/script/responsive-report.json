@@ -1,0 +1,691 @@
+{
+  "desktop-fhd": {
+    "size": "1920x1080",
+    "screens": {
+      "floor": {
+        "viewport": "1920x1080",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": [],
+        "ordersPanelVisible": true,
+        "ordersToggle": false
+      },
+      "modifier": {
+        "viewport": "1920x1080",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "order": {
+        "viewport": "1920x1080",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "kitchen-receipt": {
+        "viewport": "1920x1080",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "payment": {
+        "viewport": "1920x1080",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "takeaway": {
+        "viewport": "1920x1080",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [
+          "Đang mở 80x24",
+          "Đã thanh toán 112x24",
+          "Hôm nay 78x24",
+          "Tạo đơn mang đi 168x37",
+          "Đóng 70x37",
+          "Mở đơn 66x26",
+          "Thanh toán 90x26",
+          "Mở đơn 1414x31",
+          "Thanh toán 1414x31"
+        ],
+        "clipped": []
+      }
+    },
+    "errors": [],
+    "console": []
+  },
+  "laptop-1366": {
+    "size": "1366x768",
+    "screens": {
+      "floor": {
+        "viewport": "1366x768",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": [],
+        "ordersPanelVisible": true,
+        "ordersToggle": false
+      },
+      "modifier": {
+        "viewport": "1366x768",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "order": {
+        "viewport": "1366x768",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "kitchen-receipt": {
+        "viewport": "1366x768",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "payment": {
+        "viewport": "1366x768",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "takeaway": {
+        "viewport": "1366x768",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [
+          "Đang mở 80x24",
+          "Đã thanh toán 112x24",
+          "Hôm nay 78x24",
+          "Tạo đơn mang đi 168x37",
+          "Đóng 70x37",
+          "Mở đơn 66x26",
+          "Thanh toán 90x26",
+          "Mở đơn 860x31",
+          "Thanh toán 860x31"
+        ],
+        "clipped": []
+      }
+    },
+    "errors": [],
+    "console": []
+  },
+  "laptop-1280": {
+    "size": "1280x720",
+    "screens": {
+      "floor": {
+        "viewport": "1280x720",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": [],
+        "ordersPanelVisible": true,
+        "ordersToggle": false
+      },
+      "modifier": {
+        "viewport": "1280x720",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "order": {
+        "viewport": "1280x720",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "kitchen-receipt": {
+        "viewport": "1280x720",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "payment": {
+        "viewport": "1280x720",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "takeaway": {
+        "viewport": "1280x720",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [
+          "Đang mở 80x24",
+          "Đã thanh toán 112x24",
+          "Hôm nay 78x24",
+          "Tạo đơn mang đi 168x37",
+          "Đóng 70x37",
+          "Mở đơn 66x26",
+          "Thanh toán 90x26",
+          "Mở đơn 774x31",
+          "Thanh toán 774x31"
+        ],
+        "clipped": []
+      }
+    },
+    "errors": [],
+    "console": []
+  },
+  "bp-1279": {
+    "size": "1279x720",
+    "screens": {
+      "floor": {
+        "viewport": "1279x720",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": [],
+        "ordersPanelVisible": false,
+        "ordersToggle": true
+      },
+      "modifier": {
+        "viewport": "1279x720",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "order": {
+        "viewport": "1279x720",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "kitchen-receipt": {
+        "viewport": "1279x720",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "payment": {
+        "viewport": "1279x720",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "takeaway": {
+        "viewport": "1279x720",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [
+          "Đang mở 80x24",
+          "Đã thanh toán 112x24",
+          "Hôm nay 78x24",
+          "Tạo đơn mang đi 168x37",
+          "Đóng 70x37",
+          "Mở đơn 66x26",
+          "Thanh toán 90x26",
+          "Mở đơn 773x31",
+          "Thanh toán 773x31"
+        ],
+        "clipped": []
+      }
+    },
+    "errors": [],
+    "console": []
+  },
+  "ipad-air-land": {
+    "size": "1180x820",
+    "screens": {
+      "floor": {
+        "viewport": "1180x820",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": [],
+        "ordersPanelVisible": false,
+        "ordersToggle": true
+      },
+      "modifier": {
+        "viewport": "1180x820",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "order": {
+        "viewport": "1180x820",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "kitchen-receipt": {
+        "viewport": "1180x820",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "payment": {
+        "viewport": "1180x820",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "takeaway": {
+        "viewport": "1180x820",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [
+          "Đang mở 80x24",
+          "Đã thanh toán 112x24",
+          "Hôm nay 78x24",
+          "Tạo đơn mang đi 168x37",
+          "Đóng 70x37",
+          "Mở đơn 66x26",
+          "Thanh toán 90x26",
+          "Mở đơn 674x31",
+          "Thanh toán 674x31"
+        ],
+        "clipped": []
+      }
+    },
+    "errors": [],
+    "console": []
+  },
+  "ipad-land": {
+    "size": "1024x768",
+    "screens": {
+      "floor": {
+        "viewport": "1024x768",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": [],
+        "ordersPanelVisible": false,
+        "ordersToggle": true
+      },
+      "modifier": {
+        "viewport": "1024x768",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "order": {
+        "viewport": "1024x768",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "kitchen-receipt": {
+        "viewport": "1024x768",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "payment": {
+        "viewport": "1024x768",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "takeaway": {
+        "viewport": "1024x768",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [
+          "Đang mở 80x24",
+          "Đã thanh toán 112x24",
+          "Hôm nay 78x24",
+          "Tạo đơn mang đi 168x37",
+          "Đóng 70x37",
+          "Mở đơn 66x26",
+          "Thanh toán 90x26",
+          "Mở đơn 518x31",
+          "Thanh toán 518x31"
+        ],
+        "clipped": []
+      }
+    },
+    "errors": [],
+    "console": []
+  },
+  "bp-981": {
+    "size": "981x600",
+    "screens": {
+      "floor": {
+        "viewport": "981x600",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": [],
+        "ordersPanelVisible": false,
+        "ordersToggle": true
+      },
+      "modifier": {
+        "viewport": "981x600",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "order": {
+        "viewport": "981x600",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "kitchen-receipt": {
+        "viewport": "981x600",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "payment": {
+        "viewport": "981x600",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "takeaway": {
+        "viewport": "981x600",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [
+          "Đang mở 80x24",
+          "Đã thanh toán 112x24",
+          "Hôm nay 78x24",
+          "Tạo đơn mang đi 168x37",
+          "Đóng 70x37",
+          "Mở đơn 66x26",
+          "Thanh toán 90x26",
+          "Mở đơn 475x31",
+          "Thanh toán 475x31"
+        ],
+        "clipped": []
+      }
+    },
+    "errors": [],
+    "console": []
+  },
+  "bp-980": {
+    "size": "980x600",
+    "screens": {
+      "floor": {
+        "viewport": "980x600",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": [],
+        "ordersPanelVisible": false,
+        "ordersToggle": true
+      },
+      "modifier": {
+        "viewport": "980x600",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "order": {
+        "viewport": "980x600",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "kitchen-receipt": {
+        "viewport": "980x600",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "payment": {
+        "viewport": "980x600",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "takeaway": {
+        "viewport": "980x600",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [
+          "Đang mở 80x24",
+          "Đã thanh toán 112x24",
+          "Hôm nay 78x24",
+          "Tạo đơn mang đi 168x37",
+          "Đóng 70x37",
+          "Mở đơn 66x26",
+          "Thanh toán 90x26",
+          "Mở đơn 486x31",
+          "Thanh toán 486x31"
+        ],
+        "clipped": []
+      }
+    },
+    "errors": [],
+    "console": []
+  },
+  "phone-844-land": {
+    "size": "844x390",
+    "screens": {
+      "floor": {
+        "viewport": "844x390",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": [],
+        "ordersPanelVisible": false,
+        "ordersToggle": true
+      },
+      "modifier": {
+        "viewport": "844x390",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "order": {
+        "viewport": "844x390",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "kitchen-receipt": {
+        "viewport": "844x390",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "payment": {
+        "viewport": "844x390",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "takeaway": {
+        "viewport": "844x390",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [
+          "Đang mở 80x24",
+          "Đã thanh toán 112x24",
+          "Hôm nay 78x24",
+          "Tạo đơn mang đi 168x37",
+          "Đóng 70x37",
+          "Mở đơn 66x26",
+          "Thanh toán 90x26",
+          "Mở đơn 350x31",
+          "Thanh toán 350x31"
+        ],
+        "clipped": []
+      }
+    },
+    "errors": [],
+    "console": []
+  },
+  "phone-740-land": {
+    "size": "740x360",
+    "screens": {
+      "floor": {
+        "viewport": "740x360",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": [],
+        "ordersPanelVisible": false,
+        "ordersToggle": true
+      },
+      "modifier": {
+        "viewport": "740x360",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "order": {
+        "viewport": "740x360",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "kitchen-receipt": {
+        "viewport": "740x360",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "payment": {
+        "viewport": "740x360",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "takeaway": {
+        "viewport": "740x360",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [
+          "Đang mở 80x24",
+          "Đã thanh toán 112x24",
+          "Hôm nay 78x24",
+          "Tạo đơn mang đi 168x37",
+          "Đóng 70x37",
+          "Mở đơn 66x26",
+          "Thanh toán 90x26",
+          "Mở đơn 246x31",
+          "Thanh toán 246x31"
+        ],
+        "clipped": []
+      }
+    },
+    "errors": [],
+    "console": []
+  },
+  "phone-568-land": {
+    "size": "568x320",
+    "screens": {
+      "floor": {
+        "viewport": "568x320",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": [],
+        "ordersPanelVisible": false,
+        "ordersToggle": true
+      },
+      "modifier": {
+        "viewport": "568x320",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "order": {
+        "viewport": "568x320",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "kitchen-receipt": {
+        "viewport": "568x320",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "payment": {
+        "viewport": "568x320",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [],
+        "clipped": []
+      },
+      "takeaway": {
+        "viewport": "568x320",
+        "pageOverflowX": 0,
+        "pageOverflowY": 0,
+        "small": [
+          "Đang mở 80x24",
+          "Đã thanh toán 112x24",
+          "Hôm nay 78x24",
+          "Tạo đơn mang đi 252x37",
+          "Đóng 546x37",
+          "Mở đơn 66x26",
+          "Thanh toán 90x26",
+          "Mở đơn 234x31",
+          "Thanh toán 234x31"
+        ],
+        "clipped": []
+      }
+    },
+    "errors": [],
+    "console": []
+  },
+  "ipad-portrait": {
+    "size": "768x1024",
+    "screens": {
+      "start": {
+        "text": "P POS Cafe POS quán cà phê Quản lý order, bàn, menu và thanh toán trên nhiều thiết bị. Đã có quán Nhập Store Key để ghép máy vào quán hiện có. Tạo quán mới Thiết lập quán và nhận Store Key + Admin PIN"
+      }
+    },
+    "errors": []
+  },
+  "phone-portrait": {
+    "size": "390x844",
+    "screens": {
+      "start": {
+        "text": "P POS Cafe POS quán cà phê Quản lý order, bàn, menu và thanh toán trên nhiều thiết bị. Đã có quán Nhập Store Key để ghép máy vào quán hiện có. Tạo quán mới Thiết lập quán và nhận Store Key + Admin PIN"
+      }
+    },
+    "errors": []
+  }
+}

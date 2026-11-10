@@ -1,0 +1,160 @@
+POS Café
+
+POS Demo
+
+Không gian bán hàng
+Sơ đồ bàn
+Tra cứu thao tác
+Bán mang đi
+Lịch sử đơn
+Thực đơn
+Nhân viên
+Sơ đồ cửa hàng
+Báo cáo
+Cấu hình thanh toán
+Cài đặt
+C
+Chủ quán
+Chủ quán
+Khoá
+POS Demo
+›
+Vận hành bán hàng
+Tự động cập nhật
+Sơ đồ bàn
+
+Chọn bàn để xem và quản lý đơn hàng.
+
+Tất cả
+Trống
+Đang phục vụ
+Tầng trệt
+8
+Lầu 1
+6
+Tầng trệt
+34 chỗ ngồi
+63% sử dụng
+B01
+145K
+B02
+125K
+B03
+B04
+B05
+86K
+B06
+B07
+B08
+Chọn bàn để mở giao diện gọi món
+8/8 bàn
+Đơn đang mở
+4
+
+TẠI BÀN · 3
+
+B02
+#24
+Đang phục vụ
+125.000đ
+Mở đơn hàng →
+B05
+#25
+Đang phục vụ
+86.000đ
+Mở đơn hàng →
+B01
+#27
+Đang phục vụ
+145.000đ
+Mở đơn hàng →
+
+MANG ĐI · 1
+
+Mang đi
+#26
+Đang phục vụ
+84.000đ
+Mở đơn hàng →
+Chọn một đơn để tiếp tục phục vụ.
+Gọi món — Bàn B01
+
+Tầng trệt · Tại bàn
+Đơn #27 · Đã gửi
+
+Đóng
+Hủy đơn mở
+Thanh toán
+DANH MỤC MÓN
+Cà phê
+6
+Trà & trà sữa
+6
+Đá xay
+6
+Bánh/snack
+4
+6 món
+Cà phê sữa
+Có tùy chọn
+29.000 ₫
++ Thêm
+Bạc xỉu
+Có tùy chọn
+32.000 ₫
++ Thêm
+Americano
+Chọn để thêm vào đơn
+35.000 ₫
++ Thêm
+Latte
+Có tùy chọn
+45.000 ₫
++ Thêm
+Cold brew
+Chọn để thêm vào đơn
+49.000 ₫
++ Thêm
+Cà phê muối
+Chọn để thêm vào đơn
+39.000 ₫
++ Thêm
+Giỏ hàng
+3 món
+Cà phê sữa
+29.000 ₫
+Phần đã lưu
+29.000 ₫ / món
+
+Size M, Ít đá
+
+ít ngọt
+
+−
+1
++
+Ghi chú
+Trà sữa truyền thống
+46.000 ₫
+Phần đã lưu
+46.000 ₫ / món
+
+Trân châu
+
+−
+1
++
+Ghi chú
+Americano
+70.000 ₫
+Phần đã lưu
+35.000 ₫ / món
+−
+2
++
+Ghi chú
+Tạm tính
+145.000 ₫
+Tổng
+145.000 ₫
+Thanh toán
