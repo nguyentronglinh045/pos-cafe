@@ -10,6 +10,8 @@ Việc tạo cửa hàng SHALL yêu cầu xác minh email bằng mã gửi riên
 
 Việc tạo cửa hàng SHALL chạy hoàn toàn ở phía server. Hệ thống MUST NOT cho máy người dùng tự tạo tài khoản kỹ thuật của quán hoặc gọi thẳng các hàm giữ số quán và khởi tạo quán. Phần ghi dữ liệu quán (bản ghi cửa hàng kèm chủ sở hữu và trạng thái, cấu hình, nhân viên vai trò `owner` với PIN chủ đã nhập) SHALL nằm trong một giao dịch database. PIN chủ do chủ tự đặt nên không bắt buộc đổi ở lần đăng nhập đầu.
 
+Đường provisioning nội bộ SHALL chỉ chạy cho yêu cầu đã được server chấp nhận và còn giữ chỗ hạn mức. Khi luồng mới đã đạt vòng staging đầu tiên, tắt đăng ký Auth công khai và SHALL kiểm lại luồng mới với cấu hình này trước khi nghiệm thu giai đoạn 1 (quyết định 45).
+
 Đầu vào SHALL gồm tên hiển thị bắt buộc, địa chỉ tùy chọn và PIN của chủ quán. Cửa hàng tạo ra MUST mặc định là cửa hàng trống, chỉ gồm bản ghi cửa hàng, cấu hình cửa hàng và một nhân viên vai trò `owner`.
 
 Mã truy vết: REQ-STORE-01 (tạo cửa hàng), REQ-STORE-06 (dữ liệu mẫu).
@@ -32,7 +34,7 @@ Mã truy vết: REQ-STORE-01 (tạo cửa hàng), REQ-STORE-06 (dữ liệu mẫ
 #### Scenario: Seed dữ liệu mẫu thất bại
 
 - **WHEN** việc seed dữ liệu mẫu thất bại sau khi cửa hàng đã được tạo
-- **THEN** cửa hàng vẫn tồn tại và vào được, hạn mức không được trả lại, POS hiển thị cảnh báo kèm hành động thử lại, và chủ có thể seed lại từ màn Cài đặt
+- **THEN** cửa hàng vẫn tồn tại và vào được, hạn mức không được trả lại, chủ thấy cảnh báo kèm nút thử lại tại thông báo chung sau khi đăng nhập POS bằng phiên bình thường theo R06-A
 
 ### Requirement: Bảo mật Store Key
 
@@ -72,22 +74,28 @@ Tài khoản kỹ thuật của quán SHALL được tạo bằng API quản tr�
 - **WHEN** tài khoản `store42@store.pos.local` đã tồn tại mà không có dấu hiệu của yêu cầu đang xử lý
 - **THEN** hệ thống không dùng và không xóa tài khoản đó, báo cho người vận hành và chuyển sang số quán khác
 
-### Requirement: REQ-STORE-03 — Kết quả chưa rõ và việc dọn dẹp
+### Requirement: REQ-STORE-03 — Giữ an toàn khi chưa rõ kết quả tạo quán
 
-Tài khoản xác thực, database và email là ba hệ thống tách nhau nên không thể gói chung một giao dịch. Khi chưa đủ bằng chứng về kết quả, hệ thống SHALL giữ trạng thái "chưa rõ" (`unknown`) và MUST NOT tự tạo yêu cầu thay thế. Một tiến trình đối soát phía server SHALL hoàn tất hoặc dọn dẹp mọi yêu cầu chưa xong trong thời hạn hữu hạn, ít nhất 10 phút, và hai lượt chạy MUST NOT cùng ghi lên một yêu cầu. Dọn dẹp xong SHALL chuyển yêu cầu sang thất bại (`failed`) và trả lại chỗ trong hạn mức. Tài khoản kỹ thuật có thể tồn tại tạm thời trong lúc xử lý nhưng MUST NOT bị bỏ lại vĩnh viễn.
+Tài khoản xác thực, database và email là ba hệ thống tách nhau nên không thể gói chung một giao dịch. Khi hết thời gian xử lý mà chưa đủ bằng chứng về kết quả, hệ thống SHALL trả trạng thái "chưa rõ" (`unknown`) và giữ suất. Quy tắc này SHALL áp dụng cả khi tiến trình đã dừng trước khi ghi trạng thái mới. Hệ thống MUST NOT tạo yêu cầu thay thế, chạy lại provisioning do gửi lại hay tra trạng thái, hoặc để hai lượt xử lý cùng ghi lên một yêu cầu. Chỉ chuyển `failed` và trả suất khi chắc chắn lượt thất bại và không còn tác dụng phụ chưa xử lý.
+
+Tự động đối soát, tự dọn tài khoản kỹ thuật dở dang, cảnh báo tự động và cam kết mọi lượt chưa rõ kết thúc trong thời hạn hữu hạn thuộc phần sau đồ án theo quyết định 48. Hệ thống SHALL giữ mã lượt, trạng thái và tham chiếu Auth đủ để kiểm tra sau.
 
 #### Scenario: Dừng giữa chừng sau khi tạo tài khoản kỹ thuật
 
 - **WHEN** lời gọi tạo quán dừng sau khi đã tạo tài khoản kỹ thuật nhưng trước khi ghi cửa hàng
-- **THEN** tiến trình đối soát tìm lại đúng tài khoản đó theo dấu hiệu và hoàn tất tạo quán, không tạo tài khoản thứ hai
+- **THEN** tra cứu sau khi hết thời gian xử lý trả `unknown`, suất vẫn giữ và gửi lại không tạo tài khoản kỹ thuật hay quán thứ hai
 
 ### Requirement: REQ-STORE-04 — Giao Store Key cho chủ
 
 Tạo quán xong, màn kết quả SHALL hiển thị Store Key kèm nút sao chép; đây là đường giao chính. Hệ thống SHALL luôn gửi thêm Store Key tới email đã xác minh như một hỗ trợ kèm theo, tối đa một thư cho mỗi lần tạo. Thư gửi sau khi quán đã tạo xong: thư lỗi MUST NOT làm hỏng quán đã tạo và MUST NOT trả lại hạn mức.
 
-Nếu phản hồi bị mất khi trang còn mở, máy SHALL nhận lại được Store Key bằng cách gửi lại đúng yêu cầu, kèm đủ mã và thông tin đã nhập, trong thời hạn của mã, tức 10 phút kể từ lúc phát. Khoảng thời gian này kết thúc sớm hơn nếu người dùng bấm "Tôi đã lưu Store Key", sau 5 lần nhận lại sai, khi quán đổi chủ, khi chủ đổi email, hoặc khi Store Key được cấp lại. Khi khoảng này đã đóng, hoặc khi mã định danh hay thông tin gửi kèm không đúng, hệ thống SHALL chỉ trả trạng thái và MUST NOT so mã hay PIN cho việc nhận lại. Không mã định danh hay biên nhận nào, đơn lẻ, nhận được Store Key.
+Bấm "Tôi đã lưu Store Key" SHALL mở màn Ghép thiết bị với ô Store Key trống và chưa ghép máy.
+
+Nếu phản hồi bị mất khi trang còn mở, máy SHALL nhận lại được Store Key bằng cách gửi lại đúng yêu cầu, kèm đủ mã và thông tin đã nhập, trong thời hạn của mã, tức 10 phút kể từ lúc phát. Khoảng thời gian này kết thúc sớm hơn nếu người dùng bấm "Tôi đã lưu Store Key", sau 5 lần nhận lại sai, khi quán đổi chủ, khi chủ đổi email, hoặc khi Store Key được cấp lại. Khi cửa sổ đã đóng hoặc mã định danh không phải lần Xác nhận được chấp nhận, hệ thống SHALL chỉ trả trạng thái và MUST NOT so mã hay PIN. Khi đúng lần Xác nhận và còn cửa sổ, lần xin nhận lại có mã hay thông tin sai MUST NOT nhận key và SHALL tính vào bộ đếm nhận lại riêng. Không mã định danh hay biên nhận nào, đơn lẻ, nhận được Store Key.
 
 Nếu thư cũng lỗi sau khi khoảng này đã đóng, luồng tạo quán không giao lại Store Key; đường còn lại là luồng quên Store Key hoặc hỗ trợ vận hành.
+
+Khi tải lại, chỉ mã tra trạng thái được giữ theo REQ-OWNER-06. Đường hỏi trạng thái MUST NOT nhận hoặc so PIN/mã, trả số quán hay dữ liệu chủ, hoặc trả Store Key. Trên quán thử giai đoạn 1, chấp nhận trường hợp mất cả đường nhận lại và thư Store Key theo quyết định 47.
 
 #### Scenario: Luôn gửi Store Key qua email
 

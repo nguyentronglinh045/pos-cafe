@@ -15,7 +15,7 @@
 | Xác nhận chính chủ | Bản ghi server cho biết người đang đăng nhập vừa nhập đúng mã của email đã đăng ký; có hiệu lực 10 phút, cho đúng phiên đó và đúng một thao tác. Đây không phải mã hay mật khẩu để mang đi nơi khác |
 | Phiên bình thường | Phiên nhân viên dùng để vận hành quán (mục đích `normal`), khác phiên 5 phút chỉ để đổi PIN bắt buộc (`required_pin_change`) |
 | Dấu hiệu server | Thông tin trong `app_metadata` của tài khoản kỹ thuật, cho biết tài khoản này do đúng yêu cầu nào tạo ra |
-| Tiến trình đối soát | Việc chạy định kỳ ở server, hoàn tất hoặc dọn dẹp các yêu cầu chưa xong |
+| Tiến trình đối soát | Việc chạy định kỳ ở server, hoàn tất hoặc dọn dẹp các yêu cầu chưa xong. Đối soát tạo quán thuộc phần sau đồ án |
 | Thẻ lượt chạy | Số tăng dần cấp cho mỗi lượt xử lý, ngăn lượt cũ chạy chậm ghi đè lượt mới |
 
 ## Context
@@ -34,7 +34,7 @@ Bốn ràng buộc từ kho mã quyết định phần lớn thiết kế dướ
 **Goals**
 
 - Không ai tạo được cửa hàng nếu chưa xác thực email thật.
-- Phần ghi dữ liệu quán là một giao dịch; hỏng giữa chừng thì được làm tiếp hoặc dọn sạch, không để lại rác vĩnh viễn.
+- Phần ghi dữ liệu quán là một giao dịch. Nếu không xác định được kết quả, giữ trạng thái chưa rõ, suất và bằng chứng để đối soát sau.
 - Mất Store Key khôi phục được, không phải cấp mới và bắt cả quán ghép lại.
 - Thiết bị đã ghép không bị ảnh hưởng bởi thay đổi này.
 - Lược đồ không khóa cứng ở một cửa hàng mỗi chủ.
@@ -141,7 +141,8 @@ Tên và kiểu dưới đây là đề xuất, chốt khi viết migration. Kh�
 | `otp_request_outcomes` | Trả lại đúng kết quả khi gửi lại yêu cầu gửi mã | `request_id` (duy nhất), email, đối tượng, kết quả, `challenge_ref`, mốc hẹn. Giữ ít nhất 90 phút |
 | `otp_attempts` | Trả lại đúng kết quả khi gửi lại lần nhập mã | `attempt_id` (duy nhất), đối tượng, giá trị băm của mã nếu đã so mã, mã đã đối chiếu, kết quả. Giữ ít nhất 90 phút; không sửa sau khi ghi |
 | `create_intents` | Một bộ thông tin tạo quán đã gửi mã | `intent_id` (duy nhất), email, dấu vân tay của thông tin tạo quán (ghi một lần), trạng thái |
-| `create_operations` | Yêu cầu tạo quán đã được chấp nhận | `id`, chủ, intent, trạng thái (`accepted`, `unknown`, `compensating`, `created`, `failed`), mã lý do, thẻ lượt chạy và hạn lượt chạy, bước đang làm, dữ liệu tạm (hash PIN, bí mật mã hóa, số quán), trạng thái khoảng nhận lại Store Key. Bảng riêng tư, không cấp quyền cho máy người dùng |
+| `create_operations` | Yêu cầu tạo quán đã được chấp nhận | `id`, chủ, intent (duy nhất), `accepted_attempt_id` (duy nhất), trạng thái (`accepted`, `unknown`, `created`, `failed`), mã lý do, thẻ lượt chạy và hạn lượt chạy, bước đang làm, dữ liệu tạm (hash PIN, bí mật mã hóa, số quán), trạng thái khoảng nhận lại Store Key. Bảng riêng tư, không cấp quyền cho máy người dùng |
+| `auth_create_dispatches` | Giữ độc quyền phát lệnh tạo tài khoản kỹ thuật cho mỗi số quán đã dành | Cặp operation và số quán duy nhất, dấu hiệu server, thẻ lượt chạy nhận quyền phát, trạng thái `claimed`, `created`, `no_effect`, `unknown`, UUID tài khoản Auth nếu đã biết. Bảng riêng tư; không chứa Store Key |
 | `owner_action_proofs` | Xác nhận chính chủ cho đổi email và chuyển quyền | `id`, loại thao tác, quán, tài khoản chủ, phiên nhân viên, hạn, trạng thái (`active`, `used`, `cancelled`, `replaced`). Mỗi quán và mỗi loại có tối đa một bản ghi `active`; tạo bản ghi mới thì bản ghi trước chuyển `replaced` và mã email mới của nó bị hủy |
 | `store_key_rotations` | Việc cấp lại Store Key đang làm dở | quán, trạng thái (`pending`, `applied`, `completed`), bí mật mới đã mã hóa, thẻ lượt chạy. Mỗi quán có tối đa một bản ghi `pending`, nhờ ràng buộc duy nhất có điều kiện |
 | `mail_dispatches` | Theo dõi việc gửi thư | loại thư, đối tượng, trạng thái (`queued`, `sending`, `submitted`, `rejected`, `failed_before_submit`, `provider_limited`, `unknown`) |
@@ -149,7 +150,7 @@ Tên và kiểu dưới đây là đề xuất, chốt khi viết migration. Kh�
 
 `action` trong nhật ký gồm: `store_created`, `store_key_regenerated`, `store_status_changed`, `owner_pin_reset`, `owner_email_changed`, `ownership_transferred`, `store_data_reset`. `detail` MUST NOT chứa Store Key, phần bí mật, mã xác nhận hay PIN; kiểm bằng kiểm thử. Bảng gắn với `store_id`, nên nhật ký không mất khi đổi chủ hoặc reset.
 
-Hai trường hợp đặc biệt khi gửi thư: thư đang `sending` mà lượt chạy hết hạn thì coi là `unknown`, không gửi lại và báo người vận hành; yêu cầu `compensating` được tính như `unknown` khi đếm hạn mức.
+Thư đang `sending` mà lượt gửi hết hạn thì coi là `unknown`, không gửi lại và báo người vận hành theo quy tắc của đường gửi thư. Trạng thái gửi thư và kết quả provisioning là hai việc riêng.
 
 ## Hợp đồng hàm phía server
 
@@ -159,6 +160,7 @@ Một hàm, nhiều hành động. Gộp vì tất cả dùng chung phần gửi
 | --- | --- | --- |
 | `requestCreateStoreOtp` | Ai cũng gọi được | Gửi mã tạo quán. Phản hồi chung một dạng |
 | `verifyAndAcceptCreate` | Ai cũng gọi được, phải có mã đúng | Kiểm mã, kiểm thông tin, kiểm hạn mức, ghi yêu cầu, rồi tạo quán |
+| `getCreateStatus` | Ai cũng gọi được, cần `attemptId` đúng dạng | Chỉ đọc trạng thái của lần Xác nhận, không nhận OTP/PIN, không trả số quán, Store Key hay dữ liệu chủ |
 | `confirmStoreKeySaved` | Người vừa tạo quán | Đóng khoảng nhận lại Store Key |
 | `forgotStoreKey` | Ai cũng gọi được | Trả phản hồi chung một dạng trước, rồi mới tra chủ, giải mã key và gửi thư. Có giới hạn theo email; giới hạn theo địa chỉ mạng và trần toàn dự án tính chung |
 | `requestOwnerActionOtp` | Tài khoản chủ quán đang đăng nhập; riêng quên PIN chỉ cần máy đã ghép | Gửi mã theo loại thao tác. Phản hồi không chứa email |
@@ -200,8 +202,10 @@ Mỗi xác nhận chính chủ chỉ có một mã email mới còn hiệu lực
 2. Với thao tác của chủ: kiểm phiên bình thường còn hiệu lực (`permission_current_employee`, mục đích `normal`), hết thì trả `EMPLOYEE_SESSION_REQUIRED`, còn đang ở bước buộc đổi PIN thì trả `PIN_CHANGE_REQUIRED`; kiểm đúng vai trò `owner`, sai thì trả `OWNER_ROLE_REQUIRED`; với quên PIN: kiểm máy đã ghép; quán đang tạm ngưng thì trả `STORE_SUSPENDED`. Kiểm cả khi gửi lại. Mã gửi tới email mới còn phải có xác nhận chính chủ, thiếu thì trả `OWNER_PROOF_REQUIRED`.
 3. Tra mã định danh yêu cầu. Đã có và trùng email, loại thao tác, đối tượng thì trả lại kết quả cũ (PIN không nằm trong phần so); đã có mà khác thì từ chối; chưa có mà thời điểm tạo lệch quá 30 phút thì từ chối.
 4. Với thao tác của chủ: lấy khóa theo quán rồi lặp lại bước 2 dưới khóa. Khóa theo email, địa chỉ mạng và trần toàn dự án, rồi đọc lại mã định danh dưới khóa. Hai yêu cầu cùng mã định danh, khác email: yêu cầu sau bị ràng buộc duy nhất chặn lại và nhận `A_REQUEST_ID_REUSED`.
-5. Kiểm thời gian chờ và lượt gửi theo email cùng loại thao tác, trừ mã reset. Không đủ điều kiện thì ghi kết quả "bị chặn", không tạo mã, không tính lượt.
+5. Kiểm thời gian chờ, lượt theo email cùng loại thao tác (trừ mã reset), lượt theo IP và toàn dự án. Với tạo quán, intent đã được chấp nhận cũng không phát mã lại. Không đủ điều kiện thì ghi kết quả "bị chặn", không tạo mã, không tính lượt.
 6. Đủ điều kiện thì tạo mã, ghi kết quả và bản ghi thư trong cùng giao dịch. Sau khi lưu xong mới gửi thư, đúng một lần, không gửi lại. Thư lỗi không làm mất lượt đã tính.
+
+Riêng tạo quán, đây chỉ là cổng phát OTP. Khóa và cập nhật giới hạn email, IP, dự án trong cùng giao dịch khi chấp nhận phát, kể cả với nhiều yêu cầu đồng thời. Lấy IP từ dữ liệu đã được gateway xác thực, bỏ qua giá trị người gọi tự khai. Mọi yêu cầu đã chạm giới hạn có phản hồi chung và không phát mã, kể cả khi đổi intent, đổi tab hoặc dùng `requestId` mới. Thư OTP đã được chấp nhận phát tính một lượt dù provider báo lỗi. Đường hỏi trạng thái và xác minh không phát OTP.
 
 ### Thứ tự khi kiểm mã
 
@@ -209,13 +213,15 @@ Mỗi xác nhận chính chủ chỉ có một mã email mới còn hiệu lực
 
 1. Kiểm dạng dữ liệu. Với thao tác của chủ: kiểm phiên bình thường còn hiệu lực (`permission_current_employee`, mục đích `normal`), hết thì trả `EMPLOYEE_SESSION_REQUIRED`, còn đang ở bước buộc đổi PIN thì trả `PIN_CHANGE_REQUIRED`; kiểm đúng vai trò `owner`, sai thì trả `OWNER_ROLE_REQUIRED`; với quên PIN: kiểm máy đã ghép; quán đang tạm ngưng thì trả `STORE_SUSPENDED`. Người không đủ điều kiện không thể làm hết lần thử của chủ. Vì bước này đứng trước việc tra kết quả cũ, gửi lại sau chuyển quyền hoặc reset nhận `EMPLOYEE_SESSION_REQUIRED`: chính thao tác đã hủy phiên, mã đã dùng nên không chạy lần hai.
 2. Giữ chỗ mã định danh lần nhập (`attempt_id`). Lấy khóa theo quán, rồi khóa mã đang xét và đối tượng của nó. Đọc lại bản ghi lần nhập dưới khóa. Lặp lại việc kiểm ở bước 1 dưới khóa, vì thao tác trước có thể vừa đổi chủ, hủy phiên hoặc hủy mã. Không đạt thì trả lỗi và không lưu kết quả cho lần nhập này, để lần gửi sau kiểm lại từ đầu.
-3. Lần nhập này đã có kết quả: cùng loại thao tác, đối tượng và mã (nếu lần trước đã so mã) thì trả lại kết quả cũ. Khác mã, trong khi mã kia còn hiệu lực thì tăng đếm sai của mã đó và trả `A_ATTEMPT_ID_REUSED`. Nhờ vậy không thể dò mã bằng cách gửi lại mà không bị đếm.
-4. Yêu cầu đã được chấp nhận trước đó (ví dụ tạo quán đã nhận): chỉ trả trạng thái, không so mã, không đếm.
+3. Riêng tạo quán: nếu intent đã có operation, kiểm liên kết định danh đúng loại và đối tượng trước. Với lần nhập không phải lần được chấp nhận hoặc cửa sổ nhận lại key đã đóng, chỉ trả trạng thái, không so OTP/PIN và không tăng đếm. Với đúng lần được chấp nhận và cửa sổ còn mở, dùng nhánh nhận lại key bên dưới. Nhánh này đứng trước so mã của replay chung.
+4. Các lần nhập còn lại đã có kết quả: cùng loại thao tác, đối tượng và mã (nếu lần trước đã so mã) thì trả lại kết quả cũ. Khác mã, trong khi mã kia còn hiệu lực thì tăng đếm sai của mã đó và trả `A_ATTEMPT_ID_REUSED`. Với tạo quán, chỉ lưu kết quả và tham chiếu nội bộ, không lưu Store Key trong phản hồi gửi lại.
 5. Mã hết hạn, đã hủy, đã dùng hoặc không tồn tại: trả lỗi tương ứng, không đếm. Các trường hợp sau cũng coi như không tồn tại: quán trong mã khác quán của máy gọi; mã gửi về email đã đăng ký mà email trong mã khác email chủ hiện tại; mã gửi tới email mới mà xác nhận chính chủ của nó đã dùng, đã hủy hoặc đã bị thay, hoặc tài khoản của xác nhận đó không còn là chủ quán này. Việc này kiểm ở lúc nhập mã, nên mã được phát đồng thời với lúc xác nhận bị hủy cũng không dùng được. Mã tạo quán gắn với intent, không so với chủ nào.
 6. **So mã trước.** Sai: tăng đếm, lần thứ năm hủy mã. Lúc này chưa so PIN, nên phản hồi giống hệt dù PIN đúng hay sai.
 7. Mã đúng mới so thông tin đi kèm. Khác lúc gửi mã: tăng đếm, không dùng mã.
 8. Kiểm điều kiện riêng của thao tác (hạn mức khi tạo quán hoặc nhận quyền, email mới chưa thuộc ai khi đổi email). Không đạt: dừng, không dùng mã.
 9. Dùng mã và ghi nhận thao tác. Lưu lại kết quả. Giao dịch lỗi thì trả một lỗi tạm thời chung, không phụ thuộc mã đúng hay sai.
+
+**Điểm chặn tạo quán.** Sau khi kiểm đúng mã của intent và đúng thông tin, lấy khóa theo email chuẩn hóa kể cả khi chủ chưa có bản ghi. Dưới khóa, dùng một câu SQL với cùng snapshot để đếm tổng quán active/suspended và operation accepted/unknown, kể cả `accepted` đã quá hạn xử lý. Hai truy vấn rời ở READ COMMITTED có thể nhìn lệch lúc worker chuyển suất đang giữ thành quán. Khi đủ 5, trả `OWNER_STORE_LIMIT_REACHED` và giữ mã chưa dùng. Khi còn chỗ, một giao dịch dùng mã, giữ một chỗ, ghi duy nhất một operation theo intent và liên kết `attemptId` đã chấp nhận. Chuyển sang `created` và ghi quán trong cùng giao dịch để không đếm hai lần. Worker nội bộ chỉ xử lý operation hợp lệ có giữ chỗ và chỉ được cấp quyền gọi Auth admin, giữ số và bootstrap từ phía server. Không có bước tạo Auth hay giữ số ở API gửi mã, API tra trạng thái hoặc trên trình duyệt. Lần gửi lại của cùng operation chỉ đọc hoặc nhận lại kết quả, không tự khởi chạy worker khác. Bộ đếm nhập sai gắn với mã; đổi attempt ID, tab hay IP không đặt lại bộ đếm đó.
 
 Thứ tự khóa để tránh kẹt lẫn nhau: mã định danh lần nhập, quán (`private.permission_store_mutex`, trong `supabase/candidate/permission-identity.sql`), mã xác nhận, intent, các tài khoản chủ theo thứ tự `id`, yêu cầu tạo quán. Hai thao tác cùng lúc trên một quán chạy lần lượt; thao tác sau lặp lại việc kiểm dưới khóa: nếu thao tác trước đã hủy phiên của người gọi (chuyển quyền, reset) thì trả `EMPLOYEE_SESSION_REQUIRED`; nếu phiên còn mà mã đã bị hủy (đổi email) thì trả `A_OTP_UNAVAILABLE`. Mọi thời gian đều theo đồng hồ database; đồng hồ máy người dùng chỉ để hiển thị đếm ngược.
 
@@ -229,11 +235,19 @@ Thứ tự khóa để tránh kẹt lẫn nhau: mã định danh lần nhập, q
 
 ### Thời gian lưu
 
-Bản ghi gửi lại (`otp_request_outcomes`, `otp_attempts`) giữ ít nhất 90 phút. Mã và bản ghi thư OTP giữ tới hết ngày theo giờ Việt Nam chứa thời điểm phát, cộng 48 giờ, để đếm lượt theo ngày và đối chiếu. Intent chưa được chấp nhận giữ 90 phút sau hạn của mã cuối. Yêu cầu tạo quán đã chấp nhận, nhật ký và bản ghi thư Store Key không xóa trong giai đoạn 1. Xác nhận chính chủ hết tác dụng sau 10 phút. Máy người dùng chỉ xóa biên nhận khi quán đã tạo xong hoặc đã thất bại, người dùng đã rời luồng, đã qua 90 phút và đã qua mốc hẹn gửi lại; đồng hồ máy không phải bằng chứng. Bản nháp tên quán, địa chỉ và tùy chọn dữ liệu mẫu gắn với từng luồng và xóa cùng lúc với biên nhận. Luồng bỏ dở chưa có kết quả thì hai bản ghi này còn nằm trên máy; thời hạn xóa chốt khi triển khai. Việc dọn dữ liệu chỉ bật sau khi các con số này được duyệt khi triển khai.
+Bản ghi gửi lại (`otp_request_outcomes`, `otp_attempts`) giữ ít nhất 90 phút. Mã và bản ghi thư OTP giữ tới hết ngày theo giờ Việt Nam chứa thời điểm phát, cộng 48 giờ, để đếm lượt theo ngày và đối chiếu. Intent chưa được chấp nhận giữ 90 phút sau hạn của mã cuối. Yêu cầu tạo quán đã chấp nhận, liên kết với lần Xác nhận đã chấp nhận, nhật ký và bản ghi thư Store Key không xóa trong giai đoạn 1. Xác nhận chính chủ hết tác dụng sau 10 phút. Chỉ triển khai dọn bản ghi phía server sau khi xác nhận các thời hạn này.
+
+### Tra trạng thái sau F5 và nhận lại Store Key
+
+- **Trên máy:** giữ form, biên nhận gửi mã, OTP và PIN trong bộ nhớ trang. Ngay trước khi gửi Xác nhận hợp lệ, ghi `attemptId` vào `sessionStorage` của tab. Giá trị duy nhất được lưu là UUID v7 này, sinh với nguồn ngẫu nhiên mật mã. Mỗi tab khóa Xác nhận ngay khi gửi, giữ nguyên ID trong lúc còn chờ hoặc chưa rõ; bấm đúp bị bỏ qua, retry truyền tải khi trang còn mở dùng đúng lần nhập cũ. Sau F5 chỉ gọi `getCreateStatus` nếu có mã tra. Giữ ID cho đến khi có kết quả cuối rồi người dùng rời kết quả hoặc bắt đầu lần nhập mới. Nếu ghi lỗi, giữ trong bộ nhớ và báo `STORAGE_UNAVAILABLE`.
+- **Tra trạng thái:** đầu vào chỉ là `attemptId`. Đọc operation gắn với lần nhập đó (kể cả khi bản ghi gửi lại đã dọn), trả `accepted`, `unknown`, `created` hoặc `failed`. Khi operation còn lưu `accepted` nhưng đã quá hạn xử lý, trả `unknown` từ phép đọc, không cần tiến trình nền đổi trạng thái. Gửi lại xác minh của operation dùng cùng cách tính. Nếu chưa thấy operation và chưa thể loại trừ request đến muộn, trả `unconfirmed` và cho kiểm tra lại. Chỉ trả `not_accepted` khi có kết quả cuối từ chối lần nhập đó hoặc ID cũ hơn 30 phút và không có operation. Cả tra và xác minh lần đầu phải lấy cùng khóa lần nhập trước khi đọc kết quả và lấy giờ DB thực tại thời điểm kiểm, không dùng giờ bắt đầu giao dịch. Phản hồi chỉ chứa enum trạng thái. Không chạy worker, so bí mật, đếm sai, phát thư hoặc đổi quota. UI chờ thao tác kiểm tra lại của người dùng.
+- **Trang vẫn mở:** nhận lại Store Key và xác nhận đã lưu dùng đúng `attemptId` được chấp nhận, đúng intent, OTP và thông tin ban đầu. Khi cửa sổ đã đóng hoặc lần nhập không phải lần được chấp nhận, chỉ trả trạng thái, không so OTP/PIN. Khi cửa sổ còn mở và đúng lần nhập được chấp nhận, kiểm đủ bằng chứng, dùng bộ đếm nhận lại riêng, đóng cửa sổ sau 5 lần sai. Sai OTP hoặc sai thông tin ở nhánh nhận lại đều chỉ trả trạng thái; ở nhánh xác nhận đã lưu trả `CONFIRM_REJECTED`. Kết quả `created` lưu để gửi lại không tự mang key.
 
 ### Yêu cầu quá cũ
 
-Máy người dùng tạo `request_id` và `attempt_id` dạng UUID v7, có sẵn thời điểm tạo. Bản ghi giữ ít nhất 90 phút. Mã định danh đã có bản ghi luôn nhận lại kết quả cũ. Mã định danh không còn bản ghi mà thời điểm tạo lệch quá 30 phút thì bị từ chối. Bản ghi chỉ bị xóa sau 90 phút, lúc đó thời điểm tạo chắc chắn đã cũ hơn 30 phút, nên yêu cầu cũ không bao giờ bị coi nhầm là yêu cầu mới. Khi bị từ chối vì đồng hồ lệch, phản hồi kèm giờ của server; máy tự chỉnh và gửi lại một lần với mã định danh mới, an toàn vì lần trước chưa làm gì.
+Máy người dùng tạo `request_id` và `attempt_id` dạng UUID v7. Khi Xác nhận tạo quán, lấy thời điểm cho ID từ giờ server trong phản hồi gửi mã cộng thời gian đơn điệu đã trôi qua trên trang. Tra và xác minh lần đầu dùng giờ DB sau khóa lần nhập. Bản ghi gửi lại thông thường giữ ít nhất 90 phút. ID chưa ghi và đã cũ hơn 30 phút bị từ chối `A_REQUEST_ID_STALE` mà không cần ghi dấu, vì lúc tra sẽ nhận `not_accepted` theo tuổi. Ghi giờ server trong lỗi lệch giờ. Chỉ khi trang còn mở và đã nhận kết quả từ chối cuối thì mới tự chỉnh và thử một lần bằng ID mới.
+
+Riêng Xác nhận tạo quán với ID lệch về tương lai: quá 2 giờ là đầu vào ngoài phạm vi của cả xác minh lẫn API tra, trả `A_REQUEST_INVALID`. Trong khoảng trên 30 phút đến 2 giờ, lần Xác nhận đúng dạng gắn với intent đang có mã còn hiệu lực có thể ghi **tối đa một dấu từ chối trên mỗi challenge**, bằng ràng buộc duy nhất và dưới khóa. Dấu chỉ giữ ID, phạm vi lần nhập, lý do `A_REQUEST_ID_STALE` và thời điểm, không so/lưu OTP hoặc PIN. ID khác tranh dấu đã có trả lỗi tạm thời `CREATE_VERIFY_UNAVAILABLE`, không ghi thêm và không chấp nhận tạo quán. Giữ dấu ít nhất 90 phút và đến khi ID cũ hơn DB quá 30 phút, Chỉ dọn khi cả hai điều kiện cùng đúng. Với ID lệch đúng 2 giờ, giữ dấu ở phút 150 và dọn được từ lần quét đầu sau phút 150. Dấu chặn chính ID đó khi thử gắn với intent khác. Chỉ dấu đã ghi mới biểu thị kết quả cuối; API tra không ghi dấu hoặc cấp quyền. Hai ngưỡng ở đây chỉ giới hạn dữ liệu phục vụ xử lý lệch giờ, tách khỏi các bộ đếm OTP, gửi thư và suất quán.
 
 ### Tạo quán sau khi mã đúng
 
@@ -242,10 +256,16 @@ Auth, database và email là ba hệ thống tách nhau nên không gói chung m
 1. Khóa yêu cầu, lấy lượt chạy (tăng thẻ lượt chạy), so lại dấu vân tay thông tin.
 2. Ghi dữ liệu tạm: tên, địa chỉ, tùy chọn dữ liệu mẫu, hash PIN, bí mật đã mã hóa, số quán.
 3. Tạo tài khoản kỹ thuật bằng API quản trị, có dấu hiệu gắn với yêu cầu này.
-4. Trong một giao dịch: tạo quán, cấu hình, nhân viên `owner`, liên kết chủ, nhật ký, bản ghi thư `queued`; chuyển yêu cầu sang `created`; xóa dữ liệu tạm. Quán được ghi cùng lúc chuyển trạng thái nên phép đếm hạn mức không bao giờ thiếu hay thừa.
-5. Mở khoảng nhận lại Store Key, gửi thư, chạy seed nếu chọn.
+4. Trong một giao dịch: tạo quán, cấu hình, nhân viên `owner`, liên kết chủ, nhật ký, bản ghi thư `queued`; chuyển yêu cầu sang `created`; ghi cửa sổ nhận lại key chỉ nếu OTP gốc còn hạn; xóa dữ liệu tạm. Quán được ghi cùng lúc chuyển trạng thái nên phép đếm hạn mức không bao giờ thiếu hay thừa.
+5. Trả kết quả theo REQ-STORE-04, xử lý gửi thư và chạy seed nếu chọn. Tác vụ gửi thư định kỳ độc lập chỉ nhặt bản ghi Store Key `queued` của quán đã commit `created`, kể cả khi lượt tạo đã dừng ngay sau commit. Tác vụ giữ độc quyền gửi bằng chuyển `queued` → `sending` trong giao dịch trước khi gọi đường gửi thư. Bản ghi đã `sending` mà kết quả chưa rõ tuân theo quy tắc thư, không phát lại. Tác vụ này không chạy provisioning, tra Auth, dọn tài khoản hoặc hoàn suất.
 
-Tiến trình đối soát nhặt yêu cầu quá hạn xử lý (ít nhất 10 phút) rồi làm tiếp từ bước đã ghi, hoặc dọn dẹp nếu không làm tiếp được: chuyển `compensating`, xóa tài khoản kỹ thuật có đúng dấu hiệu, chuyển `failed`, trả chỗ hạn mức. Thẻ lượt chạy ngăn lượt cũ chậm ghi đè lượt mới. Số quán có email đã bị người khác đăng ký thì bỏ qua và chọn số khác; hỏng ba số liên tiếp thì thất bại.
+Hạn lượt chạy mặc định là 10 phút kể từ khi ghi nhận operation, tính bằng giờ DB. Sau hạn, lượt cũ mất quyền ghi quán hoặc trả suất. Nếu Auth trả xác nhận rõ ràng email số quán đã bị người khác chiếm, lượt gốc còn hạn có thể bỏ qua và chọn số khác. Ba số liên tiếp bị chiếm và không để lại tác dụng phụ thì thất bại.
+
+**Rào phát lệnh Auth.** Trước mỗi lệnh, dưới khóa operation, worker phải chứng minh thẻ lượt chạy còn hiệu lực và ghi `claimed` cho đúng số quán. Chỉ lượt vừa claim được quyền gửi đúng một lệnh, tắt retry tự động của transport. Worker cũ chưa claim bị từ chối ngay khi mất lease. Nếu đã claim rồi mất lease thì claim vẫn giữ nguyên, vì lệnh có thể chưa rời worker hoặc đang đến Auth. Không lấy lại claim, đổi số hoặc phát lệnh tạo thứ hai khi claim cũ còn mơ hồ.
+
+**Bằng chứng để hoàn suất.** Lượt gốc còn hạn có thể ghi `failed` và hoàn suất trong một giao dịch khi biết chắc chưa phát lệnh Auth hoặc đã nhận phản hồi cuối xác định không có tác dụng phụ. Khi Auth trả thành công có đúng dấu hiệu server, ghi `created` cho lệnh Auth rồi tiếp tục cùng tài khoản. Nếu đã hoặc có thể đã sinh tài khoản mà chưa ghi được quán, giữ `unknown` và suất. Timeout, mất lease, hoặc một lần tra Auth không thấy tài khoản đều chưa đủ để hoàn suất. Phần ghi quán dở trong giao dịch vẫn rollback như thường.
+
+**Sau đồ án (quyết định 48).** Dùng operation, bước cuối, claim và dấu hiệu Auth đã lưu để thiết kế tiến trình tự đối soát, tiếp tục hoặc dọn tài khoản kỹ thuật dở dang, và cảnh báo. Trước khi tự hoàn suất, tiến trình tương lai phải chứng minh lệnh Auth đã kết thúc và không còn tác dụng phụ, kể cả khi cần xóa rồi xác nhận đúng tài khoản đã vắng mặt. Trong đồ án, lượt có thể giữ trạng thái chưa rõ quá hạn xử lý; phép tra chỉ đọc. Không triển khai tác vụ nền cho các ca này. Thư Store Key cho quán đã `created` vẫn đi theo đường gửi riêng và dùng bản ghi thư duy nhất.
 
 ### Mã lỗi mới
 
@@ -315,7 +335,7 @@ Cách chạy và danh sách ca phải test tay ghi ở `testplan.md`.
 
 Sửa lại ngày 2026-11-05. Không có mặt web riêng cho chủ (quyết định 23, 24).
 
-- **Màn tạo quán:** nhập thông tin, nhập mã, phần kết quả hiển thị Store Key kèm nút sao chép và nút "Tôi đã lưu Store Key". Không cần đăng nhập.
+- **Màn tạo quán:** nhập thông tin, nhập mã, phần kết quả hiển thị Store Key kèm nút sao chép và nút "Tôi đã lưu Store Key". Bấm nút lưu mở Ghép thiết bị với ô trống. Màn tra chưa rõ cho rời về trang đầu hoặc Ghép thiết bị mà vẫn giữ mã tra, và mở lại Tạo quán trong tab thì hiện lượt cũ. Không cần đăng nhập.
 - **Màn ghép thiết bị:** có lối quên Store Key.
 - **Màn nhập PIN:** khi chọn tài khoản chủ quán thì có lối "Quên mã PIN".
 - **Mục Cài đặt của POS:** với tài khoản chủ quán có thêm cấp lại Store Key, đổi email, chuyển quyền, reset dữ liệu và lối quên Store Key. Không thêm quyền vào danh mục.
@@ -361,7 +381,7 @@ Các việc đó nằm ở `add-multi-store-ownership` và `add-cross-store-repo
 | A nhập một địa chỉ khác của chính mình vào ô email mới, nên vẫn giữ đường khôi phục | Màn hình cảnh báo người nhận phải tự nhập và tự đọc mã. POS không hiển thị email nên phần mềm không kiểm tra được thêm |
 | Người ngoài cố tình làm hết lượt gửi mã của một email | Chỉ làm chậm việc gửi mã của đúng loại thao tác đó; không lộ gì và không cấp quyền |
 | Người biết mã định danh của yêu cầu có thể làm hết lần thử mã hoặc đóng sớm khoảng nhận lại Store Key | Chỉ ảnh hưởng tính sẵn sàng; không lộ PIN, mã hay key. Store Key vẫn có trên màn hình và trong thư |
-| Signup công khai của Supabase còn bật nên có thể chiếm trước email theo số quán | Dấu hiệu server ngăn nhận nhầm; bỏ qua số đã bị chiếm. Tắt signup là quyết định của chủ dự án khi triển khai |
+| Signup công khai của Supabase còn bật trong giai đoạn chuyển tiếp nên có thể chiếm trước email theo số quán | Dấu hiệu server ngăn nhận nhầm; bỏ qua số đã bị chiếm. Tắt signup sau vòng staging đầu tiên và chạy lại hồi quy theo quyết định 45 |
 | Thư mặc định của Supabase Auth khi cơ chế chặn bị tắt | Chấp nhận rủi ro; thư không mang quyền chủ. Quyết định 31 |
 | Reset xóa dữ liệu không khôi phục được | Bốn bước xác nhận; nhật ký giữ lại; không có bước xuất dữ liệu. Quyết định 29, 30, 43 |
 | Thêm một thành phần triển khai mới, tăng bề mặt vận hành | Đặt trong cùng nền tảng backend đang dùng, không thêm nhà cung cấp thứ ba |
@@ -384,7 +404,7 @@ Bước 1 và bước 2 là cổng chặn, không được bỏ qua.
 
 ## Open Questions
 
-Các câu hỏi đã được chủ dự án chốt hết; xem `proposal.md`, quyết định 32–44.
+Các quyết định hiện hành xem `proposal.md`, quyết định 32–49. Nếu T05 không chứng minh được ngân sách đường gửi thực, ghi phương án và xin quyết định trước tích hợp phụ thuộc.
 
 Việc thực hiện, không phải câu hỏi:
 
@@ -394,6 +414,6 @@ Việc thực hiện, không phải câu hỏi:
 - Đối chiếu tài liệu chính thức của Supabase rằng tạo user bằng API quản trị với email đã xác nhận không gửi thư, và `app_metadata` chỉ server ghi được, trước khi tạo tài khoản kỹ thuật thật.
 - Chốt cách đưa dữ liệu về rỗng khi reset, gồm dữ liệu chỉ thêm không sửa của sổ thanh toán. Chủ dự án nói có thể bàn thêm.
 - Đối chiếu tài liệu Supabase về thu hồi phiên và làm mới token (`tasks.md` mục 12.10).
-- Chủ dự án quyết định có tắt đăng ký công khai của Supabase không (`tasks.md` mục 1c.5).
-- Chốt thời hạn xóa biên nhận và bản nháp của luồng bỏ dở (`tasks.md` mục 6.6).
+- Tắt signup đúng thứ tự và chạy lại ma trận FE, Admin API, chặn signup trực tiếp (`tasks.md` mục 1c.5).
+- Cài tra trạng thái qua F5 chỉ bằng mã lần Xác nhận (`tasks.md` mục 6.3).
 - Trỏ cấu hình ứng dụng, CLI và hàm phía server sang staging (`tasks.md` mục 2.0).

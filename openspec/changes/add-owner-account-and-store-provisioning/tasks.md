@@ -2,7 +2,7 @@
 
 Cập nhật 2026-11-05: chủ không còn đăng nhập web; thao tác của chủ làm trên POS (quyết định 23, 24). Đặc tả các luồng giai đoạn 2 đã viết trong đợt này; giai đoạn triển khai không đổi. Chưa có việc nào được giao triển khai.
 
-Chia hai giai đoạn theo quyết định 18. Kết thúc giai đoạn 1 là một điểm dừng an toàn: hệ thống chạy đầy đủ và đã trả lời trọn vấn đề ai cũng tạo được cửa hàng. Phần thiếu duy nhất là khôi phục, mà hiện tại cũng chưa có, nên dừng ở đó không làm hệ thống tệ hơn trước.
+Chia hai giai đoạn theo quyết định 18. Giai đoạn 1 đưa luồng tạo quán có OTP và chặn đường tạo cũ. Các chức năng khôi phục dành cho chủ ở giai đoạn 2. Tự động đối soát lượt tạo quán dở dang nằm sau đồ án theo quyết định 48.
 
 Thứ tự tổng thể xem `docs/roadmap.md` và `docs/workflow/g01-g10-plan.md`. Reset dữ liệu xếp ở giai đoạn 2 trong kế hoạch, chưa thực hiện ngay (quyết định 36).
 
@@ -10,15 +10,21 @@ Thứ tự tổng thể xem `docs/roadmap.md` và `docs/workflow/g01-g10-plan.md
 
 # Giai đoạn 1 — Danh tính và kiểm soát việc tạo cửa hàng
 
+## 0. Cổng trước khi code thực tế và thứ tự test
+
+- [ ] 0.1 Rà và chốt ma trận expected FE trong `testplan.md` trước khi viết code thực tế. Bao gồm lỗi OTP, thời gian chờ, F5, chống tạo trùng, nhận Store Key, ghép máy và PIN.
+- [ ] 0.2 Khi được giao code, hiện thực FE/ports/mock với OTP lấy từ hộp thư giả, chạy qua cổng mock trước khi nối FE với staging. Giữ cấu hình signup hiện tại.
+- [ ] 0.3 Sau khi mock đạt và T05 sẵn sàng, chạy vòng staging với OTP thật, Auth/DB thật; sau đó chạy mục 1c.5. Lưu hai kết quả theo cấu hình, nguồn và fixture.
+
 ## 1. Đường gửi email — làm ngay, không có việc nào phải chờ duyệt
 
 Mốc phải đạt là mức 1 ở quyết định 15. Mức 3 là phần thưởng nếu xin được tên miền, **không** phải điều kiện.
 
 - [ ] 1.1 Tạo một tài khoản Gmail riêng của dự án, không dùng tài khoản cá nhân
 - [ ] 1.2 Bật xác thực hai bước cho tài khoản đó, rồi tạo App Password
-- [ ] 1.3 Đặt thông tin SMTP `smtp.gmail.com` cổng 587 và App Password vừa tạo vào biến môi trường của hàm phía server; không dùng cho thư mặc định của Supabase Auth
+- [ ] 1.3 Xác minh TLS trực tiếp tới `smtp.gmail.com:465` từ Edge Function hosted trước khi chốt cấu hình. [Giới hạn hosted](https://supabase.com/docs/guides/functions/limits#other-limits--restrictions) chặn cổng 587. Giữ App Password trong bí mật của hàm server; thư Supabase Auth xử lý riêng.
 - [ ] 1.4 Gửi thử tới ít nhất một nhà cung cấp hộp thư phổ biến, xác nhận vào hộp thư chính chứ không vào thư rác
-- [ ] 1.5 Ghi lại hạn mức gửi mỗi ngày, đối chiếu với nhu cầu của giai đoạn phát triển và buổi demo
+- [ ] 1.5 Ghi lại hạn mức nhà gửi và kiểm nhu cầu gồm cả OTP, thư Store Key sau tạo và thư đang chờ. Trần 400 lượt theo quyết định 39 không bao gồm thư Store Key. Nếu ngân sách thật không đủ, báo đánh đổi và chốt phương án trước tích hợp phụ thuộc.
 
 ### 1b. Nâng lên mức 3, chạy song song và không chặn gì
 
@@ -34,7 +40,7 @@ Mốc phải đạt là mức 1 ở quyết định 15. Mức 3 là phần thư�
 - [ ] 1c.2 Cài cơ chế chặn trước khi phát hành giai đoạn 1; xác nhận Store Key và POS vẫn hoạt động
 - [ ] 1c.3 Ghi vào `docs/limitations.md` rủi ro đã chấp nhận khi cơ chế chặn bị tắt
 - [ ] 1c.4 Kiểm thử: TC-OWNER-78
-- [ ] 1c.5 Chủ dự án quyết định có tắt đăng ký công khai của Supabase không
+- [ ] 1c.5 Sau vòng staging đầu tiên đạt, tắt signup công khai trên đúng project staging rồi chạy lại TC-OWNER-104. Kiểm signup trực tiếp bị từ chối, Admin API vẫn tạo được tài khoản kỹ thuật và ma trận FE cơ bản vẫn đạt. Ghi cấu hình trước/sau và điều kiện nếu phải quay lại bản cũ.
 
 ## 2. Lược đồ và migration
 
@@ -45,7 +51,7 @@ Mốc phải đạt là mức 1 ở quyết định 15. Mức 3 là phần thư�
 - [ ] 2.4 Thêm cột `owner_account_id` vào `stores`, bắt buộc, **không** đặt ràng buộc duy nhất
 - [ ] 2.5 Thêm cột `status` vào `stores`, bỏ cột `is_active`
 - [ ] 2.6 Thêm cột `key_secret_encrypted` và `key_encryption_version` vào `stores`
-- [ ] 2.7 Tạo các bảng `otp_challenges`, `otp_request_outcomes`, `otp_attempts`, `create_intents`, `create_operations`, `mail_dispatches`, `store_admin_log` theo `design.md`
+- [ ] 2.7 Tạo các bảng `otp_challenges`, `otp_request_outcomes`, `otp_attempts`, `create_intents`, `create_operations`, `auth_create_dispatches`, `mail_dispatches`, `store_admin_log` theo `design.md`
 - [ ] 2.8 Viết kiểm thử khẳng định không tồn tại ràng buộc duy nhất nào trên `stores.owner_account_id`
 
 ## 3. Chính sách bảo mật mức dòng
@@ -64,12 +70,12 @@ Mốc phải đạt là mức 1 ở quyết định 15. Mức 3 là phần thư�
 - [ ] 4.3 Viết tiện ích mã hóa và giải mã phần bí mật, có mang định danh phiên bản khóa
 - [ ] 4.4 Dựng phần gửi và kiểm mã dùng chung theo thứ tự ở `design.md`: giới hạn theo email riêng từng loại thao tác, giới hạn theo địa chỉ mạng và trần toàn dự án tính chung
 - [ ] 4.5 Cài hạn mức 5 cửa hàng, đọc từ cấu hình chứ không phải hằng số trong mã, kiểm sau khi mã đúng; không giới hạn số lần tạo trong ngày
-- [ ] 4.6 Hành động `requestCreateStoreOtp`, `verifyAndAcceptCreate`, `confirmStoreKeySaved`
-- [ ] 4.7 Tạo quán theo các bước ở `design.md`: lượt chạy và thẻ lượt chạy, dữ liệu tạm, tài khoản kỹ thuật có dấu hiệu, giao dịch ghi quán, thư gửi sau khi đã lưu
-- [ ] 4.8 Tiến trình đối soát: làm tiếp hoặc dọn dẹp, gửi thư còn thiếu, quét tài khoản kỹ thuật mồ côi, báo người vận hành
+- [ ] 4.6 Hành động `requestCreateStoreOtp`, `verifyAndAcceptCreate`, `getCreateStatus`, `confirmStoreKeySaved`. Điểm vào provisioning nội bộ chỉ xử lý operation đã chấp nhận và có giữ chỗ; tách quyền hỏi trạng thái khỏi nhận key hoặc ghi.
+- [ ] 4.7 Tạo quán theo các bước ở `design.md`: thẻ lượt chạy, claim một lần cho lệnh Auth, dữ liệu tạm, tài khoản kỹ thuật có dấu hiệu, giao dịch ghi quán, thư gửi sau khi đã lưu
+- [ ] 4.8 Xử lý lượt tạo dở trong phạm vi đồ án: giữ suất, trả `unknown` khi hết hạn kể cả nếu lượt gốc dừng trước khi ghi trạng thái, từ chối ghi muộn và giữ tham chiếu Auth. Tra/gửi lại chỉ đọc hoặc nhận kết quả theo contract, không khởi chạy tạo lại. Kiểm các ca crash và quota trước nghiệm thu.
 - [ ] 4.9 Ghi `store_created` vào `store_admin_log`
-- [ ] 4.10 Kiểm thử: hàm không bao giờ trả khóa ra ngoài; lỗi giữa chừng không để lại tài khoản kỹ thuật mồ côi vĩnh viễn
-- [ ] 4.11 Kiểm thử: tạo xong thì có email chứa Store Key; gửi thư lỗi không làm hỏng cửa hàng và không hoàn hạn mức
+- [ ] 4.10 Kiểm TC-OWNER-103/105/106: đếm riêng lượt gửi, lần sai và suất quán; chặn bypass; chỉ trả Store Key theo REQ-STORE-04, giữ bí mật server; kiểm Auth đến muộn trước khi trả quota.
+- [ ] 4.11 Dùng tác vụ gửi thư độc lập cho bản ghi Store Key `queued` của quán đã `created`. Kiểm TC-OWNER-44 ngay cả khi lượt tạo dừng sau commit và trước khi gửi. Thư lỗi không làm hỏng quán và không hoàn suất.
 - [ ] 4.12 Đối chiếu tài liệu Supabase về tạo user bằng API quản trị và `app_metadata` trước khi tạo tài khoản thật
 - [ ] 4.13 Tách phần gửi thư và phần lưu trữ khỏi các quy tắc, để chạy test trên máy với database giả và đường gửi thư giả; hàm thật không có chế độ test, không có mã xác nhận dùng chung, có kiểm cận dưới của các giá trị cấu hình
 
@@ -86,10 +92,10 @@ Mốc phải đạt là mức 1 ở quyết định 15. Mức 3 là phần thư�
 
 - [ ] 6.1 Màn tạo quán: nhập email, tên hiển thị bắt buộc, địa chỉ tùy chọn, PIN chủ quán, tùy chọn dữ liệu mẫu
 - [ ] 6.2 Màn nhập mã, kèm xử lý hết hạn, quá số lần sai và khóa nút Gửi lại tới mốc hẹn
-- [ ] 6.3 Biên nhận và bản nháp tên quán, địa chỉ, tùy chọn dữ liệu mẫu trong IndexedDB, không lưu PIN; quay lại đúng bước sau khi tải lại trang; không ghi được thì vẫn cho làm tiếp kèm cảnh báo; chỉnh đồng hồ theo giờ server
+- [ ] 6.3 F5 bỏ form và biên nhận gửi mã. Sau Xác nhận chỉ lưu `attemptId` qua F5 để tra trạng thái; nếu lỗi lưu thì cảnh báo và vẫn cho làm tiếp. Giữ đồng hồ theo giờ server trong trang còn mở.
 - [ ] 6.4 Thông báo khi chạm trần cửa hàng, kèm hướng dẫn liên hệ nhà cung cấp
 - [ ] 6.5 Màn kết quả tạo quán: hiển thị Store Key kèm nút sao chép và nút "Tôi đã lưu Store Key", nhắc chủ sao chép và lưu lại ngay
-- [ ] 6.6 Chốt thời hạn xóa biên nhận và bản nháp của luồng bỏ dở
+- [ ] 6.6 Xóa mã tra khi người dùng rời kết quả cuối; giữ khi còn chưa rõ. Bỏ form khi F5 theo quyết định 46, không có bản nháp lưu lâu cần TTL.
 
 ## 7. Gỡ luồng tạo cửa hàng cũ
 
@@ -121,6 +127,7 @@ Chạy các ca trong `testplan.md` thuộc giai đoạn 1 theo mục Cách chạ
 - [ ] 9.3 Chạy nhóm biên TC-OWNER-31…36
 - [ ] 9.4 Chạy nhóm bảo mật TC-OWNER-37…48, cùng TC-OWNER-78, 80, 81, 82, 91…95, 101
 - [ ] 9.5 Test tay trên staging, chỉ trên quán thử: các ca được liệt kê ở mục Cách chạy; tạo cửa hàng từ đầu tới lúc ghép được thiết bị; dọn quán thử sau khi chủ dự án xác nhận
+- [ ] 9.6 Chạy TC-OWNER-103…106 theo lane trong testplan. Hai vòng staging của TC-OWNER-104 bắt buộc trước khi đóng giai đoạn 1.
 
 ## 10. Tài liệu giai đoạn 1
 
@@ -128,7 +135,7 @@ Chạy các ca trong `testplan.md` thuộc giai đoạn 1 theo mục Cách chạ
 - [ ] 10.2 Cập nhật `docs/architecture.md`: thêm thành phần chạy phía server
 - [ ] 10.3 Cập nhật `docs/data-model.md`: cột mới và bảng mới
 - [ ] 10.4 Cập nhật `docs/screens.md`: màn tạo quán và màn kết quả
-- [ ] 10.5 Cập nhật `docs/limitations.md`: rủi ro mất khóa mã hóa, Store Key nằm lại trong hộp thư, thư mặc định của Supabase Auth khi cơ chế chặn bị tắt
+- [ ] 10.5 Cập nhật `docs/limitations.md`: rủi ro mất khóa mã hóa, Store Key nằm lại trong hộp thư, thư mặc định của Supabase Auth khi cơ chế chặn bị tắt và lượt tạo chưa rõ có thể giữ suất đến khi xác minh riêng theo quyết định 48.
 - [ ] 10.6 Cập nhật `pos-cafe-context.md` và `docs/features.md`
 - [ ] 10.7 Cập nhật tiến độ trong `docs/roadmap.md`, ghi ngày
 
@@ -220,4 +227,8 @@ Chạy các ca trong `testplan.md` thuộc giai đoạn 1 theo mục Cách chạ
 - [ ] 17.3 Cập nhật `docs/demo-runbook.md` với kịch bản demo phần khôi phục
 - [ ] 17.4 Cập nhật tiến độ trong `docs/roadmap.md`, ghi ngày
 - [ ] 17.5 Cập nhật `docs/data-model.md` cho `owner_action_proofs`, `store_key_rotations`; cập nhật `docs/limitations.md`: token còn dùng được sau khi cấp lại key, chủ cũ còn biết Store Key, email thứ hai của người bán, giả lập không chứng minh được bảo mật
-- [ ] 17.6 Chạy `openspec archive add-owner-account-and-store-provisioning` sau khi cả hai giai đoạn xong
+- [ ] 17.6 Chạy `openspec archive add-owner-account-and-store-provisioning` sau khi cả hai giai đoạn trong phạm vi xong. Khi archive, giữ liên kết tới mục hoãn sau đồ án.
+
+## Sau đồ án — Đối soát tự động lượt tạo quán
+
+Quyết định 48 hoãn tiến trình tự tìm lượt chưa rõ, xác minh Auth, tiếp tục hoặc dọn tài khoản kỹ thuật dở dang và cảnh báo vận hành. Mở lại khi có nhu cầu vận hành quán thật. Tái dùng operation, bước cuối, claim và dấu hiệu Auth đã lưu. Cần chốt thời hạn xử lý và bằng chứng để hoàn suất trước khi triển khai phần này.

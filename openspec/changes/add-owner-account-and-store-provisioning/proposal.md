@@ -127,7 +127,9 @@ Change này không lật một quyết định đã chốt: mô hình Store Key 
 11. ~~Store Key được gửi tới chủ bằng cách nào, và đặt nút quên Store Key ở đâu?~~ **Đã trả lời ở quyết định số 8: gửi thẳng trong email, một luồng dùng chung ở hai lối vào.** Câu hỏi gốc: Hai điểm cần chốt: gửi thẳng Store Key trong nội dung email, hay gửi một đường dẫn mà chủ phải bấm mới xem được key trên trang web, để credential không nằm vĩnh viễn trong hộp thư và trong các thư chuyển tiếp. Và nút quên Store Key đặt công khai ngay màn ghép thiết bị chỉ cần nhập email, hay bắt đăng nhập tài khoản chủ trước. Nếu để công khai thì phản hồi phải chung chung, không tiết lộ email có tồn tại trong hệ thống hay không, và phải giới hạn tần suất gửi.
 12. ~~Tài khoản chủ có màn quản trị riêng trên web không, hay chủ muốn quản trị cửa hàng thì vẫn phải ghép thiết bị và đăng nhập bằng PIN như mọi nhân viên khác?~~ **Đã trả lời ở quyết định số 23, 24: không có mặt web riêng; chủ đăng nhập POS bằng PIN.** Trước đó quyết định số 7 giữ mặt web ở mức tối thiểu.
 
-**Không còn câu mở.** Các câu còn mở ngày 2026-11-05 đã được chủ dự án trả lời cùng ngày; xem quyết định 32–44. Bốn việc chờ lúc triển khai, không phải câu hỏi mới: cách đưa dữ liệu về rỗng khi reset, việc tắt đăng ký công khai của Supabase, thời hạn xóa bản nháp của luồng bỏ dở, và đối chiếu cách thu hồi phiên của Supabase.
+Các câu nghiệp vụ ngày 2026-11-05 đã được trả lời ở quyết định 32–44. Signup, F5, ranh giới mock/staging, xử lý kết quả chưa rõ và điều hướng FE được chốt tiếp ở quyết định 45–49. Cách reset và thu hồi phiên thuộc giai đoạn 2. Nếu kiểm tra T05 cho thấy hạn mức thực tế của nhà gửi không đủ cho cả OTP và thư Store Key, cần chốt phương án đường gửi hoặc ngân sách thư trước phần tích hợp phụ thuộc.
+
+**Đã chốt ranh giới T06:** REQ-STORE-03 chỉ yêu cầu giữ trạng thái chưa rõ, giữ suất và chống tạo trùng cho lượt tạo dở. Tự động đối soát, dọn tài khoản kỹ thuật dở dang và cảnh báo vận hành cho lượt đó nằm ngoài đồ án theo quyết định 48.
 
 ## Quyết định đã chốt
 
@@ -458,7 +460,7 @@ Ghi ngày 2026-08-28, theo trao đổi với người dùng.
 
     Lỗi lưu trữ của trình duyệt không nên chặn việc tạo quán. Máy giữ dữ liệu trong bộ nhớ và cảnh báo "Tải lại có thể làm mất bước đang thực hiện". Đánh đổi: nếu tải lại trang lúc đó, người dùng quay về màn nhập thông tin và phải đợi hết thời gian chờ mới có mã mới. Đã cân nhắc và loại phương án dừng lại.
 
-38. **Sau khi tải lại trang, máy giữ sẵn tên quán, địa chỉ và tùy chọn dữ liệu mẫu; PIN luôn phải nhập lại.** Chốt 2026-11-05.
+38. **Sau khi tải lại trang, máy giữ sẵn tên quán, địa chỉ và tùy chọn dữ liệu mẫu; PIN luôn phải nhập lại.** Chốt 2026-11-05, thay bởi quyết định 46 ngày 2026-11-10. Quyết định 37 chỉ còn áp dụng lúc lưu mã tra trạng thái sau Xác nhận.
 
     Giúp người dùng không phải gõ lại, và tránh gõ khác đi làm thành một lần tạo mới. Đánh đổi: người dùng chung máy có thể thấy các thông tin này cho tới khi chúng được xóa; đây không phải thông tin bí mật. PIN, mã và Store Key không bao giờ được lưu.
 
@@ -499,3 +501,19 @@ Ghi ngày 2026-08-28, theo trao đổi với người dùng.
 44. **Dùng project staging làm database của dự án; không dùng database gốc nữa.** Chốt 2026-11-05.
 
     Từ ngày này dự án dùng staging `ineckiashpwloncxnbqx` cho phát triển và kiểm thử, không dùng database gốc `kfqjdfwxhkdwihjobpny`. Sau này có thể dùng luôn staging làm database chính; khi đó phải xem lại quy tắc test tay ở quyết định 41, vì lúc đó có dữ liệu thật. Quyết định này chưa đổi cấu hình nào; việc trỏ cấu hình sang staging làm khi triển khai.
+
+45. **Chốt tiêu chí FE trước code; chạy mock trước khi nối staging; tắt signup công khai sau khi luồng mới chạy ổn rồi chạy lại hồi quy.** Chủ dự án xác nhận trong chat rà PR #18 ngày 2026-11-10. Vòng mock dùng dữ liệu và hộp thư giả, giữ cấu hình signup hiện tại. Trên staging dùng OTP và database thật, sau đó tắt signup và chạy lại cùng ma trận FE cơ bản, kiểm cả việc gọi thẳng signup bị chặn và Admin API vẫn tạo tài khoản kỹ thuật. Đánh đổi: thêm một vòng hồi quy nhưng phát hiện được phụ thuộc cũ vào signup. Nếu phải quay về bản cũ cần xử lý cấu hình signup cùng bản code, vì đường tạo cũ gọi `auth.signUp`. Chi tiết cổng ở testplan và tasks.
+
+46. **F5 bỏ form; sau khi bấm Xác nhận chỉ giữ mã tra trạng thái.** Chủ dự án xác nhận trong chat rà PR #18 ngày 2026-11-10, thay quyết định 38. Chọn form trong bộ nhớ và chỉ lưu `attemptId` trước khi gửi Xác nhận. Đánh đổi: sau F5 phải nhập lại form và có thể phải chờ hết thời gian gửi mã. Nếu yêu cầu đã đi tới server, người dùng vẫn có đường xem tiến độ. Mã tra chỉ trả trạng thái, không có quyền tạo quán hoặc lấy Store Key.
+
+47. **Chấp nhận trường hợp mất cả phản hồi và thư Store Key trên các quán thử giai đoạn 1.** Chủ dự án xác nhận trong chat rà PR #18 ngày 2026-11-10. Vẫn giao key trên màn hình và gửi thư như quyết định 22. Giai đoạn 2 giữ luồng Quên Store Key. Đánh giá lại khi chuyển sang quán sử dụng thực tế.
+
+48. **Giữ an toàn khi chưa rõ kết quả tạo quán. Hoãn tự động đối soát, dọn dẹp và cảnh báo provisioning tới sau đồ án.** Chủ dự án xác nhận trong chat rà PR #18 ngày 2026-11-10, thay cam kết kết thúc hữu hạn trước đây trong REQ-STORE-03 và bỏ mốc cảnh báo 1 giờ cho ca này. Trong đồ án, giữ mã lượt, trạng thái `unknown`, suất và rào một operation mỗi intent. Khi phát hiện lỗi có bằng chứng chắc chắn chưa để lại tác dụng phụ, vẫn kết thúc `failed` và hoàn suất. Nếu chưa rõ, lượt có thể kẹt và giữ suất cho tới khi được xác minh riêng. Chủ dự án chọn chấp nhận đánh đổi này cho quán thử thay vì triển khai bộ phục hồi tự động ngay. Lưu liên kết Auth và dấu hiệu server để có thể làm bộ đối soát sau. Quyết định này chỉ áp dụng cho kết quả tạo quán, giữ nghĩa vụ gửi thư Store Key của lượt tạo thành công và đường tra kết quả sau F5.
+
+49. **Cho rời màn tra khi chưa rõ, và ghép máy thủ công sau khi lưu Store Key.** Chủ dự án xác nhận trong chat rà PR #18 ngày 2026-11-10. Từ màn tra, có thể về trang đầu hoặc ghép thiết bị, vẫn giữ mã tra. Mở lại Tạo quán trong cùng tab thì mở lượt cũ, chưa mở form lượt mới. Sau khi bấm “Tôi đã lưu Store Key”, chuyển tới màn Ghép thiết bị với ô trống. Chủ dự án xác nhận lại retry seed theo R06-A, dùng thông báo chung sau khi owner đăng nhập.
+
+### Phân tích chống lạm dụng tạo quán, cập nhật 2026-11-10
+
+Ba số đếm có đơn vị riêng: lượt phát OTP theo email/IP/dự án, lần nhập sai theo từng mã, và số quán đã có hoặc đang giữ chỗ theo email. Việc bấm Gửi mã hoặc nhận thư không giữ chỗ quán. Việc chấp nhận tạo quán đòi đúng mã của intent, đúng thông tin và còn chỗ. Server tiêu thụ mã và giữ chỗ trong cùng giao dịch, trước mọi thay đổi Auth. Gửi lại cùng yêu cầu hoặc gọi hỏi trạng thái không phát thư hay tạo quán thêm. Thiết kế này giữ quyết định 14, 20, 23 và 39.
+
+Đổi IP không né được giới hạn email, còn đổi email không né được giới hạn IP và toàn dự án. Nhiều hộp thư hoặc nhiều địa chỉ cùng về một hộp thư vẫn có thể là nhiều email theo quy tắc hiện hành giữ dấu chấm và `+tag`. Bởi vậy trần 5 là theo email chuẩn hóa, và giới hạn 400 là ngân sách lượt gửi đã nêu trong quyết định 39. Thư Store Key đi thêm sau khi tạo và không nằm trong 400 lượt này. T05 phải đối chiếu tổng lưu lượng thực (gồm thư Store Key, thư còn trong hàng đợi và giới hạn nhà gửi), ưu tiên kiểm khả năng giao OTP. Bất kỳ thay đổi nào về chính sách alias, CAPTCHA, trần tạo theo ngày hoặc ngân sách gửi đã chốt đều cần quyết định riêng nếu bằng chứng cho thấy cần.
