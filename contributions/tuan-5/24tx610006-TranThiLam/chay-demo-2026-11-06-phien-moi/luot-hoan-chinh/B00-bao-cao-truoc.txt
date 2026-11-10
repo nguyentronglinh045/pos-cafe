@@ -1,0 +1,118 @@
+POS Café
+
+POS Demo
+
+Không gian bán hàng
+Sơ đồ bàn
+Tra cứu thao tác
+Bán mang đi
+Lịch sử đơn
+Thực đơn
+Nhân viên
+Sơ đồ cửa hàng
+Báo cáo
+Cấu hình thanh toán
+Cài đặt
+C
+Chủ quán
+Chủ quán
+Khoá
+POS Demo
+›
+Vận hành bán hàng
+Tự động cập nhật
+Sơ đồ bàn
+
+Chọn bàn để xem và quản lý đơn hàng.
+
+Tất cả
+Trống
+Đang phục vụ
+Tầng trệt
+8
+Lầu 1
+6
+Tầng trệt
+34 chỗ ngồi
+50% sử dụng
+B01
+B02
+125K
+B03
+B04
+B05
+86K
+B06
+B07
+B08
+Chọn bàn để mở giao diện gọi món
+8/8 bàn
+Đơn đang mở
+3
+
+TẠI BÀN · 2
+
+B02
+#24
+Đang phục vụ
+125.000đ
+Mở đơn hàng →
+B05
+#25
+Đang phục vụ
+86.000đ
+Mở đơn hàng →
+
+MANG ĐI · 1
+
+Mang đi
+#26
+Đang phục vụ
+84.000đ
+Mở đơn hàng →
+Chọn một đơn để tiếp tục phục vụ.
+Xin chào Chủ quán
+Đã ghép thiết bị
+Báo cáo
+
+Chỉ tính đơn đã thanh toán · online
+
+Hôm nay
+7 ngày
+Tháng này
+Tuỳ chọn
+Xuất
+Đóng
+DOANH THU HÔM NAY
+0 ₫
+0 đơn · TB 0 ₫
+MỤC BÁO CÁO
+Tổng quan
+0 đơn
+Theo giờ
+0 mốc
+Món bán chạy
+0
+Đơn đã thanh toán
+0
+Giờ cao điểm
+—
+Thanh toán phổ biến
+—
+Đơn đã huỷ
+0
+Tiền hủy
+0 ₫
+Tổng quan
+DOANH THU
+0 ₫
+SỐ ĐƠN ĐÃ THANH TOÁN
+0
+TRUNG BÌNH ĐƠN
+0 ₫
+TOP MÓN
+-
+
+Chưa có đơn đã thanh toán trong khoảng này.
+
+Làm mới
