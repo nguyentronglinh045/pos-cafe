@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useStoreSessionQuery } from "@/features/session";
 import { PermissionLifecycle } from "./PermissionLifecycle";
@@ -14,7 +14,8 @@ import { AppShell } from "./shell/AppShell";
 import { requireCompatibilityUpdate } from "./compatibilityGate";
 import { usePermissionSession } from "@/features/shared/permissionSession";
 import { InitialSeedLifecycle } from "./InitialSeedLifecycle";
-import { usePorts } from "@/features/shared/portsContext";
+import { PortsContext, usePorts } from "@/features/shared/portsContext";
+import { restoreOwnerCreateAttempt } from "./screens/useOwnerCreateCloseout";
 
 export const wasPageReloaded = (entries: readonly Pick<PerformanceNavigationTiming, "type">[] =
   performance.getEntriesByType("navigation") as PerformanceNavigationTiming[]): boolean =>
@@ -77,6 +78,7 @@ export function App() {
 }
 
 function ActiveApp() {
+  const storeProvisioning = useContext(PortsContext)?.storeProvisioning;
   const screen = useAppStore((state) => state.screen);
   const currentEmployee = useAppStore((state) => state.currentEmployee);
   const createdStoreResult = useAppStore(state => state.createdStoreResult);
@@ -87,6 +89,9 @@ function ActiveApp() {
   const storeSessionQuery = useStoreSessionQuery();
   const storeSession = storeSessionQuery.data?.session ?? null;
 
+  useEffect(() => {
+    if (storeProvisioning && restoreOwnerCreateAttempt()) setScreen("createStore");
+  }, [setScreen, storeProvisioning]);
 
   useEffect(() => {
     if (!storeSessionQuery.data) {
@@ -114,7 +119,7 @@ function ActiveApp() {
 
   return (
     <>
-      {!currentEmployee && !requiredPinSession && <ReloadRecoveryNotice />}
+      {!storeProvisioning && !currentEmployee && !requiredPinSession && <ReloadRecoveryNotice />}
       {currentEmployee && <PermissionLifecycle />}
       {createdStoreResult || pendingStoreCreationInput ? (
         <CreateStoreScreen />
@@ -127,7 +132,7 @@ function ActiveApp() {
           <AppShell />
         </>
       ) : screen === "landing" ? (
-        <LandingScreen />
+        <LandingScreen ownerCreatePreview={!!storeProvisioning} />
       ) : screen === "storePairing" ? (
         <StorePairingScreen />
       ) : screen === "createStore" ? (

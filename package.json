@@ -17,6 +17,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "smoke": "playwright test",
+    "smoke:owner-create": "playwright test -c playwright.owner-create.config.ts",
     "smoke:supabase": "playwright test -c playwright.supabase.config.ts",
     "test:contracts": "node scripts/idempotency-run.mjs contracts",
     "test:idempotency:unit": "node scripts/idempotency-run.mjs unit",

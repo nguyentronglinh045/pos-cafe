@@ -38,6 +38,7 @@ import type {
 
 export type * from "./permissions";
 export type * from "./permissionPrint";
+export type * from "./storeProvisioning";
 
 export type InitialReceiptExecutionResult = {
   operation: OperationView;
@@ -155,6 +156,7 @@ export type AppPorts = {
   permission: import("./permissions").PermissionRuntimePorts;
   write: IWriteOperationRepo;
   auth: IAuthRepo;
+  storeProvisioning?: import("./storeProvisioning").IStoreProvisioningPort;
   seed: ISeedRepo;
   print: IPrintPort;
 };

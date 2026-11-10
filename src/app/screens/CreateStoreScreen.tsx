@@ -7,6 +7,7 @@ import { useAppStore } from "../useAppStore";
 import { toToastError } from "../appErrors";
 import { usePorts } from "@/features/shared/portsContext";
 import { isAppError } from "@/core/appError";
+import { OwnerCreateRequestScreen } from "./OwnerCreateRequestScreen";
 
 const createStoreErrorMessage = (error: unknown): string => {
   if (!isAppError(error)) return toToastError(error);
@@ -20,6 +21,11 @@ const createStoreErrorMessage = (error: unknown): string => {
 };
 
 export function CreateStoreScreen() {
+  const { storeProvisioning } = usePorts();
+  return storeProvisioning ? <OwnerCreateRequestScreen port={storeProvisioning} /> : <LegacyCreateStoreScreen />;
+}
+
+function LegacyCreateStoreScreen() {
   const setScreen = useAppStore((state) => state.setScreen);
   const createdStoreResult = useAppStore((state) => state.createdStoreResult);
   const setCreatedStoreResult = useAppStore((state) => state.setCreatedStoreResult);

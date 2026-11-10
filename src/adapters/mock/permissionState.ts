@@ -29,13 +29,23 @@ export type MockPermissionState = {
 };
 
 /** The database flag is deliberately private to the adapter, like a non-projected column. */
-const pinChangeFlags = new WeakMap<MockPermissionState, Set<string>>();
+const pinChangeFlags = new WeakMap<MockPermissionState, Map<string, Set<string>>>();
+
+function storeFlags(state: MockPermissionState) {
+  let values = pinChangeFlags.get(state);
+  if (!values) {
+    values = new Map();
+    pinChangeFlags.set(state, values);
+  }
+  return values;
+}
 
 function flags(state: MockPermissionState): Set<string> {
-  let value = pinChangeFlags.get(state);
+  const values = storeFlags(state);
+  let value = values.get(state.storeId);
   if (!value) {
     value = new Set();
-    pinChangeFlags.set(state, value);
+    values.set(state.storeId, value);
   }
   return value;
 }
@@ -56,7 +66,7 @@ export const mockPermissionResetPinChangeFlags = (
   state: MockPermissionState,
   requiredEmployeeIds: readonly string[] = [],
 ): void => {
-  pinChangeFlags.set(state, new Set(requiredEmployeeIds));
+  storeFlags(state).set(state.storeId, new Set(requiredEmployeeIds));
 };
 
 /** Explicit synthetic identity, separate from legacy mock employee/PIN sessions. */
