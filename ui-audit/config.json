@@ -34,6 +34,29 @@
       ]
     },
     {
+      "name": "owner-create-form",
+      "describe": "phase 1 mock, nhap thong tin gui OTP",
+      "route": "/?owner-create-mock=1",
+      "extends": "landing",
+      "steps": [
+        { "click": "@go-create-store" },
+        { "waitFor": "@owner-create-email" }
+      ]
+    },
+    {
+      "name": "owner-create-receipt",
+      "describe": "phase 1 mock, bien nhan va dem nguoc gui lai",
+      "route": "/?owner-create-mock=1",
+      "extends": "owner-create-form",
+      "steps": [
+        { "fill": "@owner-create-email", "value": "qa@example.com" },
+        { "fill": "@owner-create-name", "value": "Quán QA" },
+        { "fill": "@owner-create-pin", "value": "638251" },
+        { "click": "@owner-create-send" },
+        { "waitFor": "@owner-create-otp-receipt" }
+      ]
+    },
+    {
       "name": "passcode",
       "describe": "chon nhan vien + ban phim PIN",
       "extends": "store-pairing",

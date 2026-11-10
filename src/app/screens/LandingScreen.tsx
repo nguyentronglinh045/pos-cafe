@@ -1,7 +1,7 @@
 import { LogIn, Store } from "lucide-react";
 import { useAppStore } from "../useAppStore";
 
-export function LandingScreen() {
+export function LandingScreen({ ownerCreatePreview = false }: { ownerCreatePreview?: boolean }) {
   const setScreen = useAppStore((state) => state.setScreen);
   return (
     <main className="min-h-[100dvh] w-full overflow-y-auto bg-pos-bg" data-testid="landing-screen">
@@ -34,7 +34,7 @@ export function LandingScreen() {
             >
               <Store size={26} className="shrink-0 text-pos-primary" />
               <strong>Tạo quán mới</strong>
-              <span>Thiết lập quán và nhận Store Key + Admin PIN.</span>
+              <span>{ownerCreatePreview ? "Xác minh email và nhận Store Key để ghép máy." : "Thiết lập quán và nhận Store Key + Admin PIN."}</span>
             </button>
           </div>
         </div>
