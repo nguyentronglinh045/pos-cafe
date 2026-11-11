@@ -14,9 +14,18 @@ Thứ tự tổng thể xem `docs/roadmap.md` và `docs/workflow/g01-g10-plan.md
 
 Mốc phải đạt là mức 1 ở quyết định 15. Mức 3 là phần thưởng nếu xin được tên miền, **không** phải điều kiện.
 
+Khi triển khai đường gửi OTP và Store Key, hàm phía server sẽ đọc hai key trong **Edge Functions → Secrets** của project staging `ineckiashpwloncxnbqx`. Thư mặc định của Supabase Auth có cấu hình riêng.
+
+| Key | Giá trị nhập trong Secrets |
+| --- | --- |
+| `POS_CAFE_SMTP_USER` | Địa chỉ Gmail đầy đủ của hộp thư gửi của dự án |
+| `POS_CAFE_SMTP_APP_PASSWORD` | App Password được tạo trên cùng tài khoản Gmail gửi |
+
+Ngày 11/11/2026, chủ dự án xác nhận đã lưu cả hai key. Phép thử từ Edge Function trên staging và xác nhận thư đến hộp thư nhận vẫn chờ thực hiện.
+
 - [ ] 1.1 Tạo một tài khoản Gmail riêng của dự án, không dùng tài khoản cá nhân
 - [ ] 1.2 Bật xác thực hai bước cho tài khoản đó, rồi tạo App Password
-- [ ] 1.3 Đặt thông tin SMTP `smtp.gmail.com` cổng 587 và App Password vừa tạo vào biến môi trường của hàm phía server; không dùng cho thư mặc định của Supabase Auth
+- [ ] 1.3 Xác minh kết nối TLS tới `smtp.gmail.com:465` từ Edge Function trên staging và xác thực SMTP bằng hai Secrets trên. [Giới hạn Edge Functions](https://supabase.com/docs/guides/functions/limits#other-limits--restrictions) chặn cổng `587`.
 - [ ] 1.4 Gửi thử tới ít nhất một nhà cung cấp hộp thư phổ biến, xác nhận vào hộp thư chính chứ không vào thư rác
 - [ ] 1.5 Ghi lại hạn mức gửi mỗi ngày, đối chiếu với nhu cầu của giai đoạn phát triển và buổi demo
 
