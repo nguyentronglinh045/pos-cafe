@@ -16,7 +16,7 @@
     "deployInputSHA256": "0fad636908c5c77a60cf62b5fef1a2e17537ddefd315d858ca7ccc3cdb0840f3",
     "gitBlobSHA256": "51cfebbb9ed7127a4598446c372cb7e2936dd12cf531981e949ce84c72da30fc",
     "jobId": "1",
-    "httpStatus": 200
+    "manualHttpStatus": 200
   },
   "backup": {
     "archive": "staging-20261111T095930367Z.dump",
