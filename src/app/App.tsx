@@ -81,7 +81,7 @@ export function App() {
 function ActiveApp() {
   const appPorts = useContext(PortsContext);
   const storeProvisioning = appPorts?.storeProvisioning;
-  const seed = storeProvisioning ? appPorts?.permission.initialSeed : undefined;
+  const seed = appPorts?.permission?.initialSeed;
   const serverSeed = seed?.getReadiness && seed.retryAll && seed.skipAll ? seed : undefined;
   const screen = useAppStore((state) => state.screen);
   const currentEmployee = useAppStore((state) => state.currentEmployee);
@@ -152,7 +152,7 @@ function ActiveApp() {
           )}
         </>
       ) : screen === "landing" ? (
-        <LandingScreen ownerCreatePreview={!!storeProvisioning} />
+        <LandingScreen ownerCreatePreview={!!storeProvisioning} requiresProtectedPreview={!storeProvisioning && !!seed?.getReadiness} />
       ) : screen === "storePairing" ? (
         <StorePairingScreen />
       ) : screen === "createStore" ? (
