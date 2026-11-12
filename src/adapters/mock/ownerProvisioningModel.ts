@@ -146,9 +146,12 @@ export function createMockOwnerProvisioning({
     }
     if (linked) return resultForAttempt(linked, attemptId, time, code, form);
     if (previous?.skewMarker) return { ...previous.result };
+    if (previous) {
+      if (!previous.comparedCode || previous.comparedCode === proof(code)) return { ...previous.result };
+      if (previous.challengeRef === challenge?.reference) countWrong();
+      return reject("A_ATTEMPT_ID_REUSED");
+    }
     if (operation?.email === email) {
-      // Replaying a refused attempt can read the operation, but its lookup remains final.
-      if (previous) return statusOf(operation, time);
       if (skew < -freshWindow) return stale;
       const replayIdCount = replayIdCounts.get(operation) ?? 0;
       if (skew > freshWindow || replayIdCount >= maxReplayIdsPerOperation) {
@@ -158,11 +161,6 @@ export function createMockOwnerProvisioning({
       replayedOperations.set(attemptId, operation);
       replayIdCounts.set(operation, replayIdCount + 1);
       return statusOf(operation, time);
-    }
-    if (previous) {
-      if (!previous.comparedCode || previous.comparedCode === proof(code)) return { ...previous.result };
-      if (previous.challengeRef === challenge?.reference) countWrong();
-      return reject("A_ATTEMPT_ID_REUSED");
     }
 
     if (skew < -freshWindow) return stale;

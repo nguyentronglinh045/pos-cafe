@@ -14,6 +14,7 @@ import { AppShell } from "./shell/AppShell";
 import { requireCompatibilityUpdate } from "./compatibilityGate";
 import { usePermissionSession } from "@/features/shared/permissionSession";
 import { InitialSeedLifecycle } from "./InitialSeedLifecycle";
+import { ServerInitialSeedGate } from "./ServerInitialSeedGate";
 import { PortsContext, usePorts } from "@/features/shared/portsContext";
 import { restoreOwnerCreateAttempt } from "./screens/useOwnerCreateCloseout";
 
@@ -78,7 +79,10 @@ export function App() {
 }
 
 function ActiveApp() {
-  const storeProvisioning = useContext(PortsContext)?.storeProvisioning;
+  const appPorts = useContext(PortsContext);
+  const storeProvisioning = appPorts?.storeProvisioning;
+  const seed = storeProvisioning ? appPorts?.permission.initialSeed : undefined;
+  const serverSeed = seed?.getReadiness && seed.retryAll && seed.skipAll ? seed : undefined;
   const screen = useAppStore((state) => state.screen);
   const currentEmployee = useAppStore((state) => state.currentEmployee);
   const createdStoreResult = useAppStore(state => state.createdStoreResult);
@@ -117,6 +121,21 @@ function ActiveApp() {
     }
   }, [setCurrentEmployee, setScreen, storeSessionQuery.error]);
 
+  if (storeSession?.status === "suspended") {
+    return (
+      <main className="grid min-h-[100dvh] place-items-center bg-pos-bg p-6 text-pos-ink">
+        <section className="max-w-md rounded-pos border border-pos-line bg-pos-surface p-6">
+          <h1 className="text-xl font-semibold">Quán đang tạm ngưng</h1>
+          <p className="mt-2 text-sm text-pos-muted">Quán {storeSession.storeNo} chưa thể mở POS.</p>
+          <button className="mt-4 rounded-pos border border-pos-line px-3 py-2 text-sm" type="button"
+            disabled={storeSessionQuery.isFetching} onClick={() => void storeSessionQuery.refetch()}>
+            Kiểm tra lại
+          </button>
+        </section>
+      </main>
+    );
+  }
+
   return (
     <>
       {!storeProvisioning && !currentEmployee && !requiredPinSession && <ReloadRecoveryNotice />}
@@ -128,8 +147,9 @@ function ActiveApp() {
       ) : currentEmployee ? (
         <>
           <RotateGuidance />
-          <InitialSeedLifecycle />
-          <AppShell />
+          {serverSeed ? <ServerInitialSeedGate seed={serverSeed}><AppShell /></ServerInitialSeedGate> : (
+            <><InitialSeedLifecycle /><AppShell /></>
+          )}
         </>
       ) : screen === "landing" ? (
         <LandingScreen ownerCreatePreview={!!storeProvisioning} />

@@ -101,7 +101,8 @@ export function previewBuildEnvironment(env) {
   check(env.VERCEL_ENV==='preview','BUILD');
   const config=previewConfiguration(Object.fromEntries(Object.keys(env).filter(key=>/^POS_PREVIEW_/i.test(key)).map(key=>[key,env[key]])));
   return {...Object.fromEntries(['PATH','HOME','TMPDIR','TMP','TEMP','LANG','LC_ALL','TZ','SystemRoot'].filter(key=>typeof env[key]==='string').map(key=>[key,env[key]])),
-    VITE_DATA_MODE:config.dataMode,VITE_SUPABASE_URL:config.url,VITE_SUPABASE_ANON_KEY:config.publishableKey};
+    VITE_DATA_MODE:config.dataMode,VITE_SUPABASE_URL:config.url,VITE_SUPABASE_ANON_KEY:config.publishableKey,
+    ...(config.dataMode==='supabase'?{VITE_OWNER_PROVISIONING:'1'}:{})};
 }
 export function buildPreview(env,run=spawnSync) {
   try {

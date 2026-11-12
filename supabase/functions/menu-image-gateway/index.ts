@@ -9,7 +9,7 @@ const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
 const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const bucket = "menu-item-image-staging";
 
-const clients = (request: Request, token: string, employeeToken: string) => ({
+const clients = (token: string, employeeToken: string) => ({
   caller: createClient(url, anonKey, { global: { headers: {
     Authorization: `Bearer ${token}`,
     "x-pos-employee-token": employeeToken,
@@ -17,22 +17,24 @@ const clients = (request: Request, token: string, employeeToken: string) => ({
   } }, auth: { persistSession: false, autoRefreshToken: false } }),
   service: createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } }),
 });
-const authorize = async (request: Request) => {
+const authorize = async (request: Request): Promise<ReturnType<typeof clients> | { response: Response }> => {
   const token = bearer(request); const employeeToken = request.headers.get("x-pos-employee-token");
   if (!token) return { response: failure(401, "AUTH_REQUIRED") };
   if (!employeeToken) return { response: failure(401, "EMPLOYEE_SESSION_REQUIRED") };
-  const pair = clients(request, token, employeeToken);
+  const pair = clients(token, employeeToken);
   const { data, error } = await pair.caller.auth.getUser(token);
   if (error || !data.user) return { response: failure(401, "AUTH_REQUIRED") };
   return pair;
 };
-const rpc = async (caller: ReturnType<typeof createClient>, name: string, args: Record<string, unknown>) => {
+const rpc = async (caller: ReturnType<typeof clients>["caller"], name: string, args: Record<string, unknown>):
+  Promise<{ data: Record<string, unknown> } | { response: Response }> => {
   const result = await caller.rpc(name, args);
   if (result.error) return { response: failure(503, "IMAGE_GATEWAY_UNAVAILABLE") };
   const data = rpcData(result.data);
   if (!data) {
     const code = (result.data as { error?: { code?: string } } | null)?.error?.code ?? "IMAGE_GATEWAY_UNAVAILABLE";
-    const status = code === "AUTH_REQUIRED" || code === "EMPLOYEE_SESSION_REQUIRED" ? 401 : code === "FORBIDDEN" ? 403 : code === "NOT_FOUND" ? 404 : 400;
+    const status = code === "AUTH_REQUIRED" || code === "EMPLOYEE_SESSION_REQUIRED" ? 401
+      : code === "FORBIDDEN" || code === "STORE_SUSPENDED" ? 403 : code === "NOT_FOUND" ? 404 : 400;
     return { response: failure(status, code) };
   }
   return { data };

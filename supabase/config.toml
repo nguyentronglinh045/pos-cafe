@@ -1,0 +1,8 @@
+project_id = "pos-cafe"
+
+[functions.owner-provisioning]
+verify_jwt = false
+entrypoint = "./functions/owner-provisioning/index.ts"
+
+[functions.menu-image-public]
+verify_jwt = false

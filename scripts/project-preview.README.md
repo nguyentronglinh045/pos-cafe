@@ -28,6 +28,18 @@ or `envs` plus a single complete page with `count` equal to the returned rows
 and both `next` and `prev` null. Hidden or partial lists are refused.
 The build child receives only the validated public Vite values and a small OS
 environment allowlist; GitHub and Vercel credentials are excluded.
+The build sets `VITE_OWNER_PROVISIONING=1` for the validated `supabase` mode.
+The Vercel function `/api/owner-otp` also needs the following Preview-only
+runtime variables for the signed OTP request:
+
+| Key | Value |
+| --- | --- |
+| `POS_CAFE_OTP_INGRESS_KEY` | The same base64 key as the Supabase staging Edge secret |
+| `POS_CAFE_OWNER_SUPABASE_PROJECT_REF` | `ineckiashpwloncxnbqx` |
+| `POS_CAFE_OWNER_SUPABASE_PUBLISHABLE_KEY` | Same value as `POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY` |
+
+Keep the ingress key in the function environment. It is excluded from the
+Vite build environment.
 
 The deploy helper first verifies main, CI, canonical trusted files, GitHub
 environment protection, pinned Vercel project and routing. Functional mode also

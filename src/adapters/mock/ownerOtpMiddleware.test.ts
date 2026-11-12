@@ -197,7 +197,7 @@ it("giữ hợp đồng lỗi và chống tạo trùng qua hai request xác minh
     const replies = await Promise.all([post("verify", fresh), post("verify", fresh)]);
     expect(replies.map(reply => reply.status)).toEqual([202, 202]);
     expect(await Promise.all(replies.map(reply => reply.json()))).toEqual([{ status: "accepted" }, { status: "accepted" }]);
-    expect(await mockOwnerOtpPort.verifyAndAcceptCreate({ ...input, code: badCode })).toEqual({ status: "accepted" });
+    expect(await mockOwnerOtpPort.verifyAndAcceptCreate({ ...input, code: badCode })).toEqual({ ok: false, code: "A_OTP_INVALID" });
     expect(await mockOwnerOtpPort.getCreateStatus({ attemptId: input.attemptId })).toEqual({ status: "not_accepted" });
     expect(model.readOperations()).toHaveLength(1);
     expect(model.readTestMailbox()).toHaveLength(1);

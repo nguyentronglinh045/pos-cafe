@@ -1,6 +1,7 @@
 import { createMockPermissionRuntime, createMockPermissionState } from "@/adapters/mock";
 import { checkMockOwnerPin, mockOwnerOtpPort, pairMockOwnerStore } from "@/adapters/mock/ownerOtpPort";
 import { createSupabaseBrowserClient, createSupabasePorts } from "@/adapters/supabase";
+import { createOwnerProvisioningPort } from "@/adapters/supabase/ownerProvisioningPort";
 import type { AppPorts } from "@/ports";
 import { usePermissionSession } from "@/features/shared/permissionSession";
 
@@ -12,6 +13,7 @@ export type RuntimePortEnv = {
   supabaseAnonKey?: string;
   ownerCreateMock?: boolean;
   ownerCreateFixture?: boolean;
+  ownerProvisioning?: boolean;
 };
 
 const hasSupabaseEnv = (env: RuntimePortEnv): boolean => Boolean(env.supabaseUrl && env.supabaseAnonKey);
@@ -33,13 +35,19 @@ export const createAppPorts = (env: RuntimePortEnv = {}): AppPorts => {
   const mode = resolveAppDataMode(env);
 
   if (mode === "supabase") {
-    return createSupabasePorts(
+    const ports = createSupabasePorts(
       createSupabaseBrowserClient({
         url: env.supabaseUrl,
         anonKey: env.supabaseAnonKey,
         isCompatibilityBlocked: () => usePermissionSession.getState().compatibilityBlocked,
       }), env.supabaseUrl,
     );
+    if (env.ownerProvisioning && env.supabaseUrl && env.supabaseAnonKey) {
+      return { ...ports, storeProvisioning: createOwnerProvisioningPort({
+        url: env.supabaseUrl, publicKey: env.supabaseAnonKey,
+      }) };
+    }
+    return ports;
   }
 
   const state = createMockPermissionState({ demoCredentials: true });
@@ -81,5 +89,6 @@ export const createAppPortsFromViteEnv = (): AppPorts => {
     supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
     ownerCreateMock,
     ownerCreateFixture: import.meta.env.DEV && import.meta.env.VITE_OWNER_CREATE_FIXTURE === "1",
+    ownerProvisioning: import.meta.env.VITE_OWNER_PROVISIONING === "1",
   }));
 };

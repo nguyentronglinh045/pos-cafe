@@ -199,7 +199,7 @@ function mapTransportError(value: unknown, fallback: FailureCode): AppError {
 
 function mapAuditEntry(value: unknown, code: FailureCode): EmployeeAuditEntry {
   const input = record(value, code);
-  if (input.actorType !== "employee" && input.actorType !== "operator") throw failure(code);
+  if (input.actorType !== "employee" && input.actorType !== "operator" && input.actorType !== "system") throw failure(code);
   if (!auditOutcomes.includes(input.outcome as typeof auditOutcomes[number])) throw failure(code);
   if (typeof input.credentialChanged !== "boolean") throw failure(code);
   const occurredAt = safeString(input.occurredAt, code);

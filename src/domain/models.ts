@@ -30,6 +30,7 @@ export type EmployeePermissionOverrides = {
 export type StoreSession = {
   storeId: string;
   storeNo: number;
+  status?: "active" | "suspended";
 };
 
 export type Employee = {

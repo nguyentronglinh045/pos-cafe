@@ -278,8 +278,9 @@ test('functional build accepts only the complete pinned public group and isolate
   const inherited={VERCEL_ENV:'preview',PATH:'/usr/bin',HOME:'/private',TZ:'UTC',...functionalGroup,
     VERCEL_TOKEN:'SYNTHETIC_PRIVATE',GITHUB_TOKEN:'SYNTHETIC_PRIVATE',NODE_OPTIONS:'--import=private',
     VITE_DATA_MODE:'mock',VITE_SUPABASE_URL:'https://old.invalid',VITE_SUPABASE_ANON_KEY:'old-private',
-    VITE_EXTRA:'old-private',POS_OTHER_SECRET:'private',NPM_TOKEN:'private'};
-  const wanted={PATH:'/usr/bin',HOME:'/private',TZ:'UTC',VITE_DATA_MODE:'supabase',VITE_SUPABASE_URL:supabaseUrl,VITE_SUPABASE_ANON_KEY:publishableKey};
+    VITE_OWNER_PROVISIONING:'0',VITE_EXTRA:'old-private',POS_CAFE_OTP_INGRESS_KEY:'private',NPM_TOKEN:'private'};
+  const wanted={PATH:'/usr/bin',HOME:'/private',TZ:'UTC',VITE_DATA_MODE:'supabase',VITE_SUPABASE_URL:supabaseUrl,
+    VITE_SUPABASE_ANON_KEY:publishableKey,VITE_OWNER_PROVISIONING:'1'};
   assert.deepEqual(previewBuildEnvironment(inherited),wanted);
   assert.equal(buildPreview(inherited,(_command,_args,options)=>{assert.deepEqual(options.env,wanted);return {status:0};}),true);
   for(const mutate of [e=>{delete e.POS_PREVIEW_DATA_MODE;},e=>{delete e.POS_PREVIEW_SUPABASE_URL;},
@@ -293,7 +294,7 @@ test('functional build accepts only the complete pinned public group and isolate
     assert.throws(()=>buildPreview(changed,()=>{calls++;return {status:0};}),error=>error.code==='FRONTEND_PREVIEW_CONFIG'&&error.message===error.code);
     assert.equal(calls,0);
   }
-  assert.deepEqual(previewBuildEnvironment({VERCEL_ENV:'preview',POS_OTHER_SECRET:'private'}),
+  assert.deepEqual(previewBuildEnvironment({VERCEL_ENV:'preview',VITE_OWNER_PROVISIONING:'1',POS_CAFE_OTP_INGRESS_KEY:'private'}),
     {VITE_DATA_MODE:'mock',VITE_SUPABASE_URL:'',VITE_SUPABASE_ANON_KEY:''});
 });
 
