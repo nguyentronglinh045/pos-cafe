@@ -37,11 +37,11 @@ export function validatePreviewPolicy(policy) {
     p.teamSlug==='24tx810010-hcmutes-projects'&&p.repoId===PROJECT_REPOSITORY_ID&&Array.isArray(p.protectionFields)&&
     p.protectionFields.length===PROTECTION.length&&p.protectionFields.every((field,i)=>field===PROTECTION[i]),'POLICY');
   check(policy.trustedFiles&&typeof policy.trustedFiles==='object'&&!Array.isArray(policy.trustedFiles)&&
-    Object.keys(policy.trustedFiles).length<=64,'POLICY');
+    Object.keys(policy.trustedFiles).length<=65,'POLICY');
   for(const [file,digest] of Object.entries(policy.trustedFiles))check(matches(file,/^[.A-Za-z0-9_/-]+(?![\s\S])/)&&
     file.split('/').every(part=>part&&part!=='.'&&part!=='..')&&matches(digest,DIGEST),'POLICY');
   for(const file of ['.github/workflows/ci.yml','.github/workflows/frontend-preview.yml','scripts/project-preview.mjs',
-    'scripts/project-release.mjs','vercel.json'])check(Object.hasOwn(policy.trustedFiles,file),'POLICY');
+    'scripts/project-release.mjs','vercel.json','api/owner-otp.js'])check(Object.hasOwn(policy.trustedFiles,file),'POLICY');
   return p;
 }
 

@@ -9,7 +9,7 @@ const functionalGroup={POS_PREVIEW_DATA_MODE:'supabase',POS_PREVIEW_SUPABASE_URL
 const functionalRows=()=>Object.entries(functionalGroup).map(([key,value])=>({key,value,type:'plain',visibility:'config',target:['preview']}));
 const protectionFields=['ssoProtection','passwordProtection','trustedIps','trustedSources','protectionBypass','optionsAllowlist'];
 const fileBytes=Object.fromEntries(['.github/workflows/ci.yml','.github/workflows/frontend-preview.yml',
-  'scripts/project-preview.mjs','scripts/project-release.mjs','vercel.json'].map(file=>[file,Buffer.from('synthetic canonical '+file+'\n')]));
+  'scripts/project-preview.mjs','scripts/project-release.mjs','vercel.json','api/owner-otp.js'].map(file=>[file,Buffer.from('synthetic canonical '+file+'\n')]));
 const policy={schemaVersion:'pos-release-policy-v1',reviewers:['nguyentronglinh045'],allowedSourceBranches:['main'],productionEnabled:false,
   trustedFiles:Object.fromEntries(Object.entries(fileBytes).map(([file,bytes])=>[file,hash(bytes)])),
   preview:{projectId,projectName:'pos-cafe',teamSlug:'24tx810010-hcmutes-projects',repoId,protectionFields}};
@@ -98,7 +98,7 @@ test('closed Preview policy rejects changed project, team, owner gates, open fie
   validatePreviewPolicy(policy);
   for(const mutate of [p=>{p.preview.projectId='prj_other';},p=>{p.preview.teamSlug='other';},p=>{p.preview.repoId=String(repoId);},
     p=>{p.preview.extra=true;},p=>{p.preview.protectionFields.pop();},p=>{p.reviewers=['other'];},p=>{p.allowedSourceBranches.push('feature');},
-    p=>{p.productionEnabled=true;},p=>{p.trustedFiles={};},p=>{p.trustedFiles['../outside']='1'.repeat(64);}]) {
+    p=>{p.productionEnabled=true;},p=>{delete p.trustedFiles['api/owner-otp.js'];},p=>{p.trustedFiles={};},p=>{p.trustedFiles['../outside']='1'.repeat(64);}]) {
     const changed=structuredClone(policy);mutate(changed);assert.throws(()=>validatePreviewPolicy(changed),error=>error.code==='FRONTEND_PREVIEW_POLICY');
   }
 });
