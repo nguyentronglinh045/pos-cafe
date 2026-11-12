@@ -24,6 +24,9 @@ export interface IPermissionSessionRepo {
 }
 export interface IInitialSeedRepo {
   getStatus(): Promise<InitialSeedStatus>;
+  getReadiness?(): Promise<"waiting" | "failed" | "ready">;
+  retryAll?(): Promise<void>;
+  skipAll?(): Promise<void>;
   begin(request: InitialSeedBeginRequest): Promise<InitialSeedBeginResult>;
   runStage(request: { runGeneration: number; stage: InitialSeedStage }): Promise<InitialSeedStatus>;
 }

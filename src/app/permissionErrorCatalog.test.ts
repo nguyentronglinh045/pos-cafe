@@ -24,6 +24,9 @@ const approved = {
   PIN_REUSE_NOT_ALLOWED: "PIN mới phải khác PIN tạm đang dùng.",
   PIN_CONFIRMATION_MISMATCH: "Hai lần nhập PIN mới chưa khớp.",
   INITIAL_SEED_ATTEMPT_STALE: "Tiến trình dữ liệu mẫu đã thay đổi. Kiểm tra trạng thái trước khi thử lại.",
+  INITIAL_SEED_NOT_READY: "Quán đang chuẩn bị dữ liệu mẫu.",
+  STORE_SUSPENDED: "Quán đang tạm ngưng nên chưa thực hiện được thao tác này.",
+  OWNER_ROLE_REQUIRED: "Chỉ tài khoản chủ quán mới thực hiện được thao tác này.",
 } as const;
 
 describe("TC-PERM-56 approved Vietnamese permission error catalog", () => {

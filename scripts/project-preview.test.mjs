@@ -9,7 +9,7 @@ const functionalGroup={POS_PREVIEW_DATA_MODE:'supabase',POS_PREVIEW_SUPABASE_URL
 const functionalRows=()=>Object.entries(functionalGroup).map(([key,value])=>({key,value,type:'plain',visibility:'config',target:['preview']}));
 const protectionFields=['ssoProtection','passwordProtection','trustedIps','trustedSources','protectionBypass','optionsAllowlist'];
 const fileBytes=Object.fromEntries(['.github/workflows/ci.yml','.github/workflows/frontend-preview.yml',
-  'scripts/project-preview.mjs','scripts/project-release.mjs','vercel.json'].map(file=>[file,Buffer.from('synthetic canonical '+file+'\n')]));
+  'scripts/project-preview.mjs','scripts/project-release.mjs','vercel.json','api/owner-otp.js'].map(file=>[file,Buffer.from('synthetic canonical '+file+'\n')]));
 const policy={schemaVersion:'pos-release-policy-v1',reviewers:['nguyentronglinh045'],allowedSourceBranches:['main'],productionEnabled:false,
   trustedFiles:Object.fromEntries(Object.entries(fileBytes).map(([file,bytes])=>[file,hash(bytes)])),
   preview:{projectId,projectName:'pos-cafe',teamSlug:'24tx810010-hcmutes-projects',repoId,protectionFields}};
@@ -98,7 +98,7 @@ test('closed Preview policy rejects changed project, team, owner gates, open fie
   validatePreviewPolicy(policy);
   for(const mutate of [p=>{p.preview.projectId='prj_other';},p=>{p.preview.teamSlug='other';},p=>{p.preview.repoId=String(repoId);},
     p=>{p.preview.extra=true;},p=>{p.preview.protectionFields.pop();},p=>{p.reviewers=['other'];},p=>{p.allowedSourceBranches.push('feature');},
-    p=>{p.productionEnabled=true;},p=>{p.trustedFiles={};},p=>{p.trustedFiles['../outside']='1'.repeat(64);}]) {
+    p=>{p.productionEnabled=true;},p=>{delete p.trustedFiles['api/owner-otp.js'];},p=>{p.trustedFiles={};},p=>{p.trustedFiles['../outside']='1'.repeat(64);}]) {
     const changed=structuredClone(policy);mutate(changed);assert.throws(()=>validatePreviewPolicy(changed),error=>error.code==='FRONTEND_PREVIEW_POLICY');
   }
 });
@@ -278,8 +278,9 @@ test('functional build accepts only the complete pinned public group and isolate
   const inherited={VERCEL_ENV:'preview',PATH:'/usr/bin',HOME:'/private',TZ:'UTC',...functionalGroup,
     VERCEL_TOKEN:'SYNTHETIC_PRIVATE',GITHUB_TOKEN:'SYNTHETIC_PRIVATE',NODE_OPTIONS:'--import=private',
     VITE_DATA_MODE:'mock',VITE_SUPABASE_URL:'https://old.invalid',VITE_SUPABASE_ANON_KEY:'old-private',
-    VITE_EXTRA:'old-private',POS_OTHER_SECRET:'private',NPM_TOKEN:'private'};
-  const wanted={PATH:'/usr/bin',HOME:'/private',TZ:'UTC',VITE_DATA_MODE:'supabase',VITE_SUPABASE_URL:supabaseUrl,VITE_SUPABASE_ANON_KEY:publishableKey};
+    VITE_OWNER_PROVISIONING:'0',VITE_EXTRA:'old-private',POS_CAFE_OTP_INGRESS_KEY:'private',NPM_TOKEN:'private'};
+  const wanted={PATH:'/usr/bin',HOME:'/private',TZ:'UTC',VITE_DATA_MODE:'supabase',VITE_SUPABASE_URL:supabaseUrl,
+    VITE_SUPABASE_ANON_KEY:publishableKey,VITE_OWNER_PROVISIONING:'1'};
   assert.deepEqual(previewBuildEnvironment(inherited),wanted);
   assert.equal(buildPreview(inherited,(_command,_args,options)=>{assert.deepEqual(options.env,wanted);return {status:0};}),true);
   for(const mutate of [e=>{delete e.POS_PREVIEW_DATA_MODE;},e=>{delete e.POS_PREVIEW_SUPABASE_URL;},
@@ -293,7 +294,7 @@ test('functional build accepts only the complete pinned public group and isolate
     assert.throws(()=>buildPreview(changed,()=>{calls++;return {status:0};}),error=>error.code==='FRONTEND_PREVIEW_CONFIG'&&error.message===error.code);
     assert.equal(calls,0);
   }
-  assert.deepEqual(previewBuildEnvironment({VERCEL_ENV:'preview',POS_OTHER_SECRET:'private'}),
+  assert.deepEqual(previewBuildEnvironment({VERCEL_ENV:'preview',VITE_OWNER_PROVISIONING:'1',POS_CAFE_OTP_INGRESS_KEY:'private'}),
     {VITE_DATA_MODE:'mock',VITE_SUPABASE_URL:'',VITE_SUPABASE_ANON_KEY:''});
 });
 

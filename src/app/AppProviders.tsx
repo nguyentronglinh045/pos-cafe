@@ -3,7 +3,7 @@ import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { useMemo, type ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
 import { PortsContext } from "@/features/shared/portsContext";
-import { createAppPortsFromViteEnv } from "./runtimePorts";
+import { createAppPortsFromViteEnv, OwnerCreateMockConfigError } from "./runtimePorts";
 import { WriteLifecycle } from "./WriteLifecycle";
 import { requireCompatibilityUpdate } from "./compatibilityGate";
 
@@ -35,13 +35,24 @@ export const createCompatibilityQueryClient = () => new QueryClient({
 });
 
 export function AppProviders({ children }: { children: ReactNode }) {
-  const ports = useMemo(() => createAppPortsFromViteEnv(), []);
+  const runtime = useMemo(() => {
+    try {
+      return { ports: createAppPortsFromViteEnv() };
+    } catch (error) {
+      if (error instanceof OwnerCreateMockConfigError) return { error };
+      throw error;
+    }
+  }, []);
   const queryClient = useMemo(createCompatibilityQueryClient, []);
+
+  if (runtime.error) {
+    return <main role="alert" className="p-6">{runtime.error.message}</main>;
+  }
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <PortsContext.Provider value={ports}>
+      <PortsContext.Provider value={runtime.ports}>
         <QueryClientProvider client={queryClient}>
           <WriteLifecycle />
           {children}

@@ -24,7 +24,16 @@ const ids = {
   menu: "80000000-0000-4000-8000-000000000103",
   floor: "80000000-0000-4000-8000-000000000104",
 } as const;
-const workflows = new WeakMap<MockPermissionState, InitialSeedStatus>();
+const workflows = new WeakMap<MockPermissionState, Map<string, InitialSeedStatus>>();
+
+function storeWorkflows(state: MockPermissionState) {
+  let values = workflows.get(state);
+  if (!values) {
+    values = new Map();
+    workflows.set(state, values);
+  }
+  return values;
+}
 
 const stale = () => permissionError("INITIAL_SEED_ATTEMPT_STALE");
 const unavailable = () => permissionError("PERMISSION_UPDATE_UNAVAILABLE");
@@ -43,10 +52,11 @@ function completedFixture(state: MockPermissionState): InitialSeedStatus {
 }
 
 function workflow(state: MockPermissionState): InitialSeedStatus {
-  let value = workflows.get(state);
+  const values = storeWorkflows(state);
+  let value = values.get(state.storeId);
   if (!value) {
     value = completedFixture(state);
-    workflows.set(state, value);
+    values.set(state.storeId, value);
   }
   return value;
 }
@@ -71,7 +81,7 @@ export function initializeMockInitialSeed(state: MockPermissionState, requested:
         lastErrorCode: null,
         stages: [],
       };
-  workflows.set(state, value);
+  storeWorkflows(state).set(state.storeId, value);
   return clone(value);
 }
 
@@ -97,7 +107,7 @@ function strictStage(value: { runGeneration: number; stage: InitialSeedStage }) 
 }
 
 export class MockInitialSeedRepo implements IInitialSeedRepo {
-  constructor(private readonly state: MockPermissionState) {
+  constructor(private readonly state: MockPermissionState, private readonly beforeStage?: (stage: InitialSeedStage) => void) {
     workflow(state);
   }
 
@@ -137,6 +147,7 @@ export class MockInitialSeedRepo implements IInitialSeedRepo {
       || current.stages.slice(index + 1).some(stage => stage.status === "committed")) throw stale();
 
     try {
+      this.beforeStage?.(parsed.stage);
       if (parsed.stage === "employee") insertMockInitialSeedEmployee(this.state);
       else if (parsed.stage === "menu") insertMockInitialSeedMenu(this.state);
       else insertMockInitialSeedFloor(this.state);

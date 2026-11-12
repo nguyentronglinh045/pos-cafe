@@ -103,7 +103,8 @@ export type PermissionErrorCode =
   | "PERMISSION_CATALOG_STALE" | "ADMIN_REQUEST_REUSED" | "PERMISSION_UPDATE_UNAVAILABLE"
   | "PERMISSION_REFRESH_UNAVAILABLE" | "OWNER_MIGRATION_REVIEW_REQUIRED"
   | "OWNER_RECOVERY_REVIEW_REQUIRED" | "BOOTSTRAP_CONFLICT"
-  | "PIN_CHANGE_REQUIRED" | "PIN_REUSE_NOT_ALLOWED" | "PIN_CONFIRMATION_MISMATCH" | "INITIAL_SEED_ATTEMPT_STALE";
+  | "PIN_CHANGE_REQUIRED" | "PIN_REUSE_NOT_ALLOWED" | "PIN_CONFIRMATION_MISMATCH" | "INITIAL_SEED_ATTEMPT_STALE"
+  | "INITIAL_SEED_NOT_READY" | "STORE_SUSPENDED" | "OWNER_ROLE_REQUIRED";
 export type PermissionFieldErrors = Partial<Record<"name" | "pin" | "confirmPin", string>>;
 export type PermissionErrorDetails = {
   fieldErrors?: PermissionFieldErrors; missingPermissions?: PermissionCode[];
@@ -116,7 +117,7 @@ export type EmployeeAdminEnvelope<T> =
   } };
 export type EmployeeAuditSnapshot = Omit<EmployeeAdminView, "sources">;
 export type EmployeeAuditEntry = {
-  auditKey: string; storeId: string; actorType: "employee" | "operator"; actorKey: string;
+  auditKey: string; storeId: string; actorType: "employee" | "operator" | "system"; actorKey: string;
   requestId: string; targetId: string; occurredAt: string; kind: string;
   outcome: "applied" | "noop" | "denied"; reason: string | null;
   actorEffective: PermissionCode[]; catalogRevision: number;

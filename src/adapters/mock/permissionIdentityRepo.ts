@@ -35,10 +35,15 @@ type IdentityPrivateState = {
 };
 
 // Synthetic credentials and restricted-state request material never enter domain DTOs or audit projections.
-const stores = new WeakMap<MockPermissionState, IdentityPrivateState>();
+const stores = new WeakMap<MockPermissionState, Map<string, IdentityPrivateState>>();
 
 function credentials(state: MockPermissionState): IdentityPrivateState {
-  let store = stores.get(state);
+  let values = stores.get(state);
+  if (!values) {
+    values = new Map();
+    stores.set(state, values);
+  }
+  let store = values.get(state.storeId);
   if (!store) {
     store = {
       pins: new Map(state.employees.map(employee => [employee.id, state.initialPins[employee.id] ?? "384729"])),
@@ -46,7 +51,7 @@ function credentials(state: MockPermissionState): IdentityPrivateState {
       normalRequests: new Map(),
       requiredRequests: new Map(),
     };
-    stores.set(state, store);
+    values.set(state.storeId, store);
   }
   return store;
 }
@@ -133,7 +138,7 @@ function auditKey(state: MockPermissionState, employee: PermissionEmployee, requ
 }
 
 export class MockPermissionIdentityRepo implements IPermissionSessionRepo {
-  constructor(private readonly state: MockPermissionState) {
+  constructor(private readonly state: MockPermissionState, private readonly checkOwnerPin?: (pin: string) => Promise<boolean | undefined>) {
     credentials(state);
   }
 
@@ -142,7 +147,11 @@ export class MockPermissionIdentityRepo implements IPermissionSessionRepo {
     paired(this.state);
     const store = credentials(this.state);
     const employee = this.state.employees.find(candidate => candidate.id === employeeId && candidate.storeId === this.state.storeId);
-    if (!employee?.isActive || !/^[0-9]{6}$/.test(pin) || store.pins.get(employeeId) !== pin)
+    if (!employee?.isActive || !/^[0-9]{6}$/.test(pin))
+      throw new AppError("INVALID_PIN", "PIN không đúng.");
+    const previewPin = employee.role === "owner" ? this.checkOwnerPin?.(pin) : undefined;
+    const accepted = previewPin ? (await previewPin) ?? (store.pins.get(employeeId) === pin) : store.pins.get(employeeId) === pin;
+    if (!accepted || !this.state.paired || employee.storeId !== this.state.storeId)
       throw new AppError("INVALID_PIN", "PIN không đúng.");
     if (!this.state.catalog.roles.some(role => role.code === employee.role && role.enabled))
       throw permissionError("EMPLOYEE_ROLE_UNAVAILABLE");
@@ -289,6 +298,7 @@ export class MockPermissionIdentityRepo implements IPermissionSessionRepo {
     const initialSession = this.state.session;
     const initialEmployee = requireMockNormalPermissionActor(this.state);
     if (initialEmployee.role !== "owner") throw new AppError("FORBIDDEN", "Bạn không có quyền thực hiện thao tác này.");
+    if (this.checkOwnerPin) throw new AppError("FORBIDDEN", "Đổi PIN nằm ngoài bản xem thử tạo quán.");
     const parsed = parseOwnerPinChange(request);
     let payloadMac: string;
     try {

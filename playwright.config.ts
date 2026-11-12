@@ -2,6 +2,18 @@ import { defineConfig, devices } from "@playwright/test";
 
 const demoRunbookTest = /demo-runbook\.spec\.ts/;
 
+export const smokeWebServer = {
+  command: "npm run dev -- --host 127.0.0.1 --port 5175 --strictPort",
+  env: {
+    VITE_DATA_MODE: "mock",
+    VITE_SUPABASE_URL: "",
+    VITE_SUPABASE_ANON_KEY: "",
+  },
+  url: "http://127.0.0.1:5175",
+  reuseExistingServer: false,
+  timeout: 60_000,
+};
+
 export default defineConfig({
   testDir: "./tests/smoke",
   // Comprehensive admin flows under a single shared dev server during the first
@@ -15,17 +27,7 @@ export default defineConfig({
     // Linux CI. Use the same version's full Chromium/new headless runtime.
     channel: process.env.CI === "true" ? "chromium" : undefined,
   },
-  webServer: {
-    command: "npm run dev -- --host 127.0.0.1 --port 5175 --strictPort",
-    env: {
-      VITE_DATA_MODE: "mock",
-      VITE_SUPABASE_URL: "",
-      VITE_SUPABASE_ANON_KEY: "",
-    },
-    url: "http://127.0.0.1:5175",
-    reuseExistingServer: false,
-    timeout: 60_000,
-  },
+  webServer: smokeWebServer,
   projects: [
     {
       name: "desktop",

@@ -33,7 +33,7 @@ export const useActiveEmployeesQuery = () => {
   return useQuery({
     queryKey: [...sessionQueryKeys.employees, "roster", store.data?.session?.storeId ?? null],
     queryFn: () => ports.authority.listRoster(),
-    enabled: store.data?.status === "paired",
+    enabled: store.data?.status === "paired" && store.data.session.status !== "suspended",
     staleTime: 0,
     refetchOnMount: "always",
   });

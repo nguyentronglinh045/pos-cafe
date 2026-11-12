@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useStoreSessionQuery } from "@/features/session";
 import { PermissionLifecycle } from "./PermissionLifecycle";
@@ -14,7 +14,9 @@ import { AppShell } from "./shell/AppShell";
 import { requireCompatibilityUpdate } from "./compatibilityGate";
 import { usePermissionSession } from "@/features/shared/permissionSession";
 import { InitialSeedLifecycle } from "./InitialSeedLifecycle";
-import { usePorts } from "@/features/shared/portsContext";
+import { ServerInitialSeedGate } from "./ServerInitialSeedGate";
+import { PortsContext, usePorts } from "@/features/shared/portsContext";
+import { restoreOwnerCreateAttempt } from "./screens/useOwnerCreateCloseout";
 
 export const wasPageReloaded = (entries: readonly Pick<PerformanceNavigationTiming, "type">[] =
   performance.getEntriesByType("navigation") as PerformanceNavigationTiming[]): boolean =>
@@ -77,6 +79,10 @@ export function App() {
 }
 
 function ActiveApp() {
+  const appPorts = useContext(PortsContext);
+  const storeProvisioning = appPorts?.storeProvisioning;
+  const seed = appPorts?.permission?.initialSeed;
+  const serverSeed = seed?.getReadiness && seed.retryAll && seed.skipAll ? seed : undefined;
   const screen = useAppStore((state) => state.screen);
   const currentEmployee = useAppStore((state) => state.currentEmployee);
   const createdStoreResult = useAppStore(state => state.createdStoreResult);
@@ -87,6 +93,9 @@ function ActiveApp() {
   const storeSessionQuery = useStoreSessionQuery();
   const storeSession = storeSessionQuery.data?.session ?? null;
 
+  useEffect(() => {
+    if (storeProvisioning && restoreOwnerCreateAttempt()) setScreen("createStore");
+  }, [setScreen, storeProvisioning]);
 
   useEffect(() => {
     if (!storeSessionQuery.data) {
@@ -112,9 +121,24 @@ function ActiveApp() {
     }
   }, [setCurrentEmployee, setScreen, storeSessionQuery.error]);
 
+  if (storeSession?.status === "suspended") {
+    return (
+      <main className="grid min-h-[100dvh] place-items-center bg-pos-bg p-6 text-pos-ink">
+        <section className="max-w-md rounded-pos border border-pos-line bg-pos-surface p-6">
+          <h1 className="text-xl font-semibold">Quán đang tạm ngưng</h1>
+          <p className="mt-2 text-sm text-pos-muted">Quán {storeSession.storeNo} chưa thể mở POS.</p>
+          <button className="mt-4 rounded-pos border border-pos-line px-3 py-2 text-sm" type="button"
+            disabled={storeSessionQuery.isFetching} onClick={() => void storeSessionQuery.refetch()}>
+            Kiểm tra lại
+          </button>
+        </section>
+      </main>
+    );
+  }
+
   return (
     <>
-      {!currentEmployee && !requiredPinSession && <ReloadRecoveryNotice />}
+      {!storeProvisioning && !currentEmployee && !requiredPinSession && <ReloadRecoveryNotice />}
       {currentEmployee && <PermissionLifecycle />}
       {createdStoreResult || pendingStoreCreationInput ? (
         <CreateStoreScreen />
@@ -123,11 +147,12 @@ function ActiveApp() {
       ) : currentEmployee ? (
         <>
           <RotateGuidance />
-          <InitialSeedLifecycle />
-          <AppShell />
+          {serverSeed ? <ServerInitialSeedGate seed={serverSeed}><AppShell /></ServerInitialSeedGate> : (
+            <><InitialSeedLifecycle /><AppShell /></>
+          )}
         </>
       ) : screen === "landing" ? (
-        <LandingScreen />
+        <LandingScreen ownerCreatePreview={!!storeProvisioning} requiresProtectedPreview={!storeProvisioning && !!seed?.getReadiness} />
       ) : screen === "storePairing" ? (
         <StorePairingScreen />
       ) : screen === "createStore" ? (

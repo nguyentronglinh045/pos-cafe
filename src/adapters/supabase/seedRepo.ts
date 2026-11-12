@@ -56,6 +56,13 @@ export class SupabaseSeedRepo implements ISeedRepo, IInitialSeedRepo {
   }
 
   async getStatus(): Promise<InitialSeedStatus> { return this.status(await this.call("permission_get_initial_seed_status")); }
+  async getReadiness(): Promise<"waiting" | "failed" | "ready"> {
+    const data = await this.call("owner_get_seed_readiness");
+    if (!data || !["waiting", "failed", "ready"].includes(data.status)) throw unavailable();
+    return data.status;
+  }
+  async retryAll(): Promise<void> { await this.call("owner_retry_initial_seed"); }
+  async skipAll(): Promise<void> { await this.call("owner_skip_initial_seed"); }
   async begin(request: InitialSeedBeginRequest): Promise<InitialSeedBeginResult> {
     if (!request || !["initial", "retry"].includes(request.mode)
       || Object.keys(request).some(k => !["mode", "expectedWorkflowRevision"].includes(k))) throw unavailable();

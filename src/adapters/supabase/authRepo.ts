@@ -144,6 +144,7 @@ export class SupabaseAuthRepo implements IAuthRepo {
     return {
       storeId: data.data.storeId,
       storeNo: data.data.storeNo,
+      ...(data.data.status === "active" || data.data.status === "suspended" ? { status: data.data.status } : {}),
     };
   }
 }
