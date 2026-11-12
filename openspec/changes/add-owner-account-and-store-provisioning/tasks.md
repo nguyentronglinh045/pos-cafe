@@ -2,13 +2,19 @@
 
 Cập nhật 2026-11-05: chủ không còn đăng nhập web; thao tác của chủ làm trên POS (quyết định 23, 24). Đặc tả các luồng giai đoạn 2 đã viết trong đợt này; giai đoạn triển khai không đổi. Chưa có việc nào được giao triển khai.
 
-Chia hai giai đoạn theo quyết định 18. Kết thúc giai đoạn 1 là một điểm dừng an toàn: hệ thống chạy đầy đủ và đã trả lời trọn vấn đề ai cũng tạo được cửa hàng. Phần thiếu duy nhất là khôi phục, mà hiện tại cũng chưa có, nên dừng ở đó không làm hệ thống tệ hơn trước.
+Chia hai giai đoạn theo quyết định 18. Giai đoạn 1 đưa luồng tạo quán có OTP và chặn đường tạo cũ. Các chức năng khôi phục dành cho chủ ở giai đoạn 2. Tự động đối soát lượt tạo quán dở dang nằm sau đồ án theo quyết định 48.
 
 Thứ tự tổng thể xem `docs/roadmap.md` và `docs/workflow/g01-g10-plan.md`. Reset dữ liệu xếp ở giai đoạn 2 trong kế hoạch, chưa thực hiện ngay (quyết định 36).
 
 ---
 
 # Giai đoạn 1 — Danh tính và kiểm soát việc tạo cửa hàng
+
+## 0. Cổng trước khi code thực tế và thứ tự test
+
+- [ ] 0.1 Rà và chốt ma trận expected FE trong `testplan.md` trước khi viết code thực tế. Bao gồm lỗi OTP, thời gian chờ, F5, chống tạo trùng, nhận Store Key, ghép máy và PIN.
+- [ ] 0.2 Khi được giao code, hiện thực FE/ports/mock với OTP lấy từ hộp thư giả, chạy qua cổng mock trước khi nối FE với staging. Giữ cấu hình signup hiện tại.
+- [ ] 0.3 Sau khi mock đạt, T05 sẵn sàng và hoàn tất cổng chuyển đổi mục 8, chạy vòng staging với OTP thật, Auth/DB thật; sau đó chạy mục 1c.5. Lưu hai kết quả theo cấu hình, nguồn và fixture.
 
 ## 1. Đường gửi email — làm ngay, không có việc nào phải chờ duyệt
 
@@ -21,13 +27,13 @@ Khi triển khai đường gửi OTP và Store Key, hàm phía server sẽ đọ
 | `POS_CAFE_SMTP_USER` | Địa chỉ Gmail đầy đủ của hộp thư gửi của dự án |
 | `POS_CAFE_SMTP_APP_PASSWORD` | App Password được tạo trên cùng tài khoản Gmail gửi |
 
-Ngày 11/11/2026, chủ dự án xác nhận đã lưu cả hai key. Phép thử từ Edge Function trên staging và xác nhận thư đến hộp thư nhận vẫn chờ thực hiện.
+Ngày 11/11/2026, chủ dự án xác nhận đã lưu cả hai key. Phép thử Edge trên staging đã xác thực SMTP và thư vào Hộp thư đến. Hộp thư gửi hiện tại là Gmail chính của chủ dự án. Có thể thay bằng hộp thư riêng sau. [Hồ sơ T06](../../../docs/workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md)
 
 - [ ] 1.1 Tạo một tài khoản Gmail riêng của dự án, không dùng tài khoản cá nhân
 - [ ] 1.2 Bật xác thực hai bước cho tài khoản đó, rồi tạo App Password
-- [ ] 1.3 Xác minh kết nối TLS tới `smtp.gmail.com:465` từ Edge Function trên staging và xác thực SMTP bằng hai Secrets trên. [Giới hạn Edge Functions](https://supabase.com/docs/guides/functions/limits#other-limits--restrictions) chặn cổng `587`.
-- [ ] 1.4 Gửi thử tới ít nhất một nhà cung cấp hộp thư phổ biến, xác nhận vào hộp thư chính chứ không vào thư rác
-- [ ] 1.5 Ghi lại hạn mức gửi mỗi ngày, đối chiếu với nhu cầu của giai đoạn phát triển và buổi demo
+- [x] 1.3 Xác minh TLS tới `smtp.gmail.com:465` từ Edge Function trên staging và xác thực SMTP bằng hai Secrets trên. Giữ App Password trong Secrets của Edge. [Giới hạn Edge Functions](https://supabase.com/docs/guides/functions/limits#other-limits--restrictions)
+- [x] 1.4 Gửi thử và xác nhận thư đến Hộp thư đến của Gmail
+- [ ] 1.5 Ghi lại hạn mức nhà gửi và kiểm nhu cầu gồm cả OTP, thư Store Key sau tạo và thư đang chờ. Trần 400 lượt theo quyết định 39 không bao gồm thư Store Key. Nếu ngân sách thật không đủ, báo đánh đổi và chốt phương án trước tích hợp phụ thuộc.
 
 ### 1b. Nâng lên mức 3, chạy song song và không chặn gì
 
@@ -43,9 +49,11 @@ Ngày 11/11/2026, chủ dự án xác nhận đã lưu cả hai key. Phép thử
 - [ ] 1c.2 Cài cơ chế chặn trước khi phát hành giai đoạn 1; xác nhận Store Key và POS vẫn hoạt động
 - [ ] 1c.3 Ghi vào `docs/limitations.md` rủi ro đã chấp nhận khi cơ chế chặn bị tắt
 - [ ] 1c.4 Kiểm thử: TC-OWNER-78
-- [ ] 1c.5 Chủ dự án quyết định có tắt đăng ký công khai của Supabase không
+- [ ] 1c.5 Sau vòng staging đầu tiên đạt, tắt signup công khai trên đúng project staging rồi chạy lại TC-OWNER-104. Kiểm signup trực tiếp bị từ chối, Admin API vẫn tạo được tài khoản kỹ thuật và ma trận FE cơ bản vẫn đạt. Ghi cấu hình trước/sau và điều kiện nếu phải quay lại bản cũ.
 
 ## 2. Lược đồ và migration
+
+Mục này chuẩn bị và kiểm gói migration trên lane cô lập đã được phép. Chỉ áp lên staging ở mục 8, sau khi xác nhận đã dọn dữ liệu cũ và bảng `stores` rỗng.
 
 - [ ] 2.0 Xác nhận cấu hình ứng dụng, CLI và hàm phía server đều trỏ tới staging, không còn trỏ database gốc
 - [ ] 2.1 Thêm enum `store_status` gồm `active` và `suspended`
@@ -54,33 +62,36 @@ Ngày 11/11/2026, chủ dự án xác nhận đã lưu cả hai key. Phép thử
 - [ ] 2.4 Thêm cột `owner_account_id` vào `stores`, bắt buộc, **không** đặt ràng buộc duy nhất
 - [ ] 2.5 Thêm cột `status` vào `stores`, bỏ cột `is_active`
 - [ ] 2.6 Thêm cột `key_secret_encrypted` và `key_encryption_version` vào `stores`
-- [ ] 2.7 Tạo các bảng `otp_challenges`, `otp_request_outcomes`, `otp_attempts`, `create_intents`, `create_operations`, `mail_dispatches`, `store_admin_log` theo `design.md`
+- [ ] 2.7 Tạo các bảng `otp_challenges`, `otp_request_outcomes`, `otp_attempts`, `create_intents`, `create_operations`, `auth_create_dispatches`, `mail_dispatches`, `store_admin_log` theo `design.md`
 - [ ] 2.8 Viết kiểm thử khẳng định không tồn tại ràng buộc duy nhất nào trên `stores.owner_account_id`
 
-## 3. Chính sách bảo mật mức dòng
+## 3. Quyền dữ liệu và khóa quán ở database
 
-- [ ] 3.1 Thêm điều kiện `status = 'active'` vào chính sách của mọi bảng nghiệp vụ
-- [ ] 3.2 Cho thiết bị đã ghép đọc được bản ghi và trạng thái của chính quán mình kể cả khi bị tạm ngưng
+- [ ] 3.1 Áp điều kiện `stores.status = 'active'` tại RLS và các checkpoint của RPC nghiệp vụ theo ma trận trong `design.md`. Giữ ACL đóng bảng thô. Kiểm dưới khóa trạng thái của quán sau các lần đợi liên quan.
+- [ ] 3.2 Trả đúng `storeId`, `storeNo`, `status` qua `permission_get_store_session` cho thiết bị đã ghép của chính quán. Cập nhật hợp đồng adapter đang dùng RPC này.
 - [ ] 3.3 Xác nhận nhánh thiết bị đã ghép giữ nguyên; không thêm nhánh chủ
 - [ ] 3.4 Các bảng mới của `design.md` không cấp quyền cho máy người dùng; các cột bí mật mới trên `stores` không cho thiết bị đọc
 - [ ] 3.5 Thu hồi quyền của máy người dùng trên `permission_reserve_store_no` và hàm khởi tạo quán
-- [ ] 3.6 Kiểm thử: thiết bị của quán `suspended` gọi thẳng database bị trả về rỗng; gọi thẳng các hàm ở 3.5 bị từ chối
+- [ ] 3.6 Kiểm TC-OWNER-95 và TC-OWNER-111 trên lane DB contract/tích hợp cô lập. Kiểm gọi thẳng các hàm ở 3.5 bị từ chối. Đổi trạng thái và `store_status_changed` commit cùng giao dịch với tác nhân nội bộ có quyền. Kiểm cạnh tranh và rollback.
+- [ ] 3.7 Chặn Storage staging và GET/revalidate qua cổng ảnh hiện hành khi quán tạm ngưng. Giữ ảnh công khai đời cũ trong phần giới hạn, giữ ACL của bucket private và RLS của tín hiệu theo quán.
 
 ## 4. Hàm phía server
 
 - [ ] 4.1 Dựng khung hàm tại `supabase/functions/`
-- [ ] 4.2 Khai báo biến môi trường: khóa quản trị nền tảng, khóa mã hóa Store Key, khóa băm mã xác nhận và thông tin SMTP; tất cả không bao giờ xuống máy người dùng
+- [ ] 4.2 Khai báo biến môi trường cho khóa quản trị nền tảng, khóa mã hóa Store Key, khóa băm mã xác nhận, khóa riêng mã hóa OTP chờ gửi và thông tin SMTP. Chỉ môi trường server giữ các giá trị này
 - [ ] 4.3 Viết tiện ích mã hóa và giải mã phần bí mật, có mang định danh phiên bản khóa
 - [ ] 4.4 Dựng phần gửi và kiểm mã dùng chung theo thứ tự ở `design.md`: giới hạn theo email riêng từng loại thao tác, giới hạn theo địa chỉ mạng và trần toàn dự án tính chung
 - [ ] 4.5 Cài hạn mức 5 cửa hàng, đọc từ cấu hình chứ không phải hằng số trong mã, kiểm sau khi mã đúng; không giới hạn số lần tạo trong ngày
-- [ ] 4.6 Hành động `requestCreateStoreOtp`, `verifyAndAcceptCreate`, `confirmStoreKeySaved`
-- [ ] 4.7 Tạo quán theo các bước ở `design.md`: lượt chạy và thẻ lượt chạy, dữ liệu tạm, tài khoản kỹ thuật có dấu hiệu, giao dịch ghi quán, thư gửi sau khi đã lưu
-- [ ] 4.8 Tiến trình đối soát: làm tiếp hoặc dọn dẹp, gửi thư còn thiếu, quét tài khoản kỹ thuật mồ côi, báo người vận hành
+- [ ] 4.6 Hành động `requestCreateStoreOtp`, `verifyAndAcceptCreate`, `getCreateStatus`, `confirmStoreKeySaved`. Ghi liên kết chỉ tra cho ID mới cùng intent đã được chấp nhận dưới khóa, tối đa 64 mỗi operation. Sửa mock theo quyết định 54 để lượt đã bị từ chối giữ kết quả cũ ở cả gửi lại và tra sau F5. Kiểm TC-OWNER-109. Điểm vào provisioning nội bộ chỉ xử lý operation đã chấp nhận và có giữ chỗ; tách quyền hỏi trạng thái khỏi nhận key hoặc ghi.
+- [ ] 4.7 Giữ số riêng cho từng lần chọn số của operation. Chỉ cho lượt gốc còn hạn đổi số sau khi đã xác nhận xung đột Auth không có tác dụng phụ. Mỗi số chỉ cấp một quyền phát lệnh Auth. Điểm ghi quán đọc số và UUID từ bản ghi nội bộ, đối chiếu với bản ghi Auth thực, kiểm lại quyền của lượt rồi ghi quán, kết quả, audit, thư chờ và workflow mẫu trong cùng giao dịch. Kiểm TC-OWNER-27/30/41/47/105
+- [ ] 4.8 Xử lý lượt tạo dở trong phạm vi đồ án: giữ suất, trả `unknown` khi hết hạn kể cả nếu lượt gốc dừng trước khi ghi trạng thái, từ chối ghi muộn và giữ tham chiếu Auth. Tra/gửi lại chỉ đọc hoặc nhận kết quả theo contract, không khởi chạy tạo lại. Kiểm các ca crash và quota trước nghiệm thu.
 - [ ] 4.9 Ghi `store_created` vào `store_admin_log`
-- [ ] 4.10 Kiểm thử: hàm không bao giờ trả khóa ra ngoài; lỗi giữa chừng không để lại tài khoản kỹ thuật mồ côi vĩnh viễn
-- [ ] 4.11 Kiểm thử: tạo xong thì có email chứa Store Key; gửi thư lỗi không làm hỏng cửa hàng và không hoàn hạn mức
+- [ ] 4.10 Kiểm TC-OWNER-103/105/106/108: kiểm hạn OTP sau khóa challenge và khóa hạn mức, đếm riêng lượt gửi, lần sai và suất quán; chặn bypass; chỉ trả Store Key theo REQ-STORE-04, giữ bí mật server; kiểm Auth đến muộn trước khi trả quota.
+- [ ] 4.11 Dùng tác vụ gửi thư độc lập cho bản ghi Store Key `queued` của quán đã `created`. Kiểm TC-OWNER-44 ngay cả khi lượt tạo dừng sau commit và trước khi gửi. Kiểm TC-OWNER-110 để tách phản hồi gốc khỏi gửi lại, tra trạng thái và thư. Mock cần mô phỏng một lời gọi xác minh gốc còn chờ khi quán commit sau hạn OTP. Thư lỗi không làm hỏng quán và không hoàn suất.
 - [ ] 4.12 Đối chiếu tài liệu Supabase về tạo user bằng API quản trị và `app_metadata` trước khi tạo tài khoản thật
 - [ ] 4.13 Tách phần gửi thư và phần lưu trữ khỏi các quy tắc, để chạy test trên máy với database giả và đường gửi thư giả; hàm thật không có chế độ test, không có mã xác nhận dùng chung, có kiểm cận dưới của các giá trị cấu hình
+- [ ] 4.14 Ghi workflow seed cùng giao dịch tạo quán. Server nhận lần đầu sau commit, kể cả khi mất kích hoạt. Ghi cả bộ mẫu và `completed` trong một giao dịch, có audit tác nhân hệ thống. Tuần tự hóa thử lại, bỏ mẫu và ghi mẫu theo cùng workflow, chặn lượt cũ. Chỉ mở nghiệp vụ phía server khi có `completed` hoặc `skipped` đã xác nhận. Kiểm TC-OWNER-03/09
+- [ ] 4.15 Ghi đúng một thư OTP tạo quán có bản mã cùng giao dịch phát mã. Tác vụ server nhặt thư `queued` còn hiệu lực, nhận đúng một lượt, xóa bản mã khi nhận hoặc khi mã mất hiệu lực. Kiểm mất kích hoạt, mất kết quả SMTP và nhiều tiến trình tranh gửi ở TC-OWNER-107
 
 ## 5. Ports và adapters
 
@@ -95,10 +106,11 @@ Ngày 11/11/2026, chủ dự án xác nhận đã lưu cả hai key. Phép thử
 
 - [ ] 6.1 Màn tạo quán: nhập email, tên hiển thị bắt buộc, địa chỉ tùy chọn, PIN chủ quán, tùy chọn dữ liệu mẫu
 - [ ] 6.2 Màn nhập mã, kèm xử lý hết hạn, quá số lần sai và khóa nút Gửi lại tới mốc hẹn
-- [ ] 6.3 Biên nhận và bản nháp tên quán, địa chỉ, tùy chọn dữ liệu mẫu trong IndexedDB, không lưu PIN; quay lại đúng bước sau khi tải lại trang; không ghi được thì vẫn cho làm tiếp kèm cảnh báo; chỉnh đồng hồ theo giờ server
+- [ ] 6.3 F5 bỏ form và biên nhận gửi mã. Sau Xác nhận chỉ lưu `attemptId` qua F5 để tra trạng thái; nếu lỗi lưu thì cảnh báo và vẫn cho làm tiếp. Giữ đồng hồ theo giờ server trong trang còn mở.
 - [ ] 6.4 Thông báo khi chạm trần cửa hàng, kèm hướng dẫn liên hệ nhà cung cấp
 - [ ] 6.5 Màn kết quả tạo quán: hiển thị Store Key kèm nút sao chép và nút "Tôi đã lưu Store Key", nhắc chủ sao chép và lưu lại ngay
-- [ ] 6.6 Chốt thời hạn xóa biên nhận và bản nháp của luồng bỏ dở
+- [ ] 6.6 Xóa mã tra khi người dùng rời kết quả cuối; giữ khi còn chưa rõ. Bỏ form khi F5 theo quyết định 46, không có bản nháp lưu lâu cần TTL.
+- [ ] 6.7 Sau ghép máy và đăng nhập, hiển thị màn chờ hoặc màn lỗi theo trạng thái server. Chỉ chủ có phiên bình thường thấy hai lựa chọn ở màn lỗi. Khi server xác nhận sẵn sàng, tải dữ liệu rồi tự mở POS. Kiểm TC-OWNER-03/09
 
 ## 7. Gỡ luồng tạo cửa hàng cũ
 
@@ -108,18 +120,18 @@ Ngày 11/11/2026, chủ dự án xác nhận đã lưu cả hai key. Phép thử
 - [ ] 7.4 Cập nhật các kiểm thử đang dựa vào luồng tạo cửa hàng cũ
 - [ ] 7.5 Sửa `tests/supabase/pos-cafe-supabase.spec.ts`: bỏ bước tạo quán, ghép vào quán thử tạo sẵn trên staging với Store Key qua biến môi trường
 
-## 8. Cổng chặn — xóa dữ liệu cũ
+## 8. Cổng chặn — chuyển đổi staging trước vòng tích hợp
 
 > Không được vượt qua mục này nếu chưa đủ điều kiện. Đây là thao tác không hoàn tác được.
 
-- [ ] 8.1 **Xin xác nhận rõ ràng của chủ dự án.** Không suy đoán, không mặc định là đã đồng ý. Nêu rõ staging đang giữ dữ liệu của các đợt kiểm thử trước
+- [ ] 8.1 Trình danh sách quán, cách xử lý tài khoản Auth kỹ thuật và phiên cũ, dữ liệu phụ thuộc sẽ xóa trên đúng staging, lịch chuyển đổi và cách phục hồi. **Chốt phạm vi và lần thực thi với chủ dự án.** Lựa chọn dùng quán mới ngày 11/11/2026 không thay cho xác nhận này
 - [ ] 8.2 Sao lưu toàn bộ database
 - [ ] 8.3 Sao lưu toàn bộ kho ảnh
-- [ ] 8.4 Sao lưu khóa mã hóa Store Key, cất tách khỏi bản sao lưu database
-- [ ] 8.5 Xóa dữ liệu cũ trên staging, không đụng database gốc
-- [ ] 8.6 Ghi lại thời điểm thực hiện và phạm vi đã xóa
-- [ ] 8.7 Dựng lại dữ liệu demo theo `docs/demo-runbook.md`
-- [ ] 8.8 Thông báo mọi Store Key hiện có đã mất hiệu lực và mọi thiết bị phải ghép lại
+- [ ] 8.4 Sao lưu khóa mã hóa Store Key nếu đã cấu hình, cất tách khỏi bản sao lưu database; xác nhận đường phục hồi trước khi chuyển đổi
+- [ ] 8.5 Chặn ghi từ ứng dụng và luồng tạo quán cũ, rồi xóa đúng phạm vi đã duyệt trên staging. Giữ cấu hình signup công khai theo quyết định 45
+- [ ] 8.6 Ghi thời điểm và phạm vi đã xóa; kiểm `stores` rỗng. Nếu còn quán hoặc chưa xác nhận được kết quả, dừng trước khi áp lược đồ cuối
+- [ ] 8.7 Áp migration mục 2. Kiểm `owner_account_id NOT NULL`, đường tạo quán cũ không ghi được và dùng fixture tạo mới cho vòng staging. Dựng dữ liệu demo theo `docs/demo-runbook.md`
+- [ ] 8.8 Kiểm Store Key và phiên cũ không còn truy cập POS của các quán đã xóa. Thông báo thiết bị dùng key cũ phải ghép lại bằng key mới
 
 ## 9. Kiểm thử giai đoạn 1
 
@@ -130,6 +142,7 @@ Chạy các ca trong `testplan.md` thuộc giai đoạn 1 theo mục Cách chạ
 - [ ] 9.3 Chạy nhóm biên TC-OWNER-31…36
 - [ ] 9.4 Chạy nhóm bảo mật TC-OWNER-37…48, cùng TC-OWNER-78, 80, 81, 82, 91…95, 101
 - [ ] 9.5 Test tay trên staging, chỉ trên quán thử: các ca được liệt kê ở mục Cách chạy; tạo cửa hàng từ đầu tới lúc ghép được thiết bị; dọn quán thử sau khi chủ dự án xác nhận
+- [ ] 9.6 Chạy TC-OWNER-103…111 theo lane trong testplan. Hai vòng staging của TC-OWNER-104 bắt buộc trước khi đóng giai đoạn 1.
 
 ## 10. Tài liệu giai đoạn 1
 
@@ -137,7 +150,7 @@ Chạy các ca trong `testplan.md` thuộc giai đoạn 1 theo mục Cách chạ
 - [ ] 10.2 Cập nhật `docs/architecture.md`: thêm thành phần chạy phía server
 - [ ] 10.3 Cập nhật `docs/data-model.md`: cột mới và bảng mới
 - [ ] 10.4 Cập nhật `docs/screens.md`: màn tạo quán và màn kết quả
-- [ ] 10.5 Cập nhật `docs/limitations.md`: rủi ro mất khóa mã hóa, Store Key nằm lại trong hộp thư, thư mặc định của Supabase Auth khi cơ chế chặn bị tắt
+- [ ] 10.5 Cập nhật `docs/limitations.md`: rủi ro mất khóa mã hóa, Store Key nằm lại trong hộp thư, thư mặc định của Supabase Auth khi cơ chế chặn bị tắt và lượt tạo chưa rõ có thể giữ suất đến khi xác minh riêng theo quyết định 48.
 - [ ] 10.6 Cập nhật `pos-cafe-context.md` và `docs/features.md`
 - [ ] 10.7 Cập nhật tiến độ trong `docs/roadmap.md`, ghi ngày
 
@@ -229,4 +242,8 @@ Chạy các ca trong `testplan.md` thuộc giai đoạn 1 theo mục Cách chạ
 - [ ] 17.3 Cập nhật `docs/demo-runbook.md` với kịch bản demo phần khôi phục
 - [ ] 17.4 Cập nhật tiến độ trong `docs/roadmap.md`, ghi ngày
 - [ ] 17.5 Cập nhật `docs/data-model.md` cho `owner_action_proofs`, `store_key_rotations`; cập nhật `docs/limitations.md`: token còn dùng được sau khi cấp lại key, chủ cũ còn biết Store Key, email thứ hai của người bán, giả lập không chứng minh được bảo mật
-- [ ] 17.6 Chạy `openspec archive add-owner-account-and-store-provisioning` sau khi cả hai giai đoạn xong
+- [ ] 17.6 Chạy `openspec archive add-owner-account-and-store-provisioning` sau khi cả hai giai đoạn trong phạm vi xong. Khi archive, giữ liên kết tới mục hoãn sau đồ án.
+
+## Sau đồ án — Đối soát tự động lượt tạo quán
+
+Quyết định 48 hoãn tiến trình tự tìm lượt chưa rõ, xác minh Auth, tiếp tục hoặc dọn tài khoản kỹ thuật dở dang và cảnh báo vận hành. Mở lại khi có nhu cầu vận hành quán thật. Tái dùng operation, bước cuối, claim và dấu hiệu Auth đã lưu. Cần chốt thời hạn xử lý và bằng chứng để hoàn suất trước khi triển khai phần này.
