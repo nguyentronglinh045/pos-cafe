@@ -13,7 +13,9 @@ const PROTECTION=['ssoProtection','passwordProtection','trustedIps','trustedSour
 const PROJECT_REF='ineckiashpwloncxnbqx', SUPABASE_URL=`https://${PROJECT_REF}.supabase.co`;
 const CONFIG_KEYS=['POS_PREVIEW_DATA_MODE','POS_PREVIEW_SUPABASE_URL','POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY'];
 const ENV_ROW_KEYS=['key','value','type','target','visibility','id','createdAt','createdBy','updatedAt','updatedBy','comment',
-  'securityIssues','decrypted','system','gitBranch','customEnvironmentIds','configurationId','contentHint','edgeConfigId','edgeConfigTokenId','sunsetSecretId'];
+  'securityIssues','decrypted','system','gitBranch','customEnvironmentIds','configurationId','contentHint','edgeConfigId','edgeConfigTokenId',
+  'sunsetSecretId','lastEditedByDisplayName','lastEditedByPrincipal'];
+const ENV_ID=/^[A-Za-z0-9_-]{1,128}(?![\s\S])/;
 const CODES=['CONTEXT','POLICY','AUTH','SOURCE','CI','FILES','PRODUCTION_GUARD','PREVIEW_GUARD','PROJECT','CONFIG','READINESS','API','DEPLOYMENT','TIMEOUT','ROUTING','PROTECTION','BUILD','MODE','FAILED'];
 const fail=code=>{throw Object.assign(new Error('FRONTEND_PREVIEW_'+code),{code:'FRONTEND_PREVIEW_'+code});};
 const check=(ok,code)=>{if(!ok)fail(code);};
@@ -65,7 +67,15 @@ function previewConfiguration(group) {
     matches(group.POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY,/^sb_publishable_[A-Za-z0-9_-]{16,256}(?![\s\S])/),'CONFIG');
   return {dataMode:'supabase',projectRef:PROJECT_REF,url:SUPABASE_URL,publishableKey:group.POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY};
 }
-export function previewProjectConfiguration(payload,expectedMode) {
+function isProjectPreviewRow(row) {
+  return Array.isArray(row.target)&&row.target.length===1&&row.target[0]==='preview'&&
+    (!Object.hasOwn(row,'gitBranch')||row.gitBranch===null)&&(!Object.hasOwn(row,'system')||row.system===false)&&
+    (!Object.hasOwn(row,'customEnvironmentIds')||Array.isArray(row.customEnvironmentIds)&&row.customEnvironmentIds.length===0)&&
+    (!Object.hasOwn(row,'securityIssues')||Array.isArray(row.securityIssues)&&row.securityIssues.length===0)&&
+    ['configurationId','contentHint','edgeConfigId','edgeConfigTokenId','sunsetSecretId'].every(key=>!Object.hasOwn(row,key)||row[key]===null);
+}
+
+function selectPreviewConfigRows(payload,expectedMode) {
   check(['mock','supabase'].includes(expectedMode),'CONFIG');
   let rows;
   if(Array.isArray(payload))rows=payload;
@@ -80,22 +90,42 @@ export function previewProjectConfiguration(payload,expectedMode) {
       page.count===rows?.length&&page.next===null&&page.prev===null,'CONFIG');
   }else fail('CONFIG');
   check(Array.isArray(rows)&&rows.length<=256,'CONFIG');
-  const group={},selected=[];
+  const keys=new Set(),ids=new Set(),selected=[];
   for(const row of rows){
     check(row&&typeof row==='object'&&!Array.isArray(row)&&text(row.key,256),'CONFIG');
     if(!/^POS_PREVIEW_/i.test(row.key))continue; // Never inspect unrelated or legacy VITE values.
-    check(CONFIG_KEYS.includes(row.key)&&!Object.hasOwn(group,row.key)&&Object.keys(row).every(key=>ENV_ROW_KEYS.includes(key))&&
-      row.type==='plain'&&(!Object.hasOwn(row,'visibility')||row.visibility==='config')&&
-      Array.isArray(row.target)&&row.target.length===1&&row.target[0]==='preview'&&
-      (!Object.hasOwn(row,'gitBranch')||row.gitBranch===null)&&(!Object.hasOwn(row,'system')||row.system===false)&&
-      (!Object.hasOwn(row,'decrypted')||row.decrypted===false)&&
-      (!Object.hasOwn(row,'customEnvironmentIds')||Array.isArray(row.customEnvironmentIds)&&row.customEnvironmentIds.length===0)&&
-      (!Object.hasOwn(row,'securityIssues')||Array.isArray(row.securityIssues)&&row.securityIssues.length===0)&&
-      ['configurationId','contentHint','edgeConfigId','edgeConfigTokenId','sunsetSecretId'].every(key=>!Object.hasOwn(row,key)||row[key]===null),'CONFIG');
-    group[row.key]=row.value;selected.push(row);
+    const readable=row.type==='plain'&&(!Object.hasOwn(row,'visibility')||row.visibility==='config');
+    const encrypted=row.type==='encrypted'&&row.visibility==='config'&&matches(row.id,ENV_ID)&&!ids.has(row.id);
+    check(CONFIG_KEYS.includes(row.key)&&!keys.has(row.key)&&Object.keys(row).every(key=>ENV_ROW_KEYS.includes(key))&&
+      (readable||encrypted)&&isProjectPreviewRow(row)&&(!Object.hasOwn(row,'decrypted')||row.decrypted===false),'CONFIG');
+    keys.add(row.key);if(encrypted)ids.add(row.id);selected.push(row);
   }
+  check(selected.length===(expectedMode==='supabase'?CONFIG_KEYS.length:0),'CONFIG');
+  return selected.sort((a,b)=>a.key<b.key?-1:a.key>b.key?1:0);
+}
+
+function resolvePreviewConfig(rows,publicValues,expectedMode) {
+  const group=Object.fromEntries(rows.map(row=>[row.key,row.type==='encrypted'?publicValues[row.key]:row.value]));
   const config=previewConfiguration(group);check(config.dataMode===expectedMode,'CONFIG');
-  return {...config,configurationSha256:hash(canonical(selected.sort((a,b)=>a.key<b.key?-1:a.key>b.key?1:0)))};
+  const snapshot=rows.map(row=>row.type==='encrypted'?{row,publicValue:group[row.key]}:row);
+  return {...config,configurationSha256:hash(canonical(snapshot))};
+}
+
+export function previewProjectConfiguration(payload,expectedMode) {
+  return resolvePreviewConfig(selectPreviewConfigRows(payload,expectedMode),{},expectedMode);
+}
+
+async function readPreviewProjectConfiguration(vercel,projectId,expectedMode) {
+  const rows=selectPreviewConfigRows(await vercel(`/v10/projects/${projectId}/env?decrypt=false`),expectedMode);
+  const publicValues={};
+  for(const row of rows){
+    if(row.type!=='encrypted')continue;
+    const revealed=await vercel(`/v1/projects/${projectId}/env/${row.id}`);
+    check(revealed?.id===row.id&&revealed.key===row.key&&revealed.type==='encrypted'&&revealed.visibility==='config'&&
+      revealed.decrypted===true&&isProjectPreviewRow(revealed),'CONFIG');
+    publicValues[row.key]=revealed.value;
+  }
+  return resolvePreviewConfig(rows,publicValues,expectedMode);
 }
 export function previewBuildEnvironment(env) {
   check(env.VERCEL_ENV==='preview','BUILD');
@@ -219,7 +249,7 @@ export async function deployPreview({env,event,policy},dependencies={}) {
     stage('PREVIEW_GUARD');
     try{verifyPreviewEnvironment(await gh('environments/Preview'),(await gh('environments/Preview/deployment-branch-policies')).branch_policies,policy);}catch{fail('PREVIEW_GUARD');}
     stage('PROJECT');const before=snapshotProject(await vercel(`/v9/projects/${p.projectId}`),p);
-    stage('CONFIG');const config=previewProjectConfiguration(await vercel(`/v10/projects/${p.projectId}/env?decrypt=false`),expectedMode);
+    stage('CONFIG');const config=await readPreviewProjectConfiguration(vercel,p.projectId,expectedMode);
     let authReadiness='NOT_RUN',permissionContractReadiness='NOT_RUN';
     if(config.dataMode==='supabase'){
       stage('READINESS');
@@ -244,7 +274,7 @@ export async function deployPreview({env,event,policy},dependencies={}) {
     }
     stage('RECHECK');const after=snapshotProject(await vercel(`/v9/projects/${p.projectId}`),p);await liveMain();
     check(before.routing===after.routing,'ROUTING');check(before.protection===after.protection,'PROTECTION');
-    const afterConfig=previewProjectConfiguration(await vercel(`/v10/projects/${p.projectId}/env?decrypt=false`),expectedMode);
+    const afterConfig=await readPreviewProjectConfiguration(vercel,p.projectId,expectedMode);
     check(config.configurationSha256===afterConfig.configurationSha256,'CONFIG');
     const url=previewUrl(deployment.url);stage('COMPLETE');
     return {schemaVersion:'pos-frontend-preview-v1',status:'READY',sourceSHA:input.source_sha,ciRunId:input.ci_run_id,ciAttempt:Number(input.ci_attempt),

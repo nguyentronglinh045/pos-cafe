@@ -7,6 +7,8 @@ const projectId='prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en';
 const supabaseUrl='https://ineckiashpwloncxnbqx.supabase.co',publishableKey='sb_publishable_SYNTHETIC_PUBLIC_0123456789';
 const functionalGroup={POS_PREVIEW_DATA_MODE:'supabase',POS_PREVIEW_SUPABASE_URL:supabaseUrl,POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY:publishableKey};
 const functionalRows=()=>Object.entries(functionalGroup).map(([key,value])=>({key,value,type:'plain',visibility:'config',target:['preview']}));
+const encryptedConfigRows=()=>functionalRows().map((row,i)=>({...row,id:`env_public_${i}`,type:'encrypted',value:`ciphertext_${i}`,
+  configurationId:null,customEnvironmentIds:[],securityIssues:[],decrypted:false,lastEditedByDisplayName:'Operator',lastEditedByPrincipal:{type:'user'}}));
 const protectionFields=['ssoProtection','passwordProtection','trustedIps','trustedSources','protectionBypass','optionsAllowlist'];
 const fileBytes=Object.fromEntries(['.github/workflows/ci.yml','.github/workflows/frontend-preview.yml',
   'scripts/project-preview.mjs','scripts/project-release.mjs','vercel.json','api/owner-otp.js'].map(file=>[file,Buffer.from('synthetic canonical '+file+'\n')]));
@@ -62,7 +64,14 @@ function fixture(options={}) {
       else if(parsed.pathname==='/v10/projects/'+projectId+'/env'){
         assert.equal(request.method,'GET');assert.equal(parsed.searchParams.get('decrypt'),'false');
         assert.equal(parsed.searchParams.has('target'),false);assert.equal(parsed.searchParams.has('gitBranch'),false);
-        data=structuredClone(options.envResponse??{envs:options.envRows??[]});options.environment?.(data,++configReads);
+        configReads++;data=structuredClone(options.envResponse??{envs:options.envRows??[]});options.environment?.(data,configReads);
+      }
+      else if(parsed.pathname.startsWith(`/v1/projects/${projectId}/env/`)){
+        assert.equal(request.method,'GET');assert.deepEqual([...parsed.searchParams.keys()],['slug']);
+        const id=parsed.pathname.split('/').at(-1);
+        const row=(options.envResponse?.envs??options.envRows??[]).find(item=>item.id===id&&Object.hasOwn(functionalGroup,item.key));
+        assert.ok(row,'Only the three selected public Config IDs may be read');
+        data={...structuredClone(row),value:functionalGroup[row.key],decrypted:true};options.revealed?.(data,configReads);
       }
       else if(parsed.pathname==='/v13/deployments'&&request.method==='POST') {
         if(options.postError)throw options.postError;data={id:'dpl_preview',target:null};
@@ -362,6 +371,40 @@ test('functional provider rows deny duplicate, secret, branch, production, share
     await reject(f.run,'CONFIG');assert.equal(f.postCount(),0);
     assert.equal(f.calls.some(call=>new URL(call.url).hostname.endsWith('.supabase.co')),false);
   }
+});
+
+test('dashboard Config rows use only the three public variable reads before deploy and at recheck',async()=>{
+  const rows=encryptedConfigRows();
+  const ingress={key:'POS_CAFE_OTP_INGRESS_KEY',id:'env_ingress',type:'sensitive',visibility:'secret',target:['preview']};
+  const legacy={key:'VITE_SUPABASE_ANON_KEY',id:'env_legacy',type:'encrypted',target:['production','preview']};
+  const f=fixture({dataMode:'supabase',envResponse:{envs:[...rows,ingress,legacy],hiddenProductionEnvCount:0}});
+  const result=await f.run();
+  const reveals=f.calls.filter(call=>new URL(call.url).pathname.startsWith(`/v1/projects/${projectId}/env/`));
+  const orderedIds=['env_public_0','env_public_2','env_public_1'];
+  assert.deepEqual(reveals.map(call=>new URL(call.url).pathname.split('/').at(-1)),[...orderedIds,...orderedIds]);
+  assert.equal(f.postCount(),1);assert.equal(result.status,'READY');
+  for(const value of [publishableKey,'ciphertext_0','Operator'])assert.equal(JSON.stringify(result).includes(value),false);
+});
+
+test('encrypted Config fails before a reveal when the list is ambiguous or a selected row is not public Preview Config',async()=>{
+  for(const mutate of [rows=>rows.pop(),rows=>{rows[0].id=rows[1].id;},rows=>{rows[0].id='other/secret';},
+    rows=>{delete rows[0].visibility;},rows=>{rows[0].visibility='secret';},rows=>{rows[0].target.push('production');}]){
+    const rows=encryptedConfigRows();mutate(rows);const f=fixture({dataMode:'supabase',envRows:rows});
+    await reject(f.run,'CONFIG');assert.equal(f.postCount(),0);
+    assert.equal(f.calls.some(call=>new URL(call.url).pathname.startsWith(`/v1/projects/${projectId}/env/`)),false);
+  }
+});
+
+test('encrypted Config rejects an inconsistent reveal or changed public value at recheck',async()=>{
+  for(const mutate of [row=>{row.id='env_other';},row=>{row.key='VITE_SECRET';},row=>{row.visibility='secret';},
+    row=>{row.target=['production'];},row=>{row.decrypted=false;},row=>{row.value='sb_secret_SYNTHETIC_PRIVATE';}]){
+    const f=fixture({dataMode:'supabase',envRows:encryptedConfigRows(),revealed:mutate});
+    await reject(f.run,'CONFIG');assert.equal(f.postCount(),0);
+  }
+  const drift=fixture({dataMode:'supabase',envRows:encryptedConfigRows(),revealed:(row,read)=>{
+    if(read===2&&row.key==='POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY')row.value='sb_publishable_SYNTHETIC_ROTATED_0123456789';
+  }});
+  await reject(drift.run,'CONFIG');assert.equal(drift.postCount(),1);
 });
 
 test('data_mode is an exact expectation and cannot switch provider config or relax legacy mock mode',async()=>{
