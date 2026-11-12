@@ -9,7 +9,7 @@ Production remains disabled; this command does not promote a deployment.
 
 `data_mode` is an expectation checked before creating a deployment. It does not
 write Vercel settings. Default `mock` requires no `POS_PREVIEW_*` variables.
-For `supabase`, configure exactly these three **plain/config** environment
+For `supabase`, configure exactly these three public **Config** environment
 variables on the pinned Vercel project, with target **Preview only**, no branch
 override or custom environment:
 
@@ -20,9 +20,13 @@ override or custom environment:
 | `POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY` | That project's public `sb_publishable_...` key |
 
 These values become public browser configuration. Never use a secret/service key.
-Existing `VITE_*` variables are ignored by the build helper; do not decrypt or
-change them for this operation. Partial, duplicate, extra `POS_PREVIEW_*`, shared
-Production scopes, encrypted values and unsupported API shapes fail closed.
+The deploy helper accepts `plain` rows and dashboard Config rows stored as
+`encrypted` with `visibility: config`. It reads the latter by individual ID only
+after validating the complete list, the three keys and their Preview-only scope.
+It checks the returned identity and scope, then validates the public values.
+Partial lists, duplicate or extra `POS_PREVIEW_*` keys, Secret rows and shared
+Production scopes fail closed. Existing `VITE_*` and runtime secrets stay outside
+the individual reads.
 Supported wrappers are `envs` alone, `envs` plus `hiddenProductionEnvCount: 0`,
 or `envs` plus a single complete page with `count` equal to the returned rows
 and both `next` and `prev` null. Hidden or partial lists are refused.
