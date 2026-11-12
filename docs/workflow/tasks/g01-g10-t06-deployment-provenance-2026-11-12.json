@@ -1,0 +1,143 @@
+{
+  "baseGitTree": "fbdb11bf2f81b5709f27e183b6add0076333318e",
+  "bundle": {
+    "gitBlobBasedSHA256": "27c3304a0b9282301b4344215be68f1657a8ed8d9318ed4562d271881ce66d40",
+    "workingTreeCommandSHA256": "ee849bbbb287a4990dbe2245ff09faf6b73c590caea1cfdd89913c91c8a93a31",
+    "deployedCutoverBundleBeforePatchSHA256": "3ad77fab7d7603a94c302f95a14143d05203c6f0da3e6d252ea309d9f793af5c",
+    "cutoverWrapperSHA256": "de8299d726d2946d1f01df44d95ca54c0d03b36c782e29119bb212709d9a9718",
+    "postgrestPatchSHA256": "303be39fa8385168bf5fac8e9544a825ca8e3a92700ac412f6506e144e76dc75"
+  },
+  "edge": {
+    "version": 1,
+    "providerBundleSHA256": "aef9d76f3176f6ffa3720480170e9c0ba0ebc21163dbab83ab98b4ddcfde7e5c",
+    "deployManifestSHA256": "71a6300182ca56701d5d38456041f58aeff449d2c4fddf605944fe0a36a530cd"
+  },
+  "schedule": {
+    "deployInputSHA256": "0fad636908c5c77a60cf62b5fef1a2e17537ddefd315d858ca7ccc3cdb0840f3",
+    "gitBlobSHA256": "51cfebbb9ed7127a4598446c372cb7e2936dd12cf531981e949ce84c72da30fc",
+    "jobId": "1",
+    "httpStatus": 200
+  },
+  "backup": {
+    "archive": "staging-20261111T095930367Z.dump",
+    "sha256": "41c2844c61a125626dea55ed3210b6d0e08c8941bed888db9eaf6b17c2feb811",
+    "utc": "2026-11-11T10:01:34.3016360Z",
+    "bytes": 1044627,
+    "sourceFingerprints": 73,
+    "preCutoverStores": [
+      1,
+      2,
+      3
+    ],
+    "cutoverUTC": "2026-11-11T11:56:18.9584353Z",
+    "cutoverState": "COMMITTED_VERIFIED"
+  },
+  "stagingTest": {
+    "utc": "2026-11-11T12:10:10.7524635Z",
+    "storeNo": 4,
+    "paired": true,
+    "ownerPinAccepted": true,
+    "seedReadiness": "ready",
+    "state": "HOSTED_OTP_CREATE_PAIR_SEED_VERIFIED"
+  },
+  "files": [
+    {
+      "path": "supabase/candidate/owner-provisioning-schema.sql",
+      "deploymentInputSHA256": "f285c5e07241317e4d5855e4f7b9c23b9b93c3379c64cf22e9009846c0762172",
+      "gitBlobSHA256": "22d283ba593f728be57d92e227d99a70d42cb3cb2ed3dc35c61ec03a63fe58f3",
+      "normalizedSHA256": "22d283ba593f728be57d92e227d99a70d42cb3cb2ed3dc35c61ec03a63fe58f3",
+      "difference": "LINE_ENDINGS_OR_TRAILING_BLANK_LINES"
+    },
+    {
+      "path": "supabase/candidate/owner-provisioning-otp.sql",
+      "deploymentInputSHA256": "dc31ae0ba2306c7aed45429a373e2c822fc4d42ec0d99dfe542f949518bae982",
+      "gitBlobSHA256": "8036032b6c638687f2183ac68b69b30a40506ab73fe94bd752274aba27b68f5e",
+      "normalizedSHA256": "8036032b6c638687f2183ac68b69b30a40506ab73fe94bd752274aba27b68f5e",
+      "difference": "LINE_ENDINGS_OR_TRAILING_BLANK_LINES"
+    },
+    {
+      "path": "supabase/candidate/owner-provisioning-verify.sql",
+      "deploymentInputSHA256": "d806bfee5ee3181d2ea70a16731dd2684cd69f7e231d992e96bdf6cba98f6f67",
+      "gitBlobSHA256": "5a157424c5832b11477a56ad59e895406774673eccb8f6adf5803404bfc923b8",
+      "normalizedSHA256": "5a157424c5832b11477a56ad59e895406774673eccb8f6adf5803404bfc923b8",
+      "difference": "LINE_ENDINGS_OR_TRAILING_BLANK_LINES"
+    },
+    {
+      "path": "supabase/candidate/owner-provisioning-mail.sql",
+      "deploymentInputSHA256": "d102dca679649917ea12d97fd47d01d17c325c4a936cd3dc3995d262ec69ebae",
+      "gitBlobSHA256": "b99a16c5138ea6e2f476e361b4fb1657105f39de324f04ebdfc7b95519cdb2d1",
+      "normalizedSHA256": "b99a16c5138ea6e2f476e361b4fb1657105f39de324f04ebdfc7b95519cdb2d1",
+      "difference": "LINE_ENDINGS_OR_TRAILING_BLANK_LINES"
+    },
+    {
+      "path": "supabase/candidate/owner-provisioning-commit.sql",
+      "deploymentInputSHA256": "19665cf0c89564d1d24200ffd8a681761b1db23c4fafe5f705a0b0fbba136fd2",
+      "gitBlobSHA256": "3f38072120756ca69f6c68714b1d9008fa3972731283a887163b161d26f2766d",
+      "normalizedSHA256": "3f38072120756ca69f6c68714b1d9008fa3972731283a887163b161d26f2766d",
+      "difference": "LINE_ENDINGS_OR_TRAILING_BLANK_LINES"
+    },
+    {
+      "path": "supabase/candidate/owner-provisioning-seed.sql",
+      "deploymentInputSHA256": "58fdb529b581c5757135cfeddb11fc1049560536230e1373b74b8d564106bfc3",
+      "gitBlobSHA256": "1f6fadfd7da58e7a2588b9c0bd8e9b9621dbd7c704c731d43432aeabf22d03b9",
+      "normalizedSHA256": "1f6fadfd7da58e7a2588b9c0bd8e9b9621dbd7c704c731d43432aeabf22d03b9",
+      "difference": "LINE_ENDINGS_OR_TRAILING_BLANK_LINES"
+    },
+    {
+      "path": "supabase/candidate/owner-provisioning-closeout.sql",
+      "deploymentInputSHA256": "90643497153df70ffa2e5d9250402526c82d426ebe74e4787a8c9e3829cd6a00",
+      "gitBlobSHA256": "782758b8050479a9f4bc4b6465381bf24caaabb371bbcd965cd0b9391139d3fc",
+      "normalizedSHA256": "782758b8050479a9f4bc4b6465381bf24caaabb371bbcd965cd0b9391139d3fc",
+      "difference": "LINE_ENDINGS_OR_TRAILING_BLANK_LINES"
+    },
+    {
+      "path": "supabase/candidate/owner-provisioning-suspension.sql",
+      "deploymentInputSHA256": "d67877e55f40027ea3f54de6fce4fd5b8b97a2a2db972c30e1603ad355e967c1",
+      "gitBlobSHA256": "79961c83cafe0b9cb694acac619c9cd31817de73ec07a27d983a50f1b5936247",
+      "normalizedSHA256": "79961c83cafe0b9cb694acac619c9cd31817de73ec07a27d983a50f1b5936247",
+      "difference": "LINE_ENDINGS_OR_TRAILING_BLANK_LINES"
+    },
+    {
+      "path": "supabase/candidate/owner-provisioning-readiness.sql",
+      "deploymentInputSHA256": "c3f25ba5ad65b13dfeec63a50cacad4cb9d40acbc3f632af75906530ab57bbd5",
+      "gitBlobSHA256": "08f979262db40c2f5e2b4fef3f23bd8f57a439e8b38e252e8490ecaf52139851",
+      "normalizedSHA256": "08f979262db40c2f5e2b4fef3f23bd8f57a439e8b38e252e8490ecaf52139851",
+      "difference": "LINE_ENDINGS_OR_TRAILING_BLANK_LINES"
+    },
+    {
+      "path": "supabase/candidate/owner-provisioning-postgrest.sql",
+      "deploymentInputSHA256": "303be39fa8385168bf5fac8e9544a825ca8e3a92700ac412f6506e144e76dc75",
+      "gitBlobSHA256": "303be39fa8385168bf5fac8e9544a825ca8e3a92700ac412f6506e144e76dc75",
+      "normalizedSHA256": "303be39fa8385168bf5fac8e9544a825ca8e3a92700ac412f6506e144e76dc75",
+      "difference": "EXACT"
+    },
+    {
+      "path": "supabase/functions/owner-provisioning/handler.ts",
+      "deploymentInputSHA256": "75b6ceff1c48d7a99201979242d8454f7c04f691845dc757a4e483eee11c41e1",
+      "gitBlobSHA256": "f490e450c1039b203b297a0d0af6a64e8dce69b600832ed2e6f1c9602554c939",
+      "normalizedSHA256": "f490e450c1039b203b297a0d0af6a64e8dce69b600832ed2e6f1c9602554c939",
+      "difference": "LINE_ENDINGS_OR_TRAILING_BLANK_LINES"
+    },
+    {
+      "path": "supabase/functions/owner-provisioning/index.ts",
+      "deploymentInputSHA256": "8548041e3c75e95f01f7923db5d0ffd2548198653aea6e7b1f90e4369ce5a8dd",
+      "gitBlobSHA256": "bff3cd02ce149b41437425116bd9d7e25744a2b3aef198ee571a6e06f3f81e4a",
+      "normalizedSHA256": "bff3cd02ce149b41437425116bd9d7e25744a2b3aef198ee571a6e06f3f81e4a",
+      "difference": "LINE_ENDINGS_OR_TRAILING_BLANK_LINES"
+    },
+    {
+      "path": "supabase/functions/owner-provisioning/smtp.ts",
+      "deploymentInputSHA256": "4da1bb0e78ac3a59922ce0330398558b8ae35f09f94cb8c33a1d3e1b7a70d907",
+      "gitBlobSHA256": "97458f42ef835d88c06558c6b02db752d104036825e3b6f939ae10fc7536e915",
+      "normalizedSHA256": "97458f42ef835d88c06558c6b02db752d104036825e3b6f939ae10fc7536e915",
+      "difference": "LINE_ENDINGS_OR_TRAILING_BLANK_LINES"
+    },
+    {
+      "path": "supabase/candidate/owner-provisioning-worker-schedule.sql",
+      "deploymentInputSHA256": "0fad636908c5c77a60cf62b5fef1a2e17537ddefd315d858ca7ccc3cdb0840f3",
+      "gitBlobSHA256": "51cfebbb9ed7127a4598446c372cb7e2936dd12cf531981e949ce84c72da30fc",
+      "normalizedSHA256": "51cfebbb9ed7127a4598446c372cb7e2936dd12cf531981e949ce84c72da30fc",
+      "difference": "LINE_ENDINGS_OR_TRAILING_BLANK_LINES"
+    }
+  ]
+}

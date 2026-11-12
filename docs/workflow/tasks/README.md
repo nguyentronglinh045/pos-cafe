@@ -1,5 +1,7 @@
 # Chỉ mục công việc
 
+- [T06 — OTP tạo quán, cutover staging và review PR #24](g01-g10-t06-owner-implementation-2026-11-11.md)
+
 ## Kế hoạch G01–G10 — cập nhật 02/11/2026
 
 - [Kế hoạch kỹ thuật G01–G10](../g01-g10-plan.md#next): ưu tiên, phụ thuộc, trạng thái và tiêu chí hoàn thành. Các hồ sơ bên dưới ghi nguồn và kết quả tại từng mốc kiểm chứng.

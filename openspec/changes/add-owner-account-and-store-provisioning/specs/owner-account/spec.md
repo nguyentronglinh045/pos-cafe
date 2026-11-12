@@ -19,21 +19,42 @@ Hệ thống SHALL nhận yêu cầu gửi mã gồm email, thông tin tạo qu�
 
 Khi email đã đủ điều kiện gửi, chưa đủ điều kiện gửi (đang chờ hết 10 phút hoặc đã hết lượt), hay yêu cầu tạo quán đã được chấp nhận, phản hồi SHALL giống hệt nhau về dạng, để người ngoài không dò được email nào đã có quán. Các lỗi về mã định danh (`A_REQUEST_ID_STALE`, `A_REQUEST_ID_REUSED`, `CREATE_INTENT_ID_REUSED`) và lỗi hệ thống (`A_SEND_UNAVAILABLE`) chỉ phụ thuộc mã định danh hoặc tình trạng hệ thống, không phụ thuộc PIN hay việc email đã có quán hay chưa.
 
+Với mã tạo quán, server SHALL ghi một thư chờ có OTP mã hóa cùng giao dịch phát mã (quyết định 52). Tác vụ gửi SHALL có thể tiếp tục với thư chưa được nhận gửi nếu tiến trình ban đầu dừng, với cùng OTP và hạn gốc. Ngay trước khi cho phép bắt đầu SMTP, server SHALL kiểm lại quyền gửi và hiệu lực của mã. Mỗi bản ghi thư được nhận gửi tối đa một lần. Khi đã nhận gửi mà chưa rõ kết quả, tác vụ MUST NOT tự gửi lại. Phản hồi yêu cầu mã vẫn dùng dạng chung và thời gian chờ tính từ lần phát gốc.
+
 #### Scenario: Bấm gửi lại trong 10 phút
 
 - **WHEN** người dùng yêu cầu mã tạo quán lần nữa cho cùng email trước khi hết 10 phút kể từ lần phát
 - **THEN** hệ thống trả phản hồi cùng dạng, không gửi thư, không tính lượt, và nút Gửi lại vẫn bị khóa tới mốc hẹn
 
+#### Scenario: Tiến trình dừng trước khi nhận gửi OTP
+
+- **WHEN** giao dịch phát mã đã commit, mã còn hiệu lực và thư chưa được nhận gửi
+- **THEN** tác vụ gửi nhận thư chờ và gửi mã cũ, giữ nguyên hạn và lượt phát đã tính
+
+#### Scenario: Tiến trình mất kết quả sau khi nhận gửi OTP
+
+- **WHEN** một tiến trình đã nhận gửi thư và dừng mà chưa ghi được kết quả
+- **THEN** khi hết hạn xử lý, server ghi trạng thái chưa rõ và giữ lượt đã tính. Yêu cầu lặp không cấp quyền gửi mới. Người dùng có thể xin mã mới theo giới hạn thông thường sau mốc hẹn
+
 ### Requirement: REQ-OWNER-03 — Kiểm mã trước, kiểm thông tin sau
 
 Hệ thống SHALL kiểm mã trước. Trước khi mã được xác nhận đúng, mọi phản hồi, dữ liệu lưu, số lượt, thư và bộ đếm sai MUST NOT phụ thuộc giá trị PIN hay nội dung thông tin tạo quán, ngoài việc kiểm đúng dạng. Lý do: nếu kiểm PIN trước thì người không có mã vẫn dò được PIN.
 
-Mã sai SHALL tăng bộ đếm sai. Mã đúng nhưng thông tin khác lúc gửi mã SHALL bị từ chối, tăng bộ đếm sai và không làm mất hiệu lực mã. Việc dùng mã và ghi nhận yêu cầu tạo quán SHALL nằm trong cùng một giao dịch database; mỗi yêu cầu tạo quán tạo ra tối đa một quán.
+Mỗi mã tạo quán SHALL có một bộ đếm sai dùng chung cho mã sai, mã đúng nhưng thông tin khác lúc gửi mã và lần dùng lại ID khác ràng buộc được tính theo thiết kế. Mã đúng nhưng thông tin khác SHALL bị từ chối và tăng đếm. Lỗi này giữ mã chưa dùng, nhưng hệ thống MUST vô hiệu mã nếu đó là lần sai thứ năm. Dưới khóa của mã, lần thứ năm SHALL ghi mức đếm 5 và vô hiệu mã trong cùng giao dịch, vẫn trả mã lỗi của lần đó. Lần xác minh mới khi mã đã bị khóa và còn trong cửa sổ 10 phút SHALL trả `A_OTP_ATTEMPTS_EXCEEDED`. Gửi lại đúng yêu cầu đã lưu tuân theo REQ-OWNER-04 và MUST NOT tăng đếm.
+
+Chỉ lần xác minh đúng mã còn hiệu lực của đúng intent, đúng thông tin và còn hạn mức mới SHALL tạo yêu cầu được chấp nhận. Server MUST dùng giờ thực của database sau khi lấy các khóa cần cho kết quả xác minh, kể cả khóa hạn mức theo email nếu đi đến bước đó. Từ đúng thời điểm hết hạn, mã SHALL bị từ chối `A_OTP_EXPIRED` ở lần xác minh mới, kể cả khi lời gọi đến trước hạn. Lỗi hết hạn MUST NOT tăng đếm sai, tiêu thụ mã hoặc giữ chỗ. Việc dùng mã, giữ chỗ và ghi yêu cầu tạo quán SHALL nằm trong cùng một giao dịch database. Mỗi yêu cầu tạo quán tạo ra tối đa một quán.
+
+Gửi mã, mở/tải lại trang, tra trạng thái, nhập sai hoặc gửi lại yêu cầu đã ghi nhận MUST NOT tự khởi tạo thêm quán hoặc tài khoản kỹ thuật. Thay ID, tab hay địa chỉ mạng MUST NOT đặt lại bộ đếm sai của cùng mã.
 
 #### Scenario: Đổi PIN sau khi gửi mã
 
 - **WHEN** người dùng nhập đúng mã nhưng PIN khác PIN đã nhập lúc gửi mã
-- **THEN** hệ thống trả `CREATE_INTENT_CONFLICT`, tăng bộ đếm sai và không tạo quán
+- **THEN** hệ thống trả `CREATE_INTENT_CONFLICT`, tăng bộ đếm sai và không tạo quán. Nếu bộ đếm đạt 5, mã mất hiệu lực ngay
+
+#### Scenario: OTP tạo quán hết hạn lúc chờ khóa
+
+- **WHEN** lần xác minh mới đến trước hạn, nhưng chỉ lấy được khóa cần thiết vào đúng hoặc sau mốc hết hạn
+- **THEN** hệ thống trả `A_OTP_EXPIRED`. Bộ đếm sai, việc dùng mã, số chỗ giữ và số yêu cầu tạo quán không đổi
 
 ### Requirement: REQ-OWNER-04 — Gửi lại an toàn khi mất phản hồi
 
@@ -41,12 +62,25 @@ Gửi lại đúng yêu cầu cũ SHALL nhận lại đúng kết quả đã lư
 
 Ngoại lệ: chuyển quyền và reset hủy chính phiên đang gọi, nên gửi lại sau đó nhận `EMPLOYEE_SESSION_REQUIRED` thay vì kết quả cũ. Thao tác không chạy lần hai, và người dùng đăng nhập lại để thấy kết quả.
 
-Mã định danh chưa từng được ghi nhận mà có thời điểm tạo lệch quá 30 phút so với đồng hồ database SHALL bị từ chối `A_REQUEST_ID_STALE`. Bản ghi phục vụ gửi lại SHALL được giữ ít nhất 90 phút, nên yêu cầu quá cũ không bao giờ bị coi nhầm là yêu cầu mới.
+Riêng tạo quán, một ID đã có kết quả từ chối SHALL giữ kết quả đó khi gửi lại đúng yêu cầu cũ, kể cả khi lượt khác của cùng intent đã được chấp nhận. Gửi sai ràng buộc vẫn bị từ chối theo quy tắc gửi lại.
+
+Nếu ID khớp phạm vi của yêu cầu đã được chấp nhận và chưa có kết quả riêng, hệ thống SHALL ghi liên kết chỉ tra khi ID còn trong cửa sổ hợp lệ và operation còn chỗ liên kết. Chỉ trả trạng thái sau khi ghi thành công. ID đã có liên kết tiếp tục đọc trạng thái hiện tại khi gửi lại đúng phạm vi. Mỗi operation có tối đa 64 liên kết ngoài lần Xác nhận đã được chấp nhận. Lượt vượt trần SHALL nhận lỗi tạm thời `CREATE_VERIFY_UNAVAILABLE` và MUST NOT ghi kết quả cuối. Liên kết chỉ tra giữ cùng operation trong giai đoạn 1.
+
+Lần Xác nhận đã được chấp nhận dùng đường gửi lại theo REQ-STORE-04. Nếu cửa sổ nhận lại Store Key đã đóng, chỉ trả trạng thái. Với liên kết chỉ tra, mọi mã/PIN đúng dạng trong cùng phạm vi đều nhận cùng trạng thái. Hệ thống MUST NOT so hoặc đếm lỗi OTP/PIN ở nhánh chỉ tra, cấp quyền chạy provisioning, trả Store Key hoặc số quán. Kết quả lưu để gửi lại chỉ chứa kết quả hoặc tham chiếu nội bộ.
+
+Mã định danh chưa từng được ghi nhận mà có thời điểm tạo lệch quá 30 phút so với đồng hồ database SHALL bị từ chối `A_REQUEST_ID_STALE` trong trường hợp thông thường. Bản ghi phục vụ gửi lại SHALL được giữ ít nhất 90 phút, nên yêu cầu quá cũ không bao giờ bị coi nhầm là yêu cầu mới.
+
+Riêng Xác nhận tạo quán, ID lệch về tương lai quá 2 giờ MUST bị từ chối `A_REQUEST_INVALID`. Trong khoảng lệch trên 30 phút tới 2 giờ, mỗi mã xác nhận còn hiệu lực SHALL cho tối đa một dấu từ chối giờ lệch. Yêu cầu tranh dấu khác MUST NOT được tạo quán và nhận lỗi tạm thời `CREATE_VERIFY_UNAVAILABLE`. Dấu đã ghi SHALL tiếp tục được giữ tới khi ID cũ hơn đồng hồ database quá 30 phút, kể cả sau 90 phút. ID đã có dấu MUST NOT được nhận thành lượt mới khi đồng hồ tiến vào cửa sổ hợp lệ.
 
 #### Scenario: Gửi lại sau khi mất phản hồi
 
 - **WHEN** lời gọi xác minh đã xong nhưng phản hồi bị mất, và máy gửi lại đúng yêu cầu đó sau 30 phút
 - **THEN** hệ thống trả kết quả đã lưu, không tăng bộ đếm sai và không tạo gì mới
+
+#### Scenario: Gửi lại lượt bị từ chối sau khi lượt khác đã được chấp nhận
+
+- **WHEN** lần Xác nhận B đã bị từ chối, lần A sau đó được chấp nhận cho cùng intent, và B gửi lại đúng yêu cầu đã lưu
+- **THEN** server trả lỗi đã lưu. Tra trạng thái bằng B trả `not_accepted`. B không gắn với yêu cầu do A mở
 
 ### Requirement: REQ-OWNER-05 — Mỗi email làm chủ tối đa 5 quán
 
@@ -66,32 +100,39 @@ Trong phạm vi đồ án giữ trần 5. Khi vận hành thực tế có thể 
 - **WHEN** một email chưa có quán nào tạo lần lượt 5 quán trong cùng một ngày, mỗi lần gửi mã cách nhau ít nhất 10 phút
 - **THEN** cả 5 lần đều được chấp nhận
 
-### Requirement: REQ-OWNER-06 — Biên nhận trên máy người dùng
+### Requirement: REQ-OWNER-06 — F5 bỏ form, giữ mã tra sau Xác nhận
 
-Máy người dùng SHALL lưu biên nhận của mỗi lần gửi mã trong IndexedDB, mỗi biên nhận là một bản ghi riêng, ghi trong một giao dịch cùng nhật ký yêu cầu. Biên nhận MUST NOT chứa mã, PIN hay Store Key, và MUST NOT bị loại bớt để giới hạn số lượng. Biên nhận chỉ giúp giao diện quay lại đúng bước; nó không phải bằng chứng và không mang quyền gì.
+Form và biên nhận gửi mã chỉ SHALL tồn tại trong bộ nhớ trang. Tải lại SHALL bỏ toàn bộ form và biên nhận gửi mã, không phục hồi màn nhập mã, không tự gửi lại thư hay yêu cầu xác minh. Thời gian chờ gửi mã trên server vẫn tính bình thường.
 
-Máy SHALL giữ thêm cho mỗi luồng một bản nháp gồm tên quán, địa chỉ và tùy chọn dữ liệu mẫu, để sau khi tải lại trang không phải nhập lại. Bản nháp MUST NOT chứa PIN, mã hay Store Key, và được xóa cùng lúc với biên nhận.
+Khi người dùng bấm Xác nhận với đầu vào đúng dạng, trình duyệt SHALL ghi duy nhất mã định danh `attemptId` của lần nhập để tra trạng thái, trước khi gửi yêu cầu. Dữ liệu giữ qua F5 MUST NOT có email, tên quán, địa chỉ, tùy chọn seed, PIN, OTP, Store Key hay biên nhận gửi mã. Mã tra chỉ cho phép hỏi trạng thái, không cấp quyền tạo, chạy lại, ghép máy hoặc nhận Store Key. Mỗi tab MUST NOT xóa hay ghi đè mã tra trong lúc chờ phản hồi hoặc kết quả còn chưa rõ.
 
-Nếu không ghi được vào IndexedDB, máy SHALL vẫn cho làm tiếp, giữ dữ liệu trong bộ nhớ và hiện cảnh báo `STORAGE_UNAVAILABLE`.
+Giao diện cho phép mở Tạo quán ở nhiều tab. Mỗi tab tra bằng mã lưu trong bộ nhớ phiên của nó. Form, OTP và màn kết quả không đồng bộ giữa các tab. Nếu trình duyệt sao chép bộ nhớ phiên khi mở tab, tab mới chỉ tra lại cùng ID đã sao chép. Một lượt có thể vẫn hiển thị kết quả bị từ chối dù lượt khác đã tạo quán. `not_accepted` chỉ mô tả ID được tra.
 
-#### Scenario: Tải lại trang khi đang nhập mã
+Khi kết quả chưa rõ, giao diện SHALL cho về trang đầu hoặc mở màn Ghép thiết bị mà vẫn giữ mã tra. Nếu mở lại Tạo quán trong cùng tab, hệ thống SHALL hiện lượt tra cũ trước khi cho bắt đầu lượt mới.
 
-- **WHEN** người dùng tải lại trang ở màn nhập mã
-- **THEN** tên quán, địa chỉ và tùy chọn dữ liệu mẫu đã điền sẵn, còn PIN phải nhập lại
+#### Scenario: Tải lại sau khi một lượt Xác nhận khác đã mở yêu cầu tạo quán
 
-#### Scenario: Không ghi được biên nhận
+- **WHEN** server đã ghi liên kết chỉ tra của lần Xác nhận khác và tab tải lại, kể cả khi phản hồi bị mất
+- **THEN** tab tra trạng thái hiện tại bằng ID của chính nó. Phản hồi chỉ chứa trạng thái và không mở lại việc tạo quán
 
-- **WHEN** trình duyệt không ghi được vào IndexedDB
-- **THEN** người dùng vẫn làm tiếp được và thấy cảnh báo; nếu tải lại trang thì phải bắt đầu lại từ màn nhập thông tin
+#### Scenario: Tải lại trước khi bấm Xác nhận
 
-#### Scenario: Bốn phản hồi về sai thứ tự
+- **WHEN** người dùng tải lại sau khi yêu cầu mã nhưng chưa bấm Xác nhận
+- **THEN** form trống, không có mã tra và không có thư mới
 
-- **WHEN** hai tab cùng một lần tạo quán nhận bốn phản hồi theo thứ tự đảo
-- **THEN** cả bốn biên nhận đều được lưu, không cái nào ghi đè cái nào
+#### Scenario: Tải lại sau khi bấm Xác nhận
+
+- **WHEN** người dùng tải lại sau khi gửi Xác nhận, kể cả khi phản hồi bị mất
+- **THEN** form trống, máy chỉ tra trạng thái bằng `attemptId`, không gọi xác minh và không nhận lại Store Key
+
+#### Scenario: Không ghi được mã tra
+
+- **WHEN** trình duyệt không ghi được `attemptId`
+- **THEN** vẫn cho làm tiếp bằng bộ nhớ trang và cảnh báo `STORAGE_UNAVAILABLE` rằng tải lại có thể làm mất đường tra
 
 ### Requirement: REQ-OWNER-07 — Quy tắc chung của mã xác nhận theo từng loại thao tác
 
-Mã xác nhận SHALL gồm 6 chữ số, hết hạn sau 10 phút, bị hủy sau 5 lần nhập sai và chỉ dùng được một lần. Mỗi mã SHALL chỉ dùng được cho đúng loại thao tác và đúng đối tượng mà nó được phát. Các loại thao tác gồm: tạo quán, quên PIN chủ, cấp lại Store Key, đổi email (xác nhận email đã đăng ký), đổi email (xác nhận email mới), chuyển quyền (xác nhận email đã đăng ký), chuyển quyền (xác nhận email mới), reset dữ liệu.
+Mã xác nhận SHALL gồm 6 chữ số, hết hạn tại đúng mốc 10 phút từ khi phát, bị vô hiệu ngay khi bộ đếm sai của mã đạt 5 và chỉ dùng được một lần. Với mã tạo quán, REQ-OWNER-03 quy định các lỗi tính vào bộ đếm. Mỗi mã SHALL chỉ dùng được cho đúng loại thao tác và đúng đối tượng mà nó được phát. Các loại thao tác gồm: tạo quán, quên PIN chủ, cấp lại Store Key, đổi email (xác nhận email đã đăng ký), đổi email (xác nhận email mới), chuyển quyền (xác nhận email đã đăng ký), chuyển quyền (xác nhận email mới), reset dữ liệu.
 
 Mỗi mã SHALL gắn với đúng đối tượng của nó: quán, tài khoản chủ, và với mã gửi tới email mới thì gắn cả địa chỉ đó. Khi kiểm mã, server MUST so quán trong mã với quán của máy đang gọi. Với mã gửi về email đã đăng ký, server MUST so email trong mã với email chủ hiện tại. Với mã gửi tới email mới, server MUST kiểm bước xác nhận email đã đăng ký gắn với mã chưa được dùng, chưa bị hủy, chưa bị thay, và tài khoản của bước đó đang là chủ quán này. Không đạt thì coi như không có mã. Mã tạo quán gắn với intent, không so với chủ nào.
 
