@@ -147,7 +147,7 @@ R06 đã ghi quyết định 55 về Store Key trong phản hồi Xác nhận g�
 
 R07 đã ghi quyết định 56 về khóa quán qua RPC nghiệp vụ, ngoại lệ đọc trạng thái của thiết bị, audit và giới hạn của cổng ảnh. [Hồ sơ R04–R07](tasks/g01-g10-t06-schema-otp-review-2026-11-11.md#r04--mốc-hết-hạn-và-lần-sai-thứ-năm) lưu quyết định, căn cứ và review. TC-OWNER-95/111 chưa chạy.
 
-[T06 hiện thực ngày 11/11/2026](tasks/g01-g10-t06-owner-implementation-2026-11-11.md) đã kiểm PostgreSQL loopback, Auth/SMTP giả lập, cổng ký IP và các ca chờ khóa. Sau mốc local, staging đã được backup, cutover đúng ba quán thử và thử thành công OTP, ghép Store Key, PIN chủ và seed trên quán `0004`. Protected Preview và R07 hosted còn chờ.
+[T06 hiện thực ngày 11/11/2026](tasks/g01-g10-t06-owner-implementation-2026-11-11.md) đã kiểm PostgreSQL loopback, Auth/SMTP giả lập, cổng ký IP và các ca chờ khóa. Sau mốc local, staging đã được backup, cutover đúng ba quán thử và thử thành công OTP, ghép Store Key, PIN chủ và seed trên quán `0004`. Đến ngày 13/11, hai vòng TC-OWNER-104 đã chạy trên Protected Preview. TC-OWNER-41 và R07 hosted còn chờ.
 
 ## Phạm vi kết luận
 
