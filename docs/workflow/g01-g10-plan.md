@@ -1,6 +1,6 @@
 # Kế hoạch kỹ thuật G01–G10 của POS Cafe
 
-Cập nhật **02/11/2026** (sau merge và CI main T02), dựa trên mã nguồn `28a3dc54a846463ba150d50ab323658d6ed1372c` và tài liệu đầu vào `991652224afcd125065d92ad0d657abf289f1842`. Riêng T04 cập nhật 08/11/2026. Kế hoạch tổng hợp ưu tiên, phụ thuộc, đầu ra và trạng thái kỹ thuật; yêu cầu chi tiết và bằng chứng nằm trong các hồ sơ được dẫn.
+Cập nhật **13/11/2026** sau hai vòng TC-OWNER-104 trên Protected Preview từ `610f198`. Mốc T02 ngày 02/11 dựa trên mã nguồn `28a3dc54a846463ba150d50ab323658d6ed1372c` và tài liệu đầu vào `991652224afcd125065d92ad0d657abf289f1842`. T04 cập nhật ngày 08/11. Các hồ sơ được dẫn lưu yêu cầu chi tiết và minh chứng theo từng task.
 
 <a id="next"></a>
 ## Ưu tiên triển khai tiếp theo
@@ -9,7 +9,7 @@ Cập nhật **02/11/2026** (sau merge và CI main T02), dựa trên mã nguồn
 
 Bằng chứng hiện có gồm build, unit, coverage trong phạm vi cấu hình, mock/UI, kiểm tĩnh và native PG16. Các phần còn mở gồm toàn bộ `SUPABASE_T04`, bảy service profiles, kiểm chứng bổ sung PIN, owner/email, hồi quy sản phẩm và vận hành trên nguồn cuối. **T04 trong kế hoạch là đặc tả owner; `SUPABASE_T04` là profile kiểm thử backend.**
 
-Ngày 12/11/2026, PR #24 đã merge vào `main` tại `e23c58f`, PR #25 đã merge hồ sơ T06 vào `docs` tại `b2ccce5`. PR #26 sửa kiểm cấu hình Vercel và vào `main` tại `610f198`. CI của `610f198` đạt 18/18 ở lượt 2 và Protected Preview đã triển khai đúng staging. Lượt CI đầu dừng ở `architectureBoundaries.test.ts` với 1.279/1.280 unit đạt, chưa xác định nguyên nhân. Đã chạy sáu ca giao diện ở cả hai vòng TC-OWNER-104, với bằng chứng Admin API riêng theo vòng và đăng ký trực tiếp bị từ chối sau khi tắt signup. Ca Auth xung đột và R07 hosted còn chờ. [PR code #24](https://github.com/nguyentronglinh045/pos-cafe/pull/24) · [PR docs #25](https://github.com/nguyentronglinh045/pos-cafe/pull/25) · [PR #26](https://github.com/nguyentronglinh045/pos-cafe/pull/26) · [CI main lượt 2](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/43180477033/attempts/2) · [Hồ sơ T06](tasks/g01-g10-t06-owner-implementation-2026-11-11.md)
+Ngày 12/11/2026, PR #24 đã merge vào `main` tại `e23c58f`, PR #25 đã merge hồ sơ T06 vào `docs` tại `b2ccce5` và PR #26 sửa kiểm cấu hình Vercel vào `main` tại `610f198`. CI của `610f198` đạt 18/18 ở lượt 2 và Protected Preview đã triển khai đúng staging. Đến 13/11, đã chạy sáu ca giao diện ở cả hai vòng TC-OWNER-104, kiểm đường gửi OTP có ký IP, đối chiếu Admin API theo vòng và xác nhận đăng ký trực tiếp bị từ chối sau khi tắt signup. Hồ sơ T06 theo dõi riêng lỗi CI lặp lại, dữ liệu thử và các ca staging còn mở. [PR code #24](https://github.com/nguyentronglinh045/pos-cafe/pull/24) · [PR docs #25](https://github.com/nguyentronglinh045/pos-cafe/pull/25) · [PR #26](https://github.com/nguyentronglinh045/pos-cafe/pull/26) · [CI main lượt 2](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/43180477033/attempts/2) · [Hồ sơ T06](tasks/g01-g10-t06-owner-implementation-2026-11-11.md)
 
 <a id="authority"></a>
 ## Phạm vi và cơ sở kế hoạch
@@ -78,7 +78,7 @@ T07 kiểm thử theo từng phần triển khai T06–T10. T15 kiểm tích h�
 
 1. **T02 trước:** checkpointU/P/C02/11 đãcónguồn/evidence; báo kết quảC18/18PASS/phầnthiếu,reviewdelta vàchờgiao; khôngtựmerge/R-APP/rerun. T04 sau phần T02 đang ưu tiên, dùng kết quả T01 và checkpoint owner đã có. T03-A giữ NO_CHANGE, không mở vòng rà soát mới khi chưa có source hoặc căn cứ thay đổi mới.
 2. **Chuẩn bị môi trường:** T05 sau khi xác nhận đích, quyền, contract email, fixture và ngân sách. Việc chuẩn bị môi trường không chặn phần đặc tả của T04.
-3. **G05 và nền khóa store.** FE/mock T06 đã bàn giao. Protected Preview từ `610f198` đang dùng đúng staging. Đã kiểm sáu ca giao diện và dấu vết Admin API ở cả hai trạng thái signup. Đăng ký trực tiếp bị từ chối sau khi tắt signup. Còn kiểm Auth xung đột và R07 hosted. T07 kiểm mỗi phần. Giai đoạn 1 phải có trạng thái store, DB enforce, ngoại lệ thiết bị đã ghép đọc trạng thái quán. T08/T09 phụ thuộc cổng này.
+3. **G05 và nền khóa store.** FE/mock T06 đã bàn giao. Hai vòng TC-OWNER-104 đã chạy trên Protected Preview từ `610f198`. Tiếp theo kiểm xung đột Auth (TC-OWNER-41) và R07 hosted (TC-OWNER-95/111), gồm xác minh hoặc triển khai bản cổng ảnh đã sửa và kiểm Storage/Realtime trên staging. TC-OWNER-78 và các phép kiểm TC-OWNER-103 còn lại theo dõi trong hồ sơ. T07 kiểm mỗi phần. T08/T09 phụ thuộc cổng trạng thái quán, thực thi tại DB và ngoại lệ đọc trạng thái cho thiết bị đã ghép.
 4. **G06/G04:** sau T06, thực hiện T08 → T09. T10 chỉ xử lý R06-C và hành vi còn thiếu sau đối chiếu T04; phần chưa chốt của T10 không làm hoãn nền khóa store thuộc T06. Provider-admin console nằm ngoài phạm vi.
 5. **Sản phẩm và vận hành:** T11/T12/T13/T14 theo phụ thuộc. Phân tích UI/Report có thể làm sớm; đo backend và restore thực hiện lần lượt trong môi trường đã xác nhận.
 6. **Tích hợp và bản giao:** T15 → T16. Thay đổi sau kiểm chứng cần kiểm lại phần bị ảnh hưởng và cổng bắt buộc. G11/G12 giữ ở giai đoạn cuối theo kế hoạch; khoảng thiếu G01–G10 được ghi rõ tại mốc chuyển giai đoạn.
