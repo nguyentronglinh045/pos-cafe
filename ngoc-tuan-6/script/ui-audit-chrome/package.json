@@ -1,0 +1,7 @@
+{
+  "name": "playwright",
+  "version": "1.60.0",
+  "private": true,
+  "type": "module",
+  "description": "Module trung gian: dùng gói playwright 1.60.0 của dự án, chỉ đổi channel sang Chrome cài trên máy để chạy ui-audit. Xem index.mjs."
+}
