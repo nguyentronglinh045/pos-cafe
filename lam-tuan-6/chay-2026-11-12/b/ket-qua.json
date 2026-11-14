@@ -1,0 +1,225 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\lam-tuan-6\\script\\playwright.lam-chrome-b.config.mjs",
+    "rootDir": "C:/Users/ngoc.vv/Music/KLTN/pos-cafe-main/pos-cafe-main/tests/ui-remake/integration",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/ngoc.vv/AppData/Local/Temp/claude/064098fb8c0e499a/5cf3ea90-a876-461a-84b1-57fd504798ef/scratchpad/b-run/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "",
+        "name": "",
+        "testDir": "C:/Users/ngoc.vv/Music/KLTN/pos-cafe-main/pos-cafe-main/tests/ui-remake/integration",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "C:\\Users\\ngoc.vv\\AppData\\Local\\Temp\\claude\\064098fb8c0e499a\\5cf3ea90-a876-461a-84b1-57fd504798ef\\scratchpad\\b-run\\ket-qua.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.60.0",
+    "workers": 2,
+    "webServer": {
+      "command": "npm run dev -- --host 127.0.0.1 --port 5176 --strictPort",
+      "url": "http://127.0.0.1:5176",
+      "reuseExistingServer": false,
+      "env": {
+        "VITE_DATA_MODE": "mock",
+        "VITE_SUPABASE_URL": "",
+        "VITE_SUPABASE_ANON_KEY": ""
+      },
+      "cwd": "C:/Users/ngoc.vv/Music/KLTN/pos-cafe-main/pos-cafe-main"
+    }
+  },
+  "suites": [
+    {
+      "title": "journey.spec.ts",
+      "file": "journey.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "floor to order dirty-exit to split/full payment to floor 568",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7366,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:31:48.134Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bf222bad70f76648f722-62bcc35e5bc382ac9c12",
+          "file": "journey.spec.ts",
+          "line": 15,
+          "column": 3
+        },
+        {
+          "title": "floor to new modifier order to kitchen to payment 568",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 6836,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:31:48.119Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bf222bad70f76648f722-80cb15cd3629c01c6d6d",
+          "file": "journey.spec.ts",
+          "line": 59,
+          "column": 3
+        },
+        {
+          "title": "floor to order dirty-exit to split/full payment to floor 1920",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 6465,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:31:55.200Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bf222bad70f76648f722-3c1fdb7b3877e072c1ef",
+          "file": "journey.spec.ts",
+          "line": 15,
+          "column": 3
+        },
+        {
+          "title": "floor to new modifier order to kitchen to payment 1920",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5878,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:31:55.734Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bf222bad70f76648f722-68544b35bea6b367e73b",
+          "file": "journey.spec.ts",
+          "line": 59,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-12T01:31:46.365Z",
+    "duration": 15521.632000000001,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

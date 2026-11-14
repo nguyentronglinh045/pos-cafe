@@ -1,0 +1,8 @@
+
+Running 4 tests using 2 workers
+
+[1/4] tests\ui-remake\integration\journey.spec.ts:59:3 › floor to new modifier order to kitchen to payment 568
+[2/4] tests\ui-remake\integration\journey.spec.ts:15:3 › floor to order dirty-exit to split/full payment to floor 568
+[3/4] tests\ui-remake\integration\journey.spec.ts:15:3 › floor to order dirty-exit to split/full payment to floor 1920
+[4/4] tests\ui-remake\integration\journey.spec.ts:59:3 › floor to new modifier order to kitchen to payment 1920
+  4 passed (15.5s)

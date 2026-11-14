@@ -1,0 +1,13 @@
+Lượt 1 của script chay-runbook-va-yeu-cau.mjs: 12/11/2026 08:37:10–08:40:06 (UTC+7). Đã bỏ toàn bộ ảnh và ket-qua.json của lượt này.
+
+Lý do bỏ:
+- B14–B16 dừng vì lỗi script: ở bước 5 đã đổi danh mục sang "Trà & trà sữa", sang bước 14 script bấm thẳng Americano (thuộc "Cà phê") nên không thấy món; B15, B16 dừng theo.
+- K3 dừng vì script chưa biết sau khi đổi PIN tạm app quay về màn chọn nhân viên và bắt đăng nhập lại bằng PIN mới.
+- P2 dừng vì Store Key sai ở P1 đã vào thẳng màn chọn nhân viên nên không còn ô nhập key.
+- O1 chỉ kiểm màn đầu; hướng dẫn xoay của app hiện sau khi đăng nhập.
+- Ảnh K2 và ket-qua.json lượt này còn lộ câu "PIN tạm thời: …" chưa che.
+
+Đã sửa script rồi chạy lại toàn bộ ở lượt 2. Mọi kết quả trong thư mục này là của lượt 2.
+
+Lượt 2: 08:42:37–08:44:31. Đã bỏ ảnh và ket-qua.json. B1–B14, T, K, P, O chạy hết; B15 dừng vì script bấm nút "Đóng" trong khi màn Thực đơn ghi "Thoát", B16 dừng theo. Kết quả các bước đã chạy được của lượt 2 giống lượt 3 (đã đối chiếu trước khi bỏ).
+Lượt 3: chạy lại toàn bộ sau khi sửa cách đóng màn quản trị. Thư mục anh/ và ket-qua.json là của lượt 3.

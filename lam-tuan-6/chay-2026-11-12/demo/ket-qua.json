@@ -1,0 +1,552 @@
+{
+  "runbook": "docs/demo-runbook.md tại docs e8a1810",
+  "source": "main cd35439 (src giống hệt, đã so mã băm)",
+  "base": "http://127.0.0.1:5175",
+  "finishedAt": "2026-11-12T01:45:54.277Z",
+  "results": [
+    {
+      "name": "R-runbook",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "steps": [
+        {
+          "id": "B01",
+          "title": "Mở app ở chế độ màn hình ngang",
+          "start": "08:44:57",
+          "end": "08:44:57",
+          "seen": [],
+          "labels": [
+            "Đã có quán: có",
+            "Tạo quán mới: có"
+          ],
+          "shots": [
+            "R-runbook/B01-man-dau.png"
+          ]
+        },
+        {
+          "id": "B02",
+          "title": "Đã có quán → nhập Store Key → Ghép thiết bị",
+          "start": "08:44:57",
+          "end": "08:44:58",
+          "seen": [
+            "Tiêu đề màn: \"Ghép thiết bị với quán\"; nút: \"Ghép thiết bị\""
+          ],
+          "labels": [
+            "Ghép thiết bị: có"
+          ],
+          "shots": []
+        },
+        {
+          "id": "B03",
+          "title": "Chọn Chủ quán, nhập PIN, Mở khoá",
+          "start": "08:44:58",
+          "end": "08:44:59",
+          "seen": [
+            "Nhân viên: Chủ quán | Quản lý | Thu ngân | Phục vụ | Nhân viên chỉ xem",
+            "Thanh trái của Chủ quán: Sơ đồ bàn, Tra cứu thao tác, Bán mang đi, Lịch sử đơn, Thực đơn, Nhân viên, Sơ đồ cửa hàng, Báo cáo, Cấu hình thanh toán, Cài đặt, Khoá",
+            "Báo cáo trước khi làm (để so ở bước 11): \"Doanh thu hôm nay0 ₫0 đơn · TB 0 ₫\""
+          ],
+          "labels": [
+            "Chủ quán: có",
+            "Quản lý: có",
+            "Thu ngân: có",
+            "Mở khoá: có"
+          ],
+          "shots": []
+        },
+        {
+          "id": "B04",
+          "title": "Sơ đồ bàn → bấm khu Tầng trệt → (bấm Trống) → bấm B01 → màn Gọi món",
+          "start": "08:44:59",
+          "end": "08:45:00",
+          "seen": [
+            "Sau khi bấm Trống: B01/empty, B04/empty, B06/empty, B07/empty",
+            "Màn mở ra: tiêu đề \"Bàn B01 · Đơn mới\""
+          ],
+          "labels": [
+            "Sơ đồ bàn: có",
+            "Tầng trệt: có",
+            "Trống: có",
+            "Tất cả: có",
+            "Đơn đang mở: có",
+            "Gọi món: có"
+          ],
+          "shots": [
+            "R-runbook/B04a-loc-trong.png",
+            "R-runbook/B04b-man-goi-mon.png"
+          ]
+        },
+        {
+          "id": "B05",
+          "title": "Gọi món: danh mục, Tìm món, + Thêm, Có tùy chọn, Thêm vào đơn, Giỏ hàng, + −, Ghi chú, In/Gửi đơn, Phiếu gửi bếp",
+          "start": "08:45:00",
+          "end": "08:45:03",
+          "seen": [
+            "Ghi chú không cần bấm lưu: dòng Cà phê sữa sau khi rời ô \"Cà phê sữa29.000 ₫Phần gọi thêm29.000 ₫ / mónSize M, Ít đá−1+Ghi chú\"",
+            "Tổng 145000đ; nút \"In/Gửi đơn\"",
+            "Phiếu gửi bếp đơn #27. FR-10 không hiện giá: phiếu không có số tiền; nội dung \"POS Demo01 Demo StreetPHIẾU GỬI BẾPĐơn#27LoạiBàn B01Thời gian08:45 12/11/2026MónSLCà phê sữa×1Size M, Ít đá · ít ngọtTrà sữa truyền thống×1Trân châuAmericano×2(\""
+          ],
+          "labels": [
+            "Cà phê: có",
+            "Trà & trà sữa: có",
+            "Tìm món: có (ô nhập/nhãn ẩn)",
+            "+ Thêm: có",
+            "Có tùy chọn: có",
+            "Giỏ hàng: có",
+            "Thêm vào đơn: có",
+            "Ghi chú: có",
+            "In/Gửi đơn: có",
+            "Phiếu gửi bếp: có",
+            "Đóng: có",
+            "In: có"
+          ],
+          "shots": [
+            "R-runbook/B05a-cua-so-tuy-chon.png",
+            "R-runbook/B05b-gio-hang.png",
+            "R-runbook/B05c-phieu-gui-bep.png"
+          ]
+        },
+        {
+          "id": "B06",
+          "title": "Đóng phiếu → tự về Sơ đồ bàn → bấm Tất cả nếu đang lọc Trống → B01 đang phục vụ, có tổng tiền, có trong Đơn đang mở",
+          "start": "08:45:03",
+          "end": "08:45:04",
+          "seen": [
+            "Sau khi đóng phiếu: màn gọi món đã đóng, về sơ đồ",
+            "Đang lọc Trống: B01 không thấy (đúng như lưu ý bước 6)",
+            "Bấm Tất cả: B01 trạng thái \"occupied\", chữ trên ô \"B01145K\"",
+            "Đơn đang mở có B01: có — \"B01#27Đang phục vụ145.000đMở đơn hàng →\""
+          ],
+          "labels": [
+            "Mở đơn hàng: có"
+          ],
+          "shots": [
+            "R-runbook/B06-so-do-sau-gui.png"
+          ]
+        },
+        {
+          "id": "B07",
+          "title": "Bấm lại bàn (hoặc Mở đơn hàng) → Thanh toán → màn Thanh toán đơn hàng, đã chọn sẵn toàn bộ",
+          "start": "08:45:04",
+          "end": "08:45:04",
+          "seen": [
+            "Nút ở màn đơn đã gửi: \"Thanh toán\"",
+            "\"Thanh toán đơn hàng\" — \"Bàn B01 · Đơn #27 · 4 món\"; Chọn tất cả bật sẵn; phải trả 145000đ; In hóa đơn bật sẵn"
+          ],
+          "labels": [
+            "Thanh toán đơn hàng: có",
+            "Chọn tất cả: có",
+            "Tiền khách đưa: có",
+            "In hóa đơn sau khi thanh toán: có"
+          ],
+          "shots": [
+            "R-runbook/B07-thanh-toan.png"
+          ]
+        },
+        {
+          "id": "B08",
+          "title": "Tách đơn: bỏ Chọn tất cả, đánh dấu món, + (1/2 → 2/2 → 1/2), Thanh toán món đã chọn, Hoá đơn thanh toán, phần còn lại số mới",
+          "start": "08:45:04",
+          "end": "08:45:09",
+          "seen": [
+            "Đánh dấu Americano rồi bấm + hai lần: 1/2 → 2/2 → 1/2",
+            "Ô Tiền khách đưa tự điền 70000đ, phải trả 70000đ; nút \"Thanh toán món đã chọn (70.000 ₫)\"",
+            "Hóa đơn phần vừa trả: #27 (đơn gốc #27), tổng 70000đ",
+            "Màn thanh toán vẫn mở: \"Bàn B01 · Đơn #28 · 2 món\"; \"0 món đã chọn\"",
+            "Bấm Báo cáo khi màn thanh toán đang mở: không bấm được (đúng như runbook)"
+          ],
+          "labels": [
+            "Thanh toán món đã chọn: có",
+            "Hoá đơn thanh toán: có",
+            "Hóa đơn thanh toán: KHÔNG THẤY"
+          ],
+          "shots": [
+            "R-runbook/B08a-chon-mot-phan.png",
+            "R-runbook/B08b-hoa-don-phan-dau.png",
+            "R-runbook/B08c-phan-con-lai.png"
+          ]
+        },
+        {
+          "id": "B09",
+          "title": "Trả phần còn lại: Chọn tất cả, Tiền khách đưa, ⌫, nút nhanh, thiếu/đủ/dư, Hoàn tất thanh toán",
+          "start": "08:45:09",
+          "end": "08:45:09",
+          "seen": [
+            "Chọn tất cả: phải trả 75000đ, ô tiền tự điền 75000đ",
+            "Nút xóa ở hàng cuối bàn phím số: chữ trên nút \"\", hình biểu tượng có, nhãn đọc màn hình \"Xóa một số\"; ở 1366×768 chưa cuộn: bị khuất, phải cuộn",
+            "Gõ thẳng 50000 (thiếu): \"Còn thiếu50.000 ₫ − 75.000 ₫25.000 ₫\"; nút bị khóa; nút Đúng tiền ẩn (như runbook ghi, chờ CX-02)",
+            "Gõ 100000 (dư): \"Tiền trả lại khách100.000 ₫ − 75.000 ₫25.000 ₫\"; nút bấm được",
+            "Nút cuối: \"Hoàn tất thanh toán (75.000 ₫)\""
+          ],
+          "labels": [
+            "Đúng tiền: có",
+            "+20k: có",
+            "+50k: có",
+            "200k: có",
+            "500k: có",
+            "Còn thiếu: có",
+            "Tiền trả lại khách: có",
+            "Hoàn tất thanh toán: có"
+          ],
+          "shots": [
+            "R-runbook/B09a-thieu-tien.png",
+            "R-runbook/B09b-du-tien.png"
+          ]
+        },
+        {
+          "id": "B10",
+          "title": "Hoá đơn thanh toán → Đóng → về Sơ đồ bàn, B01 trống, không còn trong Đơn đang mở",
+          "start": "08:45:09",
+          "end": "08:45:10",
+          "seen": [
+            "Hóa đơn #28, tổng 75000đ, khách đưa 100000đ, trả lại 25000đ",
+            "B01 \"empty\", chữ \"B01\"; Đơn đang mở còn B01: không"
+          ],
+          "labels": [],
+          "shots": [
+            "R-runbook/B10a-hoa-don-cuoi.png",
+            "R-runbook/B10b-ban-trong.png"
+          ]
+        },
+        {
+          "id": "B11",
+          "title": "Lịch sử đơn: 2 đơn Đã thanh toán; Báo cáo: doanh thu tăng đúng, hàng Món bán chạy",
+          "start": "08:45:10",
+          "end": "08:45:12",
+          "seen": [
+            "Lịch sử, đơn B01: #3Đã thanh toánB01·12/11/202675.000đTại  [paid, 75000đ] || #2Đã thanh toánB01·12/11/202670.000đTại  [paid, 70000đ]. Số trên hóa đơn: #27, #28",
+            "FR-14 nút lọc trong Lịch sử: Thời gian: Gần đây | Hủy đơn",
+            "Báo cáo trước: \"Doanh thu hôm nay0 ₫0 đơn · TB 0 ₫\"; sau: \"Doanh thu hôm nay145.000 ₫2 đơn · TB 72.500 ₫\"",
+            "Các chỗ ghi Món bán chạy: \"Món bán chạy 1 Đơn đã thanh toán 2 Giờ cao đi\" / \"Món bán chạy Americano 1 ngày top · 145.000 ₫\" / \"Món bán chạy Americano 145K\"",
+            "Tóm tắt nhanh: \"Giờ cao điểm 08h Thanh toán phổ biến Đã thanh toán Đơn đã huỷ 0 Tiền hủy 0 ₫ Tổng quan 2 đơn Số đơn đã thanh t\""
+          ],
+          "labels": [
+            "Lịch sử đơn: có",
+            "Đã thanh toán: có",
+            "Báo cáo: có",
+            "Món bán chạy: có"
+          ],
+          "shots": [
+            "R-runbook/B11a-lich-su.png",
+            "R-runbook/B11b-bao-cao.png"
+          ]
+        },
+        {
+          "id": "B12",
+          "title": "Hủy đơn đã thanh toán: Lịch sử → chọn đơn → Hủy đơn → Lý do khác cần ghi chú → Đã hủy, người/giờ, In lại bị khóa",
+          "start": "08:45:12",
+          "end": "08:45:14",
+          "seen": [
+            "Nút hủy: \"Hủy đơn\"",
+            "Các lý do: Nhập sai đơn / sai món | Khách đổi ý / trả món | Hết món / hết nguyên liệu | Đơn bị trùng | Lý do khác",
+            "Chọn Lý do khác, chưa ghi chú: nút xác nhận bị khóa",
+            "Sau khi hủy: nhãn \"Đã hủy\"; thông tin hủy \"Người hủyChủ quánThời điểm hủy08:45 12/11/2026Lý doLý do khácKhách đổi ý sau khi trả tiền\"; nút in lại bị khóa"
+          ],
+          "labels": [
+            "Hủy đơn: có",
+            "Lý do khác: có",
+            "Đã hủy: có",
+            "Đã huỷ: KHÔNG THẤY"
+          ],
+          "shots": [
+            "R-runbook/B12a-hop-huy.png",
+            "R-runbook/B12b-da-huy.png"
+          ]
+        },
+        {
+          "id": "B13",
+          "title": "Báo cáo: đơn hủy bị loại khỏi doanh thu, Đơn đã huỷ và Tiền hủy tăng",
+          "start": "08:45:14",
+          "end": "08:45:15",
+          "seen": [
+            "Doanh thu 75000đ, đơn đã trả 1, đơn hủy 1, tiền hủy 70000đ"
+          ],
+          "labels": [
+            "Đơn đã huỷ: có",
+            "Đơn đã hủy: KHÔNG THẤY",
+            "Tiền hủy: có",
+            "Tiền huỷ: KHÔNG THẤY"
+          ],
+          "shots": [
+            "R-runbook/B13-bao-cao-sau-huy.png"
+          ]
+        },
+        {
+          "id": "B14",
+          "title": "Phân quyền: Nhân viên → Thu ngân → bỏ payment.take → lưu → đăng nhập Thu ngân → tạo/sửa đơn được, không thanh toán được → khôi phục",
+          "start": "08:45:15",
+          "end": "08:45:29",
+          "seen": [
+            "Ô quyền thanh toán: chữ cạnh ô \"Thu tiền Theo vai trò\"; đang bật",
+            "Thanh trái của Thu ngân: Sơ đồ bàn, Tra cứu thao tác, Bán mang đi, Lịch sử đơn, Khoá",
+            "Thu ngân thiếu quyền vẫn gửi được đơn: tổng 35000đ",
+            "Mở lại đơn đã gửi: nút ở chân màn không có nút Thanh toán; các nút: Trà chanh Chọn để thêm vào đơn 29.000 ₫ + Thêm | Matcha latte Chọn để thêm vào đơn 49.000 ₫ + Thêm | Sữa tươi trân châu Có tùy chọn 45.000 ₫ + Thêm | − | + | Ghi chú",
+            "Khôi phục: quyền thanh toán của Thu ngân đã bật lại"
+          ],
+          "labels": [],
+          "shots": [
+            "R-runbook/B14a-bo-quyen.png",
+            "R-runbook/B14b-thu-ngan-khong-thanh-toan.png"
+          ]
+        },
+        {
+          "id": "B15",
+          "title": "Quản trị: Thực đơn, Sơ đồ cửa hàng, Cài đặt",
+          "start": "08:45:29",
+          "end": "08:45:33",
+          "seen": [
+            "menu-editor: đầu màn \"Quản lý menu 4 danh mục · 22 món · online Thoát Xem trước Lưu menu\"; nút đóng ghi \"Thoát\"",
+            "floor-editor: đầu màn \"Quản lý sơ đồ bàn 8 bàn · 2 khu · online Tầng trệt Lầu 1 + Khu Huỷ Lưu sơ đồ\"; nút đóng ghi \"Huỷ\"",
+            "settings-drawer: đầu màn \"Cài đặt chung Cấu hình quán · online Huỷ Lưu cài đặt\"; nút đóng ghi \"Huỷ\""
+          ],
+          "labels": [
+            "Thực đơn: có",
+            "Sơ đồ cửa hàng: có",
+            "Cài đặt: có"
+          ],
+          "shots": [
+            "R-runbook/B15a-thuc-don.png",
+            "R-runbook/B15b-so-do-cua-hang.png",
+            "R-runbook/B15c-cai-dat.png"
+          ]
+        },
+        {
+          "id": "B16",
+          "title": "Xóa dữ liệu mẫu: còn đơn mở thì bị chặn",
+          "start": "08:45:33",
+          "end": "08:45:34",
+          "seen": [
+            "Đơn đang mở lúc này: B02 #24 Đang phục vụ | B05 #25 Đang phục vụ | B01 #29 Đang phục vụ | Mang đi #26 Đang phụ",
+            "Mục dữ liệu mẫu: nút \"Đặt lại dữ liệu mẫu\"",
+            "Hộp xóa dữ liệu mẫu: BỊ CHẶN vì còn đơn mở; nội dung \"Đặt lại dữ liệu mẫuThao tác này chỉ đặt lại dữ liệu mẫu có sẵn, không xoá dữ liệu người dùng tự tạo và giữ lại tài khoản quản lý hiện tại.Còn 4 đơn đang mởCòn đơn đang mở. Hãy hoàn tất các đơn trước k\""
+          ],
+          "labels": [],
+          "shots": [
+            "R-runbook/B16-xoa-du-lieu-mau.png"
+          ]
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "name": "T-mang-di",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "steps": [
+        {
+          "id": "T1",
+          "title": "Mở Bán mang đi khi chưa có đơn",
+          "start": "08:45:34",
+          "end": "08:45:36",
+          "seen": [
+            "Màn: \"Đơn mang đi 1 đơn đang mở Đang mở Đã thanh toán Hôm nay Tạo đơn mang đi Đóng Danh sách 1 đơn #26 Đang mở 84.000 ₫ Mở đơn Thanh toán Chi tiết đơn Đơn số #26 Trà đào × 1 42K Trà vải × 1 42K Tổng 84.000 ₫ Mở đơn Thanh toán\""
+          ],
+          "labels": [],
+          "shots": [
+            "T-mang-di/T1-chua-co-don.png"
+          ]
+        },
+        {
+          "id": "T2",
+          "title": "Tạo đơn mang đi, thêm món rồi đóng khi chưa gửi → Bỏ đơn",
+          "start": "08:45:36",
+          "end": "08:45:38",
+          "seen": [
+            "Màn mở: \"Mang đi · Đơn mới\"",
+            "Đóng khi chưa gửi: Bỏ đơn chưa gửi? Các món vừa chọn sẽ không được lưu. Tiếp tục chỉnh sửa Bỏ đơn",
+            "Sau khi bỏ: \"Đơn mang đi 1 đơn đang mở Đang mở Đã thanh toán Hôm nay Tạo đơn mang đi Đóng Danh sách 1 đơn #26 Đang mở 84.000 ₫ Mở đơn Thanh toán Chi tiết đơn Đơn số #26 Trà đào × 1 42K Trà vải × 1 42K Tổng 84.000 ₫ Mở đơn Thanh toán\""
+          ],
+          "labels": [],
+          "shots": []
+        },
+        {
+          "id": "T3",
+          "title": "Tạo đơn mang đi, gửi món, quay lại danh sách",
+          "start": "08:45:38",
+          "end": "08:45:39",
+          "seen": [
+            "Gửi đơn mang đi #27: cửa sổ \"Phiếu gửi bếp POS Demo 01 Demo Street PH\"",
+            "Sau khi đóng phiếu: về sơ đồ bàn",
+            "Danh sách: \"Đơn mang đi 2 đơn đang mở Đang mở Đã thanh toán Hôm nay Tạo đơn mang đi Đóng Danh sách 2 đơn #26 Đang mở 84.000 ₫ Mở đơn Thanh toán #27 Đang mở 35.000 ₫ Mở đơn Thanh toán Chi tiết đơn Đơn số #26 Trà đào × 1 42K Trà vải ×\""
+          ],
+          "labels": [],
+          "shots": [
+            "T-mang-di/T3-danh-sach-co-don.png"
+          ]
+        },
+        {
+          "id": "T4",
+          "title": "Bấm thẻ lọc Đã thanh toán và Hôm nay khi có một đơn đang mở",
+          "start": "08:45:39",
+          "end": "08:45:40",
+          "seen": [
+            "Thẻ Đã thanh toán: \"Đơn mang đi 2 đơn đang mở Đang mở Đã thanh toán Hôm nay Tạo đơn mang đi Đóng Danh sách 0 đơn Chưa có đơn mang đi đang mở. Tạo đơn đầu tiên Chi tiết đơn Chưa có đơn để xem. Tạo đơn mang đi để bắt đầu. Tạo đơn mang đi\"",
+            "Thẻ Hôm nay: \"Đơn mang đi 2 đơn đang mở Đang mở Đã thanh toán Hôm nay Tạo đơn mang đi Đóng Danh sách 2 đơn #26 Đang mở 84.000 ₫ Mở đơn Thanh toán #27 Đang mở 35.000 ₫ Mở đơn Thanh toán Chi tiết đơn Đơn số #26 Trà đào × 1 42K Trà vải ×\""
+          ],
+          "labels": [],
+          "shots": [
+            "T-mang-di/T4-the-da-thanh-toan.png",
+            "T-mang-di/T4-the-hom-nay.png"
+          ]
+        },
+        {
+          "id": "T5",
+          "title": "Thanh toán đơn mang đi từ danh sách, xem lại danh sách và Lịch sử",
+          "start": "08:45:40",
+          "end": "08:45:43",
+          "seen": [
+            "Màn thanh toán: \"Mang đi · Đơn #26 · 2 món\", phải trả 84000đ",
+            "Sau khi trả: về sơ đồ bàn; thông báo \"Đã thanh toán. Bàn đã trống. Đã in/gửi đơn.\"",
+            "Thẻ Đã thanh toán sau khi trả #26: \"Đơn mang đi 1 đơn đang mở Đang mở Đã thanh toán Hôm nay Tạo đơn mang đi Đóng Danh sách 0 đơn Chưa có đơn mang đi đang mở. Tạo đơn đầu tiên Chi tiết đơn Chưa có đơn để xem. Tạo đơn mang đi để bắt đầu. Tạo đơn mang đi\"; nút In lại không thấy",
+            "Lịch sử, dòng đầu: \"#2 Đã thanh toán Mang đi · 12/11/2026 84.000đ Mang đi\""
+          ],
+          "labels": [],
+          "shots": [
+            "T-mang-di/T5-sau-khi-tra.png",
+            "T-mang-di/T5-lich-su.png"
+          ]
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "name": "K-tao-quan",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "steps": [
+        {
+          "id": "K1",
+          "title": "Tạo quán mới: các ô trên màn",
+          "start": "08:45:43",
+          "end": "08:45:44",
+          "seen": [
+            "Màn: \"Quay lại P POS Cafe Tạo quán mới Thiết lập thông tin quán để nhận Store Key và Admin PIN. Tên quán Tên quán Địa chỉ (tuỳ chọn) Địa chỉ (tuỳ chọn) Khởi tạo sẵn dữ liệu mẫu để demo nhanh Tạo thêm vài món, sơ đồ bàn mẫu và một thu ngân demo. Bỏ trống nếu muốn quán trống. Tôi hiểu và sẽ lưu Store Key trước khi rời trang. Store Key chỉ hiển thị trong lần tạo quán này. Nếu tải lại hoặc đóng trang trước \"",
+            "Ô dữ liệu mẫu: tắt; nút Tạo bị khóa khi chưa nhập"
+          ],
+          "labels": [],
+          "shots": [
+            "K-tao-quan/K1-man-tao-quan.png"
+          ]
+        },
+        {
+          "id": "K2",
+          "title": "Nhập tên, xác nhận giữ Store Key, Tạo quán → kết quả (che Store Key và PIN)",
+          "start": "08:45:44",
+          "end": "08:45:45",
+          "seen": [
+            "Kết quả (đã che): \"Tạo quán thành công! Lưu lại thông tin bên dưới trước khi tiếp tục. STORE KEY [STORE KEY] Copy PIN TẠM THỜI [PIN] Copy PIN tạm thời: [PIN]. Bạn phải đổi PIN trước khi sử dụng quán. Tôi đã lưu Store Key.\"",
+            "PIN tạm hiện 2 lần trên màn; Store Key hiện 1 lần"
+          ],
+          "labels": [],
+          "shots": [
+            "K-tao-quan/K2-ket-qua-da-che.png"
+          ]
+        },
+        {
+          "id": "K3",
+          "title": "Đăng nhập chủ quán bằng PIN tạm → bắt buộc đổi PIN → vào POS",
+          "start": "08:45:45",
+          "end": "08:45:47",
+          "seen": [
+            "Sau khi xác nhận đã lưu: về màn chọn nhân viên",
+            "Nhân viên: Chủ quán",
+            "Màn đổi PIN: \"Đổi PIN tạm Bạn cần đổi PIN tạm trước khi sử dụng quán. Tài khoản: Chủ quán PIN mới PIN mới Nhập lại PIN mới Nhập lại PIN mới Đổi PIN Đăng xuất Đổi quán\"",
+            "Sau khi đổi PIN: về màn chọn nhân viên, thông báo \"Đã đổi PIN. Vui lòng đăng nhập bằng PIN mới.\"; tên quán trên đầu màn \"P Cửa hàng #0001 Realtime online 08:45 ←\"",
+            "Vào POS bằng PIN mới: bàn trên sơ đồ 0; thanh trái Sơ đồ bàn, Tra cứu thao tác, Bán mang đi, Lịch sử đơn, Thực đơn, Nhân viên, Sơ đồ cửa hàng, Báo cáo, Cấu hình thanh toán, Cài đặt, Khoá"
+          ],
+          "labels": [],
+          "shots": [
+            "K-tao-quan/K3a-doi-pin-tam.png",
+            "K-tao-quan/K3b-dang-nhap-lai.png",
+            "K-tao-quan/K3c-vao-pos.png"
+          ]
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "name": "P-phuc-vu",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "steps": [
+        {
+          "id": "P1",
+          "title": "Nhập Store Key sai",
+          "start": "08:45:47",
+          "end": "08:45:48",
+          "seen": [
+            "Sau khi bấm Ghép thiết bị với key sai: VÀO ĐƯỢC màn chọn nhân viên"
+          ],
+          "labels": [],
+          "shots": [
+            "P-phuc-vu/P1-key-sai.png"
+          ]
+        },
+        {
+          "id": "P2",
+          "title": "Đăng nhập Phục vụ: thanh trái, mở đơn đã gửi, Bán mang đi",
+          "start": "08:45:48",
+          "end": "08:45:50",
+          "seen": [
+            "Màn chọn nhân viên (vào từ key ở P1): Chủ quán | Quản lý | Thu ngân | Phục vụ | Nhân viên chỉ xem",
+            "Thanh trái của Phục vụ: Sơ đồ bàn, Tra cứu thao tác, Bán mang đi, Khoá",
+            "Mở đơn đã gửi: các nút + | Ghi chú | − | + | Ghi chú",
+            "Bán mang đi của Phục vụ: \"Đơn mang đi 1 đơn đang mở Đang mở Đã thanh toán Hôm nay Tạo đơn mang đi Đóng Danh sách 1 đơn #26 Đang mở 84.000 ₫ Mở đơn Chi tiết đơn Đơn số #26 Trà đào × 1 42K\""
+          ],
+          "labels": [],
+          "shots": [
+            "P-phuc-vu/P2a-phuc-vu-mo-don.png",
+            "P-phuc-vu/P2b-phuc-vu-mang-di.png"
+          ]
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "name": "O-man-doc",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "steps": [
+        {
+          "id": "O1",
+          "title": "Màn dọc 390×844 trước khi đăng nhập",
+          "start": "08:45:51",
+          "end": "08:45:51",
+          "seen": [
+            "Màn đầu ở màn dọc: hướng dẫn xoay không thấy"
+          ],
+          "labels": [],
+          "shots": [
+            "O-man-doc/O1-man-dau-doc.png"
+          ]
+        },
+        {
+          "id": "O2",
+          "title": "Đăng nhập ở màn ngang 844×390 rồi xoay sang dọc, rồi xoay lại",
+          "start": "08:45:51",
+          "end": "08:45:54",
+          "seen": [
+            "Xoay dọc sau đăng nhập: hướng dẫn xoay có — \"Xoay ngang thiết bị POS dùng màn hình ngang để giữ đủ bàn, menu, thanh toán và báo cáo.\"; sơ đồ bàn ẩn",
+            "Xoay lại ngang: sơ đồ bàn hiện lại"
+          ],
+          "labels": [],
+          "shots": [
+            "O-man-doc/O2a-xoay-doc.png",
+            "O-man-doc/O2b-xoay-lai-ngang.png"
+          ]
+        }
+      ],
+      "pageErrors": []
+    }
+  ]
+}

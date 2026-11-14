@@ -1,0 +1,622 @@
+[
+  {
+    "id": "FR-01",
+    "file": "src/app/createStoreCloseout.test.tsx",
+    "line": 25,
+    "content": "it(\"TC-PIN-12 warning acknowledgement gates creation before network\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "TC-PIN-12 warning acknowledgement gates creation before network"
+  },
+  {
+    "id": "FR-01",
+    "file": "src/app/createStoreCloseout.test.tsx",
+    "line": 35,
+    "content": "it(\"TC-PIN-11 pending submit rejects a second click and locks the canonical payload\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "TC-PIN-11 pending submit rejects a second click and locks the canonical payload"
+  },
+  {
+    "id": "FR-02",
+    "file": "src/features/session/sessionFlow.test.ts",
+    "line": 23,
+    "content": "it(\"pairs store and returns a StoreSession without raw store key\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "pairs store and returns a StoreSession without raw store key"
+  },
+  {
+    "id": "FR-02",
+    "file": "src/features/session/sessionFlow.test.ts",
+    "line": 53,
+    "content": "it(\"fails if pairStore does not produce a session\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "fails if pairStore does not produce a session"
+  },
+  {
+    "id": "FR-03",
+    "file": "src/app/requiredPinChange.test.tsx",
+    "line": 52,
+    "content": "it(\"keeps restricted identity out of normal authority and completes once\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "keeps restricted identity out of normal authority and completes once"
+  },
+  {
+    "id": "FR-03",
+    "file": "src/app/requiredPinChange.test.tsx",
+    "line": 68,
+    "content": "it(\"does not replay a completion whose acknowledgement is unknown\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "does not replay a completion whose acknowledgement is unknown"
+  },
+  {
+    "id": "FR-04",
+    "file": "src/app/permissionUi.test.tsx",
+    "line": 29,
+    "content": "it(\"shows baseline floor but hides unavailable modules and rejects direct drawer opening\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "shows baseline floor but hides unavailable modules and rejects direct drawer opening"
+  },
+  {
+    "id": "FR-04",
+    "file": "src/app/permissionUi.test.tsx",
+    "line": 54,
+    "content": "it(\"revocation closes the dirty affected editor, purges its cache, retains unrelated draft and session\", async",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "revocation closes the dirty affected editor, purges its cache, retains unrelated draft and session"
+  },
+  {
+    "id": "FR-04",
+    "file": "tests/contracts/permissionAdministration.contract.test.ts",
+    "line": 122,
+    "content": "test(\"TC-PERM-05/18/24 T05 admin reads use manage-or-permission-edit and raw administration surfaces stay clos",
+    "linkStatus": "SAME_LINE",
+    "kind": "contract (cần backend PG16)",
+    "result": "CHƯA CHẠY",
+    "detail": "cần cơ sở dữ liệu thật; ngoài phạm vi máy này"
+  },
+  {
+    "id": "FR-05",
+    "file": "src/app/drawers/admin/EmployeesDrawer.permission.test.tsx",
+    "line": 35,
+    "content": "it(\"TC-PERM-59 renders exact field validation and never calls create for invalid input\",async()=>{",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "TC-PERM-59 renders exact field validation and never calls create for invalid input"
+  },
+  {
+    "id": "FR-05",
+    "file": "src/app/drawers/admin/EmployeesDrawer.permission.test.tsx",
+    "line": 53,
+    "content": "it(\"TC-PERM-59 distinguishes no-op, applied update and reset-PIN outcomes with exact messages\",async()=>{",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "TC-PERM-59 distinguishes no-op, applied update and reset-PIN outcomes with exact messages"
+  },
+  {
+    "id": "FR-06",
+    "file": "tests/smoke/pos-cafe.spec.ts",
+    "line": 150,
+    "content": "test(\"floor plan stage keeps demo layout readable across landscape viewports\", async ({ page }, testInfo) => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "smoke (S)",
+    "result": "4 passed, 1 skipped",
+    "detail": "desktop:passed tablet-landscape:passed phone-landscape:passed small-landscape:passed portrait:skipped"
+  },
+  {
+    "id": "FR-06",
+    "file": "tests/ui-remake/integration/areas.spec.ts",
+    "line": 46,
+    "content": "for (const { width, height } of contract.viewports) test(`area strip ${width}x${height}: 1/2/5/6 and long name",
+    "linkStatus": "SAME_LINE",
+    "kind": "browser (B)",
+    "result": "KHÔNG CHẠY ĐƯỢC",
+    "detail": "file cần artifacts/stitch/B01/v3/responsive-contract.proposed.json, không có trong repo"
+  },
+  {
+    "id": "FR-07",
+    "file": "src/features/pos/orderFlow.test.ts",
+    "line": 41,
+    "content": "it(\"preserves source identity and immutable price/name snapshots in drafts\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "preserves source identity and immutable price/name snapshots in drafts"
+  },
+  {
+    "id": "FR-07",
+    "file": "src/features/pos/orderFlow.test.ts",
+    "line": 105,
+    "content": "it(\"increments simple menu lines and removes zero quantity lines\", () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "increments simple menu lines and removes zero quantity lines"
+  },
+  {
+    "id": "FR-07",
+    "file": "tests/ui-remake/integration/journey.spec.ts",
+    "line": 59,
+    "content": "test(`floor to new modifier order to kitchen to payment ${width}`, async ({ page }) => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "browser (B)",
+    "result": "2 passed",
+    "detail": "floor to new modifier order to kitchen to payment 568 | floor to new modifier order to kitchen to payment 1920"
+  },
+  {
+    "id": "FR-08",
+    "file": "src/app/shell/LeftNav.test.tsx",
+    "line": 33,
+    "content": "fireEvent.click(screen.getByRole(\"button\", { name: \"Bán mang đi\" }));",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "link trỏ vào bên trong ca dòng 23; owns the sidebar navigation and drawer selection actions"
+  },
+  {
+    "id": "FR-08",
+    "file": "src/app/drawers/pos/TakeawayDrawer.tsx",
+    "line": 73,
+    "content": "onClick={() => { closeDrawer(); openOrder({ orderId: null, tableId: null, orderType: \"takeaway\" }); }}",
+    "linkStatus": "SAME_LINE",
+    "kind": "không phải ca kiểm",
+    "result": "—",
+    "detail": "link tới mã/cấu hình, chỉ đối chiếu link còn đúng dòng"
+  },
+  {
+    "id": "FR-09",
+    "file": "src/features/pos/modifier.test.ts",
+    "line": 30,
+    "content": "it(\"requires a pick for required groups\", () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "requires a pick for required groups"
+  },
+  {
+    "id": "FR-09",
+    "file": "src/features/pos/modifier.test.ts",
+    "line": 59,
+    "content": "it(\"multiplies option price delta by its quantity in snapshot total\", () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "multiplies option price delta by its quantity in snapshot total"
+  },
+  {
+    "id": "FR-09",
+    "file": "tests/smoke/pos-cafe.spec.ts",
+    "line": 131,
+    "content": "test(\"ordering an item with modifiers opens the picker and adds the choice to the cart\", async ({ page }, test",
+    "linkStatus": "SAME_LINE",
+    "kind": "smoke (S)",
+    "result": "4 passed, 1 skipped",
+    "detail": "desktop:passed tablet-landscape:passed phone-landscape:passed small-landscape:passed portrait:skipped"
+  },
+  {
+    "id": "FR-10",
+    "file": "src/features/pos/orderFlow.test.ts",
+    "line": 57,
+    "content": "it(\"diffs only the newly added kitchen lines when re-submitting an order\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "diffs only the newly added kitchen lines when re-submitting an order"
+  },
+  {
+    "id": "FR-10",
+    "file": "tests/ui-remake/integration/journey.spec.ts",
+    "line": 59,
+    "content": "test(`floor to new modifier order to kitchen to payment ${width}`, async ({ page }) => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "browser (B)",
+    "result": "2 passed",
+    "detail": "floor to new modifier order to kitchen to payment 568 | floor to new modifier order to kitchen to payment 1920"
+  },
+  {
+    "id": "FR-11",
+    "file": "tests/smoke/demo-runbook.spec.ts",
+    "line": 103,
+    "content": "await page.getByTestId(\"report-close-button\").click();",
+    "linkStatus": "SAME_LINE",
+    "kind": "smoke (S)",
+    "result": "1 passed",
+    "detail": "link trỏ vào bên trong ca dòng 4; demo-runbook:passed"
+  },
+  {
+    "id": "FR-11",
+    "file": "tests/contracts/permissionFinancialRegression.contract.test.ts",
+    "line": 216,
+    "content": "test(\"PERM-T06 regression/protocol v1 full payment freezes receipt and terminal R1 across catalog changes\", as",
+    "linkStatus": "SAME_LINE",
+    "kind": "contract (cần backend PG16)",
+    "result": "CHƯA CHẠY",
+    "detail": "cần cơ sở dữ liệu thật; ngoài phạm vi máy này"
+  },
+  {
+    "id": "FR-12",
+    "file": "tests/ui-remake/integration/journey.spec.ts",
+    "line": 15,
+    "content": "test(`floor to order dirty-exit to split/full payment to floor ${width}`, async ({ page }, info) => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "browser (B)",
+    "result": "2 passed",
+    "detail": "floor to order dirty-exit to split/full payment to floor 568 | floor to order dirty-exit to split/full payment to floor 1920"
+  },
+  {
+    "id": "FR-12",
+    "file": "tests/contracts/permissionFinancialRegression.contract.test.ts",
+    "line": 237,
+    "content": "test(\"PERM-T06 regression/protocol v1 partial split preserves source, paid child, payment, and terminal R1\", a",
+    "linkStatus": "SAME_LINE",
+    "kind": "contract (cần backend PG16)",
+    "result": "CHƯA CHẠY",
+    "detail": "cần cơ sở dữ liệu thật; ngoài phạm vi máy này"
+  },
+  {
+    "id": "FR-13",
+    "file": "src/app/components/ReceiptPreview.test.tsx",
+    "line": 14,
+    "content": "it(\"TC-IDEM-050/core prints 2 × 40000 from the original option quantity and original metadata\", () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "TC-IDEM-050/core prints 2 × 40000 from the original option quantity and original metadata"
+  },
+  {
+    "id": "FR-13",
+    "file": "src/app/components/ReceiptPrintLifecycle.test.tsx",
+    "line": 46,
+    "content": "test(`TC-IDEM-051/core/print=${stage}/transition=${transition} invalidates the old print before its side effec",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "10 passed",
+    "detail": "ca có tham số, 10 biến thể; TC-IDEM-051/core/print=${stage}/transition=${transition} invalidates the old print before its side effect"
+  },
+  {
+    "id": "FR-13",
+    "file": "src/app/components/ReceiptPrintLifecycle.test.tsx",
+    "line": 65,
+    "content": "test(\"TC-IDEM-051/core/print=positive a current authorized click prints exactly once\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "TC-IDEM-051/core/print=positive a current authorized click prints exactly once"
+  },
+  {
+    "id": "FR-14",
+    "file": "src/app/reportHistoryDrawer.test.tsx",
+    "line": 160,
+    "content": "it(\"shows paid order payment snapshot in the receipt summary\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "shows paid order payment snapshot in the receipt summary"
+  },
+  {
+    "id": "FR-14",
+    "file": "src/app/reportHistoryDrawer.test.tsx",
+    "line": 178,
+    "content": "it(\"keeps open orders out of the order history view\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "keeps open orders out of the order history view"
+  },
+  {
+    "id": "FR-14",
+    "file": "tests/smoke/demo-runbook.spec.ts",
+    "line": 141,
+    "content": "await test.step(\"Bước 11 — đối chiếu hai đơn độc lập trong Lịch sử và số bill thật t",
+    "linkStatus": "SAME_LINE",
+    "kind": "smoke (S)",
+    "result": "1 passed",
+    "detail": "link trỏ vào bên trong ca dòng 4; demo-runbook:passed"
+  },
+  {
+    "id": "FR-15",
+    "file": "tests/smoke/demo-runbook.spec.ts",
+    "line": 161,
+    "content": "await test.step(\"Bước 12 — hủy đơn 72.000đ với lý do khác\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "smoke (S)",
+    "result": "1 passed",
+    "detail": "link trỏ vào bên trong ca dòng 4; demo-runbook:passed"
+  },
+  {
+    "id": "FR-16",
+    "file": "src/app/menuEditorDrawer.test.tsx",
+    "line": 67,
+    "content": "it(\"saves new menu items through menu changesets\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "saves new menu items through menu changesets"
+  },
+  {
+    "id": "FR-16",
+    "file": "src/app/menuEditorDrawer.test.tsx",
+    "line": 145,
+    "content": "it(\"warns about the menu image size limit and blocks oversized files\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "warns about the menu image size limit and blocks oversized files"
+  },
+  {
+    "id": "FR-17",
+    "file": "src/app/floorEditorDrawer.test.tsx",
+    "line": 177,
+    "content": "it(\"saves new tables through floor changesets without table status\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "saves new tables through floor changesets without table status"
+  },
+  {
+    "id": "FR-17",
+    "file": "src/app/floorEditorDrawer.test.tsx",
+    "line": 200,
+    "content": "it(\"saves logical table updates without overwriting status\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "saves logical table updates without overwriting status"
+  },
+  {
+    "id": "FR-18",
+    "file": "src/app/floorEditorDrawer.test.tsx",
+    "line": 149,
+    "content": "it(\"selects one of 11 table backgrounds and persists the asset key\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "selects one of 11 table backgrounds and persists the asset key"
+  },
+  {
+    "id": "FR-18",
+    "file": "tests/smoke/pos-cafe.spec.ts",
+    "line": 362,
+    "content": "test(\"wall, decor and table backgrounds persist from editor to POS floor\", async ({ page }, testInfo) => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "smoke (S)",
+    "result": "1 passed, 4 skipped",
+    "detail": "desktop:passed tablet-landscape:skipped phone-landscape:skipped small-landscape:skipped portrait:skipped"
+  },
+  {
+    "id": "FR-19",
+    "file": "src/app/reportHistoryDrawer.test.tsx",
+    "line": 224,
+    "content": "it(\"expands 7-day report ranges into daily report calls without changing the port contract\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "expands 7-day report ranges into daily report calls without changing the port contract"
+  },
+  {
+    "id": "FR-19",
+    "file": "tests/smoke/demo-runbook.spec.ts",
+    "line": 141,
+    "content": "await test.step(\"Bước 11 — đối chiếu hai đơn độc lập trong Lịch sử và số bill thật t",
+    "linkStatus": "SAME_LINE",
+    "kind": "smoke (S)",
+    "result": "1 passed",
+    "detail": "link trỏ vào bên trong ca dòng 4; demo-runbook:passed"
+  },
+  {
+    "id": "FR-20",
+    "file": "src/adapters/mock/permissionChangesRepo.test.ts",
+    "line": 31,
+    "content": "it(\"allows delegated settings with unchanged timezone but owner-only timezone change rolls back the whole requ",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "allows delegated settings with unchanged timezone but owner-only timezone change rolls back the whole request"
+  },
+  {
+    "id": "FR-20",
+    "file": "src/adapters/mock/permissionChangesRepo.test.ts",
+    "line": 42,
+    "content": "it(\"keeps clear-demo semantics, owner-only authority, and permission identity state\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "keeps clear-demo semantics, owner-only authority, and permission identity state"
+  },
+  {
+    "id": "FR-21",
+    "file": "src/adapters/supabase/permissionSignalPort.test.ts",
+    "line": 28,
+    "content": "it(\"decodes only minimal same-store store and catalog signals\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "decodes only minimal same-store store and catalog signals"
+  },
+  {
+    "id": "FR-21",
+    "file": "src/adapters/supabase/permissionSignalPort.test.ts",
+    "line": 50,
+    "content": "it(\"requests authority verification only after reconnect and cleans up once\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "requests authority verification only after reconnect and cleans up once"
+  },
+  {
+    "id": "NFR-01",
+    "file": "tests/contracts/permissionFinancialRegression.contract.test.ts",
+    "line": 216,
+    "content": "test(\"PERM-T06 regression/protocol v1 full payment freezes receipt and terminal R1 across catalog changes\", as",
+    "linkStatus": "SAME_LINE",
+    "kind": "contract (cần backend PG16)",
+    "result": "CHƯA CHẠY",
+    "detail": "cần cơ sở dữ liệu thật; ngoài phạm vi máy này"
+  },
+  {
+    "id": "NFR-01",
+    "file": "tests/contracts/permissionFinancialRegression.contract.test.ts",
+    "line": 237,
+    "content": "test(\"PERM-T06 regression/protocol v1 partial split preserves source, paid child, payment, and terminal R1\", a",
+    "linkStatus": "SAME_LINE",
+    "kind": "contract (cần backend PG16)",
+    "result": "CHƯA CHẠY",
+    "detail": "cần cơ sở dữ liệu thật; ngoài phạm vi máy này"
+  },
+  {
+    "id": "NFR-02",
+    "file": "tests/contracts/permissionAdministration.contract.test.ts",
+    "line": 122,
+    "content": "test(\"TC-PERM-05/18/24 T05 admin reads use manage-or-permission-edit and raw administration surfaces stay clos",
+    "linkStatus": "SAME_LINE",
+    "kind": "contract (cần backend PG16)",
+    "result": "CHƯA CHẠY",
+    "detail": "cần cơ sở dữ liệu thật; ngoài phạm vi máy này"
+  },
+  {
+    "id": "NFR-02",
+    "file": "tests/contracts/permissionAdministration.contract.test.ts",
+    "line": 644,
+    "content": "test(\"TC-PERM-24 T05 an audit cursor is store-bound and a revoked session cannot continue paging\", async () =>",
+    "linkStatus": "SAME_LINE",
+    "kind": "contract (cần backend PG16)",
+    "result": "CHƯA CHẠY",
+    "detail": "cần cơ sở dữ liệu thật; ngoài phạm vi máy này"
+  },
+  {
+    "id": "NFR-03",
+    "file": "src/architectureBoundaries.test.ts",
+    "line": 124,
+    "content": "it(\"keeps foundation layers pure and dependency-light\", () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "keeps foundation layers pure and dependency-light"
+  },
+  {
+    "id": "NFR-03",
+    "file": "src/architectureBoundaries.test.ts",
+    "line": 148,
+    "content": "it(\"keeps feature, adapter, and app layers pointed in the right direction\", () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "keeps feature, adapter, and app layers pointed in the right direction"
+  },
+  {
+    "id": "NFR-04",
+    "file": "tests/smoke/pos-cafe.spec.ts",
+    "line": 150,
+    "content": "test(\"floor plan stage keeps demo layout readable across landscape viewports\", async ({ page }, testInfo) => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "smoke (S)",
+    "result": "4 passed, 1 skipped",
+    "detail": "desktop:passed tablet-landscape:passed phone-landscape:passed small-landscape:passed portrait:skipped"
+  },
+  {
+    "id": "NFR-04",
+    "file": "tests/smoke/permission-ui-closeout.spec.ts",
+    "line": 86,
+    "content": "test(\"portrait shows rotation guidance after login and restores POS on landscape\", async ({ page }, testInfo) ",
+    "linkStatus": "SAME_LINE",
+    "kind": "smoke (S)",
+    "result": "4 skipped, 1 passed",
+    "detail": "desktop:skipped tablet-landscape:skipped phone-landscape:skipped small-landscape:skipped portrait:passed"
+  },
+  {
+    "id": "NFR-05",
+    "file": "src/core/permissionLifecycle.test.ts",
+    "line": 24,
+    "content": "it(\"reads only revisions every 30s and does not reapply a no-op snapshot\", async () => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "reads only revisions every 30s and does not reapply a no-op snapshot"
+  },
+  {
+    "id": "NFR-05",
+    "file": "src/features/pos/writeOperationFlow.test.ts",
+    "line": 109,
+    "content": "it(\"TC-IDEM-054/core refuses offline confirmations without a write, outbox, or automatic reconnect work\", asyn",
+    "linkStatus": "SAME_LINE",
+    "kind": "unit (U)",
+    "result": "1 passed",
+    "detail": "TC-IDEM-054/core refuses offline confirmations without a write, outbox, or automatic reconnect work"
+  },
+  {
+    "id": "NFR-06",
+    "file": "package.json",
+    "line": 14,
+    "content": "\"build\": \"tsc -b && vite build\",",
+    "linkStatus": "SAME_LINE",
+    "kind": "không phải ca kiểm",
+    "result": "—",
+    "detail": "link tới mã/cấu hình, chỉ đối chiếu link còn đúng dòng"
+  },
+  {
+    "id": "NFR-06",
+    "file": "tsconfig.app.json",
+    "line": 10,
+    "content": "\"strict\": true,",
+    "linkStatus": "SAME_LINE",
+    "kind": "không phải ca kiểm",
+    "result": "—",
+    "detail": "link tới mã/cấu hình, chỉ đối chiếu link còn đúng dòng"
+  },
+  {
+    "id": "NFR-07",
+    "file": "vitest.config.ts",
+    "line": 10,
+    "content": "include: [\"src/**/*.{test,spec}.{ts,tsx}\"],",
+    "linkStatus": "SAME_LINE",
+    "kind": "không phải ca kiểm",
+    "result": "—",
+    "detail": "link tới mã/cấu hình, chỉ đối chiếu link còn đúng dòng"
+  },
+  {
+    "id": "NFR-07",
+    "file": "package.json",
+    "line": 18,
+    "content": "\"test:coverage\": \"vitest run --coverage\",",
+    "linkStatus": "SAME_LINE",
+    "kind": "không phải ca kiểm",
+    "result": "—",
+    "detail": "link tới mã/cấu hình, chỉ đối chiếu link còn đúng dòng"
+  },
+  {
+    "id": "NFR-07",
+    "file": "tests/smoke/demo-runbook.spec.ts",
+    "line": 4,
+    "content": "test(\"kịch bản demo chính chạy liền mạch qua 14 bước\", async ({ page }) => {",
+    "linkStatus": "SAME_LINE",
+    "kind": "smoke (S)",
+    "result": "1 passed",
+    "detail": "demo-runbook:passed"
+  },
+  {
+    "id": "NFR-08",
+    "file": "vercel.json",
+    "line": 1,
+    "content": "{",
+    "linkStatus": "SAME_LINE",
+    "kind": "không phải ca kiểm",
+    "result": "—",
+    "detail": "link tới mã/cấu hình, chỉ đối chiếu link còn đúng dòng"
+  }
+]

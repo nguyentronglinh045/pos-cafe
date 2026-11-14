@@ -1,0 +1,63 @@
+ID	FILE	L_OLD	LINE_OLD	STATUS	L_NEW
+FR-01	src/app/createStoreCloseout.test.tsx	25	it("TC-PIN-12 warning acknowledgement gates creation before network", async () => {	SAME_LINE	25
+FR-01	src/app/createStoreCloseout.test.tsx	35	it("TC-PIN-11 pending submit rejects a second click and locks the canonical payload", async () => {	SAME_LINE	35
+FR-02	src/features/session/sessionFlow.test.ts	23	it("pairs store and returns a StoreSession without raw store key", async () => {	SAME_LINE	23
+FR-02	src/features/session/sessionFlow.test.ts	53	it("fails if pairStore does not produce a session", async () => {	SAME_LINE	53
+FR-03	src/app/requiredPinChange.test.tsx	52	it("keeps restricted identity out of normal authority and completes once", async () => {	SAME_LINE	52
+FR-03	src/app/requiredPinChange.test.tsx	68	it("does not replay a completion whose acknowledgement is unknown", async () => {	SAME_LINE	68
+FR-04	src/app/permissionUi.test.tsx	29	it("shows baseline floor but hides unavailable modules and rejects direct drawer opening", async () => {	SAME_LINE	29
+FR-04	src/app/permissionUi.test.tsx	54	it("revocation closes the dirty affected editor, purges its cache, retains unrelated draft and session", async	SAME_LINE	54
+FR-04	tests/contracts/permissionAdministration.contract.test.ts	122	test("TC-PERM-05/18/24 T05 admin reads use manage-or-permission-edit and raw administration surfaces stay clos	SAME_LINE	122
+FR-05	src/app/drawers/admin/EmployeesDrawer.permission.test.tsx	35	it("TC-PERM-59 renders exact field validation and never calls create for invalid input",async()=>{	SAME_LINE	35
+FR-05	src/app/drawers/admin/EmployeesDrawer.permission.test.tsx	53	it("TC-PERM-59 distinguishes no-op, applied update and reset-PIN outcomes with exact messages",async()=>{	SAME_LINE	53
+FR-06	tests/smoke/pos-cafe.spec.ts	150	test("floor plan stage keeps demo layout readable across landscape viewports", async ({ page }, testInfo) => {	SAME_LINE	150
+FR-06	tests/ui-remake/integration/areas.spec.ts	46	for (const { width, height } of contract.viewports) test(`area strip ${width}x${height}: 1/2/5/6 and long name	SAME_LINE	46
+FR-07	src/features/pos/orderFlow.test.ts	41	it("preserves source identity and immutable price/name snapshots in drafts", async () => {	SAME_LINE	41
+FR-07	src/features/pos/orderFlow.test.ts	105	it("increments simple menu lines and removes zero quantity lines", () => {	SAME_LINE	105
+FR-07	tests/ui-remake/integration/journey.spec.ts	59	test(`floor to new modifier order to kitchen to payment ${width}`, async ({ page }) => {	SAME_LINE	59
+FR-08	src/app/shell/LeftNav.test.tsx	33	fireEvent.click(screen.getByRole("button", { name: "Bán mang đi" }));	SAME_LINE	33
+FR-08	src/app/drawers/pos/TakeawayDrawer.tsx	73	onClick={() => { closeDrawer(); openOrder({ orderId: null, tableId: null, orderType: "takeaway" }); }}	SAME_LINE	73
+FR-09	src/features/pos/modifier.test.ts	30	it("requires a pick for required groups", () => {	SAME_LINE	30
+FR-09	src/features/pos/modifier.test.ts	59	it("multiplies option price delta by its quantity in snapshot total", () => {	SAME_LINE	59
+FR-09	tests/smoke/pos-cafe.spec.ts	131	test("ordering an item with modifiers opens the picker and adds the choice to the cart", async ({ page }, test	SAME_LINE	131
+FR-10	src/features/pos/orderFlow.test.ts	57	it("diffs only the newly added kitchen lines when re-submitting an order", async () => {	SAME_LINE	57
+FR-10	tests/ui-remake/integration/journey.spec.ts	59	test(`floor to new modifier order to kitchen to payment ${width}`, async ({ page }) => {	SAME_LINE	59
+FR-11	tests/smoke/demo-runbook.spec.ts	103	await page.getByTestId("report-close-button").click();	SAME_LINE	103
+FR-11	tests/contracts/permissionFinancialRegression.contract.test.ts	216	test("PERM-T06 regression/protocol v1 full payment freezes receipt and terminal R1 across catalog changes", as	SAME_LINE	216
+FR-12	tests/ui-remake/integration/journey.spec.ts	15	test(`floor to order dirty-exit to split/full payment to floor ${width}`, async ({ page }, info) => {	SAME_LINE	15
+FR-12	tests/contracts/permissionFinancialRegression.contract.test.ts	237	test("PERM-T06 regression/protocol v1 partial split preserves source, paid child, payment, and terminal R1", a	SAME_LINE	237
+FR-13	src/app/components/ReceiptPreview.test.tsx	14	it("TC-IDEM-050/core prints 2 × 40000 from the original option quantity and original metadata", () => {	SAME_LINE	14
+FR-13	src/app/components/ReceiptPrintLifecycle.test.tsx	46	test(`TC-IDEM-051/core/print=${stage}/transition=${transition} invalidates the old print before its side effec	SAME_LINE	46
+FR-13	src/app/components/ReceiptPrintLifecycle.test.tsx	65	test("TC-IDEM-051/core/print=positive a current authorized click prints exactly once", async () => {	SAME_LINE	65
+FR-14	src/app/reportHistoryDrawer.test.tsx	160	it("shows paid order payment snapshot in the receipt summary", async () => {	SAME_LINE	160
+FR-14	src/app/reportHistoryDrawer.test.tsx	178	it("keeps open orders out of the order history view", async () => {	SAME_LINE	178
+FR-14	tests/smoke/demo-runbook.spec.ts	141	await test.step("Bước 11 — đối chiếu hai đơn độc lập trong Lịch sử và số bill thật t	SAME_LINE	141
+FR-15	tests/smoke/demo-runbook.spec.ts	161	await test.step("Bước 12 — hủy đơn 72.000đ với lý do khác", async () => {	SAME_LINE	161
+FR-16	src/app/menuEditorDrawer.test.tsx	67	it("saves new menu items through menu changesets", async () => {	SAME_LINE	67
+FR-16	src/app/menuEditorDrawer.test.tsx	145	it("warns about the menu image size limit and blocks oversized files", async () => {	SAME_LINE	145
+FR-17	src/app/floorEditorDrawer.test.tsx	177	it("saves new tables through floor changesets without table status", async () => {	SAME_LINE	177
+FR-17	src/app/floorEditorDrawer.test.tsx	200	it("saves logical table updates without overwriting status", async () => {	SAME_LINE	200
+FR-18	src/app/floorEditorDrawer.test.tsx	149	it("selects one of 11 table backgrounds and persists the asset key", async () => {	SAME_LINE	149
+FR-18	tests/smoke/pos-cafe.spec.ts	362	test("wall, decor and table backgrounds persist from editor to POS floor", async ({ page }, testInfo) => {	SAME_LINE	362
+FR-19	src/app/reportHistoryDrawer.test.tsx	224	it("expands 7-day report ranges into daily report calls without changing the port contract", async () => {	SAME_LINE	224
+FR-19	tests/smoke/demo-runbook.spec.ts	141	await test.step("Bước 11 — đối chiếu hai đơn độc lập trong Lịch sử và số bill thật t	SAME_LINE	141
+FR-20	src/adapters/mock/permissionChangesRepo.test.ts	31	it("allows delegated settings with unchanged timezone but owner-only timezone change rolls back the whole requ	SAME_LINE	31
+FR-20	src/adapters/mock/permissionChangesRepo.test.ts	42	it("keeps clear-demo semantics, owner-only authority, and permission identity state", async () => {	SAME_LINE	42
+FR-21	src/adapters/supabase/permissionSignalPort.test.ts	28	it("decodes only minimal same-store store and catalog signals", async () => {	SAME_LINE	28
+FR-21	src/adapters/supabase/permissionSignalPort.test.ts	50	it("requests authority verification only after reconnect and cleans up once", async () => {	SAME_LINE	50
+NFR-01	tests/contracts/permissionFinancialRegression.contract.test.ts	216	test("PERM-T06 regression/protocol v1 full payment freezes receipt and terminal R1 across catalog changes", as	SAME_LINE	216
+NFR-01	tests/contracts/permissionFinancialRegression.contract.test.ts	237	test("PERM-T06 regression/protocol v1 partial split preserves source, paid child, payment, and terminal R1", a	SAME_LINE	237
+NFR-02	tests/contracts/permissionAdministration.contract.test.ts	122	test("TC-PERM-05/18/24 T05 admin reads use manage-or-permission-edit and raw administration surfaces stay clos	SAME_LINE	122
+NFR-02	tests/contracts/permissionAdministration.contract.test.ts	644	test("TC-PERM-24 T05 an audit cursor is store-bound and a revoked session cannot continue paging", async () =>	SAME_LINE	644
+NFR-03	src/architectureBoundaries.test.ts	124	it("keeps foundation layers pure and dependency-light", () => {	SAME_LINE	124
+NFR-03	src/architectureBoundaries.test.ts	148	it("keeps feature, adapter, and app layers pointed in the right direction", () => {	SAME_LINE	148
+NFR-04	tests/smoke/pos-cafe.spec.ts	150	test("floor plan stage keeps demo layout readable across landscape viewports", async ({ page }, testInfo) => {	SAME_LINE	150
+NFR-04	tests/smoke/permission-ui-closeout.spec.ts	86	test("portrait shows rotation guidance after login and restores POS on landscape", async ({ page }, testInfo) 	SAME_LINE	86
+NFR-05	src/core/permissionLifecycle.test.ts	24	it("reads only revisions every 30s and does not reapply a no-op snapshot", async () => {	SAME_LINE	24
+NFR-05	src/features/pos/writeOperationFlow.test.ts	109	it("TC-IDEM-054/core refuses offline confirmations without a write, outbox, or automatic reconnect work", asyn	SAME_LINE	109
+NFR-06	package.json	14	"build": "tsc -b && vite build",	SAME_LINE	14
+NFR-06	tsconfig.app.json	10	"strict": true,	SAME_LINE	10
+NFR-07	vitest.config.ts	10	include: ["src/**/*.{test,spec}.{ts,tsx}"],	SAME_LINE	10
+NFR-07	package.json	18	"test:coverage": "vitest run --coverage",	SAME_LINE	18
+NFR-07	tests/smoke/demo-runbook.spec.ts	4	test("kịch bản demo chính chạy liền mạch qua 14 bước", async ({ page }) => {	SAME_LINE	4
+NFR-08	vercel.json	1	{	SAME_LINE	1
