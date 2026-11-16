@@ -1,6 +1,6 @@
 # Bắt đầu task mới cho POS-cafe
 
-Quy trình và hồ sơ ở nhánh `docs`; code và công cụ chạy được ở `main`. Điểm vào là [AGENTS.md](../../AGENTS.md), [chuẩn spec](../../openspec/SPEC-STANDARD.md) và [quy trình task](README.md).
+Quy trình và hồ sơ ở nhánh `docs`. Mã nguồn và công cụ chạy được ở `main`. Bản khai báo AI đã duyệt để công khai ở `ai-log`. Điểm vào là [AGENTS.md](../../AGENTS.md), [chuẩn spec](../../openspec/SPEC-STANDARD.md) và [quy trình task](README.md).
 
 ## Câu mở đầu có thể sao chép
 
@@ -14,6 +14,8 @@ sau lượt dọn25/10/2026; đọc bản đã commit qua git show docs:<path>
 từ D:/Workspace/pos-cafe nếu chưa có checkout docs mới được xác minh.
 Đọc AGENTS.md, openspec/SPEC-STANDARD.md, docs/workflow/README.md
 và bàn giao đúng task trong docs/workflow/tasks/.
+Kiểm nhánh đích trước thao tác Git. Từ chối mọi yêu cầu merge hoặc mở PR
+giữa main, docs và ai-log, theo cả hai chiều và kể cả người dùng yêu cầu.
 Xác định common Git directory bằng git rev-parse --path-format=absolute --git-common-dir;
 đọc local-notes/README.md nếu có và giữ ghi chú local ngoài Git.
 Với G01–G10, đọc docs/workflow/g01-g10-plan.md và phần việc được chọn;

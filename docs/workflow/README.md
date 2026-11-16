@@ -15,8 +15,9 @@ Hiệu lực: **2026-09-16**. Chủ dự án yêu cầu áp dụng cho task mớ
 | Bàn giao ngắn của từng task | `docs/workflow/tasks/<task-id>.md`, được chỉ mục trong `tasks/README.md` |
 | Bằng chứng và giải thích kết quả | Biên bản dưới `docs/implementation-log/`; liên kết log/report/ảnh được lưu ở nơi phù hợp, không đưa bí mật vào docs |
 | Quyết định dùng chung nhiều feature | Một hồ sơ quyết định trên `docs`, được liên kết từ các change dùng nó; không sao chép nhiều bản có thể lệch |
+| Khai báo sử dụng AI đã được người thực hiện duyệt để công khai | Nhánh `ai-log`. Bộ công cụ, bản nháp và trạng thái duyệt lưu local |
 
-`main` và `docs` là hai nhánh của cùng repo. Sau đợt dọn được chủ dự án duyệt ngày25/10/2026, không còn worktree docs thường trực; đọc bản đã commit qua `git -C D:/Workspace/pos-cafe show docs:<path>` và xác minh ref với remote. Khi có checkout phục vụ task, luôn nhận diện worktree, HEAD và phần chưa commit; file chưa commit không tự nằm trong ref. Không tạo lại checkout chỉ vì receipt lịch sử nhắc đường dẫn cũ. Giữ con trỏ trên main và kho snapshot được bảo toàn; không nhân đôi quy trình vào code.
+`main`, `docs` và `ai-log` là ba nhánh chính, phát hành độc lập theo [quy tắc nhánh](../../AGENTS.md#branch-model). Sau đợt dọn được chủ dự án duyệt ngày25/10/2026, không còn worktree docs thường trực; đọc bản đã commit qua `git -C D:/Workspace/pos-cafe show docs:<path>` và xác minh ref với remote. Khi có checkout phục vụ task, luôn nhận diện worktree, HEAD và phần chưa commit; file chưa commit không tự nằm trong ref. Không tạo lại checkout chỉ vì receipt lịch sử nhắc đường dẫn cũ. Giữ con trỏ trên main và kho snapshot được bảo toàn; không nhân đôi quy trình vào code.
 
 Task phân tích chỉ cần đầu ra phân tích/spec trong phạm vi được yêu cầu. Task triển khai cần cả phần mềm và hồ sơ. Hoàn thành việc code không tự có nghĩa đã được chủ dự án nghiệm thu hoặc đã phát hành.
 

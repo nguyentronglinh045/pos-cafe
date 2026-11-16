@@ -40,12 +40,14 @@ For reworking existing screens from Stitch, read [the shared operator workflow o
 
 ## Branch model
 
-- This project has two main branches:
-  - `main`: contains the application code.
-  - `docs`: contains project information, including implemented features, planned or deferred features, technologies used, architecture decisions, and related project notes.
-- The `main` branch must not contain project documentation that belongs on `docs`.
-- The `docs` branch must not contain application code from `main`.
-- **Never merge the `docs` branch into `main`.** Do not open or merge a PR with `docs` as its head and `main` as its base. Publish each branch independently; documentation updates do not authorize combining their histories. This permanent owner rule was reaffirmed on 2026-11-02.
+- The project has three independently published primary branches:
+  - `main`: application source, tests and executable project tooling.
+  - `docs`: project workflow, specifications, technical decisions and verification evidence.
+  - `ai-log`: reviewed public AI-use disclosures. This branch begins with an independent root commit.
+- **Never merge any pair of `main`, `docs` and `ai-log` in either direction.** Agents must refuse any such request, including an explicit request from a user or repository owner. Do not run a cross-branch merge or open or complete a PR between a pair of these branches. Squash and rebase merge options do not create an exception.
+- Base topic branches on the appropriate primary branch and use that same branch as the destination. Verify the source, destination and file scope before opening a PR or pushing a ref.
+- Publish reviewed AI-use disclosures on `ai-log`. Keep the local AI-log workflow, scripts, review UI, approvals and draft records outside Git. Project documentation belongs on `docs`, and application source belongs on `main`.
+- The owner approved the three-branch rule and unconditional refusal of cross-merges on 2026-11-16.
 - **Operator-documentation rule, approved 2026-10-19:** instructions, templates and setup/measurement contracts that ship with a tool live beside that tool on `main`, versioned with its code. For Stitch remake, start with `ui-remake/README.md` in the code checkout or [the published workflow](https://github.com/nguyentronglinh045/pos-cafe/blob/main/ui-remake/README.md). Specs, decisions, implementation/review evidence and handoffs remain on `docs`. Keep pointers, not duplicate operator documents. Project-wide rules and OpenSpec artifacts stay on `docs`.
 
 ## Documentation workflow
