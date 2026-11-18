@@ -690,6 +690,8 @@ Dùng PostgreSQL portable 16.15 hiện có ở `127.0.0.1:55467` và Deno 2.9.6 
 
 Hai recipe bổ sung được dẫn từ bản đã kiểm trước và chỉ đổi đích DB cùng import nguồn sang checkout PR. Manifest nguồn và các kết quả mới có tiền tố `backend-pr-20261118` tại `D:/Workspace/pos-cafe-t06-pg16-runtime/`. Dữ liệu thử ở DB có OID `62400`, dung lượng logic hậu kiểm `13.310.999` byte. PostgreSQL đã dừng sau lượt kiểm.
 
+Linh duyệt xóa riêng DB mới ở trên. Ngày 18/11 lúc 09:19:33 UTC+7, đã đối chiếu tên, OID `62400`, owner `t06_local`, đường dẫn `D:/Workspace/pos-cafe-t06-pg16-runtime/data/base/62400` và 0 client trước `DROP DATABASE`. Hậu kiểm DB và thư mục không còn; danh sách tên/OID các DB khác khớp tiền kiểm. Bốn tệp nguồn/kết quả trong biên nhận giữ nguyên SHA-256, PostgreSQL đã dừng. Ổ D tăng `12.922.880` byte trống từ mốc ngay trước DROP tới sau khi dừng server. Biên nhận `D:/Workspace/pos-cafe-t06-pg16-runtime/backend-pr-20261118-cleanup.json` ghi phép đo và các hash.
+
 Lần thử đầu trên DB cũ có hàng thư fixture từ các lượt trước nên assertion số thư không đạt. Đã chuyển sang DB rỗng và khởi tạo đúng bundle để kiểm độc lập. Lượt đầu Deno thiếu quyền đọc biến môi trường PostgreSQL và gặp cơ chế phân giải dependency ở checkout mới. Các lần kiểm cuối dùng quyền môi trường của tiến trình test và cache đã có. Mã của sáu tệp giữ nguyên qua các lượt này.
 
 ### CI liên quan và phần tiếp theo
