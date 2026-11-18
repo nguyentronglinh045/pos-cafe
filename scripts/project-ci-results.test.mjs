@@ -8,8 +8,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
-import SmokeFailureReporter, { smokeStepDiagnostic, smokeTraceDiagnostics, smokeTraceEvents, smokeTraceSnapshotFacts, smokeTraceExpectFacts, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, nodeTapFailureDiagnostics, NODE_FAILURE_ERRNOS, guardFailureCode, PROJECTS, PROJECT_PHASES, hash } from './project-ci-results.mjs';
-import { capturedCommand, trackedFingerprint, lightEnvironment, checkoutGit, allocatedBytes, coreLimitDisabled, browserRuntimeControlCanStart, gitCommitParents } from './project-ci.mjs';
+import SmokeFailureReporter, { foundationAssertion, smokeStepDiagnostic, smokeTraceDiagnostics, smokeTraceEvents, smokeTraceSnapshotFacts, smokeTraceExpectFacts, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, nodeTapFailureDiagnostics, NODE_FAILURE_ERRNOS, guardFailureCode, PROJECTS, PROJECT_PHASES, hash } from './project-ci-results.mjs';
+import ArchitectureCaseReporter, { capturedCommand, trackedFingerprint, lightEnvironment, checkoutGit, allocatedBytes, coreLimitDisabled, browserRuntimeControlCanStart, gitCommitParents } from './project-ci.mjs';
 import { lightService, lightOwnerMatches, withLightCorePattern, stopLightUnit, coreDumpDisabled, linuxCorePatternAdapter } from './project-ci-launch.mjs';
 import { verifyReleaseRun, verifyReleaseEnvironment, verifyReleaseFiles, productionCommands, PRODUCTION_ENABLED } from './project-release.mjs';
 
@@ -852,6 +852,50 @@ test('public UI calibration counts stay finite, numeric and separate from produc
   for(const value of [NaN,Infinity,-1,Number.MAX_SAFE_INTEGER+1,'23']) {
     rows[8].counts.detectedFindings=value;
     assert.equal(Object.hasOwn(publicSummary(binding,rows,{source:digest,lock:digest}).phases[8].counts,'detectedFindings'),false);
+  }
+});
+
+test('unit summary binds native foundation errors and bounded duration to one case', () => {
+  const file = join(process.cwd(), 'src/architectureBoundaries.test.ts');
+  const title = 'keeps foundation layers pure and dependency-light';
+  const suite = 'architecture boundaries';
+  const reporter = new ArchitectureCaseReporter();
+  const observe = (errors, duration, state = 'failed', moduleId = file) => {
+    const meta = { privateField: 'PRIVATE_FIXTURE' };
+    reporter.onTestCaseResult({ fullName: suite + ' > ' + title, module: {moduleId},
+      result: () => ({state, errors}), meta: () => meta });
+    return { fullName: suite + ' ' + title, duration, status: state, meta };
+  };
+  const select = (assertions, name = file) => foundationAssertion(
+    { testResults: [{name, assertionResults: assertions}] }, process.cwd());
+  const project = assertion => {
+    const rows = PROJECT_PHASES.slice(0, 3).map(id => ({ id, status: 'PASS', elapsedMs: 1,
+      exitCode: 0, invocationSHA: digest, reportSHA: digest, foundation: assertion }));
+    if (assertion?.status === 'failed') Object.assign(rows[2], {status: 'FAIL', exitCode: 1});
+    const phases = publicSummary(binding, rows, {source: digest, lock: digest}).phases;
+    assert.ok(phases.slice(0, 2).every(phase => !Object.hasOwn(phase, 'architectureCase')));
+    assert.ok(!JSON.stringify(phases).includes('PRIVATE_FIXTURE'));
+    return phases[2].architectureCase;
+  };
+  const timeout = kind => ({ name: 'Error', stack: 'Error: STACK_TRACE_ERROR',
+    message: `${kind} timed out in 5000ms.\nIf this is a long-running ${kind.toLowerCase()}, pass a timeout value as the last argument or configure it globally with "${kind.toLowerCase()}Timeout".` });
+  for (const [errors, kind] of [
+    [[timeout('Test')], 'test-timeout'], [[timeout('Hook')], 'hook-timeout'],
+    [[{name:'AssertionError', message:'PRIVATE_FIXTURE'}], 'assertion'],
+    [[{code:'EIO', path:'PRIVATE_FIXTURE'}], 'io'], [[{message:'Test timed out in 5000ms.'}], 'unknown'],
+    [[{name:'PRIVATE_FIXTURE'}], 'unknown'], [[], 'unknown'], [[timeout('Test'), {name:'AssertionError'}], 'unknown'],
+  ]) {
+    assert.deepEqual(project(select([observe(errors, 5432.7)])), {errorKind: kind, durationMs: 5433});
+  }
+  const pass = observe([], 77.1, 'passed');
+  assert.deepEqual(project(select([pass])), {durationMs:77});
+  assert.equal(select([pass, pass]), undefined);
+  assert.equal(select([{...pass, fullName:'another case'}]), undefined);
+  assert.equal(select([pass], join(process.cwd(), 'other.test.ts')), undefined);
+  assert.equal(observe([timeout('Test')], 1, 'failed', 'other.test.ts').meta.foundationErrorKind, undefined);
+  for (const duration of [null, -1, Infinity, 480001, 'PRIVATE_FIXTURE']) {
+    const forged = {...pass, status:'failed', duration, meta:{foundationErrorKind:'PRIVATE_FIXTURE'}};
+    assert.deepEqual(project(select([forged])), {errorKind:'unknown'});
   }
 });
 

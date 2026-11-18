@@ -3,11 +3,14 @@ import { readFileSync, writeFileSync, appendFileSync, mkdirSync, mkdtempSync, ls
 import { resolve, join } from 'node:path';
 import { spawn, execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
-import { hash, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, smokeTraceDiagnostics, guardFailureCode } from './project-ci-results.mjs';
+import { hash, sourceBinding, foundationAssertion, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, smokeTraceDiagnostics, guardFailureCode } from './project-ci-results.mjs';
 import { lightOwnerMatches } from './project-ci-launch.mjs';
 import {edgeResolutionCounts} from './permission-edge-resolution.mjs';
 import { pinUiActionRoot } from './permission-pin-ui-policy.mjs';
 import { uiTestInventory, readUIFile, readUIJSON, uiEvidenceContext, remakeSelftestCounts, auditSelftestCounts, requireFreshUIOutput } from './project-ui-results.mjs';
+
+// Vitest loads its unit reporter from this already-pinned entry point.
+export { ArchitectureCaseReporter as default } from './project-ci-results.mjs';
 
 const GiB = 1024 ** 3;
 const refuse = () => { throw new Error('PROJECT_CI_GUARD'); };
@@ -223,6 +226,7 @@ export async function main() {
     for (const [name, value] of Object.entries(limits)) if (readFileSync(join(cgroup, name), 'utf8').trim() !== value) guardRefuse('RESOURCE_CGROUP_DRIFT');
   };
   const rows = [];
+  let unitFoundation;
   const phase = async (id, command, args, readCounts, diagnosticReport, timeoutMs = 480000) => {
     const started = Date.now(), output = join(task, `${id}.log`);
     const invocationSHA = hash(JSON.stringify({ runId: binding.runId, attempt: binding.attempt, id, command, args,
@@ -281,7 +285,8 @@ export async function main() {
       diagnostic.codes = [...new Set([...diagnostic.codes, result.blockCode, result.signalCode, failureCode].filter(Boolean))];
       Object.assign(diagnostic.metrics, guardFacts);
     }
-    rows.push({ id, status: valid ? 'PASS' : 'FAIL', exitCode: result.exitCode, elapsedMs: Date.now() - started, counts, invocationSHA, reportSHA, diagnostic });
+    rows.push({ id, status: valid ? 'PASS' : 'FAIL', exitCode: result.exitCode, elapsedMs: Date.now() - started, counts, invocationSHA, reportSHA, diagnostic,
+      ...(id === 'unit' ? { foundation: unitFoundation } : {}) });
     console.log(`PROJECT_CI_PHASE ${id} ${valid ? 'PASS' : 'FAIL'}`);
     if (!valid) refuse();
   };
@@ -294,7 +299,11 @@ export async function main() {
     await phase('install', 'npm', ['ci', '--no-fund']);
     await phase('build', 'npm', ['run', 'build']);
     await phase('unit', process.execPath, ['node_modules/vitest/vitest.mjs', 'run', '--coverage', '--maxWorkers=1', '--no-file-parallelism', '--retry=0',
-      '--reporter=json', `--outputFile=${join(task, 'unit.json')}`], () => vitestCounts(json('unit'), paths.filter(path => /^src\/.*\.(?:test|spec)\.tsx?$/.test(path)), root), 'unit');
+      '--reporter=json', '--reporter=./scripts/project-ci.mjs', `--outputFile=${join(task, 'unit.json')}`], () => {
+      const report = json('unit');
+      unitFoundation = foundationAssertion(report, root);
+      return vitestCounts(report, paths.filter(path => /^src\/.*\.(?:test|spec)\.tsx?$/.test(path)), root);
+    }, 'unit');
     await phase('tooling', process.execPath, ['node_modules/vitest/vitest.mjs', 'run', '--config=vitest.project-tooling.config.ts',
       '--reporter=json', `--outputFile=${join(task, 'tooling.json')}`], () => vitestCounts(json('tooling'), paths.filter(path => /^tests\/.*\.tool\.test\.(?:ts|mjs)$/.test(path)), root, backendOnly), 'tooling');
     await phase('node-tools', process.execPath, ['--test', '--test-concurrency=2', '--test-reporter=tap', ...paths.filter(path => /^scripts\/.*\.test\.mjs$/.test(path))], nodeCounts);
