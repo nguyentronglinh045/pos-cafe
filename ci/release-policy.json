@@ -16,7 +16,7 @@
     "vitest.project-tooling.config.ts": "a85416abe41bd3bdb8b70262c82b102be5c48d1e1b5edfdad0eaf7ad9e2b9c31",
     "playwright.config.ts": "8cfb980ecc404c408465c02ab9bd7e45923c898008e8844729c40f5b380908e8",
     "ci/smoke-applicability.json": "a637930d8d07e4b5b0aae1fabd26710cb9427162bcf7c83fbc0e2b385b533fb6",
-    "package.json": "2fad363293094863105058f11be4ce0eb761fe8b7ce33a20284cbb1f3fa7323d",
+    "package.json": "c1b98513b2187d1d8942179bb5230c1306b674d9f69fe268272e46f4ccfbd7ef",
     "package-lock.json": "85969c1c161f74e9f68563182d99d1b0ac6fb5f17f5074444f329675ffd34e18",
     "tests/smoke/helpers.ts": "110b8b8327acf2198a324aea1adb292a4b84bab1cd45ae903359a9bce5a6577f",
     "vercel.json": "4896aa05e06f26b4136784d76df5ed77d12b366f8ab0e5e021a5c160cfefe5df",
