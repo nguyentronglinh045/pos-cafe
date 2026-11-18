@@ -19,7 +19,7 @@ Mô hình gồm nền nghiệp vụ và phần mở rộng quyền/phiên/ledger
 
 Nguồn: [thứ tự bundle](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/scripts/permission-activation-bundle.mjs#L4), [controller](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/scripts/permission-activation-steps.mjs#L29), [contract gate](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-compatibility-prepare.sql#L4). Không lấy thứ tự tên file làm recipe chạy migration; giữ gate và hướng dẫn triển khai ở task backend.
 
-Kiểm kê mô hình source này: **35 bảng dự án, 332 cột**. Ba bảng legacy được controller loại và bảng do nền tảng quản lý không nằm trong số đó. [Chỉ mục từ điển](data-dictionary.md#chỉ-mục-bảng) bao phủ mọi bảng; các ERD dưới là các góc nhìn theo nhóm, không sao chép cùng entity thành nhiều bảng.
+Kiểm kê source 26/10 ghi **35 bảng dự án, 332 cột**. Ba bảng legacy được controller loại và bảng do nền tảng quản lý nằm ngoài phép đếm. [Chỉ mục từ điển](data-dictionary.md#chỉ-mục-bảng) và các ERD ghi mô hình tại mốc đó. Phần [T06](#danh-tính-chủ-và-tạo-quán-t06) trình bày delta lược đồ đã áp lên staging ngày 11/11.
 
 > Khi viết báo cáo: trình bày thực thể, quan hệ, kiểu dữ liệu, ràng buộc và lý do thiết kế. Nguồn file/commit/SQL trong docs dùng để kiểm chứng nội bộ theo [source map](report-source-map.md). Mô hình source và schema đã kiểm trên môi trường đích phải ghi riêng.
 
@@ -207,6 +207,21 @@ Nguồn chi tiết và ràng buộc còn lại ở [từ điển](data-dictionar
 | `private.initial_seed_workflows`, `private.initial_seed_stages` | Tiến độ seed theo stage, retry có kiểm soát |
 
 Nguồn: [017:4](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/migrations/017_permission_catalog_bridge.sql#L4), [identity:13](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L13), [identity:47](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L47). Các ERD ở trên đã bổ sung catalog/quyền/audit; từ điển giữ chi tiết ràng buộc. Không áp SQL candidate như migration tự động chỉ vì file nằm trên main.
+
+## Danh tính chủ và tạo quán T06
+
+Cutover staging ngày 11/11/2026 bổ sung `public.stores.owner_account_id` bắt buộc, tham chiếu `private.owner_accounts(id)`. Mỗi quán có một tài khoản chủ, một chủ có thể liên kết nhiều quán. `stores.id` vẫn gắn với tài khoản Auth kỹ thuật. `stores.status` thay `is_active` với giá trị `active` hoặc `suspended`. Hai cột `key_secret_encrypted` và `key_encryption_version` giữ bản mã của phần bí mật trong Store Key và phiên bản khóa. [DDL nguồn](https://github.com/nguyentronglinh045/pos-cafe/blob/610f198d96765b01f3e0058bd793ccf5164a44a2/supabase/candidate/owner-provisioning-schema.sql#L13) · [Hậu kiểm cutover](workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#staging-và-cấu-hình-cần-thiết).
+
+| Bảng trong schema `private` | Vai trò |
+| --- | --- |
+| `owner_accounts`, `owner_provisioning_settings` | Email chuẩn hóa của chủ và cấu hình hạn mức. |
+| `create_intents`, `otp_challenges`, `otp_request_outcomes`, `otp_attempts` | Liên kết ý định, challenge, biên nhận gửi và kết quả xác minh hoặc mã chỉ để tra. OTP được đối chiếu qua digest. |
+| `create_operations` | Lượt tạo đã chấp nhận, suất giữ, lần xử lý và kết quả. `created_store_id` liên kết quán sau commit. |
+| `store_no_reservations`, `auth_create_dispatches` | Bổ sung quan hệ giữ số theo operation vào bảng có sẵn và ghi dấu liên kết lần gọi Auth. |
+| `mail_dispatches` | Hàng đợi thư OTP và Store Key, trạng thái gửi và liên kết challenge hoặc operation tương ứng. |
+| `store_admin_log` | Audit tạo quán và đổi trạng thái, gắn quán và tác nhân. |
+
+Workflow và stage seed có sẵn được gắn vào giao dịch tạo quán T06. Bảng provisioning, bản mã và dữ liệu OTP dùng ở lớp server theo ACL của SQL candidate. [Thiết kế bảng và ràng buộc](../openspec/changes/add-owner-account-and-store-provisioning/design.md) · [Giao dịch ghi quán](https://github.com/nguyentronglinh045/pos-cafe/blob/610f198d96765b01f3e0058bd793ccf5164a44a2/supabase/candidate/owner-provisioning-commit.sql#L190).
 
 ## Nhóm Menu
 

@@ -90,7 +90,7 @@ Chạy trước mỗi mốc đóng mục roadmap và trước ngày demo. Ghi ng
 
 | Việc | Ngày chạy gần nhất | Kết quả và ghi chú |
 | --- | --- | --- |
-| Gửi một email thử qua đường gửi đang cấu hình, xác nhận vào hộp thư chính chứ không vào thư rác | *chưa chạy* | Chưa dựng đường gửi email. Thuộc `add-owner-account-and-store-provisioning` nhóm 1 |
+| Gửi một email thử qua đường gửi đang cấu hình, xác nhận vào hộp thư chính chứ không vào thư rác | 16/11/2026, staging | SMTP ứng dụng đã gửi tới Inbox. Hai vòng TC-OWNER-104 có OTP thật và ghi bằng chứng theo từng lượt. Phép kiểm Gửi lại ngày 16/11 ghi hai thư ở Inbox trên fixture mới. [Kết quả ngày 16/11](workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#t06-evidence-audit-2026-11-16) · [Giới hạn từng lượt](workflow/tasks/g01-g10-t06-staging-inventory-2026-11-17.md) |
 | Mở ứng dụng trên thiết bị thật ở chế độ ngang, kiểm thao tác chạm và bàn phím ảo | *chưa chạy* | Ghi rõ loại và kích thước thiết bị khi chạy |
 
 Diễn tập kịch bản demo trước đây nằm ở đây, nay **đã chuyển sang tự động** thành `tests/smoke/demo-runbook.spec.ts`.

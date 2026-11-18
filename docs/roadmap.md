@@ -30,6 +30,10 @@ Mốc mới sau bảng trạng thái26/10 bên dưới: [đợt refactor cấu t
 
 [Bảng hiện hành G01–G12](features.md#đối-chiếu-12-mục-tiêu-tốt-nghiệp) là đường tra cứu theo mục tiêu; [đối chiếu spec](spec-reconciliation.md) và [evidence](testing.md#bản-đồ-bằng-chứng) giữ khoảng thiếu cụ thể.
 
+## Mốc T06 ngày 17/11/2026
+
+Staging đã kiểm hai vòng OTP tạo quán qua Protected Preview, ghép và vào POS trên máy thứ hai, cùng phần nền khóa quán R07. TC-09 dùng PostgreSQL cô lập. 9.5 đã đóng sau khi Linh xác nhận giữ ba quán là đã xử lý dữ liệu thử. Phần việc tiếp theo của T06 là đưa các bản vá đã kiểm vào nguồn quản lý, hoàn tất chuyển đổi runner và luồng cũ, rồi chạy gate trên bản cuối. T08/T09 tiếp nối khi đủ điều kiện của giai đoạn 1. [Hồ sơ và các việc chưa xong](workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#t06-con-lai-2026-11-17).
+
 ## Làm gì tiếp
 
 1. Bắt đầu từ [bảng công việc G01–G10](workflow/g01-g10-plan.md#next); đây là nguồn trạng thái/dependency để tư vấn việc tiếp theo. Dùng [bảng G01–G12](features.md#đối-chiếu-12-mục-tiêu-tốt-nghiệp), [quyết định](workflow/decisions.md), [spec reconciliation](spec-reconciliation.md) và [testing](testing.md) để chọn từng phần G01–G10 theo dependency và khoảng thiếu đã xác minh.

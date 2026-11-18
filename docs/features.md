@@ -8,7 +8,7 @@
 
 | Tính năng, tác nhân và hành trình | Yêu cầu / mục tiêu | Spec cần đọc | Trạng thái và giới hạn |
 | --- | --- | --- | --- |
-| [Store & Session](#store--session) — Người tạo quán/nhân viên; tạo hoặc ghép Store Key → PIN → phiên → seed theo workflow | FR-01–03; G05/G07 | [store-onboarding](spec-reconciliation.md#store-onboarding) | Có luồng Store Key/owner bootstrap; email owner chưa có. |
+| [Store & Session](#store--session) — Xác minh OTP để tạo quán → nhận Store Key → ghép thiết bị → PIN → POS | FR-01–03; G05/G07 | [store-onboarding](spec-reconciliation.md#store-onboarding) | Luồng T06 đã kiểm trên Protected Preview và staging. |
 | [Role & Permission](#role--permission) — Chủ/quản lý/nhân viên theo quyền; kiểm màn, đọc và hành động | FR-04; G03/G04 | [access-control](spec-reconciliation.md#access-control) | Catalog15 trong code; backend HOLD. |
 | [POS Floor](#pos-floor) — Nhân viên có floor.view; xem khu/trạng thái → mở đơn hoặc làm mới | FR-06; G08 | [floor-operations](spec-reconciliation.md#floor-operations) | B01 tích hợp; kiểm UI/local theo E-UI. |
 | [Order](#order) — Nhân viên có quyền; chọn món/modifier → nháp → xác nhận gửi → xem đơn/phiếu | FR-07/09/10; G02/G08 | [order-management](spec-reconciliation.md#order-management) | B02 và giao thức v1 có code; backend riêng. |
@@ -22,13 +22,13 @@
 | [Report](#report) — Người có report.view; chọn kỳ → đọc tổng hợp và các pane được phép | FR-19; NFR-01 | [reporting](spec-reconciliation.md#reporting) | Không export; quyền report không tự mở history detail. |
 | [Settings & Maintenance](#settings--maintenance) — Người có quyền settings; sửa thông tin; owner clear mẫu | FR-20; G04 | [store-settings](spec-reconciliation.md#store-settings) | [R06-A/B](spec-reconciliation.md#r06-decisions): retry tại thông báo chung đã chốt; reseed sau xóa hoãn. |
 | [Đồng bộ nhiều thiết bị](#đồng-bộ-nhiều-thiết-bị) — Nhân viên đang online; signal/reconnect → tải lại theo purpose | FR-21; G09 | [multi-device-sync](spec-reconciliation.md#multi-device-sync) | Có code signal/poll; chưa có SLA nguồn cuối. |
-| [Tài khoản chủ và sở hữu](#tài-khoản-chủ-và-sở-hữu) — Chủ email dự kiến; xác thực → tạo quán/khôi phục/chuyển chủ | G05/G06 | [store-onboarding](spec-reconciliation.md#store-onboarding) | Kế hoạch; 3 artifact owner còn khung. |
+| [Tài khoản chủ và sở hữu](#tài-khoản-chủ-và-sở-hữu) — Xác minh email để tạo quán, sau đó dùng PIN trong POS | G05/G06 | [store-onboarding](spec-reconciliation.md#store-onboarding) | T06 có bằng chứng tạo quán. Khôi phục và chuyển chủ theo T08/T09. |
 
 **Trạng thái chung:** các dòng có code không tự là đã nghiệm thu hoặc phát hành. E-UI kiểm candidate cùng tree với main; E-PH27 thuộc source cũ; E-BACKEND và deployment còn giữ gate. Từng quyết định được duyệt đọc tại hồ sơ chính, không suy cả danh mục đã được chủ dự án nghiệm thu từ việc đưa vào trang này. [Hồi quy tiểu luận](regression-map.md) nối phạm vi cũ, thay đổi và test/evidence cần đối chiếu.
 
 ## Store & Session
 
-Ghép thiết bị bằng Store Key, chọn nhân viên và nhập PIN để cấp phiên. Token nhân viên không nằm trong UI state; reload/khóa yêu cầu xác minh lại. Tạo quán mới có lựa chọn seed demo; owner nhận PIN tạm và phải đổi trước khi dùng POS. Seed có workflow/stages và retry riêng, không coi seed lỗi là mất cửa hàng. Chưa có email ownership/recovery hoàn chỉnh.
+Ghép thiết bị bằng Store Key, chọn nhân viên và nhập PIN để cấp phiên. UI chỉ giữ thông tin hiển thị của phiên. Luồng T06 trên Protected Preview xác minh OTP trước khi tạo quán. Chủ chọn PIN khi điền form và dùng PIN đó sau khi ghép. Phiên bắt đổi PIN áp dụng cho luồng cấp PIN tạm tương ứng. Seed chạy theo workflow. Nếu seed đã rollback và cần xử lý, chủ đủ điều kiện có thể thử lại hoặc bỏ mẫu. Quán đã tạo vẫn tồn tại. [Màn tạo và ghép](screens.md#3-create-store-form--success) · [Bằng chứng seed và luồng chính](workflow/tasks/g01-g10-t06-staging-inventory-2026-11-17.md).
 
 Nguồn: [session contracts:17](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/ports/permissions.ts#L17), [PasscodeScreen:42](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/app/screens/PasscodeScreen.tsx#L42), [candidate bootstrap:498](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/supabase/candidate/permission-identity.sql#L498).
 
@@ -178,9 +178,9 @@ Nguồn: [invalidation/reconnect](https://github.com/nguyentronglinh045/pos-cafe
 
 ## Tài khoản chủ và sở hữu
 
-**Kế hoạch G05/G06:** xác thực email thật, quyền tạo cửa hàng, khôi phục truy cập, đổi thông tin chủ và chuyển sở hữu theo [các quyết định owner](../openspec/changes/add-owner-account-and-store-provisioning/proposal.md#quyết-định-đã-chốt). Mỗi quán một chủ là lựa chọn nghiệp vụ; không phải quản lý quan hệ góp vốn.
+Ngày 17/11/2026, T06 đã có hai vòng thử OTP email thật trên Protected Preview với staging. Mỗi quán gắn một tài khoản chủ theo email đã xác minh. Một chủ có thể tạo nhiều quán trong hạn mức. OTP cấp quyền tạo quán cho lượt đó. Phiên POS được mở sau khi ghép thiết bị và nhập PIN. [Mô hình chủ và quán](data-model.md#danh-tính-chủ-và-tạo-quán-t06) · [Hai vòng TC-OWNER-104](workflow/tasks/g01-g10-t06-staging-inventory-2026-11-17.md).
 
-Main có role owner, self-PIN và recovery operator chuyển tiếp; chưa đồng nghĩa có tài khoản chủ email. CreateStore hiện dùng tài khoản cửa hàng với email sinh theo Store Key: [Auth tạo quán](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/adapters/supabase/authRepo.ts#L80), [email theo số quán](https://github.com/nguyentronglinh045/pos-cafe/blob/711a22e71983e3d6aa17799649af05ce4c762555/src/adapters/supabase/storeKey.ts#L34). Ba artifact usecases/testplan/traceability của owner còn khung. Chưa có evidence nghiệm thu luồng email/chuyển chủ; không ghi G05/G06 hoàn tất. [R03](spec-reconciliation.md#phần-còn-thiếu-và-phân-loại).
+Bộ đặc tả owner đã có use cases, testplan và traceability. Quên/cấp lại Store Key, khôi phục PIN, đổi thông tin và chuyển chủ thuộc giai đoạn 2. Quy trình recovery operator tiếp tục theo phạm vi chuyển tiếp đã chốt. [Bộ đặc tả owner](../openspec/changes/add-owner-account-and-store-provisioning/proposal.md) · [Phụ thuộc T08/T09](workflow/g01-g10-plan.md).
 
 ## Seam: Có Code Nhưng CHƯA Dùng Trên UI
 
@@ -218,9 +218,9 @@ Nguồn nghiệp vụ đang dùng: [orderFlow.ts:250](https://github.com/nguyent
 | **G01 — Chiến lược và môi trường kiểm thử** | [Chiến lược](test-strategy.md), [E-UI/E-CICD/E-BACKEND](testing.md#bản-đồ-bằng-chứng) | Có strategy/runners/fixture/CI; hợp nhất coverage nguồn cuối và recipe local, không cài lab từ task docs. |
 | **G02 — Chống trùng và khôi phục thanh toán** | [Giao thức ghi](#ghi-chống-trùng-và-khôi-phục), [payment](#payment) | Có code và acceptance lịch sử; cần gate backend tương ứng main mới. |
 | **G03 — Vai trò và quyền** | [Catalog/quyền](#role--permission), [quyết định](workflow/decisions.md#nghiệp-vụ-và-quyền) | Catalog15 có code; kiểm quản trị, trần quyền và audit đủ profiles. |
-| **G04 — Kiểm quyền tại DB** | [Spec access-control](spec-reconciliation.md#access-control), [E-BACKEND](testing.md#bản-đồ-bằng-chứng) | Có SQL/adapter candidate; không tự nhận grants đích hoặc acceptance đã đạt. |
-| **G05 — Chủ quán, email, quyền tạo quán** | [Owner](#tài-khoản-chủ-và-sở-hữu) | Chưa có flow email owner; phải hoàn thiện spec và implementation khi được giao. |
-| **G06 — Recovery, thông tin chủ, chuyển sở hữu** | [Owner](#tài-khoản-chủ-và-sở-hữu), [quyết định chuyển tiếp](workflow/decisions.md#nghiệp-vụ-và-quyền) | Operator PIN không thay khối email/ownership. Còn artifact khung và implementation. |
+| **G04 — Kiểm quyền tại DB** | [Spec access-control](spec-reconciliation.md#access-control), [R07 hosted](workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#r07-hosted-2026-11-15) | Có bằng chứng nền khóa quán T06; nghiệm thu quyền tổng thể còn mở. |
+| **G05 — Chủ quán, email, quyền tạo quán** | [Owner](#tài-khoản-chủ-và-sở-hữu) | Staging đã kiểm luồng OTP, ghép thiết bị và nhập PIN. Bản vá SQL/Edge (#32) và bộ smoke ghép quán (#30) đã vào `main`. Còn kiểm hồi quy trên bản ứng viên phát hành. |
+| **G06 — Recovery, thông tin chủ, chuyển sở hữu** | [Owner](#tài-khoản-chủ-và-sở-hữu), [quyết định chuyển tiếp](workflow/decisions.md#nghiệp-vụ-và-quyền) | Đã có đặc tả. T08/T09 còn chờ điều kiện triển khai. |
 | **G07 — Đổi PIN mặc định lần đầu** | [Session](#store--session), [PIN delta](spec-reconciliation.md#employee-session) | Scope đã chốt owner bootstrap/recovery; có code, full gate còn mở. Không tự mở non-owner. |
 | **G08 — UI bàn, gọi món, thanh toán, mang đi** | [UI](#shared-ui-behavior), [E-UI](testing.md#bản-đồ-bằng-chứng) | B01–03 tích hợp/đã kiểm scope local; mang đi có chức năng, chưa có batch remake riêng được nhận hoàn tất. |
 | **G09 — Đồng bộ nhiều thiết bị** | [Realtime](#đồng-bộ-nhiều-thiết-bị) | Có signal/refetch, join-only còn giới hạn; cần bài đo/kiểm dịch vụ thật theo expected. |

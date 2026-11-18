@@ -9,21 +9,25 @@ Nguồn chung: [App.tsx:73](https://github.com/nguyentronglinh045/pos-cafe/blob/
 
 **Quy tắc chung về quyền** (chốt 08/11/2026): thiếu quyền làm việc gì thì nút hoặc lối vào dẫn tới việc đó phải bị ẩn hoặc vô hiệu hóa, không cho truy cập; server vẫn kiểm lại quyền. Chi tiết và bảng tra ở [hồ sơ 08/11](workflow/tasks/team-week05-answers-2026-11-08.md#nút-theo-quyền).
 
+Mục 2–4 cập nhật ngày 17/11 theo luồng T06 trên Protected Preview và staging. [Bằng chứng giao diện](workflow/tasks/g01-g10-t06-staging-inventory-2026-11-17.md).
+
 ## 1. Landing
 
 Chọn ghép quán hoặc tạo quán. Đây là pre-login, chưa có authority nhân viên.
 
 ## 2. Store Pairing
 
-Nhập Store Key để ghép thiết bị; xử lý key sai/lỗi backend trước khi vào chọn nhân viên. Số cửa hàng đơn lẻ không thay secret.
+Nhập Store Key để ghép thiết bị, sau đó chọn nhân viên và nhập PIN. Sau khi lưu Store Key trên màn tạo quán, máy đang tạo cũng về màn Ghép thiết bị với ô trống. Hai vòng TC-OWNER-104 đã dùng máy khác để ghép và vào POS. [Bằng chứng ghép](workflow/tasks/g01-g10-t06-staging-inventory-2026-11-17.md).
 
 ## 3. Create Store Form & Success
 
-Tạo quán, lựa chọn dữ liệu mẫu, hiển thị Store Key/PIN tạm và yêu cầu lưu thông tin. Owner mới phải đổi PIN trước POS; không coi đây là email ownership provisioning.
+Trên Protected Preview T06, nhập email, tên quán, địa chỉ tùy chọn, PIN chủ tự chọn và lựa chọn dữ liệu mẫu. Bấm **Gửi mã**, nhập OTP trong thư rồi bấm Xác nhận. UI báo mã sai, hết hạn hoặc vượt số lần thử. Nút **Gửi lại** mở theo mốc server. Tải lại trước Xác nhận đưa form về trạng thái ban đầu. Sau Xác nhận, ứng dụng dùng mã tra đã lưu để đọc trạng thái lượt cũ.
+
+Khi tạo thành công và đủ điều kiện giao key, màn kết quả hiển thị Store Key và nút sao chép. **Tôi đã lưu Store Key** đóng lượt nhận key và đưa về Ghép thiết bị. Tra trạng thái sau tải lại chỉ hiện kết quả. Chủ dùng PIN đã chọn sau khi ghép. Khi seed đang xử lý, POS chờ trạng thái sẵn sàng. Nếu seed đã rollback và cần xử lý, phiên chủ đủ điều kiện có thể thử lại hoặc bỏ mẫu. Hai nhãn dữ liệu giả trên Preview đang chờ sửa. [Màn kết quả](https://github.com/nguyentronglinh045/pos-cafe/blob/610f198d96765b01f3e0058bd793ccf5164a44a2/src/app/screens/OwnerCreateRequestScreen.tsx#L152) · [Bằng chứng seed](workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#tc09-local-2026-11-17).
 
 ## 4. Passcode
 
-Đọc roster tối thiểu, chọn nhân viên và nhập PIN. Phiên normal vào shell; required_pin_change vào bước đổi PIN. Kitchen không được bật trong catalog.
+Đọc roster tối thiểu, chọn nhân viên và nhập PIN. Phiên `normal` qua cổng sẵn sàng để vào POS. Phiên `required_pin_change` vào bước đổi PIN. Luồng tạo quán OTP dùng PIN chủ tự chọn và cấp phiên `normal` sau ghép. Bước đổi PIN vẫn áp dụng cho phiên hạn chế do luồng cấp PIN tạm tương ứng. Kitchen không được bật trong catalog.
 
 ## 5. Rotate Guidance
 

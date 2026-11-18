@@ -57,6 +57,8 @@ Manifest local sau sửa PostgREST là `861c9fb5de7bd0d04902b00c5988ebfe5f6dc994
 - **Điều kiện triển khai sau merge.** Protected Preview dùng commit trên `main` có CI push đạt và cần duyệt môi trường. Kết quả triển khai và kiểm thử nằm ở mục tiếp theo. Lỗi phát hiện sau merge được xử lý bằng PR mới vào `main`.
 - **Theo dõi sau review.** Giữ trần 400 OTP/ngày cho đồ án thử có bảo vệ. Theo dõi thông báo HTTP 202, ngân sách tổng OTP và Store Key, phân loại SMTP 4xx/5xx với quy tắc tránh gửi trùng, và việc kiểm chữ ký trước định dạng chi tiết. Hạn nhận lại Store Key giữ theo R06. Hai commit sửa riêng giúp truy vết. Quyền duyệt môi trường vẫn theo cấu hình đã chốt.
 
+<a id="tc-owner-104-protected-preview"></a>
+
 ## Protected Preview và TC-OWNER-104 ngày 12–13/11/2026
 
 - Đã khởi chạy `Frontend Preview (manual)` ở chế độ `supabase` từ `main` tại `e23c58ff8a15fd68c43dfdc9834c06b085835ca6`. CI push `43170685948` lượt 1 dừng ở ca đầu của `src/architectureBoundaries.test.ts`, 1.279/1.280 unit đạt. Lượt 2 trên cùng commit đạt 18/18 bước và được dùng làm đầu vào Preview. Job chờ ở môi trường GitHub `Preview` trước khi được duyệt theo yêu cầu triển khai của chủ dự án. Bản ghi GitHub deployment `7730904063` chuyển sang `failure`. [CI lượt 1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/43170685948/attempts/1) · [CI lượt 2](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/43170685948/attempts/2) · [Preview lượt 1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/43173906616/attempts/1)
@@ -106,7 +108,7 @@ Manifest local sau sửa PostgREST là `861c9fb5de7bd0d04902b00c5988ebfe5f6dc994
 - **Vòng 2, FE-04 đã đủ fixture.** Gửi mã lúc 08:37:01 UTC+7, xác nhận lúc 08:37:48 và Preview trả quán `0020`. Staging có đúng `0011`, `0013`, `0015`, `0016`, `0020`, chỉ `0011` tạm ngưng. Đã dùng 10 OTP cùng IP trong 60 phút, cửa sổ kế tiếp không sớm hơn 09:21:06.983 UTC+7. Còn phép tạo quán thứ sáu, Gửi lại ở FE-01 và trạng thái cuối sau F5 ở FE-05B.
 - **Vòng 2, FE-04 đạt.** Gửi mã cho lượt thứ sáu lúc 09:21:17 UTC+7 sau khi một lượt gửi mở lại. UI vẫn hiện thông báo gửi chung. Sau khi chủ dự án lấy OTP thật từ thư, bấm Xác nhận lúc 09:22:39 và UI báo đủ 5 quán, không hiện Store Key. SQL ghi `OWNER_STORE_LIMIT_REACHED` và giữ nguyên đúng năm số quán, một quán tạm ngưng, năm operation `created` và năm thư Store Key. Tổng sáu mã và sáu OTP `submitted`.
 - **Vòng 2, FE-05B kiểm lại đạt.** Alias mới nhận OTP lúc 09:24 và xác nhận lúc 09:26:38 UTC+7. Kết quả gốc hiện Store Key cho quán `0021`. Chờ thư Store Key chuyển `submitted`, sau đó tải lại khi vẫn ở màn kết quả. UI chỉ hiện “Đã tạo quán. Vui lòng kiểm tra email để tìm Store Key.”, không phục hồi form, OTP, Store Key hay nút nhận lại. Hai lần đọc DB trước và sau F5 đều có một mã, một thư OTP, một thư Store Key, một operation và một quán.
-- **Cấu hình thư Auth ở cả hai vòng.** Dashboard cho thấy chưa có Send Email Hook và Auth dùng các mẫu thư mặc định. Tắt signup đã chặn đường đăng ký công khai. Cơ chế chặn chung thư native chưa cấu hình, thuộc rủi ro đã chấp nhận theo REQ-OWNER-16. TC-OWNER-78 phần thử nội dung thư native vẫn `NOT_RUN`. Bằng chứng TC-OWNER-40 của hai vòng đến từ đường gọi Admin API và dispatch đã đối chiếu.
+- **Cấu hình thư Auth ở cả hai vòng.** Dashboard cho thấy chưa có Send Email Hook và Auth dùng các mẫu thư mặc định. Tắt signup đã chặn đường đăng ký công khai. Cơ chế chặn chung thư native chưa cấu hình, thuộc rủi ro đã chấp nhận theo REQ-OWNER-16. Phép thử nội dung thư native được thực hiện ngày 16/11. Bằng chứng TC-OWNER-40 của hai vòng đến từ đường gọi Admin API và dispatch đã đối chiếu. [Kết quả TC-OWNER-78](#tc-owner-78-103-2026-11-16)
 - **Nhãn giao diện cần chỉnh.** Màn kết quả còn ghi `Giao diện tạm · Dữ liệu mock` ở dòng 156. Form tạo quán và màn xác minh dùng chung nhãn `Giao diện tạm · Chỉ dùng dữ liệu giả.` ở dòng 201. Các lượt Preview dùng staging với dữ liệu thử và đã được đối chiếu bằng DB. Bản sửa giao diện cần xử lý cả hai nhãn theo môi trường. [Màn tạo quán trên `610f198`](https://github.com/nguyentronglinh045/pos-cafe/blob/610f198d96765b01f3e0058bd793ccf5164a44a2/src/app/screens/OwnerCreateRequestScreen.tsx#L153-L207)
 - **Cổng OTP trên Preview đã kiểm đường gửi hợp lệ.** FE-01 và FE-04 gửi OTP thật qua `/api/owner-otp` của Vercel. Edge staging chấp nhận yêu cầu đã ký và DB ghi 10 mã cho cùng IP trong cửa sổ 60 phút. Lượt tiếp theo phát mã sau khi một lượt cũ ra khỏi cửa sổ. Bằng chứng này xác nhận tích hợp ký IP và quan sát hạn mức. TC-OWNER-103 còn các phép kiểm riêng về header tự khai và tranh lượt cuối.
 
@@ -120,9 +122,70 @@ Hai reviewer Codex trả `APPROVE` cho bản sửa sau góp ý PR #27. Reviewer 
 
 ## Theo dõi sau TC-OWNER-104
 
-- **TC-OWNER-41 — Xung đột Auth.** Kiểm trên fixture thử rằng tài khoản kỹ thuật đã có giữ nguyên, lượt tạo chọn số mới sau khi xác nhận lệnh Auth cũ không có tác dụng, và chỉ tạo một quán.
-- **R07 hosted — TC-OWNER-95/111.** Đối chiếu phiên bản cổng ảnh trên staging và triển khai bản đã sửa nếu còn thiếu. Kiểm cổng ảnh sau tạm ngưng, Storage và Realtime thật, cùng đường đọc/ghi, ngoại lệ phiên thiết bị đã ghép và audit. Kiểm local chưa thay được phần hosted.
-- **Thư và giao diện.** TC-OWNER-78 vẫn `NOT_RUN`. Theo dõi xác nhận thư Gửi lại FE-01 vòng 2, phân loại SMTP 4xx/5xx, thông báo 202 và hai nhãn giao diện ở trên. Giữ ngân sách 400 OTP/ngày cho phạm vi đồ án thử đã chốt.
+- **TC-OWNER-41 — Xung đột Auth.** Đạt trên staging sau khi triển khai `owner-provisioning` v2. Auth trả HTTP 422 / `email_exists`, operation chuyển từ số `0026` sang `0027` và Edge Logs ghi đúng một cảnh báo cùng UUID operation. [Bằng chứng và bản sửa](#tc-owner-41-2026-11-16).
+- **R07 hosted — TC-OWNER-95/111.** Đã triển khai riêng cổng ảnh private và chạy hai ca trên quán thử `0023` và `0022` ngày 15–16/11. Phần bổ sung kiểm PIN hạn chế, seed đang dở, quyền phiên khi mở lại, GET trực tiếp và ảnh có byte thật trước `mark_ready`. [Kết quả R07](#r07-hosted-2026-11-15).
+- **TC-OWNER-78 và TC-OWNER-103.** TC-OWNER-103 đã chạy các nhánh staging và tranh lượt trên PostgreSQL cô lập. TC-OWNER-78 đạt đối chứng thư Auth thật trên staging và đã rà cấu hình. Lượt rà soát sau đó xác nhận thư Gửi lại FE-01 trên fixture mới, phân loại SMTP 4xx/5xx ở local và HTTP 202 trong Edge Logs. Hai nhãn giao diện còn mở. [Rà soát T06](#t06-evidence-audit-2026-11-16) [Bằng chứng ngày 16/11](#tc-owner-78-103-2026-11-16)
+
+<a id="tc-owner-41-2026-11-16"></a>
+
+### TC-OWNER-41 trên staging ngày 16/11/2026
+
+- Dùng Protected Preview `610f198` và alias Gmail trường riêng cho ca này. Một OTP đến Hộp thư đến. Trước khi xác minh, thêm đúng một hàng Auth đối chứng cho số kế tiếp `0024`, có dấu nhận diện fixture, không có mật khẩu và đang bị chặn đăng nhập. Hàng này không mang `pos_cafe_create_dispatch`. Trước khi thêm, kiểm không có quán hay tài khoản dùng số đó và không có operation `accepted` còn lease.
+- Từ một lượt xác minh, log API Gateway ghi `POST /auth/v1/admin/users` HTTP 422 lúc 09:21:57 và HTTP 200 lúc 09:21:58, UTC+7. Raw Auth Logs xác nhận `error_code=email_exists` cho lần đầu. DB ghi dispatch số `0024` là `no_effect` với `auth_user_id` rỗng, fingerprint tài khoản đối chứng giữ nguyên, và không có quán `0024`. Dispatch thứ hai thuộc cùng operation, dùng số `0025`, khớp UUID và dấu dispatch của tài khoản mới. Sau ca có đúng một quán của alias, một suất hạn mức và một mail Store Key `submitted`. Màn kết quả trả Store Key mang số `0025`. Giữ hai fixture trong staging để đối soát.
+- Cửa sổ Edge Logs 09:21:40–09:22:05 của bản v1 không thấy cảnh báo ứng dụng cho xung đột. Mã nguồn v1 chưa phát cảnh báo ở nhánh `no_effect`. Candidate local trên `610f198` ghi `owner_provisioning.auth_email_collision` khi Auth trả `no_effect` và DB cũng xác nhận `no_effect`. Context chỉ có UUID operation. Deno test trên PostgreSQL 16.15 loopback với Auth/SMTP giả lập đạt 3 test, gồm hai bước TC-OWNER-41, và `deno check` entry point đạt. Hậu kiểm rollback giữ đúng số hàng của fixture local.
+
+| Bằng chứng local | SHA-256 |
+| --- | --- |
+| `tc-owner-41-20261116-hosted.result.json` | `f3fee81ef2b7732d70a1d30b68f88c7131df347e30e1a077069d5d6eed2afabe` |
+| `tc-owner-41-20261116-local.result.txt` | `b28b6c10165c13962bb8eeb7d1a83b120d2f4019e4d11adcfc4ec007cc2e67bc` |
+| `tc-owner-41-20261116.test.ts` | `67e5edab5cc1aceff3ba86a25ad24e758fcf337a77f02b5ffa31266521af3d33` |
+| `supabase/functions/owner-provisioning/handler.ts` tại candidate | `6e4c3d6b86a129d6ce8c998791b7cc4a34c1b26ea7c548a927c3d2a6390c53f8` |
+
+Hai reviewer độc lập trả `APPROVE` cho bản sửa local và cho bằng chứng cùng tài liệu TC-OWNER-41. Trước khi ghi verdict, SHA-256 của hồ sơ là `5bb27410af3f732a30ce2a01587e5f7ac0a11e88519466c72a125abb9fc4c1e6` và của kế hoạch là `b1140e4c1ac8f008dda9f1a779180a39f38ec2d87ed0f64c1ee6be981dd4eb63`.
+
+#### Xác nhận sau triển khai `owner-provisioning` v2
+
+- Chủ dự án duyệt triển khai riêng `owner-provisioning` vào staging `ineckiashpwloncxnbqx`. Dashboard tăng số deployment của hàm từ 1 lên 2, với `verify_jwt=false` và hai tệp `index.ts`, `smtp.ts` khớp bản trước. Số deployment của `menu-image-gateway` là 6 và `menu-image-public` là 5 ở cả hai lần đọc. `handler.ts` đọc lại khớp candidate đã duyệt khi chuẩn hóa LF và dòng trống cuối tệp, SHA-256 `954f4a218d2945dfbf2a7b3f6157e60c35e10af28ef620d40792640c9f278f7b`. Phần sửa mã là một dòng trên base `610f198` tại nhánh local `fix/tc-owner-41-auth-collision-warning`.
+- Dùng alias thử riêng `+tc41-261116b` trên Protected Preview `610f198`. Một OTP đến Hộp thư đến. Tài khoản Auth đối chứng chiếm số `0026` trước khi gửi xác minh, không có mật khẩu và bị chặn đăng nhập. Auth Logs ghi HTTP 422 / `email_exists` lúc 09:38:31 và HTTP 200 ở lần gọi Admin kế tiếp. Edge Logs ghi đúng một `owner_provisioning.auth_email_collision` lúc 09:38:32 với level `warning`, version `2` và UUID khớp operation trong DB. Giờ theo UTC+7. [Edge Logs của hàm](https://supabase.com/dashboard/project/ineckiashpwloncxnbqx/functions/owner-provisioning/logs)
+- Dispatch `0026` kết thúc `no_effect` với `auth_user_id` rỗng. Fingerprint tài khoản đối chứng giữ nguyên và số đó không có quán. Dispatch thứ hai thuộc cùng operation, dùng `0027` và khớp UUID, dấu dispatch cùng số trên Store Key. Hậu kiểm có một operation `created`, một quán, một suất hạn mức và một thư Store Key `submitted`. Quán `0027` active, tài khoản đối chứng vẫn bị chặn và có 0 phiên Auth, 0 phiên nhân viên còn hiệu lực trong fixture. Giữ dữ liệu thử để đối soát.
+
+**TC-OWNER-41 đạt trên staging.** Bằng chứng `tc-owner-41-20261116-edge2.result.json` ghi 13/13 phép đối soát và SHA-256 `91244a0de6242e26a5da02a8766da20da6873b29d945766b540266fbb9fff21b`.
+
+Hai reviewer độc lập trả `APPROVE` cho provenance triển khai v2 và cho tiêu chí nghiệm thu TC-OWNER-41 cùng cập nhật kế hoạch. Trước khi ghi verdict, SHA-256 của hồ sơ là `213684c7efb4e96bef9c5fbf14ab56f80d50cd90fb14bf08dc85e7b01567b82e` và của kế hoạch là `efee15a9c797cd53db911a6a7eaa317195a5e3fb5c489fd12b81bc229c2acf30`.
+
+<a id="tc-owner-78-103-2026-11-16"></a>
+
+### TC-OWNER-78 và TC-OWNER-103 ngày 16/11/2026
+
+| Nhánh TC-OWNER-103 | Kết quả |
+| --- | --- |
+| Gửi mã cùng email | Hai tab Protected Preview `610f198` gửi cùng alias trước mốc. UI cùng chuyển sang màn xác minh, DB có hai receipt, một lượt bị giới hạn, một challenge, một thư OTP `submitted` và 0 operation. Đối chứng PostgreSQL dùng request/intent khác và hai IP nguồn khác nhau, vẫn chỉ có một challenge và một dòng thư. |
+| Khóa mã sau 5 lần sai | Trên Edge staging v2, 5 request ID mới dùng mã sai và đổi header IP tự khai đều trả HTTP 400 `A_OTP_INVALID`. Dùng mã thật sau đó trả `A_OTP_ATTEMPTS_EXCEEDED`. DB ghi `locked`, đếm 5, 0 operation, 0 dispatch Auth và 0 quán. |
+| Xác minh đồng thời và gửi lại | Ba request đồng thời dùng cùng OTP và hai attempt ID. Một request trả `created`, hai request còn lại trả 202 `accepted`. Sau khi tạo, gửi lại attempt gốc trả số quán `0028` cùng Store Key, attempt kia chỉ trả `created`. DB có đúng một operation, một dispatch Auth, một quán và một thư Store Key. Lượt xác minh giữ một OTP đã phát. |
+| Gọi trực tiếp và tự khai IP | Trên staging, publishable key và JWT thật của thiết bị thử `0022` đều bị từ chối ở `permission_reserve_store_no` và `permission_bootstrap_store` với `42501` (HTTP 401/403). Yêu cầu OTP trực tiếp với header IP tự khai và yêu cầu có chữ ký giả đều trả HTTP 503 `A_SEND_UNAVAILABLE`. Alias đối chứng có 0 receipt, OTP, operation và quán. Hậu kiểm ghi 0 phiên Auth của `0022`. |
+| Tranh lượt cuối | PostgreSQL 16.15 cô lập với gateway/handler thật và SMTP giả lập kiểm hai giao dịch cùng chờ khóa. Hai email cùng IP tranh lượt IP thứ 10. Hai email/IP khác nhau tranh lượt dự án thứ 400. Mỗi biến thể tạo đúng một challenge và một dòng thư, hai phản hồi có cùng hình dạng HTTP 202, 0 operation/quán/Auth mới. Worker giả lập trả `rejected` ở lượt IP thứ 10. Lượt tiếp theo vẫn trả 202 chung và bộ đếm giữ ở 10. Gateway dùng IP tin cậy trong đối chứng, bỏ qua header IP tự khai. |
+
+Lane staging phát hai OTP thật cho hai alias của TC-OWNER-103. Hai bộ đếm sát ngưỡng được chuẩn bị trong DB loopback riêng theo testplan. Bước IP đạt ở lần chạy đầu; phần nạp fixture cho bước dự án vướng ràng buộc thời gian vì dùng hai lần đọc đồng hồ. Đã sửa fixture dùng `statement_timestamp()` và chạy lại bước dự án trên bản sao đã đối chiếu trạng thái sau bước IP. Ca đổi IP local dùng giao dịch rollback. Ba unit test gateway cũng đạt. Giữ DB bằng chứng `pos_cafe_t06_contract_tc103` (13.532.183 byte) và đã dừng PostgreSQL local.
+
+**TC-OWNER-78 đạt trên staging.** Chủ dự án bấm **Invite user** trên project staging. Gmail nhận thư mặc định **You've been invited** từ Supabase Auth vào Hộp thư đến. Lấy token 56 ký tự từ link đúng host, đường dẫn `/auth/v1/verify` và `type=invite` của project staging. Chỉ đọc token từ link. Protected Preview `610f198` tạo một OTP ứng dụng hợp lệ cho cùng hộp thư. Trước phép thử, challenge `active` và bộ đếm sai bằng 0.
+
+Gửi token native vào `verifyAndAcceptCreate` và `confirmStoreKeySaved`. Cả hai trả HTTP 400 `A_OTP_FORMAT_INVALID`. DB trước và sau khớp nhau. Challenge ứng dụng vẫn `active`, với 0 lần sai và 0 hàng xác minh. Tài khoản Auth thử ở trạng thái đã mời, chưa xác nhận email, và có 0 phiên Auth. Hậu kiểm theo địa chỉ thử ghi 0 tài khoản chủ, 0 operation, 0 quán và 0 thư Store Key.
+
+Dashboard hiển thị mẫu thư mặc định và danh sách Auth Hooks trống. Sau ca, `/auth/v1/settings` đọc lại `disable_signup=true`, `mailer_autoconfirm=true` và email bật. Cơ chế chặn chung thư mẫu đang tắt, thuộc rủi ro đã chấp nhận theo REQ-OWNER-16. SMTP mặc định giới hạn người nhận theo địa chỉ thành viên, nên ca dùng hộp thư chính của chủ dự án. [Giới hạn SMTP mặc định](https://supabase.com/docs/guides/auth/auth-smtp#send-emails-with-custom-smtp)
+
+| Bằng chứng local đã lọc | SHA-256 |
+| --- | --- |
+| `tc78103-staging-20261116.result.json` | `9d50ae76812e7d9fb2fb0685f66bb90e8aad2d93d27e3230eb5c1b18cbf90679` |
+| `tc78103-dashboard-20261116.result.json` | `aab77f78b62016b5bc8ea44ca294384e3e04b6effe0bd1c1001cbea1c4650703` |
+| `tc103-quota-20261116.result.txt` | `9e2e6fc22d9287461f46da69a6bdd1934699f6bc6a3e366dd1cd6f383e69f028` |
+| `tc103-quota-20261116-project.result.txt` | `509620a9659a9930313531a66a601f571747f000aa2bdb5f8e4aeaf08892fb7a` |
+| `tc103-cross-ip-20261116.result.txt` | `93296dfdb9ef98ac0b7aa55b3ce4d44be000f0501a72a5cca15262ab926a56ff` |
+| `tc78-native-20261116.result.json` | `19e201387bf51a240f68a231cb1135be6d2b69c37660eb8c9dd6fcbae49db7e5` |
+| `tc78-db-readback-20261116.result.json` | `e0b7a08f802fa9ca3ec8a5b21bc265c6300a556bc93e3db71004e680ad94ec77` |
+
+Hai reviewer độc lập trả `APPROVE` cho bằng chứng TC-OWNER-103 và bản bàn giao trước khi gửi lời mời TC-OWNER-78. Trước khi ghi verdict, SHA-256 của hồ sơ là `40fa1219de8c76a8432d1019bff63a0888b3d9d750185c6aedfc77c4add6eb84` và của kế hoạch là `d737269458ba042b80376ab945c17a0fefc667a0d2f6359b6db626e61c26829b`.
+
+Hai reviewer độc lập trả `APPROVE` cho nghiệm thu TC-OWNER-78 và cho phạm vi, bằng chứng cùng cấu hình Auth staging. Trước khi ghi verdict, SHA-256 của hồ sơ là `9e34cafa5c6f07405757ed546dc0fe5eb41afed9dab9b22b03ef5f520e978229` và của kế hoạch là `d64e9aad82f47043b4b60a6f82555de70040625f181ee992e390697c98d14054`.
 
 ### Lỗi CI lặp lại ở kiểm thử ranh giới kiến trúc
 
@@ -134,7 +197,508 @@ Ba lượt push đầu trên `e23c58f` (main), `129e3bd` (nhánh sửa Preview) 
 
 Tại mốc kết thúc kiểm thử có 17 quán thử `0005–0021` do hai vòng tạo, kèm các tài khoản Auth kỹ thuật tương ứng. `0007` và `0011` đang tạm ngưng. Quán `0004` thuộc lượt backend trước đó. Signup công khai của staging đã tắt và không cần đổi lại để dọn dữ liệu thử.
 
-**Chờ chủ dự án chốt phạm vi giữ hoặc dọn.** Tạm giữ dữ liệu để đối chiếu và chọn fixture cho R07 nếu phù hợp. Khi chốt dọn, kiểm kê theo số quán và liên kết Auth, xác nhận dữ liệu phụ thuộc và sao lưu, rồi trình danh sách giữ/dọn cho chủ dự án duyệt. Sau khi thực hiện, đối chiếu số quán, tài khoản kỹ thuật và phiên còn lại với phạm vi đã duyệt. Phạm vi này cần quyết định riêng với đợt dọn `0001–0003` ngày 11/11.
+**Chờ chủ dự án chốt phạm vi giữ hoặc dọn.** Giữ nhóm TC-OWNER-104 và hai quán R07 `0022–0023` cùng dữ liệu kiểm. Quán `0004` tiếp tục theo dõi riêng. Khi chốt dọn, kiểm kê theo số quán và liên kết Auth, xác nhận dữ liệu phụ thuộc và sao lưu, rồi trình danh sách giữ/dọn cho chủ dự án duyệt. Sau khi thực hiện, đối chiếu số quán, tài khoản kỹ thuật và phiên còn lại với phạm vi đã duyệt. Phạm vi này cần quyết định riêng với đợt dọn `0001–0003` ngày 11/11.
+
+<a id="r07-hosted-2026-11-15"></a>
+
+## R07 trên staging ngày 15/11/2026
+
+Nguồn ứng dụng và Edge private là `main@610f198d96765b01f3e0058bd793ccf5164a44a2`. [Protected Preview](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/43183338389/attempts/1) dùng staging `ineckiashpwloncxnbqx`. Dashboard ghi nhận `menu-image-gateway` tăng từ 5 lên 6 deployments. SHA-256 của `index.ts` đọc lại sau chuẩn hóa LF là `6309ede960b1713a755cea8623cfe88e7e8f33a0550334403dd6ea9c034fe825`, khớp nguồn với bố cục import của Dashboard. JWT verification vẫn bật. `menu-image-public` giữ bản ngày 23/10 và JWT verification tắt. Hai endpoint kiểm nhanh trả 401 khi thiếu xác thực ở cổng private và 404 `no-store` cho ảnh công khai không tồn tại. [Mã ánh xạ lỗi gateway](https://github.com/nguyentronglinh045/pos-cafe/blob/610f198d96765b01f3e0058bd793ccf5164a44a2/supabase/functions/menu-image-gateway/index.ts#L33-L39)
+
+Chủ dự án duyệt hai quán mới trên staging. Hai thư OTP tới Hộp thư đến Gmail trường, mỗi alias một lượt phát. Đối chiếu người nhận từng thư rồi nhập mã vào đúng tab. Alias `+r07a261115` tạo A `0023` và alias `+r07b261115` tạo B `0022`. Mỗi quán có một operation tạo `created`, một thư OTP và một thư Store Key `submitted`. Đã ghép hai phiên Auth kỹ thuật và mở hai phiên PIN chủ. Kiểm lại `disable_signup=true`. Phép kiểm hộp thư này thuộc hai fixture R07.
+
+| Phạm vi | Kết quả đã quan sát |
+| --- | --- |
+| TC-OWNER-95 · actor và dữ liệu | Mỗi quán có một đơn mở, một đơn thanh toán tiền mặt thử, một payment, ba write operation và một print grant. Giữ cùng JWT và token nhân viên qua suspend. RPC phiên thiết bị trả đúng `storeId`, `storeNo`, `status` của từng quán. Các phép gọi đại diện về menu, floor, đơn mở, đơn đã thanh toán, lịch sử, roster, mở phiên với PIN đúng định dạng, seed, đăng ký và tra operation, hai overload execute, cancel và in đều bị chặn ở A. B đọc được menu. Bảng `orders` thô vẫn đóng và client A gọi đổi trạng thái nhận HTTP 403 / `42501`. |
+| TC-OWNER-95 · khóa, hậu kiểm và audit | PostgreSQL 16.15 cô lập đạt cả hai thứ tự tranh khóa trên bước bắt đầu upload và phép rollback trạng thái/audit. Trên staging, SQL đối chiếu không đổi số đơn, thanh toán, operation, replay, print grant, registry và object ảnh qua các lệnh bị từ chối. A chuyển `active → suspended` lúc 10:51:18.366031 và trở lại `active` lúc 10:52:22.743685, UTC+7. Audit có đúng hai hàng, gồm thời điểm DB, trạng thái trước/sau và tham chiếu operator. Lặp lại `suspended` không thêm audit. |
+| TC-OWNER-111 · ảnh | Khi active, GET ảnh công bố trả 200 đúng hash byte với `Cache-Control: private, max-age=60, must-revalidate` và revalidate trả 304. Gateway private trả 404 khi B đọc handle của A. Khi A suspended, upload, GET staging và discard trả HTTP 403 `STORE_SUSPENDED` với `no-store`. Các RPC ảnh của A bị chặn, gồm `mark_ready` với registry ở `uploading`. GET mới và GET với ETag của ảnh A trả 404 `no-store`, cùng hash body với ảnh thiếu và không có ETag. B vẫn đọc ảnh. Khi mở lại A, cùng phiên đọc được menu và cả hai ảnh public trả 200. |
+| TC-OWNER-111 · tín hiệu và catalog DB | Trước suspend, hai quán nhận tín hiệu theo quán. Trong lúc A suspended, SELECT tín hiệu của A trả 0 hàng, B trả 3 và nhận sự kiện menu. Catalog staging xác nhận RLS theo quán và trạng thái active, hai bảng `store_change_signals` và `permission_catalog_signals` trong publication với cờ INSERT/UPDATE bật và DELETE/TRUNCATE tắt. Bucket staging private, bucket ảnh đời cũ public. |
+| Lượt bổ sung | Ghép lại hai thiết bị từ Store Key trong Gmail. Một upsert có mã đối chiếu riêng được giao tới subscription của A khi active. Caller chỉ có publishable key, gửi đúng header phiên bản hợp đồng, gọi RPC phiên quán nhận HTTP 401 / `42501` và không nhận trường quán. Phép kiểm local dùng mã handler ảnh public với RPC/Storage giả lập ghi 0 lượt tải khi lookup trả rỗng cho GET mới và conditional; đối chứng active ghi 2 lượt tải. |
+
+Runner hosted ghi **89/89 phép đã thực hiện** và hai bản tham chiếu fixture. SHA-256 của kết quả hosted là `45284cdf8c02e3096b9cb405bd99c67014c3fbc396811d5aad93f30988b0224b`; hash của log ghép lại và upsert active là `07dadaf9ded941ed225a4cd88beae8ba239ca7a00f8d21647a5e4bdc794eea2a`. Sau runner hosted chính, SQL xác nhận hai quán active, mỗi quán có 0 phiên Auth và 0 phiên nhân viên còn hiệu lực. Lượt bổ sung gửi yêu cầu đăng xuất hai thiết bị và chưa đọc lại số phiên từ DB. Giữ fixture và dữ liệu thử.
+
+Hai reviewer độc lập trả `APPROVE` ngày 15/11 cho phạm vi hồ sơ. Một reviewer đối chiếu fixture, trình tự, TC-OWNER-41 và quyền operator. Reviewer còn lại đối chiếu bằng chứng và các nhánh còn mở của TC-OWNER-95/111. Bản review trước khi thêm đoạn này có SHA-256 tệp checkout `c59f847b497d108ef3b6463a54debd8163ebb1c2f33706f4cf9e43d09c35b3a3` cho hồ sơ và `754625e4431e77e0882033a04eb17004d9e9f9e7ad7e9354db05ba922eed191f` cho kế hoạch.
+
+### Kiểm bổ sung Realtime và ảnh legacy trên staging
+
+- Cùng subscription của A `0023` nhận upsert lúc active. Sau khi A suspended, operator phát một upsert có mã riêng cho mỗi quán. B `0022` nhận upsert của mình và subscription đang mở của A không nhận mã dành cho A. Chỉ hai quán thử có phiên Auth tại thời điểm phát đối chứng catalog. B nhận tín hiệu catalog thử với revision hiện hành. Subscriber `*` của B thấy INSERT của dòng tín hiệu `floor` do phép kiểm tạo riêng. SQL xác nhận đã xóa đúng dòng đó trong khi B active và subscriber không nhận DELETE. Sau kiểm, SQL xác nhận các dòng tín hiệu đối chứng catalog và `floor` đã được gỡ, cả hai quán active và 0 phiên Auth. Audit ghi suspend A lúc 11:23:04.559668 và mở lại lúc 11:25:34.329671, UTC+7. SHA-256 log runner `8b9359385a4d6db8e22648c1bdadfa5522fa74f7f2c468df6cc7996c8f1fe093`.
+- Tải một PNG thử tên `r07-0023-20261115-legacy-probe.png` (68 byte) vào bucket public `menu-item-images` bằng hộp chọn tệp của Chrome. GET trực tiếp URL Storage trả 200 và cùng SHA-256 byte ở ba mốc A active, suspended và active trở lại. Header `Cache-Control: public, max-age=3600` giữ nguyên. Kết quả xác nhận URL public đời cũ nằm ngoài cổng R07. Audit ghi suspend A lúc 11:29:22.563957 và mở lại lúc 11:29:41.717070, UTC+7. Đọc lại cả hai quán active và một object thử còn trong bucket. SHA-256 log HTTP `96e7008e0a61630502e25abe3eeceeebda7cf69344ecd16ce90cdf0fdefae10f`.
+
+Hai reviewer độc lập trả `APPROVE` cho phần bổ sung này sau khi đối chiếu trạng thái quán, biên nhận Dashboard, log Realtime, ba lượt GET legacy và phạm vi còn mở. SHA-256 tệp checkout trước khi ghi verdict là `b790e8516733d4638b6750726bc62e3ed067eaa5668e4646c896860788b1cfbc` cho hồ sơ và `e5af4e1fc0ab2e8ed85018b0fa4c956fec986d92cdce3f6317e67d638a5ecf90` cho kế hoạch.
+
+<a id="r07-hosted-2026-11-16"></a>
+
+### Các nhánh bổ sung ngày 16/11/2026
+
+- **TC-OWNER-95 · PIN hạn chế.** Chủ dự án duyệt và phát hành PIN tạm cho riêng `0023` trong công cụ loopback. Login PostgreSQL riêng vượt preflight `SET LOCAL ROLE` với membership `SET=true`, `INHERIT=false`, `ADMIN=false`. PIN đúng mở phiên `required_pin_change`. Khi active, kiểm phiên hợp lệ và menu trả `PIN_CHANGE_REQUIRED`. Khi suspended, mở phiên mới bằng PIN đúng, kiểm phiên hạn chế, hoàn tất đổi PIN và đọc menu đều trả `STORE_SUSPENDED`. Caller có JWT thiết bị nhưng thiếu token nhân viên cũng nhận `STORE_SUSPENDED`. Sau khi mở lại, cùng phiên hạn chế hợp lệ, hoàn tất đổi PIN và PIN mới mở được phiên thường. Audit ghi đúng một `owner_recovery` và một `complete_required_pin_change`, cả hai `applied` với `credential_changed=true`. Bản checkout CRLF trên Windows làm hash CSP của script HTML lệch. Lượt chạy dùng đúng byte LF của blob Git và đã khôi phục checkout sau kiểm. [Preflight của công cụ](https://github.com/nguyentronglinh045/pos-cafe/blob/610f198d96765b01f3e0058bd793ccf5164a44a2/scripts/owner-recovery-operator-core.mjs#L89-L104)
+- **TC-OWNER-95 · Seed, ACL và quyền khi mở lại.** Đặt riêng workflow của `0023` ở `in_progress` để kiểm chặn. Khi active, readiness trả `waiting`, retry trả `NOT_FOUND` vì fixture được tạo với `seed_demo=false`, và skip trả `INITIAL_SEED_NOT_READY`. Khi suspended, cả readiness, retry và skip trả `STORE_SUSPENDED`. Revision vẫn 0, không có stage phát sinh. Workflow được trả về `skipped`, cùng revision và timestamp ban đầu, và readiness sau mở lại trả `ready`. Đây là fixture trạng thái, chưa có stage seed thực chạy. GET `history_entries` bằng JWT thiết bị trả HTTP 404 / `PGRST205` lúc active, suspended và active trở lại. Catalog `public` có 0 view. Trong lượt riêng, thu hồi đúng một phiên owner thường của `0023` khi suspended. Cùng JWT và token đọc được menu trước phép thu hồi và bị từ chối khi quán active lại. Phép kiểm dùng thu hồi phiên để thay đổi quyền truy cập đang hiệu lực.
+- **TC-OWNER-111 · Byte thật trước `mark_ready`.** RPC `begin_upload` mở registry `uploading`; Chrome tải đúng PNG 68 byte vào khóa object của upload handle trong bucket private. SQL xác nhận object có byte và registry chưa có `ready_at` trước suspend. Khi `0023` suspended, `mark_ready` và `apply_menu_changes` cùng trả `STORE_SUSPENDED`. Registry vẫn `uploading`, `ready_at` rỗng, byte và ETag giữ nguyên, 0 asset công bố cho handle. Sau mở lại, quyền owner cho phép discard registry. Object 68 byte còn trong bucket private cùng hồ sơ thử. URL Storage legacy vẫn trả 200 cùng hash lúc active và suspended. Phép đo I/O không tải Storage khi lookup từ chối dùng handler local với Storage giả lập. Lane staging kiểm HTTP và byte ảnh qua gateway/Storage thật. [TC-OWNER-95/111](../../../openspec/changes/add-owner-account-and-store-provisioning/testplan.md#6-bổ-sung-cho-giai-đoạn-1)
+- **Hậu kiểm.** `0022` active trong mọi lượt, cả hai quán active sau kiểm, 0 phiên Auth và 0 phiên nhân viên còn hiệu lực. Audit DB ghi 10 chuyển trạng thái cho 5 cặp suspend/resume của `0023`. Chủ quán `0023` không còn yêu cầu đổi PIN, revision là 2. Đã khóa công cụ, đóng listener loopback, thu hồi membership recovery và đặt login operator thử về `NOLOGIN`.
+
+Lượt đầu gọi hoàn tất đổi PIN thừa hai trường nên nhận `INVALID_EMPLOYEE_REQUEST`. Lượt có payload đúng trả `STORE_SUSPENDED`. Lượt HEAD view trả 204 chưa đủ để kết luận; lượt GET và catalog cung cấp bằng chứng. Runner tái dùng nhãn kiểm đọc menu sau mở lại cho đối chứng thu hồi, nên log chính ghi lượt âm ở nhãn đó. Tệp đối chứng lưu riêng cả lượt dương và lượt âm.
+
+| Bằng chứng local đã lọc | SHA-256 |
+| --- | --- |
+| `r07-remaining-20261116-corrected.result.json` | `6407721d206d17f555cdee3588faae1005c8ffecf9030c1507d9a630f9886ee1` |
+| `r07-view-20261116.result.json` | `89e95bf277544a3fbd3e8035e14d88e7a4fd262d529a5107189e7d09b2351697` |
+| `r07-dashboard-20261116.result.json` | `3a7114c0158384fa48ffcd19110893b8d1a170ee45f818560993da3c9c7c111a` |
+| `r07-current-session-20261116.result.json` | `725b104ea764f2614c61a7651c0401a62fbb41b83bc5844512e779b9689b7847` |
+
+Hai reviewer độc lập trả `APPROVE` cho bản cuối ngày 16/11. Phạm vi thứ nhất là TC-OWNER-95, cleanup và các mục kế hoạch tương ứng. Phạm vi thứ hai là TC-OWNER-111, ranh giới phép đo I/O và ảnh, cùng kế hoạch. Trước khi ghi verdict, SHA-256 của hồ sơ là `1602c6188e41874c4a737a586744d6fdd1c9458d8a1612b1f89eb63646f0f57b` và của kế hoạch là `84c2afd19766912e790d83bb0f2143bf774a30548d1a6e5e52a690f20781bea7`.
+
+<a id="t06-evidence-audit-2026-11-16"></a>
+
+## Rà soát bằng chứng T06 ngày 16/11/2026
+
+Phạm vi là giai đoạn 1, các nhóm 9.1–9.6. Protected Preview vẫn dùng `610f198`, kết nối Supabase staging `ineckiashpwloncxnbqx` với `owner-provisioning` v2 và signup công khai đã tắt. Các phép thử dùng alias Gmail trường và quán thử. [Checklist T06](../../../openspec/changes/add-owner-account-and-store-provisioning/tasks.md#9-kiểm-thử-giai-đoạn-1) · [Cách chạy và lane của từng ca](../../../openspec/changes/add-owner-account-and-store-provisioning/testplan.md#cách-chạy)
+
+| Phạm vi | Bằng chứng bổ sung |
+| --- | --- |
+| TC-OWNER-01 và TC-OWNER-104 / FE-01 | Edge Logs ghi `POST owner-provisioning` HTTP 202 lúc 11:00:22 UTC+7. Preview hiện thông báo chung và khóa nút Gửi lại. Hạn DB là 11:10:22.665. Lần quan sát ngay trước hạn còn khóa, lần bấm sau hạn phát mã mới lúc 11:10:36.262 và khóa lại nút. Hai receipt cùng intent, hai challenge, mã đầu `superseded`, hai thư `submitted`, 0 operation và 0 tài khoản chủ. Gmail có hai thư đúng alias lúc 11:00 và 11:10, đều lọc được trong Hộp thư đến và hai mã khác nhau. Đây là lượt lặp trên alias mới sau khi tắt signup. Hồ sơ lượt lịch sử ngày 13/11 vẫn chỉ có biên nhận SMTP cho thư Gửi lại. |
+| TC-OWNER-02, 03(a), 03(e) và 10 bước đóng | Quán `0029` tạo qua Preview với dữ liệu mẫu. Trước khi ghép, DB ghi operation `created`, workflow `completed`, 2 nhóm món, 6 món, 4 bàn, 1 audit tạo quán và 1 audit seed nhân viên với tác nhân `system` gắn operation. Có 0 phiên Auth và 0 phiên nhân viên tại mốc đó, một OTP và một Store Key `submitted`. Nút **Tôi đã lưu Store Key** ghi thời điểm đóng và đưa tới màn ghép với ô Store Key trống. Lời gọi nội bộ seed từ client bị từ chối (xem TC-OWNER-27). |
+| TC-OWNER-13/14/15 (một biến thể mỗi ca) và 45 | Dùng signer staging hiện có cho hai alias riêng, không đổi cấu hình OTP. Request ID quá 30 phút trả HTTP 400 `A_REQUEST_ID_STALE`; dùng lại ID với intent khác trả 409 `A_REQUEST_ID_REUSED`; dùng lại intent với email khác trả 409 `CREATE_INTENT_ID_REUSED`. TC-OWNER-45(c) dùng hai request đồng thời cùng request ID, cùng email. Cả hai trả 202, cùng receipt và mốc 600 giây; DB có đúng một receipt, một challenge và một thư OTP cho alias đó. Ở (b), hai intent độc lập có OTP thật cùng dùng một attempt ID mới. Một lượt trả `created` cho quán `0031`; lượt kia trả 409 `A_ATTEMPT_ID_REUSED`, không key. Challenge bên thua vẫn active, đếm sai 0, không operation hay quán. Có bằng chứng hai lời gọi chồng thời gian từ client. Nhánh (a) đã có trong TC-OWNER-103. |
+| TC-OWNER-27 và TC-OWNER-43, phần ACL | Staging từ chối cả 5 RPC: cấp số, bootstrap, claim Auth, commit quán và chạy seed. Client chưa đăng nhập nhận 401; JWT thiết bị `0022` và JWT thiết bị kèm phiên PIN owner của `0029` nhận 403; cả ba dùng SQLSTATE `42501`. Lời gọi claim/commit đặc quyền với operation không tồn tại ở PostgreSQL loopback riêng trả `CREATE_PROOF_REQUIRED`. REST từ chối đọc cột bản mã Store Key; catalog xác nhận có bản mã, role `authenticated` thiếu quyền chọn cột, sửa `owner_account_id`/`status` và đọc OTP private. |
+| TC-OWNER-38, 106 và 109, phần tra trạng thái | API thật trả `unconfirmed` cho attempt UUIDv7 mới chưa ghi, `not_accepted` cho ID 35 phút chưa ghi và ID đã bị từ chối. Attempt gốc `0029` và attempt liên kết chỉ tra của `0028` trả `created`. Intent ID, challenge ID, operation ID và ID sai dạng bị từ chối với 400 `A_REQUEST_INVALID`. Với request hợp lệ, JSON chỉ có trường `status`, header `Cache-Control: no-store` và hai lần gọi trả cùng kết quả. |
+| TC-OWNER-40 | Quán `0029` cung cấp mẫu Auth Logs trực tiếp. Cửa sổ 10:55:10–10:55:39 UTC+7 có `POST /admin/users` HTTP 200 lúc 10:55:18, cùng mốc Admin dispatch tạo user đã xác nhận. Không thấy route Auth native signup, invite, OTP, recovery hoặc magic link trong cửa sổ đó. Bằng chứng hai vòng lịch sử tiếp tục là đường gọi Admin API và dấu dispatch; mẫu ngày 16/11 bổ sung log trực tiếp cho một lượt mới. |
+| TC-OWNER-93 và 94 | JWT `0022` và `0023` đọc được tín hiệu quán mình (3 và 4 dòng), hai chiều đọc chéo cùng trả 200 với 0 dòng. REST đọc trực tiếp `orders` từ `0022` sang `0023` trả 403. Hai quán `0029` và `0030` active, có cùng `owner_account_id`; đối chiếu khóa từ Gmail và Preview xác nhận hai Store Key khác nhau. Schema không có chỉ mục duy nhất chỉ trên `owner_account_id`. |
+
+Đối chứng **SMTP local** với đúng lớp gửi thư đạt 5/5. Phản hồi 450 ở RCPT và 550 sau DATA là `rejected`; ngắt trước DATA là `failed_before_submit`; ngắt sau DATA là `unknown`; 250 sau DATA là `submitted`. Mỗi ca gọi transport một lần. Kết quả này bao phủ phân loại phản hồi, còn TC-OWNER-107 sử dụng cả giao dịch DB và điểm dừng khi worker gửi thư.
+
+**Mục còn thiếu bằng chứng.**
+
+- TC-OWNER-43 đã rà log nguồn, dump staging và việc dọn dữ liệu tạm. TC-OWNER-92 đạt nhánh khóa chủ quán bằng phiên quản lý trên staging. Bước xóa chưa có RPC. [Chi tiết](#tc43-92-2026-11-16)
+- Với TC-OWNER-13/14/15, checkpoint này chưa đo đồng bộ `serverNow` và gửi lại sau lỗi, cùng request ID đổi email, hoặc cùng intent đổi PIN.
+- Các nhánh cố ý gây lỗi, điều khiển đồng hồ hoặc khóa DB vẫn theo lane trong testplan. Cần đối chiếu từng nhánh với bằng chứng local: TC-OWNER-03(b–d)/09 về giao dịch seed, TC-OWNER-105 về giữ suất khi Auth trả muộn, TC-OWNER-106 về độ lệch đồng hồ/mất phản hồi/cleanup, TC-OWNER-107 về vòng đời thư, TC-OWNER-108 về tranh khóa và đếm sai, TC-OWNER-109 về mất phản hồi/F5/giới hạn liên kết và TC-OWNER-110 về commit/thu hồi/giao key sau hạn. Những lượt staging trên chỉ bổ sung các bước đã liệt kê. Kết quả đối chiếu và kiểm local sau checkpoint này nằm ở [checklist 9.1–9.6](#t06-checklist-9-2026-11-16).
+- Preview còn hiển thị **Giao diện tạm · Chỉ dùng dữ liệu giả** lúc tạo/xác minh và **Giao diện tạm · Dữ liệu mock** sau khi quán thật đã commit trên staging. Lượt này ghi nhận lỗi nhãn, giữ bản đang kiểm.
+- Giữ các quán thử mới `0029–0031` và receipt của các alias để đối chiếu. Runner ACL đã thu hồi các phiên do nó mở; truy vấn sau lượt của `0029` ghi 0 phiên Auth và 0 phiên nhân viên còn hiệu lực. Hai listener loopback của checkpoint đã tắt.
+
+| Bằng chứng local đã lọc trong `D:/Workspace/pos-cafe-t06-pg16-runtime` | SHA-256 |
+| --- | --- |
+| `t06-preview-auth-gmail-20261116.result.json` | `587de2d051240ad9bd8620f4f97fc1fcfd3fef17fe19be87a4cd912328ee27b2` |
+| `t06-audit-staging-20261116.result.json` | `961464bda5abdccadd4f2d42a06665ce2a8572d00ed8f1d90d7d284d373f77aa` |
+| `t06-concurrent-20261116.result.json` | `102cd62f21de13153ec860ac13ff821094e113ce19db1fc084ad11baadf0e846` |
+| `t06-concurrent-readback-20261116.result.json` | `2e7e31547bcff264c80f53aa2933d60ca50a8f73efb29708a52a9cf7cde35a83` |
+| `t06-local-proof-audit-20261116.txt` | `3f48faf525d774fb3eb8103e356aabe210a06fb4e9482957e4d51da16a275c38` |
+| `t06-smtp-audit-20261116.result.txt` | `4b5498deb7d10cf71d8e13f9967fdfb5469f608f5d120b19415759078c41c8ff` |
+| `t06-pairing-20261116.jpg` | `1fe13d6069f60c02e15333a22bc51b54a53d821b162bea823d64efa5fa6ca026` |
+
+Hai reviewer độc lập trả `APPROVE` cho bằng chứng hosted và cho phạm vi testplan cùng các ca còn mở. SHA-256 theo byte checkout trước khi ghi verdict là `dd36c56b29e6f3cf5258356d7b203615cae6dce2804f17c3181be080b2f81d7e` cho hồ sơ và `57db793e2255ff87472f22230ad309886269b229697393ee6cb6fc02b613e190` cho kế hoạch. `git diff --check` và OpenSpec strict đạt.
+
+<a id="tc43-92-2026-11-16"></a>
+
+### TC-OWNER-43 và TC-OWNER-92 trên staging ngày 16/11/2026
+
+**TC-OWNER-43 · Log nguồn và dữ liệu tạm.** Trên Supabase staging `ineckiashpwloncxnbqx`, Logs Explorer quét `event_message` và `log_attributes` theo cả biểu diễn JSON và giá trị của từng thuộc tính. Ba cửa sổ UTC+7 là 09:38:20–09:38:48 (xung đột Auth TC-OWNER-41), 10:52–11:17 (tạo, gửi lại, xác minh), và 14:58:50–15:00:25 (phiên quản lý TC-OWNER-92). Kết quả gồm 483 sự kiện: 20 Auth, 260 Gateway, 69 lượt gọi Edge, 53 sự kiện runtime Edge và 81 Postgres. PostgREST không có sự kiện trong cửa sổ đã chọn. Bộ lọc không gặp mẫu Store Key, PIN/OTP có trường nhận diện, bí mật thô có tên trường hoặc token nhân viên/Authorization. Bảy mẫu giả đối chứng đều được nhận diện, gồm cả trường `code` và `p_owner_pin` của hợp đồng thực tế. Có đúng một log `owner_provisioning.auth_email_collision` trong lần đối chứng. File bằng chứng lưu số lượng, truy vấn và đối chứng giả. [Nguồn và trường log Supabase](https://supabase.com/docs/guides/observability/log-field-reference)
+
+SQL chỉ đọc lúc 15:07:37 UTC+7 ghi 26 operation kết thúc, không còn bản băm PIN chủ tạm hoặc bản mã Store Key tạm. Cả 69 bản ghi thư kết thúc đều rỗng ở cột bản mã OTP và phiên bản mã hóa. 30 challenge đã đến mốc loại dữ liệu đều có thời điểm làm sạch và đã bỏ IP, digest. Không có receipt gửi mã hay kết quả xác minh bị từ chối quá thời hạn lưu thêm 2 phút chờ worker.
+
+**TC-OWNER-43 · Dump.** `pg_dump` đọc đủ 10 bảng staging sau cutover và thoát mã 0 lúc 15:12:45 UTC+7. Runner kiểm các dòng `COPY` trong bộ nhớ, dùng TLS `verify-full` và giữ biên nhận đã lọc. Runner không nạp khóa giải mã. Kết quả ghi 26/26 Store Key dạng bản mã có phiên bản, 30/30 PIN nhân viên dạng bcrypt, 13 OTP còn digest 32 byte, 30 OTP đã bỏ digest/IP. Không thấy mẫu Store Key thô, giá trị Store Key hoặc phần bí mật đã biết của `0004`, hay trường bằng PIN thử của `0004`. 26 operation và 69 dòng thư đã kết thúc đều rỗng ở các cột bí mật tạm. SQL xác nhận 26 tài khoản thiết bị gắn quán có bcrypt. Hai dòng Auth bộ lọc đánh dấu là tài khoản đối chứng TC-OWNER-41 cho số `0024` và `0026`, có mật khẩu rỗng, đang bị chặn đăng nhập và không gắn quán. Trích xuất JSON đủ cột cho quán `0004` và `0029` cũng xác nhận các dạng lưu trữ và không gặp mẫu thông tin thô trên 18 dòng. Phạm vi đạt là ACL đã kiểm, ba cửa sổ log, mười bảng dump và trạng thái dọn dữ liệu tạm ở thời điểm lấy mẫu. [Tài liệu pg_dump](https://www.postgresql.org/docs/current/app-pgdump.html)
+
+**TC-OWNER-92 · Khóa đạt.** Trên quán thử `0004`, tài khoản quản lý thử mở phiên PIN `normal` có quyền `employee.manage`. Gọi `permission_admin_update` với `patch.isActive=false` và revision hiện hành của chủ quán. HTTP 200 mang lỗi nghiệp vụ `OWNER_PROTECTED`; audit cùng request ghi `denied`, `credentialChanged=false`. Trước và sau vẫn là đúng một chủ quán active, cùng danh tính và revision 0. Lượt đầu của runner đọc nhầm tên trường revision nên trả `INVALID_EMPLOYEE_REQUEST`. Lượt đã sửa dùng `permissionRevision`; cả hai nhân viên quản lý thử đã được khóa và SQL xác nhận 0 phiên Auth, 0 phiên nhân viên hiệu lực. Catalog công khai và mã RPC admin không có RPC xóa nhân viên. **Bước xóa trong testplan chưa chạy vì chưa có RPC.**
+
+| Bằng chứng local đã lọc trong `D:/Workspace/pos-cafe-t06-pg16-runtime` | SHA-256 |
+| --- | --- |
+| `tc43-logs-20261116.result.json` | `5656e7abd02ff8d96907199a8b8f09c5ccddb12d3c47b64ebf7365ec507556d0` |
+| `tc43-dump-dialog-20261116.result.json` | `2e15129c0a07e3328f9b96cfef30c7a3b0c0dbc88368f775029692bc81434532` |
+| `tc43-auth-shapes-20261116.result.json` | `080aad6d7f38c8d6fa8640ef36d93969814301bfa44ef3611ee823ac37a67cd5` |
+| `tc43-fixture-export-20261116.result.json` | `b44538fac21366575521894b9fb01a47f4aefccd46ec11209108b42934d8f97b` |
+| `tc43-tc92-sql-20261116.result.json` | `9aa66f519c9007bdf2e30124162bce9b2ca2575a2e6fc98b42f96435b2d708e4` |
+| `tc92-corrected-20261116.result.json` | `77adad1dddc587e96e29b76e8754ec48e283e746d5fdb9e77644b4800069f16c` |
+
+Hai reviewer độc lập trả `APPROVE` cho TC-OWNER-43 và TC-OWNER-92. SHA-256 của bản trước khi ghi verdict là `b6945840eea0eb516ffb7cd74b78f63be3140b7825d5d746b0123669ec78e7f3` cho hồ sơ và `8afedb58adf860f50ea7f4242437297b9efef835dc1369ff4d6f73a51d6c1175` cho kế hoạch. `git diff --check` và OpenSpec strict đạt.
+
+<a id="t06-checklist-9-2026-11-16"></a>
+
+## Đối chiếu checklist 9.1–9.6 ngày 16/11/2026
+
+Checkpoint dùng code `610f198d96765b01f3e0058bd793ccf5164a44a2` và đúng một dòng cảnh báo TC-OWNER-41 đã duyệt trên `handler.ts` (SHA-256 `6e4c3d6b86a129d6ce8c998791b7cc4a34c1b26ea7c548a927c3d2a6390c53f8`). PostgreSQL 16.15 chỉ lắng nghe loopback `127.0.0.1:55467`. Setup từ migrations và candidate T06 trong hai database thử `pos_cafe_t06_contract_checklist1611` và `pos_cafe_t06_contract_checklist1611r2` của cùng runtime. Probe HTTP gọi handler Edge thật với Auth/SMTP giả. Ca đồng thời dùng nhiều kết nối Postgres và quan sát `pg_blocking_pids` hoặc `pg_stat_activity` trước khi nhả khóa. Ca giờ chính xác thay riêng biểu thức đọc giờ trong hàm SQL trên DB thử, chạy phần logic còn lại nguyên bản. Hậu kiểm xác nhận đã gỡ đồng hồ thử và dừng PostgreSQL. Bằng chứng staging dưới đây đến từ các lượt đã ghi trước checkpoint. [Checklist giai đoạn 1](../../../openspec/changes/add-owner-account-and-store-provisioning/tasks.md#9-kiểm-thử-giai-đoạn-1)
+
+| Mục | Đối chiếu bằng chứng theo ca | Trạng thái |
+| --- | --- | --- |
+| 9.1 · TC-OWNER-01…10 | **01/02/07** dùng bằng chứng gửi, xác minh, tạo quán, Store Key và hạn mức ở hai vòng TC-104 cùng mock hiện hành. **03** staging xác nhận seed khi chưa có phiên; DB thử kiểm phục hồi khi mất kích hoạt, hai worker tranh khóa (một bộ seed, một audit), owner/cashier thấy `waiting` rồi `ready`, đường đọc và ghi bị chặn trước seed, bỏ chọn mẫu tạo quán trống. **04/05** mock kiểm replay trước/sau cooldown và nhận lại cùng key theo đúng bằng chứng. **06** hai tab nhận phản hồi theo thứ tự đảo, tab bị giới hạn nhận biên nhận chung nhưng OTP của A không xác minh được cho B; F5 làm rỗng form và tab A hoàn tất. **08** DB ghi rõ `accepted` trước hạn và `unknown` sau hạn ở cả hai điểm dừng, không tăng Auth/thư/operation; Playwright kiểm F5 chỉ tra ID. **09** ép lỗi sau bước tạo nhân viên mẫu, rollback cả bộ lẫn audit; kiểm thử retry lỗi/rồi thành công, PIN session hết hạn, cashier không đủ vai trò, chặn khi chưa rõ, skip sau rollback và retry/skip tranh cả hai thứ tự. **10** kiểm chín tổ hợp xác nhận đã đóng, hai lần verify trả trạng thái, các bộ đếm không đổi. | Ngày 16/11 còn thiếu UI hai máy và nhánh bỏ phản hồi đã commit. Đã bổ sung ngày 17/11. [Bằng chứng TC-09](#tc09-local-2026-11-17) |
+| 9.2 · TC-OWNER-11…30 | **11/12/17…23** mock và DB đối chiếu hình dạng request, mã thiếu/hỏng/sai/hết hạn, khóa lần sai thứ năm, replay và ràng buộc intent. **13–15** Playwright máy lệch hai giờ tự sửa ID đúng một lần; Vitest kiểm đổi email/intent/PIN. **16** giả lỗi RPC trước ghi, thử lại cùng ID được 202. **24** xác minh đúng khi đủ suất bị từ chối, OTP giữ active. **25** ép rollback sau so mã sai và đúng; Edge trả cùng HTTP 503 `CREATE_VERIFY_UNAVAILABLE`, 0 bộ đếm/operation, ID mới vẫn `unconfirmed`. **26** hai lần xác nhận sai trả `CONFIRM_REJECTED`, bộ đếm giao key lên 2 còn OTP không đổi. **27** kết hợp ACL staging và đối chứng DB thử thiếu proof. **28** Chromium từ chối ghi storage, xác minh đúng một lần, F5 form trống. **29(d)** ba xung đột Auth xác định hoàn đúng một suất; **29(a)** đạt sau sửa guard và kiểm RPC trên staging. **29(b,c), 30** xem sai khác bên dưới. | Đã có bằng chứng theo testplan. [Hồi quy TC-29(b,c)/30](#tc29bc-30-local-2026-11-16) |
+| 9.3 · TC-OWNER-31…36 | **31/32** giờ DB thử: 599 giây tạo quán, đúng 600 giây OTP hết hạn; OTP đã dùng ở phút 3 vẫn giữ cooldown đến giây 600. Vitest kiểm email lần 11 trả biên nhận chung, không phát thêm. **33** 4 quán + 1 suất giữ và 5 quán + 0 suất cho cùng kết quả giới hạn ở hai phía commit thật; hoàn suất chắc chắn rồi attempt mới commit thành quán thứ năm. **34** ID xác minh gốc vẫn đọc trạng thái lúc 10:31:30, ID gửi lặp còn hiệu lực lúc 11:20, tới 11:35 sau cleanup trả `A_REQUEST_ID_STALE`; không sinh thư hoặc lượt mới. **35** Vitest kiểm các biên độ dài và hình dạng đầu vào. **36** DB với giờ có kiểm soát ghi accepted lúc 10:09:58, commit lúc 10:10:05, gửi lại bằng chứng gốc lúc 10:10:10 chỉ nhận `created` và DB có một thư Store Key; các nhánh giao key qua Edge nằm ở TC-110. | Đạt theo môi trường của từng ca. |
+| 9.4 · TC-OWNER-37…48, 78, 80–82, 91–95, 101 | **37–39** kiểm replay với PIN khác, PIN dùng làm OTP, Store Key/JWT sai định dạng, ID chỉ được tra trạng thái và RPC cấp quán đòi proof. **40/41/43/45/78/93–95** dùng evidence staging đã ghi và lane DB nơi testplan yêu cầu. **42/46** thử thẻ hết hạn, tra/gửi lại chỉ đọc khi đang tạo hoặc quá hạn. **44(a,b,d)** worker đọc hàng đợi riêng, chỉ một claim/quyền gửi, thư `unknown` không gửi lại; **44(c)** đã đạt trên DB cô lập và staging. [Edge Logs và hồi quy](#tc44c-staging-2026-11-17) **47(a,c)** hai operation lấy số khác nhau, số giữ cho operation gốc ổn định; Auth marker/UUID sai không ghi quán. **47(b)** đạt sau sửa guard và kiểm RPC trên staging. **47(d)** đạt khi gọi lại sau commit và đối chiếu DB. **48** attempt gốc và attempt mới cùng intent thất bại chỉ trả `failed`. **80/81** dùng thử giới hạn IP/dự án của TC-103 và giới hạn quán cả khi suspended của TC-104; giới hạn 3/15 phút có trong code và thư Store Key là outbox riêng. Các loại OTP hoặc thư đổi/cấp lại key thuộc giai đoạn 2. **82** sai PIN/xác minh đóng cửa ở lần sai thứ năm, bộ đếm OTP giữ nguyên. **91/101** mock Chromium kiểm OTP không ghép thiết bị, storage chỉ giữ ID tra, F5/điều hướng theo trạng thái; nhánh thư lỗi kết hợp mock SMTP và UI status-only. **92** đạt bước khóa trên staging và các phép kiểm DELETE/ràng buộc chủ quán trên DB cô lập. | Đã có bằng chứng theo testplan. [TC-47(d) và TC-92](#tc47d-92-local-2026-11-17) |
+| 9.5 · Staging | Dùng hai vòng TC-104, TC-27/43/45/78/92 khóa/93–95 và 111 đã chạy. Tạo quán tới ghép tay, PIN và hộp thư đã có dấu vết. FE-01 Gửi lại của vòng lịch sử giữ bằng chứng SMTP; lần kiểm lại sau tắt signup đã nhận hai thư ở Hộp thư đến. | Chờ phạm vi giữ/dọn fixture staging do chủ dự án xác nhận.  |
+| 9.6 · TC-OWNER-103…111 | **103/104/111** dùng hồ sơ staging và lane local đã có. **105** kiểm 4+1 trước/sau chuyển suất sang quán, Auth trả muộn hoặc mất phản hồi, không ghi bằng thẻ hết hạn, giữ suất sau khi đã claim nhưng chưa gọi Auth, kể cả sau hơn một giờ. DB vẫn lưu `accepted`, trả `unknown` khi tra/gửi lại và từ chối I2 mà vẫn giữ OTP mới. Ba `no_effect` được xác nhận giải phóng đúng một suất. Nhánh tổng quát từ chối dứt điểm còn liên quan TC-29(b,c). **106** UI retry đúng ID sau lỗi và xóa ID sai dạng; DB giữ chứng cứ cho ID đến trễ, thấy verifier chờ khóa trước mốc rồi từ chối sau mốc, chỉ một marker lệch giờ, kiểm phút 91, phút 150 và 1 giây sau đó. **107** thử dừng sau commit, tranh claim, hết hạn/hủy trước và sau claim, mất tiến trình trước/sau SMTP giả, ACL và rollback khi ghi thư thất bại. **108** thử mã đúng/sai/ID cũ chờ khóa, đủ suất, tranh lần sai thứ năm, đúng ở mức 4, trước/sau nửa đêm UTC+7 và replay chéo hai phạm vi. **109** kiểm F5/tab khác chỉ đọc ID liên kết, đủ bốn trạng thái, lookup chờ link chưa commit, tranh link thứ 64, mốc ±30 phút theo DB, retention, sai OTP/đóng cửa và đổi phạm vi. **110** gốc qua hạn vẫn có thể giao key, mất phản hồi hoặc hết lease cho kết quả đúng theo phép thử, DB chờ khóa ở hai thứ tự giao/thu hồi, commit lặp chỉ đọc; mỗi quán đã commit có đúng một thư. Browser kiểm sao chép key và chuyển màn ghép với ô trống ở lane mock. | Đã có bằng chứng theo testplan. [Hồi quy TC-105(5)](#tc29bc-30-local-2026-11-16) |
+
+**Sai khác cần chốt trước khi đóng giai đoạn 1.**
+
+| Ca | Quan sát tái hiện | Việc cần quyết |
+| --- | --- | --- |
+| TC-29(a) / 47(b) | Fixture có `owner_pin_hash=NULL` vẫn nhận `accepted`, tạo một dispatch đủ để gọi Auth. Testplan yêu cầu `failed/C_PIN_NOT_PERSISTED` và hoàn suất trước Auth. | Đã sửa, kiểm PostgreSQL cô lập và áp riêng RPC trên staging. [Kết quả staging](#tc29a-47b-staging-2026-11-16) |
+| TC-29(b,c) / 105(5) | Refusal giả lập có `no_effect` nhưng không có Auth user đối chứng được lưu `unknown/C_AUTH_UNCONFIRMED`. Inject thiếu khóa vào handler khiến phản hồi `unknown`, DB giữ `accepted`, không gọi Auth. | Đã sửa, kiểm trên DB cô lập và áp riêng lên staging. [Hồi quy staging](#tc29bc-30-staging-2026-11-17) |
+| TC-30 | Auth giả đã tạo user và được ghi nhận, sau đó ép lỗi khi ghi thư trong giao dịch commit quán. Toàn bộ dữ liệu quán rollback. Lời gọi gốc trả `unknown`, tra trong lease vẫn trả `accepted`, sau lease trả `unknown` và giữ suất. | Tra trong hạn trả `unknown` sau rollback đã xác nhận. Đã kiểm lại RPC trên staging. [Hồi quy staging](#tc29bc-30-staging-2026-11-17) |
+| TC-44(c) | Thư Store Key hết claim chuyển `unknown`, không gọi SMTP lại, quán vẫn `created`. Quan sát 0 cảnh báo console trong hai lượt worker. | Đã sửa và xác nhận một cảnh báo trên staging. [Edge Logs và hồi quy TC-44(c)](#tc44c-staging-2026-11-17) |
+| TC-47(d) | Retry RPC commit sau khi đã ghi trả JSON chỉ có `status: created`. UUID và số đã lưu được kiểm trong DB, một quán và một thư. | Chủ dự án chốt giữ phản hồi `created` và đối soát tại DB. Đã chạy lại. [Bằng chứng](#tc47d-92-local-2026-11-17) |
+| TC-92 | Bước khóa chủ qua quản lý đã đạt trên staging. Giai đoạn 1 chưa có RPC xóa nhân viên. | Chủ dự án chốt kiểm quyền `DELETE` và ràng buộc đúng một chủ. Đã chạy trên DB cô lập. [Bằng chứng](#tc47d-92-local-2026-11-17) |
+| 9.5 | Fixture staging đang giữ để đối chiếu. | Chờ chủ dự án duyệt danh sách giữ/dọn riêng. |
+
+Hai lượt contract và mock hiện hành lần lượt đạt SQL rollback, Deno 4/4, Vitest 68/68 và Playwright 10/10 trên năm viewport. Playwright bổ sung đạt 9/9 ở desktop. Tổng hợp 32 probe Deno bổ sung có 28 đạt và 4 sai khác kỳ vọng, gồm TC-29(a)/47(b), TC-29(b), TC-29(c) và TC-44(c). Lượt 28 probe đầu của DB r2 có 21 đạt, 4 sai khác và 3 lỗi harness chọn nhầm schema của hàm đọc giờ. Rerun sau khi sửa harness đạt 7/7, gồm ba probe giờ đó và bốn probe bổ sung. Lượt browser ban đầu giả định hai challengeRef giống nhau khi cooldown, đã sửa assertion theo biên nhận chung và đối chứng B không thể dùng mã của A. Số probe gồm nhiều nhánh, không quy đổi thành số TC đạt trên toàn T06.
+
+| Tệp ở `D:/Workspace/pos-cafe-t06-pg16-runtime` | SHA-256 |
+| --- | --- |
+| `t06-checklist-20261116-contract.result.txt` | `4daef4c5ebd4a13051efae9284c253a1154b241761c24087ae16aae662275c82` |
+| `t06-checklist-20261116-deno.result.txt` | `ab9bb264d5f7eee383ba8a9f4b5c951310a531ab872828e501430a6457fa5db3` |
+| `t06-checklist-20261116-mock.result.txt` | `8cd6061fd949f3c6533eed8bcb1df985bafe1de1383873197ed160b97abdf66a` |
+| `t06-checklist-20261116-owner-create.result.txt` | `c8fb5353032d48b058805d4f6def02a55b6207a856dcbcb17f8eb1e391140975` |
+| `t06-checklist-20261116-browser-final.result.txt` | `01551a450a684613fbd0a2e92ffdaae0bdd1d4f71c325177f42a1001cc2b7f71` |
+| `t06-checklist-20261116-final.result.txt` | `9524dc722847cea30af373ba9515cad77db4d2ab8b0f714d959c6504ee129577` |
+| `t06-checklist-20261116-followup.result.txt` | `6edad0e9091772d5174e21871c7ecdf86dd691736212ffbbf93a7dd67287bb56` |
+| `t06-checklist-20261116-postflight.result.txt` | `e95db80086c8fd28ce88d3584b73fc472343db2acf8e1c23ace874ae5c981507` |
+| `t06-checklist-20261116.test.mjs` | `23ab3d77146db40049970d528ffeaba0ae0386e16cddf08871429694945d1c5e` |
+| `t06-checklist-browser.spec.mjs` | `4116dd1a8f1453b6698714990f10a0bca674e82c50cb817a95b2224975d30be3` |
+
+Hai reviewer độc lập trả `APPROVE` cho checklist 9.1–9.3/staging và 9.4–9.6/sai khác. SHA-256 trước khi ghi verdict là `325b18f9da208e8147f376898cc6b6493bcce6d3a438b3ba7fb603e1e02f3167` cho hồ sơ, `8b14fc15139a3015b902bb6f1d1b6a36d76a7344a86ff6520e61f7d2c61e9ee2` cho kế hoạch và `928bd2fa0dd8b61053430105927b3e9bd8ee6c2685b49accb67f3966710d11d9` cho OpenSpec checklist. `git diff --check` và OpenSpec strict đạt.
+
+<a id="tc29a-47b-pin-guard-2026-11-16"></a>
+
+### TC-OWNER-29(a)/47(b) · Chặn claim khi thiếu bản băm PIN
+
+Người dùng duyệt riêng sửa hai nhánh này và dọn DB local lượt đầu. Bản sửa ở worktree `D:/Workspace/pos-cafe-t06-local`, base `610f198`. `owner_claim_create_auth` khóa hàng operation, kiểm thẻ và hạn xử lý, rồi kiểm dispatch đã có. Với lượt còn hạn và chưa phát lệnh Auth hoặc dispatch trước đã được xác nhận `no_effect`, bản băm PIN `NULL` hoặc rỗng làm operation chuyển `failed/C_PIN_NOT_PERSISTED`. Guard ghi mốc kết thúc, xóa dữ liệu tạm và trả trạng thái trước điểm cấp số/tạo dispatch. Một dispatch còn `claimed` giữ nguyên suất. Thẻ hết hạn vẫn cho kết quả tra `unknown`.
+
+- **Trước/sau bản sửa.** Chạy cùng phép kiểm qua handler Edge và RPC trên PostgreSQL 16.15 loopback, với SMTP/Auth giả lập. Đặt hash thành `NULL` ngay trước claim. Đối chứng trên hàm cũ thất bại ở assertion kết quả `failed`. Hàm đã sửa cho lần xác minh đầu, tra trạng thái, gửi lại attempt gốc và attempt mới cùng intent đúng JSON `{"status":"failed"}`. SQL ghi mã nội bộ `C_PIN_NOT_PERSISTED`, hết trạng thái giữ suất và 0 lượt cấp số, 0 cuộc gọi Auth, 0 quán, 0 thư Store Key.
+- **Đối chứng hoàn suất và thẻ xử lý.** Một chủ thử có bốn quán, gồm một quán suspended, và một operation đang giữ suất. Intent thứ hai bị từ chối trước khi nhánh thiếu hash kết thúc. Hai lần claim sau đó giữ nguyên thời điểm thất bại, không cấp số. Sau khi hoàn suất, attempt mới của intent thứ hai được chấp nhận. Bản băm rỗng có cùng xử lý. Dispatch `claimed` chưa rõ tác dụng vẫn giữ suất. Khi xác nhận dispatch đó `no_effect`, lỗi thiếu hash kết thúc operation mà không giữ số mới, và giữ bản ghi số cũ để đối chiếu. Trường hợp lease hết hạn không cấp số và trả `unknown`.
+- **Hồi quy và phạm vi.** Chạy Deno 4/4, gồm bước TC-OWNER-29(a)/47(b) nằm trong ca tích hợp, và toàn bộ `ownerProvisioning.local.sql` đạt. Thử `CREATE OR REPLACE` đúng một RPC trên DB loopback `pos_cafe_t06_contract_postgrest`; đã trả lại hàm, sequence và số hàng fixture ban đầu. Đây là bản sửa local. Các quyết định TC-29(b,c), TC-30, TC-44(c), TC-47(d), TC-92 và dọn staging tiếp tục theo bảng trên.
+- **Dọn đúng DB lượt đầu.** PostgreSQL xác nhận `pos_cafe_t06_contract_checklist1611` là OID `54713`, không còn client. Sau `DROP DATABASE`, thư mục `data/base/54713` biến mất, DB lượt cuối `pos_cafe_t06_contract_checklist1611r2` vẫn có OID `56627`, và 13 log checklist giữ đúng SHA-256. Lượt đầu có kích thước logic 13.435.407 byte ngay trước khi dọn. Ổ D tăng 13.561.856 byte trống theo hai lần đo quanh lệnh drop. PostgreSQL local đã dừng.
+
+| Tệp bằng chứng hoặc nguồn | SHA-256 |
+| --- | --- |
+| `tc29a-47b-20261116.result.txt` | `c4d6454e2b3ac99ba51e0f6b11bef49e795ddc14375f3dfd1e9123d81c8325ca` |
+| `tc29a-47b-20261116-cleanup.result.json` | `152703e755c1ffb26d020b78f71f8343255c1b91b1b7c3c45549f70b3765abc7` |
+| `tc29a-47b-20261116.verify.mjs` | `63198f020326704b983277068df0c493d098a7286aa09e22f8523523e517afc1` |
+| `supabase/candidate/owner-provisioning-commit.sql` | `ef22a709dab84d0fbbf9b7afed604320d7d60574eb747d4a7565e5b657cce903` |
+| `supabase/functions/owner-provisioning/local.test.ts` | `4a824f0f9432e4b411906e27726e4667c7a84e9b4352215f8b803589b10908e7` |
+
+Ba tệp bằng chứng nằm tại `D:/Workspace/pos-cafe-t06-pg16-runtime`. Điểm đọc nhanh khi review là điều kiện vào guard ở RPC và bước `missing PIN hash fails before Auth` trong Deno. Chủ dự án có thể đối chiếu response công khai với mã nội bộ bằng hai assertion trong bước này.
+
+Hai reviewer độc lập trả `APPROVE` cho khóa/guard/quota và kiểm hồi quy/bằng chứng dọn DB. Trước khi ghi verdict, SHA-256 của hồ sơ là `db9e9daeb7b9d97d897e81741c9477415872234b8bc14ab664568c166cc381c6` và của kế hoạch là `93a8a4e688e3dd136c61c33472539d380925c133168910e56c037c7b816b6e53`. `git diff --check` và OpenSpec strict đạt.
+
+<a id="tc29a-47b-staging-2026-11-16"></a>
+
+#### Áp và kiểm lại trên Supabase staging ngày 16/11/2026
+
+- Chủ dự án duyệt riêng bản sửa TC-OWNER-29(a)/47(b). Áp vào project `pos-cafe-permission-staging` (`ineckiashpwloncxnbqx`) lúc 16:18:35 UTC+7. Gói SQL trích đúng định nghĩa `public.owner_claim_create_auth(uuid,uuid,bytea,integer)` từ bản nguồn đã duyệt, dùng `CREATE OR REPLACE FUNCTION`. Bản diễn tập PostgreSQL loopback dùng cùng gói với giá trị định danh đích tương ứng và đã rollback.
+- Gói staging so định nghĩa cũ trước khi ghi. Thân hàm chuyển từ SHA-256 `e87416aafb26ee9e99289f27f6deda1e09aa1eb6dc4ffcc55ac28674efbd5616` sang `edeb62ed178df6ca600149c5bf79363574c60d93ab66a19fec96bffba8d55b97`. Hậu kiểm lúc 16:19:04 UTC+7 xác nhận đúng OID `25872`, chủ sở hữu `postgres`, `SECURITY DEFINER`, `search_path=pg_catalog` và quyền thực thi vẫn chỉ cấp cho role server trong ba role đã kiểm. Năm RPC đối chứng có cùng hash trước và sau là ghi kết quả Auth, commit quán, cấp quyền giao Store Key gốc, tra trạng thái và chạy seed.
+- Ba fixture `.invalid` chạy trực tiếp tại RPC trong giao dịch phụ. Với bản băm `NULL` và rỗng, claim và tra đều trả `failed`, mã nội bộ `C_PIN_NOT_PERSISTED`, suất giữ giảm từ 1 xuống 0. Gọi lại giữ nguyên thời điểm kết thúc. Thẻ sai bị từ chối bằng `CREATE_PROOF_REQUIRED`. Thẻ hết hạn trả `unknown` khi claim và tra, hàng vẫn `accepted` và tiếp tục giữ suất. Mỗi fixture có 0 bản ghi giữ số, 0 thư và 0 quán. Phép thử đi qua RPC SQL, kiểm chặn tại điểm tạo dispatch trước lệnh Auth. Kiểm đếm lời gọi Auth trong handler thuộc lượt PostgreSQL cô lập ở mục trên.
+- Giao dịch phụ rollback cả ba fixture. Truy vấn độc lập sau commit xác nhận 0 chủ, 0 intent, 0 challenge, 0 thư và 0 tài khoản Auth cho các địa chỉ thử. **TC-OWNER-29(a)/47(b) đạt trên staging trong phạm vi RPC và fixture rollback.**
+
+| Tệp ở `D:/Workspace/pos-cafe-t06-pg16-runtime` | SHA-256 |
+| --- | --- |
+| `tc29a-47b-staging-20261116.apply.sql` | `22d52ea31b3a7a90aadc989a84b6520072d535effbbaab68b625e752af9a5614` |
+| `tc29a-47b-staging-20261116.manifest.json` | `40cebcf4c4f6e25680a785f13dd6b7512fcf384a0bd75d577c96acc58058cacb` |
+| `tc29a-47b-staging-20261116.rehearsal.txt` | `f4082be675ce16d1e7431408bf9e6fb432ab4228f42217529cbaf97f3eb44b3e` |
+| `tc29a-47b-staging-20261116.result.json` | `c9e78a8bab762a06d6da6eea16805f19cadb4bf425e0c4ce155f99257d50cf51` |
+| `tc29a-47b-staging-20261116-postflight.jpg` | `e9069155769c6c2fd5ee3fbb01017291cf167f8d19735200b095364057c2d076` |
+
+Hai reviewer độc lập trả `APPROVE` cho phạm vi áp RPC, quyền thực thi và đối chiếu bằng chứng của ba fixture. Trước khi ghi verdict, SHA-256 của hồ sơ là `130cecbbd2e117652eff9f8f8e938b0ca87160203a791e85ed2ff11dbed30b26` và của kế hoạch là `52a3500aa944bb12091e64933fd5c08f88cd9d0d306e37ffef4b746848a58784`. `git diff --check` và OpenSpec strict đạt.
+
+<a id="t06-de-xuat-dong-giai-doan-1-2026-11-16"></a>
+
+#### Đề xuất thứ tự đóng các mục T06 còn mở
+
+Đối chiếu kết quả mới nhất của TC-OWNER-29(a)/47(b), checklist 9.1–9.6 và testplan. Mục 9.3 đã đạt. Các đề xuất dưới đây chờ chủ dự án chốt khi đổi yêu cầu hoặc phạm vi. Lượt rà soát dùng bằng chứng đã lưu và mã nguồn từ worktree T06 dựa trên `610f198`.
+
+| Thứ tự | Việc còn mở | Đề xuất và quyết định cần chốt |
+| --- | --- | --- |
+| 1 | **9.2/9.6 · TC-29(b,c)/105(5) và TC-30.** Thất bại chắc chắn chưa trả suất ở hai nhánh còn thiếu. Sau lỗi ghi quán đã rollback, phản hồi gốc là `unknown` nhưng tra trong hạn xử lý còn `accepted`. | Ưu tiên TC-29(b,c)/105(5) vì suất giữ có thể chặn lượt tạo kế tiếp. Giữ nhánh trùng email đã kiểm riêng. Chỉ hoàn suất khi có bằng chứng dứt khoát của đúng lệnh Auth hoặc khi chứng minh lượt đã nhận chưa phát lệnh vì thiếu cấu hình. Mất phản hồi vẫn giữ suất. Tách thiếu biến lúc khởi tạo hàm khỏi lỗi trên operation đã nhận. Với TC-30, đề xuất tra trả `unknown` trong hạn khi đã xác nhận rollback sau Auth, giữ suất và tham chiếu Auth. Nếu chỉ mất phản hồi ghi quán thì kết quả `created` đã commit vẫn có hiệu lực. Chủ dự án đã chốt phạm vi phản hồi cho thiếu cấu hình và thời điểm chuyển `unknown` của TC-30. [Kết quả DB cô lập](#tc29bc-30-local-2026-11-16) |
+| 2 | **9.4 · TC-44(c).** Worker chuyển thư kẹt sang `unknown` nhưng thiếu cảnh báo. | Đã sửa, kiểm local và xác nhận Edge Logs trên staging ngày 17/11. [Hồi quy TC-44(c)](#tc44c-staging-2026-11-17) |
+| 3 | **9.4 · TC-47(d), TC-92.** RPC commit lặp trả `created` và staging đã đạt bước khóa TC-92. | Tiêu chí đã chốt và hai ca đã chạy trên PostgreSQL cô lập ngày 17/11. [Bằng chứng](#tc47d-92-local-2026-11-17) |
+| 4 | **9.1 · TC-09.** Thiếu lượt UI hai thiết bị và phép thử mất phản hồi sau khi seed đã commit. | Kiểm UI chờ, lỗi và phục hồi trên hai máy theo từng biến thể. Riêng mất phản hồi sau commit (g), retry hoặc skip phải đọc `completed` và giữ đúng một bộ seed. Bỏ mẫu sau rollback vẫn mở quán trống ở `skipped`. Dùng bộ giả lập và DB cô lập theo testplan. |
+| 5 | **9.5 · Fixture staging.** Hai vòng TC-104 và R07 đã có bằng chứng; phạm vi giữ/dọn chưa chốt. | Kiểm kê chỉ đọc và trình danh sách theo quán, liên kết Auth, phiên và ảnh. Đề xuất giữ `0022–0023` đến khi xong hồi quy. Chủ dự án duyệt danh sách giữ/dọn cụ thể trước khi xóa. |
+
+Kết quả TC-29(a)/47(b) đang gắn với bản thay RPC trên staging và bản sửa local. Khi chuẩn bị gói kế tiếp, đưa bản sửa vào nguồn ứng viên và kiểm hồi quy cùng nó. Nhãn mock trên Preview và chẩn đoán CI lượt đầu tiếp tục theo hồ sơ riêng ở trên. Mốc qua giai đoạn 1 vẫn là điều kiện cho T08/T09.
+
+Hai reviewer độc lập trả `APPROVE` cho đề xuất Auth/hạn mức và đối chiếu các mục còn mở. SHA-256 trước khi ghi verdict là `8d8f8d6103001da8afb5494b29778298005b59a8aa5a44e5c32b6e2d9df93008` cho hồ sơ, `52283eb0aa991eb48fcc6e5bda5c98c0c6ac970dbd77549683f3b8492beb67a2` cho kế hoạch. `git diff --check` và OpenSpec strict đạt.
+
+<a id="tc29bc-30-local-2026-11-16"></a>
+
+#### Hồi quy TC-OWNER-29(b,c)/105(5) và TC-OWNER-30 trên PostgreSQL cô lập
+
+Ngày 16/11/2026, chủ dự án chốt cả hai nhóm theo đề xuất ở mục trên và giao sửa, chạy lại ở DB cô lập. Nguồn là worktree `D:/Workspace/pos-cafe-t06-local` trên `610f198`, có delta của TC-OWNER-29(a)/47(b) và cảnh báo TC-OWNER-41 đã kiểm trước đó. Đợt này chỉ chạy local. Dùng PostgreSQL 16.15 tại `127.0.0.1:55467`, DB `pos_cafe_t06_contract_failures1611` khởi tạo bằng `tests/contracts/ownerProvisioning.setup.local.mjs`. Handler chạy với request thật trong Deno, Auth và SMTP thay bằng transport giả lập.
+
+- **TC-29(b) và TC-105(5).** Adapter chấp nhận hai cặp phản hồi cấu trúc từ đúng lệnh Admin API là `403/not_admin` và `422/weak_password`. Hai kiểm tra diễn ra trước phần ghi Auth theo mã nguồn upstream. `email_exists` tiếp tục theo đường đối chứng xung đột cũ. SQL đối chiếu operation, thẻ và dispatch đang `claimed`. Nếu thấy tài khoản mang đúng dấu hiệu dispatch, giữ `unknown`. Phép thử gốc và hai dạng gửi lại chỉ trả `failed`, DB lưu `C_AUTH_REJECTED`, với 1 lời gọi Auth giả, 0 tài khoản sinh ra, 0 quán, 0 thư Store Key. Chủ có bốn quán, gồm một quán suspended. Intent kế tiếp bị chặn trước hoàn suất, được nhận sau hoàn suất, và intent thứ ba vẫn bị giới hạn. Các phép âm gồm timeout, sai thẻ/dispatch, dấu hiệu Auth mâu thuẫn, trùng email thiếu đối chứng và phản hồi tới sau hạn. [Route Admin](https://github.com/supabase/auth/blob/master/internal/api/api.go#L348-L356) · [Quyền Admin](https://github.com/supabase/auth/blob/master/internal/api/auth.go#L71-L87) · [Kiểm mật khẩu trước ghi](https://github.com/supabase/auth/blob/master/internal/api/admin.go#L419-L475) · [Phản hồi mật khẩu yếu](https://github.com/supabase/auth/blob/master/internal/api/errors.go#L97-L135)
+- **TC-29(c) và TC-105(5).** Fixture bỏ riêng khóa bọc Store Key khỏi dependency khi handler đã có thể nhận operation. RPC `owner_fail_create_missing_config` khóa cùng hàng với RPC claim, kiểm thẻ, hạn và không có bản giữ số. Ca trả `failed`, DB ghi `C_CONFIG_MISSING`, 0 dispatch, 0 lời gọi Auth, 0 quán và 0 thư Store Key. Intent sau lấy đúng một suất. Thẻ sai hoặc hết hạn và lượt đã claim đều giữ nguyên hàng. Catalog xác nhận `anon` và `authenticated` thiếu quyền thực thi, `service_role` có quyền. Thiếu biến ở entry point vẫn làm hàm từ chối khởi tạo trước khi có operation.
+- **TC-30.** Trigger thử ép lỗi trước insert thư Store Key, sau khi đã ghi các hàng quán. Khối SQL con rollback các ghi này rồi lưu `unknown/C_STORE_WRITE_REJECTED` dưới khóa operation. Phiên thứ hai sau commit đọc `unknown` ngay trong hạn, gửi lại bằng attempt gốc và attempt mới cùng cho `unknown`. Còn đúng một tài khoản Auth khớp với dispatch đã xác minh. Đếm theo UUID và operation thử cho 0 quán, cấu hình, nhân viên, workflow, stage, audit và thư. Intent thứ hai bị chặn, OTP còn active. Sau khi đẩy đồng hồ fixture qua một giờ, tra và gọi lại commit vẫn `unknown`. Đối chứng chạy commit thành công rồi bỏ phản hồi. Phiên thứ hai tiếp tục đọc `created`, có đúng một quán và một thư. Lỗi kết nối hoặc không có xác nhận rollback từ DB vẫn đi theo đường chưa rõ kết quả.
+- **Hồi quy và hậu kiểm.** Deno đạt 12/12 phép chọn theo `--filter '/TC29|TC30|TC33|TC105|TC47/'` và 5/5 test nền, gồm bước TC-29(a)/47(b) và hai phép chờ khóa OTP. `deno check` đạt cho entry point và test chính. Suite `ownerProvisioning.local.sql` đạt trong giao dịch trên DB rỗng sẵn có `pos_cafe_t06_contract_postgrest`, dùng đúng định nghĩa SQL mới. Sau rollback, hai hash định nghĩa cũ khớp, RPC mới biến mất và DB vẫn có 0 quán. Lượt đầu suite từ chối DB có fixture đã commit. Một assertion của runner sao chép cũng chọn nhầm kỳ vọng của nhánh commit lỗi cho TC-105(4), đã sửa về trạng thái `accepted` trong DB và chạy lại toàn bộ 12 phép chọn. DB `pos_cafe_t06_contract_failures1611` OID `58644` giữ fixture giả của các lượt kiểm có commit, kích thước logic 13.433.879 byte, 0 trigger ép lỗi còn lại và 0 client khác. PostgreSQL local đã dừng.
+
+Mục 9.2 và 9.6 đã có bằng chứng theo các môi trường của testplan. [Checklist](../../../openspec/changes/add-owner-account-and-store-provisioning/tasks.md#9-kiểm-thử-giai-đoạn-1) Giai đoạn 1 còn các mục 9.1, 9.4 và 9.5 ở bảng đề xuất. Hồi quy lần này giữ hành vi TC-47(d) để chủ dự án chốt riêng. Lệnh Deno dùng `--cached-only --no-lock --allow-env --allow-net=127.0.0.1:55467` với `POS_CAFE_T06_TEST_DSN` trỏ DB cô lập. Chạy `psql -X -v ON_ERROR_STOP=1 -f` với tệp diễn tập SQL bên dưới và DB rỗng `pos_cafe_t06_contract_postgrest`.
+
+| Tệp bằng chứng ở `D:/Workspace/pos-cafe-t06-pg16-runtime` | SHA-256 |
+| --- | --- |
+| `tc29bc-30-20261116-source.json` | `9aa907bfad5de9b1c5d258dc5e14a62a5418230ff30c74ef885c0857cdb24c2f` |
+| `tc29bc-30-20261116.test.mjs` | `403dcfa5d72dee5e90b04c061dcfbc28f2df98f4c927fbccf4066edb853dfc29` |
+| `tc29bc-30-20261116-final.result.txt` | `fe708f8cab4441c2748ff0e5067d6d37d58a45e3ab152e0748baa138cc948800` |
+| `tc29bc-30-20261116-deno.result.txt` | `27580975bb034cc6a1c6b930c8e7f84315e72a96a8904af45612ae4bc798e269` |
+| `tc29bc-30-20261116-typecheck.result.txt` | `226972bd0219dbc4d40ad5ba770868bbbcc13a4eb1f9ee6ee974a75b760d4f4c` |
+| `tc29bc-30-20261116-sql-rehearsal.sql` | `7a5317d629633dcb15ba1b4874a84ccad0abc4f54f8436233b6b212027ecb27c` |
+| `tc29bc-30-20261116-sql.result.txt` | `17e717ee0a5b45dceb87a73c86c257b9163bf2b16df1bc9b8402b47da4b8fdf6` |
+| `tc29bc-30-20261116-postflight.txt` | `3d631bdb8e5929998543e3321dcb7d1c3951e9532212bc488b779465174ca41a` |
+
+Hai reviewer độc lập trả `APPROVE` cho quyền, khóa và phân loại Auth/quota, cùng bằng chứng rollback/commit của TC-30. Cả hai đối chiếu năm hash nguồn trong manifest. SHA-256 trước khi ghi verdict là `d8f377c2fe0487fe1d515ade91b4e21dd3b57b6f57f09db58c749017df6eb471` cho hồ sơ và `88ed8b8ff1fc05369a008710cfe0ef74cf410c7190889543b046368e7a3f8bb4` cho kế hoạch. `git diff --check` và OpenSpec strict đạt.
+
+<a id="tc29bc-30-staging-2026-11-17"></a>
+
+#### Áp riêng TC-OWNER-29(b,c)/105(5) và TC-OWNER-30 lên staging ngày 17/11/2026
+
+Chủ dự án duyệt riêng gói này ngày 17/11. Thao tác qua Dashboard của `pos-cafe-permission-staging` (`ineckiashpwloncxnbqx`). Gói dùng fingerprint trên `610f198` đã kiểm local, gồm hai RPC thay định nghĩa, thêm một RPC dành cho `service_role`, và cập nhật duy nhất Edge Function `owner-provisioning`. Áp SQL trước để Edge phiên bản cũ và mới đều có hợp đồng DB tương thích.
+
+- **Tiền kiểm và diễn tập.** Staging ghi nhận hai thân hàm cũ đúng hash, OID `25873` và `25874`, RPC thiếu cấu hình chưa tồn tại, hạn mức 5 và trường PIN nhân viên có `NOT NULL`. Trên PostgreSQL loopback, gói chạy đủ năm fixture với danh tính DB tương ứng và rollback cả lượt diễn tập. Hai reviewer duyệt gói SQL và manifest đúng SHA-256 trước khi áp.
+- **SQL lúc 07:53:34 UTC+7.** Giữ OID và metadata của `owner_record_create_auth` và `owner_commit_created_store`, thêm `owner_fail_create_missing_config` OID `26159`, `SECURITY DEFINER`, `search_path=pg_catalog`, không cấp `EXECUTE` cho `anon` hay `authenticated`. Bốn RPC đối chứng giữ nguyên OID và hash, gồm claim với guard TC-29(a)/47(b), tra trạng thái, quyền giao Store Key gốc và seed. Biên nhận và hậu kiểm lưu cả hash lẫn ACL.
+- **TC-29(b,c)/105(5).** Dùng một chủ fixture với bốn quán, trong đó có một quán suspended, và một operation giữ suất. Lượt khác bị chặn ở `OWNER_STORE_LIMIT_REACHED` trước khi xử lý lỗi. Khi ghi nhận từ chối Auth dứt khoát hoặc thiếu khóa trước dispatch, RPC và tra trả `failed` với mã nội bộ tương ứng `C_AUTH_REJECTED` hoặc `C_CONFIG_MISSING`. Suất giữ từ 1 xuống 0, attempt mới cùng intent đối chứng lấy được đúng một suất. Kết quả Auth chưa rõ và lệnh về sau hạn đều trả `unknown` và giữ suất. Thẻ sai, dispatch sai và thiếu cấu hình sau khi đã claim đều có đối chứng.
+- **TC-30.** Ghi nhận Auth thành công từ hàng kỹ thuật tổng hợp có dấu dispatch khớp, rồi đặt riêng PIN hash của operation thử thành `NULL`. RPC đi qua kiểm Auth, ghi quán và cấu hình rồi gặp ràng buộc `public.employees.passcode_hash NOT NULL` trước bước audit. Khối ghi quán rollback, tra trong hạn trả `unknown`, operation ghi `C_STORE_WRITE_REJECTED` và giữ đúng suất cùng tham chiếu Auth. Gọi commit lại chỉ trả trạng thái, intent khác vẫn bị giới hạn và OTP giữ `active`. Kiểm 0 quán, cấu hình, tín hiệu, nhân viên, workflow, audit và thư theo UUID/operation của lượt lỗi. Đối chứng giao dịch đã commit rồi mất phản hồi đã được kiểm với phiên DB thứ hai ở lượt cô lập 16/11.
+- **Hậu kiểm SQL lúc 07:54:28 UTC+7.** Cả năm fixture chỉ nằm trong giao dịch phụ rollback. Dùng số quán tổng hợp đã kiểm trống và ghi reservation trực tiếp, nên phép thử không cấp số từ sequence. Truy vấn độc lập sau commit ghi 0 ở cả chín nhóm gồm chủ, intent, challenge, attempt, operation, quán, giữ số, tài khoản Auth kỹ thuật và thư. Không có lệnh Admin API hay SMTP từ phép kiểm.
+- **Edge đến 07:57:19 UTC+7.** Số lượt triển khai `owner-provisioning` tăng 2 → 3. Đọc lại sau reload thấy hash chuẩn hóa của bốn tệp khớp bản nháp đã kiểm. `smtp.ts` trùng v2. `verify_jwt` vẫn `false` và số lượt triển khai hai hàm ảnh là 6 và 5. Bảng Test gửi ba request `getCreateStatus`. ID sai định dạng trả HTTP 400 `A_REQUEST_INVALID`. UUIDv7 mới trả HTTP 200 `unconfirmed`. UUIDv7 chưa dùng cách 45 phút trả HTTP 200 `not_accepted`. Đây là kiểm tra khởi động bundle và đường đọc thật. Phân loại phản hồi của Auth và lỗi thiếu khóa sau khi nhận operation đã được kiểm qua handler với Auth giả lập trong lượt local.
+
+**Đạt hồi quy staging trong phạm vi hợp đồng SQL và ba phép tra HTTP.** Các nhánh thử dùng fixture rollback, tài khoản và thư thật thuộc luồng ngoài phép kiểm này.
+
+| Tệp bằng chứng ở `D:/Workspace/pos-cafe-t06-pg16-runtime` | SHA-256 |
+| --- | --- |
+| `tc29bc-30-staging-20261117.apply.sql` | `1bdde23139f5ecaf365b00839012638c298bd62db2dd148cef673996c16d9678` |
+| `tc29bc-30-staging-20261117.manifest.json` | `9e92903208c87b9c3f8d1cf50deee96601fe4babe4c1620e0e525c38400e36ee` |
+| `tc29bc-30-staging-20261117.rehearsal.txt` | `d0011ffeba95b12fe133616f4fed7276c0a9df8d68dd0afb434c875bad50efef` |
+| `tc29bc-30-staging-20261117-preflight.json` | `d20f14de6b3015e229e7c44de707a4025896236800c7c183bbe23209f6955f52` |
+| `tc29bc-30-staging-20261117-sql-receipt.json` | `f7fc81bbbed80f223fb4f57b15a3ae0df7ca0c24c44356c0aa9f1c5e43b8fecc` |
+| `tc29bc-30-staging-20261117-postflight.json` | `516d87b8d1f4a4eb6283736d3e80375489588d157257972da2a65e0085355393` |
+| `tc29bc-30-staging-20261117-edge.json` | `bdbb7a0245f29b8d4d978974dec45bc319a1ecac0d92cde0b6a2c709e3ea7646` |
+| `tc29bc-30-staging-20261117-edge.jpg` | `043bed84f51e44d852712927ca19f874c1cb4d4534e6a55fd8422b6069141fc9` |
+| `tc29bc-30-staging-20261117-postflight.jpg` | `aa4b18b4bd11ecea38081bc2231baa1689c9c488509fc8a3a56de44e80d67c4d` |
+
+Hai reviewer độc lập trả `APPROVE` cho định nghĩa và quyền SQL, phạm vi fixture rollback, fingerprint Edge và ba phản hồi HTTP. SHA-256 trước khi ghi verdict là `9427f2cb1ad35886f969807a3e937b000dcd21616da53d206191ec3f01a884d3` cho hồ sơ và `8d8e9a8a440b3f130c4d330f518385f9908399df89be5e073f725cb03a3b1f41` cho kế hoạch. `git diff --check` và OpenSpec strict đạt.
+
+<a id="tc44c-local-2026-11-17"></a>
+
+#### TC-OWNER-44(c) · Cảnh báo khi lượt gửi Store Key hết hạn
+
+Chủ dự án giao thực hiện mục tiếp theo sau gói staging TC-29/30. Phần này dùng worktree `D:/Workspace/pos-cafe-t06-local`, base `610f198` và các delta đã kiểm của lượt trước. Bản sửa TC-44(c) đang ở local.
+
+- **Cách xử lý.** `public.owner_sweep_mail()` chuyển các thư `sending` hết hạn sang `unknown` và dùng `UPDATE ... RETURNING` để lấy ID các thư Store Key vừa chuyển. Worker ghi `owner_provisioning.store_key_mail_claim_expired` với trường `mailId`. Thư OTP vẫn chuyển trạng thái và chạy quy tắc dọn cũ. `owner_sweep_otp_mail()` không tham số vẫn chạy cùng sweep để giữ tương thích với worker trước. Hai RPC có quyền thực thi ở `service_role`, danh sách ID chỉ trả cho worker khi chạy RPC mới. Cảnh báo ghi sau khi worker nhận được phản hồi sweep. Nếu phản hồi đó mất hoặc worker dừng trước khi ghi log, trạng thái `unknown` đã commit và sweep sau không phát lại cảnh báo. [Cảnh báo trong Edge Logs](https://supabase.com/docs/guides/functions/logging)
+- **Đối chứng trước/sau.** Test gọi handler Deno với chữ ký worker và PostgreSQL 16.15 cô lập, Auth/SMTP giả lập. Đặt một thư Store Key đã được cấp quyền SMTP và một thư OTP vào trạng thái `sending` hết hạn. Hai lượt worker cho cả hai thư `unknown`, mỗi thư có mốc kết thúc. Bản cũ trượt ở assertion cảnh báo. Bản mới ghi đúng một cảnh báo chỉ mang ID thư Store Key, 0 lời gọi Auth/SMTP thêm, quán và quota khớp trước/sau. Rollback savepoint rồi tiếp tục ca thường, mỗi loại thư gửi đúng một lần.
+- **Tranh lượt và quyền.** Hai kết nối DB chạy sweep trên cùng fixture, quan sát `pg_blocking_pids` xác nhận kết nối thứ hai đợi khóa. Kết nối thứ nhất nhận 1 ID, kết nối thứ hai nhận mảng rỗng sau commit. Thư vẫn `unknown` và quán vẫn `created`. Kiểm lại RPC không tham số xử lý đúng khi một thư thử hết hạn. `anon` và `authenticated` thiếu quyền `EXECUTE` trên RPC mới.
+- **Kết quả.** `deno test` đạt 5/5 test nền, gồm 2 bước TC-44(c) và TC-29(a)/47(b), thêm 1/1 phép tranh lượt. `deno check` đạt cho entry point và test. Suite `ownerProvisioning.local.sql` kết thúc bằng `ROLLBACK`. Dùng lại runtime loopback `127.0.0.1:55467`, khởi tạo DB `pos_cafe_t06_contract_mail44` với `tests/contracts/ownerProvisioning.setup.local.mjs`, rồi áp đúng hai định nghĩa sweep và grant. Lệnh Deno dùng `--cached-only --no-lock --allow-env --allow-net=127.0.0.1:55467`. DB OID `60524` giữ một quán synthetic của phép tranh lượt, kích thước logic 13.130.775 byte. Hậu kiểm thấy 0 client khác và PostgreSQL đã dừng.
+
+| Nguồn và bằng chứng | SHA-256 |
+| --- | --- |
+| `supabase/candidate/owner-provisioning-closeout.sql` | `e504dc953e61e36935596e4a99b9b5bb2389bb9247cc50eb70c5f27f594c5cef` |
+| `supabase/functions/owner-provisioning/handler.ts` | `24c13ad1f6e29659a80c331796a08804472ffc14b3a3922840c5b463194fce55` |
+| `supabase/functions/owner-provisioning/local.test.ts` | `c8604ac644f2b8815eacc59688346e5136bfc9588f642c3afbd1a846bd8c28f5` |
+| `tc44c-20261117-baseline.result.txt` | `4dabda0e7e73b4917ab173b05c67e93dc49a724a87854b36b1fa75c21c26aa0a` |
+| `tc44c-20261117-candidate.result.txt` | `bad2317047b6dfbf5778b97001015886b378473188c00ba150cc6503e8be9c4a` |
+| `tc44c-20261117-contention.test.mjs` | `43d16d35ef2576af895063f31baa2355d5e5ef5a90a58f24f570fd84a207c57e` |
+| `tc44c-20261117-contention.result.txt` | `245124efc96eb059bb6522101c7ddb0e4f1ad5595a68382d80b455029cc26574` |
+| `tc44c-20261117-local.sql` | `8291ba2d9ec5ed7524d9f9215738e5cf6d06619b617e5667f461b6361c7068bf` |
+| `tc44c-20261117-sql.result.txt` | `4daef4c5ebd4a13051efae9284c253a1154b241761c24087ae16aae662275c82` |
+| `tc44c-20261117-postflight.txt` | `4d8711392d299b8432f3bfbbdf9e45da385881869ff4fa5974a028d59be8ee23` |
+
+Các tệp `tc44c-*` nằm tại `D:/Workspace/pos-cafe-t06-pg16-runtime`. Mục 9.4 còn TC-47(d) và bước xóa TC-92.
+
+Hai reviewer độc lập trả `APPROVE` cho phạm vi SQL/quyền/tranh khóa và đối chứng trước/sau. SHA-256 trước khi ghi verdict là `6fc8854771087628d42370a987ddc064cb73a5ba67669ef905a94ddf4c464b5a` cho hồ sơ và `1142f347100a9dbf869b381dee71a9436a67df9d199d9b781888caf2f6bca6f2` cho kế hoạch. `git diff --check` và OpenSpec strict đạt.
+
+<a id="tc44c-staging-2026-11-17"></a>
+
+#### TC-OWNER-44(c) · Hồi quy staging, Edge Logs và dọn DB local
+
+Ngày 17/11/2026, chủ dự án duyệt dọn riêng `pos_cafe_t06_contract_mail44`, giữ log và áp riêng TC-OWNER-44(c) lên staging. Dùng Chrome profile 24tx trên `pos-cafe-permission-staging` (`ineckiashpwloncxnbqx`).
+
+- **Dọn local lúc 13:56 UTC+7.** Trước `DROP DATABASE`, đối chiếu loopback, role `t06_local`, `pg_default`, 0 client, OID `60524` và đúng đường dẫn `D:/Workspace/pos-cafe-t06-pg16-runtime/data/base/60524`. DB có kích thước logic 13.130.775 byte. Sau drop, catalog và thư mục dữ liệu của đúng OID không còn, OID `58644` của DB lượt TC-29/30 vẫn tồn tại. Cả 7 log `tc44c-20261117*` liên quan giữ nguyên SHA-256. Hai lần đo quanh lệnh drop ghi ổ D tăng 13.258.752 byte trống. PostgreSQL local đã dừng. Diễn tập gói staging sau đó dùng DB rỗng sẵn có `pos_cafe_t06_contract_postgrest`, rollback và dừng server, không dựng lại DB đã dọn.
+- **Áp SQL lúc 14:02:28.** Tiền kiểm ghi OID `25871` và hash cũ khớp `610f198`. Giữ OID, kiểu `void`, owner và ACL cho `owner_sweep_otp_mail`. Thêm `owner_sweep_mail` với OID `26167`, kết quả `uuid[]`, `SECURITY DEFINER` và `search_path=pg_catalog`. `service_role` có quyền chạy. `anon` và `authenticated` bị từ chối. Biên nhận và truy vấn độc lập khớp hai hash ứng viên. Hai reviewer duyệt SQL, Edge và thao tác fixture theo manifest trước khi áp.
+- **Edge.** `owner-provisioning` tăng số lượt triển khai 3 → 4. Đọc lại từ server xác nhận chỉ `handler.ts` đổi và khớp source đã duyệt sau chuẩn hóa LF/cuối tệp. `index.ts`, `auth-create-error.ts` và `smtp.ts` khớp lượt 3. `verify_jwt=false`. Số lượt của hai hàm ảnh vẫn 6 và 5.
+- **Cách dựng lỗi lúc 14:04:36.** Đối chiếu số `0027` và hash ID operation với bằng chứng TC-OWNER-41. Chọn đúng một thư Store Key đã `submitted` và đã hết hạn claim từ trước. Lưu hash hàng gốc, đổi hai trường `status` thành `sending` và `resolved_at` thành `NULL`. Giữ claim đã hết hạn và thời điểm cấp phép SMTP gốc. Hàng này không vào hàng đợi gửi vì worker chỉ claim `queued`; quyết định cấp phép gửi vẫn đòi claim còn hạn. Chờ lịch `pos-cafe-owner-work` hiện có chạy, không gọi tay worker hay mở đường gửi thư.
+- **Kết quả lúc 14:05–14:06.** Sau lần chạy đầu, SQL đọc `unknown`, `resolved_at` lúc 14:05:04. Edge Logs ghi một `owner_provisioning.store_key_mail_claim_expired`, mức `warning`, version `4`, lúc 14:05:04.694 với đúng `mailId` `40181d36-2e58-49ae-a890-708d3996350f`. Sau hai lượt Cron thành công và hai phản hồi HTTP 200 `{"ok":true}` tương ứng trong `pg_net`, log theo đúng `mailId` vẫn có một hàng. `resolved_at` không đổi, thời điểm cấp phép gửi không đổi và không có lượt cấp phép hoặc gửi lại thư thử. Quán vẫn active, operation `created`, chủ có đúng một quán, 0 lượt giữ chỗ và một bản ghi thư. Các fingerprint của quán và operation cùng số dispatch Auth khớp tiền kiểm. [Edge Logs của hàm](https://supabase.com/dashboard/project/ineckiashpwloncxnbqx/functions/owner-provisioning/logs)
+- **Khôi phục lúc 14:06:52.** Trả hai trường thư thử về `submitted` và đúng `resolved_at` gốc, kèm kiểm hash toàn hàng trong giao dịch. Truy vấn độc lập lúc 14:06:59 xác nhận hàng thư khớp tiền kiểm và hai RPC vẫn đúng bản áp. Đạt TC-OWNER-44(c) trên staging. Mục 9.4 vẫn chờ TC-47(d) và nhánh xóa của TC-92.
+
+Giờ theo UTC+7. Gói `tc44c-staging-20261117*` lưu ở `D:/Workspace/pos-cafe-t06-pg16-runtime`. Manifest có SHA-256 của ba câu SQL áp, dựng và khôi phục fixture, cùng bốn tệp Edge.
+
+| Tệp bằng chứng | SHA-256 |
+| --- | --- |
+| `tc44c-staging-20261117-manifest.json` | `169cc08b5980ba2959132085ef2007317dfdde9a2933c5bbf9132c9a3465d386` |
+| `tc44c-staging-20261117-cleanup.json` | `b44605bf5cc04b14f9093a796b0cc99561f3a380a454256de06ca21179db9535` |
+| `tc44c-staging-20261117-rehearsal.txt` | `7596400f80b3a5fb32b2d9d125cf773bca821a4133e5d344b4223d8f6ec2236e` |
+| `tc44c-staging-20261117-preflight.json` | `c6988b4a4375e6e30006437311a4f7adee0e11c69f4a213b08882fbc04aff4ce` |
+| `tc44c-staging-20261117-sql-receipt.json` | `10376374fe5f9bdff66cf4e3967fc84816c7aa2cb050dd597bd42c74c5d26efd` |
+| `tc44c-staging-20261117-sql-postflight.json` | `c055c03b014fa0559a17cc76e7db57668d65b0b94abf8e1334f46bcd3a0fc064` |
+| `tc44c-staging-20261117-edge.json` | `2fc171c44a17dbf6f813bd2925ebc147038e974c849c3e66c425a485d7ad8349` |
+| `tc44c-staging-20261117-arm.json` | `1409f3971d3e8e5a036cde11528be6c3d613f3585311b2b6787ec0a1bc09d615` |
+| `tc44c-staging-20261117-regression.json` | `d210edb7d4f1597245cb18246f2a287a0408fbd17a93bf41155b741f43cd689f` |
+| `tc44c-staging-20261117-restore.json` | `938bc9f639c7e5f6015e01db890710bf61fbe5d7ad3cf48fe099674c56a0cd42` |
+| `tc44c-staging-20261117-restore-postflight.json` | `0ba419ee9092e645453bcf99d01a8f20994afdd1b4b4f0f9fa62f453c1ddcecf` |
+| `tc44c-staging-20261117-warning.jpg` | `aae2ef2db632e7c3c222e139e3d8db160fb0c55ec36e2df73037594986f1cbdf` |
+
+Hai reviewer độc lập trả `APPROVE` cho đối chiếu SQL/quyền, dọn local, fingerprint khôi phục và dấu vết Edge Logs. SHA-256 trước khi ghi verdict là `2f8d1e5f82be5bbf18e2a1acdb886647d3eaab0a353d2c2b54caf06666de67f2` cho hồ sơ và `b42a1197c472f5df38c16b3b2c7080fde62215d7c2d4b0e8dfd39a9cdde0de9a` cho kế hoạch. `git diff --check` và OpenSpec strict đạt.
+
+<a id="tc47d-92-local-2026-11-17"></a>
+
+#### TC-OWNER-47(d) và TC-OWNER-92 · Hồi quy theo tiêu chí đã chốt
+
+Ngày 17/11/2026, chủ dự án chốt giữ phản hồi nội bộ `created` và đối soát UUID/số quán qua DB cho TC-47(d). Với TC-92, giai đoạn 1 dùng phép kiểm quyền DELETE và ràng buộc đúng một chủ ở DB cô lập, cùng bằng chứng khóa qua phiên quản lý đã có trên staging. Cập nhật thiết kế, spec employee session và testplan theo quyết định. Lượt này chạy kiểm thử trên mã hiện hành, không sửa RPC hay áp staging.
+
+- **Môi trường.** Dùng PostgreSQL 16.15 tại `127.0.0.1:55467`, DB thử có sẵn `pos_cafe_t06_contract_failures1611` OID `58644`, dưới worktree T06 base `610f198`. Runner đối chiếu thân hàm claim, record, commit và trigger owner đã cài với source trước khi ghi fixture. Tạo một quán thử từ intent và digest OTP tổng hợp, dùng hàng Auth tổng hợp mang đúng dấu dispatch.
+- **TC-47(d) đạt.** Phiên đầu thực hiện RPC thật, bỏ kết quả ở phía gọi và commit. Phiên độc lập đọc UUID quán khớp `created_store_id` và UUID Auth có dấu dispatch đúng, số quán thử `112` khớp số đã giữ. Hai lần gọi lại với thẻ gốc dưới `service_role` đều trả đúng `{"status":"created"}`. `pg_stat_xact_user_tables` ghi chênh lệch 0 insert/update/delete trong mỗi lần gọi và hai sequence cấp số/audit không tiến. Đối soát trước/sau xác nhận đúng một quán, cấu hình, chủ active, audit tạo quán, thư Store Key queued, workflow seed pending và bản giữ số. Workflow có ba stage.
+- **TC-92 đạt.** Tạo phiên PIN quản lý thật trong giao dịch thử và xác nhận có `employee.manage`. Catalog báo `anon`, `authenticated` và `service_role` thiếu quyền `DELETE` trên `employees`, cả ba lệnh thực tế đều trả `42501`. Dùng role lab có quyền ghi để thực thi xóa chủ duy nhất. Sau câu lệnh, giao dịch thấy 0 chủ. `COMMIT` trả `23514/OWNER_PROTECTED` từ `employees_owner_boundary` và rollback. Chèn chủ thứ hai bị `employees_one_owner` từ chối với `23505`. Phiên độc lập thấy đúng một chủ active, cùng UUID cũ, sau từng phép thử. Nhánh khóa qua phiên quản lý đã trả `OWNER_PROTECTED` trên staging ngày 16/11. [Bằng chứng khóa](#tc43-92-2026-11-16) · [Constraint trigger chạy cuối giao dịch](https://www.postgresql.org/docs/16/sql-createtrigger.html)
+- **Hậu kiểm.** Deno đạt 2/2 bước. Lượt đầu dừng trước khi kết nối vì quyền môi trường chưa đủ cho thư viện `pg`. Lượt đạt dùng `--cached-only --no-lock --allow-env --allow-net=127.0.0.1:55467 --allow-read=D:/Workspace/pos-cafe-t06-local/supabase/candidate`. Giữ một quán synthetic đã commit làm đối chứng. Các phép thử ghi/xóa nhân viên rollback. DB xác nhận quán thử còn đúng một nhân viên và 0 phiên nhân viên. PostgreSQL đã dừng.
+
+Mục 9.4 đã có bằng chứng theo các môi trường trong testplan. Tại checkpoint này, mục 9.1 còn bằng chứng seed hai thiết bị, đã bổ sung ở [TC-09](#tc09-local-2026-11-17). Mục 9.5 chờ quyết định giữ/dọn fixture staging. [Checklist](../../../openspec/changes/add-owner-account-and-store-provisioning/tasks.md#9-kiểm-thử-giai-đoạn-1)
+
+| Tệp trong `D:/Workspace/pos-cafe-t06-pg16-runtime` | SHA-256 |
+| --- | --- |
+| `tc47d-92-20261117.test.mjs` | `28fc2b04305ca6cacba99371ffa327950d9d6cb5782ef63e281de1927121a351` |
+| `tc47d-92-20261117-final.result.txt` | `88825df1c49db05c924b0b3fc37a1f62509bc79b7b6614277ff4d34f63f4f832` |
+| `tc47d-92-20261117-postflight.txt` | `9390d122f8a641414fd2719e5c283f2c17989a116afa3760e6fbfde7322ce5bc` |
+
+Hai reviewer độc lập trả `APPROVE` cho replay sau commit và đối soát UUID/số, cùng quyền DELETE và ràng buộc chủ quán. SHA-256 trước khi ghi verdict là `9713775b3fb2140d716ee8af853118a3e53682af0068125c4aa17d31608232ed` cho hồ sơ và `6b67b3dda83efad0bbde24cd56c870c3ac1aa4f5ee18d8fb3a4bef13d0e9fe4e` cho kế hoạch. `git diff --check` và OpenSpec strict đạt.
+
+<a id="tc09-local-2026-11-17"></a>
+
+#### TC-OWNER-09 · Seed trên hai thiết bị mô phỏng và mất phản hồi sau commit
+
+Ngày 17/11/2026, Playwright đạt 3/3 trên worktree T06 base `610f198`. Hai browser context Chromium có bộ nhớ riêng và cùng thao tác trên một quán thử trong mỗi kịch bản. Giao diện ghép thiết bị và nhập PIN dùng fixture. Seed gate, adapter seed và adapter đọc sơ đồ POS là mã ứng dụng. Bridge loopback ánh xạ mỗi context vào một phiên chủ được cấp riêng bằng `permission_start_session` và một kết nối PostgreSQL riêng. Worker và kết nối đối soát cũng độc lập. PostgreSQL 16.15 dùng DB `pos_cafe_t06_contract_failures1611` OID `58644`; runner so thân năm hàm seed/readiness với SQL candidate. Lượt này chạy trên máy local.
+
+| Nhánh | Cách kiểm và kết quả quan sát |
+| --- | --- |
+| (a), (b) · Hoàn tác và thử lại | Trigger thử chỉ gây lỗi khi bản ghi nhân viên mẫu đã xuất hiện trong giao dịch. Worker lỗi rồi thao tác Thử lại tiếp tục lỗi. Cả hai context hiện màn lỗi và chưa mở POS. Sau mỗi lỗi, DB có 0 nhân viên mẫu, nhóm món, món, khu vực, bàn, audit seed và stage đã commit. Quán và một suất đã dùng còn nguyên. Khi bỏ lỗi, Thử lại ghi đúng một bộ mẫu. |
+| (c), (e) · Phiên hết hạn và cashier | Trên fixture ở `needs_retry`, gọi cả hai RPC nhân danh phiên chủ đã hết hạn và phiên cashier. Từng lời gọi trả `EMPLOYEE_SESSION_REQUIRED` hoặc `OWNER_ROLE_REQUIRED`; đọc lại trạng thái seed và số dòng sau mỗi lần từ chối ngay trong giao dịch cho kết quả bằng trước lượt gọi. Rollback phần dựng phiên cashier và ép hạn. |
+| (d) · Chưa biết kết quả seed | Khi DB ở `pending`, cả hai context hiện màn chờ và chưa hiện nút Thử lại/Bỏ mẫu. Gọi trực tiếp hai RPC trả `INITIAL_SEED_NOT_READY`; DB giữ nguyên trạng thái, revision, generation và số dòng. Bằng chứng ngày 16/11 kiểm bổ sung cùng hai lời gọi ở `in_progress`. [Đối chiếu checklist](#t06-checklist-9-2026-11-16) |
+| (f), (h) · Bỏ mẫu thắng hoặc Thử lại thắng | Bấm từ hai context. Chỉ nhả giao dịch đầu khi `pg_blocking_pids` xác nhận lời gọi thứ hai đang bị giao dịch đầu chặn. Cả hai POS vẫn đóng trong lúc tranh khóa. Khi Bỏ mẫu thắng, hai RPC đọc `skipped`, generation 0. Cả hai mở POS trống, và worker cũ gọi lại chỉ đọc `skipped`. Khi Thử lại thắng, hai RPC đọc `completed`, generation 1; cả hai mở POS với đúng bốn ID bàn đọc từ DB. |
+| (g) · Mất phản hồi sau commit | Lượt worker đầu commit và kết nối độc lập thấy `completed` trước khi harness thay phản hồi gốc bằng HTTP 502 rỗng. Hai context đang chờ tự thăm dò lại và cùng mở POS. Ở lượt Thử lại, Playwright ngắt phản hồi của context A bằng `ERR_CONNECTION_RESET` sau khi kết nối độc lập đã thấy commit. Hai context cũng mở POS. Các lần gọi lại hai RPC dưới hai phiên chủ đọc `completed`; đối soát giữ nguyên generation 1, revision, hai nhóm món, sáu món, một khu vực, bốn ID bàn, một nhân viên mẫu, một audit, ba stage đã commit và một suất quán đã dùng. |
+
+Kịch bản dùng ba quán synthetic `119–121` trong lượt đạt. Các lượt chỉnh harness gặp lỗi tên bảng/cột trong truy vấn, đường vào fixture giao diện và lệnh nhả khóa đến trước khi harness sẵn sàng. Các lượt đó được giữ riêng và không tính vào kết quả đạt. Hậu kiểm giữ chín quán synthetic gồm cả các lượt chẩn đoán, đóng các context và Vite, thu hồi phiên thử, xác nhận 0 phiên fixture chưa thu hồi, 0 trigger ép lỗi, 0 kết nối DB khác rồi dừng PostgreSQL portable.
+
+Cách chạy lại từ worktree T06 là khởi động PostgreSQL ở cổng `55467`, đặt `POS_CAFE_T06_TEST_DSN=postgresql://t06_local@127.0.0.1:55467/pos_cafe_t06_contract_failures1611`, đặt `DENO_DIR=D:/Workspace/pos-cafe-t06-pg16-runtime/deno-cache` rồi chạy `D:/Workspace/pos-cafe-t06-pg16-runtime/package/deno.exe run --cached-only --allow-env --allow-net=127.0.0.1:55467,127.0.0.1:5177 --allow-read=D:/Workspace/pos-cafe-t06-local/supabase/candidate D:/Workspace/pos-cafe-t06-pg16-runtime/tc09-20261117-db.mjs`. Chạy `node node_modules/@playwright/test/cli.js test -c D:/Workspace/pos-cafe-t06-pg16-runtime/tc09-20261117-browser.config.mjs`. Mỗi lượt mới tạo fixture synthetic riêng.
+
+| Tệp minh chứng tại `D:/Workspace/pos-cafe-t06-pg16-runtime` | SHA-256 |
+| --- | --- |
+| `tc09-20261117-db.mjs` | `1920049c511a4b7959e3b9f584665fd21ff4aff2ee1bc839ea53101adbacde3f` |
+| `tc09-20261117-browser-entry.mjs` | `907cbefb78f654ce628c13e3d05f3a19c927557b77e235c8e4cbea384d573559` |
+| `tc09-20261117-vite.mjs` | `9b705a00797aa594f7c86526d6e717eaa31c5e1ba7a8753337d8886b6bf5206a` |
+| `tc09-20261117-browser.config.mjs` | `481727a15d42df45f532457bd57e694bb7c2f10c33e6f151b06de9d4e01e1cd8` |
+| `tc09-20261117-browser.spec.mjs` | `5aaa7a19a4210acf415c6919356a826e80d2afb45d5aba125cbb1a8a80cc43ce` |
+| `tc09-20261117-browser-accepted.result.txt` | `eeb2087f6a511b2e69662e6253a1327104dd920bb9551b70342c2b3014cd12d9` |
+| `tc09-20261117-db-accepted.result.txt` | `a3ca277e8b01be5ee083fa3e5a2dbd953769b75a5f4f01dc4d4fef39718d2b38` |
+| `tc09-20261117-postflight.txt` | `805e81e8f04a6bb319f294eef4d8c25a43402800ac0a4ad1b34c4761b9053c08` |
+| `t06-checklist-20261116-final.result.txt` | `9524dc722847cea30af373ba9515cad77db4d2ab8b0f714d959c6504ee129577` |
+
+Hai reviewer độc lập trả `APPROVE` cho phần SQL/tranh khóa/mất phản hồi và phần giao diện hai context/checklist. Đã xử lý góp ý về điểm đồng bộ tranh khóa, kiểm POS chưa mở trong lúc đợi và quyền Deno khi tái hiện. SHA-256 của candidate đã duyệt trước khi ghi verdict là `3b694853630cd2521f50d06f894548ef034d0a5908bc7ac11ecc27394ebbb010` cho hồ sơ, `09ae5991066d3e4bb3a7c955a940256806f038ddaff61c2065406f8113c78f32` cho kế hoạch và `27c9c1cde3d01b8c462f74ab656df66a9c7d6512d1cf17200173a0fc8d18091d` cho checklist. `git diff --check` và OpenSpec strict đạt.
+
+<a id="t06-inventory-9-5-2026-11-17"></a>
+
+## Mục 9.5 — Kiểm kê staging chỉ đọc ngày 17/11/2026
+
+[Báo cáo độc lập và danh sách trình duyệt](g01-g10-t06-staging-inventory-2026-11-17.md) đối chiếu đầy đủ danh sách staging với phạm vi giai đoạn 1; tách TC-92 khóa trên staging khỏi DELETE/ràng buộc chủ ở PostgreSQL cô lập. SQL chỉ đọc lúc 15:19–15:23 UTC+7 thấy 26 quán, 17 owner account, 29 Auth user, 0 phiên Auth và 0 phiên nhân viên còn hiệu lực. `0007/0011` suspended; `0022/0023` active, còn đơn/payment/ảnh R07. Ba Auth không gắn quán và sáu object Storage được liệt kê riêng. Đề xuất dọn đợt đầu `0005/0017/0018`, giữ 23 quán còn lại; chưa được Linh duyệt, chưa lập recipe xóa/backup cho đợt dọn và không thay dữ liệu. 9.5 vẫn mở. Các con số này thay mốc kiểm kê cũ cho hiện trạng hôm nay, không thay lịch sử kiểm thử hoặc mở quyền dọn.
+
+[Đối chiếu phụ thuộc lúc 15:49 ngày 17/11](g01-g10-t06-cleanup-preflight-2026-11-17.md) xác nhận dọn kéo theo operation, mail Store Key, audit và dấu cấp số/Auth. Sau đối chiếu, Linh chốt giữ `0005/0017/0018` và xác nhận lựa chọn này hoàn tất phần xử lý dữ liệu thử. Đã đánh dấu 9.5 dựa trên bằng chứng test tay và quyết định giữ. [Quyết định của Linh](g01-g10-t06-cleanup-preflight-2026-11-17.md#t06-retention-decision-2026-11-17).
+
+<a id="t06-con-lai-2026-11-17"></a>
+
+## Việc còn lại để đóng T06 ngày 17/11/2026
+
+Tại mốc rà 17/11, đã đối chiếu `origin/main@81c37dd`, `origin/docs@fc2e231`, worktree code T06 base `610f198` và bộ hồ sơ chưa commit. So sánh `610f198...81c37dd` trên GitHub chỉ liệt kê `README.md`. Các bản vá SQL/Edge đã kiểm riêng, gồm TC-29(a)/47(b), TC-41, TC-29(b,c)/105(5), TC-30 và TC-44(c). Riêng gói SQL/Edge có năm tệp sửa và một tệp mới. Mốc đóng gói, hồi quy local và trạng thái PR ngày 18/11 nằm ở [checkpoint tiếp theo](#t06-backend-pr-2026-11-18). Phiên bản chạy trên staging và bằng chứng từng bản vá đã ghi trong các mốc trên.
+
+| Việc | Trạng thái tại mốc rà soát |
+| --- | --- |
+| Chốt nguồn phát hành và hồi quy | Tập hợp các delta SQL/Edge đã kiểm và cách áp từ nguồn, chạy lại các gate áp dụng trên đúng candidate cuối, review rồi đưa code vào `main` và hồ sơ vào `docs` theo hai luồng riêng. Chưa có bằng chứng toàn gói trên candidate cuối. [So sánh hai commit main](https://github.com/nguyentronglinh045/pos-cafe/compare/610f198d96765b01f3e0058bd793ccf5164a44a2...81c37dd1ac04fe01424b729db2e877013d2b9092) |
+| Gỡ luồng cũ | Staging đã chặn RPC cũ và signup công khai. Trong source, `CreateStoreScreen.tsx:23` còn fallback legacy, `authRepo.ts:94` còn `signUp` ở đường tạo cũ. Còn 7.1, 7.2 và test phụ thuộc ở 7.4. Smoke đã chuyển sang ghép quán thử có sẵn và đạt 5/5 theo 7.5. [Kết quả 7.5](#t06-smoke-75-2026-11-17) |
+| Nhãn môi trường và CI | Hai nhãn tạm/mock còn ở `src/app/screens/OwnerCreateRequestScreen.tsx:156` và `:201`, trong khi Protected Preview đã nối staging. Lỗi CI lặp ở `architectureBoundaries` vẫn chưa rõ nguyên nhân. Ba rerun cũ đạt; giả thuyết timeout chưa được chứng minh. [Theo dõi CI](#lỗi-ci-lặp-lại-ở-kiểm-thử-ranh-giới-kiến-trúc) |
+| Checklist và bằng chứng | Đã đồng bộ tài liệu 10.1–10.7, đã đóng 9.5 và 8.7–8.8 theo bằng chứng dữ liệu demo, kiểm lại staging và thông báo ghép lại. [Đối chiếu 8.7–8.8](#t06-87-88-2026-11-17) · [Checklist](../../../openspec/changes/add-owner-account-and-store-provisioning/tasks.md). |
+| Đường thư | TC-78 và OTP/Store Key thật có bằng chứng. Cơ chế chặn chung thư mặc định Supabase chưa bật tại phép kiểm TC-78. REQ-OWNER-16 cho phép phát hành với rủi ro đã chấp nhận khi cơ chế tắt. Giới hạn đã ghi theo 10.5. Hộp thư riêng vẫn là việc của T05, lịch sử đã chốt giữ ngân sách cho staging/demo. [Giới hạn T06](../../limitations.md#tạo-quán-store-key-và-thư-t06) |
+
+Nhóm 9.1–9.6 đã có dấu kiểm. Linh đã xác nhận giữ `0005/0017/0018` đáp ứng phần xử lý fixture ở 9.5. T08/T09 còn phụ thuộc đóng giai đoạn 1. Hành vi ứng dụng khi khóa/mở ngoài nền R07 thuộc T10.
+
+<a id="t06-doi-chieu-tai-lieu-2026-11-17"></a>
+
+## Đồng bộ tài liệu và đối chiếu checklist T06 ngày 17/11/2026
+
+Đã cập nhật mục 10.1–10.7 trong worktree tài liệu. FR-01/02, NFR-02, kiến trúc từ Vercel đến Edge/DB/worker, delta dữ liệu, màn và giới hạn có dẫn nguồn T06. Context, danh mục, roadmap và hàng kiểm email thủ công trỏ tới đúng hồ sơ. Các mốc trước T06 được giữ với ngày và nguồn. [Checklist](../../../openspec/changes/add-owner-account-and-store-provisioning/tasks.md#10-tài-liệu-giai-đoạn-1).
+
+| Mục | Đã đánh dấu ở checkpoint này | Phần chưa đánh dấu và nguồn |
+| --- | --- | --- |
+| 0 | 0.1–0.2 theo quyết định 45 và mốc mock trước staging. 0.3 lưu hai vòng TC-104 ngày 12–13/11 theo cấu hình, nguồn và fixture. Chốt ô tổng sau khi bổ sung chứng cứ 8.7–8.8 ngày 17/11. | [Kế hoạch và mốc mock 10/11](../g01-g10-plan.md) · [Handoff FE](g01-g10-t06-owner-mock-ui-handoff-2026-11-10.md) · [Hai vòng staging](g01-g10-t06-staging-inventory-2026-11-17.md). |
+| 1–1c | 1.5, 1c.3–1c.5. T05 đã đối chiếu tổng thư và Linh chốt trần cho staging/demo. 1c.3 ghi rủi ro, 1c.4 có TC-78, 1c.5 có hai vòng TC-104 và điều kiện khôi phục ở quyết định 45 | 1.1–1.2 còn hộp thư riêng. 1b giữ là tùy chọn. 1c.1–1c.2 chưa chốt/cài chặn chung thư mẫu. Hồ sơ ngân sách nội bộ tại worktree `D:/Workspace/pos-cafe-t05-docs-local`, `docs/workflow/tasks/g01-g10-t05-staging-readonly-2026-11-11.md:74`. [TC-78](#tc-owner-78-103-2026-11-16) · [Quyết định 45](../../../openspec/changes/add-owner-account-and-store-provisioning/proposal.md). |
+| 2–3 | 2.1–2.8, 3.1–3.7 theo SQL, kiểm contract, R07 hosted/DB cô lập và cutover đã ghi | 2.0 chưa có readback trạng thái liên kết CLI hiện thời. Các đường T06 đã dùng có đối chiếu đúng đích staging. [Cutover và cấu hình](#staging-và-cấu-hình-cần-thiết) · [R07](#r07-hosted-2026-11-15) · [ACL](#t06-evidence-audit-2026-11-16). |
+| 4 | 4.1–4.3, 4.5–4.11 và 4.13–4.15 theo mã và bằng chứng local/staging đúng lane | 4.4 có OTP tạo quán và giới hạn, phần nhiều loại OTP còn ở 11b. 4.12 có bằng chứng TC-40 về Admin API/marker, thiếu biên nhận đối chiếu tài liệu trước lần tạo thật đầu. [Lượt local](#kiểm-local-đã-chạy) · [Checklist theo lane](#t06-checklist-9-2026-11-16). |
+| 5–7 | 5.3, 5.4, 5.6, 6.1–6.7, 7.3 và 7.5. Có Supabase adapter/mock, CI lịch sử chạy lại đạt, luồng FE và ghép/PIN. Smoke 5/5 trên quán `0004`. [Kết quả 7.5](#t06-smoke-75-2026-11-17) | 5.1/5.2/5.5 có phần tạo quán, còn `IOwnerActionPort` và kiểu/wiring thao tác giai đoạn 2. Các mục 7.1/7.2/7.4 còn nhánh legacy và các kiểm thử dựa vào đó. [Handoff FE](g01-g10-t06-owner-mock-ui-handoff-2026-11-10.md) · [TC-09](#tc09-local-2026-11-17) · [Các việc còn lại](#t06-con-lai-2026-11-17). |
+| 8 | 8.1–8.3, 8.5–8.8. Phạm vi `0001–0003` có duyệt và rehearsal. Backup DB, Storage placeholder 0 byte và lệnh fence có biên nhận. Cutover commit 11/11, kiểm `stores` rỗng trước áp schema. Đã kiểm dữ liệu demo và hiển thị trên quán `0004`. Auth staging từ chối các key và lần làm mới phiên cũ đã kiểm. Đã báo Linh ghép lại nếu mở tab hoặc máy cũ. | 8.4 điều kiện trước cutover không áp dụng, khóa mới đã sao lưu riêng. [Đối chiếu tiếp theo](#t06-87-88-2026-11-17). |
+| 9–10 | 9.1–9.6 có dấu kiểm. 9.5 đóng theo bằng chứng test tay và xác nhận của Linh. 10.1–10.7 đã đồng bộ tài liệu | [Quyết định 9.5](g01-g10-t06-cleanup-preflight-2026-11-17.md#t06-retention-decision-2026-11-17). |
+
+Lượt này đối chiếu hồ sơ và cập nhật tài liệu. Hồi quy trên bản cuối, thay đổi code, cấu hình và staging vẫn theo các công việc tương ứng.
+
+<a id="t06-87-88-2026-11-17"></a>
+
+## Đối chiếu lại 8.7–8.8 ngày 17/11/2026
+
+- **Cutover và fixture mới của 8.7.** Biên nhận `cutover-20261111T115234542Z.receipt.json` ghi `COMMITTED_VERIFIED` lúc 18:56:18 UTC+7. Sau commit, `owner_account_id` bắt buộc và các quyền bootstrap/cấp số cũ đã khóa. Biên nhận `owner-otp-20261111T120546713Z.receipt.json` ghi quán mới `0004` ghép bằng Store Key, mở PIN chủ và seed `ready` lúc 19:10:10. Hai vòng staging sau đó dùng quán mới. [Hồ sơ cutover và fixture](#staging-và-cấu-hình-cần-thiết) · [Hai vòng TC-104](g01-g10-t06-staging-inventory-2026-11-17.md).
+- **Dữ liệu runbook.** SQL chỉ đọc trên đúng staging lúc 19:40:28 UTC+7 thấy cả `0004` và `0029` active, seed `completed`, mỗi quán có một owner và một cashier active, hai danh mục, sáu món đang bán, hai nhóm/bốn lựa chọn modifier, ba món có tùy chọn, một khu, bốn bàn và bảy decor. Owner active ở cả hai quán không có ghi đè quyền hoặc yêu cầu đổi PIN. Catalog có đủ quyền owner được nêu ở runbook để xem lịch sử, hủy đơn đã trả, chỉnh quyền và xem báo cáo. Hai quán chưa có đơn trả tiền sẵn, việc chuẩn bị một đơn chỉ áp dụng nếu cần lịch sử/báo cáo có dữ liệu trước demo. `0022/0023` có đơn đã thanh toán nhưng thiếu bộ bàn và modifier của demo, nên không lấy hai quán R07 thay fixture demo. Cả `0004/0029` chưa gán `background_asset_key` cho bàn. Biên nhận SQL đã lọc ở `D:/Workspace/pos-cafe-t06-pg16-runtime/t06-inventory-20261117/cutover-87-88-readback.json`. [Checklist runbook](../../demo-runbook.md#checklist-trước-demo).
+- **Kiểm sơ đồ trên quán `0004`, 21:26:45–21:26:54 UTC+7.** Chromium mở Vite loopback từ source `610f198d96765b01f3e0058bd793ccf5164a44a2` nối Supabase staging. Store Key lưu DPAPI ghép thành công đúng Auth subject và quán active. Một lần thử PIN Linh đề xuất nhận `INVALID_PIN`. PIN chủ quán lưu DPAPI mở phiên owner bình thường của đúng quán. RPC `permission_get_floor_operational` trả HTTP 200 với một khu, bốn bàn và bảy decor. Màn hình có khu Tầng trệt, bốn bàn và bảy phần tử decor. Cả bốn bàn có nền mặc định theo projection và CSS, nên bằng chứng nền bàn áp dụng cho cấu hình mặc định. Đã thu hồi phiên owner vừa tạo và kiểm lần đọc lại bị từ chối. Đăng xuất phiên ghép vừa tạo, Auth trả HTTP 204. Đã đóng Chromium và Vite.
+- **Biên nhận UI.** Tệp `cutover-87-demo.result.json` và ảnh `cutover-87-demo-floor.png` nằm trong `D:/Workspace/pos-cafe-t06-pg16-runtime/t06-inventory-20261117/`, cùng trình chạy `cutover-87-demo.ps1` và `cutover-87-demo.mjs`. Ảnh chỉ chứa sơ đồ bàn. Đây là lần kiểm fixture demo từ app local nối staging; bằng chứng hai vòng Protected Preview nằm ở TC-104. Checklist đánh dấu xong 8.7.
+- **Kiểm lại trình chạy.** Đã sửa lỗi đọc HTTP status ở lần đầu, trước bước nhập PIN. Lần đạt đã ghi kết quả sau khi dọn phiên. Sau đó PowerShell báo lỗi dọn biến tham số PIN có kiểm tra định dạng. Đã sửa và kiểm riêng bước dọn offline.
+- **Quán cũ và phiên ở 8.8.** Biên nhận cutover ghi ba quán `0001–0003`, ba Auth user, ba Auth session và chín refresh token trước khi dọn. Sau commit các nhóm đó đều về 0. SQL chỉ đọc 17/11 tiếp tục thấy 0 quán số 1–3 và 0 tài khoản kỹ thuật ghép tương ứng. PostgreSQL cô lập đã từ chối RPC phiên quán với subject của quán cũ đầu tiên trong rehearsal. [Kiểm phiên trong rehearsal và hậu kiểm](#staging-và-cấu-hình-cần-thiết).
+- **Dấu vết ghép trước cutover.** Ngày 23/10 có một phiên cashier trên trình duyệt của `0001` được giữ cho Linh demo, và kiểm Auth/API dùng `0001–0002`. Với `0003`, trình kiểm riêng đã đăng xuất Auth, gỡ ghép và đóng tab. T05 ngày 11/11 dùng lại `0001` qua API và dọn phiên của lượt đó. Hồ sơ xác định được người dùng phiên demo là Linh. Linh cho biết không nhớ máy nào khác từng ghép và đề nghị soát các lượt kiểm tự động. [H1–H11](permission-staging-functional-2026-10-23.md#kết-quả-chạy-thật) · [Quán 0003](permission-final-push-2026-10-23.md#kiểm-một-quán-test-sau-sửa-cấu-hình).
+- **Kiểm trực tiếp trên Auth staging.** Lúc 21:33:02–21:33:05 UTC+7, ba Store Key cũ lưu từ lượt kiểm ngày 23/10 đều khớp project, số và UUID quán. Dùng mỗi key một lần qua password grant của POS. Cả ba trả HTTP 400 `invalid_credentials`, không cấp access token hoặc refresh token. Đăng nhập quán `0004` cùng staging lúc 21:26 là phép đối chứng dương.
+- **Kiểm làm mới phiên từ backup trước cutover.** Dùng `pg_restore` đọc vào bộ nhớ hai bảng Auth trong đúng archive đã xác minh SHA-256. Backup có hai phiên của `0001` (một trình duyệt, một script), một phiên script của `0002`, và không có phiên của `0003`. Mỗi phiên có một refresh token được ghi chưa thu hồi tại thời điểm chụp backup. Dùng đúng ba token đó để thử làm mới lúc 21:36:28–21:36:30 UTC+7. Cả ba trả HTTP 400 `refresh_token_not_found`, không cấp token. Đây là bằng chứng kiểm refresh grant của ba phiên trong backup. Phiên của `0003` có biên nhận đăng xuất và gỡ ghép lịch sử.
+- **Thông báo ghép lại.** Ngày 17/11 đã báo trực tiếp Linh trong chat kiểm T06 rằng tab hoặc máy từng ghép `0001–0003` cần gỡ ghép và dùng Store Key hiện hành của quán cần vào. Phạm vi thông báo là người dùng demo được xác định từ hồ sơ và trao đổi với Linh. Checklist đánh dấu xong 8.8.
+
+Hai biên nhận Auth đã lọc là `cutover-88-old-keys.result.json` và `cutover-88-archived-sessions.result.json` trong `D:/Workspace/pos-cafe-t06-pg16-runtime/t06-inventory-20261117/`. Trình kiểm tương ứng cùng thư mục chỉ gửi thông tin xác thực đến đúng Auth staging. Biên nhận lưu số quán, kết quả, số lượng phiên và nhóm client.
+
+Mục 0.3 chốt theo mốc mock 10/11, T05 đã sẵn sàng tích hợp và cutover 11/11, hai vòng TC-104 trên staging ngày 12–13/11, rồi bằng chứng bổ sung 8.7–8.8 ngày 17/11. TC-104 có OTP thật, nguồn Preview, cấu hình signup trước/sau và fixture từng vòng theo 1c.5. Mốc 17/11 là kiểm riêng sau cutover và hoàn thiện hồ sơ 0.3. [Hai vòng Protected Preview](#tc-owner-104-protected-preview).
+
+<a id="t06-smoke-75-2026-11-17"></a>
+
+## Smoke Supabase mục 7.5 trên staging ngày 17/11/2026
+
+Linh chọn quán thử đã seed `0004` cho lượt ghi staging. Playwright mở app Vite loopback ở worktree `D:/Workspace/pos-cafe-t06-local` từ base `610f198d96765b01f3e0058bd793ccf5164a44a2` với phần sửa 7.5 đang ở working tree. Admin và cashier ghép đúng quán trên Supabase staging `ineckiashpwloncxnbqx`. Lệnh `npm run smoke:supabase` chạy đúng file smoke một worker. Quán được ghép bằng Store Key từ môi trường runner. Bộ test dùng UUID đúng đơn do ca tạo và số phiếu do server cấp. Cấu hình chạy ở [Cách chạy](../../testing.md#cách-chạy).
+
+| Ca | Kết quả lượt cuối |
+| --- | --- |
+| Ghép, tạo đơn và thanh toán | PASS. Lịch sử có đúng UUID đã thanh toán. Số đơn và doanh thu tăng theo đơn. |
+| Quyền thu ngân | PASS. Thu ngân tạo được đơn, UI ẩn thanh toán và RPC đăng ký lệnh thanh toán trả `FORBIDDEN`. Đơn giữ nguyên version, được đóng ở bước dọn. |
+| Hủy đơn đã thanh toán | PASS. Đúng đơn chuyển sang `void` với lý do đã chọn. Doanh thu và số đơn trả giảm, thống kê hủy tăng. |
+| Tách món thanh toán | PASS. Trả 1/2 số lượng, phần đã trả giữ số phiếu ban đầu, phần còn lại có số mới. Chọn lại để trả nốt, hai UUID paid độc lập và bàn trống. |
+| Realtime hai trình duyệt | PASS. Có tín hiệu WebSocket topic `orders` sau tạo và thanh toán. Trình duyệt còn lại cập nhật đúng bàn. |
+
+Lượt đầu lúc 22:07 đạt 3/5. Đã sửa kiểm UI quyền, đăng ký operation trước execute và chọn đúng topic của probe Realtime. Ledger ghép UUID, actor, thời điểm và ca thất bại xác nhận chính hai đơn mở thuộc lượt đầu. Hai đơn được đóng qua `void_open` trước lượt sau. Lượt cuối bắt đầu 22:12:50 UTC+7, chạy 67,9 giây, **5 đạt, 0 thất bại, 0 bỏ qua, 0 flaky**. Hậu kiểm 22:14:34 xác nhận 0 đơn mở, cashier overrides trở lại `null` và PIN giữ nguyên. Audit và dữ liệu đơn/thanh toán thử được giữ tại `0004`. Các phiên kiểm được thu hồi và đăng xuất cục bộ.
+
+Biên nhận và trình chạy ở `D:/Workspace/pos-cafe-t06-pg16-runtime/t06-inventory-20261117/`. Lượt đạt là `smoke-75-20261117T151240584Z.playwright.json`, đối chiếu trước và sau ở `smoke-75-20261117T151240584Z.preflight.json` và `smoke-75-20261117T151434876Z.preflight.json`. Lượt đầu là `smoke-75-20261117T150719347Z.playwright.json`. Mã, log và biên nhận kiểm không chứa Store Key hoặc PIN của lượt chạy. Mục 7.5 đã đóng cho bản smoke được kiểm. Các mục gỡ luồng cũ và gate trên candidate phát hành theo dõi riêng.
+
+<a id="t06-backend-pr-2026-11-18"></a>
+
+## Đóng gói bản vá SQL/Edge và hồ sơ còn lại ngày 18/11/2026
+
+Linh yêu cầu giữ hai file SQL nguồn và gom bản vá SQL/Edge cùng hồ sơ T06 còn lại thành PR riêng. Nhánh mã `fix/t06-provisioning-backend` dựa trên `main@81c37dd`, chứa đúng sáu tệp. Nhánh hồ sơ `docs-t06-remaining-evidence` nối tiếp `838be0c` của PR #31 để xuất bản phần T06 còn lại. Chỉ mục 7.5 thuộc hai PR trước. [PR #30](https://github.com/nguyentronglinh045/pos-cafe/pull/30) · [PR #31](https://github.com/nguyentronglinh045/pos-cafe/pull/31).
+
+Mã sáu tệp đã mở [PR #32](https://github.com/nguyentronglinh045/pos-cafe/pull/32) vào `main`, commit `46c3834773608b9f8e878cb637f075ff98f7a0d6`. PR hồ sơ nối tiếp nhánh PR #31 cho tới khi nhánh đó được hợp nhất.
+
+| Tệp mã | SHA-256 canonical |
+| --- | --- |
+| `supabase/candidate/owner-provisioning-commit.sql` | `eed9711e8c7ec6d817d9d072437a55035a1325926efb95579b47cdf29b8f2b67` |
+| `supabase/candidate/owner-provisioning-closeout.sql` | `e504dc953e61e36935596e4a99b9b5bb2389bb9247cc50eb70c5f27f594c5cef` |
+| `supabase/functions/owner-provisioning/handler.ts` | `24c13ad1f6e29659a80c331796a08804472ffc14b3a3922840c5b463194fce55` |
+| `supabase/functions/owner-provisioning/index.ts` | `9068c77eebfa3966ab1b563f7527e64a2a059b7d8079b19cf119b2fd0e1779e4` |
+| `supabase/functions/owner-provisioning/local.test.ts` | `c8604ac644f2b8815eacc59688346e5136bfc9588f642c3afbd1a846bd8c28f5` |
+| `supabase/functions/owner-provisioning/auth-create-error.ts` | `116499c7fe3d79668081d59691cf877888f6b425456b4e8916d38ac2cc409102` |
+
+Hai file SQL là nguồn của bundle khởi tạo T06. Khi áp lên DB hiện hữu cần dùng gói thay đổi theo định nghĩa/ACL đã kiểm ở các mốc staging trên. Bản Edge gọi các RPC đã lưu trong DB. Lượt đóng gói 18/11 chỉ kiểm local và xuất bản nguồn.
+
+### Hồi quy trên nguồn đóng gói
+
+Dùng PostgreSQL portable 16.15 hiện có ở `127.0.0.1:55467` và Deno 2.9.6 với dependency cache. DB mới `pos_cafe_t06_contract_pr20261118` được khởi tạo từ migrations và bundle của đúng checkout PR. Auth và SMTP là giả lập trong các bài kiểm. Deno chỉ được mở mạng loopback.
+
+| Kiểm tra | Kết quả |
+| --- | --- |
+| Kiểm tra kiểu entry point và local test | PASS, dùng dependency đã cache. |
+| `local.test.ts` | 3 test đạt, gồm 2 bước con về cảnh báo thư hết hạn claim và thiếu hash PIN. |
+| Hồi quy TC-29/30/33/105/47 từ recipe 16/11 | 12 đạt, kiểm hoàn suất/giữ suất, replay và trạng thái bền sau rollback/commit. |
+| TC-44(c) hai worker tranh sweep | 1 đạt, đúng một lượt trả ID thư hết hạn, kiểm quyền và hàm sweep cũ. |
+
+Hai recipe bổ sung được dẫn từ bản đã kiểm trước và chỉ đổi đích DB cùng import nguồn sang checkout PR. Manifest nguồn và các kết quả mới có tiền tố `backend-pr-20261118` tại `D:/Workspace/pos-cafe-t06-pg16-runtime/`. Dữ liệu thử ở DB có OID `62400`, dung lượng logic hậu kiểm `13.310.999` byte. PostgreSQL đã dừng sau lượt kiểm.
+
+Linh duyệt xóa riêng DB mới ở trên. Ngày 18/11 lúc 09:19:33 UTC+7, đã đối chiếu tên, OID `62400`, owner `t06_local`, đường dẫn `D:/Workspace/pos-cafe-t06-pg16-runtime/data/base/62400` và 0 client trước `DROP DATABASE`. Hậu kiểm DB và thư mục không còn; danh sách tên/OID các DB khác khớp tiền kiểm. Bốn tệp nguồn/kết quả trong biên nhận giữ nguyên SHA-256, PostgreSQL đã dừng. Ổ D tăng `12.922.880` byte trống từ mốc ngay trước DROP tới sau khi dừng server. Biên nhận `D:/Workspace/pos-cafe-t06-pg16-runtime/backend-pr-20261118-cleanup.json` ghi phép đo và các hash.
+
+Lần thử đầu trên DB cũ có hàng thư fixture từ các lượt trước nên assertion số thư không đạt. Đã chuyển sang DB rỗng và khởi tạo đúng bundle để kiểm độc lập. Lượt đầu Deno thiếu quyền đọc biến môi trường PostgreSQL và gặp cơ chế phân giải dependency ở checkout mới. Các lần kiểm cuối dùng quyền môi trường của tiến trình test và cache đã có. Mã của sáu tệp giữ nguyên qua các lượt này.
+
+### CI liên quan và phần tiếp theo
+
+CI đầu của PR #30 dừng ở `permission-full-target-policy.test.mjs` do pin `package.json` chưa cập nhật theo lệnh smoke. Đã cập nhật đúng SHA-256 canonical trong `ci/release-policy.json` ở commit `b1cc6fd` trên PR #30 và phép kiểm tương ứng đạt 2/2 local. Bản nguyên byte trong checkout Windows dùng CRLF nên hash file thô khác hash canonical LF được pin. Quy tắc kiểm nguồn và cờ `productionEnabled=false` được giữ.
+
+Nhóm 7 còn 7.1, 7.2 và 7.4. Các nhãn Preview, chẩn đoán lỗi CI lịch sử và gate trên candidate phát hành tiếp tục theo bảng việc còn lại. Bộ kiểm local ở checkpoint này gắn với đúng gói sáu tệp. Kết quả staging lịch sử giữ nguyên mốc và phạm vi từng lần kiểm.
 
 ## Tái hiện local
 

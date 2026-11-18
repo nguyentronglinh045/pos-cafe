@@ -30,7 +30,7 @@
 | `ports` | Hợp đồng dữ liệu/side effect, không chứa React |
 | `adapters` | Mock, Supabase, browser; mapping lỗi/DTO và I/O |
 
-Production `AppPorts` chỉ gồm **permission, write, auth, seed, print**. `permission` chứa authority, session, read projections, quản trị nhân viên, changes, signals, ảnh và quyền in. `LegacyAppPorts` giữ repository cũ cho test tương thích; sự tồn tại của nó không làm nó thành đường đọc/ghi UI hiện hành. Nguồn: [ports/index.ts:154](https://github.com/nguyentronglinh045/pos-cafe/blob/052a7d1e156425ea82ed1c9cf978d7ef4d4f3571/src/ports/index.ts#L154), [composition:24](https://github.com/nguyentronglinh045/pos-cafe/blob/052a7d1e156425ea82ed1c9cf978d7ef4d4f3571/src/app/runtimePorts.ts#L24), [Supabase factory:17](https://github.com/nguyentronglinh045/pos-cafe/blob/052a7d1e156425ea82ed1c9cf978d7ef4d4f3571/src/adapters/supabase/repos.ts#L17).
+Ở mốc 27/10, `AppPorts` gồm **permission, write, auth, seed, print**. `permission` chứa authority, session, read projections, quản trị nhân viên, changes, signals, ảnh và quyền in. `LegacyAppPorts` giữ repository cho kiểm thử tương thích. T06 bổ sung port tạo quán dưới đây. [Ports tại mốc 27/10](https://github.com/nguyentronglinh045/pos-cafe/blob/052a7d1e156425ea82ed1c9cf978d7ef4d4f3571/src/ports/index.ts#L154).
 
 [PermissionLifecycle:6](https://github.com/nguyentronglinh045/pos-cafe/blob/052a7d1e156425ea82ed1c9cf978d7ef4d4f3571/src/core/permissionLifecycle.ts#L6) nhận callback getRevision/getAuthority, dùng scheduler/timer; không mô tả toàn bộ core là hàm thuần. Ranh giới kiểm ở đây là phụ thuộc module, không phải cấm mọi side effect được inject.
 
@@ -41,6 +41,14 @@ Production `AppPorts` chỉ gồm **permission, write, auth, seed, print**. `per
 ## Data Flow Tổng Quát
 
 Màn → hook/flow → port theo purpose → adapter/RPC → DTO. Query keys chứa store, employee, generation phiên và purpose; response cũ sau đổi phiên không được khôi phục dữ liệu. UI chỉ giữ hồ sơ hiển thị; quyền lấy từ authority đã xác minh. Nguồn: [permissionSession.ts:28](https://github.com/nguyentronglinh045/pos-cafe/blob/052a7d1e156425ea82ed1c9cf978d7ef4d4f3571/src/features/shared/permissionSession.ts#L28), [read projections:59](https://github.com/nguyentronglinh045/pos-cafe/blob/052a7d1e156425ea82ed1c9cf978d7ef4d4f3571/src/ports/permissions.ts#L59).
+
+## Tạo quán qua OTP trên staging
+
+Ngày 17/11/2026, đối chiếu T06 với Protected Preview `610f198` và hồ sơ backend staging. Cấu hình Preview nối `storeProvisioning` vào giao diện. Adapter gửi yêu cầu phát OTP qua `/api/owner-otp` trên Vercel. Route ký IP do nền tảng chuyển tiếp và nội dung yêu cầu trước khi gọi Supabase Edge. Các yêu cầu xác minh, tra trạng thái và xác nhận đã lưu Store Key đi từ adapter tới Edge. [Composition](https://github.com/nguyentronglinh045/pos-cafe/blob/610f198d96765b01f3e0058bd793ccf5164a44a2/src/app/runtimePorts.ts#L45) · [Adapter](https://github.com/nguyentronglinh045/pos-cafe/blob/610f198d96765b01f3e0058bd793ccf5164a44a2/src/adapters/supabase/ownerProvisioningPort.ts#L22) · [Route ký](https://github.com/nguyentronglinh045/pos-cafe/blob/610f198d96765b01f3e0058bd793ccf5164a44a2/api/owner-otp.js#L29).
+
+`owner-provisioning` gọi RPC nội bộ để xác minh và giữ suất, rồi dùng Auth Admin API tạo tài khoản kỹ thuật. Giao dịch DB tiếp theo ghi quán, audit, thư chờ, workflow seed và kết quả `created`. Worker gửi thư và chạy seed. Lịch DB mỗi phút gọi worker để xử lý việc còn chờ. Tra trạng thái chỉ đọc kết quả lượt cũ. Auth và DB có ranh giới giao dịch riêng. Khi chưa rõ kết quả theo hợp đồng, hệ thống giữ suất. [Thiết kế](../openspec/changes/add-owner-account-and-store-provisioning/design.md) · [Biên nhận backend staging](workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#staging-và-cấu-hình-cần-thiết).
+
+Thiết bị ghép bằng Store Key rồi mở phiên PIN POS. DB chặn nghiệp vụ của quán `suspended` cả khi phiên đã mở, đồng thời cho thiết bị đã ghép đọc trạng thái quán mình. Hành vi giao diện khóa/mở còn lại theo T10. [Hợp đồng cô lập](../openspec/changes/add-owner-account-and-store-provisioning/specs/store-isolation/spec.md) · [R07 trên staging](workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#r07-hosted-2026-11-15).
 
 ## Navigation & State
 
