@@ -118,7 +118,9 @@ Mục này chuẩn bị và kiểm gói migration trên lane cô lập đã đư
 - [ ] 7.2 Cập nhật `src/adapters/supabase/authRepo.ts` cho khớp hợp đồng mới
 - [ ] 7.3 Xác nhận màn ghép thiết bị bằng Store Key giữ nguyên hành vi, theo quyết định 13
 - [ ] 7.4 Cập nhật các kiểm thử đang dựa vào luồng tạo cửa hàng cũ
-- [ ] 7.5 Sửa `tests/supabase/pos-cafe-supabase.spec.ts`: bỏ bước tạo quán, ghép vào quán thử tạo sẵn trên staging với Store Key qua biến môi trường
+- [x] 7.5 Sửa `tests/supabase/pos-cafe-supabase.spec.ts`: bỏ bước tạo quán, ghép vào quán thử tạo sẵn trên staging với Store Key qua biến môi trường
+
+  Ngày 17/11/2026 đạt 5/5 trên quán thử `0004` và Supabase staging. Hậu kiểm 0 đơn mở, quyền thu ngân trở về trạng thái ban đầu. [Bằng chứng 7.5](../../../docs/workflow/tasks/g01-g10-t06-smoke-staging-2026-11-18.md).
 
 ## 8. Cổng chặn — chuyển đổi staging trước vòng tích hợp
 
