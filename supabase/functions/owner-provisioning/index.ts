@@ -1,4 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2.45.0";
+import { classifyAuthCreateError } from "./auth-create-error.ts";
 import { makeOwnerHandler } from "./handler.ts";
 import { sendOwnerMail } from "./smtp.ts";
 
@@ -26,7 +27,7 @@ const handler = makeOwnerHandler({
     const result = await service.auth.admin.createUser({
       email, password, email_confirm: true, app_metadata: { pos_cafe_create_dispatch: dispatchToken },
     });
-    if (result.error?.code === "email_exists") return { kind: "no_effect" };
+    if (result.error) return { kind: classifyAuthCreateError(result.error) };
     return result.data.user?.id ? { kind: "created", userId: result.data.user.id } : { kind: "unknown" };
   },
   sendMail(message) {

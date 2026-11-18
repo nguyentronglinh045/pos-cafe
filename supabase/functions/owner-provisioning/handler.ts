@@ -5,12 +5,12 @@ type Form = { email: string; displayName: string; address: string; seedDemo: boo
 export type OwnerDependencies = {
   rpc(name: string, params?: Fields): Promise<unknown>;
   createAuth(input: { email: string; password: string; dispatchToken: string }): Promise<
-    { kind: "created"; userId: string } | { kind: "no_effect" | "unknown" }
+    { kind: "created"; userId: string } | { kind: "no_effect" | "rejected" | "unknown" }
   >;
   sendMail(input: { to: string; subject: string; body: string; id: string }): Promise<MailOutcome>;
   hmacKey: CryptoKey;
   otpEncryptionKey: CryptoKey;
-  storeEncryptionKey: CryptoKey;
+  storeEncryptionKey: CryptoKey | null;
   ingressKey: CryptoKey;
   workerKey: CryptoKey;
   clock(): number;
@@ -176,9 +176,13 @@ async function proof(deps: OwnerDependencies, intent: string, form: Form, code: 
 }
 
 async function provision(deps: OwnerDependencies, operationId: string, leaseToken: string): Promise<Fields> {
+  const bound = { p_operation_id: operationId, p_lease_token: leaseToken };
+  if (!deps.storeEncryptionKey) {
+    const failed = record(await deps.rpc("owner_fail_create_missing_config", bound));
+    return { status: failed.status === "failed" ? "failed" : "unknown" };
+  }
   const secret = newStoreSecret();
   const encrypted = await encrypt(deps.storeEncryptionKey, secret, operationId);
-  const bound = { p_operation_id: operationId, p_lease_token: leaseToken };
   for (;;) {
     const claim = record(await deps.rpc("owner_claim_create_auth", {
       ...bound, p_secret_encrypted: "\\x" + encrypted, p_key_version: 1,
@@ -192,8 +196,10 @@ async function provision(deps: OwnerDependencies, operationId: string, leaseToke
       ...bound, p_dispatch_token: claim.dispatchToken, p_result: auth.kind,
       p_auth_user_id: auth.kind === "created" ? auth.userId : null,
     }));
+    if (recorded.status === "failed") return { status: "failed" };
     if (recorded.authResult === "created") break;
     if (recorded.authResult !== "no_effect") return { status: "unknown" };
+    if (auth.kind === "no_effect") console.warn("owner_provisioning.auth_email_collision", { operationId });
   }
   const committed = record(await deps.rpc("owner_commit_created_store", bound));
   if (committed.status === "created" && validStoreNo(committed.storeNo)) {
@@ -208,6 +214,8 @@ async function provision(deps: OwnerDependencies, operationId: string, leaseToke
 }
 
 async function processMail(deps: OwnerDependencies, kind: "otp" | "store_key") {
+  const key = kind === "otp" ? deps.otpEncryptionKey : deps.storeEncryptionKey;
+  if (!key) return;
   const claim = record(await deps.rpc(`owner_claim_${kind}_mail`));
   if (claim.state !== "claimed") return;
   if (typeof claim.id !== "string" || typeof claim.claimToken !== "string" || typeof claim.email !== "string") return;
@@ -217,14 +225,14 @@ async function processMail(deps: OwnerDependencies, kind: "otp" | "store_key") {
     let subject: string;
     let body: string;
     if (kind === "otp") {
-      const otp = await decrypt(deps.otpEncryptionKey, claim.otpEncrypted, claim.otpEncryptionVersion,
+      const otp = await decrypt(key, claim.otpEncrypted, claim.otpEncryptionVersion,
         JSON.stringify(["otp-mail", claim.challengeId, claim.email]));
       if (!otpPattern.test(otp)) throw new Error("Invalid OTP envelope");
       subject = "POS Cafe - Ma xac nhan";
       body = `Mã xác nhận tạo quán của bạn là ${otp}. Mã có hiệu lực trong 10 phút kể từ lúc phát.`;
     } else {
       if (!validStoreNo(claim.storeNo) || typeof claim.operationId !== "string") throw new Error("Invalid store mail");
-      const secret = await decrypt(deps.storeEncryptionKey, claim.storeSecretEncrypted,
+      const secret = await decrypt(key, claim.storeSecretEncrypted,
         claim.keyEncryptionVersion, claim.operationId);
       subject = "POS Cafe - Store Key";
       body = `${String(claim.displayName ?? "")}\n${String(claim.address ?? "")}\nStore Key: ${claim.storeNo}-${secret}`;
@@ -264,7 +272,14 @@ export function makeOwnerHandler(deps: OwnerDependencies) {
           && /^[a-f0-9]{64}$/.test(signature)
           && await crypto.subtle.verify("HMAC", deps.workerKey, fromHex(signature), text.encode(`owner-work-v1\n${time}`));
         if (!allowed) return response({ ok: false }, 403);
-        await deps.rpc("owner_sweep_otp_mail");
+        const expiredStoreKeyMails = await deps.rpc("owner_sweep_mail");
+        if (Array.isArray(expiredStoreKeyMails)) {
+          for (const mailId of expiredStoreKeyMails) {
+            if (typeof mailId === "string" && uuid4.test(mailId)) {
+              console.warn("owner_provisioning.store_key_mail_claim_expired", { mailId });
+            }
+          }
+        }
         await Promise.allSettled([processMail(deps, "otp"), processMail(deps, "store_key")]);
         const seed = await deps.rpc("owner_next_initial_seed");
         if (typeof seed === "string") await deps.rpc("owner_run_initial_seed", { p_operation_id: seed });
@@ -325,6 +340,7 @@ export function makeOwnerHandler(deps: OwnerDependencies) {
         }
       }
       if (result.status === "created" && validStoreNo(result.storeNo) && typeof result.operationId === "string") {
+        if (!deps.storeEncryptionKey) return error("CREATE_VERIFY_UNAVAILABLE");
         const secret = await decrypt(deps.storeEncryptionKey, result.storeSecretEncrypted,
           result.keyEncryptionVersion, result.operationId);
         return response({ status: "created", storeNo: result.storeNo, storeKey: `${result.storeNo}-${secret}` });
