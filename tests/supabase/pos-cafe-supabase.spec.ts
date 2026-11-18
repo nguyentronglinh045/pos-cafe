@@ -1,6 +1,7 @@
 import { expect, test as base, type Browser, type Locator, type Page, type Request, type Response } from "@playwright/test";
-import type { BusinessResult, EmployeeAdminUpdateRequest, EmployeeAdminView, OperationView, OrderSnapshot, WriteKind } from "../../src/domain";
+import type { BusinessResult, EmployeeAdminUpdateRequest, OperationView, OrderSnapshot, WriteKind } from "../../src/domain";
 import { installPermissionTimingProbe } from "../../scripts/permission-realtime-probe.mjs";
+import { restoreCashierOverrides } from "./restoreCashierOverrides";
 
 type Fixture = { origin: string; publicKey: string; storeKey: string; storeNo: number; ownerPin: string; cashierPin: string };
 type Device = { page: Page; accessToken?: string; storeId?: string };
@@ -273,31 +274,6 @@ async function findCashier(page: Page) {
   });
 }
 
-async function restoreCashier(page: Page, cashier: EmployeeAdminView, change: EmployeeAdminUpdateRequest) {
-  const restored = await page.evaluate(async ({ original, change }) => {
-    const { createAppPortsFromViteEnv } = await import("/src/app/runtimePorts.ts");
-    const { employeeAdmin, authority } = createAppPortsFromViteEnv().permission!;
-    const current = await employeeAdmin.getEmployee(original.id);
-    const same = (overrides: typeof current.overrides) => JSON.stringify(overrides) === JSON.stringify(original.overrides);
-    if (same(current.overrides)) return true;
-    const { rows } = await employeeAdmin.listAudit({ targetId: original.id, outcome: "applied", limit: 10 });
-    const applied = rows.find(row => row.requestId === change.requestId);
-    if (!applied) return true;
-    // A different revision or override may include a real operator's change.
-    if (current.permissionRevision !== original.permissionRevision + 1 ||
-        JSON.stringify(current.overrides) !== JSON.stringify(applied.actualAfter?.overrides)) {
-      throw new Error("The cashier changed outside the smoke test. Check the fixture before restoring permissions.");
-    }
-    const { catalog } = await authority.getAuthority();
-    await employeeAdmin.updateEmployee({
-      requestId: crypto.randomUUID(), targetId: original.id, expectedRevision: current.permissionRevision,
-      expectedCatalogRevision: catalog.revision, patch: { overrides: original.overrides },
-    });
-    return same((await employeeAdmin.getEmployee(original.id)).overrides);
-  }, { original: cashier, change });
-  expect(restored, "The original cashier overrides were restored").toBe(true);
-}
-
 test("Supabase enforces per-employee payment permission in UI and RPC", async ({ smoke, browser, baseURL }) => {
   const owner = smoke.owner.page;
   const cashier = await findCashier(owner);
@@ -358,7 +334,7 @@ test("Supabase enforces per-employee payment permission in UI and RPC", async ({
     });
   } finally {
     owner.off("request", observeChange);
-    if (change) await restoreCashier(owner, cashier, change);
+    if (change) await owner.evaluate(restoreCashierOverrides, { original: cashier, requestId: change.requestId });
   }
 });
 
