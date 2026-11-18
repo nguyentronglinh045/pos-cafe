@@ -105,9 +105,11 @@ language sql volatile security definer set search_path = pg_catalog as $$
   ) select exists(select 1 from changed);
 $$;
 
-create or replace function public.owner_sweep_otp_mail() returns void
+create function public.owner_sweep_mail() returns uuid[]
 language plpgsql volatile security definer set search_path = pg_catalog as $$
-declare target_mail uuid;
+declare
+  target_mail uuid;
+  expired_store_key_mails uuid[];
 begin
   for target_mail in
     select m.id from private.mail_dispatches m join private.otp_challenges c on c.id=m.challenge_id
@@ -119,8 +121,13 @@ begin
       otp_encryption_version=null,resolved_at=clock_timestamp()
     where id=target_mail and status='queued';
   end loop;
-  update private.mail_dispatches set status = 'unknown', resolved_at = clock_timestamp()
-    where status = 'sending' and claim_expires_at <= clock_timestamp();
+  with expired as (
+    update private.mail_dispatches set status = 'unknown', resolved_at = clock_timestamp()
+    where status = 'sending' and claim_expires_at <= clock_timestamp()
+    returning id, kind
+  )
+  select coalesce(array_agg(id) filter (where kind = 'store_key'), array[]::uuid[])
+    into expired_store_key_mails from expired;
   delete from private.otp_request_outcomes where retain_until < clock_timestamp();
   delete from private.otp_attempts where outcome = 'rejected' and retain_until < clock_timestamp();
   update private.otp_challenges set otp_digest=null,source_ip=null,redacted_at=clock_timestamp(),
@@ -128,16 +135,24 @@ begin
   where redacted_at is null and issued_at < (
     (date_trunc('day',clock_timestamp() at time zone 'Asia/Ho_Chi_Minh') - interval '2 days')
     at time zone 'Asia/Ho_Chi_Minh');
+  return expired_store_key_mails;
+end;
+$$;
+
+create or replace function public.owner_sweep_otp_mail() returns void
+language plpgsql volatile security definer set search_path = pg_catalog as $$
+begin
+  perform public.owner_sweep_mail();
 end;
 $$;
 
 revoke all on function public.owner_confirm_key_saved(uuid,uuid,private.owner_canonical_email,bytea,bytea),
   public.owner_next_initial_seed(), public.owner_claim_store_key_mail(),
-  public.owner_authorize_store_key_submit(uuid,uuid), public.owner_finish_store_key_mail(uuid,uuid,text)
+  public.owner_authorize_store_key_submit(uuid,uuid), public.owner_finish_store_key_mail(uuid,uuid,text), public.owner_sweep_mail()
   from public, anon, authenticated, service_role;
 grant execute on function public.owner_confirm_key_saved(uuid,uuid,private.owner_canonical_email,bytea,bytea),
   public.owner_next_initial_seed(), public.owner_claim_store_key_mail(),
-  public.owner_authorize_store_key_submit(uuid,uuid), public.owner_finish_store_key_mail(uuid,uuid,text)
+  public.owner_authorize_store_key_submit(uuid,uuid), public.owner_finish_store_key_mail(uuid,uuid,text), public.owner_sweep_mail()
   to service_role;
 
 commit;

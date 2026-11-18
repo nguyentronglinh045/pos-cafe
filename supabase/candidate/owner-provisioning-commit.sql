@@ -41,6 +41,15 @@ begin
     end if;
   end if;
 
+  -- The first claim or a confirmed no-effect dispatch can release the seat.
+  if nullif(op.owner_pin_hash, '') is null then
+    update private.create_operations set status = 'failed', resolved_at = at_time,
+      reason_code = 'C_PIN_NOT_PERSISTED', owner_pin_hash = null,
+      store_secret_encrypted = null, store_secret_encryption_version = null
+    where id = op.id returning * into op;
+    return private.owner_status(op, at_time);
+  end if;
+
   selection := coalesce(reservation.selection_no, 0) + 1;
   if selection > 3 then
     update private.create_operations set status = 'failed', resolved_at = at_time,
@@ -84,6 +93,32 @@ begin
 end;
 $$;
 
+create function public.owner_fail_create_missing_config(p_operation_id uuid, p_lease_token uuid) returns jsonb
+language plpgsql volatile security definer set search_path = pg_catalog as $$
+declare
+  op private.create_operations;
+  at_time timestamptz;
+begin
+  select * into op from private.create_operations where id = p_operation_id for update;
+  at_time := clock_timestamp();
+  if op.id is null or p_lease_token is null or op.lease_token <> p_lease_token then
+    return private.owner_error('CREATE_PROOF_REQUIRED');
+  end if;
+  if op.status <> 'accepted' or at_time >= op.lease_expires_at then
+    return private.owner_status(op, at_time);
+  end if;
+  -- Claim takes the same operation lock. Any prior reservation requires reconciliation.
+  if exists (select 1 from private.store_no_reservations where operation_id = op.id) then
+    return private.owner_status(op, at_time);
+  end if;
+  update private.create_operations set status = 'failed', resolved_at = at_time,
+    reason_code = 'C_CONFIG_MISSING', owner_pin_hash = null,
+    store_secret_encrypted = null, store_secret_encryption_version = null
+  where id = op.id returning * into op;
+  return private.owner_status(op, at_time);
+end;
+$$;
+
 create function public.owner_record_create_auth(
   p_operation_id uuid, p_lease_token uuid, p_dispatch_token uuid, p_result text, p_auth_user_id uuid default null
 ) returns jsonb
@@ -97,7 +132,7 @@ declare
   result text := p_result;
   at_time timestamptz;
 begin
-  if p_result is null or p_result not in ('created','no_effect','unknown')
+  if p_result is null or p_result not in ('created','no_effect','rejected','unknown')
     or (p_result = 'created') <> (p_auth_user_id is not null) then
     return private.owner_error('A_REQUEST_INVALID');
   end if;
@@ -129,13 +164,26 @@ begin
       and (u.raw_app_meta_data->>'pos_cafe_create_dispatch') is distinct from dispatch.dispatch_token::text
     limit 1 for share;
     if colliding_user is null then result := 'unknown'; end if;
+  elsif p_result = 'rejected' and exists (
+    select 1 from auth.users u where u.email = dispatch.expected_email
+      and u.raw_app_meta_data->>'pos_cafe_create_dispatch' = dispatch.dispatch_token::text
+  ) then
+    result := 'unknown';
   end if;
   at_time := clock_timestamp();
   if at_time >= op.lease_expires_at then return jsonb_build_object('status','unknown'); end if;
 
-  update private.auth_create_dispatches set status = result, resolved_at = at_time,
+  update private.auth_create_dispatches
+    set status = case when result = 'rejected' then 'no_effect' else result end, resolved_at = at_time,
     auth_user_id = case when result = 'created' then p_auth_user_id end
   where reservation_id = dispatch.reservation_id;
+  if result = 'rejected' then
+    update private.create_operations set status = 'failed', resolved_at = at_time,
+      reason_code = 'C_AUTH_REJECTED', owner_pin_hash = null,
+      store_secret_encrypted = null, store_secret_encryption_version = null
+    where id = op.id returning * into op;
+    return private.owner_status(op, at_time);
+  end if;
   if result = 'unknown' then
     update private.create_operations set status = 'unknown', reason_code = 'C_AUTH_UNCONFIRMED' where id = op.id;
     return jsonb_build_object('status','unknown');
@@ -187,32 +235,38 @@ begin
 
   select i.canonical_email into canonical_email from private.create_intents i where i.intent_id = op.intent_id;
   workflow_id := private.permission_stable_uuid(store_id,'initial-seed.workflow.v1');
-  insert into public.stores(id, store_no, name, seed_status, owner_account_id,
-    key_secret_encrypted, key_encryption_version)
-  values (store_id, reservation.store_no, op.display_name,
-    (case when op.seed_demo then 'pending' else 'seeded' end)::public.seed_status,
-    op.owner_account_id, op.store_secret_encrypted, op.store_secret_encryption_version);
-  insert into public.store_settings(store_id, display_name, address)
-    values (store_id, op.display_name, op.address);
-  insert into public.employees(id, store_id, name, role, passcode_hash, pin_change_required)
-    values (gen_random_uuid(), store_id, 'Chủ quán', 'owner', op.owner_pin_hash, false);
-  insert into private.initial_seed_workflows(workflow_id, store_id, requested, template_version,
-    status, created_at, updated_at)
-  values (workflow_id, store_id, op.seed_demo, 1,
-    case when op.seed_demo then 'pending' else 'skipped' end, at_time, at_time);
-  if op.seed_demo then
-    foreach stage_name in array array['employee','menu','floor'] loop
-      insert into private.initial_seed_stages(workflow_id, stage, stage_id)
-      values (workflow_id, stage_name, private.permission_stable_uuid(store_id,'initial-seed.stage.v1:' || stage_name));
-    end loop;
-  end if;
-  insert into private.store_admin_log(store_id, action, actor_kind, actor_owner_account_id, detail)
-    values (store_id, 'store_created', 'owner', op.owner_account_id, jsonb_build_object('operationId',op.id));
-  insert into private.mail_dispatches(kind, canonical_email, operation_id, queued_at)
-    values ('store_key', canonical_email, op.id, at_time);
-  update private.create_operations set status = 'created', created_store_id = store_id,
-    resolved_at = at_time, owner_pin_hash = null, store_secret_encrypted = null, store_secret_encryption_version = null
-    where id = op.id;
+  begin
+    insert into public.stores(id, store_no, name, seed_status, owner_account_id,
+      key_secret_encrypted, key_encryption_version)
+    values (store_id, reservation.store_no, op.display_name,
+      (case when op.seed_demo then 'pending' else 'seeded' end)::public.seed_status,
+      op.owner_account_id, op.store_secret_encrypted, op.store_secret_encryption_version);
+    insert into public.store_settings(store_id, display_name, address)
+      values (store_id, op.display_name, op.address);
+    insert into public.employees(id, store_id, name, role, passcode_hash, pin_change_required)
+      values (gen_random_uuid(), store_id, 'Chủ quán', 'owner', op.owner_pin_hash, false);
+    insert into private.initial_seed_workflows(workflow_id, store_id, requested, template_version,
+      status, created_at, updated_at)
+    values (workflow_id, store_id, op.seed_demo, 1,
+      case when op.seed_demo then 'pending' else 'skipped' end, at_time, at_time);
+    if op.seed_demo then
+      foreach stage_name in array array['employee','menu','floor'] loop
+        insert into private.initial_seed_stages(workflow_id, stage, stage_id)
+        values (workflow_id, stage_name, private.permission_stable_uuid(store_id,'initial-seed.stage.v1:' || stage_name));
+      end loop;
+    end if;
+    insert into private.store_admin_log(store_id, action, actor_kind, actor_owner_account_id, detail)
+      values (store_id, 'store_created', 'owner', op.owner_account_id, jsonb_build_object('operationId',op.id));
+    insert into private.mail_dispatches(kind, canonical_email, operation_id, queued_at)
+      values ('store_key', canonical_email, op.id, at_time);
+    update private.create_operations set status = 'created', created_store_id = store_id,
+      resolved_at = at_time, owner_pin_hash = null, store_secret_encrypted = null, store_secret_encryption_version = null
+      where id = op.id;
+  exception when others then
+    -- PostgreSQL rolled back the store writes. Keep the verified Auth dispatch and quota.
+    update private.create_operations set status = 'unknown', reason_code = 'C_STORE_WRITE_REJECTED' where id = op.id;
+    return jsonb_build_object('status','unknown');
+  end;
   return jsonb_build_object('status','created','storeNo',reservation.store_no,'seedRequested',op.seed_demo);
 end;
 $$;
@@ -233,9 +287,11 @@ end;
 $$;
 
 revoke all on function public.owner_claim_create_auth(uuid,uuid,bytea,integer),
+  public.owner_fail_create_missing_config(uuid,uuid),
   public.owner_record_create_auth(uuid,uuid,uuid,text,uuid), public.owner_commit_created_store(uuid,uuid),
   public.owner_authorize_original_delivery(uuid,uuid) from public, anon, authenticated, service_role;
 grant execute on function public.owner_claim_create_auth(uuid,uuid,bytea,integer),
+  public.owner_fail_create_missing_config(uuid,uuid),
   public.owner_record_create_auth(uuid,uuid,uuid,text,uuid), public.owner_commit_created_store(uuid,uuid),
   public.owner_authorize_original_delivery(uuid,uuid) to service_role;
 
