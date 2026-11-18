@@ -1,5 +1,5 @@
 // Self-contained so Playwright can serialize this function into each browser.
-export function installPermissionTimingProbe({storeId}) {
+export function installPermissionTimingProbe({storeId,storeTopic='permission'}) {
   const state={blockSignals:false,subscriptions:0,ready:{store:false,catalog:false},resumes:[],signals:[],nav:[],requests:[]};
   window.permissionTimingProbe=state;
   const active=new Map(),joinedTopics=new Set();
@@ -60,7 +60,7 @@ export function installPermissionTimingProbe({storeId}) {
         if(name!=='postgres_changes'||!item.joined||!row||(joinRef!=null&&joinRef!==item.joinRef)
           ||data.schema!=='public'||data.table!==(kind==='store'?'store_change_signals':'permission_catalog_signals')
           ||!Array.isArray(payload.ids)||!payload.ids.some(id=>item.bindingIds.includes(id)))return;
-        if(kind==='store'&&(row.topic!=='permission'||row.store_id!==storeId))return;
+        if(kind==='store'&&(row.topic!==storeTopic||row.store_id!==storeId))return;
         state.signals.push({time:performance.now(),table:data.table,revision:Number(row.revision),targetId:row.target_id??null,dropped:state.blockSignals});
         // Controlled transport loss occurs before the app's message listener.
         if(state.blockSignals)event.stopImmediatePropagation();
