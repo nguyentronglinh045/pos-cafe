@@ -156,6 +156,57 @@ export default class SmokeFailureReporter {
   }
 }
 
+const architectureFile = 'src/architectureBoundaries.test.ts';
+const architectureSuite = 'architecture boundaries';
+const foundationTitle = 'keeps foundation layers pure and dependency-light';
+const foundationErrors = ['test-timeout', 'hook-timeout', 'assertion', 'io'];
+
+function foundationErrorKind(error) {
+  if (error?.name === 'AssertionError') return 'assertion';
+  if (NODE_FAILURE_ERRNOS.includes(error?.code) || error?.code === 'EIO') return 'io';
+  // Vitest 4's JSON reporter prefers stack, which can lose the native timeout message.
+  if (error?.name === 'Error' && typeof error.message === 'string') {
+    const match = /^(Test|Hook) timed out in (\d+)ms\.\n/.exec(error.message);
+    if (match) {
+      const hook = match[1] === 'Hook';
+      const suffix = `If this is a long-running ${hook ? 'hook' : 'test'}, pass a timeout value as the last argument or configure it globally with "${hook ? 'hookTimeout' : 'testTimeout'}".`;
+      if (error.message === match[0] + suffix) return hook ? 'hook-timeout' : 'test-timeout';
+    }
+  }
+  return 'unknown';
+}
+
+export class ArchitectureCaseReporter {
+  onTestCaseResult(test) {
+    if (test.fullName !== architectureSuite + ' > ' + foundationTitle
+      || resolve(test.module.moduleId) !== resolve(architectureFile)) return;
+    const result = test.result();
+    if (result.state !== 'failed') return;
+    const errors = result.errors ?? [];
+    test.meta().foundationErrorKind = errors.length === 1 ? foundationErrorKind(errors[0]) : 'unknown';
+  }
+}
+
+export function foundationAssertion(report, root) {
+  const target = resolve(root, architectureFile);
+  if (!Array.isArray(report?.testResults)) return;
+  const files = report.testResults.filter(file => typeof file?.name === 'string' && resolve(file.name) === target);
+  if (files.length !== 1 || !Array.isArray(files[0].assertionResults)) return;
+  const cases = files[0].assertionResults.filter(item => item?.fullName === architectureSuite + ' ' + foundationTitle);
+  if (cases?.length === 1 && ['passed', 'failed'].includes(cases[0].status)) return cases[0];
+}
+
+function publicArchitectureCase(assertion) {
+  const result = {};
+  const ms = assertion.duration;
+  if (Number.isFinite(ms) && ms >= 0 && ms <= 480000) result.durationMs = Math.round(ms);
+  if (assertion.status === 'failed') {
+    const kind = assertion.meta?.foundationErrorKind;
+    result.errorKind = foundationErrors.includes(kind) ? kind : 'unknown';
+  }
+  return result;
+}
+
 function smokeErrorKey(error) {
   if (typeof error?.message !== 'string' || typeof error?.stack !== 'string'
     || Buffer.byteLength(error.message) > 1024 ** 2 || Buffer.byteLength(error.stack) > 1024 ** 2
@@ -840,7 +891,8 @@ export function publicSummary(binding, rows, fingerprints) {
     || !(row.exitCode === null || integer(row.exitCode)) || !/^[a-f0-9]{64}$/.test(row.invocationSHA)
     || !(row.reportSHA === null || /^[a-f0-9]{64}$/.test(row.reportSHA)))) reject();
   if (!/^[a-f0-9]{64}$/.test(fingerprints.source) || !/^[a-f0-9]{64}$/.test(fingerprints.lock)) reject();
-  const phases = rows.map(({ id, status, elapsedMs, exitCode, counts, invocationSHA, reportSHA, diagnostic }) => ({ id, status, elapsedMs, exitCode, invocationSHA, reportSHA,
+  const phases = rows.map(({ id, status, elapsedMs, exitCode, counts, invocationSHA, reportSHA, diagnostic, foundation }) => ({ id, status, elapsedMs, exitCode, invocationSHA, reportSHA,
+    ...(id === 'unit' && foundation ? {architectureCase: publicArchitectureCase(foundation)} : {}),
     counts: counts ? {...Object.fromEntries(Object.entries(counts).filter(([key, value]) =>
       ['discovered', 'run', 'pass', 'fail', 'skip', 'manualDeferred', 'acceptedFindings', 'detectedFindings', 'positiveControls', 'negativeControls', 'targetControls'].includes(key) && integer(value))),
    ...(id==='runtime-reporters'&&Object.hasOwn(counts,'diagnosticControls')?{diagnosticControls:publicDiagnosticControls(counts.diagnosticControls,binding,fingerprints)}:{}),
