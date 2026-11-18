@@ -1,0 +1,12 @@
+# Personal working data and toolkit outputs stay outside published disclosures.
+/entries/
+/review-evidence/
+/local/
+/ban-nhap/
+/dist/
+/agent/
+/ai-usage-log/
+*.html
+*.zip
+.env
+.env.*
