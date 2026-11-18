@@ -6,6 +6,8 @@ Mã FR/NFR tổng quan được giữ để truy vết; cập nhật mô tả th
 
 > Cột **Bằng chứng chính** là traceability nội bộ cho AI/developer. Khi viết báo cáo, không sao chép tên code, file, symbol hoặc migration từ cột này; chỉ dùng chúng để kiểm chứng rồi diễn đạt lại yêu cầu và thiết kế ở mức hệ thống.
 
+FR-01, FR-02 và NFR-02 cập nhật ngày 17/11/2026 theo T06. Protected Preview `610f198` đã kiểm luồng với staging. Các bản vá tiếp theo có bằng chứng riêng theo nguồn và môi trường. [Hồ sơ T06](workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md).
+
 ## Cách nối yêu cầu với phần hiện hành
 
 [Danh mục tính năng](features.md#danh-mục-tra-cứu) là điểm tra cứu chính theo hành trình; bảng FR/NFR dưới đây giữ mã và purpose. [Spec reconciliation](spec-reconciliation.md) nối 16 baseline với delta được duyệt; [regression map](regression-map.md) tách 21 FR/8 NFR thành scenario/UC → ca kiểm cụ thể → evidence/kết quả hoặc phần chưa chứng minh; không nhận tổng suite là PASS từng requirement. [Bản đồ evidence](testing.md#bản-đồ-bằng-chứng) phân biệt code, test có trong source, kết quả thực chạy, nghiệm thu và phát hành. G01–G12 là góc nhìn mục tiêu ở features, không thay mã FR/NFR.
@@ -23,8 +25,8 @@ Mã FR/NFR tổng quan được giữ để truy vết; cập nhật mô tả th
 
 | Mã | Yêu cầu | Trạng thái | Bằng chứng chính |
 | --- | --- | --- | --- |
-| FR-01 | Tạo cửa hàng mới với tên, địa chỉ tùy chọn, PIN tạm owner, đổi PIN bắt buộc và lựa chọn seed dữ liệu mẫu | Đã triển khai | [features.md](features.md#store--session), `sessionFlow`, `authRepo`, seed bundle |
-| FR-02 | Ghép thiết bị vào cửa hàng bằng Store Key và lưu session cửa hàng ở client | Đã triển khai | [screens.md](screens.md#2-store-pairing), `sessionFlow`, `storeKey` |
+| FR-01 | Xác minh email bằng OTP để tạo quán với tên, địa chỉ tùy chọn, PIN chủ tự chọn và lựa chọn dữ liệu mẫu. Server ghi quán, cấp Store Key và xử lý seed theo lựa chọn. | Có code và bằng chứng T06 trên Protected Preview/staging. Còn hồi quy trên bộ bản vá cuối. | [Luồng T06](features.md#tài-khoản-chủ-và-sở-hữu), [TC-OWNER-02/03/104](workflow/tasks/g01-g10-t06-staging-inventory-2026-11-17.md) |
+| FR-02 | Ghép thiết bị vào đúng quán bằng Store Key và lưu phiên thiết bị, rồi chọn nhân viên và nhập PIN để vào POS. Bước tạo quán qua OTP không tự ghép máy. | Đã ghép máy khác và mở POS bằng PIN ở hai vòng TC-OWNER-104. | [Màn ghép](screens.md#2-store-pairing), [bằng chứng T06](workflow/tasks/g01-g10-t06-staging-inventory-2026-11-17.md) |
 | FR-03 | Chọn nhân viên hiện hành và xác minh PIN trước khi vào POS | Đã triển khai | [screens.md](screens.md#4-passcode), `src/ports/permissions.ts:17`, `src/app/screens/PasscodeScreen.tsx:42` |
 | FR-04 | Giới hạn màn, đọc và thao tác theo catalog 15 quyền/authority | Đã triển khai | [features.md](features.md#role--permission), `src/core/permissionCatalog.ts:5`, `src/app/permissionUi.ts:17`; SQL candidate chưa nhận activation đích |
 | FR-05 | Quản lý nhân viên: lọc, tạo, sửa tên/role/trạng thái, reset PIN và chỉnh quyền | Đã triển khai | [screens.md](screens.md#12-employees-drawer), `src/app/drawers/admin/EmployeesDrawer.tsx:150`; phase22 là lịch sử UI cũ |
@@ -50,7 +52,7 @@ Mã FR/NFR tổng quan được giữ để truy vết; cập nhật mô tả th
 | Mã | Yêu cầu | Tiêu chí chấp nhận hiện tại | Trạng thái |
 | --- | --- | --- | --- |
 | NFR-01 | Nhất quán giao dịch order/payment | Transaction v1 nguyên tử, replay K/R1 không ghi lặp; stale update bị chặn bằng expectedVersion bắt buộc | Có implementation/test source; bằng chứng theo E-PH27/E-BACKEND, không nhận toàn main PASS |
-| NFR-02 | Cô lập dữ liệu giữa cửa hàng | Tenant theo store; runtime đọc/ghi qua permission RPC/projection, phải kiểm deny trực tiếp | Có source; backend acceptance mới còn HOLD |
+| NFR-02 | Cô lập dữ liệu giữa cửa hàng và chặn nghiệp vụ khi quán tạm ngưng | RPC và ACL/RLS giới hạn theo quán và chặn đọc/ghi nghiệp vụ của quán `suspended` kể cả với phiên đã mở. Thiết bị đã ghép vẫn đọc trạng thái quán mình. Kiểm RPC trực tiếp, ảnh và tín hiệu theo phạm vi R07. | Có bằng chứng TC-93/95/111 theo từng môi trường. Nghiệm thu backend tổng thể còn HOLD. [R07](workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#r07-hosted-2026-11-15) |
 | NFR-03 | Dễ kiểm thử và thay adapter | UI/features phụ thuộc ports; Supabase/mock cùng implement contract | Có boundary guard; E-UI giữ phạm vi unit theo source |
 | NFR-04 | Hỗ trợ màn hình vận hành ngang | Desktop, tablet/phone landscape dùng được; portrait hiển thị hướng dẫn xoay | E-UI có kiểm viewport/mock; chưa thay thiết bị thật |
 | NFR-05 | Khả năng khôi phục đồng bộ online | Realtime signal kết hợp refetch/polling danh mục đang active | Đã triển khai; không phải SLA cứng |

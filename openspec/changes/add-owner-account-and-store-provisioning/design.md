@@ -170,6 +170,8 @@ Tên và kiểu dưới đây là đề xuất, chốt khi viết migration. Kh�
 
 Thư đang `sending` mà lượt gửi hết hạn thì coi là `unknown`, không gửi lại và báo người vận hành theo quy tắc của đường gửi thư. Trạng thái gửi thư và kết quả provisioning là hai việc riêng.
 
+Worker ghi `owner_provisioning.store_key_mail_claim_expired` khi sweep chuyển thư Store Key sang `unknown`. SQL trả ID của các hàng Store Key vừa chuyển trong giao dịch. Lượt sweep tiếp theo không nhận lại các ID đó. Log chỉ mang `mailId` để đối chiếu hàng đợi.
+
 ## Hợp đồng hàm phía server
 
 Một hàm, nhiều hành động. Gộp vì tất cả dùng chung phần gửi và kiểm mã, giới hạn tần suất và ghi nhật ký. Mọi hành động của chủ nhận quán từ phiên của máy đang gọi (`auth.uid()`), không nhận từ tham số.
@@ -313,7 +315,11 @@ Hạn lượt chạy mặc định là 10 phút kể từ khi ghi nhận operati
 
 **Ghi quán trong một giao dịch.** Điểm vào nội bộ nhận `operation_id` và thẻ lượt chạy. Dưới khóa operation, nó đọc dữ liệu đã chấp nhận và bản phát lệnh `created` tương ứng. Chỉ dùng số đã giữ và UUID Auth từ bản ghi đó. Đọc và khóa bản ghi `auth.users` theo UUID trong cùng giao dịch, đối chiếu email kỹ thuật và dấu hiệu trong `raw_app_meta_data` với đúng bản phát lệnh và bản giữ số. Kiểm lại thẻ và thời hạn bằng giờ DB sau khi lấy các khóa, trước khi ghi. Khi UUID không có hoặc dữ liệu không khớp, giữ kết quả chưa rõ và suất. Trình duyệt không cấp UUID, số quán, chủ hay hash PIN cho bước này. Giao dịch ghi một quán với `stores.id` bằng UUID Auth, cấu hình, owner với PIN đã xác minh, audit, thư Store Key `queued` và workflow dữ liệu mẫu `pending` hoặc `skipped`. Ghi `created` và liên kết kết quả cùng giao dịch. Khi nhận lại lời gọi ghi quán sau khi giao dịch đã commit, chỉ đọc trạng thái đã lưu. Nếu giao dịch rollback sau khi Auth thành công, giữ tham chiếu Auth và suất theo REQ-STORE-03. Store Key dùng số quán cuối cùng đã commit. Đường đọc kết quả tuân theo REQ-STORE-04.
 
+Khi gọi lại điểm ghi quán nội bộ bằng operation và thẻ cũ sau commit, phản hồi là `{"status":"created"}`. TC-OWNER-47(d) đối chiếu UUID trong operation, quán và bản phát lệnh Auth cùng số quán trong bản giữ số tại DB. Lượt gọi lại phát sinh 0 thao tác ghi.
+
 **Bằng chứng để hoàn suất.** Lượt gốc còn hạn có thể ghi `failed` và hoàn suất trong một giao dịch khi biết chắc chưa phát lệnh Auth hoặc đã nhận phản hồi cuối xác định không có tác dụng phụ. Khi Auth trả thành công có đúng dấu hiệu server, ghi `created` cho lệnh Auth rồi tiếp tục cùng tài khoản. Nếu đã hoặc có thể đã sinh tài khoản mà chưa ghi được quán, giữ `unknown` và suất. Timeout, mất lease, hoặc một lần tra Auth không thấy tài khoản đều chưa đủ để hoàn suất. Phần ghi quán dở trong giao dịch vẫn rollback như thường.
+
+**Kết quả đã chốt ngày 16/11/2026.** Phản hồi Admin API từ chối dứt khoát của đúng dispatch dùng `C_AUTH_REJECTED`. Xung đột email tiếp tục đi theo đường kiểm đối chứng và chọn số khác. Nếu một operation đã nhận thiếu khóa trước khi phát lệnh, chỉ ghi `C_CONFIG_MISSING` khi thẻ còn hạn và chưa có bản giữ số dưới khóa operation. Thiếu biến lúc khởi tạo hàm vẫn làm khởi tạo thất bại, trước khi nhận operation. Khi DB xác nhận nhóm ghi quán đã rollback sau Auth, tra/gửi lại trả `unknown` ngay trong hạn và giữ suất cùng tham chiếu Auth. Nếu đã commit mà mất phản hồi, lần tra đọc `created` từ DB.
 
 **Sau đồ án (quyết định 48).** Dùng operation, bước cuối, claim và dấu hiệu Auth đã lưu để thiết kế tiến trình tự đối soát, tiếp tục hoặc dọn tài khoản kỹ thuật dở dang, và cảnh báo. Trước khi tự hoàn suất, tiến trình tương lai phải chứng minh lệnh Auth đã kết thúc và không còn tác dụng phụ, kể cả khi cần xóa rồi xác nhận đúng tài khoản đã vắng mặt. Trong đồ án, lượt có thể giữ trạng thái chưa rõ quá hạn xử lý; phép tra chỉ đọc. Không triển khai tác vụ nền cho các ca này. Thư Store Key cho quán đã `created` vẫn đi theo đường gửi riêng và dùng bản ghi thư duy nhất.
 
@@ -369,7 +375,9 @@ Các mã này chưa có trong `AppErrorCode` (`src/core/appError.ts`) nên khai 
 
 Với mã reset không có thời gian chờ, hai câu trên đổi thành: `A_OTP_ATTEMPTS_EXCEEDED` "Mã xác minh đã bị hủy sau 5 lần nhập sai. Vui lòng yêu cầu mã mới."; `A_OTP_UNAVAILABLE` "Không thể xác minh mã này. Vui lòng yêu cầu mã mới."
 
-`OWNER_PROTECTED` là mã có sẵn khi người khác cố đổi, xóa hoặc khóa chủ quán qua phần quản lý nhân viên: "Không thể thay đổi chủ quán bằng thao tác này." (`src/core/permissionErrors.ts`). Hai mã có sẵn khác được dùng lại cho thao tác của chủ: `EMPLOYEE_SESSION_REQUIRED` khi phiên đã hết hiệu lực, "Phiên nhân viên không còn hợp lệ. Vui lòng đăng nhập lại."; `PIN_CHANGE_REQUIRED` khi tài khoản đang phải đổi PIN. Câu hiện có trên main là "Bạn cần đổi PIN tạm trước khi sử dụng quán."; người vừa nhận quyền không dùng PIN tạm nên thấy câu "Bạn cần đổi PIN trước khi sử dụng quán."
+`OWNER_PROTECTED` là mã có sẵn với thông báo "Không thể thay đổi chủ quán bằng thao tác này." (`src/core/permissionErrors.ts`). Mã này áp dụng khi người khác cố đổi hoặc khóa chủ qua quản lý nhân viên và khi chức năng xóa qua quản lý được bổ sung. Giai đoạn 1 kiểm nhánh xóa bằng quyền `DELETE` ở bảng `employees`, constraint trigger `employees_owner_boundary` chạy khi commit và chỉ mục `employees_one_owner` ngăn thêm chủ thứ hai.
+
+Hai mã có sẵn khác dùng cho thao tác của chủ. `EMPLOYEE_SESSION_REQUIRED` dùng khi phiên đã hết hiệu lực, "Phiên nhân viên không còn hợp lệ. Vui lòng đăng nhập lại." `PIN_CHANGE_REQUIRED` dùng khi tài khoản đang phải đổi PIN. Câu hiện có trên main là "Bạn cần đổi PIN tạm trước khi sử dụng quán." Người vừa nhận quyền không dùng PIN tạm nên thấy câu "Bạn cần đổi PIN trước khi sử dụng quán."
 
 Trạng thái kết quả, không phải lỗi: `unknown` — "Chưa xác định kết quả tạo quán. Kiểm tra yêu cầu cũ trước khi tạo yêu cầu mới."; với cấp lại Store Key là "Chưa xác định kết quả cấp lại Store Key. Vui lòng kiểm tra email hoặc thử lại sau."; `failed` — "Không tạo được quán. Lượt tạo đã được hoàn lại, bạn có thể tạo lại bằng yêu cầu mới.". Mã lý do thất bại nội bộ (`C_PIN_NOT_PERSISTED`, `C_AUTH_REJECTED`, `C_STORE_NO_UNAVAILABLE`, `C_STORE_WRITE_REJECTED`, `C_CONFIG_MISSING`) chỉ ghi nhật ký vận hành, không hiện cho người dùng. Seed dùng mã có sẵn `PERMISSION_UPDATE_UNAVAILABLE` và `EMPLOYEE_SESSION_REQUIRED`.
 

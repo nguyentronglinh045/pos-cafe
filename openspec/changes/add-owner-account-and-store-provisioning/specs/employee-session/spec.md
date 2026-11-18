@@ -43,10 +43,20 @@ Khi cửa hàng được chuyển sang chủ mới, vai trò `owner` MUST chuy�
 
 Mã truy vết: REQ-SESSION-02.
 
-#### Scenario: Không xóa được nhân viên chủ quán
+#### Scenario: Quản lý không khóa được nhân viên chủ quán
 
-- **WHEN** một nhân viên vai trò `manager` có quyền `employee.manage` thử xóa hoặc vô hiệu hóa nhân viên vai trò `owner`
+- **WHEN** một nhân viên vai trò `manager` có quyền `employee.manage` thử vô hiệu hóa nhân viên vai trò `owner`
 - **THEN** hệ thống từ chối với mã có sẵn `OWNER_PROTECTED`
+
+#### Scenario: Role API không xóa trực tiếp được nhân viên chủ quán
+
+- **WHEN** ứng dụng thử xóa trực tiếp bản ghi nhân viên chủ quán bằng role API
+- **THEN** cơ sở dữ liệu từ chối vì role không có quyền `DELETE`
+
+#### Scenario: Ràng buộc DB ngăn quán vừa mất chủ hoặc có thêm chủ
+
+- **WHEN** một giao dịch có quyền ghi thử xóa chủ duy nhất của quán đang tồn tại hoặc thêm chủ thứ hai
+- **THEN** cơ sở dữ liệu từ chối trạng thái vi phạm yêu cầu đúng một chủ quán
 
 #### Scenario: Cửa hàng luôn có đúng một chủ quán
 
