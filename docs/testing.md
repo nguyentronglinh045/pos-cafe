@@ -107,7 +107,9 @@ npm run smoke:supabase
 
 Bốn lệnh đầu là cổng chất lượng, chạy được cục bộ và không cần hạ tầng ngoài. Lệnh thứ năm là cổng theo mốc.
 
-`smoke:supabase` cần cấu hình `VITE_DATA_MODE=supabase`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, migration/storage/realtime đúng phiên bản và Supabase Auth cho phép signup nhận session phù hợp với flow demo.
+`smoke:supabase` chạy tuần tự năm ca trong `tests/supabase/pos-cafe-supabase.spec.ts`. Đặt `VITE_DATA_MODE=supabase`, `VITE_SUPABASE_URL` và `VITE_SUPABASE_ANON_KEY` tới staging với contract và Realtime đã áp dụng. Ghép quán thử đã chuẩn bị bằng `SMOKE_SUPABASE_STORE_KEY`. Nhập PIN chủ và thu ngân demo qua `SMOKE_SUPABASE_OWNER_PIN` và `SMOKE_SUPABASE_CASHIER_PIN` từ nguồn credential riêng của lượt chạy.
+
+Quán thử cần menu mẫu, bàn trống, chủ quán và một nhân viên `Thu ngân demo` đang active. Các ca ghi đơn, thanh toán và hủy đơn thử. Ca phân quyền hoàn nguyên ghi đè quyền thu ngân. Các ca đóng đơn mở do chính lần kiểm tạo và đăng xuất cục bộ các phiên kiểm. [Lượt staging đạt 5/5 ngày 17/11/2026](workflow/tasks/g01-g10-t06-smoke-staging-2026-11-18.md).
 
 ## Khoảng Trống Kiểm Thử
 
