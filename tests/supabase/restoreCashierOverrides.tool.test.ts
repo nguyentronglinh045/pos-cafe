@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { restoreCashierOverrides } from "./restoreCashierOverrides";
+import { cashierUpdateConfirmed, restoreCashierOverrides } from "./restoreCashierOverrides";
 
 const ports = vi.hoisted(() => ({
   employeeAdmin: { getEmployee: vi.fn(), listAudit: vi.fn(), updateEmployee: vi.fn() },
@@ -12,7 +12,7 @@ const original = { id: "cashier", permissionRevision: 11, overrides: null };
 const changed = { ...original, permissionRevision: 12, overrides: { grants: [], denies: ["payment.take"] } };
 const requestId = "smoke-change";
 const applied = { targetId: original.id, outcome: "applied", requestId, actualAfter: changed };
-const restore = () => restoreCashierOverrides({ original, requestId });
+const restore = (responseConfirmed = true) => restoreCashierOverrides({ original, requestId, responseConfirmed });
 
 describe("staging smoke cashier cleanup", () => {
   beforeEach(() => {
@@ -55,7 +55,8 @@ describe("staging smoke cashier cleanup", () => {
 
   it("leaves an operator's newer revision untouched", async () => {
     getEmployee.mockResolvedValue({ ...changed, permissionRevision: 13 });
-    await expect(restore()).rejects.toThrow("revision changed");
+    listAudit.mockResolvedValue({ rows: [applied], nextCursor: null });
+    await expect(restore()).rejects.toThrow("no longer matches");
     expect(updateEmployee).not.toHaveBeenCalled();
   });
 
@@ -70,6 +71,47 @@ describe("staging smoke cashier cleanup", () => {
     await restore();
     expect(listAudit).not.toHaveBeenCalled();
     expect(updateEmployee).not.toHaveBeenCalled();
+  });
+
+  it("does not accept a pre-commit baseline when the dispatched POST is still pending", async () => {
+    vi.useFakeTimers();
+    try {
+      const response = vi.fn().mockReturnValue(new Promise(() => {}));
+      const confirmed = cashierUpdateConfirmed({ response }, original.id);
+      await vi.advanceTimersByTimeAsync(5_000);
+      expect(await confirmed).toBe(false);
+      getEmployee.mockResolvedValue(original);
+      listAudit.mockResolvedValue({ rows: [], nextCursor: null });
+      await expect(restore(await confirmed)).rejects.toThrow("Could not verify");
+      expect(updateEmployee).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("recovers a lost reply using the matching committed audit before reading the cashier", async () => {
+    listAudit.mockResolvedValue({ rows: [applied], nextCursor: null });
+    getEmployee.mockResolvedValueOnce(changed).mockResolvedValueOnce(original);
+    await restore(false);
+    expect(listAudit).toHaveBeenCalledBefore(getEmployee);
+    expect(updateEmployee).toHaveBeenCalledOnce();
+  });
+
+  it("recognizes a terminal reply only for the captured RPC", async () => {
+    const response = vi.fn();
+    const request = { response };
+    const confirm = () => cashierUpdateConfirmed(request, original.id);
+    for (const [body, expected] of [
+      [{ ok: true, outcome: "applied", data: { id: original.id } }, true],
+      [{ ok: false, error: { code: "EMPLOYEE_VERSION_CONFLICT" } }, true],
+      [{ ok: true, outcome: "applied", data: { id: "other" } }, false],
+      [{}, false],
+    ] as const) {
+      response.mockResolvedValue({ ok: () => true, json: async () => body });
+      expect(await confirm()).toBe(expected);
+    }
+    response.mockRejectedValue(new Error("lost reply"));
+    expect(await confirm()).toBe(false);
   });
 
   it("reports a rejected restore or a write whose readback still differs", async () => {

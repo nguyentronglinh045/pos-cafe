@@ -1,7 +1,7 @@
 import { expect, test as base, type Browser, type Locator, type Page, type Request, type Response } from "@playwright/test";
 import type { BusinessResult, EmployeeAdminUpdateRequest, OperationView, OrderSnapshot, WriteKind } from "../../src/domain";
 import { installPermissionTimingProbe } from "../../scripts/permission-realtime-probe.mjs";
-import { restoreCashierOverrides } from "./restoreCashierOverrides";
+import { cashierUpdateConfirmed, restoreCashierOverrides } from "./restoreCashierOverrides";
 
 type Fixture = { origin: string; publicKey: string; storeKey: string; storeNo: number; ownerPin: string; cashierPin: string };
 type Device = { page: Page; accessToken?: string; storeId?: string };
@@ -279,13 +279,13 @@ test("Supabase enforces per-employee payment permission in UI and RPC", async ({
   const cashier = await findCashier(owner);
   const hasPayment = cashier.effective.includes("payment.take");
   expect(hasPayment, "The seeded cashier initially has payment.take").toBe(true);
-  let change: EmployeeAdminUpdateRequest | undefined;
+  let change: { requestId: string; request: Request } | undefined;
   const observeChange = (request: Request) => {
     const url = new URL(request.url());
     if (url.origin !== smoke.fixture.origin || url.pathname !== "/rest/v1/rpc/permission_admin_update" || request.method() !== "POST") return;
     const input = request.postDataJSON()?.p_request as EmployeeAdminUpdateRequest | undefined;
     if (input?.targetId === cashier.id && input.expectedRevision === cashier.permissionRevision
-        && input.patch.overrides?.denies.includes("payment.take")) change = input;
+        && input.patch.overrides?.denies.includes("payment.take")) change = { requestId: input.requestId, request };
   };
   owner.on("request", observeChange);
   try {
@@ -334,7 +334,10 @@ test("Supabase enforces per-employee payment permission in UI and RPC", async ({
     });
   } finally {
     owner.off("request", observeChange);
-    if (change) await owner.evaluate(restoreCashierOverrides, { original: cashier, requestId: change.requestId });
+    if (change) {
+      const responseConfirmed = await cashierUpdateConfirmed(change.request, cashier.id);
+      await owner.evaluate(restoreCashierOverrides, { original: cashier, requestId: change.requestId, responseConfirmed });
+    }
   }
 });
 
