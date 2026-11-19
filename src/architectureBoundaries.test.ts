@@ -102,8 +102,10 @@ const collectImportSpecifiers = (source: string, fileName: string): string[] => 
   return specifiers;
 };
 
-const importRecords = (): ImportRecord[] =>
-  sourceFiles().flatMap((sourceFile) =>
+let cachedProductionImports: ImportRecord[] | undefined;
+
+const productionImports = (): ImportRecord[] =>
+  cachedProductionImports ??= sourceFiles().filter((file) => !file.isTest).flatMap((sourceFile) =>
     collectImportSpecifiers(readFileSync(sourceFile.absolutePath, "utf8"), sourceFile.absolutePath).map((specifier) => {
       const resolvedPath = resolveInternalImport(sourceFile, specifier);
       return {
@@ -114,8 +116,6 @@ const importRecords = (): ImportRecord[] =>
       };
     }),
   );
-
-const productionImports = (): ImportRecord[] => importRecords().filter((record) => !record.sourceFile.isTest);
 
 const formatViolation = (record: ImportRecord, reason: string): string =>
   `${record.sourceFile.relativePath} imports ${record.specifier} (${reason})`;
