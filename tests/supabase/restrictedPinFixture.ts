@@ -43,47 +43,53 @@ export async function provisionRestrictedPinFixture(env: FixtureEnvironment, dis
     throw new Error("PIN_FIXTURE_REQUEST_FAILED");
   }
 
+  async function json(response: Response): Promise<Fields> {
+    try {
+      return record(await response.json());
+    } catch {
+      throw new Error("PIN_FIXTURE_RESPONSE_INVALID");
+    }
+  }
+
   const proof = await post(`/rest/v1/rpc/${target.proof}`, {});
-  const binding = record(await proof.json());
+  const binding = await json(proof);
   if (binding.project !== env.project || binding.marker !== env.marker || binding.database !== "postgres"
     || proof.headers.get("x-pos-permission-hook") !== "strict") {
     throw new Error("PIN_FIXTURE_BINDING_REFUSED");
   }
 
-  const reservation = record(await (await post("/rest/v1/rpc/permission_reserve_store_no", {
+  const reservation = await json(await post("/rest/v1/rpc/permission_reserve_store_no", {
     p_create_attempt_id: randomUUID(),
-  })).json());
+  }));
   const storeNo = record(reservation.data).storeNo;
   if (reservation.ok !== true || typeof storeNo !== "number" || !Number.isInteger(storeNo)
     || storeNo < 1 || storeNo > 2147483647) throw new Error("PIN_FIXTURE_RESERVATION_INVALID");
 
   const secret = randomBytes(8).toString("hex").toUpperCase();
-  const auth = record(await (await post("/auth/v1/signup", {
+  const auth = await json(await post("/auth/v1/signup", {
     email: `store${storeNo}@store.pos.local`, password: secret,
-  })).json());
+  }));
   const storeId = record(auth.user).id;
   const token = auth.access_token;
-  if (typeof storeId !== "string" || !uuid.test(storeId) || typeof token !== "string" || !token) {
-    throw new Error("PIN_FIXTURE_ACCOUNT_INVALID");
-  }
-
-  const ownerId = await deterministicUuid(storeId, "owner.primary");
+  if (typeof token !== "string" || !token) throw new Error("PIN_FIXTURE_ACCOUNT_INVALID");
   try {
-    const bootstrap = record(await (await post("/rest/v1/rpc/permission_bootstrap_store", {
+    if (typeof storeId !== "string" || !uuid.test(storeId)) throw new Error("PIN_FIXTURE_ACCOUNT_INVALID");
+    const ownerId = await deterministicUuid(storeId, "owner.primary");
+    const bootstrap = await json(await post("/rest/v1/rpc/permission_bootstrap_store", {
       p_request: {
         requestId: await deterministicUuid(storeId, "permission.bootstrap.v1"),
         ownerId, storeNo, displayName, address: "", seedDemo: false,
       },
-    }, token)).json());
+    }, token));
     const created = record(bootstrap.data);
     if (bootstrap.ok !== true || bootstrap.outcome !== "applied" || created.storeId !== storeId
       || created.ownerId !== ownerId || created.storeNo !== storeNo || created.seedRequested !== false) {
       throw new Error("PIN_FIXTURE_BOOTSTRAP_INVALID");
     }
+    return { identity: { storeId, ownerId }, storeKey: `${String(storeNo).padStart(4, "0")}-${secret}` };
   } finally {
     await post("/auth/v1/logout?scope=local", {}, token);
   }
-  return { identity: { storeId, ownerId }, storeKey: `${String(storeNo).padStart(4, "0")}-${secret}` };
 }
 
 export async function pairRestrictedPinFixture(page: Page, api: string, storeKey: string) {
@@ -100,6 +106,10 @@ export async function pairRestrictedPinFixture(page: Page, api: string, storeKey
     const response = await route.fetch({
       url: `${api}/rest/v1/rpc/permission_get_initial_seed_status`, maxRedirects: 0,
     });
+    if (response.status() >= 300 && response.status() < 400) {
+      await route.abort();
+      return;
+    }
     if (!response.ok()) {
       await route.fulfill({ response });
       return;
@@ -113,7 +123,11 @@ export async function pairRestrictedPinFixture(page: Page, api: string, storeKey
       await route.fulfill({ status: response.status(), headers, json: { ok: true, data: { status: "ready" } } });
       return;
     }
-    await route.fulfill({ response });
+    if (status.ok === false) {
+      await route.fulfill({ response });
+      return;
+    }
+    await route.abort();
   });
   await page.goto("/");
   await page.getByTestId("landing-screen").waitFor();

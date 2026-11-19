@@ -10,7 +10,7 @@ const env = {
 };
 const storeId = "80000000-0000-4000-8000-000000000001";
 
-function fixtureResponses(outcome = "applied") {
+function fixtureResponses(outcome = "applied", authStoreId = storeId) {
   return vi.spyOn(globalThis, "fetch").mockImplementation(async (address, init) => {
     const url = new URL(String(address));
     expect(url.origin).toBe(env.api);
@@ -26,7 +26,7 @@ function fixtureResponses(outcome = "applied") {
     }
     if (url.pathname === "/auth/v1/signup") {
       expect(JSON.parse(String(init?.body)).email).toBe("store17@store.pos.local");
-      return Response.json({ access_token: "setup-token", user: { id: storeId } });
+      return Response.json({ access_token: "setup-token", user: { id: authStoreId } });
     }
     expect(headers.get("authorization")).toBe("Bearer setup-token");
     if (url.pathname.endsWith("permission_bootstrap_store")) {
@@ -69,11 +69,20 @@ test("PIN fixture closes its setup session when the bootstrap verdict is invalid
   expect(new URL(String(requests.mock.calls.at(-1)?.[0])).pathname).toBe("/auth/v1/logout");
 });
 
+test("PIN fixture closes the setup session when Auth returns an invalid identity with a token", async () => {
+  const requests = fixtureResponses("applied", "not-a-store");
+  await expect(provisionRestrictedPinFixture(env, "G2a ACK A")).rejects.toThrow("PIN_FIXTURE_ACCOUNT_INVALID");
+  expect(requests).toHaveBeenCalledTimes(4);
+  expect(String(requests.mock.calls.at(-1)?.[0])).toBe(env.api + "/auth/v1/logout?scope=local");
+});
+
 test.each([
-  [{ ok: true, data: { status: "skipped" } }, true],
-  [{ ok: true, data: { status: "pending" } }, false],
-  [{ ok: false, code: "PIN_CHANGE_REQUIRED" }, false],
-] as const)("PIN readiness bridge preserves the fixture verdict %j", async (body, ready) => {
+  [200, { ok: true, data: { status: "skipped" } }, "ready"],
+  [200, { ok: true, data: { status: "pending" } }, "abort"],
+  [200, { ok: true, data: { status: "ready" } }, "abort"],
+  [200, { ok: false, code: "PIN_CHANGE_REQUIRED" }, "deny"],
+  [302, {}, "abort"],
+] as const)("PIN readiness bridge preserves HTTP %i and the fixture verdict %j", async (status, body, verdict) => {
   const page = {
     route: vi.fn<(url: string, handler: (route: Route) => Promise<void>) => Promise<void>>(),
     goto: vi.fn(),
@@ -83,13 +92,19 @@ test.each([
   const [path, handler] = page.route.mock.calls[0];
   expect(path).toBe(env.api + "/rest/v1/rpc/owner_get_seed_readiness");
   const response = {
-    ok: () => true, json: async () => body, status: () => 200,
+    ok: () => status === 200, json: async () => body, status: () => status,
     headers: () => ({ "content-length": "180", "access-control-allow-origin": "*" }),
   };
-  const route = { request: () => ({ method: () => "POST" }), fetch: vi.fn(async () => response), fulfill: vi.fn() };
+  const route = { request: () => ({ method: () => "POST" }), fetch: vi.fn(async () => response), fulfill: vi.fn(), abort: vi.fn() };
   await handler(route as unknown as Route);
   expect(route.fetch).toHaveBeenCalledWith({ url: env.api + "/rest/v1/rpc/permission_get_initial_seed_status", maxRedirects: 0 });
-  expect(route.fulfill).toHaveBeenCalledWith(ready
-    ? { status: 200, headers: { "access-control-allow-origin": "*" }, json: { ok: true, data: { status: "ready" } } }
-    : { response });
+  if (verdict === "abort") {
+    expect(route.abort).toHaveBeenCalledOnce();
+    expect(route.fulfill).not.toHaveBeenCalled();
+  } else {
+    expect(route.abort).not.toHaveBeenCalled();
+    expect(route.fulfill).toHaveBeenCalledWith(verdict === "ready"
+      ? { status: 200, headers: { "access-control-allow-origin": "*" }, json: { ok: true, data: { status: "ready" } } }
+      : { response });
+  }
 });
