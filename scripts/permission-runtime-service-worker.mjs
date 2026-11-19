@@ -743,7 +743,7 @@ async function setup(layout, input, parentEnv) {
         const config = readFileSync(`${source}/.git/config`, 'utf8');
         if (/extraheader|credential|https?:\/\/[^\s/]+@/i.test(config)) refused();
         if(t06Profile(ACTIVE_PROFILE.id)){
-          run('git',['-C',source,'fetch','--no-tags','--depth=1','--','file://'+input,'refs/t06/candidate']);
+          run('git',['-c','safe.directory='+input,'-C',source,'fetch','--no-tags','--depth=1','--','file://'+input,'refs/t06/candidate']);
           if(run('git',['-C',source,'rev-parse','FETCH_HEAD']).trim()!==T06_CANDIDATE_SHA
             ||run('git',['-C',source,'rev-parse','FETCH_HEAD^{tree}']).trim()!==T06_CANDIDATE_TREE)refused();
           run('git',['-C',source,'-c','core.hooksPath=/dev/null','worktree','add','--detach',root+'/candidate',T06_CANDIDATE_SHA]);

@@ -53,7 +53,7 @@
     "scripts/permission-full-target-policy.test.mjs": "28a20fbad9d760fcd5bb3a0f160dfc5e33ac5e5df6229a97f0938e4ab55197f7",
     "scripts/project-preview.README.md": "c62b101abee86a8919204eab88f425256b8a9d8e5846f84ac93db7535733ed83",
     "scripts/permission-runtime-candidate-diagnostic.mjs": "36e488f19e4e5e27656339a1d8e9bf8d904febc0ac8c36e7d6076435e0615f67",
-    "scripts/permission-runtime-service-worker.mjs": "60e97a94c47a7748b29fbbf6092b7e2baf32870bba14e8172353ee2480c78891",
+    "scripts/permission-runtime-service-worker.mjs": "804b66300b52e90b23d8574966a28f4a79a06ff104d988664ad4e3f6566ee593",
     "scripts/permission-runtime-diagnostic-selftest.mjs": "8c8c8e283bfb1d187ab4aea2da4cb731899d90280d12c78b306789c1d827c5b2",
     "scripts/permission-runtime-isolated-receipt.mjs": "3d22da9bbdd39e48ad5cc87ffb0151dfb27847e85b1de5aeecad40ff4f3a6752",
     "scripts/permission-runtime-isolated-receipt-control.mjs": "8297474540f503e05941c93cf5d9bdba9070d66c69087bd522d135ecdbfe23b0",
