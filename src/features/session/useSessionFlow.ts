@@ -1,9 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { CreateStoreInput } from "@/domain";
 import { AppError } from "@/core/appError";
 import { usePorts, usePermissionPorts } from "@/features/shared/portsContext";
 import {
-  createStoreForSession,
   loadStoreSession,
   pairStoreForSession,
   retrySeedForSession,
@@ -47,23 +45,6 @@ export const usePairStoreMutation = () => {
     retry: false,
     networkMode: "always",
     mutationFn: (storeKey: string) => pairStoreForSession(ports, storeKey),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: sessionQueryKeys.storeSession });
-      void queryClient.invalidateQueries({ queryKey: sessionQueryKeys.employees });
-    },
-  });
-};
-
-export const useCreateStoreMutation = (onCreated?: (store: Awaited<ReturnType<typeof createStoreForSession>>["store"]) => void) => {
-  const ports = usePorts();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    retry: false,
-    networkMode: "always",
-    mutationFn: async (input: CreateStoreInput) => {
-      return createStoreForSession(ports, input, onCreated);
-    },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: sessionQueryKeys.storeSession });
       void queryClient.invalidateQueries({ queryKey: sessionQueryKeys.employees });

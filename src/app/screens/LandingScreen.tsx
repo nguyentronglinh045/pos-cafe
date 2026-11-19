@@ -1,13 +1,12 @@
 import { LogIn, Store } from "lucide-react";
 import { useAppStore } from "../useAppStore";
 
-export function LandingScreen({ ownerCreatePreview = false, requiresProtectedPreview = false }: {
+export function LandingScreen({ ownerCreatePreview = false }: {
   ownerCreatePreview?: boolean;
-  requiresProtectedPreview?: boolean;
 }) {
   const setScreen = useAppStore((state) => state.setScreen);
-  const createStoreHint = requiresProtectedPreview ? "Dùng Protected Preview để tạo quán mới."
-    : ownerCreatePreview ? "Xác minh email và nhận Store Key để ghép máy." : "Thiết lập quán và nhận Store Key + Admin PIN.";
+  const createStoreHint = ownerCreatePreview ? "Xác minh email và nhận Store Key để ghép máy."
+    : "Dùng Protected Preview để tạo quán mới.";
   return (
     <main className="min-h-[100dvh] w-full overflow-y-auto bg-pos-bg" data-testid="landing-screen">
       <div className="flex min-h-[100dvh] w-full items-center justify-center px-[clamp(16px,4vw,48px)] py-[clamp(20px,4vw,56px)]">

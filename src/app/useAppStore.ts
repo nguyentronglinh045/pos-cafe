@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { CreateStoreInput, OrderType, PrintReceipt, PrintTicket, SubmitOrderDraftItem } from "@/domain";
+import type { OrderType, PrintReceipt, PrintTicket, SubmitOrderDraftItem } from "@/domain";
 import type { EmployeeRosterEntry, PermissionSession } from "@/domain/permissions";
 import { usePermissionSession } from "@/features/shared/permissionSession";
 import { clearDrawerExitGuard, requestDrawerExit } from "./drawerNavigation";
@@ -20,8 +20,6 @@ export type OrderDrawerContext = {
 
 type AppState = {
   updateRequired: boolean;
-  createdStoreResult: { storeKey: string; adminPin: string; seedStatus: string; canRetrySeed: boolean } | null;
-  pendingStoreCreationInput: CreateStoreInput | null;
   sessionNotice: string | null;
   screen: AppScreen;
   currentEmployee: EmployeeRosterEntry | null;
@@ -34,8 +32,6 @@ type AppState = {
   draftItems: SubmitOrderDraftItem[];
   receiptPreview: ReceiptPreview | null;
   setCurrentEmployee: (employee: EmployeeRosterEntry | null) => void;
-  setCreatedStoreResult: (result: AppState["createdStoreResult"]) => void;
-  setPendingStoreCreationInput: (input: CreateStoreInput | null) => void;
   setSessionNotice: (notice: string | null) => void;
   startEmployeeSession: (employee: EmployeeRosterEntry, session: PermissionSession) => void;
   setScreen: (screen: AppScreen) => void;
@@ -52,8 +48,6 @@ type AppState = {
 
 export const useAppStore = create<AppState>((set) => ({
   updateRequired: false,
-  createdStoreResult: null,
-  pendingStoreCreationInput: null,
   sessionNotice: null,
   screen: "landing",
   currentEmployee: null,
@@ -67,11 +61,8 @@ export const useAppStore = create<AppState>((set) => ({
   receiptPreview: null,
   setCurrentEmployee: (employee) => {
     if (!employee) { clearDrawerExitGuard(); usePermissionSession.getState().clear(); }
-    set((state) => ({ currentEmployee: employee, employeeSessionVersion: state.employeeSessionVersion + 1,
-      ...(employee ? { createdStoreResult: null } : {}) }));
+    set((state) => ({ currentEmployee: employee, employeeSessionVersion: state.employeeSessionVersion + 1 }));
   },
-  setCreatedStoreResult: createdStoreResult => set({ createdStoreResult }),
-  setPendingStoreCreationInput: pendingStoreCreationInput => set({ pendingStoreCreationInput }),
   setSessionNotice: sessionNotice => set({ sessionNotice }),
   startEmployeeSession: (employee, session) => {
     clearDrawerExitGuard();
@@ -79,13 +70,13 @@ export const useAppStore = create<AppState>((set) => ({
       if (employee.id !== session.employeeId) throw new Error("Session identity mismatch");
       usePermissionSession.getState().beginRequiredPinChange(session);
       set(state => ({ currentEmployee: null, employeeSessionVersion: state.employeeSessionVersion + 1,
-        createdStoreResult: null, drawer: null, orderContext: null, paymentOrderId: null, draftItems: [], receiptPreview: null }));
+        drawer: null, orderContext: null, paymentOrderId: null, draftItems: [], receiptPreview: null }));
       return;
     }
     if (employee.id !== session.authority.snapshot.employeeId) throw new Error("Session identity mismatch");
     usePermissionSession.getState().begin(session);
     set(state => ({ currentEmployee: { id: employee.id, name: employee.name }, employeeSessionVersion: state.employeeSessionVersion + 1,
-      createdStoreResult: null, drawer: null, orderContext: null, paymentOrderId: null, draftItems: [], receiptPreview: null }));
+      drawer: null, orderContext: null, paymentOrderId: null, draftItems: [], receiptPreview: null }));
   },
   setScreen: (screen) => set({ screen }),
   setActiveAreaId: (areaId) => set({ activeAreaId: areaId }),

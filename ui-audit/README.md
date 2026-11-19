@@ -86,7 +86,7 @@ clear-demo-dialog, payment và receipt-preview. State con kế thừa steps củ
 `value`, `press`, `waitFor` + `state`, `wait` và `timeout` riêng từng bước.
 
 Giữ ba viewport lịch sử: tablet 1024×768, desktop 1440×900, mobile ngang 844×390;
-tổng **48 cặp**, gồm ba state compatibility-update-gate, compatibility-created-store và required-pin-change. Đây là kiểm thử vận hành audit trên app mock hiện có. Không phải
+tổng **48 cặp**, gồm ba state compatibility-update-gate, create-store-preview-notice và required-pin-change. Đây là kiểm thử vận hành audit trên app mock hiện có. Không phải
 pilot remake màn Stitch và không chứng minh toàn app đạt 568×320. Gate responsive
 568×320 trở lên của từng màn remake nằm trong workflow `ui-remake/`.
 

@@ -2,7 +2,7 @@ import type {
   AuthorityBundle, AuthorityRevision, EmployeeAdminCreateRequest, EmployeeAdminEnvelope, EmployeeAdminUpdateRequest,
   EmployeeAdminView, EmployeeAuditFilter, EmployeeAuditPage, EmployeePinResetRequest, EmployeeRosterEntry,
   PermissionCatalogSignal, PermissionSignal,
-  PermissionSession, OwnerPinChangeRequest, PermissionPinChangeResult, PermissionBootstrapRequest, PermissionBootstrapResult,
+  PermissionSession, OwnerPinChangeRequest, PermissionPinChangeResult,
   RequiredPinChangeRequest, RequiredPinChangeResult, RequiredPinSessionProof,
   InitialSeedStatus, InitialSeedBeginRequest, InitialSeedBeginResult, InitialSeedStage,
 } from "@/domain/permissions";
@@ -29,10 +29,6 @@ export interface IInitialSeedRepo {
   skipAll?(): Promise<void>;
   begin(request: InitialSeedBeginRequest): Promise<InitialSeedBeginResult>;
   runStage(request: { runGeneration: number; stage: InitialSeedStage }): Promise<InitialSeedStatus>;
-}
-/** Provisioning identity comes from store Auth. Recovery is deliberately absent. */
-export interface IPermissionBootstrapRepo {
-  bootstrapStore(request: PermissionBootstrapRequest): Promise<PermissionBootstrapResult>;
 }
 export interface IEmployeeAdminReadRepo {
   listEmployees(): Promise<EmployeeAdminView[]>;

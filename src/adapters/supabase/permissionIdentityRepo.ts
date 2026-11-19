@@ -1,16 +1,16 @@
-import type { AuthorityBundle, AuthorityRevision, EmployeeRosterEntry, OwnerPinChangeRequest, PermissionBootstrapRequest, PermissionBootstrapResult, PermissionPinChangeResult, PermissionSession, RequiredPinSession, RequiredPinSessionProof, RequiredPinChangeRequest, RequiredPinChangeResult } from "@/domain/permissions";
-import type { IPermissionAuthorityRepo, IPermissionSessionRepo, IPermissionBootstrapRepo } from "@/ports/permissions";
+import type { AuthorityBundle, AuthorityRevision, EmployeeRosterEntry, OwnerPinChangeRequest, PermissionPinChangeResult, PermissionSession, RequiredPinSession, RequiredPinSessionProof, RequiredPinChangeRequest, RequiredPinChangeResult } from "@/domain/permissions";
+import type { IPermissionAuthorityRepo, IPermissionSessionRepo } from "@/ports/permissions";
 import { AppError } from "@/core/appError";
 import { validatePermissionCatalog } from "@/core/permissionCatalog";
 import { permissionEmployeeName, permissionPin, permissionRevision, permissionUuid } from "@/core/permissionInputs";
-import { parseOwnerPinChange, parsePermissionBootstrap, parseRequiredPinChange } from "@/core/permissionIdentityInputs";
+import { parseOwnerPinChange, parseRequiredPinChange } from "@/core/permissionIdentityInputs";
 import { mapSupabaseError } from "./errors";
 import { employeeCredential, clearEmployeeCredential } from "./employeeCredential";
 import type { SupabaseAnyClient } from "./repoShared";
 
 const stale = () => new AppError("EMPLOYEE_SESSION_REQUIRED", "Phiên nhân viên không còn hợp lệ. Vui lòng đăng nhập lại.");
 /** Permission identity adapter. Employee credentials remain private to the runtime. */
-export class SupabasePermissionIdentityRepo implements IPermissionSessionRepo, IPermissionAuthorityRepo, IPermissionBootstrapRepo {
+export class SupabasePermissionIdentityRepo implements IPermissionSessionRepo, IPermissionAuthorityRepo {
   private restricted: { generation: number; session: RequiredPinSession } | null = null;
   constructor(private readonly client: SupabaseAnyClient) {}
   private async call(name: string, args?: Record<string, unknown>, token?: string) {
@@ -138,13 +138,5 @@ export class SupabasePermissionIdentityRepo implements IPermissionSessionRepo, I
   async listRoster(): Promise<EmployeeRosterEntry[]> {
     const data = await this.call("permission_list_roster");
     return data.data.map((e: EmployeeRosterEntry) => ({ id: permissionUuid(e.id), name: e.name }));
-  }
-  async bootstrapStore(request: PermissionBootstrapRequest): Promise<PermissionBootstrapResult> {
-    const data = await this.call("permission_bootstrap_store", { p_request: parsePermissionBootstrap(request) });
-    if (!["applied", "replayed"].includes(data.outcome) || !Number.isInteger(data.data?.storeNo)
-      || data.data.storeNo < 1 || data.data.storeNo > 2147483647 || typeof data.data.seedRequested !== "boolean")
-      throw new AppError("BOOTSTRAP_CONFLICT", "Thông tin tạo quán không khớp yêu cầu ban đầu. Đã dừng để tránh tạo trùng quán.");
-    return { outcome: data.outcome, storeId: permissionUuid(data.data.storeId), ownerId: permissionUuid(data.data.ownerId), storeNo: data.data.storeNo,
-      seedRequested: data.data.seedRequested, seedWorkflowId: permissionUuid(data.data.seedWorkflowId) };
   }
 }
