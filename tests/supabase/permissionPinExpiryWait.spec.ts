@@ -1,3 +1,4 @@
+import { pairRestrictedPinFixture, provisionRestrictedPinFixture } from "./restrictedPinFixture.ts";
 import { randomUUID } from "node:crypto";
 import { expect, test, type Page, type Route } from "@playwright/test";
 import pg from "pg";
@@ -11,7 +12,7 @@ const TEMP_PIN = "123456";
 const NEW_PIN = "384729";
 const NOTICE = "Phiên nhân viên không còn hợp lệ. Vui lòng đăng nhập lại.";
 const FINANCIAL = /(?:payment|receipt|print|write_operation)/;
-const PROTECTED = new Set(["permission_get_authority", "permission_get_revision", "permission_get_initial_seed_status",
+const PROTECTED = new Set(["permission_get_authority", "permission_get_revision", "permission_get_initial_seed_status", "owner_get_seed_readiness",
   "permission_begin_initial_seed", "permission_run_initial_seed_stage", "permission_get_menu_catalog",
   "permission_get_floor_workspace", "permission_get_settings_admin", "permission_admin_list"]);
 function fail(code: string): never { throw new Error(`PIN_EXPIRY_${code}`); }
@@ -58,33 +59,6 @@ function parseStart(value: Record<string, unknown>): Start {
     ttlMs: Date.parse(value.expiresAt as string) - Date.parse(value.issuedAt as string) };
 }
 
-async function createStore(page: Page): Promise<Identity> {
-  let identity: Identity | undefined;
-  let routeFailed = false;
-  await page.route("**/rest/v1/rpc/permission_bootstrap_store", async route => {
-    try {
-      const response = await route.fetch({ timeout: 20_000 });
-      const value = await jsonObject(response);
-      const data = value.data as Record<string, unknown> | undefined;
-      if (!response.ok() || value.ok !== true || !uuid(data?.storeId) || !uuid(data?.ownerId)
-        || data?.seedRequested !== false) fail("BOOTSTRAP_INVALID");
-      identity = { storeId: data.storeId, ownerId: data.ownerId };
-      await route.fulfill({ response });
-    } catch { routeFailed = true; await route.abort("failed").catch(() => undefined); }
-  });
-  await page.goto("/");
-  await expect(page.getByTestId("landing-screen")).toBeVisible();
-  await page.getByTestId("go-create-store").click();
-  await page.getByTestId("store-name-input").fill("G2c Expiry Wait");
-  await expect(page.getByTestId("seed-demo-checkbox")).not.toBeChecked();
-  await page.getByTestId("key-loss-acknowledgement").check();
-  await page.getByTestId("create-store-button").click();
-  await expect(page.getByTestId("create-store-result")).toBeVisible({ timeout: 20_000 });
-  if (!identity || routeFailed) fail("BOOTSTRAP_UNOBSERVED");
-  await page.getByTestId("acknowledge-store-key").click();
-  await expect(page.getByTestId("passcode-screen")).toBeVisible();
-  return identity;
-}
 async function enterPin(page: Page, ownerId: string, pin: string) {
   await page.getByTestId(`employee-${ownerId}`).click();
   for (const digit of pin) await page.getByTestId(`pin-${digit}`).click();
@@ -283,7 +257,8 @@ test("TC-PIN-08 exact DB expiry while one UI completion waits on owner row", asy
       const name = request.url().match(/\/rest\/v1\/rpc\/([^?]+)/)?.[1];
       if (name) rpcNames.push(name);
     });
-    const identity = await createStore(page);
+    const { identity, storeKey } = await provisionRestrictedPinFixture(env, "G2c Expiry Wait");
+    await pairRestrictedPinFixture(page, env.api, storeKey);
     const pendingK = await installPendingK(db, identity);
     const starts: Start[] = [];
     let bearer: string | null = null;

@@ -79,14 +79,14 @@ thiết bị vật lý hay độ giống design.
 
 ## Phạm vi state/viewport
 
-Config tích hợp permission bao phủ 16 state: landing, store-pairing,
+Config tích hợp permission bao phủ 18 state: landing, store-pairing, owner-create-form, owner-create-receipt,
 passcode, floor, order-drawer, order-cart, menu-editor, report, employees, settings,
 clear-demo-dialog, payment và receipt-preview. State con kế thừa steps của cha bằng
 `extends`; `@ten` là `[data-testid="ten"]`. Hỗ trợ `click`, `clickAll`, `fill` +
 `value`, `press`, `waitFor` + `state`, `wait` và `timeout` riêng từng bước.
 
 Giữ ba viewport lịch sử: tablet 1024×768, desktop 1440×900, mobile ngang 844×390;
-tổng **48 cặp**, gồm ba state compatibility-update-gate, create-store-preview-notice và required-pin-change. Đây là kiểm thử vận hành audit trên app mock hiện có. Không phải
+tổng **54 cặp**, gồm ba state compatibility-update-gate, create-store-preview-notice và required-pin-change. Đây là kiểm thử vận hành audit trên app mock hiện có. Không phải
 pilot remake màn Stitch và không chứng minh toàn app đạt 568×320. Gate responsive
 568×320 trở lên của từng màn remake nằm trong workflow `ui-remake/`.
 

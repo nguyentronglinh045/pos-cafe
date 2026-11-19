@@ -1,3 +1,4 @@
+import { pairRestrictedPinFixture, provisionRestrictedPinFixture } from "./restrictedPinFixture.ts";
 import { randomUUID } from "node:crypto";
 import { expect, test, type Page, type Route } from "@playwright/test";
 import pg from "pg";
@@ -10,7 +11,7 @@ const TEMP_PIN = "123456";
 const NEW_PIN = "384729";
 const LOST_ACK = "Chưa xác nhận được việc đổi PIN. Vui lòng đăng nhập lại bằng PIN mới; nếu chưa được, thử lại bằng PIN tạm.";
 const PROTECTED_BEFORE_LOGIN = new Set([
-  "permission_get_authority", "permission_get_revision", "permission_get_initial_seed_status",
+  "permission_get_authority", "permission_get_revision", "permission_get_initial_seed_status", "owner_get_seed_readiness",
   "permission_begin_initial_seed", "permission_run_initial_seed_stage", "permission_get_menu_catalog",
   "permission_get_floor_workspace", "permission_get_settings_admin", "permission_admin_list",
   "register_write_operation", "execute_write_operation", "get_write_operation", "list_write_operations",
@@ -94,33 +95,6 @@ async function rpc(name: string, bearer: string, body: Record<string, unknown>, 
   } catch { return fail("PIN_ACK_DIRECT_RPC_FAILED"); }
 }
 
-async function createStoreFromUi(page: Page, caseName: "A" | "B"): Promise<BootstrapIdentity> {
-  const capture: { identity?: BootstrapIdentity } = {};
-  await page.route("**/rest/v1/rpc/permission_bootstrap_store", async route => {
-    const response = await route.fetch();
-    if (!response.ok()) fail("PIN_ACK_BOOTSTRAP_HTTP_FAILED");
-    const value = await jsonResponse(response);
-    const data = value.data as Record<string, unknown> | undefined;
-    if (value.ok !== true || !uuid(data?.storeId) || !uuid(data?.ownerId) || data?.seedRequested !== false)
-      fail("PIN_ACK_BOOTSTRAP_SHAPE_INVALID");
-    capture.identity = { storeId: data.storeId, ownerId: data.ownerId };
-    await route.fulfill({ response });
-  });
-  await page.goto("/");
-  await expect(page.getByTestId("landing-screen")).toBeVisible();
-  await page.getByTestId("go-create-store").click();
-  await expect(page.getByTestId("create-store-screen")).toBeVisible();
-  await page.getByTestId("store-name-input").fill(`G2a ACK ${caseName}`);
-  await expect(page.getByTestId("seed-demo-checkbox")).not.toBeChecked();
-  await page.getByTestId("key-loss-acknowledgement").check();
-  await page.getByTestId("create-store-button").click();
-  await expect(page.getByTestId("create-store-result")).toBeVisible({ timeout: 20_000 });
-  if (!capture.identity) fail("PIN_ACK_BOOTSTRAP_NOT_OBSERVED");
-  await page.getByTestId("acknowledge-store-key").click();
-  await expect(page.getByTestId("passcode-screen")).toBeVisible();
-  return capture.identity;
-}
-
 async function clickPin(page: Page, ownerId: string, pinValue: string) {
   await page.getByTestId(`employee-${ownerId}`).click();
   for (const digit of pinValue) await page.getByTestId(`pin-${digit}`).click();
@@ -165,7 +139,8 @@ async function prepareCase(page: Page, db: pg.Client, caseName: "A" | "B"): Prom
     window.print = () => { calls += 1; };
     Object.defineProperty(window, "__pinAckPrintCalls", { get: () => calls });
   });
-  const identity = await createStoreFromUi(page, caseName);
+  const { identity, storeKey } = await provisionRestrictedPinFixture(env, `G2a ACK ${caseName}`);
+  await pairRestrictedPinFixture(page, env.api, storeKey);
   const pendingK = await installPendingK(db, identity);
   phase("RESTRICTED_LOGIN");
   const starts: StartResult[] = [];
