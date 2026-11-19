@@ -20,7 +20,7 @@ import{renderServiceEvidence,serviceFailureFacts}from'./permission-runtime-servi
 import{SERVICE_DIAGNOSTIC_BOUNDS,serviceSafeFailureMetric}from'./permission-runtime-service-diagnostic.mjs';
 import{finiteDiagnosticFacts}from'./permission-runtime-diagnostic-transport.mjs';
 import{ACTIVE_PROFILE}from'./permission-runtime-service-policy.mjs';
-import{serviceConfig,serviceEventProfile}from'./permission-runtime-service-profile.mjs';
+import{serviceConfig,serviceEventProfile,t06Profile,T06_CANDIDATE_SHA,T06_CANDIDATE_TREE}from'./permission-runtime-service-profile.mjs';
 import{servicePeerLayout,startedServicePeer,recordStoppedServicePeer}from'./permission-runtime-service-peer.mjs';
 import { CI1_SETUP, ci1BytesHash, ci1NpmIntake, ci1ToolsIntake, ci1CheckTarListing, ci1EdgeIntake,
   assertCi1Supervisor, ci1WorkerLayout, ci1ImagesIntake } from './permission-runtime-service-intake.mjs';
@@ -34,7 +34,7 @@ const fixedEnv = (root, env) => ({ ...ci1ProcessEnvironment(root, env), PERMISSI
   NPM_CONFIG_AUDIT: 'false', NPM_CONFIG_FUND: 'false', NPM_CONFIG_FETCH_RETRIES: '0', NPM_CONFIG_FETCH_TIMEOUT: '60000',
   CI: 'true', GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: '/dev/null', GIT_TERMINAL_PROMPT: '0' });
 const ghKeys = ['GITHUB_ACTIONS', 'RUNNER_ENVIRONMENT', 'GITHUB_REPOSITORY', 'GITHUB_EVENT_NAME', 'GITHUB_EVENT_PATH',
-  'GITHUB_REPOSITORY_ID','PERMISSION_RUNTIME_PROFILE','GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_WORKFLOW_SHA', 'GITHUB_SHA', 'CI1_EXECUTION_AUTHORIZED'];
+  'GITHUB_REPOSITORY_ID','GITHUB_REF','PERMISSION_RUNTIME_PROFILE','GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_WORKFLOW_SHA', 'GITHUB_SHA', 'CI1_EXECUTION_AUTHORIZED'];
 const githubEnv = env => Object.fromEntries(ghKeys.filter(key => env[key]).map(key => [key, env[key]]));
 
 const failureStages = ['supervisor', 'loop', 'source-tools', 'npm-images', 'edge-network-warm', 'stop-prefetch',
@@ -560,7 +560,7 @@ function exportProof(layout, env) {
   const root = layout.volume, file = `${root}/private/public-evidence.json`;
   if (!existsSync(file)) return false; // No invented counts when setup/kernel failed early.
   const evidence = parse(file), output = ci1PublicExport(evidence);
-  if (evidence.executionProfile!==ACTIVE_PROFILE.id||evidence.runId !== layout.identity.runId || evidence.attempt !== layout.identity.attempt || evidence.sourceSHA !== env.GITHUB_SHA
+  if (evidence.executionProfile!==ACTIVE_PROFILE.id||evidence.runId !== layout.identity.runId || evidence.attempt !== layout.identity.attempt || evidence.sourceSHA !== (t06Profile(ACTIVE_PROFILE.id)?T06_CANDIDATE_SHA:env.GITHUB_SHA)
     || evidence.workflowSHA !== env.GITHUB_WORKFLOW_SHA || Buffer.byteLength(output.json) + Buffer.byteLength(output.markdown) > CI1_SETUP.exportBytes) refused();
   mkdirSync(`${layout.task}/export`, { mode: 0o700, recursive: true });
   for (const [name, text] of [['public-evidence.json', output.json], ['public-summary.md', output.markdown]]) {
@@ -742,6 +742,12 @@ async function setup(layout, input, parentEnv) {
         operation = 'SOURCE_CONFIG';
         const config = readFileSync(`${source}/.git/config`, 'utf8');
         if (/extraheader|credential|https?:\/\/[^\s/]+@/i.test(config)) refused();
+        if(t06Profile(ACTIVE_PROFILE.id)){
+          run('git',['-C',source,'fetch','--no-tags','--depth=1','--','file://'+input,'refs/t06/candidate']);
+          if(run('git',['-C',source,'rev-parse','FETCH_HEAD']).trim()!==T06_CANDIDATE_SHA
+            ||run('git',['-C',source,'rev-parse','FETCH_HEAD^{tree}']).trim()!==T06_CANDIDATE_TREE)refused();
+          run('git',['-C',source,'-c','core.hooksPath=/dev/null','worktree','add','--detach',root+'/candidate',T06_CANDIDATE_SHA]);
+        }
         operation = 'TOOL_MANIFEST';
         for (const tool of ci1ToolsIntake(parse(pinPath('ci1-tools.json')))) {
           const archive = `${root}/downloads/${tool.id}.tar.gz`;

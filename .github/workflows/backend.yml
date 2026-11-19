@@ -21,6 +21,11 @@ on:
         required: false
         type: string
         default: ''
+      candidate_source_sha:
+        description: 'Exact PR #37 commit for T06_ACK or T06_SEED on its dedicated CI branch'
+        required: false
+        type: string
+        default: ''
       runtime_profile:
         description: 'One exact reviewed service envelope; PIN server/onboarding use separate fixed fixtures'
         required: false
@@ -34,6 +39,8 @@ on:
           - PIN_IDENTITY_SERVER
           - PIN_IDENTITY_ONBOARDING
           - PIN_CANARY
+          - T06_ACK
+          - T06_SEED
 
 permissions:
   contents: read
@@ -169,6 +176,22 @@ jobs:
         with:
           node-version: '24.16.0'
           package-manager-cache: false
+      - name: Fetch the pinned T06 candidate object
+        if: inputs.runtime_profile == 'T06_ACK' || inputs.runtime_profile == 'T06_SEED'
+        env:
+          CANDIDATE_SHA: ${{ inputs.candidate_source_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/ci/t06-pin-seed-regression-20261119
+          test "$CANDIDATE_SHA" = 3dd68aea1c14eb05306115bedb7300a78fee3f16
+          test "$(git rev-parse HEAD)" = "$GITHUB_WORKFLOW_SHA"
+          git fetch --no-tags --depth=1 origin "$CANDIDATE_SHA:refs/t06/candidate"
+          test "$(git rev-parse refs/t06/candidate)" = "$CANDIDATE_SHA"
+          tree="$(git rev-parse refs/t06/candidate^{tree})"
+          test "$tree" = 97fd905c5adf55a5e89d150acdba424553d2676b
+          printf 'T06_DISPATCH_BINDING workflowSHA=%s candidateObjectSHA=%s candidateTree=%s run=%s attempt=%s\n' \
+            "$GITHUB_WORKFLOW_SHA" "$CANDIDATE_SHA" "$tree" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT"
       - name: Run one bounded synthetic service profile
         env:
           CI1_CONFIRMATION: RUN_SERVICE_PROFILE

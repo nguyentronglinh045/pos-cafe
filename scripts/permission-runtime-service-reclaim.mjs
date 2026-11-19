@@ -101,7 +101,7 @@ function main(){
   const {root,layout}=admission();
   if(process.getuid()===0){console.log(JSON.stringify(reclaim(root,layout)));return;}
   const keys=['GITHUB_ACTIONS','RUNNER_ENVIRONMENT','GITHUB_REPOSITORY','GITHUB_REPOSITORY_ID','GITHUB_EVENT_NAME',
-    'PERMISSION_RUNTIME_PROFILE','GITHUB_EVENT_PATH','GITHUB_SHA','GITHUB_WORKFLOW_SHA','GITHUB_RUN_ID','GITHUB_RUN_ATTEMPT','CI1_RECLAIM_AUTHORIZED'];
+    'PERMISSION_RUNTIME_PROFILE','GITHUB_REF','GITHUB_EVENT_PATH','GITHUB_SHA','GITHUB_WORKFLOW_SHA','GITHUB_RUN_ID','GITHUB_RUN_ATTEMPT','CI1_RECLAIM_AUTHORIZED'];
   const args=['--','env','-i','PATH=/usr/sbin:/usr/bin:/sbin:/bin',...keys.map(k=>`${k}=${process.env[k]}`),
     process.execPath,resolve(root,'scripts/permission-runtime-service-reclaim.mjs')];
   if(args.some(a=>/[\r\n\0]/.test(a)))refuse();

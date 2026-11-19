@@ -9,18 +9,22 @@ import{trackedFingerprint}from'./project-ci.mjs';
 import{CI1_PROJECT,CI1_RUNTIME,ACTIVE_PROFILE,ci1Identity,ci1ProcessEnvironment,assertCi1Envelope}from'./permission-runtime-service-policy.mjs';
 import{readCi1LinuxEnvelope}from'./permission-runtime-service-linux.mjs';
 import{ci1ImagesIntake,ci1PinnedImageProof}from'./permission-ci1-intake.mjs';
-import{ci1HarnessFailureMarker}from'./permission-runtime-t04-adapter.mjs';
+import{ci1HarnessFailureMarker,realAdapter}from'./permission-runtime-t04-adapter.mjs';
 import{t04TimeBudget}from'./permission-runtime-t04.mjs';
-import{serviceProfile,serviceConfig,serviceEventProfile}from'./permission-runtime-service-profile.mjs';
+import{serviceProfile,serviceConfig,serviceEventProfile,t06Profile}from'./permission-runtime-service-profile.mjs';
 import{readStoppedServicePeer}from'./permission-runtime-service-peer.mjs';
 import{serviceSafeFailureMetric,serviceStageErrorFacts,serviceRunnerFailureFacts}from'./permission-runtime-service-diagnostic.mjs';
 import{readTc18WrapperReceipt}from'./permission-runtime-tc18-diagnostic.mjs';
 import{parseDiagnosticMarker}from'./permission-runtime-diagnostic-transport.mjs';
 import{assertRuntimeDiagnosticBinding}from'./permission-runtime-error-facts.mjs';
 
+import{createT04FixtureBoundary,t04Lifecycle,t04StageEnvironment,assertT04ResourceFacts}from'./permission-runtime-t04-fixture.mjs';
+import{t06CandidateCheckout,t06DefaultCases,t06ObservedCases,t06AckPhases,validateT06Evidence}from'./permission-runtime-t06.mjs';
+
 const check=x=>{if(!x)throw Error('PERMISSION_SERVICE_RUNTIME_REFUSED');};
 export function servicePreparedEnvironment(id,privateRoot){
- check(['PIN_ONBOARD','PIN_RACE','PIN_EXPIRY'].includes(id)&&typeof privateRoot==='string'&&privateRoot.startsWith('/')&&!/[\r\n\0]/.test(privateRoot));
+ check(['PIN_ONBOARD','PIN_RACE','PIN_EXPIRY','T06_ACK'].includes(id)&&typeof privateRoot==='string'&&privateRoot.startsWith('/')&&!/[\r\n\0]/.test(privateRoot));
+ if(id==='T06_ACK')return{PIN_ACK_ENV_FILE:privateRoot+'/pin-ack.env',PIN_ACK_VITE_PORT:'5179'};
  if(id==='PIN_RACE')return{PIN_RACE_ENV_FILE:privateRoot+'/pin-race.env',PIN_RACE_VITE_PORT:'5180'};
  if(id==='PIN_EXPIRY')return{PIN_EXPIRY_ENV_FILE:privateRoot+'/pin-expiry.env',PIN_EXPIRY_VITE_PORT:'5181'};
  return{PIN_ONBOARD_ENV_FILE:privateRoot+'/pin-onboard.env'};
@@ -50,21 +54,21 @@ export async function runServiceProfile(profile,adapter){
   supplementalOracles:'NOT_PROVEN_BY_STAGE_COUNTS'};
 }
 export function renderServiceEvidence(r){
- const p=serviceProfile(r?.executionProfile),ids=p.stages;
+ const p=serviceProfile(r?.executionProfile),ids=p.stages,split=t06Profile(p.id);
  const exact=(v,keys)=>check(v&&Object.keys(v).sort().join(',')===keys.sort().join(','));
  exact(r,['schemaVersion','scope','executionProfile','logicalProfile','status','failure','stages','physicalBackendSHA',
   'fixtureConnectionClosed','full35BusinessRuntime','remainingBusinessStages','supplementalOracles',
-  'repository','runId','attempt','sourceSHA','workflowSHA','sourceFingerprint','lockSHA','stoppedPeerSHA']);
+  'repository','runId','attempt','sourceSHA','workflowSHA','sourceFingerprint','lockSHA','stoppedPeerSHA',...(split?['t06']:[])]);
  check(r.schemaVersion==='permission-service-runtime-v1'&&r.scope==='ONE_SERVICE_PROFILE_ONLY'&&r.logicalProfile===p.logicalProfile
   &&r.repository==='nguyentronglinh045/pos-cafe'&&/^[1-9][0-9]{0,19}$/.test(r.runId??'')
   &&Number.isInteger(r.attempt)&&r.attempt>=1&&r.attempt<=1000&&['PASS','FAIL'].includes(r.status)
   &&r.full35BusinessRuntime==='NOT_RUN'&&r.remainingBusinessStages===35-ids.length
   &&r.supplementalOracles==='NOT_PROVEN_BY_STAGE_COUNTS'&&typeof r.fixtureConnectionClosed==='boolean'
-  &&['sourceSHA','workflowSHA'].every(k=>/^[a-f0-9]{40}$/.test(r[k]??''))&&r.sourceSHA===r.workflowSHA
+  &&['sourceSHA','workflowSHA'].every(k=>/^[a-f0-9]{40}$/.test(r[k]??''))&&(split||r.sourceSHA===r.workflowSHA)
   &&['sourceFingerprint','lockSHA'].every(k=>/^[a-f0-9]{64}$/.test(r[k]??''))
   &&(r.physicalBackendSHA===null||/^[a-f0-9]{64}$/.test(r.physicalBackendSHA??''))
   &&(r.stoppedPeerSHA===null||p.id==='PIN_EXPIRY'&&/^[a-f0-9]{64}$/.test(r.stoppedPeerSHA??''))
-  &&Array.isArray(r.stages)&&r.stages.length===ids.length&&[null,'bootstrap','cleanup',...ids].includes(r.failure));
+  &&Array.isArray(r.stages)&&r.stages.length===ids.length&&[null,'bootstrap','cleanup',...(split?['candidate-preservation']:[]),...ids].includes(r.failure));
  for(let i=0;i<ids.length;i++){const row=r.stages[i],s=runtimeStage(ids[i]);
   check(row?.stage===ids[i]&&['PASS','FAIL','NOT_RUN'].includes(row.status));
   if(row.status==='PASS'){
@@ -81,6 +85,7 @@ export function renderServiceEvidence(r){
    &&!(r.failure==='cleanup'&&(r.fixtureConnectionClosed||r.stages.some(s=>s.status!=='PASS')))
    &&!(failed>=0&&r.stages.some((s,i)=>s.status!==(i<failed?'PASS':i===failed?'FAIL':'NOT_RUN'))));
  }
+ if(split)validateT06Evidence(r,ids[0]);
  const json=JSON.stringify(r,null,2)+'\n';check(Buffer.byteLength(json)<=16384);
  return{json,markdown:`# Permission service profile\n\n${p.id}: **${r.status}**. Only ${ids.length} catalog stages; full35/oracles remain unproven.\n`};
 }
@@ -97,15 +102,26 @@ async function main(){
   &&control.workerSHA===runtimeHash(readFileSync(join(source,'scripts/permission-runtime-service-worker.mjs'))));
  const {deadline}=t04TimeBudget(control.startedAtEpochMs,Date.now());
  const env={...ci1ProcessEnvironment(root,process.env),...process.env};
- const call=(name,args,cap=30000)=>{guard();const remaining=deadline-Date.now()-1000;check(remaining>0);
-  return execFileSync(name,args,{cwd:source,env,encoding:'utf8',timeout:Math.min(cap,remaining),killSignal:'SIGKILL',maxBuffer:1024**2,stdio:['ignore','pipe','pipe']});};
- check(!lstatSync(source+'/node_modules',{throwIfNoEntry:false}));
- const lockSHA=runtimeHash(readFileSync(source+'/package-lock.json'));
- call('npm',['ci','--offline','--no-audit','--no-fund'],300000);check(runtimeHash(readFileSync(source+'/package-lock.json'))===lockSHA);
- const git=args=>call('git',args,10000),sourceSHA=git(['rev-parse','HEAD']).trim(),paths=git(['ls-files','-z']).split('\0').filter(Boolean).sort();
- check(sourceSHA===process.env.GITHUB_SHA&&!git(['diff','--name-only','HEAD','--']).trim());
- const sourceFingerprint=trackedFingerprint(source,paths),profile=ACTIVE_PROFILE;
- const outputRoot=prepareRuntimeDirectory(source,join(source,'artifacts',`permission-service-${profile.id.toLowerCase()}-${identity.runId}-${identity.attempt}`),guard);
+ const call=(name,args,cap=30000,cwd=source)=>{guard();const remaining=deadline-Date.now()-1000;check(remaining>0);
+  return execFileSync(name,args,{cwd,env,encoding:'utf8',timeout:Math.min(cap,remaining),killSignal:'SIGKILL',maxBuffer:1024**2,stdio:['ignore','pipe','pipe']});};
+ const install=cwd=>{
+  check(!lstatSync(cwd+'/node_modules',{throwIfNoEntry:false}));
+  const path=join(cwd,'package-lock.json'),lock=runtimeHash(readFileSync(path));
+  call('npm',['ci','--offline','--no-audit','--no-fund'],300000,cwd);
+  check(runtimeHash(readFileSync(path))===lock);
+ };
+ const profile=ACTIVE_PROFILE,split=t06Profile(profile.id),seed=profile.id==='T06_SEED';
+ const git=args=>call('git',args,10000),workflowSHA=git(['rev-parse','HEAD']).trim();
+ check(workflowSHA===process.env.GITHUB_WORKFLOW_SHA&&!git(['diff','--name-only','HEAD','--']).trim());
+ const candidate=split?t06CandidateCheckout(root):null;
+ if(!split)install(source);
+ const testSource=candidate?.source??source,sourceSHA=candidate?.sourceSHA??workflowSHA;
+ const lockSHA=candidate?.lockSHA??runtimeHash(readFileSync(source+'/package-lock.json'));
+ const sourceFingerprint=candidate?.sourceFingerprint??trackedFingerprint(source,git(['ls-files','-z']).split('\0').filter(Boolean).sort());
+ const outputRoot=prepareRuntimeDirectory(testSource,join(testSource,'artifacts',`permission-service-${profile.id.toLowerCase()}-${identity.runId}-${identity.attempt}`),guard);
+ let cases=split?t06DefaultCases(profile.stages[0]):null,caseReportObserved=false;
+ const fixture=seed?{preflight:'NOT_RUN',restore:'NOT_RUN',archiveSHA:null,storageSHA:null,baselineSHA:null,afterSHA:null}:{postcheck:'NOT_RUN'};
+ let seedAdapter,boundary;
  const aliasPrivate=CI1_RUNTIME+'/private',privateRoot=profile.id==='PIN_IDENTITY_SERVER'?aliasPrivate:root+'/private';
  if(profile.id==='PIN_IDENTITY_SERVER')check(!lstatSync(aliasPrivate,{throwIfNoEntry:false}));
  let db,runtime,setupOrdinal=0;
@@ -137,9 +153,50 @@ async function main(){
   return runtimeHash({databaseOID:row.database_oid,system_identifier:row.identifier,data_directory:row.directory,stoppedPeerSHA,
    container:c.Id,volumeDevice:v.dev,volumeInode:v.ino,api:s.API_URL,project:CI1_PROJECT});
  };
+ const seedPrepare=async stage=>{
+  const baseline=await seedAdapter.baseline(),physicalSHA=await physical();
+  boundary=await createT04FixtureBoundary({root,identity,guard,physical,baseline,preserved:seedAdapter.preserved,deadline,
+    resourceGuard:()=>assertT04ResourceFacts(readCi1LinuxEnvelope(root,identity),identity)});
+  Object.assign(fixture,{baselineSHA:baseline,archiveSHA:boundary.archiveSHA,storageSHA:boundary.storageSHA,preflight:'FAIL'});
+  const proof=await boundary.preflight();
+  check(proof.status==='PASS'&&proof.archiveSHA===boundary.archiveSHA&&proof.storageSHA===boundary.storageSHA
+    &&proof.baselineSHA===baseline&&proof.physicalSHA===physicalSHA&&await physical()===physicalSHA
+    &&await seedAdapter.preserved(baseline));
+  fixture.preflight='PASS';
+  await boundary.prepare(stage);
+ };
+ const t06After=async stage=>{
+  if(seed){
+   fixture.restore='FAIL';
+   const physicalSHA=await physical();
+   fixture.afterSHA=await boundary.observe(t04Lifecycle(stage).post);
+   const restored=await boundary.restore(stage,fixture.afterSHA);
+   check(restored.stage===stage&&restored.status==='RESTORED_ORIGINAL'&&restored.archiveSHA===fixture.archiveSHA
+     &&restored.beforeResetSHA===fixture.afterSHA&&restored.baselineSHA===fixture.baselineSHA&&restored.physicalSHA===physicalSHA
+     &&await physical()===physicalSHA&&await seedAdapter.preserved(fixture.baselineSHA));
+   fixture.restore='RESTORED_ORIGINAL';
+  }else{
+   fixture.postcheck='FAIL';
+   const helper=await import(join(testSource,'tests/supabase/permissionPinAckEnvironment.ts'));
+   await helper.assertPinAckTarget(db,helper.pinAckEnvironment());
+   fixture.postcheck='PASS';
+  }
+ };
  const receipt=await runServiceProfile(profile.id,{guard,
   bootstrap:async()=>{setupOrdinal=1;services();status();setupOrdinal=2;
-   if(profile.id==='SUPABASE_T02'||profile.id==='PIN_IDENTITY_ONBOARDING'||profile.id==='PIN_IDENTITY_SERVER'){
+   if(seed){
+    seedAdapter=await realAdapter(root,identity);
+    await seedAdapter.bootstrap();
+    env.IDEM_ENV_FILE=privateRoot+'/bridge.env';
+    install(testSource);
+   }else if(split){
+    install(source);
+    install(testSource);
+    call(process.execPath,[testSource+'/scripts/permission-pin-ack-prepare.mjs',privateRoot],300000,testSource);
+    Object.assign(env,servicePreparedEnvironment(profile.id,privateRoot));
+    process.env.PIN_ACK_ENV_FILE=env.PIN_ACK_ENV_FILE;
+    env.PIN_ACK_REPORT_FILE=join(privateRoot,'ack-browser-safe.json');
+   }else if(profile.id==='SUPABASE_T02'||profile.id==='PIN_IDENTITY_ONBOARDING'||profile.id==='PIN_IDENTITY_SERVER'){
     runtime=await import(profile.id==='SUPABASE_T02'?'./permission-bridge-runtime.mjs':profile.id==='PIN_IDENTITY_SERVER'?'./permission-pin-identity-runtime.mjs':'./permission-identity-runtime.mjs');
     await runtime.bootstrapBridgeRuntime(privateRoot);env.IDEM_ENV_FILE=privateRoot+'/bridge.env';
     if(profile.id==='PIN_IDENTITY_SERVER')env.PIN_IDENTITY_RUNTIME='close1';
@@ -148,13 +205,32 @@ async function main(){
     call(process.execPath,[source+'/scripts/permission-pin-'+part+'-prepare.mjs',privateRoot],300000);
     Object.assign(env,servicePreparedEnvironment(profile.id,privateRoot));
    }else check(profile.id==='PIN_CANARY');setupOrdinal=3;
-  },physical,prepare:async()=>{check(Date.now()<deadline);},
-  stage:stage=>executeRuntimeStage(stage,{sourceRoot:source,outputRoot,baseEnv:env,sourceSHA,sourceFingerprint,lockSHA,runId:identity.runId,guard,deadline}),
+  },physical,prepare:async stage=>{check(Date.now()<deadline);if(seed)await seedPrepare(stage);},
+  stage:async stage=>{
+   const settings=seed?t04StageEnvironment(stage,env):env;
+   const execute=()=>executeRuntimeStage(stage,{sourceRoot:testSource,outputRoot,baseEnv:settings,sourceSHA,sourceFingerprint,
+     lockSHA,runId:identity.runId,guard,deadline,...(split?{observeReport:(expected,report,context)=>{
+      cases=t06ObservedCases(expected,report,context);
+      caseReportObserved=true;
+     }}:{})});
+   let result;
+   try{result=await execute();}
+   catch(error){
+    if(split){
+     if(error?.runtimeStageBoundaryOrdinal>=4&&!caseReportObserved)
+      cases=cases.map(item=>({...item,status:'UNVERIFIED'}));
+     await t06After(stage).catch(()=>{});
+    }
+    throw error;
+   }
+   if(split){check(cases.every(item=>item.status==='PASS'));await t06After(stage);}
+   return result;
+  },
   diagnostic:(stage,error)=>{
    const facts={serviceStageOrdinal:profile.stages.indexOf(stage)+1,serviceSetupOrdinal:setupOrdinal,...serviceStageErrorFacts(error),serviceReportObserved:0};
    const expected=profile.stages.includes(stage)?runtimeStage(stage):null;
    if(expected)try{
-    const command=runtimeStageCommand(stage,{sourceRoot:source,outputRoot}),path=join(command.reportRoot,stage+'-runner.json'),s=lstatSync(path,{throwIfNoEntry:false});
+    const command=runtimeStageCommand(stage,{sourceRoot:testSource,outputRoot}),path=join(command.reportRoot,stage+'-runner.json'),s=lstatSync(path,{throwIfNoEntry:false});
     if(!s)facts.serviceReportObserved=3;
     else{
      facts.serviceReportObserved=2;
@@ -176,9 +252,24 @@ async function main(){
    }
    console.error('SERVICE_FAILURE_FACTS '+JSON.stringify(facts));
   },
-  close:async()=>{if(db)await db.end();return true;}});
+  close:async()=>{
+   let okay=true;
+   try{if(boundary)await boundary.close();}catch{okay=false;}
+   try{if(db)await db.end();}catch{okay=false;}
+   try{if(seedAdapter)await seedAdapter.close();}catch{okay=false;}
+   return okay;
+  }});
+ if(split){
+  if(!seed&&env.PIN_ACK_REPORT_FILE)cases=t06AckPhases(env.PIN_ACK_REPORT_FILE,cases);
+  let candidatePreserved=false;
+  try{candidatePreserved=t06CandidateCheckout(root).sourceFingerprint===sourceFingerprint;}catch{}
+  if(!candidatePreserved&&receipt.status==='PASS'){
+   receipt.status='FAIL';receipt.failure='candidate-preservation';
+  }
+  receipt.t06={candidatePreserved,candidateTree:candidate.tree,cases,fixture};
+ }
  Object.assign(receipt,{repository:process.env.GITHUB_REPOSITORY,runId:identity.runId,attempt:identity.attempt,
-  sourceSHA,workflowSHA:process.env.GITHUB_WORKFLOW_SHA,sourceFingerprint,lockSHA,stoppedPeerSHA});
+  sourceSHA,workflowSHA,sourceFingerprint,lockSHA,stoppedPeerSHA});
  const rendered=renderServiceEvidence(receipt);writeFileSync(root+'/private/public-evidence.json',rendered.json,{flag:'wx',mode:0o600});
  writeFileSync(root+'/private/public-summary.md',rendered.markdown,{flag:'wx',mode:0o600});if(receipt.status!=='PASS')process.exitCode=1;
 }

@@ -40,7 +40,18 @@ check(ordinary.required.length===48&&tc18.required.length===7
   &&new Set([...ordinary.required,...tc18.required].map(key)).size===55);
 
 export const runtimeStageCatalog=()=>structuredClone(catalog);
-export function runtimeStage(stage){const s=catalog.find(s=>s.stage===stage);check(s);return structuredClone(s);}
+const ackTest='tests/supabase/permissionPinAckLoss.spec.ts';
+const ackProject='permission-pin-ack-isolated-chromium';
+const ackConfig='playwright.permission-pin-ack-loss.config.ts';
+const ackConfigSHA='65ccd2419e79034859763aeb2309555699c3e444f2ff518d69274b304a19fbdf';
+const t06Ack={stage:'t06-pin-ack',runner:'playwright',files:[ackTest],
+  required:[
+    'TC-PIN-09 A drops completion ACK after independent observer proves commit',
+    'TC-PIN-09 B drops completion before forward and keeps temporary PIN restricted',
+  ].map(title=>({file:ackTest,name:'G2a forced completion lost ACK on isolated Auth/REST/browser > '+title,project:ackProject})),
+  config:{path:ackConfig,sha256:ackConfigSHA},configSHA:ackConfigSHA,exactDiscovery:true,timeoutMs:15*60000,wrapper:null};
+
+export function runtimeStage(stage){const s=stage===t06Ack.stage?t06Ack:catalog.find(s=>s.stage===stage);check(s);return structuredClone(s);}
 export function runtimeConfigBinding(stage,bytes){const s=runtimeStage(stage);
   check(Buffer.isBuffer(bytes)&&runtimeHash(bytes)===s.configSHA);return s.configSHA;}
 
@@ -58,7 +69,7 @@ export function runtimeStageCommand(stage,{sourceRoot,outputRoot}){
     ?['node_modules/vitest/vitest.mjs','run','--config',s.config.path,...s.files,'--allowOnly=false','--retry=0',
       '--reporter','./scripts/permission-runtime-vitest-reporter.mjs']
     :['node_modules/@playwright/test/cli.js','test','--config',s.config.path,...s.files,'--workers=1','--retries=0',
-      '--repeat-each=1','--forbid-only','--reporter','./scripts/permission-runtime-playwright-reporter.mjs',
+      '--repeat-each=1','--forbid-only','--reporter',stage===t06Ack.stage?'./scripts/permission-runtime-playwright-reporter.mjs,./scripts/permission-pin-ack-reporter.mjs':'./scripts/permission-runtime-playwright-reporter.mjs',
       '--output',resolve(outputRoot,stage+'-browser')];
   argv[0]=resolve(sourceRoot,argv[0]);
   return {stage,cwd:sourceRoot,argv,runnerArgv:[...argv],timeoutMs:s.timeoutMs,wrapper:false,reportRoot:outputRoot};

@@ -5,7 +5,7 @@ import { pathToFileURL } from 'node:url';
 import { withLightCorePattern, linuxCorePatternAdapter } from './project-ci-launch.mjs';
 import { ci1WorkerLayout } from './permission-runtime-service-intake.mjs';
 import { ci1WorkerPlan, ci1PublicExport, ci1FailureExport } from './permission-runtime-service-worker.mjs';
-import{serviceEventProfile}from'./permission-runtime-service-profile.mjs';
+import{serviceEventProfile,t06Profile,T06_CANDIDATE_SHA}from'./permission-runtime-service-profile.mjs';
 import { allocatedOutsideBytes } from './permission-ci1-outside.mjs';
 
 export function backendOutsideAdmission(measuredBytes) {
@@ -22,7 +22,7 @@ export function backendInvocation(env, node, root) {
     || env.GITHUB_WORKFLOW_SHA !== env.GITHUB_SHA || !node.startsWith('/') || !root.startsWith('/')) throw new Error('BACKEND_DISPATCH_REFUSED');
   serviceEventProfile(env,JSON.parse(readFileSync(env.GITHUB_EVENT_PATH)));
   const layout = ci1WorkerLayout(env.GITHUB_RUN_ID, Number(env.GITHUB_RUN_ATTEMPT));
-  const keys = ['PERMISSION_RUNTIME_PROFILE','PATH', 'GITHUB_ACTIONS', 'RUNNER_ENVIRONMENT', 'GITHUB_REPOSITORY', 'GITHUB_REPOSITORY_ID', 'GITHUB_EVENT_NAME', 'GITHUB_EVENT_PATH',
+  const keys = ['PERMISSION_RUNTIME_PROFILE','PATH', 'GITHUB_REF', 'GITHUB_ACTIONS', 'RUNNER_ENVIRONMENT', 'GITHUB_REPOSITORY', 'GITHUB_REPOSITORY_ID', 'GITHUB_EVENT_NAME', 'GITHUB_EVENT_PATH',
     'GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_WORKFLOW_SHA', 'GITHUB_SHA'];
   const argv = ['--', 'env', ...keys.filter(key => env[key]).map(key => `${key}=${env[key]}`),
     'CI1_EXECUTION_AUTHORIZED=yes', node, resolve(root, 'scripts/permission-runtime-service-worker.mjs'), 'launch', root];
@@ -38,7 +38,7 @@ export function backendEvidence(worker, evidence, env) {
     || worker.cleanup !== true || worker.cleanupFailure !== null
     || JSON.stringify(worker.completed) !== JSON.stringify(stages) || worker.businessCounts !== null
     || safe.executionProfile!==env.PERMISSION_RUNTIME_PROFILE||safe.status !== 'PASS' || safe.repository !== env.GITHUB_REPOSITORY || safe.runId !== env.GITHUB_RUN_ID
-    || safe.attempt !== Number(env.GITHUB_RUN_ATTEMPT) || safe.sourceSHA !== env.GITHUB_SHA
+    || safe.attempt !== Number(env.GITHUB_RUN_ATTEMPT) || safe.sourceSHA !== (t06Profile(env.PERMISSION_RUNTIME_PROFILE)?T06_CANDIDATE_SHA:env.GITHUB_SHA)
     || safe.workflowSHA !== env.GITHUB_WORKFLOW_SHA) throw new Error('BACKEND_PROOF_REFUSED');
   return rendered;
 }
@@ -47,6 +47,16 @@ export function backendEvidence(worker, evidence, env) {
 // This path never satisfies backendEvidence or changes the failed job's exit.
 export function backendFailureEvidence(worker, evidence, env) {
   const rendered = ci1PublicExport(evidence), safe = JSON.parse(rendered.json);
+  if(t06Profile(env.PERMISSION_RUNTIME_PROFILE)){
+    // Report observed results even if export or teardown failed. The enclosing
+    // job still exits nonzero and only backendEvidence can attest overall PASS.
+    if(worker.schemaVersion!=='permission-ci1-worker-status-v1'||worker.status!=='ERROR'
+      ||worker.businessCounts!==null||!worker.failure&&!worker.cleanupFailure
+      ||safe.executionProfile!==env.PERMISSION_RUNTIME_PROFILE||safe.repository!==env.GITHUB_REPOSITORY
+      ||safe.runId!==env.GITHUB_RUN_ID||safe.attempt!==Number(env.GITHUB_RUN_ATTEMPT)
+      ||safe.sourceSHA!==T06_CANDIDATE_SHA||safe.workflowSHA!==env.GITHUB_WORKFLOW_SHA)throw Error('BACKEND_FAILURE_PROOF_REFUSED');
+    return {...rendered,markdown:rendered.markdown+'\nWorker failed. Results above are diagnostic only.\n'};
+  }
   const completed = ci1WorkerPlan(env.GITHUB_RUN_ID, Number(env.GITHUB_RUN_ATTEMPT)).stages.slice(1, 7);
   if (worker.schemaVersion !== 'permission-ci1-worker-status-v1' || worker.status !== 'ERROR'
     || worker.businessCounts !== null || worker.cleanup !== true || worker.cleanupFailure !== null

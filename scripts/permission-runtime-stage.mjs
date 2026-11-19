@@ -23,7 +23,7 @@ export function prepareRuntimeDirectory(sourceRoot,outputRoot,guard){
   p=root;for(const part of components){p=join(p,part);if(!lstatSync(p,{throwIfNoEntry:false})){guard();mkdirSync(p,{mode:0o700});}}
   return out;
 }
-export async function executeRuntimeStage(stage,{sourceRoot,outputRoot,baseEnv,sourceSHA,sourceFingerprint,lockSHA,runId,guard,deadline}){
+export async function executeRuntimeStage(stage,{sourceRoot,outputRoot,baseEnv,sourceSHA,sourceFingerprint,lockSHA,runId,guard,deadline,observeReport}){
   let boundary=1,childExitCode;
   try{
   const s=runtimeStage(stage),root=resolve(sourceRoot),out=resolve(outputRoot);
@@ -52,6 +52,7 @@ export async function executeRuntimeStage(stage,{sourceRoot,outputRoot,baseEnv,s
   boundary=6;const resultPath=join(command.reportRoot,stage+'-runner.json'),info=lstatSync(resultPath);
   check(info.isFile()&&!info.isSymbolicLink()&&info.size<=1024**2&&realpathSync(resultPath)===resultPath);
   const report=JSON.parse(readFileSync(resultPath));
+  observeReport?.(expected,report,context);
   boundary=7;return validateRuntimeStage(expected,report,context,child.exitCode);
   }catch(error){if(error&&typeof error==='object'){error.runtimeStageBoundaryOrdinal=boundary;if(boundary>=5)error.runtimeStageChildExitCode=childExitCode??null;}throw error;}
 }
