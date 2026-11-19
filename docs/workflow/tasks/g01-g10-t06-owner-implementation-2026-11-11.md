@@ -705,3 +705,88 @@ Nhóm 7 còn 7.1, 7.2 và 7.4. Các nhãn Preview, chẩn đoán lỗi CI lịch
 ## Tái hiện local
 
 Dùng PostgreSQL portable trên loopback và DB rỗng tên `pos_cafe_t06_contract` hoặc hậu tố thử. Chỉ truyền DSN local qua `POS_CAFE_T06_TEST_DSN`, chạy setup bằng Node, chạy file SQL với `psql -v ON_ERROR_STOP=1`, rồi chạy hai file Deno test với quyền mạng loopback. Các ca dùng SMTP/Auth giả, fixture có email miền invalid và dọn theo phạm vi test. Không dùng Secrets hosted cho lane này.
+
+<a id="t06-closeout-client-2026-11-19"></a>
+
+## Ứng viên gỡ luồng tạo quán cũ ngày 19/11/2026
+
+Linh giao thực hiện 7.1, 7.2, 7.4, sửa nhãn Preview, xác minh đích CLI, kiểm hồi quy và trình PR trước khi merge. [PR #37](https://github.com/nguyentronglinh045/pos-cafe/pull/37) ở commit `ed80654` từ `main@d402dc0`. Khi có cổng provisioning, ứng dụng mở quy trình OTP. Khi thiếu cổng, ứng dụng hướng dẫn dùng Protected Preview hoặc ghép quán bằng Store Key. Adapter Auth chỉ giữ ghép thiết bị, ngắt ghép và đọc phiên. Hai nhãn mock đã được gỡ. Cây SQL/Edge và gateway API khớp byte với main nền.
+
+| Phép kiểm trên `ed80654` | Kết quả |
+| --- | --- |
+| Build và unit Windows | Build đạt. Unit 1.250/1.250, độ phủ dòng 92,63%. |
+| UI audit mock | Selftest ghi đủ 23 phát hiện mẫu. Ma trận 54 cặp state/viewport không có finding. |
+| Smoke staging `0004` | 5/5, 0 bỏ qua, 0 flaky. Hậu kiểm 0 đơn mở, ghi đè quyền thu ngân trở về baseline, thu hồi phiên thử và logout thiết bị HTTP 204. |
+| Đối chiếu đích | Dashboard mở đúng project staging, khớp project dùng trong script và biên nhận smoke. CLI v3.2.0 báo chưa có phiên đăng nhập, mục 2.0 còn mở. |
+| Các bộ test signup lịch sử | Ứng viên đã chuyển test unit của luồng hiện hành sang điều hướng, OTP và đọc lại trạng thái. Sáu browser spec PIN/IDEM vẫn sử dụng luồng signup/bootstrap cũ và fixture khác. TC-IDEM-011 còn được thu thập bởi `npm run test:idempotency:e2e`. Mục 7.4 còn phần này, cần giữ nguồn chạy lịch sử hoặc chuyển test và fixture theo tiêu chí đã chốt. |
+| Lượt OTP thật | Smoke 0004 ghép quán được cấp sẵn. Hai vòng TC-OWNER-104 có Gmail thật thuộc lượt Protected Preview ngày 12–13/11. |
+
+Hai review AI độc lập thống nhất phần production đúng phạm vi. Reviewer kiểm release pins xác nhận 65/65. Phạm vi 7.4 của các bộ lab cũ chưa được duyệt đóng. PR #37 ở dạng Draft chờ xử lý các điều kiện còn mở.
+
+Lượt local còn đạt 10/10 ca OTP mock, 59 ca smoke mock với 37 lượt bỏ qua theo viewport. Hai lượt POS light CI trên push và pull request đạt 18/18 bước ở attempt 1. Cả hai kiểm đúng tree của `ed80654`, gồm 1.250/1.250 unit, 577/577 ca tooling tự động, 59 smoke áp dụng, 54/54 cặp UI audit. Push mất 1.443 ms ở ca kiểm kiến trúc, pull request mất 925 ms. [CI push](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/44456468049) · [CI pull request](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/44456504050).
+
+Hồ sơ local gồm báo cáo unit, coverage, kiểm UI, hai lượt smoke và biên nhận trước/sau staging. Smoke staging dùng cùng mã ứng viên và backend staging đang phục vụ. Fixture seed recovery đã tách provisioning cũ ra khỏi mã ứng dụng, nhưng bài contract đó cần backend lab riêng để chạy lại. Lượt này chưa tạo hoặc deploy backend mới. Hai nhánh nguồn của #35 và #36 đã được xóa sau khi xác nhận commit nằm trong nhánh đích.
+
+### Phương án cho các ca còn lại của 7.4
+
+Linh chốt giữ mục 2.0 mở đến khi xác minh CLI. Với 7.4, Linh yêu cầu đối chiếu trước khi chọn. Đề xuất giữ ca chỉ kiểm signup/bootstrap và giao PIN tạm ở nguồn lịch sử. Luồng T06 lưu PIN chủ đã chọn và tạo chủ với `pin_change_required=false`. Các ca bảo vệ phiên PIN hạn chế còn giá trị vì quy trình phục hồi PIN vẫn đặt `pin_change_required=true`. Tách khởi tạo fixture khỏi form cũ, ghép vào fixture cô lập đã được chuẩn bị, rồi giữ assertion về hết hạn, mất phản hồi, tranh đồng thời, thu hồi và cách ly. Giữ ca TC-IDEM-011 lịch sử và đối chiếu hành vi còn áp dụng của tạo quán, seed và idempotency với test OTP trước khi xác nhận đủ bằng chứng.
+
+Khi Linh duyệt phương án trên ngày 19/11, PR #37 còn ở trạng thái Draft để chờ kết quả chạy lab và quyết định merge.
+
+<a id="t06-pin-isolated-fixture-2026-11-19"></a>
+
+### Chuyển các ca bảo vệ phiên PIN sang fixture cô lập
+
+Ứng viên [PR #37](https://github.com/nguyentronglinh045/pos-cafe/pull/37) ở `3dd68ae` chuyển năm ca trong ba spec mất ACK, tranh đồng thời khi hoàn thành, và chờ hết hạn. Khi chạy trên lab, fixture Node kiểm đích trước khi chuẩn bị quán và đóng phiên Auth của bước chuẩn bị. Trình duyệt bắt đầu tại màn ghép bằng Store Key rồi chạy các bước và assertion PIN hiện có. Lớp tương thích chỉ ánh xạ `skipped` sang `ready` khi RPC đọc trạng thái seed trả kết quả đó. Phản hồi lỗi vẫn được giữ, trạng thái thành công không hợp lệ và chuyển hướng bị chặn. Mã ứng dụng, gateway và SQL/Edge khớp byte với `ed80654`.
+
+| Phạm vi | Cách chạy và bằng chứng |
+| --- | --- |
+| Bảo vệ phiên PIN còn áp dụng | Giữ các ca mất ACK (2), tranh đồng thời (2) và hết hạn (1). Playwright thu thập đủ 5 ca. GitHub Actions sau đó chạy thật đạt đủ năm ca với Auth/REST/PostgreSQL và đạt ca hợp đồng seed recovery. Xem các lượt chạy bên dưới. |
+| Signup/bootstrap và giao PIN tạm | Giữ bằng chứng ở nguồn lịch sử đã ghi trong manifest PIN, `567af2191400ef559e90b3eccae0a0e4992f82e5`. TC-IDEM-011 tham chiếu riêng nguồn `3ada48c` và vẫn được runner cũ thu thập. |
+| Hành vi còn áp dụng của TC-IDEM-011 | Hai ca mock hiện hành kiểm tạo một quán và một slot khi phát lại thao tác qua OTP, PIN do chủ chọn và lựa chọn seed bật/tắt. Các assertion DB và UI của flow signup cũ vẫn thuộc ca lịch sử. |
+| Bản ứng viên | Build Windows đạt, unit 1.252/1.252 với độ phủ dòng 92,63%, 9/9 ca kiểm fixture đạt. Smoke staging 5/5 ở bảng trên thuộc `ed80654`. |
+
+Hai reviewer AI độc lập duyệt mã `3dd68ae`. Vòng đầu phát hiện phản hồi readiness thành công ngoài dự kiến, đường chuyển hướng và phiên Auth khi danh tính trả về không hợp lệ. Bản cuối chặn phản hồi/chuyển hướng ngoài hợp đồng, giảm chi tiết lỗi ghi ra ngoài và đóng phiên cục bộ ngay cả khi lỗi danh tính xảy ra sau khi cấp token.
+
+Hai lượt POS light CI đạt 18/18 bước ở attempt 1. Push chạy `3dd68ae` và pull request chạy merge ref `36796fd` với cùng cây nguồn và fingerprint. Cả hai đạt 1.252/1.252 unit, 586/586 ca tooling tự động, 59 ca smoke mock áp dụng, 37 lượt bỏ qua theo viewport và 54/54 cặp UI audit. Ca kiểm kiến trúc mất 918 ms trên push và 934 ms trên pull request. [CI push](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/44476980895) · [CI pull request](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/44476990130).
+
+Phiên kiểm thử độc lập ngày 19/11 đối chiếu checkout sạch và head PR #37 cùng ở `3dd68ae`, tree `97fd905c`. Kiểm kê trên Windows không thấy listener ở bốn cặp cổng lab. Repo không có runner tự quản. Workflow lúc đó chưa có cấu hình chạy riêng cho ACK và seed recovery. PostgreSQL portable chỉ đáp ứng các lượt DB riêng. Cả năm ca browser PIN và ca TC-PERM-52 seed recovery đều dừng trước khi chạy. Chưa tạo fixture hoặc dữ liệu cần dọn.
+
+Sau kiểm kê Windows, GitHub Actions chạy được hai ca race và một ca expiry trên cùng commit ứng viên. Cả ba đạt ở attempt 1, không skip hoặc retry. Mỗi lượt xác nhận kết nối fixture đã đóng và thu hồi khoảng 18 GiB trên runner. Lượt expiry có bằng chứng stack race đối chiếu đã dừng. [Race](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/44482817075) · [Expiry](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/44483935355).
+
+Linh duyệt dùng nhánh CI riêng cho hai ca ACK và TC-PERM-52 seed recovery, để giữ nguyên head PR #37. Workflow lấy đúng commit/tree của ứng viên và chạy trong checkout tách khỏi công cụ CI. Bước ACK giữ bộ kiểm đích và kiểm lại trạng thái fixture. Bước seed dùng preflight, checkpoint, observer và restore của T04 tương ứng với đúng một ca. Hai reviewer AI độc lập duyệt nhánh CI sau khi kiểm ràng buộc nguồn, cách giữ kết quả từng ca khi job lỗi, hậu kiểm fixture và thu hồi không gian.
+
+| Ca chạy riêng trên GitHub Actions | Kết quả và hậu kiểm |
+| --- | --- |
+| TC-PIN-09 A, rớt ACK sau khi DB commit | Đạt. Observer và ca kiểm xác nhận commit trước khi làm rớt phản hồi, từ chối phát lại bằng token cũ và vào POS bằng PIN mới. [ACK, attempt 1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/44487842124/job/135435686701) |
+| TC-PIN-09 B, rớt trước khi chuyển tiếp | Đạt. DB giữ trạng thái trước thao tác và PIN tạm vẫn bị hạn chế. Hậu kiểm fixture chung của hai ca ACK đạt. [ACK, attempt 1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/44487842124/job/135435686701) |
+| TC-PERM-52, seed recovery | Đạt. Observer đối chiếu trạng thái sau test. Preflight đạt, fixture được khôi phục về checkpoint gốc và kiểm lại. [Seed recovery, attempt 1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/44488962090/job/135439427568) |
+
+Cả hai lượt dùng workflow `d18a41c50ea8fc94a091f04509b9337cdbbb47e2` trên nhánh `ci/t06-pin-seed-regression-20261119` và checkout ứng viên `3dd68aea1c14eb05306115bedb7300a78fee3f16`, tree `97fd905c5adf55a5e89d150acdba424553d2676b`. Hai lượt giữ nguyên fingerprint của ứng viên, đóng kết nối fixture và thu hồi lần lượt 19.327.369.216 và 19.327.365.120 byte trên runner. CI nhẹ của nhánh công cụ đạt 18/18. [CI nhánh công cụ](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/44487784529)
+
+Mục 7.4 có đủ bằng chứng 6/6 ca theo phạm vi Linh đã chốt. Ở lượt kiểm ban đầu, CLI 3.2.0 trả `Access token not provided` khi chạy `projects list` và checkout chưa có dấu vết liên kết.
+
+<a id="t06-cli-staging-linked-2026-11-19"></a>
+
+### Xác minh liên kết CLI với staging ngày 19/11/2026
+
+Sau khi CLI có phiên đăng nhập, lượt đọc trước khi liên kết nhận đúng project staging đã đối chiếu từ Dashboard và smoke, với 0 project liên kết. Linh cho phép liên kết đúng staging từ checkout PR #37 và chốt 2.0 khi CLI đọc lại `linked: true`. Lệnh `supabase link` trong checkout `3dd68aea1c14eb05306115bedb7300a78fee3f16` trả exit 0. Lệnh `supabase projects list` chạy riêng trả exit 0 và có đúng một project `linked: true`. Project đó khớp staging đã duyệt và `supabase/.temp/project-ref` trong checkout. Git xác nhận đúng tree `97fd905c5adf55a5e89d150acdba424553d2676b` và checkout sạch.
+
+Checklist đã chốt 2.0 bằng đối chiếu CLI cùng bằng chứng Dashboard, ứng dụng và chức năng phía server đã ghi ở các mốc trước. Tại checkpoint CLI, PR #37 còn ở trạng thái Draft.
+
+<a id="t06-pr37-main-2026-11-19"></a>
+
+### PR #37 đã vào main ngày 19/11/2026
+
+Linh duyệt merge sau khi xác nhận đủ bằng chứng 7.4 và 2.0. GitHub ghi nhận [PR #37](https://github.com/nguyentronglinh045/pos-cafe/pull/37) vào `main` lúc 16:15:28 giờ Việt Nam ngày 19/11. Merge commit `2e5764958a08300aac2f98701144a7d89ac8d4a5` có hai cha `d402dc08bdd4b43663b0fce671002e1e6619b39e` và `3dd68aea1c14eb05306115bedb7300a78fee3f16`. Tree `97fd905c5adf55a5e89d150acdba424553d2676b` khớp ứng viên đã kiểm. Hai check POS light CI trước merge đều đạt. [Merge commit](https://github.com/nguyentronglinh045/pos-cafe/commit/2e5764958a08300aac2f98701144a7d89ac8d4a5)
+
+| Mục đã đối chiếu | Bằng chứng |
+| --- | --- |
+| 7.1 | `CreateStoreScreen` chuyển sang provisioning OTP hoặc hướng dẫn Protected Preview và ghép Store Key. Đã gỡ các lệnh signup và bootstrap trực tiếp khỏi đường tạo quán phía trình duyệt. |
+| 7.2 | `authRepo.ts` xử lý ghép, ngắt ghép và đọc phiên theo hợp đồng mới. |
+| 7.4 | Sáu ca hồi quy PIN và seed recovery đạt trên đúng tree merge. Hai ca OTP mock bổ sung đã đạt trong bộ unit. Các ca chỉ dùng signup/bootstrap cũ vẫn có mốc nguồn lịch sử như phần trên. |
+| 2.0 | CLI xác nhận đúng một liên kết tới staging từ checkout ứng viên. [Xác minh CLI](#t06-cli-staging-linked-2026-11-19) |
+
+Lượt push CI sau merge chạy trên đúng SHA `2e5764958a08300aac2f98701144a7d89ac8d4a5` và đạt 18/18 bước ở attempt 1. Log xác nhận fingerprint khớp cả hai lượt kiểm ứng viên trước merge. Kết quả gồm 1.252/1.252 unit, 586/586 ca tooling tự động, 59 ca smoke mock áp dụng, 37 lượt bỏ qua theo viewport và 54/54 cặp UI audit. Ca kiểm kiến trúc mất 1.134 ms. [CI trên main](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/44494748075)
+
+Dấu kiểm ở đây áp dụng cho phạm vi PR #37 và bằng chứng mục 2.0. Smoke staging 5/5 thuộc ứng viên `ed80654`. Hai lượt OTP hosted thuộc checkpoint ngày 12–13/11. Các điều kiện nghiệm thu còn lại theo checklist từng nhóm.

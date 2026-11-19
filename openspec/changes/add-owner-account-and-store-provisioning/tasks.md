@@ -1,6 +1,6 @@
 # Danh sách việc
 
-Cập nhật 17/11/2026 theo [đối chiếu T06](../../../docs/workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#t06-doi-chieu-tai-lieu-2026-11-17). Dấu kiểm giai đoạn 1 gắn với nguồn và môi trường đã thực hiện trong hồ sơ. Hồi quy trên bộ bản vá cuối được theo dõi riêng. Đặc tả giai đoạn 2 đã viết, phạm vi triển khai theo T08/T09. Chủ thao tác trên POS theo quyết định 23, 24.
+Cập nhật 19/11/2026 sau khi [PR #37 vào main](../../../docs/workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#t06-pr37-main-2026-11-19). Mốc rà checklist trước đó là [đối chiếu T06 ngày 17/11](../../../docs/workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#t06-doi-chieu-tai-lieu-2026-11-17). Dấu kiểm giai đoạn 1 gắn với nguồn và môi trường đã thực hiện trong hồ sơ. Hồi quy trên bộ bản vá cuối được theo dõi riêng. Đặc tả giai đoạn 2 đã viết, phạm vi triển khai theo T08/T09. Chủ thao tác trên POS theo quyết định 23, 24.
 
 Chia hai giai đoạn theo quyết định 18. Giai đoạn 1 đưa luồng tạo quán có OTP và chặn đường tạo cũ. Các chức năng khôi phục dành cho chủ ở giai đoạn 2. Tự động đối soát lượt tạo quán dở dang nằm sau đồ án theo quyết định 48.
 
@@ -57,9 +57,9 @@ Ngày 11/11/2026, chủ dự án xác nhận đã lưu cả hai key. Phép thử
 
 Mục này chuẩn bị và kiểm gói migration trên lane cô lập đã được phép. Chỉ áp lên staging ở mục 8, sau khi xác nhận đã dọn dữ liệu cũ và bảng `stores` rỗng.
 
-- [ ] 2.0 Xác nhận cấu hình ứng dụng, CLI và hàm phía server đều trỏ tới staging, không còn trỏ database gốc
+- [x] 2.0 Xác nhận cấu hình ứng dụng, CLI và hàm phía server đều trỏ tới staging, không còn trỏ database gốc
 
-  Đường Preview, Edge và công cụ cutover dùng trong T06 đã xác minh đúng đích. Chưa xác minh trạng thái liên kết CLI hiện thời.
+  Đường Preview, Edge và công cụ cutover dùng trong T06 đã xác minh đúng đích. Ngày 19/11, Supabase CLI xác nhận checkout PR #37 có đúng một project liên kết với staging. [Biên nhận CLI](../../../docs/workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#t06-cli-staging-linked-2026-11-19).
 - [x] 2.1 Thêm enum `store_status` gồm `active` và `suspended`
 - [x] 2.2 Thêm enum `store_admin_action` gồm các giá trị ở `design.md`
 - [x] 2.3 Tạo bảng `owner_accounts`
@@ -124,10 +124,12 @@ Mục này chuẩn bị và kiểm gói migration trên lane cô lập đã đư
 
 ## 7. Gỡ luồng tạo cửa hàng cũ
 
-- [ ] 7.1 Gỡ luồng tạo cửa hàng phía client ở `src/app/screens/CreateStoreScreen.tsx`, gồm đường `auth.signUp` và gọi bootstrap trực tiếp
-- [ ] 7.2 Cập nhật `src/adapters/supabase/authRepo.ts` cho khớp hợp đồng mới
+PR #37 đã đưa 7.1, 7.2 và 7.4 vào `main` ngày 19/11. Sáu ca hồi quy của phạm vi 7.4 đạt trên cùng cây nguồn. [Biên nhận tích hợp](../../../docs/workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#t06-pr37-main-2026-11-19).
+
+- [x] 7.1 Gỡ luồng tạo cửa hàng phía client ở `src/app/screens/CreateStoreScreen.tsx`, gồm đường `auth.signUp` và gọi bootstrap trực tiếp
+- [x] 7.2 Cập nhật `src/adapters/supabase/authRepo.ts` cho khớp hợp đồng mới
 - [x] 7.3 Xác nhận màn ghép thiết bị bằng Store Key giữ nguyên hành vi, theo quyết định 13
-- [ ] 7.4 Cập nhật các kiểm thử đang dựa vào luồng tạo cửa hàng cũ
+- [x] 7.4 Cập nhật các kiểm thử đang dựa vào luồng tạo cửa hàng cũ
 - [x] 7.5 Sửa `tests/supabase/pos-cafe-supabase.spec.ts`: bỏ bước tạo quán, ghép vào quán thử tạo sẵn trên staging với Store Key qua biến môi trường
 
   Ngày 17/11, `npm run smoke:supabase` đạt 5/5 với quán thử `0004` trên Supabase staging. Hậu kiểm thấy 0 đơn mở và quyền thu ngân đã trở lại trạng thái ban đầu. [Kết quả và biên nhận](../../../docs/workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#t06-smoke-75-2026-11-17).
