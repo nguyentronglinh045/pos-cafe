@@ -7,8 +7,6 @@ import type {
   WriteOperationFilter,
   WriteOperationPage,
   CoreReport,
-  CreateStoreInput,
-  CreateStoreResult,
   Employee,
   EmployeeInput,
   EmployeeUpdate,
@@ -47,9 +45,6 @@ export type InitialReceiptExecutionResult = {
 
 export interface IAuthRepo {
   pairStore(storeKey: string): Promise<void>;
-  createStore(input: CreateStoreInput): Promise<CreateStoreResult>;
-  /** Explicit acknowledgement releases the only in-memory copy of the generated secret. */
-  acknowledgeCreatedStore(): void;
   unpairStore(): Promise<void>;
   getStoreSession(): Promise<StoreSession | null>;
 }

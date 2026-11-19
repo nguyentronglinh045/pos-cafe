@@ -1,9 +1,9 @@
 import { AppError } from "@/core/appError";
 import { writeError } from "@/core/writeErrors";
-import type { CreateStoreInput, CreateStoreResult, StoreSession } from "@/domain";
+import type { StoreSession } from "@/domain";
 import type { PermissionSession } from "@/domain/permissions";
 import type { AppPorts } from "@/ports";
-import { assertCompatibilityCurrent, isCompatibilityBlocked } from "@/features/shared/permissionSession";
+import { assertCompatibilityCurrent } from "@/features/shared/permissionSession";
 
 export type StoreSessionBootstrap =
   | {
@@ -14,11 +14,6 @@ export type StoreSessionBootstrap =
       status: "unpaired";
       session: null;
     };
-
-export type CreateStoreFlowResult = {
-  store: CreateStoreResult;
-  session: StoreSession;
-};
 
 const requirePairedSession = (session: StoreSession | null): StoreSession => {
   if (!session) {
@@ -43,23 +38,6 @@ export const pairStoreForSession = async (ports: AppPorts, storeKey: string): Pr
   assertCompatibilityCurrent();
   await ports.auth.pairStore(storeKey);
   return requirePairedSession(await ports.auth.getStoreSession());
-};
-
-export const createStoreForSession = async (
-  ports: AppPorts,
-  input: CreateStoreInput,
-  onStoreCreated?: (store: CreateStoreResult) => void,
-): Promise<CreateStoreFlowResult> => {
-  assertCompatibilityCurrent();
-  const store = await ports.auth.createStore(input);
-  onStoreCreated?.(store);
-  const fallback = {
-    storeId: store.storeId,
-    storeNo: store.storeNo,
-  };
-  const session = isCompatibilityBlocked() ? fallback : (await ports.auth.getStoreSession()) ?? fallback;
-
-  return { store, session };
 };
 
 export const retrySeedForSession = async (ports: AppPorts, session: StoreSession): Promise<void> => {

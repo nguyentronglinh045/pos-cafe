@@ -55,7 +55,7 @@ test('audit matrix covers the existing states and both owner OTP states on all 3
     'landing', 'store-pairing', 'owner-create-form', 'owner-create-receipt',
     'passcode', 'floor', 'order-drawer', 'order-cart',
     'menu-editor', 'report', 'employees', 'settings', 'clear-demo-dialog', 'payment',
-    'receipt-preview', 'compatibility-update-gate', 'compatibility-created-store', 'required-pin-change',
+    'receipt-preview', 'compatibility-update-gate', 'create-store-preview-notice', 'required-pin-change',
   ]);
   assert.equal(matrix.targets.length, 18);
   assert.equal(matrix.viewports.length, 3);
@@ -63,8 +63,8 @@ test('audit matrix covers the existing states and both owner OTP states on all 3
   const floor = matrix.targets.find(target => target.name === 'floor');
   assert(floor.steps.some(step => step.click === '@employee-30000000-0000-4000-8000-000000000011'));
   assert(!floor.steps.some(step => step.click === '@employee-6b7bd350-7db2-4160-8471-cca2668c070d'));
-  assert.deepEqual(matrix.targets.filter(target => /compatibility|required-pin/.test(target.name)).map(target => target.name),
-    ['compatibility-update-gate', 'compatibility-created-store', 'required-pin-change']);
+  assert.deepEqual(matrix.targets.filter(target => /compatibility|create-store-preview|required-pin/.test(target.name)).map(target => target.name),
+    ['compatibility-update-gate', 'create-store-preview-notice', 'required-pin-change']);
 });
 
 test('a nonexistent viewport/state or empty matrix cannot return a green audit', () => {

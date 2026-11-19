@@ -3,7 +3,6 @@ import type { AppPorts } from "@/ports";
 import { createAppPorts } from "@/app/runtimePorts";
 import { createCandidateRuntimeFixture } from "@/test/candidateRuntimeFixture";
 import {
-  createStoreForSession,
   loadStoreSession,
   pairStoreForSession,
   retrySeedForSession,
@@ -26,15 +25,6 @@ describe("sessionFlow", () => {
 
     expect(session).toEqual({ storeId: "30000000-0000-4000-8000-000000000001", storeNo: 7 });
     expect(session).not.toHaveProperty("storeKey");
-  });
-
-  it("creates store and keeps Store Key only in create result", async () => {
-    const ports = createAppPorts({ mode: "mock" }); await ports.auth.unpairStore();
-    const result = await createStoreForSession(ports, { displayName: "Demo", seedDemo: false });
-
-    expect(result.store.storeKey).toBe("0001-X8F3QA");
-    expect(result.session).toEqual({ storeId: "30000000-0000-4000-8000-000000000001", storeNo: 1 });
-    expect(result.session).not.toHaveProperty("storeKey");
   });
 
   it("delegates seed retry and PIN verification through ports", async () => {

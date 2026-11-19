@@ -28,7 +28,7 @@ export function createSupabasePermissionRuntime(client: SupabaseAnyClient, supab
       menuImages: new SupabasePermissionMenuImagePort(client, supabaseUrl),
     },
     write: new SupabaseWriteOperationRepo(client, true),
-    auth: new SupabaseAuthRepo(client, seed),
+    auth: new SupabaseAuthRepo(client),
     seed,
     print: new BrowserPrintPort(),
   };

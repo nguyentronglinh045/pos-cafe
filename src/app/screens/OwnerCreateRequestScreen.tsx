@@ -153,7 +153,6 @@ export function OwnerCreateRequestScreen({ port }: { port: IStoreProvisioningPor
     <main className="box-border grid min-h-[100dvh] place-items-center bg-pos-bg p-4" data-testid="owner-create-closeout">
       <section className="grid w-[min(480px,100%)] gap-3 rounded-pos border border-pos-line bg-pos-surface p-5">
         <h1 className="m-0 text-xl">{closeout.storeKey ? "Đã tạo quán" : "Trạng thái tạo quán"}</h1>
-        <p className="m-0 text-sm text-pos-muted">Giao diện tạm · Dữ liệu mock</p>
         {closeout.notice && <p role="alert" className="m-0 text-sm">{closeout.notice}</p>}
         {closeout.storeKey ? (
           <>
@@ -198,7 +197,6 @@ export function OwnerCreateRequestScreen({ port }: { port: IStoreProvisioningPor
             Quay lại
           </button>
           <h1 ref={heading} tabIndex={-1} className="m-0 text-xl">{receipt ? "Xác minh email" : "Tạo quán mới"}</h1>
-          <p className="mb-0 text-sm text-pos-muted">Giao diện tạm · Chỉ dùng dữ liệu giả.</p>
         </div>
         <form onSubmit={send} noValidate className="grid gap-4" autoComplete="off">
           {receipt ? (

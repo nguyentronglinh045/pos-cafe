@@ -4,8 +4,9 @@ import pg from 'pg';
 import { afterAll, beforeAll, expect, test, vi } from 'vitest';
 import { observeCandidateStage } from './permissionStageObservation';
 import { createSupabasePorts } from '../../src/adapters/supabase/repos';
+import { formatStoreKey, generateStoreSecret, storeEmailForNo } from '../../src/adapters/supabase/storeKey';
 import { deterministicUuid } from '../../src/adapters/supabase/deterministicId';
-import { createStoreForSession, loadStoreSession, pairStoreForSession, retrySeedForSession } from '../../src/features/session/sessionFlow';
+import { loadStoreSession, pairStoreForSession, retrySeedForSession } from '../../src/features/session/sessionFlow';
 import { assertBridgeFixture, parseBridgeEnvironment, runtimeProof, STORE_IDS } from '../../scripts/permission-identity-runtime.mjs';
 
 const env = parseBridgeEnvironment();
@@ -90,24 +91,39 @@ test('TC-PERM-52 onboarding flow preserves Store Key, owner and changed PIN when
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
   });
   const ports = createSupabasePorts(client, env.api);
-  const created = await createStoreForSession(ports, { displayName: ' Cà phê Seed Recovery ', address: '', seedDemo: true });
-  ownedStoreId = created.store.storeId;
-  expect(created.store).toMatchObject({ seedStatus: 'pending', canRetrySeed: false, adminPin: '123456' });
-  expect(created.store.storeNo).toBe(101);
-  expect(created.store.storeKey).toMatch(/^\d{4}-[A-Z0-9]{8}$/);
-  expect(created.session).toEqual({ storeId: created.store.storeId, storeNo: created.store.storeNo });
-
-  const ownerId = await deterministicUuid(created.store.storeId, 'owner.primary');
+  // Provision the old bridge fixture explicitly. The browser runtime provisions through OTP.
+  const reservation = await client.rpc('permission_reserve_store_no', { p_create_attempt_id: randomUUID() });
+  expect(reservation.error).toBeNull();
+  expect(reservation.data).toMatchObject({ ok: true, data: { storeNo: 101 } });
+  const storeNo = 101;
+  const secret = generateStoreSecret();
+  const signup = await client.auth.signUp({ email: storeEmailForNo(storeNo), password: secret });
+  ownedStoreId = signup.data.user?.id;
+  expect(signup.error).toBeNull();
+  if (!ownedStoreId || signup.data.session?.user.id !== ownedStoreId) throw new Error('TC52_FIXTURE_AUTH_REQUIRED');
+  const ownerId = await deterministicUuid(ownedStoreId, 'owner.primary');
+  const bootstrap = await client.rpc('permission_bootstrap_store', { p_request: {
+    requestId: await deterministicUuid(ownedStoreId, 'permission.bootstrap.v1'), ownerId, storeNo,
+    displayName: 'Cà phê Seed Recovery', address: '', seedDemo: true,
+  } });
+  expect(bootstrap.error).toBeNull();
+  expect(bootstrap.data).toMatchObject({
+    ok: true, outcome: 'applied', data: { storeId: ownedStoreId, ownerId, storeNo, seedRequested: true },
+  });
+  const storeKey = formatStoreKey(storeNo, secret);
+  const storeSession = { storeId: ownedStoreId, storeNo };
+  const adminPin = '123456';
+  await expect(ports.auth.getStoreSession()).resolves.toEqual(storeSession);
   const persisted = (await db.query(`select s.id,s.store_no,s.seed_status,ss.display_name,e.id owner_id,e.role,e.is_active,
       e.passcode_hash=extensions.crypt('123456',e.passcode_hash) initial_pin
     from public.stores s join public.store_settings ss on ss.store_id=s.id
-    join public.employees e on e.store_id=s.id and e.role='owner' where s.id=$1`, [created.store.storeId])).rows;
-  expect(persisted).toEqual([{ id: created.store.storeId, store_no: created.store.storeNo, seed_status: 'pending',
+    join public.employees e on e.store_id=s.id and e.role='owner' where s.id=$1`, [ownedStoreId])).rows;
+  expect(persisted).toEqual([{ id: ownedStoreId, store_no: storeNo, seed_status: 'pending',
     display_name: 'Cà phê Seed Recovery', owner_id: ownerId, role: 'owner', is_active: true, initial_pin: true }]);
-  expect((await db.query('select count(*)::int count from auth.users where id=$1', [created.store.storeId])).rows[0].count).toBe(1);
-  expect((await db.query("select count(*)::int count from public.employees where store_id=$1 and seed_key='demo.employee.demo-emp-cashier'", [created.store.storeId])).rows[0].count).toBe(0);
+  expect((await db.query('select count(*)::int count from auth.users where id=$1', [ownedStoreId])).rows[0].count).toBe(1);
+  expect((await db.query("select count(*)::int count from public.employees where store_id=$1 and seed_key='demo.employee.demo-emp-cashier'", [ownedStoreId])).rows[0].count).toBe(0);
 
-  const initialSession = await ports.permission!.session.startSession(ownerId, created.store.adminPin);
+  const initialSession = await ports.permission!.session.startSession(ownerId, adminPin);
   expect(initialSession.kind).toBe('required_pin_change');
   if (initialSession.kind !== 'required_pin_change') throw new Error('EXPECTED_REQUIRED_PIN_SESSION');
   await expect(ports.permission.initialSeed.getStatus()).rejects.toMatchObject({ code: 'PIN_CHANGE_REQUIRED' });
@@ -116,29 +132,29 @@ test('TC-PERM-52 onboarding flow preserves Store Key, owner and changed PIN when
   expect(changed).toMatchObject({ outcome: 'applied', credentialChanged: true });
   await ports.permission!.session.startSession(ownerId, '654321');
 
-  await expect(ports.seed.seedDemo(created.store.storeId)).rejects.toMatchObject({ code: 'PERMISSION_UPDATE_UNAVAILABLE' });
+  await expect(ports.seed.seedDemo(ownedStoreId)).rejects.toMatchObject({ code: 'PERMISSION_UPDATE_UNAVAILABLE' });
   const partial = await ports.permission.initialSeed.getStatus();
   expect(partial.status).toBe('needs_retry');
   expect(partial.stages.map(s => [s.stage, s.status])).toEqual([['employee', 'committed'], ['menu', 'pending'], ['floor', 'pending']]);
-  const cashier = (await db.query("select id,permission_revision from public.employees where store_id=$1 and seed_key='demo.employee.demo-emp-cashier'", [created.store.storeId])).rows[0];
+  const cashier = (await db.query("select id,permission_revision from public.employees where store_id=$1 and seed_key='demo.employee.demo-emp-cashier'", [ownedStoreId])).rows[0];
   expect(await ports.permission.employeeAdmin.resetPin({ requestId: randomUUID(), targetId: cashier.id,
     expectedRevision: Number(cashier.permission_revision), newPin: '558899' })).toMatchObject({ ok: true, outcome: 'applied' });
   await db.query('drop trigger tc52_seed_failure on public.categories; drop function private.tc52_seed_failure()');
 
   const loaded = await loadStoreSession(ports);
-  expect(loaded).toEqual({ status: 'paired', session: created.session });
+  expect(loaded).toEqual({ status: 'paired', session: storeSession });
   const rpcSpy = vi.spyOn(client, 'rpc');
-  await retrySeedForSession(ports, loaded.status === 'paired' ? loaded.session : created.session);
+  await retrySeedForSession(ports, loaded.status === 'paired' ? loaded.session : storeSession);
   const retryRpcNames = rpcSpy.mock.calls.map(call => call[0]);
   expect(retryRpcNames).toEqual(['permission_get_initial_seed_status', 'permission_begin_initial_seed', 'permission_run_initial_seed_stage', 'permission_run_initial_seed_stage']);
   expect(rpcSpy.mock.calls.filter(call => call[0] === 'permission_run_initial_seed_stage').map(call => (call[1] as any).p_request.stage)).toEqual(['menu', 'floor']);
   expect(retryRpcNames).not.toContain('permission_bootstrap_store');
 
-  expect((await db.query("select seed_status from public.stores where id=$1", [created.store.storeId])).rows[0].seed_status).toBe('seeded');
-  expect((await db.query("select count(*)::int owners,bool_and(passcode_hash=extensions.crypt('654321',passcode_hash)) pin_preserved from public.employees where store_id=$1 and role='owner'", [created.store.storeId])).rows[0])
+  expect((await db.query("select seed_status from public.stores where id=$1", [ownedStoreId])).rows[0].seed_status).toBe('seeded');
+  expect((await db.query("select count(*)::int owners,bool_and(passcode_hash=extensions.crypt('654321',passcode_hash)) pin_preserved from public.employees where store_id=$1 and role='owner'", [ownedStoreId])).rows[0])
     .toEqual({ owners: 1, pin_preserved: true });
   expect((await db.query("select passcode_hash=extensions.crypt('558899',passcode_hash) preserved from public.employees where id=$1", [cashier.id])).rows[0].preserved).toBe(true);
-  await expect(ports.permission!.session.startSession(ownerId, created.store.adminPin)).rejects.toMatchObject({ code: 'INVALID_PIN' });
+  await expect(ports.permission!.session.startSession(ownerId, adminPin)).rejects.toMatchObject({ code: 'INVALID_PIN' });
   await expect(ports.permission!.session.startSession(ownerId, '654321')).resolves.toMatchObject({ authority: { snapshot: { employeeId: ownerId, role: 'owner' } } });
 
   const secondClient = createClient(env.api, env.anonKey, {
@@ -146,6 +162,6 @@ test('TC-PERM-52 onboarding flow preserves Store Key, owner and changed PIN when
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
   });
   const secondPorts = createSupabasePorts(secondClient, env.api);
-  await expect(pairStoreForSession(secondPorts, created.store.storeKey)).resolves.toEqual(created.session);
-  expect((await db.query('select count(*)::int count from public.employees where store_id=$1 and role=\'owner\'', [created.store.storeId])).rows[0].count).toBe(1);
+  await expect(pairStoreForSession(secondPorts, storeKey)).resolves.toEqual(storeSession);
+  expect((await db.query('select count(*)::int count from public.employees where store_id=$1 and role=\'owner\'', [ownedStoreId])).rows[0].count).toBe(1);
 });

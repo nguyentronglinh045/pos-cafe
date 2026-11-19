@@ -13,14 +13,6 @@
       if (import.meta.env.VITE_DATA_MODE !== "mock") throw new Error("UI_AUDIT_REQUIRES_MOCK");
       const { AppError } = await import("/src/core/appError.ts");
       const { requireCompatibilityUpdate } = await import("/src/app/compatibilityGate.ts");
-      if (new URLSearchParams(location.search).has("created")) {
-        const { useAppStore } = await import("/src/app/useAppStore.ts");
-        useAppStore.setState({ createdStoreResult: {
-          storeId: "10000000-0000-4000-8000-000000000001", storeNo: 1,
-          storeKey: "0001-AUDITKEY", adminPin: "123456",
-          seedStatus: "seeded", canRetrySeed: false,
-        } });
-      }
       requireCompatibilityUpdate(new AppError("WRITE_PROTOCOL_UNSUPPORTED", "Ứng dụng cần được cập nhật trước khi tiếp tục."));
       await import("/src/main.tsx");
     </script>

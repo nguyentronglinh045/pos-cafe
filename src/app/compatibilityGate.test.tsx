@@ -15,7 +15,6 @@ import { requireCompatibilityUpdate } from "./compatibilityGate";
 import { usePermissionSession } from "@/features/shared/permissionSession";
 import { createCandidateRuntimeFixture } from "@/test/candidateRuntimeFixture";
 import { createEmptyMenuChanges, saveMenuForAdmin } from "@/features/admin/adminFlow";
-import { createStoreForSession } from "@/features/session/sessionFlow";
 
 const sessionQuery = vi.hoisted(() => ({ error: null as unknown, hook: vi.fn() }));
 
@@ -79,17 +78,6 @@ test("an update latch queued as authority resolves wins before the admin side-ef
   queueMicrotask(() => requireCompatibilityUpdate(writeError("WRITE_PROTOCOL_UNSUPPORTED")));
   await expect(pendingSave).rejects.toMatchObject({ code: "WRITE_PROTOCOL_UNSUPPORTED" });
   expect(save).not.toHaveBeenCalled();
-});
-
-test("a completed create-store response preserves its one-time Store Key without a gated follow-up read", async () => {
-  let release!: (value: { storeId: string; storeNo: number; storeKey: string }) => void;
-  const auth = { createStore: vi.fn(() => new Promise(resolve => { release = resolve; })), getStoreSession: vi.fn() };
-  const action = createStoreForSession({ auth } as unknown as AppPorts, { displayName: "Demo" });
-  await waitFor(() => expect(release).toBeDefined());
-  act(() => { requireCompatibilityUpdate(writeError("WRITE_PROTOCOL_UNSUPPORTED")); });
-  release({ storeId: id(20), storeNo: 20, storeKey: "0020-ABCDEF" });
-  await expect(action).resolves.toEqual({ store: { storeId: id(20), storeNo: 20, storeKey: "0020-ABCDEF" }, session: { storeId: id(20), storeNo: 20 } });
-  expect(auth.getStoreSession).not.toHaveBeenCalled();
 });
 
 test("startup and global query/mutation errors independently latch the update gate", async () => {

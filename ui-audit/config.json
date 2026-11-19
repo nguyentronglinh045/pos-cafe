@@ -245,12 +245,15 @@
       ]
     },
     {
-      "name": "compatibility-created-store",
-      "describe": "ma quan synthetic chua xac nhan luu khi yeu cau cap nhat",
-      "route": "/ui-audit/compatibility-gate.html?created=1",
+      "name": "create-store-preview-notice",
+      "describe": "huong dan Protected Preview khi chua bat tao quan",
+      "route": "/",
       "steps": [
         {
-          "waitFor": "@compatibility-created-store-result"
+          "click": "@go-create-store"
+        },
+        {
+          "waitFor": "@create-store-preview-notice"
         }
       ]
     },

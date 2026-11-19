@@ -85,8 +85,6 @@ afterEach(() => {
   useAppStore.setState({
     screen: "landing",
     currentEmployee: null,
-    createdStoreResult: null,
-    pendingStoreCreationInput: null,
     activeAreaId: null,
     activeCategoryId: null,
     drawer: null,
@@ -105,11 +103,7 @@ describe("demo copy polish", () => {
     expectNoImplementationCopy(container);
 
     await user.click(screen.getByTestId("go-create-store"));
-    await user.type(screen.getByTestId("store-name-input"), "Cafe Sáng");
-    await user.click(screen.getByTestId("key-loss-acknowledgement"));
-    await user.click(screen.getByTestId("create-store-button"));
-
-    expect(await screen.findByTestId("create-store-result")).toBeInTheDocument();
+    expect(await screen.findByTestId("create-store-preview-notice")).toBeVisible();
     expectNoImplementationCopy(container);
   });
 

@@ -13,7 +13,7 @@ vi.mock("./shell/AppShell", () => ({ AppShell: () => <div data-testid="pos-shell
 afterEach(() => {
   cleanup();
   useAppStore.getState().setCurrentEmployee(null);
-  useAppStore.setState({ screen: "landing", createdStoreResult: null, pendingStoreCreationInput: null });
+  useAppStore.setState({ screen: "landing" });
 });
 
 it.each([
@@ -22,7 +22,6 @@ it.each([
 ] as const)("pairs and signs in while keeping POS closed when server seed is $initial", async ({ initial, title }) => {
   const fixture = await createCandidateRuntimeFixture({ demoCredentials: true });
   await fixture.ports.auth.unpairStore();
-  const legacyCreate = vi.spyOn(fixture.ports.auth, "createStore");
   let readiness: "waiting" | "failed" | "ready" = initial;
   const rpc = vi.fn((name: string) => ({ setHeader: async (_header: string, token: string) => {
     expect(token).toBe("fixture-employee-token");
@@ -43,8 +42,9 @@ it.each([
 
   fireEvent.click(await screen.findByTestId("go-create-store"));
   expect(screen.getByRole("heading", { name: "Tạo quán trên Protected Preview" })).toBeVisible();
-  expect(screen.queryByTestId("create-store-button")).not.toBeInTheDocument();
-  expect(legacyCreate).not.toHaveBeenCalled();
+  expect(screen.getByTestId("create-store-preview-notice")).toBeVisible();
+  expect(screen.queryByTestId("owner-create-request")).not.toBeInTheDocument();
+  expect(rpc).not.toHaveBeenCalled();
 
   fireEvent.click(screen.getByRole("button", { name: "Ghép thiết bị" }));
   fireEvent.change(screen.getByTestId("store-key-input"), { target: { value: "0001-X8F3QA" } });

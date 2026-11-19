@@ -443,3 +443,19 @@ it.each([1, 2])("R06-A: explicit retry preserves committed seed stages (%s menu 
   expect(app.checkMockOwnerPin(result.storeKey, baseForm.ownerPin)).toBe(true);
   expect(app.checkMockOwnerPin(result.storeKey, "538271")).toBe(false);
 });
+
+it.each([false, true])("OTP creates one store and preserves the seed choice %s on replay", seedDemo => {
+  const { app, issue } = fixture({ autoComplete: true });
+  const input = issue({ ...baseForm, seedDemo });
+  const created = app.verifyAndAcceptCreate(input);
+  if (!("storeKey" in created)) throw new Error("Expected Store Key from the verified request");
+  const retry = app.verifyAndAcceptCreate(input);
+  expect(retry).toMatchObject({ status: "created" });
+  expect(app.readOperations()).toHaveLength(1);
+  expect(app.usedSlots(email)).toBe(1);
+  expect(app.getCreateStatus({ attemptId: input.attemptId })).toEqual({ status: "created" });
+  expect(app.pairMockStore(created.storeKey)).toMatchObject({
+    storeNo: created.storeNo, displayName: baseForm.displayName, seedDemo,
+  });
+  expect(app.checkMockOwnerPin(created.storeKey, baseForm.ownerPin)).toBe(true);
+});

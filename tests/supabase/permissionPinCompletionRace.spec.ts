@@ -1,3 +1,4 @@
+import { pairRestrictedPinFixture, provisionRestrictedPinFixture } from "./restrictedPinFixture.ts";
 import { randomUUID } from "node:crypto";
 import { expect, test, type Browser, type Page } from "@playwright/test";
 import pg from "pg";
@@ -13,7 +14,7 @@ const PIN_B = "927416";
 const WIN_NOTICE = "Đã đổi PIN. Vui lòng đăng nhập bằng PIN mới.";
 const LOSE_NOTICE = "Phiên nhân viên không còn hợp lệ. Vui lòng đăng nhập lại.";
 const PROTECTED = new Set([
-  "permission_get_authority", "permission_get_revision", "permission_get_initial_seed_status",
+  "permission_get_authority", "permission_get_revision", "permission_get_initial_seed_status", "owner_get_seed_readiness",
   "permission_begin_initial_seed", "permission_run_initial_seed_stage", "permission_get_menu_catalog",
   "permission_get_floor_workspace", "permission_get_settings_admin", "permission_admin_list",
   "register_write_operation", "execute_write_operation", "get_write_operation", "list_write_operations",
@@ -84,44 +85,6 @@ function parseStart(value: Record<string, unknown>): Start {
   return { kind, errorCode: null, token: value.token as string, ttlMs, revision: null,
     authority: { storeId: snapshot.storeId, employeeId: snapshot.employeeId,
       employeeRevision: snapshot.employeeRevision as number } };
-}
-
-async function createStore(page: Page, label: "A" | "B"): Promise<{ identity: Identity; storeKey: string }> {
-  let identity: Identity | undefined;
-  await page.route("**/rest/v1/rpc/permission_bootstrap_store", async route => {
-    try {
-      const response = await route.fetch({ timeout: 20_000 });
-      const value = await jsonObject(response);
-      const data = value.data as Record<string, unknown> | undefined;
-      if (!response.ok() || value.ok !== true || !uuid(data?.storeId) || !uuid(data?.ownerId)
-        || data?.seedRequested !== false) fail("BOOTSTRAP_INVALID");
-      identity = { storeId: data.storeId, ownerId: data.ownerId };
-      await route.fulfill({ response });
-    } catch { await route.abort("failed").catch(() => undefined); }
-  });
-  await page.goto("/");
-  await expect(page.getByTestId("landing-screen")).toBeVisible();
-  await page.getByTestId("go-create-store").click();
-  await page.getByTestId("store-name-input").fill(`G2b Race ${label}`);
-  await expect(page.getByTestId("seed-demo-checkbox")).not.toBeChecked();
-  await page.getByTestId("key-loss-acknowledgement").check();
-  await page.getByTestId("create-store-button").click();
-  await expect(page.getByTestId("create-store-result")).toBeVisible({ timeout: 20_000 });
-  if (!identity) fail("BOOTSTRAP_UNOBSERVED");
-  const storeKey = (await page.getByTestId("result-store-key").textContent())?.trim() ?? "";
-  if (!/^\d{4,}-[A-Z0-9]+$/.test(storeKey)) fail("STORE_KEY_SHAPE_INVALID");
-  await page.getByTestId("acknowledge-store-key").click();
-  await expect(page.getByTestId("passcode-screen")).toBeVisible();
-  return { identity, storeKey };
-}
-
-async function pairDevice(page: Page, storeKey: string) {
-  await page.goto("/");
-  await expect(page.getByTestId("landing-screen")).toBeVisible();
-  await page.getByTestId("go-store-pairing").click();
-  await page.getByTestId("store-key-input").fill(storeKey);
-  await page.getByTestId("go-passcode").click();
-  await expect(page.getByTestId("passcode-screen")).toBeVisible({ timeout: 15_000 });
 }
 
 async function enterPin(page: Page, ownerId: string, pin: string) {
@@ -375,8 +338,9 @@ async function runOrdering(browser: Browser, db: pg.Client, controllerDb: pg.Cli
     a = await newDevice(browser);
     b = await newDevice(browser);
     mark("CREATE_STORE");
-    const { identity, storeKey } = await createStore(a.page, winnerLabel);
-    await pairDevice(b.page, storeKey);
+    const { identity, storeKey } = await provisionRestrictedPinFixture(env, `G2b Race ${winnerLabel}`);
+    await pairRestrictedPinFixture(a.page, env.api, storeKey);
+    await pairRestrictedPinFixture(b.page, env.api, storeKey);
     const pendingK = await installPendingK(db, identity);
     mark("TWO_RESTRICTED_CONTEXTS");
     await prepareRestricted(a, identity);
