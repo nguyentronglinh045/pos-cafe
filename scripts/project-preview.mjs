@@ -256,7 +256,7 @@ export async function deployPreview({env,event,policy},dependencies={}) {
       try{
         const readinessDeadline=now()+30000;
         const settings=await json(config.url+'/auth/v1/settings',null,'GET',undefined,readinessDeadline,{apikey:config.publishableKey});
-        check(settings?.mailer_autoconfirm===true&&settings.disable_signup===false&&settings.external?.email===true,'READINESS');
+        check(settings?.mailer_autoconfirm===true&&settings.disable_signup===true&&settings.external?.email===true,'READINESS');
         authReadiness='PASS';
         const contract=await json(config.url+'/rest/v1/rpc/permission_get_contract',null,'POST',{},readinessDeadline,
           {apikey:config.publishableKey,'Content-Type':'application/json','x-pos-permission-contract':'2'});

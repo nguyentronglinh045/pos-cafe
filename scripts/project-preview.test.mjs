@@ -55,7 +55,7 @@ function fixture(options={}) {
     } else if(parsed.hostname==='ineckiashpwloncxnbqx.supabase.co') {
       if(options.publicTransport)return options.publicTransport(parsed,request);
       clock+=options.publicDelayMs??0;
-      if(parsed.pathname==='/auth/v1/settings')data={mailer_autoconfirm:true,disable_signup:false,external:{email:true},...options.authSettings};
+      if(parsed.pathname==='/auth/v1/settings')data={mailer_autoconfirm:true,disable_signup:true,external:{email:true},...options.authSettings};
       else if(parsed.pathname==='/rest/v1/rpc/permission_get_contract')data={permissionContractVersion:2,writeProtocolVersion:1,...options.contract};
       else assert.fail('Unexpected Supabase API path');
     } else {
@@ -448,7 +448,7 @@ test('functional Preview checks public readiness before its one minimal Vercel P
 });
 
 test('Auth or contract incompatibility and bounded public transport failures prevent deployment without retry',async()=>{
-  for(const options of [{authSettings:{mailer_autoconfirm:false}},{authSettings:{disable_signup:true}},{authSettings:{external:{email:false}}},
+  for(const options of [{authSettings:{mailer_autoconfirm:false}},{authSettings:{disable_signup:false}},{authSettings:{disable_signup:'true'}},{authSettings:{external:{email:false}}},
     {authSettings:{mailer_autoconfirm:'true'}},{authSettings:{disable_signup:undefined}},{authSettings:{external:{}}},
     {contract:{permissionContractVersion:1}},{contract:{writeProtocolVersion:2}},{contract:{writeProtocolVersion:'1'}},
     {publicDelayMs:30001},

@@ -47,7 +47,7 @@ Vite build environment.
 
 The deploy helper first verifies main, CI, canonical trusted files, GitHub
 environment protection, pinned Vercel project and routing. Functional mode also
-checks public Auth settings (email enabled, signup enabled, auto-confirm) and
+checks public Auth settings (email enabled, public signup disabled, auto-confirm) and
 the read-only permission contract (versions 2/1) on the pinned Supabase project.
 It then creates at most one Preview, polls only that ID, and checks source,
 routing, protection and configuration again. The receipt excludes credentials
