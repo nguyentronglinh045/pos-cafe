@@ -1,10 +1,10 @@
-name: Frontend release approval (held)
+name: Frontend public demo (manual)
 
 on:
   workflow_dispatch:
     inputs:
       source_sha:
-        description: 'Exact reviewed source commit; setup never deploys production'
+        description: 'Exact current main commit approved for the public staging demo'
         required: true
         type: string
       ci_run_id:
@@ -46,8 +46,24 @@ jobs:
   approval:
     needs: preflight
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 18
     environment: production
     steps:
-      - name: Approval checkpoint only; production stays held
-        run: echo FRONTEND_RELEASE_APPROVED_BUT_PRODUCTION_HELD
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.16.0'
+          package-manager-cache: false
+      - name: Recheck source after approval
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/project-release.mjs verify
+      - name: Publish the staging demo to its production domain
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          DEMO_CLIENT_KEY: ${{ vars.POS_PUBLIC_DEMO_CLIENT_KEY }}
+          DEMO_OTP_KEY: ${{ secrets.POS_PUBLIC_DEMO_OTP_INGRESS_KEY }}
+        run: node scripts/project-public-demo.mjs

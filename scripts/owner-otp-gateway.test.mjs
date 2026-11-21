@@ -38,6 +38,28 @@ test("OTP gateway refuses non-staging or mismatched Preview configuration before
   }
 });
 
+test("public demo accepts the approved Production main SHA and its dedicated credentials", async () => {
+  const sha = "a".repeat(40);
+  const prod = { VERCEL: "1", VERCEL_ENV: "production", VERCEL_TARGET_ENV: "production",
+    VERCEL_GIT_COMMIT_REF: "main", VERCEL_GIT_COMMIT_SHA: sha, POS_PUBLIC_DEMO_SHA: sha,
+    POS_PUBLIC_DEMO_CLIENT_KEY: publishableKey, POS_PUBLIC_DEMO_OTP_INGRESS_KEY: key.toString("base64") };
+  for (const [overrides, allowed] of [[{}, true], [{ VERCEL_GIT_COMMIT_SHA: "b".repeat(40) }, false],
+    [{ VERCEL_GIT_COMMIT_REF: "dev" }, false], [{ VERCEL_TARGET_ENV: "preview" }, false],
+    [{ POS_PUBLIC_DEMO_OTP_INGRESS_KEY: undefined }, false], [{ POS_PUBLIC_DEMO_CLIENT_KEY: "invalid" }, false]]) {
+    let sent = false;
+    const handler = ownerOtpGateway({ env: { ...prod, ...overrides }, clock, fetchImpl(url, options) {
+      assert.equal(url, "https://" + project + ".supabase.co/functions/v1/owner-provisioning");
+      assert.equal(options.headers.apikey, publishableKey);
+      sent = true;
+      return Promise.resolve(Response.json({ ok: false, code: "A_REQUEST_INVALID" }, { status: 400 }));
+    } });
+    const res = response();
+    await handler({ method: "POST", body, headers: { "x-vercel-forwarded-for": "192.0.2.21" } }, res);
+    assert.equal(sent, allowed);
+    assert.equal(res.statusCode, allowed ? 400 : 503);
+  }
+});
+
 test("OTP gateway signs only the Vercel-derived IP and the exact forwarded body", async () => {
   const handler = ownerOtpGateway({ env, clock, async fetchImpl(url, init) {
     assert.equal(url, `https://${project}.supabase.co/functions/v1/owner-provisioning`);

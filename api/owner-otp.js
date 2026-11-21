@@ -5,6 +5,14 @@ const stagingProject = "ineckiashpwloncxnbqx";
 const stagingUrl = `https://${stagingProject}.supabase.co`;
 const publishableKey = /^sb_publishable_[A-Za-z0-9_-]{16,256}(?![\s\S])/;
 
+export function publicDemoClientKey(env) {
+  if (env.VERCEL !== "1" || env.VERCEL_ENV !== "production" || env.VERCEL_TARGET_ENV !== "production"
+    || env.VERCEL_GIT_COMMIT_REF !== "main" || !/^[a-f0-9]{40}$/.test(env.POS_PUBLIC_DEMO_SHA ?? "")
+    || env.POS_PUBLIC_DEMO_SHA !== env.VERCEL_GIT_COMMIT_SHA
+    || !publishableKey.test(env.POS_PUBLIC_DEMO_CLIENT_KEY ?? "")) return null;
+  return env.POS_PUBLIC_DEMO_CLIENT_KEY;
+}
+
 const issueErrors = new Set([
   "A_EMAIL_INVALID", "A_REQUEST_INVALID", "A_REQUEST_ID_STALE", "A_REQUEST_ID_REUSED",
   "CREATE_INTENT_ID_REUSED", "A_SEND_UNAVAILABLE",
@@ -30,12 +38,13 @@ export function ownerOtpGateway({ env = process.env, fetchImpl = fetch, clock = 
     if (Buffer.byteLength(raw) > 8192) return response.status(400).json({ ok: false, code: "A_REQUEST_INVALID" });
 
     const ip = request.headers["x-vercel-forwarded-for"];
-    const key = Buffer.from(env.POS_CAFE_OTP_INGRESS_KEY ?? "", "base64");
-    const apiKey = env.POS_CAFE_OWNER_SUPABASE_PUBLISHABLE_KEY ?? "";
-    if (env.VERCEL !== "1" || env.VERCEL_ENV !== "preview" || env.VERCEL_TARGET_ENV !== "preview"
+    const demoKey = publicDemoClientKey(env);
+    const key = Buffer.from((demoKey ? env.POS_PUBLIC_DEMO_OTP_INGRESS_KEY : env.POS_CAFE_OTP_INGRESS_KEY) ?? "", "base64");
+    const apiKey = demoKey ?? env.POS_CAFE_OWNER_SUPABASE_PUBLISHABLE_KEY ?? "";
+    if ((!demoKey && (env.VERCEL !== "1" || env.VERCEL_ENV !== "preview" || env.VERCEL_TARGET_ENV !== "preview"
       || env.POS_PREVIEW_DATA_MODE !== "supabase"
       || env.POS_PREVIEW_SUPABASE_URL !== stagingUrl || env.POS_CAFE_OWNER_SUPABASE_PROJECT_REF !== stagingProject
-      || !publishableKey.test(apiKey) || apiKey !== env.POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY
+      || !publishableKey.test(apiKey) || apiKey !== env.POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY))
       || typeof ip !== "string" || !isIP(ip) || key.byteLength !== 32) {
       return response.status(503).json({ ok: false, code: "A_SEND_UNAVAILABLE" });
     }

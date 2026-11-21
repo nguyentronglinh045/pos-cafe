@@ -1,10 +1,10 @@
-// Setup release lock: this revision has no executable Vercel deployment path.
+// Verify the exact source for the environment-protected public demo release.
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { hash, PROJECT_REPOSITORY, PROJECT_REPOSITORY_ID } from './project-ci-results.mjs';
 
-export const PRODUCTION_ENABLED = false;
+export const PRODUCTION_ENABLED = true;
 const refuse = () => { throw new Error('FRONTEND_RELEASE_BLOCKED'); };
 export function verifyReleaseRun(run, input, policy) {
   if (!/^[a-f0-9]{40}$/.test(input.sourceSHA ?? '') || !/^[1-9][0-9]*$/.test(String(input.runId ?? ''))
@@ -36,17 +36,8 @@ export function verifyReleaseFiles(files, policy) {
   return true;
 }
 
-export function productionCommands() {
-  // Neither environment variables nor workflow_dispatch inputs can open this.
-  if (!PRODUCTION_ENABLED) refuse();
-  return [];
-}
 
 async function main() {
-  if (process.argv[2] === 'held') {
-    if (PRODUCTION_ENABLED) refuse();
-    console.log('FRONTEND_RELEASE_HELD_NO_DEPLOY'); return;
-  }
   if (process.argv[2] !== 'verify' || process.env.GITHUB_REPOSITORY !== PROJECT_REPOSITORY
     || process.env.GITHUB_REPOSITORY_ID !== String(PROJECT_REPOSITORY_ID)
     || process.env.GITHUB_EVENT_NAME !== 'workflow_dispatch' || process.env.GITHUB_REF !== 'refs/heads/main') refuse();
@@ -78,8 +69,9 @@ async function main() {
   verifyReleaseFiles(files, policy);
   verifyReleaseEnvironment(await get('environments/production'),
     (await get('environments/production/deployment-branch-policies')).branch_policies, policy);
-  if (PRODUCTION_ENABLED) refuse();
-  console.log('FRONTEND_RELEASE_PREFLIGHT_VALID_PRODUCTION_HELD');
+  if (!PRODUCTION_ENABLED || policy.productionEnabled !== true || process.env.GITHUB_SHA !== input.sourceSHA
+    || process.env.GITHUB_WORKFLOW_SHA !== input.sourceSHA || (await get('git/ref/heads/main')).object?.sha !== input.sourceSHA) refuse();
+  console.log('FRONTEND_PUBLIC_DEMO_PREFLIGHT_VALID');
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {

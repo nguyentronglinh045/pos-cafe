@@ -1,4 +1,5 @@
 // Manual, Git-source Preview only. No Vercel SDK/CLI, production mutation or logs API.
+import {publicDemoClientKey} from '../api/owner-otp.js';
 import {readFileSync, statSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
@@ -30,7 +31,7 @@ const finite=error=>{const code=CODES.some(item=>error?.code==='FRONTEND_PREVIEW
 
 export function validatePreviewPolicy(policy) {
   check(exact(policy,['schemaVersion','reviewers','allowedSourceBranches','productionEnabled','trustedFiles','preview'])&&
-    policy.schemaVersion==='pos-release-policy-v1'&&policy.productionEnabled===false&&!PRODUCTION_ENABLED&&
+    policy.schemaVersion==='pos-release-policy-v1'&&policy.productionEnabled===true&&PRODUCTION_ENABLED&&
     Array.isArray(policy.allowedSourceBranches)&&policy.allowedSourceBranches.length===1&&policy.allowedSourceBranches[0]==='main'&&
     Array.isArray(policy.reviewers)&&policy.reviewers.length===1&&policy.reviewers[0]==='nguyentronglinh045','POLICY');
   const p=policy.preview;
@@ -39,7 +40,7 @@ export function validatePreviewPolicy(policy) {
     p.teamSlug==='24tx810010-hcmutes-projects'&&p.repoId===PROJECT_REPOSITORY_ID&&Array.isArray(p.protectionFields)&&
     p.protectionFields.length===PROTECTION.length&&p.protectionFields.every((field,i)=>field===PROTECTION[i]),'POLICY');
   check(policy.trustedFiles&&typeof policy.trustedFiles==='object'&&!Array.isArray(policy.trustedFiles)&&
-    Object.keys(policy.trustedFiles).length<=65,'POLICY');
+    Object.keys(policy.trustedFiles).length<=67,'POLICY');
   for(const [file,digest] of Object.entries(policy.trustedFiles))check(matches(file,/^[.A-Za-z0-9_/-]+(?![\s\S])/)&&
     file.split('/').every(part=>part&&part!=='.'&&part!=='..')&&matches(digest,DIGEST),'POLICY');
   for(const file of ['.github/workflows/ci.yml','.github/workflows/frontend-preview.yml','scripts/project-preview.mjs',
@@ -59,7 +60,7 @@ export function verifyPreviewEnvironment(environment,branches,policy) {
   return true;
 }
 
-export const ignorePreview=env=>env.VERCEL_ENV==='preview'?1:0;
+export const ignorePreview=env=>(env.VERCEL_ENV==='preview'||publicDemoClientKey(env))?1:0;
 function previewConfiguration(group) {
   const keys=Object.keys(group);
   if(keys.length===0)return {dataMode:'mock',projectRef:null,url:'',publishableKey:''};
@@ -128,8 +129,9 @@ async function readPreviewProjectConfiguration(vercel,projectId,expectedMode) {
   return resolvePreviewConfig(rows,publicValues,expectedMode);
 }
 export function previewBuildEnvironment(env) {
-  check(env.VERCEL_ENV==='preview','BUILD');
-  const config=previewConfiguration(Object.fromEntries(Object.keys(env).filter(key=>/^POS_PREVIEW_/i.test(key)).map(key=>[key,env[key]])));
+  const demoKey=publicDemoClientKey(env);
+  check(env.VERCEL_ENV==='preview'||demoKey,'BUILD');
+  const config=demoKey ? {dataMode:'supabase',url:SUPABASE_URL,publishableKey:demoKey} : previewConfiguration(Object.fromEntries(Object.keys(env).filter(key=>/^POS_PREVIEW_/i.test(key)).map(key=>[key,env[key]])));
   return {...Object.fromEntries(['PATH','HOME','TMPDIR','TMP','TEMP','LANG','LC_ALL','TZ','SystemRoot'].filter(key=>typeof env[key]==='string').map(key=>[key,env[key]])),
     VITE_DATA_MODE:config.dataMode,VITE_SUPABASE_URL:config.url,VITE_SUPABASE_ANON_KEY:config.publishableKey,
     ...(config.dataMode==='supabase'?{VITE_OWNER_PROVISIONING:'1'}:{})};

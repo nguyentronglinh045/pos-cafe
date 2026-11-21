@@ -11,7 +11,7 @@ import { pathToFileURL } from 'node:url';
 import SmokeFailureReporter, { foundationAssertion, smokeStepDiagnostic, smokeTraceDiagnostics, smokeTraceEvents, smokeTraceSnapshotFacts, smokeTraceExpectFacts, sourceBinding, vitestCounts, nodeCounts, smokeCounts, smokePreflightCounts, uiCounts, publicSummary, privateDiagnostics, nodeTapFailureDiagnostics, NODE_FAILURE_ERRNOS, guardFailureCode, PROJECTS, PROJECT_PHASES, hash } from './project-ci-results.mjs';
 import ArchitectureCaseReporter, { capturedCommand, trackedFingerprint, lightEnvironment, checkoutGit, allocatedBytes, coreLimitDisabled, browserRuntimeControlCanStart, gitCommitParents } from './project-ci.mjs';
 import { lightService, lightOwnerMatches, withLightCorePattern, stopLightUnit, coreDumpDisabled, linuxCorePatternAdapter } from './project-ci-launch.mjs';
-import { verifyReleaseRun, verifyReleaseEnvironment, verifyReleaseFiles, productionCommands, PRODUCTION_ENABLED } from './project-release.mjs';
+import { verifyReleaseRun, verifyReleaseEnvironment, verifyReleaseFiles, PRODUCTION_ENABLED } from './project-release.mjs';
 
 // T02 fixtures follow the JSON serializer: errors[] has location/message only;
 // raw error.stack and errorLocation describe that same first error.
@@ -1033,8 +1033,7 @@ test('CD requires the exact owner, branch restrictions and no admin bypass; prod
   assert.throws(() => verifyReleaseEnvironment({ ...environment, name: 'Preview' }, [{ name: 'main', type: 'branch' }], policy));
   assert.throws(() => verifyReleaseEnvironment({ ...environment, can_admins_bypass: true }, [{ name: 'main', type: 'branch' }], policy));
   assert.throws(() => verifyReleaseEnvironment(environment, [{ name: '*', type: 'branch' }], policy));
-  assert.equal(PRODUCTION_ENABLED, false);
-  assert.throws(() => productionCommands({ enable: true, VERCEL_TOKEN: 'FAKE_PRIVATE_TOKEN' }));
+  assert.equal(PRODUCTION_ENABLED, true);
 });
 
 test('CD verifies canonical Git bytes across CRLF checkouts and rejects checker/config drift', () => {
