@@ -5,7 +5,16 @@ required application/backend acceptance and independent reviews are complete.
 Supply the exact current main SHA and its successful **push** CI run/attempt.
 PR CI, an ancestor's CI, or a mock smoke result does not replace those gates.
 Keep the Preview environment approval and existing project protection enabled.
-Production remains disabled; this command does not promote a deployment.
+The Preview workflow never promotes a deployment. The separate manual workflow
+`frontend-release.yml` publishes the approved main SHA on `pos-cafe-azure.vercel.app`
+as a public demo backed by the same staging database. Its protected Production
+environment supplies VERCEL_TOKEN, the secret POS_PUBLIC_DEMO_OTP_INGRESS_KEY
+and the public variable POS_PUBLIC_DEMO_CLIENT_KEY. The release verifies staging
+readiness and the project/domain, sets Production-only demo variables, then
+checks the final domain binding. Automatic Git deployment stays disabled.
+To recover from a failed run, inspect its deployment ID before retrying the same run.
+A rerun reconciles the existing deployment for that run. For a terminal build error, fix the cause and start a new approved dispatch.
+For an incident after traffic changes, use Vercel Instant Rollback to restore the previous deployment.
 
 `data_mode` is an expectation checked before creating a deployment. It does not
 write Vercel settings. Default `mock` requires no `POS_PREVIEW_*` variables.

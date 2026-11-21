@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {deployPublicDemo} from './project-public-demo.mjs';
 import assert from 'node:assert/strict';
 import {hash} from './project-ci-results.mjs';
 import {ignorePreview,previewBuildEnvironment,buildPreview,validatePreviewPolicy,previewProjectConfiguration,deployPreview} from './project-preview.mjs';
@@ -12,7 +13,7 @@ const encryptedConfigRows=()=>functionalRows().map((row,i)=>({...row,id:`env_pub
 const protectionFields=['ssoProtection','passwordProtection','trustedIps','trustedSources','protectionBypass','optionsAllowlist'];
 const fileBytes=Object.fromEntries(['.github/workflows/ci.yml','.github/workflows/frontend-preview.yml',
   'scripts/project-preview.mjs','scripts/project-release.mjs','vercel.json','api/owner-otp.js'].map(file=>[file,Buffer.from('synthetic canonical '+file+'\n')]));
-const policy={schemaVersion:'pos-release-policy-v1',reviewers:['nguyentronglinh045'],allowedSourceBranches:['main'],productionEnabled:false,
+const policy={schemaVersion:'pos-release-policy-v1',reviewers:['nguyentronglinh045'],allowedSourceBranches:['main'],productionEnabled:true,
   trustedFiles:Object.fromEntries(Object.entries(fileBytes).map(([file,bytes])=>[file,hash(bytes)])),
   preview:{projectId,projectName:'pos-cafe',teamSlug:'24tx810010-hcmutes-projects',repoId,protectionFields}};
 const env={GITHUB_ACTIONS:'true',RUNNER_ENVIRONMENT:'github-hosted',GITHUB_REPOSITORY:repo,GITHUB_REPOSITORY_ID:String(repoId),
@@ -103,11 +104,62 @@ test('ignore opens only Preview and build strips tokens, inherited VITE and proc
     assert.throws(()=>buildPreview(inherited,()=>result),error=>error.message==='FRONTEND_PREVIEW_BUILD');
 });
 
+test('public Production release reconciles a retry and refuses an unready backend before writing', async()=>{
+  const sha='a'.repeat(40), domain='pos-cafe-azure.vercel.app', id='dpl_demo';
+  const pid='prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en';
+  const env={GITHUB_REPOSITORY:'nguyentronglinh045/pos-cafe',GITHUB_REPOSITORY_ID:'1263057386',
+    GITHUB_REF:'refs/heads/main',GITHUB_EVENT_NAME:'workflow_dispatch',GITHUB_SHA:sha,GITHUB_WORKFLOW_SHA:sha,GITHUB_RUN_ID:'123',
+    GITHUB_TOKEN:'fixture',VERCEL_TOKEN:'fixture',DEMO_CLIENT_KEY:'sb_publishable_public_fixture_key',DEMO_OTP_KEY:Buffer.alloc(32,3).toString('base64')};
+  async function exercise({retry=false,ready=true,incomplete=false,invalidId=false}={}) {
+    const writes=[];
+    async function request(url,options={}) {
+      const path=new URL(url).pathname;
+      if(path.endsWith('/git/ref/heads/main'))return {object:{sha}};
+      if(path==='/v9/projects/'+pid)return {id:pid,name:'pos-cafe',link:{repoId:1263057386,productionBranch:'main'},autoExposeSystemEnvs:true};
+      if(path.endsWith('/domains/'+domain))return {verified:true,projectId:pid,name:domain};
+      if(path.endsWith('/domains'))return {domains:[{name:domain}]};
+      if(path==='/auth/v1/settings')return {disable_signup:ready,external:{email:true},mailer_autoconfirm:true};
+      if(path.endsWith('/permission_get_contract'))return {permissionContractVersion:2,writeProtocolVersion:1};
+      if(path==='/v7/deployments')return {pagination:{next:incomplete?1:null},deployments:retry?[{uid:invalidId?null:id,meta:{publicDemoSource:sha,publicDemoRun:'123'}}]:[]};
+      if(path.endsWith('/env')&&!options.body)return {envs:[]};
+      if(path.endsWith('/env')){const rows=JSON.parse(options.body);assert.ok(rows.every(row=>row.target.join()==='production'));
+        writes.push('configure');return {created:rows,failed:[]};}
+      if(path==='/v13/deployments'){const input=JSON.parse(options.body);assert.equal(input.gitSource.sha,sha);assert.equal(input.target,'production');
+        writes.push('create');return {id};}
+      if(path==='/v13/deployments/'+id)return {id,projectId:pid,target:'production',gitSource:{sha,type:'github',repoId:1263057386,ref:'main'},meta:{publicDemoRun:'123',publicDemoSource:sha},readyState:'READY'};
+      if(path==='/v4/aliases/'+domain)return {projectId:pid,alias:domain,deploymentId:id};
+      throw Error('Unexpected request '+path);
+    }
+    if(!ready)await assert.rejects(deployPublicDemo(env,request),/readiness/);
+    else if(incomplete||invalidId)await assert.rejects(deployPublicDemo(env,request),/Incomplete|Ambiguous/);
+    else await deployPublicDemo(env,request,async()=>{});
+    return writes;
+  }
+  assert.deepEqual(await exercise(),['configure','create']);
+  assert.deepEqual(await exercise({retry:true}),[]);
+  assert.deepEqual(await exercise({ready:false}),[]);
+  assert.deepEqual(await exercise({incomplete:true}),[]);
+  assert.deepEqual(await exercise({retry:true,invalidId:true}),[]);
+});
+
+test('public demo build uses the approved staging project and excludes legacy Production config and the ingress secret',()=>{
+  const sha='a'.repeat(40), key='sb_publishable_demo_fixture_client';
+  const demo={VERCEL:'1',VERCEL_ENV:'production',VERCEL_TARGET_ENV:'production',VERCEL_GIT_COMMIT_REF:'main',
+    VERCEL_GIT_COMMIT_SHA:sha,POS_PUBLIC_DEMO_SHA:sha,POS_PUBLIC_DEMO_CLIENT_KEY:key,
+    POS_PUBLIC_DEMO_OTP_INGRESS_KEY:'fixture-secret',VITE_SUPABASE_URL:'https://wrong.invalid'};
+  assert.equal(ignorePreview(demo),1);
+  assert.deepEqual(previewBuildEnvironment(demo),{VITE_DATA_MODE:'supabase',VITE_OWNER_PROVISIONING:'1',
+    VITE_SUPABASE_URL:'https://ineckiashpwloncxnbqx.supabase.co',VITE_SUPABASE_ANON_KEY:key});
+  const stale={...demo,VERCEL_GIT_COMMIT_SHA:'b'.repeat(40)};
+  assert.equal(ignorePreview(stale),0);
+  assert.throws(()=>previewBuildEnvironment(stale),/BUILD/);
+});
+
 test('closed Preview policy rejects changed project, team, owner gates, open fields and missing checker pins',()=>{
   validatePreviewPolicy(policy);
   for(const mutate of [p=>{p.preview.projectId='prj_other';},p=>{p.preview.teamSlug='other';},p=>{p.preview.repoId=String(repoId);},
     p=>{p.preview.extra=true;},p=>{p.preview.protectionFields.pop();},p=>{p.reviewers=['other'];},p=>{p.allowedSourceBranches.push('feature');},
-    p=>{p.productionEnabled=true;},p=>{delete p.trustedFiles['api/owner-otp.js'];},p=>{p.trustedFiles={};},p=>{p.trustedFiles['../outside']='1'.repeat(64);}]) {
+    p=>{p.productionEnabled=false;},p=>{delete p.trustedFiles['api/owner-otp.js'];},p=>{p.trustedFiles={};},p=>{p.trustedFiles['../outside']='1'.repeat(64);}]) {
     const changed=structuredClone(policy);mutate(changed);assert.throws(()=>validatePreviewPolicy(changed),error=>error.code==='FRONTEND_PREVIEW_POLICY');
   }
 });

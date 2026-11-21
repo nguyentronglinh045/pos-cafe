@@ -6,7 +6,7 @@
   "allowedSourceBranches": [
     "main"
   ],
-  "productionEnabled": false,
+  "productionEnabled": true,
   "trustedFiles": {
     ".github/workflows/ci.yml": "af0b53a559a2970b9d100589802da5a61660369b45268795aaeaacf7dea11a2c",
     "scripts/project-ci-launch.mjs": "db2ce0777c9bcd314320a7378fb03bfa0dfb18696ca597fc73f733742bd46273",
@@ -24,8 +24,8 @@
     "tests/contracts/gates.tool.test.ts": "9deced5b290e611845255d27cb50f04a572d9a5146538e65fb66259e2a064070",
     "playwright.project-ci.config.ts": "34f2073b1c3aa0967b583b282dfdaa71c7d87dd25a3721fb12bb135fd2b702d9",
     ".github/workflows/frontend-preview.yml": "4095d745a74769f6fdeb08511cd98ee7eb4f527f9d1712eb0e560d1c65e6f7c3",
-    "scripts/project-preview.mjs": "d46c987e314b09d7b91c2c67c04e5855ab47ad473d3f75c5a626f63e3ce64bab",
-    "scripts/project-release.mjs": "43f3e6b0bf8739a66113ab669bb44279e20e0272d57122b579f907ebcdf79b54",
+    "scripts/project-preview.mjs": "9e94d77a7d9bb8319e2508d0c5a37d8e21b21cbde48d90c432bd694b01920441",
+    "scripts/project-release.mjs": "4ccefd3a412d928658ea721892171340754663d281c0ffdc5e19ce063a45c0e9",
     "scripts/project-ui-results.mjs": "bf4aee4b2fbd0ab03976afa156db346ec2f762aecf77e67c6a91db8e6b667372",
     "ui-audit/run.mjs": "489f6b5eea4153af814e2a560e615cddd372bc45706a5e2d49264aa5530badfd",
     "ui-audit/config.json": "7cc827171528222409da3da1ee35d2294c73176d62344b1377f5f8eaa87136ee",
@@ -36,7 +36,7 @@
     "scripts/permission-runtime-pg16-cleanup.mjs": "3a47c5a59c08411a702d4622b74dd514395072be9878630f3dc6a1f54109efa8",
     "scripts/permission-runtime-error-facts.mjs": "bf41daf43254aa36eef59c4fb0fbfaf9e92725a01606074be87192b7f1fb71b6",
     "scripts/permission-runtime-vitest-reporter.mjs": "aff12fd7758d63f83b22608e47a906feb363455e5472b8de4b2661cfe6f478f4",
-    "scripts/project-ci-results.test.mjs": "a8a3333cd351b21625af7b63e906930916da8ffbd718f3083a570fdb6e4d40d3",
+    "scripts/project-ci-results.test.mjs": "2595157e6aac810a5e308e6b918b5844617ede0aec1d34dde40ca6fa527d42cf",
     "scripts/permission-runtime-stage.mjs": "bfcede0b296d329ab22fe1eabaacb7ece8f12413add07fc1527d2b96a8295119",
     "scripts/permission-runtime-pin-ui.mjs": "a5effa0a9c2a97ad1c35151aa4f8bfb1a35331e3d88edf9f4cdd4fc82bae93f1",
     "scripts/permission-pin-ui-policy.mjs": "d23227f8f872c33aa02634e80695577cdf6caaa0040a116f19bc7c1f2adc906e",
@@ -50,8 +50,8 @@
     "tests/permissions/runtime/ci1-edge.json": "523111f7b3134e5f29a6bbf600302140db58530d3998a1ffbd565f7152493d51",
     "tests/permissions/runtime/edge-resolution/deno.json": "eca3984001a907fb17773aa60e4ce77efb2033c255e3f5462963f3b87b894113",
     "tests/permissions/runtime/edge-resolution/deno.lock": "6f9fc5dd3b6e81d9468c712bfbf3fc423e6ea28d49e8fe44915abca50740ab41",
-    "scripts/permission-full-target-policy.test.mjs": "28a20fbad9d760fcd5bb3a0f160dfc5e33ac5e5df6229a97f0938e4ab55197f7",
-    "scripts/project-preview.README.md": "c7ba7f2797459ae86ceeb9a63deec3781d49f16fba62731758e94015c1cc5f34",
+    "scripts/permission-full-target-policy.test.mjs": "7959851246f240ef792704f68cac6339860ab90d667808437f221d389621ca58",
+    "scripts/project-preview.README.md": "b288ff01a3306ccf7d5adf00a1f17d9521e9569077d8450518eb18f818a41448",
     "scripts/permission-runtime-candidate-diagnostic.mjs": "36e488f19e4e5e27656339a1d8e9bf8d904febc0ac8c36e7d6076435e0615f67",
     "scripts/permission-runtime-service-worker.mjs": "e377f42893ada170fe6e4152f943c77a09e95ee431570191cb5f74bc735ac426",
     "scripts/permission-runtime-diagnostic-selftest.mjs": "8c8c8e283bfb1d187ab4aea2da4cb731899d90280d12c78b306789c1d827c5b2",
@@ -72,7 +72,9 @@
     "scripts/permission-t04-image-browser.mjs": "cbd0d983d5ff46ad49dd60d14aca16d9e0efc1513fde4c73dfb9b44e87ddaa03",
     "scripts/permission-t04-image-browser.test.mjs": "a11c2ce46661341d9aed9214eccbfe161a50a237895b7820d94e6ceeccc9c785",
     "scripts/permission-t04-image-browser-control.mjs": "84f55a9a882f11bca1032f610366f6636993445c65b3dec8559731e0caa5121d",
-    "api/owner-otp.js": "195536538561b7237bad80ee82effb0f3ea99b6c516dab7867b0fbd846bbbbfc"
+    "api/owner-otp.js": "5cf217661a0828fdf5de46ff28a4ebcac5bbbbaf6b0ec0ebf04d378b4abc607d",
+    "scripts/project-public-demo.mjs": "5b88b3afb7b6dcdc065e3c02952a28a9c7f9511283ea8fbeb71312df7a808b1c",
+    ".github/workflows/frontend-release.yml": "012d5d93ae0bf23bdcfc90d253974e312db39e4157000c85d0b3bdca666cdfa9"
   },
   "preview": {
     "projectId": "prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en",
