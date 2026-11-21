@@ -1,0 +1,219 @@
+{
+  "source": "main 2e5764958a08300aac2f98701144a7d89ac8d4a5",
+  "method": "AI kiểm tra UI tự động bằng Playwright headless; không phải Ngọc tự chạy tay",
+  "date": "20/11/2026",
+  "timezone": "Asia/Bangkok (UTC+7)",
+  "baseURL": "http://127.0.0.1:5175",
+  "browserVersion": "157.0.8103.79",
+  "viewport": {
+    "desktop": {
+      "width": 1366,
+      "height": 768
+    },
+    "takeaway": {
+      "width": 568,
+      "height": 320
+    }
+  },
+  "finishedAt": "2026-11-20T01:47:27.507Z",
+  "results": [
+    {
+      "caseId": "N01-11",
+      "title": "Gọi món — thêm/bớt món đã gửi",
+      "start": "08:47:03",
+      "end": "08:47:10",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Mở đơn 24 (Bàn 2): các dòng đã gửi ghi 'Phần đã lưu'",
+          "source": "B02-04",
+          "observed": "Gọi món — Bàn B02Tầng trệt · Tại bànĐơn #24 · Đã gửiĐóngHủy đơn mởThanh toán; 3 dòng: Cà phê sữa58.000 ₫Phần đã lưu29.000 ₫ / mónSize  | Bạc xỉu32.000 ₫Phần đã lưu32.000 ₫ / món50% đườn | Croissant35.000 ₫Phần đã lưu35.000 ₫ / mónHâm nó; tổng 125000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-11/B1.png",
+          "time": "08:47:07"
+        },
+        {
+          "id": "B2",
+          "expected": "Bấm + ở dòng Bạc xỉu đã lưu: dòng đã lưu giữ nguyên, thêm một dòng Bạc xỉu mới theo giá hiện hành; tổng 157.000đ",
+          "source": "B02-04 (saved+ → thêm dòng giá hiện hành)",
+          "observed": "4 dòng: Cà phê sữa58.000 ₫Phần đã lưu29.000 ₫ / mónSize  | Bạc xỉu32.000 ₫Phần đã lưu32.000 ₫ / món50% đườn | Croissant35.000 ₫Phần đã lưu35.000 ₫ / mónHâm nó | Bạc xỉu32.000 ₫Phần gọi thêm32.000 ₫ / món50% đư. Dòng đã lưu số lượng 1; dòng Bạc xỉu mới: 1; tổng 157000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-11/B2.png",
+          "time": "08:47:08"
+        },
+        {
+          "id": "B3",
+          "expected": "Bấm − ở dòng Croissant đã lưu: về 0 thì dòng ẩn khỏi giỏ; tổng giảm 35.000đ",
+          "source": "B02-04 (saved− clamp 0; giỏ ẩn dòng 0)",
+          "observed": "3 dòng: Cà phê sữa58.000 ₫Phần đã lưu29.000 ₫ / mónSize  | Bạc xỉu32.000 ₫Phần đã lưu32.000 ₫ / món50% đườn | Bạc xỉu32.000 ₫Phần gọi thêm32.000 ₫ / món50% đư; tổng 122000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-11/B3.png",
+          "time": "08:47:08"
+        },
+        {
+          "id": "B4",
+          "expected": "Đóng, bỏ thay đổi: mở lại đơn 24 về bản đã lưu 125.000đ, Croissant còn",
+          "source": "B02-07, Q-N01-4",
+          "observed": "Nút bỏ \"Bỏ đơn\". Mở lại: 3 dòng đã lưu, tổng 125000đ; Croissant còn; không còn dòng gọi thêm.",
+          "status": "ĐÚNG",
+          "shot": "N01-11/B4.png",
+          "time": "08:47:09"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "N01-12",
+      "title": "Thanh toán — nhập tiền khách đưa",
+      "start": "08:47:10",
+      "end": "08:47:18",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Mở thanh toán đơn 24: ô khách đưa 125.000",
+          "source": "R03",
+          "observed": "Khách đưa 125000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-12/B1.png",
+          "time": "08:47:14"
+        },
+        {
+          "id": "B2",
+          "expected": "Bấm xóa một lần: xóa một chữ số (12.500)",
+          "source": "R04 (delete xóa một chữ số)",
+          "observed": "Khách đưa 12500đ; Hoàn tất bị khóa: true.",
+          "status": "ĐÚNG",
+          "shot": "N01-12/B2.png",
+          "time": "08:47:15"
+        },
+        {
+          "id": "B3",
+          "expected": "Bấm phím 00: thêm hai số 0 (1.250.000)",
+          "source": "R04 (có phím 00)",
+          "observed": "Khách đưa 1250000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-12/B3.png",
+          "time": "08:47:15"
+        },
+        {
+          "id": "B4",
+          "expected": "Bấm thêm 4 chữ số 9: chỉ giữ tối đa 9 chữ số",
+          "source": "R04 (cắt tối đa 9 chữ số)",
+          "observed": "Khách đưa 125000099đ (9 chữ số).",
+          "status": "ĐÚNG",
+          "shot": "N01-12/B4.png",
+          "time": "08:47:16"
+        },
+        {
+          "id": "B5",
+          "expected": "Gõ thẳng '12a5b' vào ô: chỉ nhận chữ số (125)",
+          "source": "R04 (direct input chỉ nhận chữ số)",
+          "observed": "Khách đưa 125đ; ô hiện \"125\"; Hoàn tất bị khóa: true; nút Đúng tiền hiện: false.",
+          "status": "ĐÚNG",
+          "shot": "N01-12/B5.png",
+          "time": "08:47:16"
+        },
+        {
+          "id": "B6",
+          "expected": "Nút nhanh: Đúng tiền = 125.000; +50k = 175.000; 500k = 500.000",
+          "source": "R04",
+          "observed": "Đúng tiền → 125000; +50k → 175000; 500k → 500000",
+          "status": "ĐÚNG",
+          "shot": "N01-12/B6.png",
+          "time": "08:47:16"
+        },
+        {
+          "id": "SAU-B6",
+          "expected": "Đóng thanh toán, không Hoàn tất; mở lại B02 vẫn #24/125.000đ",
+          "source": "Phiếu chạy tay",
+          "observed": "Gọi món — Bàn B02Tầng trệt · Tại bànĐơn #24 · Đã gửiĐóngHủy đơn mởThanh toán; tổng 125000đ; chưa bấm Hoàn tất.",
+          "status": "ĐÚNG",
+          "shot": "N01-12/SAU-B6.png",
+          "time": "08:47:17"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "MANG-DI",
+      "title": "Bán mang đi 568×320",
+      "start": "08:47:18",
+      "end": "08:47:27",
+      "steps": [
+        {
+          "id": "T1",
+          "expected": "1 đơn #26/84.000đ; 9 nút; không tràn trang",
+          "source": "Phiếu chạy tay",
+          "observed": "1 đơn đang mở; thẻ: #26Đang mở84.000 ₫Mở đơnThanh toán; 9 nút; trang 568/568px; có cuộn nội bộ: [{\"tag\":\"DIV\",\"cls\":\"min-h-0 overflow-auto bg-pos-bg p-3 max-[980px]:p-2\",\"left\":0,\"top\":0,\"maxX\":72,\"maxY\":0},{\"tag\":\"DIV\",\"cls\":\"min-h-0 overflow-auto p-2.5 max-[980px]:p-2\",\"left\":0,\"top\":0,\"maxX\":0,\"maxY\":19},{\"tag\":\"DIV\",\"cls\":\"min-h-0 overflow-auto p-2.5 max-[980px]:p-2\",\"left\":0,\"top\":0,\"maxX\":0,\"maxY\":150}].",
+          "status": "ĐÚNG",
+          "shot": "MANG-DI/T1.png",
+          "time": "08:47:22"
+        },
+        {
+          "id": "T2",
+          "expected": "Ba thẻ lọc bấm được; Đã thanh toán rỗng, Hôm nay/Đang mở có #26",
+          "source": "Phiếu chạy tay",
+          "observed": "[{\"name\":\"Đã thanh toán\",\"count\":0},{\"name\":\"Hôm nay\",\"count\":1},{\"name\":\"Đang mở\",\"count\":1}]",
+          "status": "ĐÚNG",
+          "shot": "MANG-DI/T2.png",
+          "time": "08:47:22"
+        },
+        {
+          "id": "T3",
+          "expected": "Mở nháp mới, đóng chưa thêm món; mở lại vẫn 1 đơn",
+          "source": "Phiếu chạy tay / Q-N01-1",
+          "observed": "Nháp: Gọi món — Mang điMang điĐơn mới · Chưa gửiĐóngIn/Gửi đơn; mở lại: 1 đơn đang mở.",
+          "status": "ĐÚNG",
+          "shot": "MANG-DI/T3.png",
+          "time": "08:47:22"
+        },
+        {
+          "id": "T4a",
+          "expected": "Mở đơn trên thẻ đúng #26/84.000đ",
+          "source": "Phiếu chạy tay",
+          "observed": "Gọi món — Mang điMang điĐơn #26 · Đã gửiĐóngHủy đơn mởThanh toán; tổng 84000đ.",
+          "status": "ĐÚNG",
+          "shot": "MANG-DI/T4a.png",
+          "time": "08:47:23"
+        },
+        {
+          "id": "T4b",
+          "expected": "Thanh toán trên thẻ đúng #26, phải trả 84.000đ; đóng",
+          "source": "Phiếu chạy tay",
+          "observed": "Thanh toán #26: true; phải trả 84000đ.",
+          "status": "ĐÚNG",
+          "shot": "MANG-DI/T4b.png",
+          "time": "08:47:24"
+        },
+        {
+          "id": "T4c",
+          "expected": "Cuộn khung chi tiết và bấm Mở đơn; đúng #26",
+          "source": "Phiếu chạy tay",
+          "observed": "Cuộn thực tế: {\"hit\":{\"x\":310,\"y\":221.25,\"width\":234,\"height\":30.75,\"reachable\":true},\"change\":[{\"tag\":\"DIV\",\"x\":72,\"y\":0},{\"tag\":\"DIV\",\"x\":0,\"y\":150}]}; mở đúng #26/84.000đ: true.",
+          "status": "ĐÚNG",
+          "shot": "MANG-DI/T4c.png",
+          "time": "08:47:24"
+        },
+        {
+          "id": "T4d",
+          "expected": "Cuộn ngang/dọc tới Thanh toán trong chi tiết; đúng #26/84.000đ",
+          "source": "Phiếu chạy tay",
+          "observed": "Cuộn thực tế: {\"hit\":{\"x\":310,\"y\":260,\"width\":234,\"height\":30.75,\"reachable\":true},\"change\":[{\"tag\":\"DIV\",\"x\":72,\"y\":0},{\"tag\":\"DIV\",\"x\":0,\"y\":150}]}; mở đúng thanh toán #26/84.000đ: true.",
+          "status": "ĐÚNG",
+          "shot": "MANG-DI/T4d.png",
+          "time": "08:47:25"
+        },
+        {
+          "id": "T5",
+          "expected": "Cuộn tới tổng 84.000đ; Đóng hoạt động; mở lại vẫn 1 đơn",
+          "source": "Phiếu chạy tay",
+          "observed": "Chi tiết có tổng 84.000đ nhìn thấy, không bị che: true; đóng về sơ đồ; mở lại 1 thẻ #26.",
+          "status": "ĐÚNG",
+          "shot": "MANG-DI/T5.png",
+          "time": "08:47:26"
+        }
+      ],
+      "pageErrors": []
+    }
+  ]
+}
