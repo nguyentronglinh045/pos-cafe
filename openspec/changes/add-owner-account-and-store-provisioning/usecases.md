@@ -196,8 +196,8 @@ Cập nhật 2026-11-05. Mã lỗi khai ở `design.md`. Dữ liệu ví dụ d�
 | --- | --- | --- | --- | --- |
 | email | chuỗi | Có | Như UC-OWNER-01 | `owner.a@example.com` |
 
-- **Luồng chính:** 1. Chủ bấm "Quên Store Key" ở màn ghép thiết bị hoặc mục Cài đặt. 2. Nhập email, bấm gửi. 3. Hệ thống trả phản hồi chung. 4. Nếu email đứng tên quán, thư chứa danh sách quán và key tới hộp thư.
-- **Luồng thay thế:** 4a. Email không đứng tên quán nào: phản hồi giống hệt, không có thư. 4b. Quán đang có lần cấp lại Store Key làm dở: được bỏ khỏi thư; thư cấp lại sẽ tới sau.
+- **Luồng chính:** 1. Chủ chọn “Quên Store Key?” ở màn ghép thiết bị hoặc mục Cài đặt. Hộp thoại hiển thị lời nhắc “Nhập email chủ quán đã đăng ký để nhận lại Store Key đang dùng. Việc gửi lại không đổi key hay đăng xuất các máy đã ghép.” 2. Nhập email rồi bấm “Gửi key hiện tại qua email”. 3. Hệ thống trả phản hồi chung. 4. Nếu email đứng tên quán, thư chứa danh sách quán và key tới hộp thư.
+- **Luồng thay thế:** 4a. Email không đứng tên quán nào: phản hồi giống hệt, không có thư. 4b. Khi chưa xác nhận key mới đã được lưu (`pending`), thư bỏ qua quán đó. Từ `applied`, thư có thể gửi key mới đang có hiệu lực. Nếu việc thu hồi phiên còn dở, thư nhắc chủ “Việc đổi key vẫn đang hoàn tất. Máy vừa ghép bằng key mới có thể phải ghép lại.” Phản hồi trên màn hình vẫn dùng thông báo chung.
 - **Luồng ngoại lệ:** email sai dạng ⇒ `A_EMAIL_INVALID` "Địa chỉ email không hợp lệ. Vui lòng kiểm tra lại."; quá 3 lần trong một giờ, hoặc hết giới hạn theo địa chỉ mạng và trần toàn dự án: phản hồi vẫn giống hệt, không có thư thêm. Giới hạn theo địa chỉ mạng đếm mọi yêu cầu đúng dạng, trước khi xét giới hạn theo email, kể cả yêu cầu cho email không có quán.
 - **Đầu ra:**
 
@@ -209,7 +209,7 @@ Cập nhật 2026-11-05. Mã lỗi khai ở `design.md`. Dữ liệu ví dụ d�
 | Tác dụng phụ | Một thư; không ghi key vào nhật ký |
 
 - **Tiêu chí chấp nhận:** phản hồi không cho biết email có quán hay không; máy đã ghép không bị ảnh hưởng.
-- **Truy vết:** REQ-OWNER-09.
+- **Truy vết:** REQ-OWNER-09 và quy tắc giao key trong lúc đổi của REQ-OWNER-10.
 
 ## UC-OWNER-09 — Chủ cấp lại Store Key
 
@@ -224,8 +224,8 @@ Cập nhật 2026-11-05. Mã lỗi khai ở `design.md`. Dữ liệu ví dụ d�
 | code | chuỗi | Có | 6 chữ số `0-9` | `012345` |
 | requestId, attemptId | UUID v7 | Có (máy sinh) | Như UC-OWNER-01, 02 | — |
 
-- **Luồng chính:** 1. Mở Cài đặt, chọn "Cấp lại Store Key". 2. Đọc cảnh báo. 3. Gõ lại tên quán. 4. Bấm gửi mã; mã tới email đã đăng ký. 5. Nhập mã. 6. Hệ thống đổi key, hiển thị key mới kèm nút sao chép. 7. Mọi máy, gồm máy đang thao tác, bị đăng xuất và phải ghép lại; token đang dùng có thể còn tác dụng tới khi hết hạn, mặc định khoảng 1 giờ, hoặc tới khi đăng xuất.
-- **Luồng thay thế:** 6a. Mất phản hồi: gửi lại đúng lần nhập mã không sinh key lần hai; key mới có trong thư. Máy đã bị đăng xuất thì không gửi lại được, và key mới vẫn có trong thư. 6b. Dừng giữa chừng: trả trạng thái chưa rõ; tiến trình đối soát làm tiếp. 6c. Đang có lần cấp lại làm dở: chỉ trả trạng thái chưa rõ, không dùng mã.
+- **Luồng chính:** 1. Mở Cài đặt, chọn “Đổi Store Key”. 2. Đọc cảnh báo “Dùng khi bạn nghi Store Key đã lộ, chẳng hạn nhân viên đã nghỉ việc vẫn còn biết key. Sau khi đổi, key cũ không ghép thêm máy được. Mọi máy, kể cả máy này, sẽ phải ghép lại. Máy đang sử dụng có thể tiếp tục hoạt động đến khi phiên hiện tại hết hạn.” 3. Gõ lại tên quán. 4. Bấm gửi mã tới email đã đăng ký. 5. Nhập mã rồi xác nhận bằng nút “Tạo key mới”. 6. Khi hoàn tất, hệ thống hiển thị key mới kèm nút sao chép. 7. Chủ có thể bấm “Dùng key mới trên máy này” để ghép bằng key đang hiển thị, sau đó nhập lại PIN nhân viên để vào POS.
+- **Luồng thay thế:** 6a. Mất phản hồi: gửi lại đúng lần nhập mã không sinh key lần hai; key mới có trong thư. Máy đã bị đăng xuất thì không gửi lại được, và key mới vẫn có trong thư. 6b. Dừng giữa chừng: trả trạng thái chưa rõ; tiến trình đối soát làm tiếp. 6c. Đang có lần cấp lại làm dở: chỉ trả trạng thái chưa rõ, không dùng mã. 6d. Khi đã lưu key mới và bước thu hồi còn dở, chủ có thể nhận key hiện tại qua luồng quên key của UC-OWNER-08.
 - **Luồng ngoại lệ:** `EMPLOYEE_SESSION_REQUIRED` "Phiên nhân viên không còn hợp lệ. Vui lòng đăng nhập lại."; `PIN_CHANGE_REQUIRED` "Bạn cần đổi PIN trước khi sử dụng quán."; `STORE_NAME_MISMATCH` "Tên quán chưa đúng. Vui lòng gõ lại đúng tên quán."; `OWNER_ROLE_REQUIRED` "Chỉ tài khoản chủ quán mới thực hiện được thao tác này."; `STORE_SUSPENDED` "Quán đang tạm ngưng nên chưa thực hiện được thao tác này."; các lỗi mã như UC-OWNER-02.
 - **Đầu ra:**
 
@@ -233,11 +233,11 @@ Cập nhật 2026-11-05. Mã lỗi khai ở `design.md`. Dữ liệu ví dụ d�
 | --- | --- |
 | Dữ liệu trả về | Store Key mới |
 | Trạng thái hệ thống | Bí mật mới đã mã hóa; mật khẩu tài khoản kỹ thuật đổi; key cũ không ghép được nữa |
-| Thông báo | "Đã cấp lại Store Key. Hãy sao chép và ghép lại các máy." |
+| Thông báo | “Đã đổi Store Key. Hãy sao chép key mới để ghép lại các máy.” |
 | Tác dụng phụ | Thư gửi kèm; nhật ký `store_key_regenerated`, không chứa key |
 
 - **Tiêu chí chấp nhận:** không có mã thì key không đổi; key cũ không ghép được nữa; gửi lại không đổi key lần hai.
-- **Truy vết:** REQ-OWNER-04, 07, 08, 10.
+- **Truy vết:** REQ-OWNER-04, 07, 08, 09, 10.
 
 ## UC-OWNER-10 — Chủ quên PIN
 
@@ -355,3 +355,26 @@ Cập nhật 2026-11-05. Mã lỗi khai ở `design.md`. Dữ liệu ví dụ d�
 
 - **Tiêu chí chấp nhận:** không có mã thì không xóa gì; sau reset còn đúng một nhân viên là chủ quán; nhật ký còn nguyên; reset được nhiều lần, không có thời gian chờ, trong giới hạn chung; không tự tạo lại dữ liệu mẫu.
 - **Truy vết:** REQ-OWNER-04, 07, 08, 14, 15.
+
+## UC-OWNER-14 — Gỡ ghép thiết bị này
+
+- **Tác nhân và mục tiêu:** người đang ở máy POS muốn ngắt kết nối máy này với quán.
+- **Tiền điều kiện:** thiết bị có phiên quán và đang ở màn chọn nhân viên.
+- **Đầu vào:**
+
+| Trường | Kiểu | Ràng buộc |
+| --- | --- | --- |
+| Thao tác | Nút trên màn chọn nhân viên | “Gỡ ghép thiết bị này”, không yêu cầu PIN |
+
+- **Luồng chính:** bấm nút. Hệ thống thu hồi phiên quán hiện tại, xóa trạng thái phiên trên trình duyệt và về màn ghép.
+- **Luồng thay thế:** người dùng có thể ghép lại bằng Store Key hiện hành rồi chọn nhân viên và nhập PIN.
+- **Luồng ngoại lệ:** nếu phiên bản giao thức không tương thích, áp dụng xử lý `WRITE_PROTOCOL_UNSUPPORTED` hiện có.
+- **Đầu ra:**
+
+| Đầu ra | Kết quả |
+| --- | --- |
+| Máy được gỡ | Phiên cũ không được cấp JWT mới. Giao diện trở về màn ghép. |
+| Máy có phiên độc lập | Vẫn gia hạn được và thao tác theo quyền hiện có. |
+
+- **Tiêu chí chấp nhận:** TC-OWNER-112 kiểm độc lập tại server và UI. Các tab dùng chung một phiên có thể cùng bị gỡ.
+- **Truy vết:** REQ-SESSION-01.

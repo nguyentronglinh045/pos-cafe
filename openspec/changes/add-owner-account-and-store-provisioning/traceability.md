@@ -1,6 +1,6 @@
 # Ma trận truy vết
 
-Cập nhật 2026-11-11. Cả 111 test case chưa chạy. Bảng được lập từ cột Truy vết của `testplan.md` và dòng Truy vết của `usecases.md`.
+Cập nhật ngày 24/11/2026. Ma trận nối yêu cầu với use case và tiêu chí kiểm trong `testplan.md`. Trạng thái thực thi giai đoạn 1 nằm trong hồ sơ T06. Các tiêu chí T08 và ca gỡ ghép bổ sung ngày 24/11 chưa chạy.
 
 | Requirement | Use case | Test case |
 | --- | --- | --- |
@@ -12,8 +12,8 @@ Cập nhật 2026-11-11. Cả 111 test case chưa chạy. Bảng được lập 
 | REQ-OWNER-06 — F5 bỏ form, giữ mã tra sau Xác nhận | UC-OWNER-01, 02, 03, 04 | TC-OWNER-06, 28, 101, 104, 106, 109, 110 |
 | REQ-OWNER-07 — Quy tắc chung của mã xác nhận | UC-OWNER-01, 02, 09, 10, 11, 12, 13 | TC-OWNER-19, 20, 31, 32, 64, 75, 76, 80, 83, 84, 97, 99, 102, 06, 103, 107, 23, 108 |
 | REQ-OWNER-08 — Thao tác của chủ quán trong Cài đặt | UC-OWNER-09, 11, 12, 13 | TC-OWNER-77, 85, 86, 97 |
-| REQ-OWNER-09 — Quên Store Key | UC-OWNER-08 | TC-OWNER-49, 50, 51, 100 |
-| REQ-OWNER-10 — Cấp lại Store Key | UC-OWNER-09 | TC-OWNER-52, 53, 54, 55, 87 |
+| REQ-OWNER-09 — Quên Store Key | UC-OWNER-08, 09 | TC-OWNER-49, 50, 51, 87, 100 |
+| REQ-OWNER-10 — Cấp lại Store Key | UC-OWNER-08, 09 | TC-OWNER-52, 53, 54, 55, 87 |
 | REQ-OWNER-11 — Quên PIN chỉ dành cho chủ quán | UC-OWNER-10 | TC-OWNER-56, 57, 58, 59, 86, 97 |
 | REQ-OWNER-12 — Đổi email chủ | UC-OWNER-11 | TC-OWNER-60, 61, 62, 63, 64, 88, 99 |
 | REQ-OWNER-13 — Chuyển quyền sở hữu quán | UC-OWNER-12 | TC-OWNER-65, 66, 67, 68, 69, 84, 88, 89, 90, 97, 98, 99 |
@@ -26,20 +26,20 @@ Cập nhật 2026-11-11. Cả 111 test case chưa chạy. Bảng được lập 
 | REQ-STORE-04 — Giao Store Key cho chủ | UC-OWNER-02, 03, 04, 06 | TC-OWNER-02, 05, 10, 26, 36, 38, 44, 82, 101, 104, 106, 109, 110 |
 | REQ-STORE-05 — Bảo mật Store Key | UC-OWNER-02 | TC-OWNER-43, 110 |
 | REQ-STORE-06 — Dữ liệu mẫu tùy chọn, giao dịch và điều kiện mở POS | UC-OWNER-02, 07 | TC-OWNER-03, 09 |
-| REQ-SESSION-01 — Ba tầng danh tính tách bạch | UC-OWNER-02 | TC-OWNER-91, 104 |
+| REQ-SESSION-01 — Ba tầng danh tính tách bạch | UC-OWNER-02, 14 | TC-OWNER-91, 104, 112 |
 | REQ-SESSION-02 — Nhân viên vai trò chủ quán | UC-OWNER-10, 12 | TC-OWNER-59, 90, 92, 98 |
 | REQ-ISOLATION-01 — Cô lập ở tầng database | Không có use case; xem giải trình | TC-OWNER-93 |
 | REQ-ISOLATION-02 — Phạm vi của mô hình cô lập | UC-OWNER-05 | TC-OWNER-94 |
 | REQ-ISOLATION-03 — Khóa cửa hàng ở tầng database | Không có use case; xem giải trình | TC-OWNER-95, 111 |
 
-**Mỗi use case có test case:** UC-OWNER-01 (01, 06, 103, 104, 107, 04, 11, 12, 13, 14, 15, 16, 32, 34, 35, 37, 45, 80); UC-OWNER-02 (02, 110, 28, 103, 104, 108, 03, 10, 12, 17, 18, 19, 20, 21, 22, 23, 25, 27, 31, 37, 39, 40, 43, 45, 46, 78, 91); UC-OWNER-03 (05, 110, 101, 104, 106, 109, 10, 22, 26, 30, 34, 36, 38, 48, 82); UC-OWNER-04 (06, 110, 28, 101, 104, 106, 109); UC-OWNER-05 (07, 24, 33, 81, 94, 103, 105); UC-OWNER-06 (08, 110, 29, 30, 41, 42, 44, 46, 47, 105); UC-OWNER-07 (09); UC-OWNER-08 (49, 50, 51, 100); UC-OWNER-09 (52, 53, 54, 55, 75, 77, 83, 85, 86, 87, 97); UC-OWNER-10 (56, 57, 58, 59, 75, 86, 96, 97); UC-OWNER-11 (60, 61, 62, 63, 64, 77, 83, 85, 86, 88, 96, 97, 99); UC-OWNER-12 (65, 66, 67, 68, 69, 77, 79, 83, 84, 85, 86, 88, 89, 90, 96, 97, 98, 99); UC-OWNER-13 (70, 71, 72, 73, 74, 76, 77, 79, 83, 85, 86, 97, 102).
+**Mỗi use case có test case:** UC-OWNER-01 (01, 06, 103, 104, 107, 04, 11, 12, 13, 14, 15, 16, 32, 34, 35, 37, 45, 80); UC-OWNER-02 (02, 110, 28, 103, 104, 108, 03, 10, 12, 17, 18, 19, 20, 21, 22, 23, 25, 27, 31, 37, 39, 40, 43, 45, 46, 78, 91); UC-OWNER-03 (05, 110, 101, 104, 106, 109, 10, 22, 26, 30, 34, 36, 38, 48, 82); UC-OWNER-04 (06, 110, 28, 101, 104, 106, 109); UC-OWNER-05 (07, 24, 33, 81, 94, 103, 105); UC-OWNER-06 (08, 110, 29, 30, 41, 42, 44, 46, 47, 105); UC-OWNER-07 (09); UC-OWNER-08 (49, 50, 51, 87, 100); UC-OWNER-09 (52, 53, 54, 55, 75, 77, 83, 85, 86, 87, 97); UC-OWNER-10 (56, 57, 58, 59, 75, 86, 96, 97); UC-OWNER-11 (60, 61, 62, 63, 64, 77, 83, 85, 86, 88, 96, 97, 99); UC-OWNER-12 (65, 66, 67, 68, 69, 77, 79, 83, 84, 85, 86, 88, 89, 90, 96, 97, 98, 99); UC-OWNER-13 (70, 71, 72, 73, 74, 76, 77, 79, 83, 85, 86, 97, 102). UC-OWNER-14 (112).
 
 **Mỗi mã lỗi trong `design.md` có test case:** `A_EMAIL_INVALID` 11, 35; `A_REQUEST_INVALID` 12, 35, 57, 106; `A_REQUEST_ID_STALE` 13, 34, 109; `A_REQUEST_ID_REUSED` 14; `CREATE_INTENT_ID_REUSED` 15; `A_SEND_UNAVAILABLE` 16, 107; `A_OTP_FORMAT_INVALID` 17, 39, 78; `A_OTP_INVALID` 18, 20, 22, 39, 78, 108, 109; `A_OTP_EXPIRED` 19, 20, 31, 67, 108; `A_OTP_ATTEMPTS_EXCEEDED` 20, 22, 23, 108; `A_OTP_UNAVAILABLE` 21, 64, 83, 85, 99, 102; `A_ATTEMPT_ID_REUSED` 22, 45, 108, 109; `CREATE_INTENT_CONFLICT` 22, 23, 108; `OWNER_STORE_LIMIT_REACHED` 24, 33, 81; `RECIPIENT_STORE_LIMIT_REACHED` 66; `CREATE_VERIFY_UNAVAILABLE` 25, 74, 85, 87, 106, 109; `CONFIRM_REJECTED` 26, 109; `CREATE_PROOF_REQUIRED` 27, 39; `OWNER_ROLE_REQUIRED` 77; `STORE_NAME_MISMATCH` 53, 71; `NEW_EMAIL_UNAVAILABLE` 63; `TRANSFER_TARGET_INVALID` 68; `TRANSFER_EMPLOYEE_INVALID` 89, 98; `OWNER_PROOF_REQUIRED` 88; `STORE_SUSPENDED` 86, 95; `STORAGE_UNAVAILABLE` 28. Trạng thái `failed` 29, 48; `unknown` 30, 47, 87, 110. Mã có sẵn dùng lại: `PERMISSION_UPDATE_UNAVAILABLE` 09; `EMPLOYEE_SESSION_REQUIRED` 09, 74, 85, 96; `PIN_CHANGE_REQUIRED` 98; `OWNER_PROTECTED` 59, 92.
 
 | Chỉ số | Giá trị | Ngưỡng |
 | --- | --- | --- |
 | Số requirement chưa có test case | 0 / 27 | Phải bằng 0 |
-| Số use case chưa có test case | 0 / 13 | Phải bằng 0 |
+| Số use case chưa có test case | 0 / 14 | Phải bằng 0 |
 | Số requirement chưa có use case | 2 / 27 | Nên bằng 0 |
 
 Giải trình requirement không có use case: REQ-ISOLATION-01, REQ-ISOLATION-03 là ràng buộc kiến trúc, không phải thao tác của một người dùng; đã có test case.

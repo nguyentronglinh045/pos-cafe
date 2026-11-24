@@ -18,6 +18,11 @@ Một người có thể đồng thời là chủ cửa hàng và là nhân viê
 
 Mã truy vết: REQ-SESSION-01.
 
+#### Scenario: Gỡ ghép thiết bị trước khi nhập PIN
+
+- **WHEN** người dùng chọn “Gỡ ghép thiết bị này” từ màn chọn nhân viên
+- **THEN** hệ thống SHALL thu hồi riêng phiên Auth đang dùng và đưa máy về màn ghép ngay, không yêu cầu PIN. Các máy có phiên độc lập SHALL tiếp tục gia hạn và làm việc theo quyền hiện có. Store Key của quán giữ nguyên.
+
 #### Scenario: Chủ thao tác nghiệp vụ tại quán
 
 - **WHEN** chủ muốn xem báo cáo và sửa thực đơn

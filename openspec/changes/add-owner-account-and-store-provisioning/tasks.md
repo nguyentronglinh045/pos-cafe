@@ -182,7 +182,7 @@ Chạy các ca trong `testplan.md` thuộc giai đoạn 1 theo mục Cách chạ
 
 - [ ] 11.1 Hành động `forgotStoreKey`, không cần đăng nhập, không cần mã
 - [ ] 11.2 Luôn trả phản hồi chung chung, không tiết lộ email có tồn tại hay không
-- [ ] 11.3 Giới hạn 3 lần mỗi giờ tính theo email, cộng giới hạn theo địa chỉ mạng và trần toàn dự án; trả phản hồi trước rồi mới tra chủ và gửi thư; bỏ quán đang cấp lại key ra khỏi thư
+- [ ] 11.3 Giới hạn 3 lần mỗi giờ tính theo email, cộng giới hạn theo địa chỉ mạng và trần toàn dự án; trả phản hồi trước rồi mới tra chủ và gửi thư; bỏ quán ở `pending` ra khỏi thư; từ `applied` cho phép gửi key hiện tại
 - [ ] 11.4 Dựng email liệt kê dạng danh sách: tên cửa hàng, địa chỉ lấy từ `store_settings`, Store Key
 - [ ] 11.5 Thêm câu nhắc dùng chức năng cấp lại nếu nghi hộp thư đã bị lộ
 - [ ] 11.6 Một thành phần giao diện dùng chung, gắn ở hai lối vào: màn ghép thiết bị và mục Cài đặt
@@ -207,6 +207,10 @@ Chạy các ca trong `testplan.md` thuộc giai đoạn 1 theo mục Cách chạ
 - [ ] 12.8 Tạo bảng `store_key_rotations`, mỗi quán tối đa một bản ghi `pending`; trong lúc này chặn các thao tác khác của chủ. Bước làm dở: ghi bảng này, đổi mật khẩu, ghi bí mật, đối soát làm tiếp; thu hồi phiên tài khoản kỹ thuật, dừng trước bước này thì đối soát làm tiếp; lỗi lặp lại thì báo người vận hành
 - [ ] 12.9 Kiểm thử: TC-OWNER-52…55, 87
 - [ ] 12.10 Đối chiếu tài liệu Supabase về thu hồi phiên: đổi mật khẩu bằng API quản trị có chặn được việc làm mới token không, và đăng xuất theo tài khoản làm thế nào khi không có JWT của máy. Ghi hạn token thực tế của project. Nếu không chặn được thì người giữ key cũ không bị đẩy ra; phải báo chủ dự án
+
+## Gỡ ghép riêng một thiết bị
+
+- [ ] Áp dụng phạm vi phiên hiện tại cho thao tác gỡ ghép và cho nhánh dọn phiên vừa tạo khi thông tin quán không khớp. Kiểm hai máy theo TC-OWNER-112. Bản sửa độc lập với luồng đổi key.
 
 ## 13. Quên PIN của chủ quán
 

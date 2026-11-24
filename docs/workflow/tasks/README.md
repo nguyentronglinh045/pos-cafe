@@ -1,5 +1,6 @@
 # Chỉ mục công việc
 
+- [T08 — Đối chiếu hiệu lực phiên sau khi cấp lại Store Key, 24/11/2026](g01-g10-t08-session-review-2026-11-24.md)
 - [T06 — OTP tạo quán, cutover staging và review PR #24](g01-g10-t06-owner-implementation-2026-11-11.md)
 
 ## Kế hoạch G01–G10 — cập nhật 02/11/2026
