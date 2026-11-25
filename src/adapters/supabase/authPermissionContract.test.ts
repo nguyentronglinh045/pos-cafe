@@ -1,7 +1,42 @@
 import { describe, expect, it, vi } from "vitest";
 import { SupabaseAuthRepo } from "./authRepo";
+import { employeeCredential } from "./employeeCredential";
 import { SupabaseWriteOperationRepo } from "./writeOperationRepo";
 import type { SupabaseAnyClient } from "./repoShared";
+
+describe("current-device store logout", () => {
+  it("clears the employee credential and revokes only the current store session", async () => {
+    const signOut = vi.fn().mockResolvedValue({ error: null });
+    const client = { auth: { signOut } } as unknown as SupabaseAnyClient;
+    const credential = employeeCredential(client);
+    credential.token = "employee-session";
+
+    await new SupabaseAuthRepo(client).unpairStore();
+
+    expect(signOut).toHaveBeenCalledExactlyOnceWith({ scope: "local" });
+    expect(credential).toEqual({ token: null, generation: 1 });
+  });
+
+  it.each([
+    { name: "the store session is missing", storeSession: null },
+    { name: "the store number differs", storeSession: { storeId: "store", storeNo: 8 } },
+  ])("revokes only the newly paired session when $name", async ({ storeSession }) => {
+    const signOut = vi.fn().mockResolvedValue({ error: null });
+    const signInWithPassword = vi.fn().mockResolvedValue({ error: null });
+    const getSession = vi.fn().mockResolvedValue({ data: { session: { user: { id: "store" } } }, error: null });
+    const rpc = vi.fn().mockResolvedValueOnce({
+      data: { permissionContractVersion: 2, writeProtocolVersion: 1 }, error: null,
+    }).mockResolvedValueOnce({ data: { ok: true, data: storeSession }, error: null });
+    const client = { auth: { signOut, signInWithPassword, getSession }, rpc } as unknown as SupabaseAnyClient;
+
+    await expect(new SupabaseAuthRepo(client).pairStore("7-ABCDE")).rejects.toMatchObject({
+      code: "AUTH_REQUIRED", message: "Store Key không đúng.",
+    });
+
+    expect(signInWithPassword).toHaveBeenCalledTimes(1);
+    expect(signOut).toHaveBeenCalledExactlyOnceWith({ scope: "local" });
+  });
+});
 
 describe("candidate compatibility gate", () => {
   it("blocks incompatible paired backend before store reads", async () => {

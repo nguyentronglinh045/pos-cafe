@@ -28,14 +28,14 @@ export class SupabaseAuthRepo implements IAuthRepo {
     const session = await this.getStoreSession();
 
     if (!session || session.storeNo !== parsed.storeNo) {
-      await this.client.auth.signOut();
+      await this.client.auth.signOut({ scope: "local" });
       throw new AppError("AUTH_REQUIRED", "Store Key không đúng.");
     }
   }
 
   async unpairStore(): Promise<void> {
     clearEmployeeCredential(this.client);
-    const { error } = await this.client.auth.signOut();
+    const { error } = await this.client.auth.signOut({ scope: "local" });
     throwIfError(error, "AUTH_REQUIRED");
   }
 

@@ -25,15 +25,18 @@ function loadEnvFile(fileName: string) {
 loadEnvFile(".env");
 loadEnvFile(".env.local");
 
+const hostedUnpair = process.env.SMOKE_SUPABASE_HOSTED_UNPAIR === "1";
+
 export default defineConfig({
   testDir: "./tests/supabase",
+  grep: hostedUnpair ? /TC-OWNER-112/ : undefined,
   timeout: 90_000,
   fullyParallel: false,
   use: {
-    baseURL: "http://127.0.0.1:5174",
+    baseURL: hostedUnpair ? "https://pos-cafe-azure.vercel.app/" : "http://127.0.0.1:5174",
     trace: "on-first-retry",
   },
-  webServer: {
+  webServer: hostedUnpair ? undefined : {
     command: "npm run dev -- --host 127.0.0.1 --port 5174",
     url: "http://127.0.0.1:5174",
     reuseExistingServer: false,
