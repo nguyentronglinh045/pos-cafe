@@ -100,7 +100,34 @@ async function revokeStoreSession(device: Device, fixture: PairingFixture) {
     headers: { apikey: fixture.publicKey, authorization: "Bearer " + device.accessToken },
     maxRedirects: 0, timeout: 12_000,
   }).catch(() => { throw new Error("Could not log out the smoke test device."); });
+  if (logout.status() === 403) {
+    const { code, error_code: errorCode } = await logout.json();
+    if ((errorCode ?? code) === "session_not_found") return;
+  }
   expect(logout.status(), "Smoke device local logout").toBe(204);
+}
+
+async function lockOwner(device: Device, fixture: PairingFixture) {
+  const { page } = device;
+  const lock = page.getByTestId("nav-lock");
+  if (!await lock.isVisible()) return;
+  const closeReport = page.getByTestId("report-close-button");
+  if (await closeReport.isVisible()) await closeReport.click();
+  const [revoke] = await Promise.all([
+    page.waitForResponse(response => backendPost(response, fixture, "/rest/v1/rpc/permission_revoke_session"),
+      { timeout: 12_000 }),
+    lock.click(),
+  ]);
+  expect(revoke.status(), "B employee session cleanup").toBe(200);
+  expect((await revoke.json()).ok, "B employee session was revoked").toBe(true);
+}
+
+async function closeRegressionOwner(device: Device, fixture: PairingFixture) {
+  try {
+    await lockOwner(device, fixture);
+  } finally {
+    await revokeStoreSession(device, fixture);
+  }
 }
 
 async function voidRemainingOrders({ owner, orders }: Smoke) {
@@ -153,6 +180,7 @@ test("TC-OWNER-112 unpair before PIN revokes A and preserves B", async ({ page, 
   const a: Device = { page };
   const contextB = await browser.newContext({ baseURL });
   const b: Device = { page: await contextB.newPage() };
+  let verified = false;
 
   try {
     await b.page.clock.install();
@@ -169,7 +197,6 @@ test("TC-OWNER-112 unpair before PIN revokes A and preserves B", async ({ page, 
       a.page.getByText("← Đổi quán / Gỡ ghép", { exact: true }).click(),
     ]);
     expect(logoutA.status()).toBe(204);
-    a.accessToken = undefined;
     await expect(a.page.getByTestId("go-store-pairing")).toBeVisible();
 
     const refreshURL = fixture.origin + "/auth/v1/token?grant_type=refresh_token";
@@ -177,9 +204,13 @@ test("TC-OWNER-112 unpair before PIN revokes A and preserves B", async ({ page, 
       headers: { apikey: fixture.publicKey }, data: { refresh_token: oldA.refreshToken },
       maxRedirects: 0, timeout: 12_000,
     }).catch(() => { throw new Error("Could not check the old A session."); });
-    expect(deniedA.status(), "Auth rejects the old A session").toBe(400);
     const rejected = await deniedA.json();
+    if (typeof rejected.access_token === "string") a.accessToken = rejected.access_token;
+    expect(deniedA.status(), "Auth rejects the old A session").toBe(400);
+    expect(["refresh_token_not_found", "session_not_found"], "Auth reports the old A session is gone")
+      .toContain(rejected.error_code ?? rejected.code);
     expect(Boolean(rejected.access_token), "Auth did not issue a new A access token").toBe(false);
+    a.accessToken = undefined;
     expect(new URL(logoutA.url()).searchParams.get("scope")).toBe("local");
 
     // Advance only B's browser scheduler. Supabase still handles the refresh in real time.
@@ -208,9 +239,16 @@ test("TC-OWNER-112 unpair before PIN revokes A and preserves B", async ({ page, 
     await pairDevice(a, fixture);
     await a.page.getByTestId("passcode-screen").getByRole("button", { name: "Chủ quán", exact: true }).click();
     await expect(a.page.getByTestId("unlock-button")).toBeDisabled();
+    verified = true;
   } finally {
     try {
-      await Promise.all([revokeStoreSession(a, fixture), revokeStoreSession(b, fixture)]);
+      const cleanup = await Promise.allSettled([revokeStoreSession(a, fixture), closeRegressionOwner(b, fixture)]);
+      const failedDevices = cleanup.flatMap((result, index) => result.status === "rejected" ? [index === 0 ? "A" : "B"] : []);
+      if (failedDevices.length) {
+        const note = `Could not confirm cleanup for ${failedDevices.join(", ")}.`;
+        if (verified) throw new Error(note);
+        test.info().annotations.push({ type: "cleanup", description: note });
+      }
     } finally {
       await contextB.close();
     }
