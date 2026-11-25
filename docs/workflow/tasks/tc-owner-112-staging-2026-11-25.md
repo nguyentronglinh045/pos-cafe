@@ -1,6 +1,6 @@
 # TC-OWNER-112 · Gỡ ghép thiết bị trước PIN
 
-**Kết quả cuối ngày 25/11/2026.** Ca gỡ ghép đạt về hành vi trên Vercel staging ở `7014d3f`. Lượt kiểm lại mất 14,7 giây. Nhãn trên UI vẫn là “Đổi quán / Gỡ ghép”, khác nhãn “Gỡ ghép thiết bị này” trong đặc tả.
+**Kết quả cuối ngày 25/11/2026.** TC-OWNER-112 đạt trên Vercel staging ở `e362c1d` trong 17,5 giây. Nút trên màn chọn nhân viên hiển thị “Gỡ ghép thiết bị này”, đúng nhãn trong đặc tả.
 
 ## Kết quả trước bản sửa
 
@@ -72,3 +72,11 @@ Kết quả sau sửa áp dụng cho hành vi gỡ ghép trong TC-OWNER-112. Lư
 ### Lượt kiểm lại trực tiếp trên Vercel
 
 Ngày 25/11/2026, theo yêu cầu của Linh, chạy lại TC-OWNER-112 trên Vercel với hai context Chromium mới. Biên nhận phát hành, SHA-256 của bundle đang phục vụ và cây nguồn của bài test khớp `7014d3f`. Playwright trả **1 test đạt trong 14,7 giây**. A gỡ trước PIN, logout phạm vi local trả 204 và Auth từ chối gia hạn A cũ với HTTP 400. B gia hạn 200, đọc báo cáo 200 với quyền Chủ quán, rồi A ghép lại bằng key hiện hành và vẫn yêu cầu PIN. Đồng hồ thử chỉ tua phía B. Ca đạt gồm các bước dọn phiên của fixture.
+
+### Đồng bộ nhãn nút
+
+Ngày 25/11/2026, theo yêu cầu của Linh, đổi nhãn tại màn chọn nhân viên thành “Gỡ ghép thiết bị này” theo UC-OWNER-14 và cập nhật bốn vị trí tìm nút trong các bài kiểm. Build và 8 ca Vitest đạt. Audit màn chọn nhân viên trên ba viewport ghi 0 finding. TC-OWNER-112 đạt trong 16,6 giây với frontend local và Supabase staging. Subagent rà độc lập và duyệt đúng commit `55127a8`. PR #42 merge vào `main` tại `e362c1d` sau khi CI đạt. [PR #42](https://github.com/nguyentronglinh045/pos-cafe/pull/42).
+
+[CI của main](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45591281819) và [workflow phát hành Vercel](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45602302184) đạt. Biên nhận Vercel ghi `READY` cho deployment `dpl_CsGUkwvj4aK5CcHX2rA7FtkwRUi1`, source `e362c1dc6125a44f1fa46020b588d44ac3ebf2ae` và dữ liệu staging. Bundle live `/assets/index-CmLcPGqH.js` trả HTTP 200, SHA-256 `247fef598d283e3c425289e7489f689060b2e984aa4b2dca71590cd5ce079879`, có nhãn mới và thao tác gỡ dùng phạm vi `local`.
+
+Playwright chạy trực tiếp trên Vercel với hai context Chromium mới, tìm đúng nhãn mới bằng so khớp chính xác rồi bấm trước PIN. **TC-OWNER-112 đạt trong 17,5 giây**. Auth từ chối gia hạn phiên A cũ với HTTP 400. B gia hạn thành công và đọc báo cáo với HTTP 200. A ghép lại bằng Store Key hiện hành và vẫn yêu cầu PIN.
