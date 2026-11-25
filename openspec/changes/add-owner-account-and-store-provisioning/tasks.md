@@ -210,7 +210,9 @@ Chạy các ca trong `testplan.md` thuộc giai đoạn 1 theo mục Cách chạ
 
 ## Gỡ ghép riêng một thiết bị
 
-- [ ] Áp dụng phạm vi phiên hiện tại cho thao tác gỡ ghép và cho nhánh dọn phiên vừa tạo khi thông tin quán không khớp. Kiểm hai máy theo TC-OWNER-112. Bản sửa độc lập với luồng đổi key.
+- [x] Áp dụng phạm vi phiên hiện tại cho thao tác gỡ ghép và cho nhánh dọn phiên vừa tạo khi thông tin quán không khớp. Hai nhánh dọn đạt ở test adapter. Hành vi gỡ ghép trên hai phiên đạt theo TC-OWNER-112 trên Vercel staging ở `7014d3f`. [Biên bản kiểm thử](../../../docs/workflow/tasks/tc-owner-112-staging-2026-11-25.md).
+
+Nhãn UI hiện là “Đổi quán / Gỡ ghép”. Nhãn trong UC-OWNER-14 là “Gỡ ghép thiết bị này”.
 
 ## 13. Quên PIN của chủ quán
 

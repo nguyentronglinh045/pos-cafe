@@ -1,5 +1,6 @@
 # Chỉ mục công việc
 
+- [TC-OWNER-112 — Kiểm nút gỡ ghép trên staging, 25/11/2026](tc-owner-112-staging-2026-11-25.md)
 - [T08 — Đối chiếu hiệu lực phiên sau khi cấp lại Store Key, 24/11/2026](g01-g10-t08-session-review-2026-11-24.md)
 - [T06 — OTP tạo quán, cutover staging và review PR #24](g01-g10-t06-owner-implementation-2026-11-11.md)
 
