@@ -3,14 +3,15 @@ import type { BusinessResult, EmployeeAdminUpdateRequest, OperationView, OrderSn
 import { installPermissionTimingProbe } from "../../scripts/permission-realtime-probe.mjs";
 import { cashierUpdateConfirmed, restoreCashierOverrides } from "./restoreCashierOverrides";
 
-type Fixture = { origin: string; publicKey: string; storeKey: string; storeNo: number; ownerPin: string; cashierPin: string };
+type PairingFixture = { origin: string; publicKey: string; storeKey: string; storeNo: number; ownerPin: string };
+type Fixture = PairingFixture & { cashierPin: string };
 type Device = { page: Page; accessToken?: string; storeId?: string };
 type Smoke = { owner: Device; fixture: Fixture; orders: Set<string> };
 type StoreSignalProbe = { ready: { store: boolean }; signals: Array<{ table: string }> };
 
-function testFixture(): Fixture {
+function pairingFixture(): PairingFixture {
   const { VITE_DATA_MODE, VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY, SMOKE_SUPABASE_STORE_KEY,
-    SMOKE_SUPABASE_OWNER_PIN, SMOKE_SUPABASE_CASHIER_PIN } = process.env;
+    SMOKE_SUPABASE_OWNER_PIN } = process.env;
   if (VITE_DATA_MODE !== "supabase" || !VITE_SUPABASE_URL || !VITE_SUPABASE_ANON_KEY) {
     throw new Error("Set VITE_DATA_MODE=supabase and explicitly configure the Supabase URL and publishable key for the test project.");
   }
@@ -19,14 +20,22 @@ function testFixture(): Fixture {
   if (!Number.isInteger(storeNo) || storeNo < 1 || storeNo > 2147483647) {
     throw new Error("Set SMOKE_SUPABASE_STORE_KEY to the provisioned test store's Store Key.");
   }
-  if (!/^\d{6}$/.test(SMOKE_SUPABASE_OWNER_PIN ?? "") || !/^\d{6}$/.test(SMOKE_SUPABASE_CASHIER_PIN ?? "")) {
-    throw new Error("Set SMOKE_SUPABASE_OWNER_PIN and SMOKE_SUPABASE_CASHIER_PIN for the provisioned test store.");
+  if (!/^\d{6}$/.test(SMOKE_SUPABASE_OWNER_PIN ?? "")) {
+    throw new Error("Set SMOKE_SUPABASE_OWNER_PIN for the provisioned test store.");
   }
   return { origin: new URL(VITE_SUPABASE_URL).origin, publicKey: VITE_SUPABASE_ANON_KEY, storeKey, storeNo,
-    ownerPin: SMOKE_SUPABASE_OWNER_PIN!, cashierPin: SMOKE_SUPABASE_CASHIER_PIN! };
+    ownerPin: SMOKE_SUPABASE_OWNER_PIN! };
 }
 
-function backendPost(response: Response, fixture: Fixture, path: string) {
+function testFixture(): Fixture {
+  const cashierPin = process.env.SMOKE_SUPABASE_CASHIER_PIN;
+  if (!cashierPin || !/^\d{6}$/.test(cashierPin)) {
+    throw new Error("Set SMOKE_SUPABASE_CASHIER_PIN for the provisioned test store.");
+  }
+  return { ...pairingFixture(), cashierPin };
+}
+
+function backendPost(response: Response, fixture: PairingFixture, path: string) {
   const url = new URL(response.url());
   return url.origin === fixture.origin && url.pathname === path && response.request().method() === "POST";
 }
@@ -47,7 +56,7 @@ async function unlock(page: Page, role: "owner" | "cashier", pin: string, employ
   await expect(page.getByTestId("floor-view")).toBeVisible();
 }
 
-async function pairDevice(device: Device, fixture: Fixture) {
+async function pairDevice(device: Device, fixture: PairingFixture) {
   const { page } = device;
   await page.goto("/");
   await page.getByTestId("go-store-pairing").click();
@@ -65,6 +74,7 @@ async function pairDevice(device: Device, fixture: Fixture) {
     if (!device.accessToken || !device.storeId) throw new Error("Supabase Auth did not return a fixture session.");
     const label = "Cửa hàng #" + String(fixture.storeNo).padStart(4, "0");
     await expect(page.getByTestId("passcode-screen").getByText(label, { exact: true })).toBeVisible();
+    return { refreshToken: auth.refresh_token as string, expiresAt: auth.expires_at as number };
   } finally {
     // A rejected pairing can leave the key visible in Playwright's error context.
     const input = page.getByTestId("store-key-input");
@@ -74,18 +84,49 @@ async function pairDevice(device: Device, fixture: Fixture) {
 
 async function closeDevice(device: Device, fixture: Fixture) {
   if (!device.accessToken) return;
-  // Unpair in the app uses Auth's global sign-out. Revoke only this test's sessions.
   try {
     await device.page.evaluate(async () => {
       const { createAppPortsFromViteEnv } = await import("/src/app/runtimePorts.ts");
       await createAppPortsFromViteEnv().permission?.session.revokeSession();
     });
   } finally {
-    const logout = await device.page.request.post(fixture.origin + "/auth/v1/logout?scope=local", {
-      headers: { apikey: fixture.publicKey, authorization: "Bearer " + device.accessToken },
-      maxRedirects: 0, timeout: 12_000,
-    }).catch(() => { throw new Error("Could not log out the smoke test device."); });
-    expect(logout.status(), "Smoke device local logout").toBe(204);
+    await revokeStoreSession(device, fixture);
+  }
+}
+
+async function revokeStoreSession(device: Device, fixture: PairingFixture) {
+  if (!device.accessToken) return;
+  const logout = await device.page.request.post(fixture.origin + "/auth/v1/logout?scope=local", {
+    headers: { apikey: fixture.publicKey, authorization: "Bearer " + device.accessToken },
+    maxRedirects: 0, timeout: 12_000,
+  }).catch(() => { throw new Error("Could not log out the smoke test device."); });
+  if (logout.status() === 403) {
+    const { code, error_code: errorCode } = await logout.json();
+    if ((errorCode ?? code) === "session_not_found") return;
+  }
+  expect(logout.status(), "Smoke device local logout").toBe(204);
+}
+
+async function lockOwner(device: Device, fixture: PairingFixture) {
+  const { page } = device;
+  const lock = page.getByTestId("nav-lock");
+  if (!await lock.isVisible()) return;
+  const closeReport = page.getByTestId("report-close-button");
+  if (await closeReport.isVisible()) await closeReport.click();
+  const [revoke] = await Promise.all([
+    page.waitForResponse(response => backendPost(response, fixture, "/rest/v1/rpc/permission_revoke_session"),
+      { timeout: 12_000 }),
+    lock.click(),
+  ]);
+  expect(revoke.status(), "B employee session cleanup").toBe(200);
+  expect((await revoke.json()).ok, "B employee session was revoked").toBe(true);
+}
+
+async function closeRegressionOwner(device: Device, fixture: PairingFixture) {
+  try {
+    await lockOwner(device, fixture);
+  } finally {
+    await revokeStoreSession(device, fixture);
   }
 }
 
@@ -133,6 +174,86 @@ const test = base.extend<{ smoke: Smoke }>({
 });
 
 test.use({ trace: "off", screenshot: "off", video: "off" });
+
+test("TC-OWNER-112 unpair before PIN revokes A and preserves B", async ({ page, browser, baseURL }) => {
+  const fixture = pairingFixture();
+  const a: Device = { page };
+  const contextB = await browser.newContext({ baseURL });
+  const b: Device = { page: await contextB.newPage() };
+  let verified = false;
+
+  try {
+    await b.page.clock.install();
+    const oldA = await pairDevice(a, fixture);
+    const sessionB = await pairDevice(b, fixture);
+    await unlock(b.page, "owner", fixture.ownerPin);
+    await expect(a.page.getByTestId("unlock-button")).toBeDisabled();
+    expect(a.storeId).toBe(b.storeId);
+    expect(Boolean(oldA.refreshToken && sessionB.refreshToken && oldA.refreshToken !== sessionB.refreshToken),
+      "Both devices have separate Auth sessions").toBe(true);
+
+    const [logoutA] = await Promise.all([
+      a.page.waitForResponse(response => backendPost(response, fixture, "/auth/v1/logout"), { timeout: 12_000 }),
+      a.page.getByText("← Đổi quán / Gỡ ghép", { exact: true }).click(),
+    ]);
+    expect(logoutA.status()).toBe(204);
+    await expect(a.page.getByTestId("go-store-pairing")).toBeVisible();
+
+    const refreshURL = fixture.origin + "/auth/v1/token?grant_type=refresh_token";
+    const deniedA = await a.page.request.post(refreshURL, {
+      headers: { apikey: fixture.publicKey }, data: { refresh_token: oldA.refreshToken },
+      maxRedirects: 0, timeout: 12_000,
+    }).catch(() => { throw new Error("Could not check the old A session."); });
+    const rejected = await deniedA.json();
+    if (typeof rejected.access_token === "string") a.accessToken = rejected.access_token;
+    expect(deniedA.status(), "Auth rejects the old A session").toBe(400);
+    expect(["refresh_token_not_found", "session_not_found"], "Auth reports the old A session is gone")
+      .toContain(rejected.error_code ?? rejected.code);
+    expect(Boolean(rejected.access_token), "Auth did not issue a new A access token").toBe(false);
+    a.accessToken = undefined;
+    expect(new URL(logoutA.url()).searchParams.get("scope")).toBe("local");
+
+    // Advance only B's browser scheduler. Supabase still handles the refresh in real time.
+    expect(Number.isFinite(sessionB.expiresAt), "B received an expiry from Auth").toBe(true);
+    await b.page.bringToFront();
+    const [refreshB] = await Promise.all([
+      b.page.waitForResponse(response => response.url() === refreshURL
+        && backendPost(response, fixture, "/auth/v1/token"), { timeout: 12_000 }),
+      b.page.clock.fastForward(Math.max(30_000, sessionB.expiresAt * 1000 - Date.now() - 60_000)),
+    ]);
+    expect(refreshB.status(), "Auth renews B's own session").toBe(200);
+    const renewedB = await refreshB.json();
+    expect(Boolean(renewedB.access_token && renewedB.refresh_token
+      && renewedB.refresh_token !== sessionB.refreshToken), "Auth issued a renewed B session").toBe(true);
+    b.accessToken = renewedB.access_token;
+
+    const [reportB] = await Promise.all([
+      b.page.waitForResponse(response => backendPost(response, fixture, "/rest/v1/rpc/permission_get_sales_report"),
+        { timeout: 12_000 }),
+      b.page.getByRole("button", { name: "Báo cáo", exact: true }).click(),
+    ]);
+    expect(reportB.status(), "B can read reports after refresh").toBe(200);
+    expect((await reportB.json()).ok, "B retained report permissions").toBe(true);
+    await expect(b.page.getByTestId("report-summary")).toBeVisible();
+
+    await pairDevice(a, fixture);
+    await a.page.getByTestId("passcode-screen").getByRole("button", { name: "Chủ quán", exact: true }).click();
+    await expect(a.page.getByTestId("unlock-button")).toBeDisabled();
+    verified = true;
+  } finally {
+    try {
+      const cleanup = await Promise.allSettled([revokeStoreSession(a, fixture), closeRegressionOwner(b, fixture)]);
+      const failedDevices = cleanup.flatMap((result, index) => result.status === "rejected" ? [index === 0 ? "A" : "B"] : []);
+      if (failedDevices.length) {
+        const note = `Could not confirm cleanup for ${failedDevices.join(", ")}.`;
+        if (verified) throw new Error(note);
+        test.info().annotations.push({ type: "cleanup", description: note });
+      }
+    } finally {
+      await contextB.close();
+    }
+  }
+});
 
 async function withSecondDevice(browser: Browser, baseURL: string | undefined, smoke: Smoke, run: (device: Device) => Promise<void>) {
   const context = await browser.newContext({ baseURL });
