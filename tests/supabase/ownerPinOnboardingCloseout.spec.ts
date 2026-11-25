@@ -2283,7 +2283,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
       expect(savedKey.split("-")[0]).toBe(String(storeNo).padStart(4, "0"));
       await page.getByTestId("acknowledge-store-key").click();
       await expect(page.getByTestId("passcode-screen")).toBeVisible();
-      await page.getByText("← Đổi quán / Gỡ ghép", { exact: true }).click();
+      await page.getByText("Gỡ ghép thiết bị này", { exact: true }).click();
       await expect(page.getByTestId("landing-screen")).toBeVisible();
       await page.getByTestId("go-store-pairing").click();
       await page.getByTestId("store-key-input").fill(savedKey);
@@ -2767,7 +2767,7 @@ test.describe.serial("owner PIN onboarding on an isolated candidate fixture", ()
     expect(capture.counts.reserve).toBe(1);
     expect(capture.counts.signup).toBe(1);
     expect(capture.counts.bootstrap).toBe(1);
-    await page.getByText("← Đổi quán / Gỡ ghép", { exact: true }).click();
+    await page.getByText("Gỡ ghép thiết bị này", { exact: true }).click();
     await expect(page.getByTestId("landing-screen")).toBeVisible();
     await page.getByTestId("go-store-pairing").click();
     await page.getByTestId("store-key-input").fill(savedKey);

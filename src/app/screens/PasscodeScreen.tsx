@@ -125,7 +125,7 @@ export function PasscodeScreen() {
           className="inline-flex h-[clamp(30px,2.4vw,44px)] w-fit shrink-0 cursor-pointer items-center rounded-full bg-white px-[clamp(14px,1vw,22px)] text-[clamp(12px,0.9vw,16px)] font-bold text-[#475569]"
           onClick={unpair}
         >
-          ← Đổi quán / Gỡ ghép
+          Gỡ ghép thiết bị này
         </span>
       </header>
 

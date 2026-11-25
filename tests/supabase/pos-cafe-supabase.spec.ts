@@ -194,7 +194,7 @@ test("TC-OWNER-112 unpair before PIN revokes A and preserves B", async ({ page, 
 
     const [logoutA] = await Promise.all([
       a.page.waitForResponse(response => backendPost(response, fixture, "/auth/v1/logout"), { timeout: 12_000 }),
-      a.page.getByText("← Đổi quán / Gỡ ghép", { exact: true }).click(),
+      a.page.getByText("Gỡ ghép thiết bị này", { exact: true }).click(),
     ]);
     expect(logoutA.status()).toBe(204);
     await expect(a.page.getByTestId("go-store-pairing")).toBeVisible();
