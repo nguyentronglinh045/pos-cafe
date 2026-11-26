@@ -4,7 +4,6 @@ import { loginAsAdmin } from "./helpers";
 const confirmation = "Nếu email này đứng tên quán, thư chứa Store Key đã được gửi.";
 
 test("public pairing and settings use the same email-only recovery dialog", async ({ page }, info) => {
-  test.skip(info.project.name === "portrait", "Settings require landscape");
   await page.goto("/?owner-recovery-mock=1");
   await page.getByTestId("go-store-pairing").click();
   await page.getByTestId("pairing-forgot-key").click();
@@ -27,6 +26,10 @@ test("public pairing and settings use the same email-only recovery dialog", asyn
   await expect(page.getByTestId("store-pairing-screen")).toBeVisible();
 
   await page.getByRole("button", { name: "Quay lại" }).click();
+  const viewport = page.viewportSize();
+  if (info.project.name === "portrait" && viewport) {
+    await page.setViewportSize({ width: viewport.height, height: viewport.width });
+  }
   await loginAsAdmin(page);
   await page.getByTestId("nav-settings").click();
   await page.getByTestId("settings-forgot-key").click();

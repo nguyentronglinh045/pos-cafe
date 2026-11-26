@@ -2,9 +2,17 @@ import { expect, test } from "@playwright/test";
 import { loginAsAdmin } from "./helpers";
 
 test("owner rotates Store Key and re-pairs the current machine before entering PIN again", async ({ page }, info) => {
-  test.skip(info.project.name === "portrait", "POS settings require landscape");
   await page.goto("/?owner-recovery-mock=1");
+  const viewport = page.viewportSize();
+  const landscape = viewport && { width: viewport.height, height: viewport.width };
+  if (info.project.name === "portrait" && landscape) await page.setViewportSize(landscape);
   await loginAsAdmin(page);
+  if (info.project.name === "portrait" && viewport && landscape) {
+    await page.setViewportSize(viewport);
+    await expect(page.getByTestId("rotate-guidance")).toBeVisible();
+    await page.setViewportSize(landscape);
+    await expect(page.getByTestId("floor-view")).toBeVisible();
+  }
   await page.getByTestId("nav-settings").click();
   await page.getByTestId("settings-section-rotation").click();
   const send = page.getByTestId("rotation-send-otp");
