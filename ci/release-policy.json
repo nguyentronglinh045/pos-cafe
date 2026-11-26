@@ -51,7 +51,7 @@
     "tests/permissions/runtime/edge-resolution/deno.json": "eca3984001a907fb17773aa60e4ce77efb2033c255e3f5462963f3b87b894113",
     "tests/permissions/runtime/edge-resolution/deno.lock": "6f9fc5dd3b6e81d9468c712bfbf3fc423e6ea28d49e8fe44915abca50740ab41",
     "scripts/permission-full-target-policy.test.mjs": "7959851246f240ef792704f68cac6339860ab90d667808437f221d389621ca58",
-    "scripts/project-preview.README.md": "c96991827af74df1a65f33e0859da6941f487d714b02c59a68a274a8500c500d",
+    "scripts/project-preview.README.md": "b2e60e90b6404ee5eaf016660e051e91787772a6cd3734a711174512b50daf84",
     "scripts/permission-runtime-candidate-diagnostic.mjs": "36e488f19e4e5e27656339a1d8e9bf8d904febc0ac8c36e7d6076435e0615f67",
     "scripts/permission-runtime-service-worker.mjs": "e377f42893ada170fe6e4152f943c77a09e95ee431570191cb5f74bc735ac426",
     "scripts/permission-runtime-diagnostic-selftest.mjs": "8c8c8e283bfb1d187ab4aea2da4cb731899d90280d12c78b306789c1d827c5b2",
