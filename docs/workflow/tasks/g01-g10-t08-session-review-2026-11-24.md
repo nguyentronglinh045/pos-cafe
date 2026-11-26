@@ -272,3 +272,16 @@ Tạm dừng Quên Store Key lúc 19:05:57 UTC+7. Hậu kiểm trước SQL vẫ
 Linh chốt phần sửa và phát hành TC-OWNER-100(c) theo kết quả PR #48 và Protected Preview `0aa9345`. Linh giữ tiêu chí hiện tại và để 11.7g mở. Các ca hosted còn thiếu được ghi là **giới hạn kiểm chứng** và giữ trạng thái **Chưa chạy**. Phạm vi còn lại gồm TC-OWNER-100(a), (b), (d) ở ngưỡng hạn mức IP hoặc dự án và TC-OWNER-100(c) với SMTP chậm và so sánh độ trễ phản hồi. Chạy các ca này khi có môi trường hosted độc lập.
 
 Reviewer AI độc lập trả `APPROVE` cho cập nhật docs `54f3835032137d69e887bc6a7008b9e37e2f7825ec7ec490d65255fef65ea5d7` trước khi thêm dòng này. Rà chỉ đọc, đối chiếu quyết định, checklist, tiêu chí TC-OWNER-100 và các liên kết. OpenSpec strict và kiểm bản vá đạt.
+
+<a id="chot-nghiem-thu-117g-20261126"></a>
+
+#### Quyết định nghiệm thu 11.7g ngày 26/11/2026
+
+Linh duyệt chốt 11.7g theo bộ bằng chứng hiện có. Quyết định cập nhật phạm vi bằng chứng cần để đóng mục. Tiêu chí sản phẩm, code và hạn mức hiện hành giữ nguyên. Lượt này chỉ cập nhật tài liệu.
+
+- **PostgreSQL cô lập với SMTP giả.** Bản sửa đã qua ba lượt kiểm, mỗi lượt đạt 14/14 mục. Bằng chứng gồm các ca TC-OWNER-100(a), (b), (d) ở ngưỡng hạn mức, ca đồng thời của 100(c) và phép đo 240 cặp HTTP khi SMTP giả đang chờ. [Kết quả kiểm lại bản sửa](#tc-owner-100c-receipt-20261126)
+- **Protected Preview `0aa9345`.** Thông báo chung xuất hiện khi trình duyệt còn giữ bước xác nhận. Worker chạy và tạo 0 thư trong lúc đó. Sau xác nhận có một thư cho hộp thư thử. Alias nhận cùng thông báo và có 0 thư. [Bằng chứng Protected Preview](#tc-owner-100c-hosted-20261126)
+
+**Giới hạn kiểm chứng trên hosted.** TC-OWNER-100(a), (b), (d) tại ngưỡng hạn mức IP hoặc dự án có trạng thái **Chưa chạy** trên hosted. Phần SMTP chậm và so độ trễ phản hồi của TC-OWNER-100(c) cũng **Chưa chạy** trên hosted. Kết quả độ trễ trong bộ bằng chứng nghiệm thu thuộc phép đo local.
+
+Hai reviewer AI độc lập trả `APPROVE` cho Git tree `95b50fb28f6ee720adab3b3c3e8f86df6c928bcc` trước khi thêm dòng này. Phạm vi rà gồm hợp đồng nghiệm thu, bằng chứng theo phiên bản, trạng thái các ca hosted và nội dung công bố. OpenSpec strict và kiểm bản vá đạt.
