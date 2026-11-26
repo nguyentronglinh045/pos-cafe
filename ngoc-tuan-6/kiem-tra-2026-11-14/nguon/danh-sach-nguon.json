@@ -1,0 +1,50 @@
+﻿[
+    {
+        "id":  "A08",
+        "url":  "https://raw.githubusercontent.com/nguyentronglinh045/pos-cafe/e8a1810f3de41453ad33b224334c26d6f8cd52db/docs/workflow/tasks/team-week05-answers-2026-11-08.md",
+        "file":  "nguon/A08.md",
+        "downloadedAt":  "2026-11-14T07:52:34.3628325+07:00",
+        "sha256":  "16075d7b9f7860b47ee433e667e113b0a8f54600a6ab2be4ab52f3817813efc5",
+        "readBy":  "Codex"
+    },
+    {
+        "id":  "FO",
+        "url":  "https://raw.githubusercontent.com/nguyentronglinh045/pos-cafe/e8a1810f3de41453ad33b224334c26d6f8cd52db/openspec/specs/floor-operations/spec.md",
+        "file":  "nguon/FO.md",
+        "downloadedAt":  "2026-11-14T07:52:34.7328093+07:00",
+        "sha256":  "540573c3790c9b108e9fb61496f76d55b714b9610ee2d8c0aa8349c1d4b0e6cc",
+        "readBy":  "Codex"
+    },
+    {
+        "id":  "OM",
+        "url":  "https://raw.githubusercontent.com/nguyentronglinh045/pos-cafe/e8a1810f3de41453ad33b224334c26d6f8cd52db/openspec/specs/order-management/spec.md",
+        "file":  "nguon/OM.md",
+        "downloadedAt":  "2026-11-14T07:52:35.1493513+07:00",
+        "sha256":  "c618df3b254845a91682dfcc1acdbe0581d7faa3108e1a6e526bf1e35f7a9106",
+        "readBy":  "Codex"
+    },
+    {
+        "id":  "B01",
+        "url":  "https://raw.githubusercontent.com/nguyentronglinh045/pos-cafe/e8a1810f3de41453ad33b224334c26d6f8cd52db/openspec/changes/remake-b01/specs/floor-workspace/spec.md",
+        "file":  "nguon/B01.md",
+        "downloadedAt":  "2026-11-14T07:52:35.5461985+07:00",
+        "sha256":  "0d1910ead07759c763ff58f6f6972f28a4bf91e7f9e9907522439a7f797fa57d",
+        "readBy":  "Codex"
+    },
+    {
+        "id":  "B02",
+        "url":  "https://raw.githubusercontent.com/nguyentronglinh045/pos-cafe/e8a1810f3de41453ad33b224334c26d6f8cd52db/openspec/changes/remake-b02/specs/order-workspace/spec.md",
+        "file":  "nguon/B02.md",
+        "downloadedAt":  "2026-11-14T07:52:35.9276193+07:00",
+        "sha256":  "8e584bc727230663894dfe9b5d7f7e6898bc8b5df840e740fc7bab58980dd569",
+        "readBy":  "Codex"
+    },
+    {
+        "id":  "R0x",
+        "url":  "https://raw.githubusercontent.com/nguyentronglinh045/pos-cafe/e8a1810f3de41453ad33b224334c26d6f8cd52db/openspec/changes/remake-b03/specs/payment-ui/spec.md",
+        "file":  "nguon/R0x.md",
+        "downloadedAt":  "2026-11-14T07:52:36.3279784+07:00",
+        "sha256":  "81465f1c766fe1cf7c8e1e3f9a4bef3cc8af753710117fabea53d1c444f8479a",
+        "readBy":  "Codex"
+    }
+]

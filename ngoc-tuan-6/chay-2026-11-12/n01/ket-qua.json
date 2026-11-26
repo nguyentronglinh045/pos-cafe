@@ -1,0 +1,721 @@
+{
+  "source": "main cd35439 (src giống hệt, đã so mã băm)",
+  "viewport": {
+    "width": 1366,
+    "height": 768
+  },
+  "finishedAt": "2026-11-12T02:08:18.662Z",
+  "results": [
+    {
+      "caseId": "N01-01",
+      "title": "Sơ đồ bàn",
+      "start": "09:06:45",
+      "end": "09:06:52",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Màn đầu tiên là Sơ đồ bàn",
+          "source": "S02/PERM-03",
+          "observed": "Đăng nhập Thu ngân; Sơ đồ bàn hiện, 0 màn mở đè.",
+          "status": "ĐÚNG",
+          "shot": "N01-01/B1.png",
+          "time": "09:06:45"
+        },
+        {
+          "id": "B2",
+          "expected": "Sơ đồ hiện bàn và vật trang trí của khu",
+          "source": "floor-operations: Chuyển khu",
+          "observed": "Tầng trệt: 8 bàn, 7 vật trang trí.",
+          "status": "ĐÚNG",
+          "shot": "N01-01/B2.png",
+          "time": "09:06:49"
+        },
+        {
+          "id": "B3",
+          "expected": "Bàn 1 trống; Bàn 2 đang phục vụ, ô bàn ghi tên bàn và tổng tiền 125.000đ; số đơn #24 xem ở danh sách Đơn đang mở",
+          "source": "floor-operations (sửa theo Q-N01-5, 08/11)",
+          "observed": "B01 \"empty\". B02 \"occupied\", chữ trên ô \"B02125K\", tổng 125000đ. Đơn đang mở của B02: \"B02#24Đang phục vụ125.000đMở đơn hàng →\".",
+          "status": "ĐÚNG",
+          "shot": "N01-01/B3.png",
+          "time": "09:06:50"
+        },
+        {
+          "id": "B4",
+          "expected": "Chọn bộ lọc 'Đang phục vụ': bàn khớp sáng lên, bàn không khớp vẫn hiện đúng chỗ",
+          "source": "floor-operations: Lọc theo trạng thái; Q-N01-8, CX-01",
+          "observed": "Trước lọc 8 bàn; sau lọc còn 4 bàn trên sơ đồ: B02/occupied, B03/occupied, B05/occupied, B08/occupied. Bàn không khớp bị ẩn.",
+          "status": "LỆCH — chờ CX-01",
+          "shot": "N01-01/B4.png",
+          "time": "09:06:50"
+        },
+        {
+          "id": "B5",
+          "expected": "Bấm vật trang trí: không mở đơn nào",
+          "source": "floor-operations: Bấm vào vật trang trí",
+          "observed": "Không có màn đơn nào mở.",
+          "status": "ĐÚNG",
+          "shot": "N01-01/B5.png",
+          "time": "09:06:50"
+        },
+        {
+          "id": "B6",
+          "expected": "Bấm Bàn 1: mở màn tạo đơn mới cho Bàn 1",
+          "source": "floor-operations: Mở đơn tại bàn trống",
+          "observed": "Đầu màn: \"Gọi món — Bàn B01Tầng trệt · Tại bànĐơn mới · Chưa gửiĐóngIn/Gửi đơn\".",
+          "status": "ĐÚNG",
+          "shot": "N01-01/B6.png",
+          "time": "09:06:51"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "N01-02",
+      "title": "Gọi món — nhóm bắt buộc",
+      "start": "09:06:52",
+      "end": "09:07:04",
+      "steps": [
+        {
+          "id": "CB",
+          "expected": "Chuẩn bị dữ liệu: nhóm Size của Cà phê sữa là bắt buộc",
+          "source": "điều kiện chạy (r03)",
+          "observed": "Chủ quán đổi nhóm \"Size\" thành \"Bắt buộc chọn\" (đã đổi), lưu, thoát; đăng nhập lại Thu ngân.",
+          "status": "ĐÃ CHUẨN BỊ",
+          "shot": "N01-02/CB.png",
+          "time": "09:06:52"
+        },
+        {
+          "id": "B1",
+          "expected": "Mở đơn 24 của Bàn 2, tổng 125.000đ",
+          "source": "S02/B02-01",
+          "observed": "Đầu màn \"Gọi món — Bàn B02Tầng trệt · Tại bànĐơn #24 · Đã gửiĐóngHủy đơn mởThan\"; tổng 125000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-02/B1.png",
+          "time": "09:07:02"
+        },
+        {
+          "id": "B2",
+          "expected": "Americano vào giỏ ngay, không mở hộp thoại; tổng 160.000đ",
+          "source": "B02-01, B02-03",
+          "observed": "Hộp thoại không mở; giỏ 3 → 4 dòng; tổng 160000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-02/B2.png",
+          "time": "09:07:03"
+        },
+        {
+          "id": "B3",
+          "expected": "Bấm Cà phê sữa, chưa chọn: hộp thoại mở, nút thêm bị khóa",
+          "source": "B02-03",
+          "observed": "Hộp thoại mở; nút \"Thêm vào đơn\" bị khóa.",
+          "status": "ĐÚNG",
+          "shot": "N01-02/B3.png",
+          "time": "09:07:03"
+        },
+        {
+          "id": "B4",
+          "expected": "Hủy (đóng) hộp thoại: giỏ không đổi so với sau B2",
+          "source": "B02-03 (Q-N01-6: dùng remake-b02)",
+          "observed": "Dùng nút đóng (X, tên \"Đóng\"). Hộp đã đóng; giỏ 4 dòng (sau B2: 4), tổng 160000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-02/B4.png",
+          "time": "09:07:03"
+        },
+        {
+          "id": "B5",
+          "expected": "Chọn giá trị hợp lệ: nút thêm mở khóa; dòng Cà phê sữa vào giỏ, hiện tùy chọn",
+          "source": "S03, B02-03",
+          "observed": "Nút thêm mở khóa; dòng cuối giỏ \"Cà phê sữa29.000 ₫Phần gọi thêm29.000 ₫ / mónSize M−1+Ghi ch\".",
+          "status": "ĐÚNG",
+          "shot": "N01-02/B5.png",
+          "time": "09:07:04"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "N01-03",
+      "title": "Gọi món — đóng khi còn nháp",
+      "start": "09:07:05",
+      "end": "09:07:11",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Mở đơn 24 của Bàn 2",
+          "source": "S02",
+          "observed": "Tổng 125000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-03/B1.png",
+          "time": "09:07:09"
+        },
+        {
+          "id": "B2",
+          "expected": "Thêm Americano: tổng nháp 160.000đ",
+          "source": "B02-01",
+          "observed": "Tổng 160000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-03/B2.png",
+          "time": "09:07:09"
+        },
+        {
+          "id": "B3",
+          "expected": "Bấm đóng: hiện hộp 'Bỏ đơn chưa gửi?'",
+          "source": "B02-07",
+          "observed": "Hộp hiện \"Bỏ đơn chưa gửi?\"; nút: \"Tiếp tục chỉnh sửa\", \"Bỏ đơn\".",
+          "status": "ĐÚNG",
+          "shot": "N01-03/B3.png",
+          "time": "09:07:10"
+        },
+        {
+          "id": "B4",
+          "expected": "'Tiếp tục chỉnh sửa': vẫn ở màn đơn, nháp giữ 160.000đ",
+          "source": "B02-07",
+          "observed": "Màn đơn vẫn mở; tổng 160000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-03/B4.png",
+          "time": "09:07:10"
+        },
+        {
+          "id": "B5",
+          "expected": "Đóng lần nữa: với đơn đã gửi nút bỏ ghi 'Bỏ thay đổi'; bấm bỏ thì màn đơn đóng và đơn về bản đã lưu (125.000đ)",
+          "source": "B02-07 (cập nhật 08/11), Q-N01-4, CX-03",
+          "observed": "Nút bỏ ghi \"Bỏ đơn\". Bấm xong màn đơn đóng; mở lại B02 tổng 125000đ.",
+          "status": "LỆCH — chờ CX-03 (hành vi đúng, chữ nút chưa đổi)",
+          "shot": "N01-03/B5.png",
+          "time": "09:07:10"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "N01-04",
+      "title": "Thanh toán — trả đủ",
+      "start": "09:07:11",
+      "end": "09:07:18",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Mở đơn 24, bấm Thanh toán",
+          "source": "S04",
+          "observed": "\"Bàn B02 · Đơn #24 · 4 món\".",
+          "status": "ĐÚNG",
+          "shot": "N01-04/B1.png",
+          "time": "09:07:15"
+        },
+        {
+          "id": "B2",
+          "expected": "Mặc định chọn tất cả; phải trả 125.000đ",
+          "source": "R03",
+          "observed": "Chọn tất cả bật; phải trả 125000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-04/B2.png",
+          "time": "09:07:16"
+        },
+        {
+          "id": "B3",
+          "expected": "Bấm Thẻ/QR: không được chọn, vẫn tiền mặt",
+          "source": "S04 phương thức khả dụng, R01",
+          "observed": "Thẻ bị vô hiệu; Tiền mặt vẫn chọn.",
+          "status": "ĐÚNG",
+          "shot": "N01-04/B3.png",
+          "time": "09:07:16"
+        },
+        {
+          "id": "B4",
+          "expected": "'200k': khách đưa 200.000đ, trả lại 75.000đ",
+          "source": "R04",
+          "observed": "Khách đưa 200000đ; trả lại \"75.000 ₫\".",
+          "status": "ĐÚNG",
+          "shot": "N01-04/B4.png",
+          "time": "09:07:16"
+        },
+        {
+          "id": "B5",
+          "expected": "'+20k' đặt 145.000đ; '200k' đặt lại 200.000đ",
+          "source": "R04",
+          "observed": "+20k → 145000đ; 200k → 200000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-04/B5.png",
+          "time": "09:07:17"
+        },
+        {
+          "id": "B6",
+          "expected": "Hoàn tất: màn thanh toán đóng; Bàn 2 trống; Lịch sử có đơn đã thanh toán 125.000đ của B02",
+          "source": "S04, R05",
+          "observed": "Màn thanh toán đóng; B02 \"empty\"; Lịch sử B02: 125000đ/paid.",
+          "status": "ĐÚNG",
+          "shot": "N01-04/B6.png",
+          "time": "09:07:17"
+        },
+        {
+          "id": "B7",
+          "expected": "Lịch sử hiện số đơn do database cấp (#24) như hóa đơn, chia nhóm theo ngày",
+          "source": "CX-04 (chốt 09/11)",
+          "observed": "Dòng Lịch sử của đơn vừa trả: \"#2Đã thanh toánB02·12/11/2026125.000đTại bàn\"; dòng tiêu đề theo ngày: 0.",
+          "status": "LỆCH — chờ CX-04",
+          "shot": "N01-04/B7.png",
+          "time": "09:07:18"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "N01-05",
+      "title": "Thanh toán — thiếu tiền / không chọn",
+      "start": "09:07:18",
+      "end": "09:07:25",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Mở thanh toán đơn 24: chọn tất cả, phải trả 125.000đ",
+          "source": "R03",
+          "observed": "Phải trả 125000đ; ô khách đưa 125000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-05/B1.png",
+          "time": "09:07:23"
+        },
+        {
+          "id": "B2",
+          "expected": "Xóa hết, nhập 124999 bằng bàn phím số: hiển thị thiếu 1đ",
+          "source": "R04",
+          "observed": "Xóa 6 lần; khách đưa 124999đ; cảnh báo \"Còn thiếu 1 ₫.\".",
+          "status": "ĐÚNG",
+          "shot": "N01-05/B2.png",
+          "time": "09:07:23"
+        },
+        {
+          "id": "B3",
+          "expected": "Nút hoàn tất vẫn hiện ở trạng thái khóa kèm lý do; bấm không ghi lệnh",
+          "source": "R04, PERM-04, Q-N01-3",
+          "observed": "Nút hiện, khóa; lý do: dòng \"Còn thiếu\"; bấm ép không ra hóa đơn.",
+          "status": "ĐÚNG",
+          "shot": "N01-05/B3.png",
+          "time": "09:07:24"
+        },
+        {
+          "id": "B4",
+          "expected": "Bấm 'Đúng tiền': số khách đưa = 125.000đ",
+          "source": "R04; Q-N01-7 giữ Expected, CX-02",
+          "observed": "Khi đang thiếu tiền, hàng nút nhanh bị thay bằng dòng \"Còn thiếu…\", không có nút Đúng tiền để bấm.",
+          "status": "LỆCH — chờ CX-02",
+          "shot": "N01-05/B4.png",
+          "time": "09:07:24"
+        },
+        {
+          "id": "B5",
+          "expected": "Bỏ chọn tất cả: phải trả 0đ, bị chặn hoàn tất",
+          "source": "S04, R05",
+          "observed": "Phải trả 0đ; \"0 món đã chọn\"; nút khóa.",
+          "status": "ĐÚNG",
+          "shot": "N01-05/B5.png",
+          "time": "09:07:25"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "N01-06",
+      "title": "Thanh toán — trả một phần",
+      "start": "09:07:25",
+      "end": "09:07:32",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Mở thanh toán đơn 24",
+          "source": "S04",
+          "observed": "Phải trả 125000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-06/B1.png",
+          "time": "09:07:29"
+        },
+        {
+          "id": "B2",
+          "expected": "Bỏ chọn tất cả: 0đ",
+          "source": "R03",
+          "observed": "Phải trả 0đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-06/B2.png",
+          "time": "09:07:30"
+        },
+        {
+          "id": "B3",
+          "expected": "Tick dòng Cà phê: 1/2, phải trả 29.000đ",
+          "source": "R03",
+          "observed": "Cà phê sữa 1/2; phải trả 29000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-06/B3.png",
+          "time": "09:07:30"
+        },
+        {
+          "id": "B4",
+          "expected": "'+' hai lần: 2/2 58.000đ rồi 1/2 29.000đ",
+          "source": "R03",
+          "observed": "Lần 1: 2/2 58000đ; lần 2: 1/2 29000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-06/B4.png",
+          "time": "09:07:31"
+        },
+        {
+          "id": "B5",
+          "expected": "Đúng tiền, hoàn tất: màn vẫn mở; đơn tách 29.000đ; nguồn 96.000đ; lựa chọn rỗng, 0đ",
+          "source": "R05",
+          "observed": "Đơn tách 29000đ; màn vẫn mở; nguồn 96000đ; phải trả 0đ; Chọn tất cả tắt.",
+          "status": "ĐÚNG",
+          "shot": "N01-06/B5.png",
+          "time": "09:07:31"
+        },
+        {
+          "id": "B6",
+          "expected": "Đóng màn thanh toán: Bàn 2 vẫn đang phục vụ, tổng 96.000đ",
+          "source": "S04",
+          "observed": "B02 \"occupied\", tổng 96000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-06/B6.png",
+          "time": "09:07:32"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "N01-07",
+      "title": "Mang đi",
+      "start": "09:07:32",
+      "end": "09:07:41",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Ghi lại bàn đang phục vụ; mở khu Mang đi",
+          "source": "S09",
+          "observed": "Bàn đang phục vụ: B02, B03, B05, B08; Mang đi: \"1 đơn đang mở\".",
+          "status": "ĐÚNG",
+          "shot": "N01-07/B1.png",
+          "time": "09:07:37"
+        },
+        {
+          "id": "B2",
+          "expected": "Tạo đơn mang đi, thêm Americano, gửi",
+          "source": "order-management: Tạo đơn mang đi",
+          "observed": "Gửi xong ra phiếu bếp đơn #27.",
+          "status": "ĐÚNG",
+          "shot": "N01-07/B2.png",
+          "time": "09:07:37"
+        },
+        {
+          "id": "B3",
+          "expected": "Đơn mới có trong danh sách mang đi đang mở; không bàn nào đổi sang đang phục vụ",
+          "source": "order-management: Tạo đơn mang đi",
+          "observed": "\"1 đơn đang mở\" → \"2 đơn đang mở\"; #27 có; bàn đang phục vụ B02, B03, B05, B08.",
+          "status": "ĐÚNG",
+          "shot": "N01-07/B3.png",
+          "time": "09:07:38"
+        },
+        {
+          "id": "B4",
+          "expected": "Mở lại đơn từ danh sách, Thanh toán, Đúng tiền, hoàn tất",
+          "source": "S09, R04",
+          "observed": "Hóa đơn 35000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-07/B4.png",
+          "time": "09:07:38"
+        },
+        {
+          "id": "B5",
+          "expected": "Đơn rời khỏi danh sách mang đi",
+          "source": "order-management: Đơn mang đi đã thanh toán",
+          "observed": "\"1 đơn đang mở\"; #27 không còn.",
+          "status": "ĐÚNG",
+          "shot": "N01-07/B5.png",
+          "time": "09:07:40"
+        },
+        {
+          "id": "B6",
+          "expected": "Chỉ còn xem được ở Lịch sử đơn: đơn mang đi đã thanh toán",
+          "source": "order-management: Đơn mang đi đã thanh toán",
+          "observed": "Đơn 35.000đ trong Lịch sử: Mang đi/paid.",
+          "status": "ĐÚNG",
+          "shot": "N01-07/B6.png",
+          "time": "09:07:40"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "N01-08",
+      "title": "Thiếu quyền — Waiter",
+      "start": "09:07:41",
+      "end": "09:07:47",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Vai Waiter: về Sơ đồ bàn",
+          "source": "PERM-03",
+          "observed": "Vai waiter.",
+          "status": "ĐÚNG",
+          "shot": "N01-08/B1.png",
+          "time": "09:07:41"
+        },
+        {
+          "id": "B2",
+          "expected": "Không có Lịch sử đơn, Báo cáo, Thực đơn, Nhân viên, Cài đặt",
+          "source": "PERM-02, PERM-04",
+          "observed": "Thanh trái: Sơ đồ bàn, Tra cứu thao tác, Bán mang đi, Khoá.",
+          "status": "ĐÚNG",
+          "shot": "N01-08/B2.png",
+          "time": "09:07:45"
+        },
+        {
+          "id": "B3",
+          "expected": "Bấm Bàn 2: đơn 24 mở được",
+          "source": "S02",
+          "observed": "\"Gọi món — Bàn B02Tầng trệt · Tại bànĐơn #24 · Đã gửiĐóng\".",
+          "status": "ĐÚNG",
+          "shot": "N01-08/B3.png",
+          "time": "09:07:45"
+        },
+        {
+          "id": "B4",
+          "expected": "Thêm Americano, gửi: đơn 24 có thêm Americano, 160.000đ",
+          "source": "PERM-02",
+          "observed": "Mở lại: tổng 160000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-08/B4.png",
+          "time": "09:07:46"
+        },
+        {
+          "id": "B5",
+          "expected": "Đơn đã gửi: chỉ có nút Đóng; không có Thanh toán, không có Hủy đơn đang mở",
+          "source": "Q-N01-2 (08/11), PERM-04",
+          "observed": "Nút ở đầu màn: \"Đóng\"; nút Thanh toán không; nút chính ở chân màn không; Hủy đơn mở không.",
+          "status": "ĐÚNG",
+          "shot": "N01-08/B5.png",
+          "time": "09:07:47"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "N01-09",
+      "title": "Mang đi — thoát trước khi gửi món",
+      "start": "09:07:47",
+      "end": "09:07:53",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Mở Bán mang đi, ghi số đơn đang mở",
+          "source": "S09",
+          "observed": "\"1 đơn đang mở\".",
+          "status": "ĐÚNG",
+          "shot": "N01-09/B1.png",
+          "time": "09:07:51"
+        },
+        {
+          "id": "B2",
+          "expected": "Tạo đơn mang đi, thêm Americano (chưa gửi)",
+          "source": "order-management",
+          "observed": "\"Gọi món — Mang điMang điĐơn mới · Chưa gửiĐóngIn/G\", tổng 35000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-09/B2.png",
+          "time": "09:07:51"
+        },
+        {
+          "id": "B3",
+          "expected": "Bấm đóng: hỏi 'Bỏ đơn chưa gửi?'; đơn mới nên nút bỏ ghi 'Bỏ đơn'",
+          "source": "B02-07, CX-03",
+          "observed": "Hộp hiện; nút: Tiếp tục chỉnh sửa, Bỏ đơn.",
+          "status": "ĐÚNG",
+          "shot": "N01-09/B3.png",
+          "time": "09:07:52"
+        },
+        {
+          "id": "B4",
+          "expected": "Bấm Bỏ đơn: không có đơn nào được tạo, danh sách mang đi không đổi",
+          "source": "order-management: Thoát trước khi gửi món; Q-N01-1",
+          "observed": "Danh sách: \"1 đơn đang mở\" → \"1 đơn đang mở\".",
+          "status": "ĐÚNG",
+          "shot": "N01-09/B4.png",
+          "time": "09:07:52"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "N01-10",
+      "title": "Gọi món — tìm món và đổi danh mục",
+      "start": "09:07:53",
+      "end": "09:07:59",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Mở Bàn 1, chọn danh mục 'Trà & trà sữa'",
+          "source": "B02-02",
+          "observed": "Americano ở danh mục này: không.",
+          "status": "ĐÚNG",
+          "shot": "N01-10/B1.png",
+          "time": "09:07:57"
+        },
+        {
+          "id": "B2",
+          "expected": "Gõ 'americano' (chữ thường): vẫn tìm thấy Americano dù đang ở danh mục khác",
+          "source": "B02-02 (không phân biệt hoa thường, trên toàn menu)",
+          "observed": "Kết quả: thấy Americano.",
+          "status": "ĐÚNG",
+          "shot": "N01-10/B2.png",
+          "time": "09:07:58"
+        },
+        {
+          "id": "B3",
+          "expected": "Đổi sang danh mục 'Cà phê': ô tìm được xóa",
+          "source": "B02-02 (đổi category xóa search)",
+          "observed": "Ô tìm sau khi đổi danh mục: \"\".",
+          "status": "ĐÚNG",
+          "shot": "N01-10/B3.png",
+          "time": "09:07:58"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "N01-11",
+      "title": "Gọi món — thêm/bớt món đã gửi",
+      "start": "09:07:59",
+      "end": "09:08:05",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Mở đơn 24 (Bàn 2): các dòng đã gửi ghi 'Phần đã lưu'",
+          "source": "B02-04",
+          "observed": "3 dòng: Cà phê sữa58.000 ₫Phần đã lưu29.000 ₫ / mónSize  | Bạc xỉu32.000 ₫Phần đã lưu32.000 ₫ / món50% đườn | Croissant35.000 ₫Phần đã lưu35.000 ₫ / mónHâm nó; tổng 125000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-11/B1.png",
+          "time": "09:08:03"
+        },
+        {
+          "id": "B2",
+          "expected": "Bấm + ở dòng Bạc xỉu đã lưu: dòng đã lưu giữ nguyên, thêm một dòng Bạc xỉu mới theo giá hiện hành; tổng 157.000đ",
+          "source": "B02-04 (saved+ → thêm dòng giá hiện hành)",
+          "observed": "4 dòng: Cà phê sữa58.000 ₫Phần đã lưu29.000 ₫ / mónSize  | Bạc xỉu32.000 ₫Phần đã lưu32.000 ₫ / món50% đườn | Croissant35.000 ₫Phần đã lưu35.000 ₫ / mónHâm nó | Bạc xỉu32.000 ₫Phần gọi thêm32.000 ₫ / món50% đư. Dòng đã lưu số lượng 1; dòng Bạc xỉu mới: 1; tổng 157000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-11/B2.png",
+          "time": "09:08:03"
+        },
+        {
+          "id": "B3",
+          "expected": "Bấm − ở dòng Croissant đã lưu: về 0 thì dòng ẩn khỏi giỏ; tổng giảm 35.000đ",
+          "source": "B02-04 (saved− clamp 0; giỏ ẩn dòng 0)",
+          "observed": "3 dòng: Cà phê sữa58.000 ₫Phần đã lưu29.000 ₫ / mónSize  | Bạc xỉu32.000 ₫Phần đã lưu32.000 ₫ / món50% đườn | Bạc xỉu32.000 ₫Phần gọi thêm32.000 ₫ / món50% đư; tổng 122000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-11/B3.png",
+          "time": "09:08:04"
+        },
+        {
+          "id": "B4",
+          "expected": "Đóng, bỏ thay đổi: mở lại đơn 24 về bản đã lưu 125.000đ, Croissant còn",
+          "source": "B02-07, Q-N01-4",
+          "observed": "Nút bỏ \"Bỏ đơn\". Mở lại: 3 dòng, tổng 125000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-11/B4.png",
+          "time": "09:08:04"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "N01-12",
+      "title": "Thanh toán — nhập tiền khách đưa",
+      "start": "09:08:05",
+      "end": "09:08:12",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Mở thanh toán đơn 24: ô khách đưa 125.000",
+          "source": "R03",
+          "observed": "Khách đưa 125000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-12/B1.png",
+          "time": "09:08:09"
+        },
+        {
+          "id": "B2",
+          "expected": "Bấm xóa một lần: xóa một chữ số (12.500)",
+          "source": "R04 (delete xóa một chữ số)",
+          "observed": "Khách đưa 12500đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-12/B2.png",
+          "time": "09:08:10"
+        },
+        {
+          "id": "B3",
+          "expected": "Bấm phím 00: thêm hai số 0 (1.250.000)",
+          "source": "R04 (có phím 00)",
+          "observed": "Khách đưa 1250000đ.",
+          "status": "ĐÚNG",
+          "shot": "N01-12/B3.png",
+          "time": "09:08:10"
+        },
+        {
+          "id": "B4",
+          "expected": "Bấm thêm 4 chữ số 9: chỉ giữ tối đa 9 chữ số",
+          "source": "R04 (cắt tối đa 9 chữ số)",
+          "observed": "Khách đưa 125000099đ (9 chữ số).",
+          "status": "ĐÚNG",
+          "shot": "N01-12/B4.png",
+          "time": "09:08:11"
+        },
+        {
+          "id": "B5",
+          "expected": "Gõ thẳng '12a5b' vào ô: chỉ nhận chữ số (125)",
+          "source": "R04 (direct input chỉ nhận chữ số)",
+          "observed": "Khách đưa 125đ; ô hiện \"125\".",
+          "status": "ĐÚNG",
+          "shot": "N01-12/B5.png",
+          "time": "09:08:11"
+        },
+        {
+          "id": "B6",
+          "expected": "Nút nhanh: Đúng tiền = 125.000; +50k = 175.000; 500k = 500.000",
+          "source": "R04",
+          "observed": "Đúng tiền → 125000; +50k → 175000; 500k → 500000",
+          "status": "ĐÚNG",
+          "shot": "N01-12/B6.png",
+          "time": "09:08:11"
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "caseId": "N01-13",
+      "title": "Thanh toán — in hóa đơn và tạm tính",
+      "start": "09:08:12",
+      "end": "09:08:18",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Mở thanh toán đơn 24: ô 'In hóa đơn sau khi thanh toán' bật sẵn",
+          "source": "R06 (checkbox in mặc định true)",
+          "observed": "Ô in bật sẵn.",
+          "status": "ĐÚNG",
+          "shot": "N01-13/B1.png",
+          "time": "09:08:16"
+        },
+        {
+          "id": "B2",
+          "expected": "Bấm in tạm tính: hiện phiếu tạm tính nằm trên màn thanh toán; đơn chưa bị thanh toán",
+          "source": "R06 (Xem tạm tính không ghi lệnh)",
+          "observed": "Nút \"In tạm tính\". Cửa sổ: \"Phiếu tạm tínhPOS Demo01 Demo StreetPHIẾU TẠM TÍNHĐơn#24LoạiBàn B02Thờ\"; nằm trên cùng: có.",
+          "status": "ĐÚNG",
+          "shot": "N01-13/B2.png",
+          "time": "09:08:17"
+        },
+        {
+          "id": "B3",
+          "expected": "Đóng phiếu tạm tính: vẫn ở màn thanh toán, phải trả không đổi; bàn vẫn đang phục vụ",
+          "source": "R06",
+          "observed": "Màn thanh toán vẫn mở, phải trả 125000đ; sau đó B02 \"occupied\".",
+          "status": "ĐÚNG",
+          "shot": "N01-13/B3.png",
+          "time": "09:08:17"
+        }
+      ],
+      "pageErrors": []
+    }
+  ]
+}

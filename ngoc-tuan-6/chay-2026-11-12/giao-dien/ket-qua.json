@@ -1,0 +1,1092 @@
+{
+  "source": "main cd35439 (src giống hệt, đã so mã băm)",
+  "role": "Thu ngân",
+  "finishedAt": "2026-11-12T02:16:53.408Z",
+  "results": [
+    {
+      "viewport": "568x320",
+      "state": "1-so-do-ban",
+      "screen": "Sơ đồ bàn",
+      "spec": "B01-07/08",
+      "time": "09:16:03",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 14,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"8\" 10px",
+        "\"6\" 10px",
+        "\"34 chỗ ngồi\" 11px",
+        "\"50% sử dụng\" 11px",
+        "\"125K\" 11px",
+        "\"86K\" 11px",
+        "\"Chọn bàn để mở giao diện gọi m\" 10px",
+        "\"8 / 8 bàn\" 10px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"table-a254abd0-b883-4d5c-85c1-89f660409e02\"]: tới được",
+        "[data-testid=\"floor-filter-all\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "568x320",
+      "state": "1b-don-dang-mo",
+      "screen": "Sơ đồ bàn",
+      "spec": "B01-07/08",
+      "time": "09:16:03",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 4,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"3\" 10px",
+        "\"Tại bàn · 2\" 11px",
+        "\"Đang phục vụ\" 11px",
+        "\"Mở đơn hàng\" 11px",
+        "\"→\" 11px",
+        "\"Mang đi · 1\" 11px",
+        "\"Chọn một đơn để tiếp tục phục \" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid^=\"floor-order-\"]: tới được"
+      ],
+      "note": "Mở bằng nút \"Đơn đang mở\"; bấm Escape: khung đã đóng."
+    },
+    {
+      "viewport": "568x320",
+      "state": "2-goi-mon",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:04",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 24,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"6\" 11px",
+        "\"4\" 11px",
+        "\"3 món\" 10px",
+        "\"Cà phê sữa\" 11px",
+        "\"58.000 ₫\" 11px",
+        "\"Phần đã lưu\" 10px",
+        "\"29.000 ₫ / món\" 10px",
+        "\"Size M\" 10px",
+        "\"Ít đá\" 10px",
+        "\"Ghi chú\" 11px",
+        "\"Bạc xỉu\" 11px",
+        "\"32.000 ₫\" 11px",
+        "\"32.000 ₫ / món\" 10px",
+        "\"50% đường\" 10px",
+        "\"Croissant\" 11px",
+        "\"35.000 ₫\" 11px",
+        "\"35.000 ₫ / món\" 10px",
+        "\"Hâm nóng\" 10px",
+        "\"Tạm tính\" 11px",
+        "\"125.000 ₫\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"submit-order-button-footer\"]: tới được",
+        "[data-testid=\"order-total-amount\"]: tới được",
+        "[data-testid=\"order-close-button\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "568x320",
+      "state": "3-hop-tuy-chon",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:04",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 6,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"Chọn 1\" 10px",
+        "\"Tạm tính\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"modifier-confirm\"]: tới được",
+        "[data-testid=\"modifier-picker-close\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "568x320",
+      "state": "4-hop-bo-nhap",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:05",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 2,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": []
+    },
+    {
+      "viewport": "568x320",
+      "state": "5-thanh-toan",
+      "screen": "Thanh toán",
+      "spec": "R07",
+      "time": "09:16:06",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 32,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"pay-button-footer\"]: tới được",
+        "[data-testid=\"payment-amount-due-value\"]: tới được",
+        "[data-testid=\"payment-received-amount\"]: tới được",
+        "[data-testid=\"payment-key-delete\"]: tới được",
+        "[data-testid=\"pay-select-all\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "568x320",
+      "state": "6-thieu-tien",
+      "screen": "Thanh toán",
+      "spec": "R07",
+      "time": "09:16:07",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 26,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"payment-insufficient-warning\"]: tới được",
+        "[data-testid=\"pay-button-footer\"]: tới được",
+        "[data-testid=\"payment-change-summary-value\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "568x320",
+      "state": "7-phieu-tam-tinh",
+      "screen": "Thanh toán",
+      "spec": "R06/R07",
+      "time": "09:16:08",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 3,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"01 Demo Street\" 11px",
+        "\"Món\" 11px",
+        "\"Thành tiền\" 11px",
+        "\"Size M · Ghi chú: Ít đá\" 11px",
+        "\"50% đường\" 11px",
+        "\"Ghi chú: Hâm nóng\" 11px",
+        "\"(Phiếu tạm tính — chưa thanh t\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"receipt-close-header\"]: tới được",
+        "[data-testid=\"receipt-close-footer\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "568x320",
+      "state": "8-mang-di",
+      "screen": "Mang đi",
+      "spec": "chưa có spec (tham khảo)",
+      "time": "09:16:09",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 9,
+      "small": [
+        "Đang mở (80×24)",
+        "Đã thanh toán (112×24)",
+        "Hôm nay (78×24)",
+        "Tạo đơn mang đi (252×37)",
+        "Đóng (546×37)",
+        "Mở đơn (66×26)",
+        "Thanh toán (90×26)",
+        "Mở đơn (234×31)",
+        "Thanh toán (234×31)"
+      ],
+      "noName": [],
+      "tiny": [
+        "\"Đang mở\" 11px"
+      ],
+      "clipped": [],
+      "keys": []
+    },
+    {
+      "viewport": "568x320",
+      "pageErrors": []
+    },
+    {
+      "viewport": "844x390",
+      "state": "1-so-do-ban",
+      "screen": "Sơ đồ bàn",
+      "spec": "B01-07/08",
+      "time": "09:16:14",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 14,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"8\" 10px",
+        "\"6\" 10px",
+        "\"34 chỗ ngồi\" 11px",
+        "\"50% sử dụng\" 11px",
+        "\"125K\" 11px",
+        "\"86K\" 11px",
+        "\"Chọn bàn để mở giao diện gọi m\" 10px",
+        "\"8 / 8 bàn\" 10px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"table-a254abd0-b883-4d5c-85c1-89f660409e02\"]: tới được",
+        "[data-testid=\"floor-filter-all\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "844x390",
+      "state": "1b-don-dang-mo",
+      "screen": "Sơ đồ bàn",
+      "spec": "B01-07/08",
+      "time": "09:16:14",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 4,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"3\" 10px",
+        "\"Tại bàn · 2\" 11px",
+        "\"Đang phục vụ\" 11px",
+        "\"Mở đơn hàng\" 11px",
+        "\"→\" 11px",
+        "\"Mang đi · 1\" 11px",
+        "\"Chọn một đơn để tiếp tục phục \" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid^=\"floor-order-\"]: tới được"
+      ],
+      "note": "Mở bằng nút \"Đơn đang mở\"; bấm Escape: khung đã đóng."
+    },
+    {
+      "viewport": "844x390",
+      "state": "2-goi-mon",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:15",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 24,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"6\" 11px",
+        "\"4\" 11px",
+        "\"Phần đã lưu\" 11px",
+        "\"29.000 ₫ / món\" 11px",
+        "\"32.000 ₫ / món\" 11px",
+        "\"35.000 ₫ / món\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"submit-order-button-footer\"]: tới được",
+        "[data-testid=\"order-total-amount\"]: tới được",
+        "[data-testid=\"order-close-button\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "844x390",
+      "state": "3-hop-tuy-chon",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:15",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 6,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"Chọn 1\" 10px",
+        "\"Tạm tính\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"modifier-confirm\"]: tới được",
+        "[data-testid=\"modifier-picker-close\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "844x390",
+      "state": "4-hop-bo-nhap",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:16",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 2,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": []
+    },
+    {
+      "viewport": "844x390",
+      "state": "5-thanh-toan",
+      "screen": "Thanh toán",
+      "spec": "R07",
+      "time": "09:16:17",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 32,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"pay-button-footer\"]: tới được",
+        "[data-testid=\"payment-amount-due-value\"]: tới được",
+        "[data-testid=\"payment-received-amount\"]: tới được",
+        "[data-testid=\"payment-key-delete\"]: tới được",
+        "[data-testid=\"pay-select-all\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "844x390",
+      "state": "6-thieu-tien",
+      "screen": "Thanh toán",
+      "spec": "R07",
+      "time": "09:16:18",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 26,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"payment-insufficient-warning\"]: tới được",
+        "[data-testid=\"pay-button-footer\"]: tới được",
+        "[data-testid=\"payment-change-summary-value\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "844x390",
+      "state": "7-phieu-tam-tinh",
+      "screen": "Thanh toán",
+      "spec": "R06/R07",
+      "time": "09:16:19",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 3,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"01 Demo Street\" 11px",
+        "\"Món\" 11px",
+        "\"Thành tiền\" 11px",
+        "\"Size M · Ghi chú: Ít đá\" 11px",
+        "\"50% đường\" 11px",
+        "\"Ghi chú: Hâm nóng\" 11px",
+        "\"(Phiếu tạm tính — chưa thanh t\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"receipt-close-header\"]: tới được",
+        "[data-testid=\"receipt-close-footer\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "844x390",
+      "state": "8-mang-di",
+      "screen": "Mang đi",
+      "spec": "chưa có spec (tham khảo)",
+      "time": "09:16:20",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 9,
+      "small": [
+        "Đang mở (80×24)",
+        "Đã thanh toán (112×24)",
+        "Hôm nay (78×24)",
+        "Tạo đơn mang đi (168×37)",
+        "Đóng (70×37)",
+        "Mở đơn (66×26)",
+        "Thanh toán (90×26)",
+        "Mở đơn (350×31)",
+        "Thanh toán (350×31)"
+      ],
+      "noName": [],
+      "tiny": [
+        "\"Đang mở\" 11px"
+      ],
+      "clipped": [],
+      "keys": []
+    },
+    {
+      "viewport": "844x390",
+      "pageErrors": []
+    },
+    {
+      "viewport": "1024x600",
+      "state": "1-so-do-ban",
+      "screen": "Sơ đồ bàn",
+      "spec": "B01-07/08",
+      "time": "09:16:25",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 14,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"Chọn bàn để xem và quản lý đơn\" 11px",
+        "\"8\" 10px",
+        "\"6\" 10px",
+        "\"34 chỗ ngồi\" 11px",
+        "\"50% sử dụng\" 11px",
+        "\"125K\" 11px",
+        "\"86K\" 11px",
+        "\"Chọn bàn để mở giao diện gọi m\" 11px",
+        "\"8 / 8 bàn\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"table-a254abd0-b883-4d5c-85c1-89f660409e02\"]: tới được",
+        "[data-testid=\"floor-filter-all\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1024x600",
+      "state": "1b-don-dang-mo",
+      "screen": "Sơ đồ bàn",
+      "spec": "B01-07/08",
+      "time": "09:16:25",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 4,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"3\" 10px",
+        "\"Tại bàn · 2\" 11px",
+        "\"Đang phục vụ\" 11px",
+        "\"Mở đơn hàng\" 11px",
+        "\"→\" 11px",
+        "\"Mang đi · 1\" 11px",
+        "\"Chọn một đơn để tiếp tục phục \" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid^=\"floor-order-\"]: tới được"
+      ],
+      "note": "Mở bằng nút \"Đơn đang mở\"; bấm Escape: khung đã đóng."
+    },
+    {
+      "viewport": "1024x600",
+      "state": "2-goi-mon",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:26",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 24,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"6\" 11px",
+        "\"4\" 11px",
+        "\"Có tùy chọn\" 11px",
+        "\"Chọn để thêm vào đơn\" 11px",
+        "\"Phần đã lưu\" 11px",
+        "\"29.000 ₫ / món\" 11px",
+        "\"32.000 ₫ / món\" 11px",
+        "\"35.000 ₫ / món\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"submit-order-button-footer\"]: tới được",
+        "[data-testid=\"order-total-amount\"]: tới được",
+        "[data-testid=\"order-close-button\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1024x600",
+      "state": "3-hop-tuy-chon",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:26",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 6,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"Chọn 1\" 10px",
+        "\"Tạm tính\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"modifier-confirm\"]: tới được",
+        "[data-testid=\"modifier-picker-close\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1024x600",
+      "state": "4-hop-bo-nhap",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:27",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 2,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": []
+    },
+    {
+      "viewport": "1024x600",
+      "state": "5-thanh-toan",
+      "screen": "Thanh toán",
+      "spec": "R07",
+      "time": "09:16:28",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 32,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"pay-button-footer\"]: tới được",
+        "[data-testid=\"payment-amount-due-value\"]: tới được",
+        "[data-testid=\"payment-received-amount\"]: tới được",
+        "[data-testid=\"payment-key-delete\"]: tới được",
+        "[data-testid=\"pay-select-all\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1024x600",
+      "state": "6-thieu-tien",
+      "screen": "Thanh toán",
+      "spec": "R07",
+      "time": "09:16:29",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 26,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"payment-insufficient-warning\"]: tới được",
+        "[data-testid=\"pay-button-footer\"]: tới được",
+        "[data-testid=\"payment-change-summary-value\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1024x600",
+      "state": "7-phieu-tam-tinh",
+      "screen": "Thanh toán",
+      "spec": "R06/R07",
+      "time": "09:16:30",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 3,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"01 Demo Street\" 11px",
+        "\"Món\" 11px",
+        "\"Thành tiền\" 11px",
+        "\"Size M · Ghi chú: Ít đá\" 11px",
+        "\"50% đường\" 11px",
+        "\"Ghi chú: Hâm nóng\" 11px",
+        "\"(Phiếu tạm tính — chưa thanh t\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"receipt-close-header\"]: tới được",
+        "[data-testid=\"receipt-close-footer\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1024x600",
+      "state": "8-mang-di",
+      "screen": "Mang đi",
+      "spec": "chưa có spec (tham khảo)",
+      "time": "09:16:31",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 9,
+      "small": [
+        "Đang mở (80×24)",
+        "Đã thanh toán (112×24)",
+        "Hôm nay (78×24)",
+        "Tạo đơn mang đi (168×37)",
+        "Đóng (70×37)",
+        "Mở đơn (66×26)",
+        "Thanh toán (90×26)",
+        "Mở đơn (518×31)",
+        "Thanh toán (518×31)"
+      ],
+      "noName": [],
+      "tiny": [
+        "\"Đang mở\" 11px"
+      ],
+      "clipped": [],
+      "keys": []
+    },
+    {
+      "viewport": "1024x600",
+      "pageErrors": []
+    },
+    {
+      "viewport": "1366x768",
+      "state": "1-so-do-ban",
+      "screen": "Sơ đồ bàn",
+      "spec": "B01-07/08",
+      "time": "09:16:36",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 14,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"Chọn bàn để xem và quản lý đơn\" 11px",
+        "\"8\" 10px",
+        "\"6\" 10px",
+        "\"34 chỗ ngồi\" 11px",
+        "\"50% sử dụng\" 11px",
+        "\"125K\" 11px",
+        "\"86K\" 11px",
+        "\"Chọn bàn để mở giao diện gọi m\" 11px",
+        "\"8 / 8 bàn\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"table-a254abd0-b883-4d5c-85c1-89f660409e02\"]: tới được",
+        "[data-testid=\"floor-filter-all\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1366x768",
+      "state": "1b-don-dang-mo",
+      "screen": "Sơ đồ bàn",
+      "spec": "B01-07/08",
+      "time": "09:16:36",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 3,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"3\" 10px",
+        "\"Tại bàn · 2\" 11px",
+        "\"Đang phục vụ\" 11px",
+        "\"Mở đơn hàng\" 11px",
+        "\"→\" 11px",
+        "\"Mang đi · 1\" 11px",
+        "\"Chọn một đơn để tiếp tục phục \" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid^=\"floor-order-\"]: tới được"
+      ],
+      "note": "Khung Đơn đang mở hiện thường trực (≥1280px), không có nút thu gọn."
+    },
+    {
+      "viewport": "1366x768",
+      "state": "2-goi-mon",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:36",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 24,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"DANH MỤC MÓN\" 11px",
+        "\"6\" 11px",
+        "\"4\" 11px",
+        "\"Có tùy chọn\" 11px",
+        "\"Chọn để thêm vào đơn\" 11px",
+        "\"Phần đã lưu\" 11px",
+        "\"29.000 ₫ / món\" 11px",
+        "\"32.000 ₫ / món\" 11px",
+        "\"35.000 ₫ / món\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"submit-order-button-footer\"]: tới được",
+        "[data-testid=\"order-total-amount\"]: tới được",
+        "[data-testid=\"order-close-button\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1366x768",
+      "state": "3-hop-tuy-chon",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:37",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 6,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"Chọn 1\" 10px",
+        "\"Tạm tính\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"modifier-confirm\"]: tới được",
+        "[data-testid=\"modifier-picker-close\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1366x768",
+      "state": "4-hop-bo-nhap",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:37",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 2,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": []
+    },
+    {
+      "viewport": "1366x768",
+      "state": "5-thanh-toan",
+      "screen": "Thanh toán",
+      "spec": "R07",
+      "time": "09:16:39",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 33,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"pay-button-footer\"]: tới được",
+        "[data-testid=\"payment-amount-due-value\"]: tới được",
+        "[data-testid=\"payment-received-amount\"]: tới được",
+        "[data-testid=\"payment-key-delete\"]: tới được",
+        "[data-testid=\"pay-select-all\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1366x768",
+      "state": "6-thieu-tien",
+      "screen": "Thanh toán",
+      "spec": "R07",
+      "time": "09:16:40",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 26,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"payment-insufficient-warning\"]: tới được",
+        "[data-testid=\"pay-button-footer\"]: tới được",
+        "[data-testid=\"payment-change-summary-value\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1366x768",
+      "state": "7-phieu-tam-tinh",
+      "screen": "Thanh toán",
+      "spec": "R06/R07",
+      "time": "09:16:40",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 3,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"01 Demo Street\" 11px",
+        "\"Món\" 11px",
+        "\"Thành tiền\" 11px",
+        "\"Size M · Ghi chú: Ít đá\" 11px",
+        "\"50% đường\" 11px",
+        "\"Ghi chú: Hâm nóng\" 11px",
+        "\"(Phiếu tạm tính — chưa thanh t\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"receipt-close-header\"]: tới được",
+        "[data-testid=\"receipt-close-footer\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1366x768",
+      "state": "8-mang-di",
+      "screen": "Mang đi",
+      "spec": "chưa có spec (tham khảo)",
+      "time": "09:16:41",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 9,
+      "small": [
+        "Đang mở (80×24)",
+        "Đã thanh toán (112×24)",
+        "Hôm nay (78×24)",
+        "Tạo đơn mang đi (168×37)",
+        "Đóng (70×37)",
+        "Mở đơn (66×26)",
+        "Thanh toán (90×26)",
+        "Mở đơn (860×31)",
+        "Thanh toán (860×31)"
+      ],
+      "noName": [],
+      "tiny": [
+        "\"Đang mở\" 11px"
+      ],
+      "clipped": [],
+      "keys": []
+    },
+    {
+      "viewport": "1366x768",
+      "pageErrors": []
+    },
+    {
+      "viewport": "1920x1080",
+      "state": "1-so-do-ban",
+      "screen": "Sơ đồ bàn",
+      "spec": "B01-07/08",
+      "time": "09:16:46",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 14,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"Chọn bàn để xem và quản lý đơn\" 11px",
+        "\"8\" 10px",
+        "\"6\" 10px",
+        "\"34 chỗ ngồi\" 11px",
+        "\"50% sử dụng\" 11px",
+        "\"125K\" 11px",
+        "\"86K\" 11px",
+        "\"Chọn bàn để mở giao diện gọi m\" 11px",
+        "\"8 / 8 bàn\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"table-a254abd0-b883-4d5c-85c1-89f660409e02\"]: tới được",
+        "[data-testid=\"floor-filter-all\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1920x1080",
+      "state": "1b-don-dang-mo",
+      "screen": "Sơ đồ bàn",
+      "spec": "B01-07/08",
+      "time": "09:16:46",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 3,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"3\" 10px",
+        "\"Tại bàn · 2\" 11px",
+        "\"Đang phục vụ\" 11px",
+        "\"Mở đơn hàng\" 11px",
+        "\"→\" 11px",
+        "\"Mang đi · 1\" 11px",
+        "\"Chọn một đơn để tiếp tục phục \" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid^=\"floor-order-\"]: tới được"
+      ],
+      "note": "Khung Đơn đang mở hiện thường trực (≥1280px), không có nút thu gọn."
+    },
+    {
+      "viewport": "1920x1080",
+      "state": "2-goi-mon",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:47",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 24,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"DANH MỤC MÓN\" 11px",
+        "\"6\" 11px",
+        "\"4\" 11px",
+        "\"Có tùy chọn\" 11px",
+        "\"Chọn để thêm vào đơn\" 11px",
+        "\"Phần đã lưu\" 11px",
+        "\"29.000 ₫ / món\" 11px",
+        "\"32.000 ₫ / món\" 11px",
+        "\"35.000 ₫ / món\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"submit-order-button-footer\"]: tới được",
+        "[data-testid=\"order-total-amount\"]: tới được",
+        "[data-testid=\"order-close-button\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1920x1080",
+      "state": "3-hop-tuy-chon",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:47",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 6,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"Chọn 1\" 10px",
+        "\"Tạm tính\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"modifier-confirm\"]: tới được",
+        "[data-testid=\"modifier-picker-close\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1920x1080",
+      "state": "4-hop-bo-nhap",
+      "screen": "Gọi món",
+      "spec": "B02-08",
+      "time": "09:16:48",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 2,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": []
+    },
+    {
+      "viewport": "1920x1080",
+      "state": "5-thanh-toan",
+      "screen": "Thanh toán",
+      "spec": "R07",
+      "time": "09:16:49",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 33,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"pay-button-footer\"]: tới được",
+        "[data-testid=\"payment-amount-due-value\"]: tới được",
+        "[data-testid=\"payment-received-amount\"]: tới được",
+        "[data-testid=\"payment-key-delete\"]: tới được",
+        "[data-testid=\"pay-select-all\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1920x1080",
+      "state": "6-thieu-tien",
+      "screen": "Thanh toán",
+      "spec": "R07",
+      "time": "09:16:50",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 26,
+      "small": [],
+      "noName": [],
+      "tiny": [],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"payment-insufficient-warning\"]: tới được",
+        "[data-testid=\"pay-button-footer\"]: tới được",
+        "[data-testid=\"payment-change-summary-value\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1920x1080",
+      "state": "7-phieu-tam-tinh",
+      "screen": "Thanh toán",
+      "spec": "R06/R07",
+      "time": "09:16:51",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 3,
+      "small": [],
+      "noName": [],
+      "tiny": [
+        "\"01 Demo Street\" 11px",
+        "\"Món\" 11px",
+        "\"Thành tiền\" 11px",
+        "\"Size M · Ghi chú: Ít đá\" 11px",
+        "\"50% đường\" 11px",
+        "\"Ghi chú: Hâm nóng\" 11px",
+        "\"(Phiếu tạm tính — chưa thanh t\" 11px"
+      ],
+      "clipped": [],
+      "keys": [
+        "[data-testid=\"receipt-close-header\"]: tới được",
+        "[data-testid=\"receipt-close-footer\"]: tới được"
+      ]
+    },
+    {
+      "viewport": "1920x1080",
+      "state": "8-mang-di",
+      "screen": "Mang đi",
+      "spec": "chưa có spec (tham khảo)",
+      "time": "09:16:52",
+      "overflowX": 0,
+      "overflowY": 0,
+      "controls": 9,
+      "small": [
+        "Đang mở (80×24)",
+        "Đã thanh toán (112×24)",
+        "Hôm nay (78×24)",
+        "Tạo đơn mang đi (168×37)",
+        "Đóng (70×37)",
+        "Mở đơn (66×26)",
+        "Thanh toán (90×26)",
+        "Mở đơn (1414×31)",
+        "Thanh toán (1414×31)"
+      ],
+      "noName": [],
+      "tiny": [
+        "\"Đang mở\" 11px"
+      ],
+      "clipped": [],
+      "keys": []
+    },
+    {
+      "viewport": "1920x1080",
+      "pageErrors": []
+    }
+  ]
+}

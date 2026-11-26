@@ -1,0 +1,54 @@
+ ok   tablet   landing                  0 finding(s), 0 new
+ ok   tablet   store-pairing            0 finding(s), 0 new
+ ok   tablet   passcode                 0 finding(s), 0 new
+ ok   tablet   floor                    0 finding(s), 0 new
+ ok   tablet   order-drawer             0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   order-cart               0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   menu-editor              0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   report                   0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   employees                0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   settings                 0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   clear-demo-dialog        0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0:nth-of-type(2)]
+ ok   tablet   payment                  0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   receipt-preview          0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   tablet   compatibility-update-gate 0 finding(s), 0 new  [scoped to top layer #root > main.fixed.inset-0]
+ ok   tablet   compatibility-created-store 0 finding(s), 0 new  [scoped to top layer #root > main.fixed.inset-0]
+ ok   tablet   required-pin-change      0 finding(s), 0 new
+ ok   desktop  landing                  0 finding(s), 0 new
+ ok   desktop  store-pairing            0 finding(s), 0 new
+ ok   desktop  passcode                 0 finding(s), 0 new
+ ok   desktop  floor                    0 finding(s), 0 new
+ ok   desktop  order-drawer             0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  order-cart               0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  menu-editor              0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  report                   0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  employees                0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  settings                 0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  clear-demo-dialog        0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0:nth-of-type(2)]
+ ok   desktop  payment                  0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  receipt-preview          0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   desktop  compatibility-update-gate 0 finding(s), 0 new  [scoped to top layer #root > main.fixed.inset-0]
+ ok   desktop  compatibility-created-store 0 finding(s), 0 new  [scoped to top layer #root > main.fixed.inset-0]
+ ok   desktop  required-pin-change      0 finding(s), 0 new
+ ok   mobile   landing                  0 finding(s), 0 new
+ ok   mobile   store-pairing            0 finding(s), 0 new
+ ok   mobile   passcode                 0 finding(s), 0 new
+ ok   mobile   floor                    0 finding(s), 0 new
+ ok   mobile   order-drawer             0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   order-cart               0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   menu-editor              0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   report                   0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   employees                0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   settings                 0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   clear-demo-dialog        0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0:nth-of-type(2)]
+ ok   mobile   payment                  0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   receipt-preview          0 finding(s), 0 new  [scoped to top layer #portals > div.fixed.inset-0]
+ ok   mobile   compatibility-update-gate 0 finding(s), 0 new  [scoped to top layer #root > main.fixed.inset-0]
+ ok   mobile   compatibility-created-store 0 finding(s), 0 new  [scoped to top layer #root > main.fixed.inset-0]
+ ok   mobile   required-pin-change      0 finding(s), 0 new
+
+total 0 finding(s): none
+
+report: ui-audit/report.md, ui-audit/report.json
+
+no new UI anomalies at configured blocking severities; warnings/info remain in the report

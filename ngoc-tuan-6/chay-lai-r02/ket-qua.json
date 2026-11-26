@@ -1,0 +1,1929 @@
+{
+  "method": "AUTOMATED_PLAYWRIGHT_RECHECK",
+  "performedBy": "Codex AI",
+  "personalManualAttestation": false,
+  "baseURL": "http://127.0.0.1:5175",
+  "timezone": "Asia/Bangkok",
+  "startedAt": "2026-11-14T02:05:01.740Z",
+  "startedLocal": "2026-11-14 09:05:01 UTC+7",
+  "sourceFingerprint": "390f39205f286eb35481efc1cfe9f0a352a5df2ed617d8069c4a2a8f309178a0",
+  "sourceManifest": [
+    {
+      "file": "src/adapters/browser/printPort.ts",
+      "sha256": "195e7b038e9d5287afcf9cdb587004b23b3635e4097318cbd1f863a59242d0f8"
+    },
+    {
+      "file": "src/adapters/mock/authRepo.ts",
+      "sha256": "c37d8343a89fd98adb1c6120f785b02dbb0c28688525493f13354ce3f071afed"
+    },
+    {
+      "file": "src/adapters/mock/demoSeedHelpers.ts",
+      "sha256": "0c644cfbf3c925f4773da726c2f00540cf52fa3ec0705423a5952946fc4d0d43"
+    },
+    {
+      "file": "src/adapters/mock/employeeRepo.ts",
+      "sha256": "f8852815b5cad09547edb3ba0a9590444a10b5ae804e091c62ef8f9dab6ec693"
+    },
+    {
+      "file": "src/adapters/mock/floorPlanRepo.ts",
+      "sha256": "aad3a5fc9424642b79e87a02520ebbf24f59044ab2764def49f86a1729ae2605"
+    },
+    {
+      "file": "src/adapters/mock/index.ts",
+      "sha256": "6589158e50f7cbb45ed4460ba5901e4d8826de3f1c648cea825f768bbebb7705"
+    },
+    {
+      "file": "src/adapters/mock/menuImagePort.ts",
+      "sha256": "6d51157b48bcc4ce3193aeb8da54028aa97ca203c1c8281359b9db3e0e867fb0"
+    },
+    {
+      "file": "src/adapters/mock/menuRepo.ts",
+      "sha256": "c7928cfb24dbde665f56caee9921f48f648c364c3c5af6a5e2f900c167461eb3"
+    },
+    {
+      "file": "src/adapters/mock/mockData.ts",
+      "sha256": "a237fe8e6ade8f413aaf20a7218c8c80109e99a1786e04a2a6a6f0219ded2794"
+    },
+    {
+      "file": "src/adapters/mock/mockRepoShared.ts",
+      "sha256": "fc3487abf7d426b73c7e62c2933ba4e09033e7e21d19b871d0d08d192accebd3"
+    },
+    {
+      "file": "src/adapters/mock/mockRepos.test.ts",
+      "sha256": "3a0033d1d15d9a57cce0a5de3e324fbbe8897f3c63b55a6150043705be0ee84d"
+    },
+    {
+      "file": "src/adapters/mock/mockRepos.ts",
+      "sha256": "9c8ce4911e3aee0e0f2b69f4430e46a98194f26131a83730c3e0813492ab350b"
+    },
+    {
+      "file": "src/adapters/mock/mockState.ts",
+      "sha256": "41fbb5fef28b1af5744493a5d25557efd3fdd95f4c9908da8f4de906cd14dba7"
+    },
+    {
+      "file": "src/adapters/mock/orderRepo.ts",
+      "sha256": "62311351f3c21974a111a4c0cbef7e09934d0dabc99d20e09388dc569b5b210c"
+    },
+    {
+      "file": "src/adapters/mock/paymentRepo.ts",
+      "sha256": "5c8b6555aec4544e4d788f9616740243e84b75d9df8b6351bba3f1858076b709"
+    },
+    {
+      "file": "src/adapters/mock/permissionAdminRepo.test.ts",
+      "sha256": "bc6d3c85c8413f7ef97ad04085115ee6ff9ec9c8fbd2a2592d6fbc98ed367074"
+    },
+    {
+      "file": "src/adapters/mock/permissionAdminRepo.ts",
+      "sha256": "78d25c63fc35e9e45f22c59ceeec4e0489d294e803f2eba5ca6a1cae54b24eeb"
+    },
+    {
+      "file": "src/adapters/mock/permissionAdminState.ts",
+      "sha256": "96bd75d3676e31c228725e64bafa7712f1dfbf778de736cef7a821858f49f81d"
+    },
+    {
+      "file": "src/adapters/mock/permissionChangesRepo.test.ts",
+      "sha256": "09101a46cf6a24d16c3b224bb19606c04b8eccd9c007675938cb7685f6dcabea"
+    },
+    {
+      "file": "src/adapters/mock/permissionChangesRepo.ts",
+      "sha256": "d42f9e552a2501f79cabcc05130a5392b38ff0e7d9cc29f6e6463db0995b5060"
+    },
+    {
+      "file": "src/adapters/mock/permissionIdentityRepo.test.ts",
+      "sha256": "9cbc652db8a6d91d10cf8708a5017133d27e52c9caf85f5945b54fe79e5c70e8"
+    },
+    {
+      "file": "src/adapters/mock/permissionIdentityRepo.ts",
+      "sha256": "5c906563f47f633c2591d247dcd629916ce2def0d3f23286988cfe5b85aa1a3a"
+    },
+    {
+      "file": "src/adapters/mock/permissionInitialSeedRepo.test.ts",
+      "sha256": "1c7fd431889776bd3cab569296bf8ccd61c9ab6d5e1e03bc4e7bca86c021b16b"
+    },
+    {
+      "file": "src/adapters/mock/permissionInitialSeedRepo.ts",
+      "sha256": "7cf050988fa93cf17a1c60a21d7d8d7cd37b53be68c4952db8d9a95604d93eee"
+    },
+    {
+      "file": "src/adapters/mock/permissionMenuImagePort.test.ts",
+      "sha256": "dc5c250c702f1f6b5a00716529943ecdf0e890be0a8a180000a47b3f71c747d5"
+    },
+    {
+      "file": "src/adapters/mock/permissionMenuImagePort.ts",
+      "sha256": "e225cf99a32fdc877481470aff9d810084d73670dcd7bcd5d03c2d1b6bc0ea6d"
+    },
+    {
+      "file": "src/adapters/mock/permissionPrintRepo.test.ts",
+      "sha256": "5aec3eb6537fd1638bdb4b4d58f3e5507d443d037aa2e66f1973af402cacac07"
+    },
+    {
+      "file": "src/adapters/mock/permissionPrintRepo.ts",
+      "sha256": "5fec6f6ab16bd3a9143e763f3243f0539080658cac1896480ecd17d30616bf8f"
+    },
+    {
+      "file": "src/adapters/mock/permissionPrintRuntime.test.ts",
+      "sha256": "d6f775e5b524293c497ea0be34c4a3ff240e46ec0dc37243ab6c263d11452c78"
+    },
+    {
+      "file": "src/adapters/mock/permissionReadRepo.test.ts",
+      "sha256": "6e00f2577e3477dcb1a2bec11beebd3011f0ac31a04e6cec80331da25eaed8be"
+    },
+    {
+      "file": "src/adapters/mock/permissionRepos.test.ts",
+      "sha256": "15aca1ab7acb40fdf54a2a39a60cc0a09e1d0f1056cc8e05c5a123efd3a91842"
+    },
+    {
+      "file": "src/adapters/mock/permissionRepos.ts",
+      "sha256": "ebc6cd688062e4073740016b49fdc997c2840f6da2f271df477598337f5ca3b4"
+    },
+    {
+      "file": "src/adapters/mock/permissionRequestMac.ts",
+      "sha256": "ad656fca8357fe3b2f39954c2c235baba52b07b656f79e77005424f9d69d8436"
+    },
+    {
+      "file": "src/adapters/mock/permissionRuntime.test.ts",
+      "sha256": "3c76ce4dfd3280bff285ba07e85b357ee3d4aa3c202a4440e46698a8c31923ab"
+    },
+    {
+      "file": "src/adapters/mock/permissionRuntime.ts",
+      "sha256": "6eb9677cded35e6fb7cce656f674e44200c60ac3c86c570c78fc118795f7f4b5"
+    },
+    {
+      "file": "src/adapters/mock/permissionSeedHelpers.ts",
+      "sha256": "141373f440ac1199ab49e5b6b6a59d167c5e06b6d0a1d8642cbda0a63ffea49c"
+    },
+    {
+      "file": "src/adapters/mock/permissionSignalPort.test.ts",
+      "sha256": "62ea2db395c73659dc85afbaf23e5ddae7e8dad6624b92b33e49047518f84184"
+    },
+    {
+      "file": "src/adapters/mock/permissionSignalPort.ts",
+      "sha256": "74e86cbe94ebafcbecc04469e321b490dac1b0bc7f022f0f42adedc3a3819427"
+    },
+    {
+      "file": "src/adapters/mock/permissionState.ts",
+      "sha256": "0efd88d803b7d08a7890cc9144e2e9196cb2bce36bf757163f20f09f36b76b40"
+    },
+    {
+      "file": "src/adapters/mock/printPort.ts",
+      "sha256": "3478efeb57bb427115e0f62adb1674abe962dc9886f6a5ab31b8ac0a94bfa2dd"
+    },
+    {
+      "file": "src/adapters/mock/realtimePort.ts",
+      "sha256": "0c1da3da5f67f8a31a4eb0df74ebea0f0cdc3cf10576ef89dc72023100f172e0"
+    },
+    {
+      "file": "src/adapters/mock/reportRepo.ts",
+      "sha256": "aca5d0e3945f6586d18f40474098870e3a117650d9d624f7615f104d01bf2e82"
+    },
+    {
+      "file": "src/adapters/mock/seedRepo.ts",
+      "sha256": "4a12e29a279f6cf8d6db8c1f31a8c42d322f0339b3285ad5b9c1902f04140d3e"
+    },
+    {
+      "file": "src/adapters/mock/settingsRepo.ts",
+      "sha256": "e245ea769e91d9bef88eadff78e1febd6ef49737328bfe3f545573c75f5d2904"
+    },
+    {
+      "file": "src/adapters/mock/writeBusiness.ts",
+      "sha256": "f10d50923a3d10927930d81faaa4b5db559402977a15702a6760496f55b93b11"
+    },
+    {
+      "file": "src/adapters/mock/writeOperationRepo.test.ts",
+      "sha256": "4dff646e562a0410b9a610a7cc2e114aa72f087a8c4e523881e5f270b3f9083a"
+    },
+    {
+      "file": "src/adapters/mock/writeOperationRepo.ts",
+      "sha256": "eb7af512a6f0c3b0f747ae941d2555f2ea0cc1cb552210ad564d826d554a6f3e"
+    },
+    {
+      "file": "src/adapters/mock/writeState.ts",
+      "sha256": "4beb8c68b32b876ede00fd7d97f7601a9b3db269daa806165dbc811afb4649e0"
+    },
+    {
+      "file": "src/adapters/supabase/authPermissionContract.test.ts",
+      "sha256": "b9ad127d86479dbd4e43a66a630546f89a796779e29feda099d9c2396540df92"
+    },
+    {
+      "file": "src/adapters/supabase/authRepo.ts",
+      "sha256": "73ba26fe7dcc73fb63f7902487033b3e057e1c89cac1d880c749b83486786284"
+    },
+    {
+      "file": "src/adapters/supabase/client.test.ts",
+      "sha256": "219e5e61469c52d409cc6945acabb52ef1ec4389d9c47749aa726a8cbc6316b8"
+    },
+    {
+      "file": "src/adapters/supabase/client.ts",
+      "sha256": "0a70e800a937709ea79310922b603489e979685c27b62d9cbd372056a6b24328"
+    },
+    {
+      "file": "src/adapters/supabase/deterministicId.test.ts",
+      "sha256": "51c77f3e2a1af36080bddcbb52045bcd51fc15cf4022c3c54bae7cfdf48d8bad"
+    },
+    {
+      "file": "src/adapters/supabase/deterministicId.ts",
+      "sha256": "fe65fcf23ba397ad3815c0587e760f5cbb51c5d0b7da9d0618ca0d36d0ab72f0"
+    },
+    {
+      "file": "src/adapters/supabase/employeeCredential.ts",
+      "sha256": "998e63def5dd227055a6d3d88e1eaeb40d9d7d70d37b08fb7c8785dd97b7c89f"
+    },
+    {
+      "file": "src/adapters/supabase/employeeRepo.ts",
+      "sha256": "30d02579e46d27a26331d90f9ce7d27c94534957fde11f2d49c3b8862a8bb4c4"
+    },
+    {
+      "file": "src/adapters/supabase/errors.test.ts",
+      "sha256": "a35de48e372f7231e3ca18e26384d2ef620fb5d67203eb8bbd289345c229cbe3"
+    },
+    {
+      "file": "src/adapters/supabase/errors.ts",
+      "sha256": "4fc804fc2792d08e794fbf717a16dddb71b782efc9ee4d40e8fa360442ae70c2"
+    },
+    {
+      "file": "src/adapters/supabase/floorPlanRepo.ts",
+      "sha256": "bf2c3436d313f98eb2a849088d0ecb9b7916c9876746dc3ed41aa09d8bfa8444"
+    },
+    {
+      "file": "src/adapters/supabase/index.ts",
+      "sha256": "aa9477c80eb853d6bf51b3adf87960acba52e2654130d6829a6f85df9c6b6979"
+    },
+    {
+      "file": "src/adapters/supabase/mappers.ts",
+      "sha256": "771a32a9197e9c954a16f89d260d5d7afb70231b75e57ea66bcd55c56c8417c9"
+    },
+    {
+      "file": "src/adapters/supabase/menuImageHttp.test.ts",
+      "sha256": "fc58b4f623fefb1eaae7e0b5f60661e692aad16b78f57cc97748e69d76cc9525"
+    },
+    {
+      "file": "src/adapters/supabase/menuImagePort.ts",
+      "sha256": "0105c4829e9d597b0eac4b6509d8f583f9bb5b9290542bab19e0881bc4680d59"
+    },
+    {
+      "file": "src/adapters/supabase/menuRepo.ts",
+      "sha256": "555740264f5c6769d1b55acd4ba92f2b4244701ff585487eeb353a2801068717"
+    },
+    {
+      "file": "src/adapters/supabase/migrations.test.ts",
+      "sha256": "a1959782b3b64c8a1af6b2cf5eb33a6579c48b0406c96ff9307d79d86bd9117e"
+    },
+    {
+      "file": "src/adapters/supabase/newPermissionRuntime.ts",
+      "sha256": "53ccd8d29c7a5ed60da8c5eb48ce7abb40b2f8d28e0b08c56b76bd92dcb88c11"
+    },
+    {
+      "file": "src/adapters/supabase/orderRepo.ts",
+      "sha256": "d2e264915ca060a9fb400a364637f8f54e1124ce23d6f5677c5533e000739a2c"
+    },
+    {
+      "file": "src/adapters/supabase/ownerPinOnboarding.test.ts",
+      "sha256": "f58c239511f11868e260fa058bd7b87a8e5cff9024d3506c8a5ce329033e8766"
+    },
+    {
+      "file": "src/adapters/supabase/ownerPinOnboardingCloseout.test.ts",
+      "sha256": "24a1c7317b37459188083905d88776875985a54968242b0abe4eb12f505119e8"
+    },
+    {
+      "file": "src/adapters/supabase/paymentRepo.ts",
+      "sha256": "ad69dd476e756bdbf85cbd97ff8db129e7cbd4756422fb7c24a879b6656cdfa3"
+    },
+    {
+      "file": "src/adapters/supabase/permissionAdminRepo.test.ts",
+      "sha256": "bf0f565446dd2729726777144524e89013c7ff8e675979794bfddb7bcac6aef7"
+    },
+    {
+      "file": "src/adapters/supabase/permissionAdminRepo.ts",
+      "sha256": "7baa3917ed1eafa2568531cac6c686d91e5065d672135705e01e19b31dedd91e"
+    },
+    {
+      "file": "src/adapters/supabase/permissionChangesRepo.test.ts",
+      "sha256": "bb924e4aa61283736cc9698e01acab08ed3494f77ef116a8b81b637fc6508035"
+    },
+    {
+      "file": "src/adapters/supabase/permissionChangesRepo.ts",
+      "sha256": "16df660ee681512257ac55a04872eba38fed8435366b4c9c079ba9c4aa268115"
+    },
+    {
+      "file": "src/adapters/supabase/permissionIdentityRepo.test.ts",
+      "sha256": "ccf8157afc0de4f3f436139ce6eacfcf5ae6de2a205094a19625bd7743e06a13"
+    },
+    {
+      "file": "src/adapters/supabase/permissionIdentityRepo.ts",
+      "sha256": "62de6a828bc1c16669c603fb735b3acadc85ef90559a829d184477d619f75b4e"
+    },
+    {
+      "file": "src/adapters/supabase/permissionMenuImagePort.test.ts",
+      "sha256": "e01ce9442016f63890fda00c593d710e364c646af68f45a1ced5569aca9f862a"
+    },
+    {
+      "file": "src/adapters/supabase/permissionMenuImagePort.ts",
+      "sha256": "95c34a86f86bcd2d7930c390936933c4b742006fb9133ee0b1c9ba8bfc205cbe"
+    },
+    {
+      "file": "src/adapters/supabase/permissionPrintRepo.test.ts",
+      "sha256": "5cd510ed6c243ed634ba62039b003008aeb0986789597c5c201046b72d6c84c8"
+    },
+    {
+      "file": "src/adapters/supabase/permissionPrintRepo.ts",
+      "sha256": "d4fbe4f569225b946606a54643cdc2c29ade58394b674c25a14da1dc7ad681d4"
+    },
+    {
+      "file": "src/adapters/supabase/permissionReadRepo.test.ts",
+      "sha256": "a3a177e4ef5226c4b831d48e10019c0c7dd9853af9219da3e94356d78091b49a"
+    },
+    {
+      "file": "src/adapters/supabase/permissionReadRepo.ts",
+      "sha256": "f6382806e9c5b900eb16b4dd23fad4ea4c5477a03fd194e34e71a3691f23581a"
+    },
+    {
+      "file": "src/adapters/supabase/permissionSignalPort.test.ts",
+      "sha256": "0ea1c1f4b72d59f003fcab21675371bc1d36284d48df00963886f7adc83042fc"
+    },
+    {
+      "file": "src/adapters/supabase/permissionSignalPort.ts",
+      "sha256": "29ac6eaa07de0d9fa8ff181362ca915fe5b6ee81cc044973e9465529da736d76"
+    },
+    {
+      "file": "src/adapters/supabase/realtimePort.test.ts",
+      "sha256": "edb759d8fea9b80e199e6e131c0e70e72bec18f20dcd118bd91218f9e9af88d4"
+    },
+    {
+      "file": "src/adapters/supabase/realtimePort.ts",
+      "sha256": "3ec749409c30dbb79667f44cfcee1c1bdb1ae44144269dbb012531b193cb9f38"
+    },
+    {
+      "file": "src/adapters/supabase/repoShared.ts",
+      "sha256": "d5c4002d6ce9fa6ebbb760cb07591e09af9a25b0412db51d42c7069e10ff5776"
+    },
+    {
+      "file": "src/adapters/supabase/reportRepo.ts",
+      "sha256": "5b03cdeb1cf4d2f4a903c5bcf0ba511a4c0b7fdab9784f49b7549c6774aafe9e"
+    },
+    {
+      "file": "src/adapters/supabase/repos.test.ts",
+      "sha256": "34138129fb9fc54fff88399fc393f6ba0b0e640c38e113c59f944c92393e5ead"
+    },
+    {
+      "file": "src/adapters/supabase/repos.ts",
+      "sha256": "f861104e8d4d202fb6f87ab2e6cecb0bfed415372f5ceeccf89939100b62557c"
+    },
+    {
+      "file": "src/adapters/supabase/seedBundle.ts",
+      "sha256": "73ef96c139b28f13f0ce1363500a05d299d99592bb5c8490aaa772ad28507b8f"
+    },
+    {
+      "file": "src/adapters/supabase/seedRepo.test.ts",
+      "sha256": "9e9b4eb5359060301c5859ee000d3c6b3e44035e0eefe58f0f43ab660ddcfc25"
+    },
+    {
+      "file": "src/adapters/supabase/seedRepo.ts",
+      "sha256": "ac8a5b736ffab7e2ad08960f3d49419ffcf1142e88d5fb52210369035e68e75a"
+    },
+    {
+      "file": "src/adapters/supabase/settingsRepo.ts",
+      "sha256": "32b15768b27387f6182b51d1e7d3936305ce82b9dc8bfe469d02627707c20718"
+    },
+    {
+      "file": "src/adapters/supabase/storeKey.test.ts",
+      "sha256": "f884397cbc196eab66337dc63385f4a46b8380ebc26646f10a249b181515d4a8"
+    },
+    {
+      "file": "src/adapters/supabase/storeKey.ts",
+      "sha256": "9a65a9e7a13f848d1fa210be47a60b0308edd159454d2ea2eef5ca71c1ac7663"
+    },
+    {
+      "file": "src/adapters/supabase/writeOperationRepo.test.ts",
+      "sha256": "80911dec06cd65de83657938fefbf382e43ccf0aecddc8ee481dde23a4841859"
+    },
+    {
+      "file": "src/adapters/supabase/writeOperationRepo.ts",
+      "sha256": "e0cf20f0432d637989c0eadb30070319641c16f21ca6c72a43598a58a558044e"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "sha256": "0e7a73cf95d81bb630f727298a6f177e795388a81595f0476e7a575a2e167f9d"
+    },
+    {
+      "file": "src/app/AppProviders.tsx",
+      "sha256": "c55a0a546ae597603a0d5458b34f034b6798e5f9d58d347a4fdbdf895f893150"
+    },
+    {
+      "file": "src/app/InitialSeedLifecycle.tsx",
+      "sha256": "ce58fe5f2bf4455dd90727ec43b422ef8ddd11113434d50a68ff3cced29cadec"
+    },
+    {
+      "file": "src/app/PermissionLifecycle.tsx",
+      "sha256": "a3a88bbc3c68fbb253eb5da2fb43fb3ffca54b80037dce949c3162e2eaf3b89d"
+    },
+    {
+      "file": "src/app/WriteLifecycle.tsx",
+      "sha256": "0deb641f2af2b0f3c46bb99238609e9d1ad6096a23f902268d1ec2f31c408df5"
+    },
+    {
+      "file": "src/app/appErrors.ts",
+      "sha256": "1e3c222dae9543896fc2c7e367960b11b69a04991fc44bf1a8c20d8840dd6576"
+    },
+    {
+      "file": "src/app/compatibilityCreateStore.test.tsx",
+      "sha256": "0577b101334b69c31b29cd5b2a180aa2100754ef403ac4fcecca140ade0cdd6a"
+    },
+    {
+      "file": "src/app/compatibilityGate.test.tsx",
+      "sha256": "9b0293f5669df353f8359123ec1cd9f7c3e0f9561bb78fa2945d4aa0842dd7a1"
+    },
+    {
+      "file": "src/app/compatibilityGate.ts",
+      "sha256": "4313b36dc4534a2374244c173c64175b77026454fb0d56b8ea7ef66bef7b29f6"
+    },
+    {
+      "file": "src/app/components/CartSnapshotList.tsx",
+      "sha256": "4c1628a8c667512705ed0c4d66dd90921793e04fa21ba0fa02329806a21b14ac"
+    },
+    {
+      "file": "src/app/components/EditorDrawer.tsx",
+      "sha256": "1b60cb07158597ec6a0ed00d41bc88d6ef6af387c1c54d9a04b9c0afd1f2d136"
+    },
+    {
+      "file": "src/app/components/FloorDecorVisual.tsx",
+      "sha256": "8dc29bff367de404d9fef29461cdc621db92c1a4f0ebb2f3b3d02e449aac6772"
+    },
+    {
+      "file": "src/app/components/Metric.tsx",
+      "sha256": "56f9add0cbb0a4bf571e4f4f6cd1b1a483216c03932b41edf0a7b1e00f2cf2ab"
+    },
+    {
+      "file": "src/app/components/PortalDrawer.test.tsx",
+      "sha256": "74f4d8baf652829d0aef0517f1ad7ea6b316fff3d8b061cc13f63846b5e2de82"
+    },
+    {
+      "file": "src/app/components/PortalDrawer.tsx",
+      "sha256": "fcbe48b08ff65c003abe348b5b1cbf1e684cc600c5315c29cdf98f21ab7c2cf0"
+    },
+    {
+      "file": "src/app/components/PortalPopup.test.tsx",
+      "sha256": "48d93ec9ad2bbdbe53e0b637ed045428c41a234b3bdad667d60e33556fb4a9e9"
+    },
+    {
+      "file": "src/app/components/PortalPopup.tsx",
+      "sha256": "921075cb68079a553878cfd0a555dc0bdeb3e14083d54b5204b064bdcb16ee03"
+    },
+    {
+      "file": "src/app/components/ReceiptPreview.test.tsx",
+      "sha256": "f6a3116ef40d917186e3ad7b8d447b8f27173a7dfc450623ee5f9dd9fc843cc6"
+    },
+    {
+      "file": "src/app/components/ReceiptPreview.tsx",
+      "sha256": "2eb4aec726ba75e7ba6bc959d9f78cd6bdd3fef964c7685a4600961543d3af3a"
+    },
+    {
+      "file": "src/app/components/ReceiptPrintLifecycle.test.tsx",
+      "sha256": "b10887572dd74fe7c2d6e9374f9c80b2d94785c53ce33a4f76e8bdc457f02fd1"
+    },
+    {
+      "file": "src/app/components/RemakeIcon.tsx",
+      "sha256": "9671453cb4da1237f5a1f4b41ab07c1af8d7de410726b0b89f7cebaf6cc94c52"
+    },
+    {
+      "file": "src/app/components/ScaledFloorStage.tsx",
+      "sha256": "b013aae98bc0411574a6b142f2e9a8c88e6705b659a828389b41c0272bba30e1"
+    },
+    {
+      "file": "src/app/components/useDialogFocus.ts",
+      "sha256": "3a7eaf6aca1a044b46a52c2a5679a1eb7e604df769f43ec209938d122c521d2f"
+    },
+    {
+      "file": "src/app/createStoreCloseout.test.tsx",
+      "sha256": "d0051a900778972073c6f9d4adbe9352bdb90a0545851159875f94305b0dd36c"
+    },
+    {
+      "file": "src/app/demoCopyPolish.test.tsx",
+      "sha256": "d8b58c841aadf49acad54ee75fb4e490125bf059e4431c66d6066474915a5ec6"
+    },
+    {
+      "file": "src/app/demoHardening.test.tsx",
+      "sha256": "f3ea7e195b5903cb1216414ca0251918b3ce2d9778debfd361f7e85c95f1aa9b"
+    },
+    {
+      "file": "src/app/drawerNavigation.ts",
+      "sha256": "77f72a14eace1cf7811ac93a73cca3e483742cc03d138c192aea1c524791cfd3"
+    },
+    {
+      "file": "src/app/drawers/admin/ClearDemoDialog.tsx",
+      "sha256": "449fc289070bb2cc3babb62ca8f9f57d6d2f03be45c473b92f258cad3a73b3ac"
+    },
+    {
+      "file": "src/app/drawers/admin/EmployeeDetailPane.permission.test.tsx",
+      "sha256": "002e91e06e2128f0f6194a26713ad844fa56ae933d8c1f782917cb261cb9c6e0"
+    },
+    {
+      "file": "src/app/drawers/admin/EmployeeDetailPane.tsx",
+      "sha256": "f082d0473c5f074e7514e5c746aa59ee794bf301b5ae0905ecc6434bc522fd09"
+    },
+    {
+      "file": "src/app/drawers/admin/EmployeeListPane.tsx",
+      "sha256": "17bedc6d4e8a2d63fd7fa2fb5d85cc1c467269f124cbb246c9df124ca7f4b912"
+    },
+    {
+      "file": "src/app/drawers/admin/EmployeesDrawer.permission.test.tsx",
+      "sha256": "5c90ae0e95b5f4743df912b8932c3b5cc9eb38125a8c4e3e9d64f8d620da4cfe"
+    },
+    {
+      "file": "src/app/drawers/admin/EmployeesDrawer.tsx",
+      "sha256": "89c91570dea19fc4699716c53cda4b797dfc3146e4f130663a1645363fba5c8f"
+    },
+    {
+      "file": "src/app/drawers/admin/FloorDecorAssetPicker.tsx",
+      "sha256": "0823e51088f67936bee83d5d7b2ddeaeaffd4a303ad92bb93208b0e21238cf47"
+    },
+    {
+      "file": "src/app/drawers/admin/FloorEditorDecorNode.tsx",
+      "sha256": "3b3f89f7d3fe94238aff096da18861c0398c5777a4daf254dca182e6f78a35b0"
+    },
+    {
+      "file": "src/app/drawers/admin/FloorEditorDrawer.tsx",
+      "sha256": "f0835ee9867fd96a9e6939a3f04f4616173fa82c712fa54fa9b310ba15b19621"
+    },
+    {
+      "file": "src/app/drawers/admin/FloorEditorInspectorPane.tsx",
+      "sha256": "3c9ac589c28c770d2199b3a63064ebedab5f54d0496549ec67d5be77dd48ef14"
+    },
+    {
+      "file": "src/app/drawers/admin/FloorEditorTableNode.tsx",
+      "sha256": "87c56a16fb7c8b8e1f882d3fa5811ec40ce34dca9c639e6980ce5cb7e5697d21"
+    },
+    {
+      "file": "src/app/drawers/admin/FloorEditorToolbar.tsx",
+      "sha256": "a1e74cc528ca012710d3e567481332df80e661a26a0102f500b7f4e7fdc8276d"
+    },
+    {
+      "file": "src/app/drawers/admin/FloorTableBackgroundPicker.tsx",
+      "sha256": "61745cd61eac528ff0aa435a9c7f3db709e1463a88f2d39655905afd1a124496"
+    },
+    {
+      "file": "src/app/drawers/admin/GeneralSettingsDrawer.tsx",
+      "sha256": "6dc4788cf7809f5dc25ebde8da23264d1a1dbf0e98d4595bb160a557c649b0b2"
+    },
+    {
+      "file": "src/app/drawers/admin/KitchenQueueDrawer.tsx",
+      "sha256": "24d6b50dd8464d892d93eb12d4f2b5c8cd9d56460c87a4f9df8fc7f250d14b28"
+    },
+    {
+      "file": "src/app/drawers/admin/MenuCatalogPane.tsx",
+      "sha256": "8f00f1497a059e36ecb28473509477b3b62e73232f674545694be385f2b679d2"
+    },
+    {
+      "file": "src/app/drawers/admin/MenuEditorDetailPane.tsx",
+      "sha256": "b953009771aa8c6853567b3004ee5cf381397f15ef01d4cc65d2786b780fa07b"
+    },
+    {
+      "file": "src/app/drawers/admin/MenuEditorDrawer.tsx",
+      "sha256": "781928b40fe58cf9489768599f64d5333c92b0d6fb56dfdb2db929ee85a91231"
+    },
+    {
+      "file": "src/app/drawers/admin/ModifierGroupEditor.tsx",
+      "sha256": "b3a87bd48f8dada829ce4476e81fc5d380cbfe30b42bc1394f46a3f13e889352"
+    },
+    {
+      "file": "src/app/drawers/admin/OrderHistoryDetailPane.tsx",
+      "sha256": "0295c4d9c47a9d8677cd6c533ff09386d63ca9ee99e27f5aa187e6ed77dab5ef"
+    },
+    {
+      "file": "src/app/drawers/admin/OrderHistoryDrawer.tsx",
+      "sha256": "61cbbd2b78d62a503d4af4bcb20987b485c503d27e3b3369589631b5cc74fd58"
+    },
+    {
+      "file": "src/app/drawers/admin/OrderHistoryListPane.tsx",
+      "sha256": "b6b5f0da6b95821019ae5a30314bdd8cb652e8c30093fa0b5909b210625a7a52"
+    },
+    {
+      "file": "src/app/drawers/admin/PaymentSettingsDrawer.tsx",
+      "sha256": "4c93a2fc34c98241459a29f8d636be4a91f6b1e062a0dad8b01992d3d92f9f97"
+    },
+    {
+      "file": "src/app/drawers/admin/PermissionEmployeeListPane.tsx",
+      "sha256": "19c609f298a896a740322f5c17b330c834994156323cc5083e36c5eb86f6a594"
+    },
+    {
+      "file": "src/app/drawers/admin/ReportDrawer.tsx",
+      "sha256": "ee28883a616123285e2731ecae8714034e3b9f28fb679ad087aac78f82259c65"
+    },
+    {
+      "file": "src/app/drawers/admin/floorObjectTransforms.tsx",
+      "sha256": "96212df51fdcc51a6dd8d2cec87b4ed34fd8e2996692c2cd3019c347e00cd0c5"
+    },
+    {
+      "file": "src/app/drawers/admin/orderHistoryShared.tsx",
+      "sha256": "8093f915eda7cda0a332f69c5ec462adabe3d53c44e958758f9baa70d87007b9"
+    },
+    {
+      "file": "src/app/drawers/admin/report/ReportChart.tsx",
+      "sha256": "f64cacc3e5438e806b1233c5a6608dcb174f78c2e462bfc844b0c4778dfef9fc"
+    },
+    {
+      "file": "src/app/drawers/admin/report/ReportSummary.tsx",
+      "sha256": "58d12c1cb6e8704489ecf92da2d3a2bda2ce19fb9a36599498281e8255e60c49"
+    },
+    {
+      "file": "src/app/drawers/pos/DiscardDraftDialog.tsx",
+      "sha256": "4fa8e76614a02dfc15e6645092bbafe5b0885b098c5f58f20fcca2512694e81d"
+    },
+    {
+      "file": "src/app/drawers/pos/ModifierPickerPopup.test.tsx",
+      "sha256": "746b0dc247b7f40f9850477658ae4acc53005cacc5e5063e5cd8d815839c6ff0"
+    },
+    {
+      "file": "src/app/drawers/pos/ModifierPickerPopup.tsx",
+      "sha256": "b5231a616da491057f2ba26bff715ea892520f976a7ea3e534e28d200e0bae6e"
+    },
+    {
+      "file": "src/app/drawers/pos/OrderCartPane.tsx",
+      "sha256": "b5ec6a9ff10f0463aa90b33fcf285f531528d4298c02bbd2298758557c8b2ebe"
+    },
+    {
+      "file": "src/app/drawers/pos/OrderDrawer.tsx",
+      "sha256": "1c9e3f3529eb74d5694709166665d6183d53ea7514ffbb5e9ad720d50125e708"
+    },
+    {
+      "file": "src/app/drawers/pos/OrderMenuPane.test.tsx",
+      "sha256": "18ebb4d4615d32a4c915fd5c3f0fdb0494c1f674671ca89f7580f006d430390f"
+    },
+    {
+      "file": "src/app/drawers/pos/OrderMenuPane.tsx",
+      "sha256": "734bcb6aa92f79c4196382b7695133e6f717fc232c4fec79a09bd10e053849b0"
+    },
+    {
+      "file": "src/app/drawers/pos/PaymentCashierPane.tsx",
+      "sha256": "0d1bf4cf40bf7625e57bf6c89ec603910609315a8fd3cc704fa3cad3b75c213b"
+    },
+    {
+      "file": "src/app/drawers/pos/PaymentDrawer.tsx",
+      "sha256": "e776e3a2e89cd9db2606a12d0713ce0c43556b42e4bf3ce4684faef6e13a3375"
+    },
+    {
+      "file": "src/app/drawers/pos/PaymentIcon.tsx",
+      "sha256": "ea4c1bd9efe31108d1714766776cd8e33442953f58579f3a412577027b70f196"
+    },
+    {
+      "file": "src/app/drawers/pos/PaymentSummaryPane.tsx",
+      "sha256": "fc7740cfcca02d7e0674b4a9b47264542d465fd1be4e704691f969449854fee4"
+    },
+    {
+      "file": "src/app/drawers/pos/PriceChangedNotice.tsx",
+      "sha256": "6752adb1325084d559c2cafe41186e1a7b32b0a450d39026ab14998d6ad43984"
+    },
+    {
+      "file": "src/app/drawers/pos/TakeawayDrawer.tsx",
+      "sha256": "da543a0050a3ec41778ac7ea2b19f42b3c44f788a48b56c67b935671e1203616"
+    },
+    {
+      "file": "src/app/drawers/pos/WriteAttemptNotice.tsx",
+      "sha256": "d44d8d370e115bc5ac2dd74c1b13b81c6ea6f5c5c647b36b40cacc88f2a0cf11"
+    },
+    {
+      "file": "src/app/drawers/pos/WriteRecoveryDrawer.tsx",
+      "sha256": "0e786385121060db01b952d6361567622a6312298cc46382070bcc8d2295aa85"
+    },
+    {
+      "file": "src/app/drawers/pos/orderRemake.css",
+      "sha256": "1fd853b3f3243390e7307981dcd966808fafa1d3064b1733bfbaaa7bdb66032e"
+    },
+    {
+      "file": "src/app/drawers/pos/paymentRemake.css",
+      "sha256": "267dd19e2e6e6df32a5cfc67ff572fa75e3c5057ab9e7f7d94dc1fb7ab0ea8dc"
+    },
+    {
+      "file": "src/app/drawers/pos/paymentShared.tsx",
+      "sha256": "6a2c1bd9e29629593f00cce81108836b9ac6b397621c7f523f994babe1acecc4"
+    },
+    {
+      "file": "src/app/drawers/pos/useOrderDialogFocus.ts",
+      "sha256": "9ede09fa25bbf0403c28516bd3341cfe4c6a3335ff80e91b68251fb00bb750d8"
+    },
+    {
+      "file": "src/app/drawers/pos/usePaymentDialogFocus.ts",
+      "sha256": "d3219108fa3cadcefdb6dc3cf5bea0f64a06ce0564cbb3e8cc09e12d91281fb8"
+    },
+    {
+      "file": "src/app/drawers/pos/usePaymentViewport.ts",
+      "sha256": "827ce1ed6dff462c6d0c50056f62d6c397e507fbc17652a3da4b4dbdbb93ad22"
+    },
+    {
+      "file": "src/app/drawers/pos/useServerOrderDraft.ts",
+      "sha256": "da0fd3124a1cc6d588fc85141d1644ded7427e0e07aa79e4c53aa75062039a45"
+    },
+    {
+      "file": "src/app/employeeDrawer.test.tsx",
+      "sha256": "deabdb7d09782e477291439b65a5f936977ab06d16a943250ac71da1e17fdf0f"
+    },
+    {
+      "file": "src/app/floorDecorAssets.test.ts",
+      "sha256": "6ec4873ec9762a00f2743cb5b1a57c78d4895c034fe086b8ab460ddb0dc3b5ab"
+    },
+    {
+      "file": "src/app/floorDecorAssets.ts",
+      "sha256": "6136642c4b3602152b065004259353ccf5054cd88758b74775bc846f8c96281c"
+    },
+    {
+      "file": "src/app/floorEditorDrawer.test.tsx",
+      "sha256": "2386304fe3ac2805e1d7cec11aab4d96ec7c996ba6162551973583d16478ff32"
+    },
+    {
+      "file": "src/app/floorStage.test.ts",
+      "sha256": "6ea965c3cd22e22820aa0857ff32ba38fd62fa215bc2048006d65339e959c217"
+    },
+    {
+      "file": "src/app/floorStage.ts",
+      "sha256": "9341d3bfd106f4b76f4f52221356fdccd4fd58f193230478f186f19c7ea7d0d7"
+    },
+    {
+      "file": "src/app/floorTableBackgroundAssets.test.ts",
+      "sha256": "a4adf6b8a7a5e964161265c13f507813bb5c63c6d5573bb95d81e9463ca1c2ec"
+    },
+    {
+      "file": "src/app/floorTableBackgroundAssets.ts",
+      "sha256": "bfcbe10e564093d39deccdf98f37965f6e650ba6d186928591c756d3d8fa2db3"
+    },
+    {
+      "file": "src/app/initialSeedCloseout.test.tsx",
+      "sha256": "53bf218c111b3920220b8c1b4465690ca2c5e601d634f860b8e25847ccd60598"
+    },
+    {
+      "file": "src/app/initialSeedLifecycle.test.tsx",
+      "sha256": "a8edf588f44d4810886d2be7f2508fca899f9e90c77ec15136eef32414b12568"
+    },
+    {
+      "file": "src/app/instantPay.test.tsx",
+      "sha256": "1657e4a72c1b81bef4a81b2f203c839c2131f97cc1c3f6a2cca4ddaa20176db9"
+    },
+    {
+      "file": "src/app/menuEditorDrawer.test.tsx",
+      "sha256": "f17b485fa5683dd14e4859b0a3081c91c989954551e06d210175336a252df3fe"
+    },
+    {
+      "file": "src/app/orderHistoryVoid.test.tsx",
+      "sha256": "fd8819cfabaf0bc5ad4c15cc5dff6e14086c2349e2886032fe27d682fd5cfb52"
+    },
+    {
+      "file": "src/app/passcodeErrorMessages.test.tsx",
+      "sha256": "c7089d11795813d4ee9c1ccdcbbb61a70df3cb7cbbc19109ebb3f73743ae313d"
+    },
+    {
+      "file": "src/app/permissionErrorCatalog.test.ts",
+      "sha256": "e45570759ce80562dea651ee7101153c5528488393e5de3fef0df712508fe378"
+    },
+    {
+      "file": "src/app/permissionPurposeCache.test.tsx",
+      "sha256": "8b81046200c21c41a1f0c8ccfa492cccdb2e817d3469ac1ed72cc7baa304da88"
+    },
+    {
+      "file": "src/app/permissionUi.test.tsx",
+      "sha256": "fd546ba4e612c2e12d0ac9a3d8a68b011d3deee07dd04bdf74100a0d6d8bdf51"
+    },
+    {
+      "file": "src/app/permissionUi.ts",
+      "sha256": "41f73a75efac5f30c5ba9b7767711313721688cff856ad9061fe7454713800c5"
+    },
+    {
+      "file": "src/app/reloadRecoveryNotice.test.tsx",
+      "sha256": "d09caacb5a5ced5722bc653ca6919109dcb90820298492650324c9fd8d7f841d"
+    },
+    {
+      "file": "src/app/reportDrawer.presentation.test.tsx",
+      "sha256": "1599c69bf851110b485978e42bc2c476cf7d2ef495c61a50ddb753cc4c66f4a8"
+    },
+    {
+      "file": "src/app/reportHistoryDrawer.test.tsx",
+      "sha256": "19c77c5f2e78422be03fcad4ff80f265aa0c11561f53423097196974e0326093"
+    },
+    {
+      "file": "src/app/requiredPinChange.test.tsx",
+      "sha256": "28e0d1dee00c2bac887f0707ba483e2c0f8b52a492f9d751f752a52be14b28b6"
+    },
+    {
+      "file": "src/app/restrictedAppGate.test.tsx",
+      "sha256": "ba07cad77d28a1588094a9d39f81094431cc1c24250eb3adb6f8dab4043dd266"
+    },
+    {
+      "file": "src/app/runtimePorts.test.ts",
+      "sha256": "bee6358bd58b5695490b0acb3d57c6fb26915d87d877451abb84247b4771d31c"
+    },
+    {
+      "file": "src/app/runtimePorts.ts",
+      "sha256": "a93bc308004aaf39823dc1f76de3c4cb948f6645c9e9ee3104384b3fbd349f02"
+    },
+    {
+      "file": "src/app/screens/CreateStoreScreen.tsx",
+      "sha256": "b01a0fd34c717a5111ce5970e3277fbc4d2c72ddf21c48d9ee2f57469aaf4e77"
+    },
+    {
+      "file": "src/app/screens/LandingScreen.tsx",
+      "sha256": "1119d3a03880a9b319214400d3e5d24a7497d410e68dc0dbb641610ea89e225a"
+    },
+    {
+      "file": "src/app/screens/PasscodeScreen.tsx",
+      "sha256": "0cf83a7a9a78737a2932ffb0ab1bcf9500139fedd4b64fec9741e4bdff79ce94"
+    },
+    {
+      "file": "src/app/screens/RequiredPinChangeScreen.tsx",
+      "sha256": "89342e5e42453c6732c47fc065e8f721e90d7ae7153706a2766b062721c218b1"
+    },
+    {
+      "file": "src/app/screens/RotateGuidance.tsx",
+      "sha256": "d7e0e9cbca3f9ee9b73e2ce620387f3f3aae48e5d535afaee73c34d83d152151"
+    },
+    {
+      "file": "src/app/screens/StorePairingScreen.tsx",
+      "sha256": "dee9c2f6df403b2a9da1334e0487fbb2af99bc516be4964d14578f3efa40bda2"
+    },
+    {
+      "file": "src/app/shell/AppShell.tsx",
+      "sha256": "64f3909d8d0ebdb8f726bba25e6b334bc64b9fae3f1937ac568534d5370d0907"
+    },
+    {
+      "file": "src/app/shell/FloorAreaChooser.tsx",
+      "sha256": "752e45fbce1957b2828eccb997a13a453dbf08d7d610a4e9674d1389fb8b6b21"
+    },
+    {
+      "file": "src/app/shell/FloorWorkspace.test.tsx",
+      "sha256": "02c1506e34aa187e08c406b31b6dd31c0345968b547b0a88798abfec3d0816ae"
+    },
+    {
+      "file": "src/app/shell/FloorWorkspace.tsx",
+      "sha256": "0b8c50152e4005da5816c4d95f6fc10666bd7bdc3f39029c3090102e7e0bac41"
+    },
+    {
+      "file": "src/app/shell/LeftNav.test.tsx",
+      "sha256": "2e33011d5a1e1657277a26346f52fd288186b5fc53adc8b4e39e30461fe56ba8"
+    },
+    {
+      "file": "src/app/shell/LeftNav.tsx",
+      "sha256": "ef8075b5c6c02f5bdec67931bfe20924869c76f5b7a41e2604f9c981e4c6d4a6"
+    },
+    {
+      "file": "src/app/shell/RailButton.test.tsx",
+      "sha256": "cd306fa3114fe7b7868c6350ce3aa62becc0c67f5d5568864e40e58049afcacd"
+    },
+    {
+      "file": "src/app/shell/RailButton.tsx",
+      "sha256": "bd0f0114d4e89f7e0d683dc1b183c29eedca1377ba17f4597cefd2d5f3ca088a"
+    },
+    {
+      "file": "src/app/shell/floorAreaSelector.css",
+      "sha256": "399ced8babba53368ab1777988c7192e787e85b35cde32ab39b281bd722436e6"
+    },
+    {
+      "file": "src/app/tailwindMigration.test.ts",
+      "sha256": "a64308d8d547d3f51ffaef543e3083737b26bacea54c0355a1284d3608263200"
+    },
+    {
+      "file": "src/app/useAppStore.ts",
+      "sha256": "5444cdc734aae9eb0b309ee0426996f55daa4f85859aed19dd9571b3064cd1aa"
+    },
+    {
+      "file": "src/app/useViewLifetime.ts",
+      "sha256": "58e583253ed7e4a2b32f185d7f530f551eb28ca5d7629e6ef843b0b7f954d998"
+    },
+    {
+      "file": "src/app/writeHistoryLifetime.test.tsx",
+      "sha256": "6e6f9fba692b400edfce1570d78b1a85601d3bd166f40d9eed584ab5bcca8cde"
+    },
+    {
+      "file": "src/app/writeInitialSubmitLifetime.test.tsx",
+      "sha256": "2e687a4c947a45b9ac2726cd577577ac5fda1cef08f54e13f1ed58a17e71a61f"
+    },
+    {
+      "file": "src/app/writePaymentLifetime.test.tsx",
+      "sha256": "29b166d9652950e7255cada0d08782295e430b00268cee34f0e08dc09f270ab3"
+    },
+    {
+      "file": "src/app/writeRecovery.test.tsx",
+      "sha256": "94efaf9851d3168754a5d3381e7cfae521fc1d63c4dfeef43e4914b9b1a65efe"
+    },
+    {
+      "file": "src/app/writeRecoveryAccess.test.tsx",
+      "sha256": "f5de39b890aabd85095eb40f5e660a1c926e678ca9c6ccee32dd569d131e3aea"
+    },
+    {
+      "file": "src/app/writeRecoveryActionLifetime.test.tsx",
+      "sha256": "1e022a7cda6a658399b2a224f52f165716e7f51faeaf37fdc46a065cee10f32a"
+    },
+    {
+      "file": "src/app/writeRetryDraft.test.tsx",
+      "sha256": "1558895de1803c981eda81a89556ff807e78a48ba6508d7bd2fe246134af7252"
+    },
+    {
+      "file": "src/app/writeReviewRegressions.test.tsx",
+      "sha256": "4bcae74bc6d95dd27c8a7e5ed2c5f651dfcdf52e06e46f22bbfb4feb367d6b87"
+    },
+    {
+      "file": "src/app/writeSessionGeneration.test.tsx",
+      "sha256": "ab19ffdbcb5ec8da198c90b96d08bbb9d2ffcf45b801e599413f36130c87c1db"
+    },
+    {
+      "file": "src/architectureBoundaries.test.ts",
+      "sha256": "59fa39121d89f84c973f7348399dbfb1e4458d36eeae3b80948d39798b8cc276"
+    },
+    {
+      "file": "src/core/appError.ts",
+      "sha256": "0a286f319de96eedf795666a76d218a5791e6de65e345e6e8a171494713d8bea"
+    },
+    {
+      "file": "src/core/guards.test.ts",
+      "sha256": "7ea364106b685244628ef76a3bd16248c35d43159dc4902e3849c7d9ebd7a6e2"
+    },
+    {
+      "file": "src/core/guards.ts",
+      "sha256": "1ad7e61b65af9cb3867d3a32f94a693b0c92283d9309fd9afd0aee6bcfaa2242"
+    },
+    {
+      "file": "src/core/money.ts",
+      "sha256": "9358f80479ede0c906c619fdccc1a7b1faf46124f27495f3aeb5fe1400927778"
+    },
+    {
+      "file": "src/core/orderDraft.ts",
+      "sha256": "69362b3c44753dae5525b543751827325ad08526f6d1f3690c2b11bcdddc14c0"
+    },
+    {
+      "file": "src/core/permissionAuthority.ts",
+      "sha256": "2e436d449c2141d55e0d1ba0994e588ca42bacc9182e44627302ba7f31698055"
+    },
+    {
+      "file": "src/core/permissionCatalog.test.ts",
+      "sha256": "d7fcbf1788f70d22cc566ccabcbce961935dbe9d6ab4363d6182e3be632259ad"
+    },
+    {
+      "file": "src/core/permissionCatalog.ts",
+      "sha256": "5d207e40bd019f688bab2f14ff92c529937f1ec4e4d463b447edef7bdf505162"
+    },
+    {
+      "file": "src/core/permissionChangesInputs.test.ts",
+      "sha256": "cdb43dee2b95b381fb384107c9c73b8ae76fe975dc7c57b681c90e1d6bb08b7a"
+    },
+    {
+      "file": "src/core/permissionChangesInputs.ts",
+      "sha256": "2aaedfdecacc88d5fd30971a602c1767e37b0eca0ae8316173ed3f96b7888711"
+    },
+    {
+      "file": "src/core/permissionErrors.ts",
+      "sha256": "4a59631ec1b95662b835bedc4eaba12df3371ebae6ce2af6f4f063afc5923829"
+    },
+    {
+      "file": "src/core/permissionIdentityInputs.test.ts",
+      "sha256": "5449f456a8955ca5733b3a6509db48eaec617275ad11230bf87badd22f461b83"
+    },
+    {
+      "file": "src/core/permissionIdentityInputs.ts",
+      "sha256": "884a4ddf2d5b60fe7580d4b342b737f56f27d6fda6582e790dd15042b41541c0"
+    },
+    {
+      "file": "src/core/permissionInputs.test.ts",
+      "sha256": "01a9e21908153c68a35e35622bf656024e988fecbeede41ba74894071425e9c1"
+    },
+    {
+      "file": "src/core/permissionInputs.ts",
+      "sha256": "0136380a755d0fd4ec91697beb5caba96452ca80be76c42f5f0eeceda004b4bc"
+    },
+    {
+      "file": "src/core/permissionLifecycle.test.ts",
+      "sha256": "0540be3e2a93954b1c3f67f49d49e9b709755feb5f1b149f62b1570080688d3d"
+    },
+    {
+      "file": "src/core/permissionLifecycle.ts",
+      "sha256": "c0acde8d29574e5bf04a7d7d2fc5d8fd1eebe39d3d36fa4a0f1f561750e0f95e"
+    },
+    {
+      "file": "src/core/permissionOverrides.test.ts",
+      "sha256": "767a38bfabc0f881e7e0d453b29fce983f7b25cf268f13bb9667fdda0029d7f1"
+    },
+    {
+      "file": "src/core/permissionOverrides.ts",
+      "sha256": "04ae52854d6fac2af75ca722cb0d2d6487b40a5c994cf41001023850e291a0fb"
+    },
+    {
+      "file": "src/core/permissionReadInputs.test.ts",
+      "sha256": "9fea958c8452188c26f5398fceef97d65c9d7c2bf81490feeb92bb1359d3da82"
+    },
+    {
+      "file": "src/core/permissionReadInputs.ts",
+      "sha256": "cccb3d9ddf746b2887059203e1f64b558bd368ba303c4b1aebb31876085edfb8"
+    },
+    {
+      "file": "src/core/receiptPrintClick.test.ts",
+      "sha256": "5644e18a06164eedea216a031e7917fef06532dfbef5b1923acf48f521c16979"
+    },
+    {
+      "file": "src/core/receiptPrintClick.ts",
+      "sha256": "c0705d95a89bc6ebccc38f89b865b9ef546854d67aa7dff1aed09bcee096e3e9"
+    },
+    {
+      "file": "src/core/writeErrors.ts",
+      "sha256": "fead70421f3b4b50683c2302e0d60e6501f70a24fcdf918c96576401e42f63ae"
+    },
+    {
+      "file": "src/core/writePayload.test.ts",
+      "sha256": "95988a70b772d9c1356cc0c5a5e40f4a80920c4d9fdda7a119a44a26869f5d65"
+    },
+    {
+      "file": "src/core/writePayload.ts",
+      "sha256": "c51528c3548c75775920b2441e43192841d4093580fc442a0dc88c3a634dd41c"
+    },
+    {
+      "file": "src/domain/changes.ts",
+      "sha256": "764ebd60d5dc429496af1200d7407d7be84562e0fc010a2808f0e84db1d4de37"
+    },
+    {
+      "file": "src/domain/index.ts",
+      "sha256": "8cc9f6508f4b1a3aee25c5bf2c979493d0febf61d51f5d5cdb93ef600824929d"
+    },
+    {
+      "file": "src/domain/inputs.ts",
+      "sha256": "d4cdcea552dd188ef7e68111f6a1e28fac92c920ae6c4eba8ef6dc5ed5435edb"
+    },
+    {
+      "file": "src/domain/models.ts",
+      "sha256": "68fad531aa32fdcd4cf0dd2356d4d04efe5f6e6ba2cb9540bb68a5fc21b30818"
+    },
+    {
+      "file": "src/domain/permissions.ts",
+      "sha256": "ed6d30b956658ec4c339e77249c6015c27d354548f4f30bbbe637b15818224b6"
+    },
+    {
+      "file": "src/domain/writeOperations.ts",
+      "sha256": "3a26d26da22df47adef3f7be09080ca8b5af6e34358178fde03cfe8fddfa4679"
+    },
+    {
+      "file": "src/features/admin/adminFlow.test.ts",
+      "sha256": "f746bda2346b839af8d89c46409ad2b4e51b22275c6a6f6d11b7d13343af0f96"
+    },
+    {
+      "file": "src/features/admin/adminFlow.ts",
+      "sha256": "954e2f5d0a34f18874fda4262249eac319ad47c71ac2ea83a36febe06e503f07"
+    },
+    {
+      "file": "src/features/admin/adminInvalidation.test.ts",
+      "sha256": "007d5ee806846c19e9c42db61ce38334ea7b50f2f75ecb4f24cbae0163b3c5ef"
+    },
+    {
+      "file": "src/features/admin/adminInvalidation.ts",
+      "sha256": "d96c684906d419fa9efdc4ea4dfd9db01528c62988b1c3c0fff2e2fabb2c1eee"
+    },
+    {
+      "file": "src/features/admin/adminQueryKeys.ts",
+      "sha256": "fef0a6da700ca916a9eb142bc0679f3fd1da75cea147762133235ee4d1934a15"
+    },
+    {
+      "file": "src/features/admin/draftUtils.test.ts",
+      "sha256": "9b4fd6e98526dafe966bdd9d32113e768c4190bf6e7ee8d0d6f8cf5c1d9a22d9"
+    },
+    {
+      "file": "src/features/admin/draftUtils.ts",
+      "sha256": "9f33b980504036929a4103d460ce98c3909cf5a5e87a53a811840b95a22beb24"
+    },
+    {
+      "file": "src/features/admin/employeeDrawerFlow.test.ts",
+      "sha256": "01a7ce7fce40da0142a8183eca4572bfc1d2c0d9d2ed586f5a134b91bac7f32f"
+    },
+    {
+      "file": "src/features/admin/employeeDrawerFlow.ts",
+      "sha256": "afe311c23d0fd2dffc03ca0d75d411b8c4864aabde482d09ba7fd271fbea2527"
+    },
+    {
+      "file": "src/features/admin/floorEditorDraft.test.ts",
+      "sha256": "a0ad62d18099bcadcc5b20289aa096d351b96b28b2a5dd66e15b50c5ff08b88b"
+    },
+    {
+      "file": "src/features/admin/floorEditorDraft.ts",
+      "sha256": "1047b077f40498fe0552cf8185d1a1286fbc0d68708e37b7b3ea91ab2de7dda7"
+    },
+    {
+      "file": "src/features/admin/index.ts",
+      "sha256": "88724c6e4954dbd8ac8c3049b5ca3982ebc048cafe0557c0cb374013b3ebe0f0"
+    },
+    {
+      "file": "src/features/admin/menuDraft.ts",
+      "sha256": "1d577d44346bd4a3892d0857f24e28913c726a91df7fb31171d8a0545f9befce"
+    },
+    {
+      "file": "src/features/admin/menuEditorDraft.test.ts",
+      "sha256": "42e1193f1f05c6f049257d1861fad92485f4897910683d1ece50ad9b20dbad57"
+    },
+    {
+      "file": "src/features/admin/menuEditorDraft.ts",
+      "sha256": "821742c215499bac7646941383e52455a04a3be1484e3f2d47ba2cf780e17f66"
+    },
+    {
+      "file": "src/features/admin/menuImageDraft.ts",
+      "sha256": "6a644481265f1eaa8376631f42d938dfcf26714b7f8c44b251eb92f54d2d183e"
+    },
+    {
+      "file": "src/features/admin/menuImageSaveDraft.ts",
+      "sha256": "1b2f9cd5bb1828ba12543d581731f15fec59b1539c93958fdfa0ebb113b52880"
+    },
+    {
+      "file": "src/features/admin/menuItemOrderDraft.test.ts",
+      "sha256": "f45e70d35b12f9a804e6d1147070bfb618c47d54a23d10570e1071229aae0095"
+    },
+    {
+      "file": "src/features/admin/menuItemOrderDraft.ts",
+      "sha256": "e2abcc3917c293436487ba60a9a0d13b013dd8950fe90a017025692635cb5810"
+    },
+    {
+      "file": "src/features/admin/permissionEmployeeFlow.test.ts",
+      "sha256": "278e76e9bd00c1383224e09fa847867c60900ce49eb263e102609e1651332e9f"
+    },
+    {
+      "file": "src/features/admin/permissionEmployeeFlow.ts",
+      "sha256": "f012816d0a9741aeecd94bbf8f66dbc7ce935b876d7f524e107ec5daa8e019ea"
+    },
+    {
+      "file": "src/features/admin/permissionMenuImageDraft.ts",
+      "sha256": "de0b2afd54a442f06cfc0c0b8f8b77970dbdb8aec2009c105603256141ba7593"
+    },
+    {
+      "file": "src/features/admin/reportHelpers.test.ts",
+      "sha256": "8bab9f3b9805f694f157e68c01d81fbe93a6b967aa32d59f07753c70d20a2876"
+    },
+    {
+      "file": "src/features/admin/reportHelpers.ts",
+      "sha256": "e0e1fb8d793e4444158742a0fc9811800c751915f32f53c520e21b610c47560d"
+    },
+    {
+      "file": "src/features/admin/useAdminData.ts",
+      "sha256": "57208c92b7d25b7e697d5e03cf39c37adb93521a34c7566346c511f02e8aead8"
+    },
+    {
+      "file": "src/features/admin/useAdminMutations.ts",
+      "sha256": "59f7902d0f1372eecb9b202520c3faf535d12ef05cf369f0910268d5d3c4fef2"
+    },
+    {
+      "file": "src/features/admin/useMenuModifierDrafts.ts",
+      "sha256": "affe99bb633e609e408b1de83b10523ce2078b43c26d7680102892e8ec00b746"
+    },
+    {
+      "file": "src/features/admin/usePermissionEmployees.ts",
+      "sha256": "d19a9f75b46bba65a3fb8f076027ce888e72a9e03612ecd2ea5698e4cb39f508"
+    },
+    {
+      "file": "src/features/integration/dirtyFlow.test.ts",
+      "sha256": "d8a99ff3ec8f19eaae4bb4aa7de64b072579f9d613b4a5ab8ac1b2926f69cb02"
+    },
+    {
+      "file": "src/features/integration/dirtyFlow.ts",
+      "sha256": "399ceb6366fa99e4246afa770aa5c356c8678888992fe9b85ac0adf51364e4fb"
+    },
+    {
+      "file": "src/features/integration/index.ts",
+      "sha256": "65923e77b16d1f98a004ecb88ea3741547ec1b105a6427978567df73a1ff7bed"
+    },
+    {
+      "file": "src/features/integration/realtimeInvalidation.test.ts",
+      "sha256": "900253545aaf32b1b94190ffb71ebc76210a6a53b2d9e3145ba0180331444350"
+    },
+    {
+      "file": "src/features/integration/realtimeInvalidation.ts",
+      "sha256": "e1769ef590f3edb912a4b80a5bf68d223c74f3493fd88a706bfe76829071b1e2"
+    },
+    {
+      "file": "src/features/integration/uiError.test.ts",
+      "sha256": "67fff3679caf05d1131a994756fec04f4075a7179de82b44b87f3bc7c3e82980"
+    },
+    {
+      "file": "src/features/integration/uiError.ts",
+      "sha256": "56057167ea37be7a1f9906c782d86f585c4e7576a05284ef67e0617643af2239"
+    },
+    {
+      "file": "src/features/pos/historyHelpers.test.ts",
+      "sha256": "a53103137620e6fc381ad8ab7c532743f0baf526d1401ed8cc326abf6d58fdc7"
+    },
+    {
+      "file": "src/features/pos/historyHelpers.ts",
+      "sha256": "2041b1070ebf036560c94f6112cc270ba831de250842fd23eab278817b22beac"
+    },
+    {
+      "file": "src/features/pos/index.ts",
+      "sha256": "89d87ce72246d6c09d241341a6ed5fc07e0f242abaa829e2e50d067b4cd6dbd7"
+    },
+    {
+      "file": "src/features/pos/modifier.test.ts",
+      "sha256": "2cc38666c663461ac0b0a46a1a64a6e865ba6350042b5478ae01d691739ddc89"
+    },
+    {
+      "file": "src/features/pos/orderDraft.test.ts",
+      "sha256": "deba60e7c971c3507e2cf1d7d5d17e6f2f56f9b8287836a3fc2c262c798aefdf"
+    },
+    {
+      "file": "src/features/pos/orderDraft.ts",
+      "sha256": "10a2687f065844c54b71b809be07a042eda67edda887fe5a56defb9bb7dcfd38"
+    },
+    {
+      "file": "src/features/pos/orderFlow.lifecycle.test.ts",
+      "sha256": "2bb78c632365f1b76bfbd69f6ca72655096d4d8593945b1d2fb0730d561cd2eb"
+    },
+    {
+      "file": "src/features/pos/orderFlow.test.ts",
+      "sha256": "b1c29b0c9595b94e9200e064bfab2ed9704572379db051cff5d0b337d2221f2b"
+    },
+    {
+      "file": "src/features/pos/orderFlow.ts",
+      "sha256": "31c2bb9bddbccf8ca18eb1020fe473ce8e0f50801dc37268e64c3400ca83ac57"
+    },
+    {
+      "file": "src/features/pos/posInvalidation.test.ts",
+      "sha256": "8bfb269854f2767586d62ee347e0ee83443fbb25a63f4e4c5c3540983951c0fb"
+    },
+    {
+      "file": "src/features/pos/posInvalidation.ts",
+      "sha256": "e3398df632bc7f288b3280b96a195a1a12d15fd665d1f7bfc17dfa348dfdaebc"
+    },
+    {
+      "file": "src/features/pos/useOrderModifierPicker.ts",
+      "sha256": "878de5294258e7a01cdcfb81e7d3816e03ee2e85c8c9fb45c3ad35187380dccd"
+    },
+    {
+      "file": "src/features/pos/useOrderPaymentFlow.ts",
+      "sha256": "eaacd9382262f3790da426e8a878a2a371f4f950fa9fee2977841a35abde4ef6"
+    },
+    {
+      "file": "src/features/pos/usePosData.ts",
+      "sha256": "302898d6a6e186af7101fe52516a1a2950eccaa7fa70748dc74aeeec6b4e8205"
+    },
+    {
+      "file": "src/features/pos/useWriteAttempt.ts",
+      "sha256": "1d705a92b71a059b6f9932ff78e74dda80a47ea92b009c2141a3f0f1d2dadb86"
+    },
+    {
+      "file": "src/features/pos/voidOrder.test.ts",
+      "sha256": "abdbe641af6d24078746b66e369e24202080aca11540ff7b8927f8832521794b"
+    },
+    {
+      "file": "src/features/pos/writeClock.test.ts",
+      "sha256": "491d6cb912a29ef5def08b56a1e645d84182ab753bec46c28843a64b2acabd04"
+    },
+    {
+      "file": "src/features/pos/writeOperationFlow.test.ts",
+      "sha256": "1df72845d32578193d51fc82520433c9f72ba4bcc24770ea8de9ae2569799273"
+    },
+    {
+      "file": "src/features/pos/writeOperationFlow.ts",
+      "sha256": "bbc3d49d2de85f1e1f41f2738b126aba192e4c447128ed71d99a67eaeddec5c0"
+    },
+    {
+      "file": "src/features/session/index.ts",
+      "sha256": "579e1c336f7c61cc2541540f08336ecbde596d10a7f50c2b9e43ab6234b4cfd6"
+    },
+    {
+      "file": "src/features/session/sessionFlow.test.ts",
+      "sha256": "fa85253b4550fee2d683c73cf128b3c070120873ee2f82f3ea5cc45f9315de8c"
+    },
+    {
+      "file": "src/features/session/sessionFlow.ts",
+      "sha256": "92ccb07f07ce828f013d7a0ae867c94ec1f8e86fb03afd3bb265090c7010add7"
+    },
+    {
+      "file": "src/features/session/useSessionFlow.ts",
+      "sha256": "98084e4be68b93a3e056c43593e5c4684c86eeb7b87325953372f95f2b7a0970"
+    },
+    {
+      "file": "src/features/shared/permissionSession.ts",
+      "sha256": "66f0ccad1117ff6cd86095d2889ebc2309c168d69da1a801e944bf5e7215647d"
+    },
+    {
+      "file": "src/features/shared/portsContext.tsx",
+      "sha256": "5a45807b25c93ab434139de12a2edf449988bb8f213f8573e591957d82c36b77"
+    },
+    {
+      "file": "src/features/shared/queryKeys.ts",
+      "sha256": "722ec0c4df87b114fbe017a7b623ab7f3b878e63eef5ef9d6d8a8e7f93c815d7"
+    },
+    {
+      "file": "src/features/shared/usePurposeQuery.test.tsx",
+      "sha256": "4c074346e0d54320d6c7b473fd64c767cff212285445dd08f1ea10837f207a9c"
+    },
+    {
+      "file": "src/features/shared/usePurposeQuery.ts",
+      "sha256": "6f774f80f1813a1dbad0068a3a53386261b7bc399d4b258896d05345055afb87"
+    },
+    {
+      "file": "src/main.tsx",
+      "sha256": "d5a1f2ef6a5563bf4b44540d56b07231307800f9720128a9487e83fc0cd3d3a9"
+    },
+    {
+      "file": "src/ports/index.ts",
+      "sha256": "e4a41364cbd1a14ca8c2a483aa46fb7d7f0f6311242df091a5d4327d17f7c811"
+    },
+    {
+      "file": "src/ports/permissionChanges.ts",
+      "sha256": "b143456fb08b617b12ae8acbd7443a0c7d70904d290e71551426fae501af083c"
+    },
+    {
+      "file": "src/ports/permissionImages.ts",
+      "sha256": "2c8ea631a0fffe8dbea08b8da372492407c7ac5afedee4ac45880b9f1a7f8ca0"
+    },
+    {
+      "file": "src/ports/permissionPrint.ts",
+      "sha256": "c890afb32a1255ac1c724df8919b8234554689e85e8b9b7b40bca4424794a268"
+    },
+    {
+      "file": "src/ports/permissions.ts",
+      "sha256": "610bfb555ae22d358d6aa91308cc0ec01b6bb8d3bec2c285c580f7d938aed57e"
+    },
+    {
+      "file": "src/seed/demoSeedData.test.ts",
+      "sha256": "aaad0373de643787dcc6d66b8fc8edf896dfec2adb0ef7ed9096525424110222"
+    },
+    {
+      "file": "src/seed/demoSeedData.ts",
+      "sha256": "9dceb94bb3c9389747f5e3912cdfdff5a093678c687f2a3b055ab1678cdecb9e"
+    },
+    {
+      "file": "src/seed/legacySeedAliases.ts",
+      "sha256": "235c1f44171fa903567ad6a7fd5f1bd95c21365ad328b90f22d78ee2ddb6e006"
+    },
+    {
+      "file": "src/seed/permissionCatalog.json",
+      "sha256": "17181eaac21ffdeceb61bec714e69521cfa2ed71f394d04e234bb630c7c1c418"
+    },
+    {
+      "file": "src/tailwind.css",
+      "sha256": "347577422656c86dad35aac76a135f26729205e8ab18a0672b075ac3c9ed4366"
+    },
+    {
+      "file": "src/test/candidateRuntimeFixture.ts",
+      "sha256": "766795c14b903834b7867817aa3991375301eaa195502a518c2138d8bfd7e50d"
+    },
+    {
+      "file": "src/test/setup.ts",
+      "sha256": "9b328c4843431fa76d8de00008fc159e95f99a840211085ff3b8f25e53d14409"
+    },
+    {
+      "file": "src/theme/RemakeThemeProvider.test.tsx",
+      "sha256": "8cf90a60ae55336ae49fe5b71b531dabff491c2a9509240e282265125f38fb90"
+    },
+    {
+      "file": "src/theme/RemakeThemeProvider.tsx",
+      "sha256": "44f31f8994a7ea42483da7cb21b2bfcec1637b7df79d5bf7fffc9cbe7cdd7281"
+    },
+    {
+      "file": "src/theme/remakeFonts.css",
+      "sha256": "61c290ac15141663f7046e83eddbb211a1a0942b777d0ae360196310871c5ed3"
+    },
+    {
+      "file": "src/theme/remakeTheme.test.ts",
+      "sha256": "7484fcaed6cf030a5126b52a161184c576937e9c9f3a2ce4cc205b2b587d07c2"
+    },
+    {
+      "file": "src/theme/remakeTheme.ts",
+      "sha256": "3f000c9a7efd140993311597b3240acd1b15f54e2031d051b20cfe1fb1739c2e"
+    },
+    {
+      "file": "src/vite-env.d.ts",
+      "sha256": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5"
+    }
+  ],
+  "results": [
+    {
+      "caseId": "N01-11",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "start": "2026-11-14 09:05:02 UTC+7",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Đơn #24 có 3 dòng đã lưu, tổng 125000",
+          "time": "2026-11-14 09:05:06 UTC+7",
+          "status": "ĐÚNG",
+          "observed": [
+            "Cà phê sữa58.000 ₫Phần đã lưu29.000 ₫ / mónSize MÍt đá−2+Ghi chú",
+            "Bạc xỉu32.000 ₫Phần đã lưu32.000 ₫ / món50% đường−1+Ghi chú",
+            "Croissant35.000 ₫Phần đã lưu35.000 ₫ / mónHâm nóng−1+Ghi chú"
+          ],
+          "amount": "125000",
+          "shot": "anh/N01-11-B1.png"
+        },
+        {
+          "id": "B2",
+          "expected": "Saved Bạc xỉu vẫn x1; có dòng gọi thêm riêng; tổng 157000",
+          "time": "2026-11-14 09:05:06 UTC+7",
+          "status": "ĐÚNG",
+          "observed": [
+            "Cà phê sữa58.000 ₫Phần đã lưu29.000 ₫ / mónSize MÍt đá−2+Ghi chú",
+            "Bạc xỉu32.000 ₫Phần đã lưu32.000 ₫ / món50% đường−1+Ghi chú",
+            "Croissant35.000 ₫Phần đã lưu35.000 ₫ / mónHâm nóng−1+Ghi chú",
+            "Bạc xỉu32.000 ₫Phần gọi thêm32.000 ₫ / món50% đường−1+Ghi chú"
+          ],
+          "amount": "157000",
+          "shot": "anh/N01-11-B2.png"
+        },
+        {
+          "id": "B3",
+          "expected": "Croissant giảm về 0 thì ẩn; tổng 122000",
+          "time": "2026-11-14 09:05:07 UTC+7",
+          "status": "ĐÚNG",
+          "observed": [
+            "Cà phê sữa58.000 ₫Phần đã lưu29.000 ₫ / mónSize MÍt đá−2+Ghi chú",
+            "Bạc xỉu32.000 ₫Phần đã lưu32.000 ₫ / món50% đường−1+Ghi chú",
+            "Bạc xỉu32.000 ₫Phần gọi thêm32.000 ₫ / món50% đường−1+Ghi chú"
+          ],
+          "amount": "122000",
+          "shot": "anh/N01-11-B3.png"
+        },
+        {
+          "id": "B4",
+          "expected": "Nút Bỏ thay đổi; bỏ nháp, mở lại 125000 và Croissant còn",
+          "time": "2026-11-14 09:05:07 UTC+7",
+          "status": "LỆCH — chờ CX-03",
+          "behavior": "ĐÚNG",
+          "label": "Bỏ đơn",
+          "dialogShot": "anh/N01-11-B4-hop-bo-nhap.png",
+          "amount": "125000",
+          "observed": [
+            "Cà phê sữa58.000 ₫Phần đã lưu29.000 ₫ / mónSize MÍt đá−2+Ghi chú",
+            "Bạc xỉu32.000 ₫Phần đã lưu32.000 ₫ / món50% đường−1+Ghi chú",
+            "Croissant35.000 ₫Phần đã lưu35.000 ₫ / mónHâm nóng−1+Ghi chú"
+          ],
+          "shot": "anh/N01-11-B4.png"
+        }
+      ],
+      "pageErrors": [],
+      "status": "LỆCH ĐÃ BIẾT",
+      "end": "2026-11-14 09:05:07 UTC+7"
+    },
+    {
+      "caseId": "N01-12",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "start": "2026-11-14 09:05:07 UTC+7",
+      "steps": [
+        {
+          "id": "B1",
+          "expected": "Mở thanh toán #24: 125000",
+          "time": "2026-11-14 09:05:12 UTC+7",
+          "status": "ĐÚNG",
+          "received": "125000",
+          "display": "125.000",
+          "finishDisabled": false,
+          "shot": "anh/N01-12-B1.png"
+        },
+        {
+          "id": "B2",
+          "expected": "Xóa 1 chữ số: 12500",
+          "time": "2026-11-14 09:05:12 UTC+7",
+          "status": "ĐÚNG",
+          "received": "12500",
+          "display": "12.500",
+          "finishDisabled": true,
+          "shot": "anh/N01-12-B2.png"
+        },
+        {
+          "id": "B3",
+          "expected": "Bấm 00: 1250000",
+          "time": "2026-11-14 09:05:12 UTC+7",
+          "status": "ĐÚNG",
+          "received": "1250000",
+          "display": "1.250.000",
+          "finishDisabled": false,
+          "shot": "anh/N01-12-B3.png"
+        },
+        {
+          "id": "B4",
+          "expected": "Bấm 9 bốn lần: giữ đúng 125000099 (9 chữ số)",
+          "time": "2026-11-14 09:05:12 UTC+7",
+          "status": "ĐÚNG",
+          "received": "125000099",
+          "display": "125.000.099",
+          "finishDisabled": false,
+          "shot": "anh/N01-12-B4.png"
+        },
+        {
+          "id": "B5",
+          "expected": "Gõ 12a5b: chỉ còn 125, hoàn tất bị khóa",
+          "time": "2026-11-14 09:05:12 UTC+7",
+          "status": "ĐÚNG",
+          "received": "125",
+          "display": "125",
+          "finishDisabled": true,
+          "exactAmountButtonVisible": false,
+          "shot": "anh/N01-12-B5.png"
+        },
+        {
+          "id": "B6",
+          "expected": "Nhập lại 200000; Đúng tiền=125000; +50k=175000; 500k=500000",
+          "time": "2026-11-14 09:05:13 UTC+7",
+          "status": "ĐÚNG",
+          "preparation": "200000",
+          "preparationShot": "anh/N01-12-B6-nhap-lai-200000.png",
+          "values": [
+            {
+              "name": "Đúng tiền",
+              "received": "125000",
+              "display": "125.000",
+              "finishDisabled": false,
+              "shot": "anh/N01-12-B6-125000.png"
+            },
+            {
+              "name": "+50k",
+              "received": "175000",
+              "display": "175.000",
+              "finishDisabled": false,
+              "shot": "anh/N01-12-B6-175000.png"
+            },
+            {
+              "name": "500k",
+              "received": "500000",
+              "display": "500.000",
+              "finishDisabled": false,
+              "shot": "anh/N01-12-B6-500000.png"
+            }
+          ],
+          "shot": "anh/N01-12-B6.png"
+        }
+      ],
+      "pageErrors": [],
+      "status": "ĐÚNG",
+      "end": "2026-11-14 09:05:13 UTC+7"
+    },
+    {
+      "caseId": "MANG-DI-568x320",
+      "viewport": {
+        "width": 568,
+        "height": 320
+      },
+      "start": "2026-11-14 09:05:13 UTC+7",
+      "steps": [
+        {
+          "id": "T1",
+          "expected": "Mở mang đi tại đúng 568x320; ghi trạng thái ban đầu và 9 nút",
+          "time": "2026-11-14 09:05:18 UTC+7",
+          "status": "ĐÚNG",
+          "controls": [
+            {
+              "text": "Đang mở",
+              "width": 79.703125,
+              "height": 24
+            },
+            {
+              "text": "Đã thanh toán",
+              "width": 111.9375,
+              "height": 24
+            },
+            {
+              "text": "Hôm nay",
+              "width": 78.078125,
+              "height": 24
+            },
+            {
+              "text": "Tạo đơn mang đi",
+              "width": 252.28125,
+              "height": 36.5
+            },
+            {
+              "text": "Đóng",
+              "width": 546,
+              "height": 36.5
+            },
+            {
+              "text": "Mở đơn",
+              "width": 66.390625,
+              "height": 26
+            },
+            {
+              "text": "Thanh toán",
+              "width": 89.984375,
+              "height": 26
+            },
+            {
+              "text": "Mở đơn",
+              "width": 234,
+              "height": 30.75
+            },
+            {
+              "text": "Thanh toán",
+              "width": 234,
+              "height": 30.75
+            }
+          ],
+          "document": {
+            "width": 568,
+            "height": 320,
+            "overflowX": 0,
+            "overflowY": 0
+          },
+          "shot": "anh/MANG-DI-568x320-T1.png"
+        },
+        {
+          "id": "T2",
+          "expected": "Bấm cả ba thẻ lọc; Đã thanh toán rỗng; Hôm nay/Đang mở có đơn #26",
+          "time": "2026-11-14 09:05:18 UTC+7",
+          "status": "ĐÚNG",
+          "filters": [
+            {
+              "name": "Đã thanh toán",
+              "control": {
+                "text": "Đã thanh toán",
+                "x": 98.703125,
+                "y": 63.5,
+                "width": 111.9375,
+                "height": 24,
+                "fullyInViewport": true,
+                "centerHit": true,
+                "scrollParents": []
+              },
+              "list": "Danh sách 0 đơn Chưa có đơn mang đi đang mở. Tạo đơn đầu tiên",
+              "shot": "anh/MANG-DI-568x320-T2-1.png"
+            },
+            {
+              "name": "Hôm nay",
+              "control": {
+                "text": "Hôm nay",
+                "x": 218.640625,
+                "y": 63.5,
+                "width": 78.078125,
+                "height": 24,
+                "fullyInViewport": true,
+                "centerHit": true,
+                "scrollParents": []
+              },
+              "list": "Danh sách 1 đơn #26 Đang mở 84.000 ₫ Mở đơn Thanh toán",
+              "shot": "anh/MANG-DI-568x320-T2-2.png"
+            },
+            {
+              "name": "Đang mở",
+              "control": {
+                "text": "Đang mở",
+                "x": 11,
+                "y": 63.5,
+                "width": 79.703125,
+                "height": 24,
+                "fullyInViewport": true,
+                "centerHit": true,
+                "scrollParents": []
+              },
+              "list": "Danh sách 1 đơn #26 Đang mở 84.000 ₫ Mở đơn Thanh toán",
+              "shot": "anh/MANG-DI-568x320-T2-3.png"
+            }
+          ],
+          "shot": "anh/MANG-DI-568x320-T2.png"
+        },
+        {
+          "id": "T3",
+          "expected": "Tạo đơn mở nháp mới; đóng không gửi, danh sách vẫn 1 đơn",
+          "time": "2026-11-14 09:05:18 UTC+7",
+          "status": "ĐÚNG",
+          "control": {
+            "text": "Tạo đơn mang đi",
+            "x": 304.71875,
+            "y": 57.25,
+            "width": 252.28125,
+            "height": 36.5,
+            "fullyInViewport": true,
+            "centerHit": true,
+            "scrollParents": []
+          },
+          "newOrderShot": "anh/MANG-DI-568x320-T3-don-moi.png",
+          "openOrders": 1,
+          "shot": "anh/MANG-DI-568x320-T3.png"
+        },
+        {
+          "id": "T4-the-don-order",
+          "expected": "Cuộn tới và bấm Mở đơn ở the-don: đúng đơn #26, 84000",
+          "time": "2026-11-14 09:05:19 UTC+7",
+          "status": "ĐÚNG",
+          "control": {
+            "text": "Mở đơn",
+            "x": 39,
+            "y": 276.75,
+            "width": 66.390625,
+            "height": 26,
+            "fullyInViewport": true,
+            "centerHit": true,
+            "scrollParents": [
+              {
+                "tag": "DIV",
+                "className": "min-h-0 overflow-auto p-2.5 max-[980px]:p-2",
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "clientWidth": 338,
+                "scrollWidth": 338,
+                "clientHeight": 119,
+                "scrollHeight": 138
+              },
+              {
+                "tag": "DIV",
+                "className": "grid h-full min-h-0 min-w-[600px] grid-cols-[minmax(340px,420px)_minmax(280px,1fr)] gap-2.5",
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "clientWidth": 600,
+                "scrollWidth": 630,
+                "clientHeight": 157,
+                "scrollHeight": 157
+              },
+              {
+                "tag": "DIV",
+                "className": "min-h-0 overflow-auto bg-pos-bg p-3 max-[980px]:p-2",
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "clientWidth": 566,
+                "scrollWidth": 638,
+                "clientHeight": 173,
+                "scrollHeight": 173
+              }
+            ]
+          },
+          "beforeClickShot": "anh/MANG-DI-568x320-T4-the-don-order-truoc-bam.png",
+          "targetShot": "anh/MANG-DI-568x320-T4-the-don-order-da-mo.png",
+          "amount": "84000",
+          "completedPayment": false,
+          "shot": "anh/MANG-DI-568x320-T4-the-don-order.png"
+        },
+        {
+          "id": "T4-the-don-payment",
+          "expected": "Cuộn tới và bấm Thanh toán ở the-don: đúng đơn #26, 84000",
+          "time": "2026-11-14 09:05:19 UTC+7",
+          "status": "ĐÚNG",
+          "control": {
+            "text": "Thanh toán",
+            "x": 113.390625,
+            "y": 276.75,
+            "width": 89.984375,
+            "height": 26,
+            "fullyInViewport": true,
+            "centerHit": true,
+            "scrollParents": [
+              {
+                "tag": "DIV",
+                "className": "min-h-0 overflow-auto p-2.5 max-[980px]:p-2",
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "clientWidth": 338,
+                "scrollWidth": 338,
+                "clientHeight": 119,
+                "scrollHeight": 138
+              },
+              {
+                "tag": "DIV",
+                "className": "grid h-full min-h-0 min-w-[600px] grid-cols-[minmax(340px,420px)_minmax(280px,1fr)] gap-2.5",
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "clientWidth": 600,
+                "scrollWidth": 630,
+                "clientHeight": 157,
+                "scrollHeight": 157
+              },
+              {
+                "tag": "DIV",
+                "className": "min-h-0 overflow-auto bg-pos-bg p-3 max-[980px]:p-2",
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "clientWidth": 566,
+                "scrollWidth": 638,
+                "clientHeight": 173,
+                "scrollHeight": 173
+              }
+            ]
+          },
+          "beforeClickShot": "anh/MANG-DI-568x320-T4-the-don-payment-truoc-bam.png",
+          "targetShot": "anh/MANG-DI-568x320-T4-the-don-payment-da-mo.png",
+          "amount": "84000",
+          "completedPayment": false,
+          "shot": "anh/MANG-DI-568x320-T4-the-don-payment.png"
+        },
+        {
+          "id": "T4-chi-tiet-order",
+          "expected": "Cuộn tới và bấm Mở đơn ở chi-tiet: đúng đơn #26, 84000",
+          "time": "2026-11-14 09:05:19 UTC+7",
+          "status": "ĐÚNG",
+          "control": {
+            "text": "Mở đơn",
+            "x": 333,
+            "y": 236.25,
+            "width": 234,
+            "height": 30.75,
+            "fullyInViewport": true,
+            "centerHit": true,
+            "scrollParents": [
+              {
+                "tag": "DIV",
+                "className": "min-h-0 overflow-auto p-2.5 max-[980px]:p-2",
+                "scrollLeft": 0,
+                "scrollTop": 135,
+                "clientWidth": 278,
+                "scrollWidth": 278,
+                "clientHeight": 119,
+                "scrollHeight": 269
+              },
+              {
+                "tag": "DIV",
+                "className": "grid h-full min-h-0 min-w-[600px] grid-cols-[minmax(340px,420px)_minmax(280px,1fr)] gap-2.5",
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "clientWidth": 600,
+                "scrollWidth": 630,
+                "clientHeight": 157,
+                "scrollHeight": 157
+              },
+              {
+                "tag": "DIV",
+                "className": "min-h-0 overflow-auto bg-pos-bg p-3 max-[980px]:p-2",
+                "scrollLeft": 49,
+                "scrollTop": 0,
+                "clientWidth": 566,
+                "scrollWidth": 638,
+                "clientHeight": 173,
+                "scrollHeight": 173
+              }
+            ]
+          },
+          "beforeClickShot": "anh/MANG-DI-568x320-T4-chi-tiet-order-truoc-bam.png",
+          "targetShot": "anh/MANG-DI-568x320-T4-chi-tiet-order-da-mo.png",
+          "amount": "84000",
+          "completedPayment": false,
+          "shot": "anh/MANG-DI-568x320-T4-chi-tiet-order.png"
+        },
+        {
+          "id": "T4-chi-tiet-payment",
+          "expected": "Cuộn tới và bấm Thanh toán ở chi-tiet: đúng đơn #26, 84000",
+          "time": "2026-11-14 09:05:20 UTC+7",
+          "status": "ĐÚNG",
+          "control": {
+            "text": "Thanh toán",
+            "x": 333,
+            "y": 260,
+            "width": 234,
+            "height": 30.75,
+            "fullyInViewport": true,
+            "centerHit": true,
+            "scrollParents": [
+              {
+                "tag": "DIV",
+                "className": "min-h-0 overflow-auto p-2.5 max-[980px]:p-2",
+                "scrollLeft": 0,
+                "scrollTop": 150,
+                "clientWidth": 278,
+                "scrollWidth": 278,
+                "clientHeight": 119,
+                "scrollHeight": 269
+              },
+              {
+                "tag": "DIV",
+                "className": "grid h-full min-h-0 min-w-[600px] grid-cols-[minmax(340px,420px)_minmax(280px,1fr)] gap-2.5",
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "clientWidth": 600,
+                "scrollWidth": 630,
+                "clientHeight": 157,
+                "scrollHeight": 157
+              },
+              {
+                "tag": "DIV",
+                "className": "min-h-0 overflow-auto bg-pos-bg p-3 max-[980px]:p-2",
+                "scrollLeft": 49,
+                "scrollTop": 0,
+                "clientWidth": 566,
+                "scrollWidth": 638,
+                "clientHeight": 173,
+                "scrollHeight": 173
+              }
+            ]
+          },
+          "beforeClickShot": "anh/MANG-DI-568x320-T4-chi-tiet-payment-truoc-bam.png",
+          "targetShot": "anh/MANG-DI-568x320-T4-chi-tiet-payment-da-mo.png",
+          "amount": "84000",
+          "completedPayment": false,
+          "shot": "anh/MANG-DI-568x320-T4-chi-tiet-payment.png"
+        },
+        {
+          "id": "T5",
+          "expected": "Cuộn tới tổng chi tiết 84000; bấm Đóng; mở lại vẫn một đơn",
+          "time": "2026-11-14 09:05:20 UTC+7",
+          "status": "ĐÚNG",
+          "total": "84.000 ₫",
+          "control": {
+            "text": "Đóng",
+            "x": 11,
+            "y": 101.75,
+            "width": 546,
+            "height": 36.5,
+            "fullyInViewport": true,
+            "centerHit": true,
+            "scrollParents": []
+          },
+          "totalShot": "anh/MANG-DI-568x320-T5-tong-chi-tiet.png",
+          "openOrders": 1,
+          "shot": "anh/MANG-DI-568x320-T5.png"
+        }
+      ],
+      "pageErrors": [],
+      "status": "ĐÚNG",
+      "end": "2026-11-14 09:05:20 UTC+7"
+    }
+  ],
+  "browserVersion": "157.0.8103.79",
+  "sourceUnchanged": true,
+  "finishedAt": "2026-11-14T02:05:21.125Z",
+  "finishedLocal": "2026-11-14 09:05:21 UTC+7"
+}

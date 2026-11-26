@@ -1,0 +1,106 @@
+{
+  "recordedAt": "2026-11-14T07:56:11.7080968+07:00",
+  "timezone": "Asia/Bangkok",
+  "performedBy": "Codex (AI), theo yêu cầu của Ngọc",
+  "sourceCommit": "e8a1810f3de41453ad33b224334c26d6f8cd52db",
+  "sourcesRead": 6,
+  "imagesReviewed": [
+    {
+      "group": "n01",
+      "count": 66,
+      "method": "Xem bang anh co ten tung anh; mo rieng mot so anh goc"
+    },
+    {
+      "group": "giao-dien",
+      "count": 45,
+      "method": "Xem bang anh co ten tung anh; mo rieng mot so anh goc"
+    }
+  ],
+  "originalN01Counts": [
+    {
+      "status": "ĐÚNG",
+      "count": 61
+    },
+    {
+      "status": "LỆCH",
+      "count": 4
+    }
+  ],
+  "manualN0111": "CHƯA CHẠY",
+  "manualN0112": "CHƯA CHẠY",
+  "takeaway568x320": "Đã xem ảnh gốc; chưa thao tác trực tiếp",
+  "blockers": [
+    "The browser access host is unavailable",
+    "Computer Use native pipe is unavailable: failed to connect native pipe ... (os error 2)"
+  ],
+  "recovery": "Đã thử lại và khởi tạo lại phiên; lỗi vẫn lặp lại",
+  "newRuntimeTestsExecuted": true,
+  "personalAttestationChecked": false,
+  "sentToLinh": false,
+  "pullRequestCreated": false,
+  "integrityVerifiedAt": "2026-11-14T00:56:35.012Z",
+  "integrity": {
+    "uniqueImages": 111,
+    "contactSheets": 19,
+    "sourceSnapshots": 6,
+    "allHashesMatch": true
+  },
+  "manualRetryAttempts": [
+    {
+      "attemptedAt": "2026-11-14T01:56:20.907Z",
+      "localTime": "2026-11-14 08:56:20 UTC+7",
+      "requestedCases": [
+        "N01-11",
+        "N01-12",
+        "Mang di 568x320"
+      ],
+      "status": "CHƯA CHẠY",
+      "recoveryAttempted": "CUA inventory; reset node_repl; reinitialize @oai/sky; list_apps",
+      "browserError": "The browser access host is unavailable",
+      "windowsError": "Computer Use native pipe is unavailable: failed to connect native pipe: The system cannot find the file specified. (os error 2)",
+      "newScreenshotsCaptured": 0,
+      "appActionsPerformed": 0
+    }
+  ],
+  "currentConnectivity": {
+    "checkedAt": "2026-11-14T02:07:29.776Z",
+    "CUA": false,
+    "PlaywrightChrome": true,
+    "localDemoReachable": true
+  },
+  "automatedRechecks": [
+    {
+      "method": "AUTOMATED_PLAYWRIGHT_RECHECK",
+      "personalManualAttestation": false,
+      "startedAt": "2026-11-14T02:05:01.740Z",
+      "finishedAt": "2026-11-14T02:05:21.125Z",
+      "startedLocal": "2026-11-14 09:05:01 UTC+7",
+      "finishedLocal": "2026-11-14 09:05:21 UTC+7",
+      "evidence": "../chay-lai-2026-11-14-playwright-r02/README.md",
+      "results": [
+        {
+          "caseId": "N01-11",
+          "status": "LỆCH ĐÃ BIẾT",
+          "steps": 4,
+          "pageErrors": []
+        },
+        {
+          "caseId": "N01-12",
+          "status": "ĐÚNG",
+          "steps": 6,
+          "pageErrors": []
+        },
+        {
+          "caseId": "MANG-DI-568x320",
+          "status": "ĐÚNG",
+          "steps": 8,
+          "pageErrors": []
+        }
+      ],
+      "sourceUnchanged": true,
+      "screenshots": 36,
+      "traces": 3,
+      "verification": "All screenshot dimensions, file hashes, traces and local links verified"
+    }
+  ]
+}

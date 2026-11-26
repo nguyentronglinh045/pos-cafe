@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "kind": "ui-audit-run",
+  "status": "COMPLETE",
+  "productAcceptance": "NOT_ASSESSED",
+  "startedAt": "2026-11-12T02:09:43.713Z",
+  "finishedAt": "2026-11-12T02:13:37.131Z",
+  "expectedPairs": 48,
+  "attemptedPairs": 48,
+  "completedPairs": 48,
+  "setupFailures": [],
+  "source": {
+    "before": {
+      "head": "cd3543996fb4d06f022dcf4a6829fba43645daff",
+      "detectorSha256": "b146d969bdc892cc32be92a41c7ee015cba4bd78a670d3590d18f8d545d082a5",
+      "fixtureSha256": "f6bbfdfce11544a55e8645649e02bd81f177987b9b0bdedf259097be2fa448b2",
+      "effectiveTargetsSha256": "45161db48a31b684dc6a85802fa49a14816a582af3141ea8a0a0248ec90aa334",
+      "runnerSha256": "489f6b5eea4153af814e2a560e615cddd372bc45706a5e2d49264aa5530badfd",
+      "configSha256": "83ad64e8498511c3360d2874859ef7211a142601883ab8d743455ab32ab5428b",
+      "runtimeSha256": "41af4591f6e1c9b6171adb46f169ff274b3a4358e075dedc8a65143b9ff181ce",
+      "baselineSha256": "79fe315c36c21db23a66724939b085e5ac4065d16780e2a0d26e1f9da5c87080"
+    },
+    "after": {
+      "head": "cd3543996fb4d06f022dcf4a6829fba43645daff",
+      "detectorSha256": "b146d969bdc892cc32be92a41c7ee015cba4bd78a670d3590d18f8d545d082a5",
+      "fixtureSha256": "f6bbfdfce11544a55e8645649e02bd81f177987b9b0bdedf259097be2fa448b2",
+      "effectiveTargetsSha256": "45161db48a31b684dc6a85802fa49a14816a582af3141ea8a0a0248ec90aa334",
+      "runnerSha256": "489f6b5eea4153af814e2a560e615cddd372bc45706a5e2d49264aa5530badfd",
+      "configSha256": "83ad64e8498511c3360d2874859ef7211a142601883ab8d743455ab32ab5428b",
+      "runtimeSha256": "41af4591f6e1c9b6171adb46f169ff274b3a4358e075dedc8a65143b9ff181ce",
+      "baselineSha256": "79fe315c36c21db23a66724939b085e5ac4065d16780e2a0d26e1f9da5c87080"
+    },
+    "preserved": true
+  },
+  "environment": {
+    "node": "v24.22.0",
+    "os": "win32 10.0.19045 x64",
+    "engine": "chromium",
+    "channel": "chromium",
+    "browserVersion": "157.0.8103.38",
+    "playwrightVersion": "1.60.0"
+  },
+  "pinPhotos": [
+    {
+      "state": "required-pin-change",
+      "viewport": "tablet",
+      "width": 1024,
+      "height": 768,
+      "filename": "required_pin_change__tablet.png",
+      "bytes": 15507,
+      "sha256": "00cc640806347d4f02726da3a316a5f7a83874e1cb3bd178924c2cff51d37531",
+      "credentialFreeMock": true,
+      "passwordInputsEmpty": true,
+      "maskedPasswordInputs": 2,
+      "annotatedFindings": 0
+    },
+    {
+      "state": "required-pin-change",
+      "viewport": "desktop",
+      "width": 1440,
+      "height": 900,
+      "filename": "required_pin_change__desktop.png",
+      "bytes": 17519,
+      "sha256": "f1bc080b378339b3c389e21f87af7f542f5214445c9c43fa8efc71657a12fa78",
+      "credentialFreeMock": true,
+      "passwordInputsEmpty": true,
+      "maskedPasswordInputs": 2,
+      "annotatedFindings": 0
+    },
+    {
+      "state": "required-pin-change",
+      "viewport": "mobile",
+      "width": 844,
+      "height": 390,
+      "filename": "required_pin_change__mobile.png",
+      "bytes": 13130,
+      "sha256": "ebb8c5585862b54eec7a4f67325a35e76577f0751e246647ac7d403fd8885f00",
+      "credentialFreeMock": true,
+      "passwordInputsEmpty": true,
+      "maskedPasswordInputs": 2,
+      "annotatedFindings": 0
+    }
+  ],
+  "serverDiagnostics": {
+    "pid": 21992,
+    "exitCode": 1,
+    "signalCode": null,
+    "tail": "\n> pos-cafe@0.1.0 dev\n> vite --host 127.0.0.1 --port 5178 --strictPort\n\n\u001b[2m09:09:44\u001b[22m \u001b[36m\u001b[1m[vite]\u001b[22m\u001b[39m \u001b[90m\u001b[2m(client)\u001b[22m\u001b[39m Re-optimizing dependencies because vite config has changed\n\n  \u001b[32m\u001b[1mVITE\u001b[22m v8.0.16\u001b[39m  \u001b[2mready in \u001b[0m\u001b[1m1125\u001b[22m\u001b[2m\u001b[0m ms\u001b[22m\n\n  \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m5178\u001b[22m/\u001b[39m\n\u001b[2m09:09:46\u001b[22m \u001b[36m\u001b[1m[vite]\u001b[22m\u001b[39m \u001b[90m\u001b[2m(client)\u001b[22m\u001b[39m [optimizer] scanning dependencies...\n\u001b[2m09:09:48\u001b[22m \u001b[36m\u001b[1m[vite]\u001b[22m\u001b[39m \u001b[90m\u001b[2m(client)\u001b[22m\u001b[39m [optimizer] bundling dependencies...\n"
+  }
+}
