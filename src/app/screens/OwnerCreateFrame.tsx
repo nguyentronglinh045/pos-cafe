@@ -12,6 +12,7 @@ const steps: Array<{ step: OwnerCreateStep; label: string }> = [
 type FrameProps = {
   testId: string;
   step: OwnerCreateStep;
+  isMock: boolean;
   /** Shown in the header. The result frame has no back action because leaving goes through its own buttons. */
   back?: { onClick: () => void; disabled?: boolean };
   aside: ReactNode;
@@ -23,7 +24,7 @@ type FrameProps = {
  * (create form, email verification) and the result frame (status lookup,
  * Store Key). It only lays out content; all behaviour stays with the caller.
  */
-export function OwnerCreateFrame({ testId, step, back, aside, children }: FrameProps) {
+export function OwnerCreateFrame({ testId, step, isMock, back, aside, children }: FrameProps) {
   return (
     <main className="box-border grid min-h-[100dvh] w-full place-items-center overflow-y-auto overflow-x-hidden bg-pos-bg p-4 max-sm:p-3" data-testid={testId}>
       <div className="w-[min(960px,100%)] overflow-hidden rounded-pos border border-pos-line bg-pos-surface">
@@ -38,7 +39,7 @@ export function OwnerCreateFrame({ testId, step, back, aside, children }: FrameP
             <span className="text-sm font-semibold text-pos-muted">Tạo quán mới</span>
           )}
           <div className="flex items-center gap-2.5">
-            <span className="rounded-full border border-pos-line bg-pos-surface2 px-2 py-0.5 text-xs font-semibold text-pos-muted">Dữ liệu mock</span>
+            {isMock && <span className="rounded-full border border-pos-line bg-pos-surface2 px-2 py-0.5 text-xs font-semibold text-pos-muted">Dữ liệu mock</span>}
             <div className="grid h-10 w-10 place-items-center rounded-pos bg-pos-primary font-black text-white" aria-hidden>P</div>
             <span className="text-base font-bold text-pos-ink max-[420px]:sr-only">POS Cafe</span>
           </div>

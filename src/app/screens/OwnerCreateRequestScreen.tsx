@@ -82,6 +82,7 @@ const otpSx = {
 };
 
 export function OwnerCreateRequestScreen({ port }: { port: IStoreProvisioningPort }) {
+  const isMock = port.isMock === true;
   const setScreen = useAppStore(state => state.setScreen);
   const [form, setForm] = useState(blankForm);
   const [receipt, setReceipt] = useState<CreateStoreOtpReceipt | null>(null);
@@ -209,7 +210,7 @@ export function OwnerCreateRequestScreen({ port }: { port: IStoreProvisioningPor
     const StatusIcon = closeout.busy ? Loader2 : view.icon;
     const tone: Tone = closeout.busy ? "info" : view.tone;
     return (
-      <OwnerCreateFrame testId="owner-create-closeout" step={3}
+      <OwnerCreateFrame testId="owner-create-closeout" step={3} isMock={isMock}
         aside={closeout.storeKey ? (
           <>
             <AsideItem icon={ShieldCheck} title="Lưu ở nơi an toàn">
@@ -316,10 +317,10 @@ export function OwnerCreateRequestScreen({ port }: { port: IStoreProvisioningPor
   const fieldMessage = (field: keyof OwnerCreateForm) => fieldError === field ? error : fieldHint[field];
   const fieldHelperProps = (field: keyof OwnerCreateForm) => fieldError === field ? { role: "alert" } : undefined;
   const generalError = fieldError ? "" : error || closeout.error;
-  const showFixtureCode = import.meta.env.DEV && import.meta.env.VITE_OWNER_CREATE_FIXTURE === "1";
+  const showFixtureCode = isMock && import.meta.env.DEV && import.meta.env.VITE_OWNER_CREATE_FIXTURE === "1";
 
   return (
-    <OwnerCreateFrame testId="owner-create-request" step={receipt ? 2 : 1}
+    <OwnerCreateFrame testId="owner-create-request" step={receipt ? 2 : 1} isMock={isMock}
       back={{ onClick: () => setScreen("landing"), disabled: sending }}
       aside={receipt ? (
         <>
@@ -350,7 +351,8 @@ export function OwnerCreateRequestScreen({ port }: { port: IStoreProvisioningPor
       <FrameHeading headingRef={heading} title={receipt ? "Xác minh email" : "Tạo quán mới"}
         description={receipt
           ? "Nhập mã 6 số vừa gửi tới email chủ quán."
-          : "Nhập thông tin quán và email chủ quán. Chỉ dùng dữ liệu giả."} />
+          : isMock ? "Nhập thông tin quán và email chủ quán. Chỉ dùng dữ liệu giả."
+          : "Nhập thông tin quán và email chủ quán."} />
       {/* In the verify state the send form is display:contents so the OTP form can sit
           between the receipt and the resend button without merging the two handlers. */}
       <div className="grid gap-4">

@@ -60,6 +60,7 @@ function readStatusReply<Status extends CreateLookupStatus | "closed", Code exte
 }
 
 export const mockOwnerOtpPort: IStoreProvisioningPort = {
+  isMock: true,
   async requestCreateStoreOtp(input) {
     const { data, serverTime } = await post("request-otp", input, [202]);
     return { result: data as CreateStoreOtpResponse, serverTime };
