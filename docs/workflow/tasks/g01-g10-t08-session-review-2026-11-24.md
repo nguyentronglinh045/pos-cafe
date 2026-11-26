@@ -156,3 +156,119 @@ Trên Preview nghiệm thu `e3021ef`, Codex gỡ ghép phiên thử #0033 của 
 TC-OWNER-49 đạt trên Protected Preview `e3021ef` bằng Chrome 24tx. Không ghi PIN, OTP, key, địa chỉ email, mã phiên hay dấu vân tay vào hồ sơ. TC-OWNER-50, 51, 100 và UI Đổi Store Key 12.9 không thuộc lượt chạy này.
 
 Hai reviewer AI độc lập duyệt bằng chứng và cập nhật OpenSpec ở phạm vi 11.7c. OpenSpec strict đạt.
+
+<a id="tc-owner-50-51-100-20261126"></a>
+
+### Kiểm TC-OWNER-50, 51 và 100 ngày 26/11/2026
+
+Linh giao kiểm phần còn lại của mục 11.7 và dùng lại bằng chứng TC-OWNER-49. Nguồn kiểm là `main@e3021ef`, Git tree `1aa061ae`, trùng checkout `787e48d` dùng để chạy local. Hai run trên đúng SHA đạt. Host Protected Preview đối chiếu với log triển khai và mở đúng POS Cafe bằng Chrome 24tx. [CI lần 2](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45751813514/attempts/2) · [Workflow Preview](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45755385135)
+
+**Kiểm điều kiện staging.** SQL Editor của Supabase staging xác nhận #0034 và #0035 cùng `active` dưới hộp thư thử được chỉ định. Địa chỉ cộng thẻ của cùng hộp thư có 0 chủ và 0 quán. Tại mốc kiểm, địa chỉ chính dùng 0/3 lượt gửi trong một giờ, IP có mức dùng cao nhất là 0/10 trong một giờ và dự án dùng 4/400 trong ngày Việt Nam. Có một lịch worker đang bật. Tìm trong Gmail theo tiêu đề, địa chỉ cộng thẻ và mốc bắt đầu cho 0 kết quả trước khi gửi. Linh mở phiên Chủ quán của #0034 bằng PIN thử. Codex dùng **Cài đặt → Quên Store Key** và kiểm lại các số đếm lúc 17:40 trước khi gửi. [Bằng chứng hộp thư đối chứng TC-OWNER-49](#tc-owner-49-hai-quan-staging-20261126)
+
+**Kết quả staging.** Cả năm yêu cầu hiển thị “Nếu email này đứng tên quán, thư chứa Store Key đã được gửi.”, giống TC-OWNER-49. Trước lượt thứ tư cho email chính, SQL ghi 4 intake đã xử lý, 0 thư cho alias và 3 thư `submitted` cho email chính. Sau lượt thứ tư, SQL ghi 5 intake đã xử lý. Email chính vẫn có 3 `submitted`, thêm 1 `provider_limited` với `submit_authorized_at` trống và 0 thư đang chờ hoặc đang gửi. Dự án tăng từ 4 lên 7 lượt gửi/OTP trong ngày rồi giữ 7 sau lượt chặn. Bộ lọc Gmail theo tiêu đề, người nhận và mốc thời gian cho 0 thư của alias. Trong hội thoại của email chính có đúng 3 mục mới lúc 17:44, sau khi mở nhóm thư Gmail gộp. Yêu cầu thứ tư gửi lúc 17:49, hậu kiểm lúc 17:50 sau khi worker đã chặn và Gmail vẫn có đúng 3 mục trong cửa sổ thử.
+
+Các số đếm đã che nằm trong `staging-117.json`, SHA-256 `5c6b07b3568e5b5cc50c3d6b07487ab313c0ca62716c1b71538ced07e7facece`. Bản preflight ban đầu nằm trong `preflight-117.json`, SHA-256 `cfa649cb80efb2f5cc51d7da6c2a6f07a03a5a072ed0a8d5893529ae1d861596`. Hai file nằm cùng thư mục với kết quả local bên dưới.
+
+| Tiêu chí | PostgreSQL 16.15 cô lập và SMTP giả | Protected Preview và Gmail |
+| --- | --- | --- |
+| **50** · email 0 quán, phản hồi như TC-49, 0 thư | Email fixture chưa có quán nhận `202` và `{ "ok": true }`, giống email có quán. Sau khi worker chạy, chỉ email có quán nhận một lần gọi SMTP giả. | Đạt. Một yêu cầu qua Cài đặt cho alias 0 quán, dùng phản hồi chung như TC-49. Hậu kiểm ghi 0 bản ghi mail và Gmail có 0 thư. |
+| **51** · yêu cầu thứ tư trong một giờ, cùng phản hồi, 0 thư thêm | Ba yêu cầu cùng email lần lượt hoàn tất `submitted`. Yêu cầu thứ tư trong cùng cửa sổ nhận cùng `202` và body. Worker lưu một `provider_limited` có `submit_authorized_at` trống, tổng lần gọi SMTP vẫn là 3. | Đạt. Gửi đúng bốn yêu cầu cho email đăng ký. Trước lượt bốn DB có 3 `submitted` trong một giờ. Sau lượt bốn có cùng phản hồi, thêm một bản ghi bị giới hạn và 0 thư mới. Gmail nhận đúng ba thư thử. |
+| **100(a)** · IP đã hết lượt | Một lượt OTP của fixture và chín yêu cầu recovery dùng hết 10 lượt IP. Yêu cầu recovery cho email có quán trả cùng `202` và body, không thêm intake hoặc thư. | Chưa kích hoạt hạn mức IP dùng chung trên staging. |
+| **100(b)** · dự án đã hết lượt | Fixture ở 399/400. Hai yêu cầu recovery nhận cùng `202` và body. Worker dùng lượt cuối cho đúng một thư và chặn yêu cầu còn lại. Sau khi xác nhận 400/400, gửi thêm một yêu cầu recovery và chạy worker. Phản hồi vẫn giống nhau, SMTP tăng 0, bộ đếm vẫn 400. OTP cũng bị chặn ở hạn mức chung. | Chưa kích hoạt hạn mức ngày của dự án dùng chung. |
+| **100(c)** · trả lời trước khi gửi thư, so thời gian phản hồi | Khi SMTP giả đang chờ, cả hai loại yêu cầu trả cùng `202` và body qua cùng RPC intake. Một cặp đo cuối là 1,01 và 1,00 ms. Ở phép kiểm đồng thời, worker hoàn tất `submitted` trước khi handler trả `202`. Điều đó vi phạm thứ tự yêu cầu trong ca. Khả năng phân biệt theo độ trễ chưa được kết luận từ mẫu local này. | Chưa tái hiện thứ tự song song hoặc đo độ trễ hai nhóm trên staging. |
+| **100(d)** · mười yêu cầu 0 quán, yêu cầu thứ 11 có quán | Mười email fixture riêng chưa có quán cùng IP nhận `202` và tạo đúng 10 intake. Yêu cầu thứ 11 dùng email có quán, cùng IP và cùng phản hồi. Tổng intake vẫn là 10, worker xử lý cả 10 và SMTP giả có 0 lượt. | Chưa dùng hết lượt IP dùng chung trên staging. |
+
+Phép kiểm hồi quy nguyên bản đạt 11/11, gồm test cha. Bản chạy bổ sung đạt 15/15 assertion test, gồm test cha, bốn bước đích danh cho TC-OWNER-51, 100(c), 100(d) và assertions thêm ở bước quota dự án. Một test đạt vì tái hiện đúng trường hợp sai thứ tự của 100(c). Cả hai dùng Node `24.16.0`, handler thật và SQL đúng Git tree nguồn. Fixture PostgreSQL chạy loopback từ bản sao `pos_cafe_t06_contract_t08review` có ba candidate rotation, rồi áp `owner-store-key-forgot.sql`. File `artifacts/t08-forgot-store-key-20261126/check-117.mjs` trong checkout code local có SHA-256 `7513e159bb31ee9fd603875b8f7bb7338d3743e39598cf3aca9b8f92ea067313`. Kết quả đã lọc ID nội bộ nằm cùng thư mục trong `check-117-result.txt`.
+
+Đường đối chiếu từ `src/adapters/supabase/ownerRecoveryPort.ts:21` và `api/owner-otp.js:37` qua handler nhận yêu cầu ở `supabase/functions/owner-provisioning/handler.ts:474`. SQL intake ở `supabase/candidate/owner-store-key-forgot.sql:40`, tra quán ở dòng 59 và kiểm hạn mức email/dự án ở dòng 115. Đối chiếu tiêu chí với `tests/contracts/forgotStoreKey.local.test.mjs:149` và bản chạy bổ sung kể trên.
+
+**Phát hiện TC-OWNER-100(c).** Fixture giữ kết quả RPC ở adapter sau khi PostgreSQL đã commit hàng intake. Worker chạy độc lập trên hàng đã commit. SMTP giả hoàn tất và hàng mail chuyển `submitted` trong lúc Promise phản hồi công khai vẫn chờ. Sau khi nhả kết quả RPC, handler mới trả `202`. Điều này tái hiện với handler và SQL thật ở loopback. SMTP và độ trễ trả kết quả RPC được điều khiển trong fixture. Ở runtime, hàng có thể được worker lấy từ lúc commit còn gateway phải đợi Edge trả lời. Vì vậy một nhịp worker trùng cửa sổ này có thể gửi thư trước khi người dùng nhận phản hồi. Cần xem lại thời điểm worker được phép lấy yêu cầu so với hợp đồng trả lời công khai, rồi chạy lại ca đồng thời và phép đo độ trễ. Linh quyết định hướng sửa sau khi xem biên bản.
+
+<a id="theo-doi-ui-quen-store-key-20261126"></a>
+
+**Quan sát khi đổi tab trên staging.** Khi chuyển từ SQL Editor về POS Cafe, một số lần màn hình báo “Chưa xác minh được quyền. Kiểm tra kết nối và thử lại.” rồi tự trở về Cài đặt. Hộp thoại mở lại với trường email trống. Hai thao tác bấm trước khi gửi thành công tạo 0 intake theo hậu kiểm. Lượt thử tiếp tục bằng Enter sau khi form hiện ổn định. Cần kiểm vòng đời UI tại `src/app/PermissionLifecycle.tsx:99` nếu xử lý việc mất nội dung khi quay lại tab. Chưa xác định nguyên nhân gốc của hiện tượng.
+
+**Bàn giao.** TC-OWNER-50/51 đạt staging. Mục 11.7 vẫn mở do TC-OWNER-100(c) có lỗi thứ tự tái hiện local và phần đo độ trễ còn mở. Các phép kích hoạt hạn mức IP/dự án hoặc làm chậm SMTP cần môi trường độc lập nếu kiểm hosted. Các bằng chứng trên thuộc lát Quên Store Key. Phần nghiệm thu Đổi Store Key tiếp tục theo mục 12.9.
+
+#### Rà độc lập biên bản 11.7
+
+Hai reviewer AI trả `APPROVE` cho bản tài liệu trên nền `6cef663`, SHA-256 của `docs-117-v3.patch` là `5c367181a438be02f3c07052124a8f5e9374abcb03c7297ad6be7a35b57aebca`, trước đoạn metadata này. Reviewer hợp đồng đối chiếu từng nhánh với test, SQL và handler. Reviewer bằng chứng đối chiếu phiên bản, số đếm staging, trạng thái checklist và thông tin đã che. Cả hai dùng bản trích và kết quả đã lưu để rà chỉ đọc. OpenSpec strict, `git diff --check` và kiểm ngược bản vá đều đạt.
+
+| Phát hiện khi rà bản đầu | Xử lý đã được kiểm lại |
+| --- | --- |
+| **Chặn biên bản** · TC-OWNER-100(b) chỉ có recovery lúc còn một lượt, rồi OTP lúc đã hết. | Bổ sung yêu cầu recovery sau khi xác nhận 400/400. Worker không gửi thêm và phản hồi vẫn giống. |
+| **Chặn biên bản** · TC-OWNER-100(c) chưa thử cạnh tranh tại lúc commit. Một cặp thời gian thiếu căn cứ kết luận về khả năng phân biệt. | Tái hiện worker `submitted` trước `202` trong điều kiện kiểm soát. Ghi lỗi thứ tự và giữ phần thời gian phản hồi mở ở cả local và hosted. |
+| **Đề xuất** · Thêm dấu vân tay bản trích preflight. | Bổ sung SHA-256 của `preflight-117.json` và bản trích kết quả staging `staging-117.json`. |
+
+<a id="tc-owner-100c-receipt-20261126"></a>
+
+### Sửa và kiểm lại TC-OWNER-100(c) ngày 26/11/2026
+
+Linh yêu cầu giữ tiêu chí hiện tại, sửa thứ tự trả lời và gửi thư, kiểm lại ca đồng thời và độ trễ rồi cập nhật mục 11.7. Hiện tượng mất nội dung khi đổi tab được theo dõi riêng. [Quan sát khi đổi tab](#theo-doi-ui-quen-store-key-20261126)
+
+Ứng viên code local dựa trên `main@e3021ef`, nhánh `fix/t08-forgot-response-order-20261126`. Bản vá `receipt-final-code.patch` có SHA-256 `f3e8e65eb6b13cec3ac6acabe0717eecd194a68c0fc97caec1b8913b8896b360`, nằm trong `artifacts/t08-forgot-store-key-20261126/` của worktree code. Bản vá gồm candidate SQL nâng cấp, Edge, gateway, adapter trình duyệt, test và ghim hash phát hành.
+
+Ở bước đầu, intake giữ email trong `pending_email`. Edge sinh UUID ngẫu nhiên và gateway trả nó trong header của cùng phản hồi `202` với body `{ "ok": true }`. Trình duyệt đọc xong body, gắn thông báo chung vào DOM rồi xác nhận UUID qua gateway. RPC xác nhận chuyển email sang cột mà worker đọc và ghi `receipt_confirmed_at`. Ràng buộc bảng chặn dữ liệu sẵn sàng thiếu mốc xác nhận. Trước bước xác nhận, worker chưa thể tra chủ, giải mã key hoặc gửi thư. Cả email có quán, email không có quán và yêu cầu bị giới hạn IP đều có cùng status, body và định dạng header. Xác nhận thiếu hàng hoặc xác nhận lặp trả cùng kết quả. Lượt chưa xác nhận vẫn giữ suất IP và tự hết hạn sau 90 phút. Nếu kết nối đứt khi xác nhận, adapter thử lại cùng biên nhận một lần trong nền. Thông báo chung đã hiện vẫn giữ nguyên. Nếu DB chưa nhận được xác nhận và thư chưa đến, người dùng có thể thử lại yêu cầu.
+
+**Kiểm đồng thời.** Dùng HTTP gateway thật qua loopback, handler Edge và PostgreSQL 16.15 cô lập, SMTP giả. Giữ kết quả RPC sau khi intake commit và chạy worker trong lúc gateway còn chờ. Worker tạo 0 bản ghi thư và SMTP có 0 lượt. Sau khi client đọc xong `202`, worker chạy lần nữa và vẫn không gửi khi thiếu xác nhận hợp lệ. Xác nhận không có chữ ký bị từ chối. UUID không khớp nhận phản hồi chung và không phát sinh thư. Hai xác nhận hợp lệ đồng thời ở HTTP và một lượt lặp sau gửi chỉ sinh đúng một thư. Fixture tuần tự hóa các RPC trên kết nối worker. Vitest kiểm riêng hộp thoại bằng cách đọc thông báo trong DOM ngay khi callback xác nhận chạy. Bộ contract đạt 14/14 mục mỗi lượt trong ba lượt chạy, gồm test cha, hồi quy giới hạn email/IP/dự án và quyền RPC.
+
+**Độ trễ.** Mỗi lượt bỏ 8 cặp làm nóng rồi đo 80 cặp HTTP. Hai địa chỉ cùng độ dài, dùng chung IP trong từng cặp. Phép đo đổi nhóm đi trước qua từng cặp và hoán đổi quyền sở hữu giữa hai nửa mỗi lượt để từng địa chỉ xuất hiện trong cả hai nhóm. SMTP giả được giữ mở suốt phép đo. Cả hai nhóm hoàn tất phản hồi và chỉ gọi cùng RPC intake. Đơn vị là ms.
+
+| Lượt | Email có quán p50 / p95 | Email không có quán p50 / p95 | Trung vị chênh lệch ghép cặp | Số cặp nhóm có quán chậm hơn |
+| --- | --- | --- | --- | --- |
+| 1 | 1,48 / 1,86 | 1,45 / 1,86 | 0,00 | 41/80 |
+| 2 | 1,52 / 2,06 | 1,47 / 1,89 | +0,03 | 43/80 |
+| 3 | 1,43 / 3,00 | 1,49 / 1,87 | +0,01 | 42/80 |
+
+Trong 240 cặp trên loopback, nhóm email có quán chậm hơn ở 126 cặp. Chênh lệch trung vị ghép cặp dao động từ 0,00 đến +0,03 ms và p95 thay đổi theo lượt. Phép đo bao phủ thời gian đến lúc client đọc xong phản hồi `202`, với gateway Node và handler Edge gọi trong cùng tiến trình fixture. Hosted còn phụ thuộc Vercel, Supabase và đường truyền của máy thử. [Chuẩn Fetch về đọc JSON](https://fetch.spec.whatwg.org/#dom-body-json)
+
+**Hồi quy và nâng cấp.** Candidate SQL từ chối khi còn intake cũ nằm trong cửa sổ xử lý hoặc thư cũ đang chờ gửi. Các phép thử từ chối tự hoàn tác. Áp thành công trên bản sao đã có schema của PR #47, xác nhận địa chỉ legacy hết hạn được xóa khỏi hàng, RPC hai tham số đã nghỉ và DB từ chối hình dạng ghi legacy thiếu mốc xác nhận. Deno check đạt. Hồi quy Edge T06 đạt 3 ca và 2 bước con. Gateway và release tooling đạt 38/38. Vitest đạt 1.270/1.270, build đạt và smoke mock Quên Store Key đạt 5/5. UI Audit selftest đạt 23 phát hiện mẫu. Hai trạng thái Quên Store Key đạt 6 cặp giao diện và viewport, với 0 phát hiện. OpenSpec strict đạt. Bằng chứng đã lọc nằm trong `receipt-final-contract-run1.txt`, `receipt-final-contract-run2.txt`, `receipt-final-contract-run3.txt` và `receipt-v2-guard.txt` cạnh bản vá.
+
+**Bàn giao từ lượt local.** Mục 11.7f đã kiểm xong local. TC-OWNER-49…51 đã chạy trên bản `e3021ef`. Bước 11.7g cần xác minh bản sửa trên Protected Preview được duyệt. Quy trình nâng cấp tạm dừng Quên Store Key, xác minh hàng cũ đã xử lý và áp SQL trước khi chuyển backend sang luồng biên nhận. Các Preview cũ sẽ báo chưa gửi được yêu cầu sau khi chuyển phiên bản.
+
+#### Rà độc lập bản sửa TC-OWNER-100(c)
+
+Hai reviewer AI trả `APPROVE` cho bản vá code `f3e8e65eb6b13cec3ac6acabe0717eecd194a68c0fc97caec1b8913b8896b360` và bản vá docs `084642c7bdbb3646076e1575575e037e8dfe45012a59c457d8c94b24e77ba4b7` trước đoạn metadata này. Reviewer hợp đồng kiểm thứ tự UI, gateway, worker và phép đo. Reviewer dữ liệu kiểm quyền RPC, thời hạn, quota, nâng cấp, hash phát hành và nguồn bằng chứng. Cả hai đối chiếu bản vá, log local và kiểm chỉ đọc.
+
+| Phát hiện khi rà ứng viên đầu | Xử lý và phép kiểm lại |
+| --- | --- |
+| **Chặn** · Adapter đợi kết quả xác nhận trước khi báo thành công. Worker có thể gửi trước lúc hộp thoại hiện phản hồi chung. | Đưa xác nhận xuống effect sau khi thông báo có trong DOM. Test hộp thoại đọc đúng thông báo ngay khi callback xác nhận chạy. |
+| **Theo dõi nâng cấp** · Lượt RPC cũ đang dở có thể dùng hình dạng ghi đã coi email là sẵn sàng. | Ràng buộc SQL từ chối hàng thiếu mốc xác nhận. Kiểm trực tiếp hình dạng cũ nhận lỗi `23514`. Candidate cũng từ chối nâng cấp khi còn hàng legacy đủ điều kiện và dọn địa chỉ intake cũ đã hết hạn. |
+| **Làm rõ bằng chứng** · Hai xác nhận đồng thời ở HTTP dùng chung kết nối SQL nối tuần tự. | Biên bản ghi đúng tầng song song và giữ riêng ca worker chạy giữa lúc commit và lúc client đọc phản hồi. |
+
+<a id="tc-owner-100c-hosted-20261126"></a>
+
+### Phát hành và kiểm 11.7g trên Protected Preview ngày 26/11/2026
+
+Linh giao dọn bản sao PostgreSQL của lượt kiểm cuối, phát hành bản sửa và cập nhật checklist theo kết quả hosted. Chỉ xóa DB bản sao của lượt kiểm cuối sau khi đối chiếu thư mục dữ liệu, OID và số kết nối bằng 0. PostgreSQL local đã dừng. Đo trên ổ D trước và sau cho thấy dung lượng trống tăng 15.753.216 byte. Bằng chứng kiểm thử local vẫn nằm trong thư mục của lượt sửa.
+
+Hai lượt CI của commit ban đầu dừng ở kiểm hash runbook Preview. Commit `7870ab0` cập nhật đúng hash của runbook đã rà. Reviewer kiểm lại delta này. CI của PR và nhánh push ở lượt 1 đều đạt. PR #48 squash vào `main@0aa934507bcf0387c475953f2bc78ae60b1f3ed2` với Git tree `3827a60127a3b97ce9037c9a8eb2b589ec874f16`, khớp bản được duyệt. [PR #48](https://github.com/nguyentronglinh045/pos-cafe/pull/48) · [CI của PR](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45811849344) · [CI của nhánh push](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45811843756) · [CI của main](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45814110518)
+
+**Tiền kiểm staging.** Lúc 18:44:46 UTC+7, PostgreSQL có 0 hàng intake cũ còn địa chỉ, 0 thư recovery ở trạng thái queued, sending hoặc unknown. RPC enqueue cũ còn tồn tại, RPC xác nhận chưa có. Mức sử dụng lớn nhất theo IP trong giờ là 1/10, theo dự án trong ngày là 7/400. Cron worker hoạt động, cửa sổ lần chạy 18:44 có một HTTP 200 với `ok=true`. Trên Chrome 24tx đã xác nhận địa chỉ thử đứng tên #0034 và #0035, alias cùng hộp thư đứng tên 0 quán, địa chỉ chủ quán dùng 0/3 lượt gửi trong giờ. Bản tải Edge trước nâng cấp khớp đủ năm tệp deploy của `e3021ef` sau khi chuẩn hóa xuống dòng. Bản trích đã che nằm trong `receipt-release-checkpoint.json` và `receipt-hosted-edge-preflight.json`.
+
+**Phát hành.** CI push `45814110518` lượt 1 đạt trên đúng SHA merge. Workflow `45816368026` lượt 1 qua bước duyệt môi trường Preview và báo `READY` cho cùng SHA. Biên nhận xác nhận chế độ Supabase staging, Auth readiness và permission contract đều đạt, định tuyến production và bảo vệ Preview không đổi. Host mở trong Chrome 24tx khớp host trên biên nhận. [CI lượt 1 của main](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45814110518/attempts/1) · [Workflow Protected Preview](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45816368026)
+
+Tạm dừng Quên Store Key lúc 19:05:57 UTC+7. Hậu kiểm trước SQL vẫn thấy 0 hàng cũ còn địa chỉ và 0 thư queued, sending hoặc unknown, với mức dùng IP tối đa 0/10 và dự án 7/400. Sau khi công cụ Chrome mất kết nối và kết nối lại, áp thành công candidate biên nhận lúc 19:12:01. Schema có đủ hai RPC `SECURITY DEFINER` theo hợp đồng, chỉ `service_role` được gọi, RPC enqueue cũ đã nghỉ và hai ràng buộc biên nhận được xác thực. Deploy Edge lúc 19:12:50. Đọc lại ZIP từ staging và so đủ năm tệp với Git tại SHA merge sau chuẩn hóa xuống dòng, cả năm khớp. Hành động đọc trạng thái T06 trả HTTP 200 `not_accepted` với UUID thử cũ. Cron worker có HTTP 200 `ok=true` ở nhịp 19:13 lúc recovery tạm dừng và ở nhịp 19:15 sau khi khôi phục cờ lúc 19:14:32.
+
+**Ca đồng thời trên bản hosted.** Từ màn Ghép thiết bị, gửi một yêu cầu cho hộp thư thử #0034/#0035. Dùng breakpoint DevTools trên đúng tab đó để giữ lần gọi xác nhận. Khi tab đang dừng, UI đã hiện “Nếu email này đứng tên quán, thư chứa Store Key đã được gửi.” DB lúc 19:16:30 thấy một intake chỉ có `pending_email`, 0 xác nhận và 0 hàng thư. Worker chạy lúc 19:17:00 và trả HTTP 200 `ok=true`. Hậu kiểm lúc 19:17:25 vẫn có một intake chờ, 0 xác nhận và 0 hàng thư. Sau khi tiếp tục tab, DB ghi `receipt_confirmed_at` lúc 19:17:48.570, cấp quyền gửi lúc 19:18:01.205 và chốt `submitted` lúc 19:18:04.547. Một hàng thư gắn đúng hai quán #0034 và #0035. Gmail thấy một kết quả khớp bộ lọc thử sau mốc ban đầu có 0 kết quả. Không đọc nội dung key cho lượt kiểm này.
+
+**Đối chiếu alias.** Gửi một yêu cầu bình thường cho alias đã xác nhận không đứng tên quán. UI hiện đúng cùng nội dung. Sau nhịp worker, DB thấy một intake đã xác nhận và xử lý, 0 hàng thư. Gmail cho bộ lọc thử của alias vẫn có 0 kết quả. Tổng lượt kiểm hosted là hai lần gửi form. Breakpoint và hai tab tìm Gmail đã được đóng sau kiểm.
+
+| Tiêu chí | Kết quả trên bản sửa |
+| --- | --- |
+| TC-OWNER-100(a) · IP đã hết hạn mức giờ | Đã kiểm bằng PostgreSQL cô lập và SMTP giả ở 11.7f. Chưa kích hoạt ngưỡng 10/10 IP trên hosted. |
+| TC-OWNER-100(b) · Dự án đã hết hạn mức ngày | Đã kiểm bằng PostgreSQL cô lập và SMTP giả ở 11.7f. Chưa kích hoạt ngưỡng 400/400 trên hosted. |
+| TC-OWNER-100(c) · Phản hồi trước khi gửi và độ trễ | Đạt quan sát thứ tự trên Protected Preview với một lượt giữ ACK qua nhịp worker. Đã kiểm SMTP chậm và đo 240 cặp HTTP ở local. Phép đo độ trễ so sánh và SMTP chậm trên hosted còn mở. |
+| TC-OWNER-100(d) · 10 yêu cầu alias và yêu cầu thứ 11 | Đã kiểm bằng PostgreSQL cô lập và SMTP giả ở 11.7f. Chưa dùng hết hạn mức IP trên hosted. |
+
+**Checklist.** Đánh dấu phần kiểm bản sửa trên Protected Preview. Giữ 11.7g mở vì cần môi trường hosted độc lập cho hạn mức dùng chung và SMTP chậm, gồm so độ trễ HTTP. Kết quả TC-OWNER-49…51 đầy đủ vẫn gắn với `e3021ef`. Bản trích `receipt-hosted-117g.json` có SHA-256 `488b452a902e3e784e499803158bd212e812c1c1fb160b58bf2ca731fe073d5d`. Bản đối chiếu Edge `receipt-hosted-edge-after.json` có SHA-256 `71c24f2864e205ced9f4ec95dbb62ecc5cf04bf9d1dfd22b453e995e0103d271`. Thư mục bằng chứng ở worktree code là `artifacts/t08-forgot-store-key-20261126/`.
+
+**Rà độc lập.** Hai reviewer AI trả `APPROVE` cho bản vá docs `26ec7388c7364d711b3f797f8aaad6d2b7656a97b96f3f9b84bdabf7ce1e2b4d` trước đoạn metadata này. Một reviewer đối chiếu tiêu chí, phạm vi local và trạng thái 11.7g. Reviewer còn lại đối chiếu SHA, CI, phê duyệt Preview, SQL, ACL, ZIP Edge, thời điểm worker và số đếm DB/Gmail trong bản trích đã che. Hai lượt rà đều chỉ đọc. OpenSpec strict và kiểm bản vá đạt.
+
+<a id="chot-sua-phat-hanh-tc-owner-100c-20261126"></a>
+
+#### Quyết định chốt phần sửa và phát hành ngày 26/11/2026
+
+Linh chốt phần sửa và phát hành TC-OWNER-100(c) theo kết quả PR #48 và Protected Preview `0aa9345`. Linh giữ tiêu chí hiện tại và để 11.7g mở. Các ca hosted còn thiếu được ghi là **giới hạn kiểm chứng** và giữ trạng thái **Chưa chạy**. Phạm vi còn lại gồm TC-OWNER-100(a), (b), (d) ở ngưỡng hạn mức IP hoặc dự án và TC-OWNER-100(c) với SMTP chậm và so sánh độ trễ phản hồi. Chạy các ca này khi có môi trường hosted độc lập.
+
+Reviewer AI độc lập trả `APPROVE` cho cập nhật docs `54f3835032137d69e887bc6a7008b9e37e2f7825ec7ec490d65255fef65ea5d7` trước khi thêm dòng này. Rà chỉ đọc, đối chiếu quyết định, checklist, tiêu chí TC-OWNER-100 và các liên kết. OpenSpec strict và kiểm bản vá đạt.
