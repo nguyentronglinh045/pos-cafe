@@ -9,21 +9,54 @@ const request = { storeName: "Quán thử", requestId: "fixture-request" };
 const confirmation = { storeName: request.storeName, challengeRef, code: "540218", attemptId: "fixture-attempt" };
 const storeKey = `0001-${"K".repeat(32)}`;
 
-it("sends email only to the gateway and exposes a uniform acceptance", async () => {
+it("confirms only after reading the accepted response and sends only the receipt on confirmation", async () => {
+  const reply = Response.json({ ok: true, storeKey, address: "fixture" }, {
+    status: 202, headers: { "x-pos-cafe-forgot-receipt": challengeRef },
+  });
+  const read = vi.spyOn(reply, "json");
   const fetchImpl = vi.fn<typeof fetch>()
-    .mockResolvedValueOnce(Response.json({ ok: true, storeKey, address: "fixture" }, { status: 202 }))
+    .mockResolvedValueOnce(reply)
+    .mockImplementationOnce(async () => {
+      expect(read).toHaveBeenCalledOnce();
+      expect(reply.bodyUsed).toBe(true);
+      return Response.json({ ok: true }, { status: 202 });
+    })
     .mockResolvedValueOnce(Response.json({ ok: false, code: "A_EMAIL_INVALID" }, { status: 400 }))
     .mockRejectedValueOnce(new Error("fixture transport error"));
   const port = createForgotStoreKeyPort(fetchImpl);
-  expect(await port.request("fixture@invalid.test")).toBe("accepted");
-  expect(await port.request("invalid")).toBe("invalid_email");
-  expect(await port.request("fixture@invalid.test")).toBe("unavailable");
+  const accepted = await port.request("fixture@invalid.test");
+  expect(accepted.kind).toBe("accepted");
+  expect(fetchImpl).toHaveBeenCalledTimes(1);
+  if (accepted.kind === "accepted") await accepted.confirmReceipt?.();
+  expect(await port.request("invalid")).toEqual({ kind: "invalid_email" });
+  expect(await port.request("fixture@invalid.test")).toEqual({ kind: "unavailable" });
   const [target, options] = fetchImpl.mock.calls[0];
   expect(target).toBe("/api/owner-otp");
   expect(options?.credentials).toBe("same-origin");
   expect(new Headers(options?.headers).has("authorization")).toBe(false);
   expect(new Headers(options?.headers).has("x-pos-employee-token")).toBe(false);
-  expect(JSON.parse(String(options?.body))).toEqual({ action: "forgotStoreKey", email: "fixture@invalid.test" });
+  expect(JSON.parse(String(options?.body))).toEqual({ action: "forgotStoreKey", email: "fixture@invalid.test", receiptProtocol: 1 });
+  const [confirmationTarget, confirmationOptions] = fetchImpl.mock.calls[1];
+  expect(confirmationTarget).toBe(target);
+  expect(confirmationOptions?.credentials).toBe("same-origin");
+  expect(confirmationOptions?.keepalive).toBe(true);
+  expect(JSON.parse(String(confirmationOptions?.body))).toEqual({ action: "confirmForgotStoreKeyReceipt", receipt: challengeRef });
+});
+
+it("retries the same receipt once and requires a usable accepted response before confirming", async () => {
+  const fetchImpl = vi.fn<typeof fetch>()
+    .mockResolvedValueOnce(Response.json({ ok: true }, { status: 202 }))
+    .mockResolvedValueOnce(Response.json({ ok: true }, { status: 202, headers: { "x-pos-cafe-forgot-receipt": challengeRef } }))
+    .mockRejectedValueOnce(new Error("confirmation response lost"))
+    .mockResolvedValueOnce(Response.json({ ok: true }, { status: 202 }));
+  const port = createForgotStoreKeyPort(fetchImpl);
+  expect(await port.request("fixture@invalid.test")).toEqual({ kind: "unavailable" });
+  expect(fetchImpl).toHaveBeenCalledTimes(1);
+  const accepted = await port.request("fixture@invalid.test");
+  expect(accepted.kind).toBe("accepted");
+  expect(fetchImpl).toHaveBeenCalledTimes(2);
+  if (accepted.kind === "accepted") await accepted.confirmReceipt?.();
+  expect(fetchImpl.mock.calls[2][1]?.body).toBe(fetchImpl.mock.calls[3][1]?.body);
 });
 
 function setup(fetchImpl: typeof fetch) {

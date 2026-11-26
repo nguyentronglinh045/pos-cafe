@@ -1,15 +1,20 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
-import { useId, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { ownerCreateOtpMessage, parseOwnerEmail } from "@/core/ownerCreateInput";
-import type { IForgotStoreKeyPort } from "@/ports/ownerRecovery";
+import type { ForgotStoreKeyAccepted, IForgotStoreKeyPort } from "@/ports/ownerRecovery";
 
 export function ForgotStoreKeyDialog({ port, onClose }: { port: IForgotStoreKeyPort; onClose: () => void }) {
   const title = useId();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
-  const [accepted, setAccepted] = useState(false);
+  const [accepted, setAccepted] = useState<ForgotStoreKeyAccepted | null>(null);
   const sending = useRef(false);
+
+  useEffect(() => {
+    // The status is already in the DOM when this effect releases the mail request.
+    void accepted?.confirmReceipt?.();
+  }, [accepted]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -24,11 +29,11 @@ export function ForgotStoreKeyDialog({ port, onClose }: { port: IForgotStoreKeyP
     setError("");
     try {
       const result = await port.request(canonical);
-      if (result === "accepted") {
+      if (result.kind === "accepted") {
         setEmail("");
-        setAccepted(true);
+        setAccepted(result);
       } else {
-        setError(result === "invalid_email" ? ownerCreateOtpMessage("A_EMAIL_INVALID") : "Chưa gửi được yêu cầu. Vui lòng thử lại.");
+        setError(result.kind === "invalid_email" ? ownerCreateOtpMessage("A_EMAIL_INVALID") : "Chưa gửi được yêu cầu. Vui lòng thử lại.");
       }
     } catch {
       setError("Chưa gửi được yêu cầu. Vui lòng thử lại.");

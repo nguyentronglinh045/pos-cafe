@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
+import { once } from "node:events";
+import { createServer } from "node:http";
 import { test } from "node:test";
 import pg from "pg";
+import { ownerOtpGateway } from "../../api/owner-otp.js";
 import { makeOwnerHandler } from "../../supabase/functions/owner-provisioning/handler.ts";
 import { rotationCandidateBinding } from "../../supabase/functions/owner-provisioning/rotation.ts";
 
@@ -19,6 +22,8 @@ const open = async () => {
 };
 const encoder = new TextEncoder();
 const notice = "Việc đổi key vẫn đang hoàn tất.";
+const receiptHeader = "x-pos-cafe-forgot-receipt";
+const receiptPattern = /^[0-9a-f-]{36}$/;
 const nowId = () => {
   const stamp = Date.now().toString(16).padStart(12, "0");
   return `${stamp.slice(0, 8)}-${stamp.slice(8)}-7${randomUUID().slice(15)}`;
@@ -109,16 +114,23 @@ test("forgotten Store Key HTTP and worker contract with PostgreSQL and SMTP fixt
   const observed = [];
   const messages = [];
   let deliver = async () => "submitted";
+  let afterEnqueue = async () => {};
+  const rpc = rpcClient(workerDb, observed);
   const handler = makeOwnerHandler({
-    rpc: rpcClient(workerDb, observed), forgotStoreKey: true,
+    async rpc(name, args) {
+      const result = await rpc(name, args);
+      if (name === "owner_enqueue_forgot_store_key") await afterEnqueue(args);
+      return result;
+    },
+    forgotStoreKey: true,
     createAuth() { assert.fail("Forgetting a key must not change Auth"); },
     sendMail(message) { messages.push(message); return deliver(message); },
     hmacKey: await importHmac(randomBytes(32)), ingressKey: await importHmac(ingressRaw), workerKey: await importHmac(workerRaw),
     otpEncryptionKey: cipher, storeEncryptionKey: cipher, clock: Date.now,
   });
 
-  async function request(email, ip, signed = true) {
-    const body = JSON.stringify({ action: "forgotStoreKey", email });
+  async function signedRequest(input, ip, signed = true) {
+    const body = JSON.stringify(input);
     const time = String(Date.now());
     const digest = createHash("sha256").update(body).digest("hex");
     const signature = createHmac("sha256", ingressRaw).update(`pos-cafe-otp-v1\n${time}\n${ip}\n${digest}`).digest("hex");
@@ -126,7 +138,15 @@ test("forgotten Store Key HTTP and worker contract with PostgreSQL and SMTP fixt
       "x-pos-cafe-ip": ip, "x-pos-cafe-time": time, "x-pos-cafe-signature": signed ? signature : "",
     } }));
     assert.equal(reply.headers.get("cache-control"), "no-store");
-    return [reply.status, await reply.json()];
+    return { result: [reply.status, await reply.json()], receipt: reply.headers.get(receiptHeader) };
+  }
+  const prepare = (email, ip, signed = true) => signedRequest({ action: "prepareForgotStoreKey", email }, ip, signed);
+  const confirm = (receipt, ip, signed = true) => signedRequest({ action: "confirmForgotStoreKeyReceipt", receipt }, ip, signed);
+  async function request(email, ip) {
+    const { result, receipt } = await prepare(email, ip);
+    assert.match(receipt, receiptPattern);
+    assert.deepEqual((await confirm(receipt, ip)).result, accepted);
+    return result;
   }
   async function work() {
     const time = String(Date.now());
@@ -138,12 +158,60 @@ test("forgotten Store Key HTTP and worker contract with PostgreSQL and SMTP fixt
   const accepted = [202, { ok: true }];
   const ipPrefix = `2001:db8:${randomBytes(2).toString("hex")}::`;
 
+  const stagingRef = "ineckiashpwloncxnbqx";
+  const stagingUrl = `https://${stagingRef}.supabase.co`;
+  const testKey = "sb_publishable_synthetic_test_key";
+  const gateway = ownerOtpGateway({
+    env: { VERCEL: "1", VERCEL_ENV: "preview", VERCEL_TARGET_ENV: "preview", POS_PREVIEW_DATA_MODE: "supabase",
+      POS_PREVIEW_SUPABASE_URL: stagingUrl, POS_CAFE_OWNER_SUPABASE_PROJECT_REF: stagingRef,
+      POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY: testKey, POS_CAFE_OWNER_SUPABASE_PUBLISHABLE_KEY: testKey,
+      POS_CAFE_OTP_INGRESS_KEY: ingressRaw.toString("base64") },
+    fetchImpl(url, init) {
+      assert.equal(url, `${stagingUrl}/functions/v1/owner-provisioning`);
+      return handler(new Request("https://fixture.invalid", init));
+    },
+  });
+  const server = createServer(async (req, res) => {
+    const chunks = [];
+    for await (const chunk of req) chunks.push(chunk);
+    await gateway({ method: req.method, body: Buffer.concat(chunks).toString(), headers: req.headers }, {
+      setHeader: (name, header) => res.setHeader(name, header),
+      status(status) { res.statusCode = status; return this; },
+      json(body) { res.setHeader("content-type", "application/json"); res.end(JSON.stringify(body)); },
+    });
+  });
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  server.listen(0, "127.0.0.1");
+  await once(server, "listening");
+  const gatewayUrl = `http://127.0.0.1:${server.address().port}/api/owner-otp`;
+  const gatewayPost = (body, ip) => fetch(gatewayUrl, {
+    method: "POST", headers: { "content-type": "application/json", "x-vercel-forwarded-for": ip },
+    body: JSON.stringify(body), signal: AbortSignal.timeout(5_000),
+  });
+  async function gatewayPrepare(email, ip) {
+    const response = await gatewayPost({ action: "forgotStoreKey", email, receiptProtocol: 1 }, ip);
+    assert.deepEqual([response.status, await response.json()], accepted);
+    assert.equal(response.headers.get("cache-control"), "no-store");
+    const receipt = response.headers.get(receiptHeader);
+    assert.match(receipt, receiptPattern);
+    return receipt;
+  }
+  async function gatewayConfirm(receipt, ip) {
+    const response = await gatewayPost({ action: "confirmForgotStoreKeyReceipt", receipt }, ip);
+    assert.deepEqual([response.status, await response.json()], accepted);
+    assert.equal(response.headers.has(receiptHeader), false);
+  }
+
   await t.test("only service can enqueue, inspect or deliver", async () => {
     assert.equal(await value(db, `select to_regprocedure('public.owner_request_create_otp(uuid,uuid,private.owner_canonical_email,inet,uuid,bytea,bytea,bytea,integer)') is null as value`), true);
+    assert.equal(await value(db, "select to_regprocedure('public.owner_enqueue_forgot_store_key(text,inet)') is null as value"), true);
+    await assert.rejects(db.query(`insert into private.forgot_store_key_requests(source_ip,canonical_email,received_at)
+      values('192.0.2.10','fixture@invalid.test',now())`), { code: "23514", constraint: "forgot_key_requests_confirmed_email" });
     for (const role of ["anon", "authenticated"]) {
       await db.query(`set role ${role}`);
       try {
-        await assert.rejects(db.query("select public.owner_enqueue_forgot_store_key($1,$2)", ["none@invalid.test", "192.0.2.10"]), { code: "42501" });
+        await assert.rejects(db.query("select public.owner_enqueue_forgot_store_key($1,$2,$3)", ["none@invalid.test", "192.0.2.10", randomUUID()]), { code: "42501" });
+        await assert.rejects(db.query("select public.owner_confirm_forgot_store_key_receipt($1)", [randomUUID()]), { code: "42501" });
         await assert.rejects(db.query("select public.owner_claim_forgot_key_mail()"), { code: "42501" });
         await assert.rejects(db.query("select * from private.forgot_store_key_requests"), { code: "42501" });
       } finally { await db.query("reset role"); }
@@ -158,12 +226,18 @@ test("forgotten Store Key HTTP and worker contract with PostgreSQL and SMTP fixt
   await t.test("public receipt precedes owner lookup; valid owner gets one mail with both current keys", async () => {
     const before = observed.length;
     const unknown = `${randomUUID()}@invalid.test`;
-    assert.deepEqual(await request("bad-address", "192.0.2.10"), [400, { ok: false, code: "A_EMAIL_INVALID" }]);
-    assert.deepEqual(await request(actor.email, "192.0.2.10", false), [503, { ok: false, code: "A_SEND_UNAVAILABLE" }]);
-    assert.deepEqual(await request(` ${actor.email.toUpperCase()} `, `${ipPrefix}10`), accepted);
-    assert.deepEqual(await request(unknown, `${ipPrefix}10`), accepted);
+    const ip = `${ipPrefix}10`;
+    assert.deepEqual((await prepare("bad-address", ip)).result, [400, { ok: false, code: "A_EMAIL_INVALID" }]);
+    assert.deepEqual((await prepare(actor.email, ip, false)).result, [503, { ok: false, code: "A_SEND_UNAVAILABLE" }]);
+    const replies = [await prepare(` ${actor.email.toUpperCase()} `, ip), await prepare(unknown, ip)];
+    for (const { result, receipt } of replies) {
+      assert.deepEqual(result, accepted);
+      assert.match(receipt, receiptPattern);
+    }
+    assert.notEqual(replies[0].receipt, replies[1].receipt);
     assert.deepEqual(observed.slice(before), ["owner_enqueue_forgot_store_key", "owner_enqueue_forgot_store_key"]);
     assert.equal(messages.length, 0);
+    for (const { receipt } of replies) assert.deepEqual((await confirm(receipt, ip)).result, accepted);
     await work();
     assert.equal(messages.length, 1);
     assert.equal(messages[0].to === actor.email, true);
@@ -173,11 +247,56 @@ test("forgotten Store Key HTTP and worker contract with PostgreSQL and SMTP fixt
     assert.equal(await value(db, "select sum(key_generation)::int as value from public.stores where id = any($1)", [[first.store, second.store]]), 0);
   });
 
+  await t.test("TC-OWNER-100(c): worker cannot take a committed intake until the public response is read", { timeout: 10_000 }, async () => {
+    const another = await ownerFixture(db);
+    await addStore(db, cipher, another, "Receipt order fixture", "J");
+    const ip = `${ipPrefix}90`;
+    const sent = messages.length;
+    let notifyCommit;
+    let release;
+    const committed = new Promise(resolve => { notifyCommit = resolve; });
+    const held = new Promise(resolve => { release = resolve; });
+    afterEnqueue = async ({ p_receipt_id }) => {
+      notifyCommit(p_receipt_id);
+      await held;
+    };
+
+    const publicResponse = gatewayPrepare(another.email, ip);
+    let expectedReceipt;
+    try {
+      expectedReceipt = await Promise.race([committed, publicResponse.then(() => assert.fail("The enqueue response was not held"))]);
+      assert.equal(await value(db, `select pending_email is not null and canonical_email is null and receipt_confirmed_at is null as value
+        from private.forgot_store_key_requests where id=$1`, [expectedReceipt]), true);
+      await work();
+      assert.equal(messages.length, sent);
+      assert.equal(await value(db, "select count(*)::int as value from private.mail_dispatches where kind='forgot_store_key' and canonical_email=$1", [another.email]), 0);
+    } finally {
+      afterEnqueue = async () => {};
+      release();
+    }
+
+    const receipt = await publicResponse;
+    assert.equal(receipt, expectedReceipt);
+    assert.deepEqual((await confirm(receipt, ip, false)).result, [503, { ok: false, code: "A_SEND_UNAVAILABLE" }]);
+    await gatewayConfirm(randomUUID(), ip);
+    await work();
+    assert.equal(messages.length, sent);
+    await Promise.all([gatewayConfirm(receipt, ip), gatewayConfirm(receipt, ip)]);
+    await work();
+    assert.equal(messages.length, sent + 1);
+    assert.equal(messages.at(-1).to === another.email, true);
+    await gatewayConfirm(receipt, ip);
+    await work();
+    assert.equal(messages.length, sent + 1);
+  });
+
   await t.test("email and shared IP limits remain indistinguishable", async () => {
     const count = messages.length;
-    for (let i = 0; i < 3; i++) assert.deepEqual(await request(actor.email, `${ipPrefix}11`), accepted);
-    await work();
-    assert.equal(messages.length - count, 2);
+    for (let i = 0; i < 3; i++) {
+      assert.deepEqual(await request(actor.email, `${ipPrefix}11`), accepted);
+      await work();
+      assert.equal(messages.length - count, Math.min(i + 1, 2));
+    }
 
     const ip = `${ipPrefix}71`;
     const other = await ownerFixture(db);
@@ -198,11 +317,13 @@ test("forgotten Store Key HTTP and worker contract with PostgreSQL and SMTP fixt
     const another = await ownerFixture(db);
     const shop = await addStore(db, cipher, another, "Expired intake fixture", "Z");
     const ip = `${ipPrefix}18`;
-    const stale = await value(db, `insert into private.forgot_store_key_requests(source_ip,canonical_email,received_at)
+    const stale = await value(db, `insert into private.forgot_store_key_requests(source_ip,pending_email,received_at)
       values($1,$2,now()-interval '91 minutes') returning id as value`, [ip, another.email]);
+    assert.deepEqual((await confirm(stale, ip)).result, accepted);
     assert.equal(await value(workerDb, "select public.owner_prepare_forgot_key_mail() as value"), false);
-    const fresh = await value(db, `insert into private.forgot_store_key_requests(source_ip,canonical_email,received_at)
+    const fresh = await value(db, `insert into private.forgot_store_key_requests(source_ip,pending_email,received_at)
       values($1,$2,now()-interval '89 minutes') returning id as value`, [ip, another.email]);
+    assert.deepEqual((await confirm(fresh, ip)).result, accepted);
     assert.equal(await value(workerDb, "select public.owner_prepare_forgot_key_mail() as value"), true);
     const queued = await value(db, `select m.id as value from private.mail_dispatches m
       join private.forgot_store_key_requests r on m.queued_at=r.received_at
@@ -369,8 +490,85 @@ test("forgotten Store Key HTTP and worker contract with PostgreSQL and SMTP fixt
       const result = await value(workerDb, `select public.owner_request_create_otp($1,$2,$3,$4,$5,$6,$7,decode('01','hex'),1) as value`,
         [nowId(), randomUUID(), `${randomUUID()}@invalid.test`, `${ipPrefix}15`, randomUUID(), randomBytes(32), randomBytes(32)]);
       assert.equal(result.dispatchNew, false);
+      const full = await value(db, `select private.owner_mail_project_usage(
+        date_trunc('day', now() at time zone 'Asia/Ho_Chi_Minh') at time zone 'Asia/Ho_Chi_Minh',
+        (date_trunc('day', now() at time zone 'Asia/Ho_Chi_Minh') + interval '1 day') at time zone 'Asia/Ho_Chi_Minh')::int as value`);
+      assert.equal(full, 400);
+      assert.deepEqual(await request(another.email, `${ipPrefix}14`), accepted);
+      await work();
+      assert.equal(messages.length - count, 1);
     } finally {
       await db.query("delete from private.mail_dispatches where kind='forgot_store_key' and canonical_email=$1", [capFixtureEmail]);
+    }
+  });
+
+  await t.test("TC-OWNER-100(d): ten unowned recipients consume the shared IP intake slots", async () => {
+    const another = await ownerFixture(db);
+    await addStore(db, cipher, another, "IP limit fixture", "K");
+    const ip = `${ipPrefix}91`;
+    const sent = messages.length;
+    for (let i = 0; i < 10; i++) assert.deepEqual(await request(`${randomUUID()}@invalid.test`, ip), accepted);
+    assert.deepEqual(await request(another.email, ip), accepted);
+    assert.equal(await value(db, "select count(*)::int as value from private.forgot_store_key_requests where source_ip=$1", [ip]), 10);
+    await work();
+    assert.equal(messages.length, sent);
+  });
+
+  await t.test("TC-OWNER-100(c): compare paired public response latency while SMTP waits", { timeout: 20_000 }, async (t) => {
+    const another = await ownerFixture(db);
+    await addStore(db, cipher, another, "Slow SMTP fixture", "L");
+    const left = await ownerFixture(db);
+    const right = await ownerFixture(db);
+    const sampleShop = await addStore(db, cipher, left, "Latency comparison fixture", "M");
+    const sent = messages.length;
+    const ip = `${ipPrefix}92`;
+    let notifyStart;
+    let release;
+    const started = new Promise(resolve => { notifyStart = resolve; });
+    const held = new Promise(resolve => { release = resolve; });
+    deliver = async () => {
+      notifyStart();
+      await held;
+      return "submitted";
+    };
+
+    let worker;
+    const times = [[], []];
+    try {
+      await gatewayConfirm(await gatewayPrepare(another.email, ip), ip);
+      worker = work();
+      await Promise.race([started, worker.then(() => assert.fail("Worker did not reach SMTP"))]);
+      const before = observed.length;
+      const warmupPerPhase = 4;
+      const pairsPerPhase = 40;
+      const totalPerPhase = warmupPerPhase + pairsPerPhase;
+      for (let phase = 0; phase < 2; phase++) {
+        // Each identical address appears in both ownership groups.
+        const [owner, other] = phase === 0 ? [left, right] : [right, left];
+        await db.query("update public.stores set owner_account_id=$1 where id=$2", [owner.owner, sampleShop.store]);
+        const emails = [owner.email, other.email];
+        for (let n = 0; n < totalPerPhase; n++) {
+          const sampleIp = `${ipPrefix}${(0x100 + phase * totalPerPhase + n).toString(16)}`;
+          for (const group of n % 2 === 0 ? [0, 1] : [1, 0]) {
+            const begin = performance.now();
+            await gatewayPrepare(emails[group], sampleIp);
+            if (n >= warmupPerPhase) times[group].push(performance.now() - begin);
+          }
+        }
+      }
+      assert.equal(messages.length, sent + 1);
+      assert.deepEqual(observed.slice(before), Array(4 * totalPerPhase).fill("owner_enqueue_forgot_store_key"));
+      const [withStore, withoutStore] = times;
+      const quantile = (values, q) => [...values].sort((a, b) => a - b)[Math.ceil(q * values.length) - 1];
+      const differences = withStore.map((ms, i) => ms - withoutStore[i]);
+      const pairedMedian = quantile(differences, 0.5);
+      const format = values => `p50=${quantile(values, 0.5).toFixed(2)} p95=${quantile(values, 0.95).toFixed(2)}`;
+      const slower = differences.filter(ms => ms > 0).length;
+      t.diagnostic(`HTTP ms before SMTP release, ${withStore.length} crossover pairs over loopback: with store ${format(withStore)}; without store ${format(withoutStore)}; paired median difference=${pairedMedian.toFixed(2)}; with store slower in ${slower} pairs`);
+    } finally {
+      deliver = async () => "submitted";
+      release();
+      await worker;
     }
   });
 });

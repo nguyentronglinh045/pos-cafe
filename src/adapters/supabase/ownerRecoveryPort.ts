@@ -15,19 +15,33 @@ const fields = (value: unknown): Record<string, unknown> =>
   value !== null && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : {};
 
 export function createForgotStoreKeyPort(fetchImpl: typeof fetch = fetch): IForgotStoreKeyPort {
+  const post = (body: object, timeout: number, keepalive = false) => fetchImpl("/api/owner-otp", {
+    method: "POST", credentials: "same-origin", cache: "no-store", redirect: "error", keepalive,
+    headers: { "content-type": "application/json" }, body: JSON.stringify(body),
+    signal: AbortSignal.timeout(timeout),
+  });
+
+  async function confirmReceipt(receipt: string) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const response = await post({ action: "confirmForgotStoreKeyReceipt", receipt }, 8_000, true);
+        if (response.status === 202 && fields(await response.json()).ok === true) return;
+      } catch { /* Confirmation may have committed. Retry the same receipt once. */ }
+    }
+  }
+
   return {
     async request(email) {
       try {
-        const response = await fetchImpl("/api/owner-otp", {
-          method: "POST", credentials: "same-origin", cache: "no-store", redirect: "error",
-          headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "forgotStoreKey", email }),
-          signal: AbortSignal.timeout(18_000),
-        });
+        const response = await post({ action: "forgotStoreKey", email, receiptProtocol: 1 }, 18_000);
         const body = fields(await response.json());
-        if (response.status === 202 && body.ok === true) return "accepted";
-        if (response.status === 400 && body.code === "A_EMAIL_INVALID") return "invalid_email";
+        if (response.status === 202 && body.ok === true) {
+          const receipt = response.headers.get("x-pos-cafe-forgot-receipt");
+          if (receipt && uuid.test(receipt)) return { kind: "accepted", confirmReceipt: () => confirmReceipt(receipt) };
+        }
+        if (response.status === 400 && body.code === "A_EMAIL_INVALID") return { kind: "invalid_email" };
       } catch { /* Gateway and transport errors share one UI state. */ }
-      return "unavailable";
+      return { kind: "unavailable" };
     },
   };
 }

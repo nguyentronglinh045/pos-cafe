@@ -25,6 +25,9 @@ export interface IOwnerRecoveryPort {
   confirmRotation(input: RotationConfirmation): Promise<RotationConfirmResult>;
 }
 
+export type ForgotStoreKeyAccepted = { kind: "accepted"; confirmReceipt?: () => Promise<void> };
+export type ForgotStoreKeyResult = ForgotStoreKeyAccepted | { kind: "invalid_email" | "unavailable" };
+
 export interface IForgotStoreKeyPort {
-  request(email: string): Promise<"accepted" | "invalid_email" | "unavailable">;
+  request(email: string): Promise<ForgotStoreKeyResult>;
 }
