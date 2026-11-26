@@ -43,9 +43,32 @@ The build child receives only the validated public Vite values and a small OS
 environment allowlist; GitHub and Vercel credentials are excluded.
 The build sets `VITE_OWNER_PROVISIONING=1` for the validated `supabase` mode.
 Only the Supabase-backed Protected Preview build also sets `VITE_FORGOT_STORE_KEY=1`.
-Before using it with a test mailbox, apply the reviewed recovery database candidates
-on staging and enable `POS_CAFE_FORGOT_STORE_KEY_ENABLED=1` on `owner-provisioning`.
-Verify that the signed worker is running before submitting a recovery request.
+For the forgotten-key rollout, use this sequence on the pinned staging project:
+
+1. Verify the T06 schema, the existing Edge function and the signed worker.
+   Check that `POS_CAFE_FORGOT_STORE_KEY_ENABLED` and
+   `POS_CAFE_STORE_ROTATION_ACCESS_TOKEN_TTL_SECONDS` are both absent.
+   An empty rotation value fails startup and does not count as absent.
+2. Apply the reviewed SQL in order, using `owner-store-key-rotation.sql`,
+   `owner-store-key-rotation-otp.sql`, `owner-store-key-rotation-mail.sql`,
+   then `owner-store-key-forgot.sql`. Verify the service-only RPC grants and
+   the mail queue and cleanup indexes.
+3. Deploy the reviewed `owner-provisioning` bundle with both flags still
+   absent. Probe the existing T06 endpoint and verify that a signed worker
+   invocation succeeds with the new bundle.
+4. Set only `POS_CAFE_FORGOT_STORE_KEY_ENABLED=1`. Verify startup and signed
+   worker health again, then create the protected Supabase Preview.
+5. Use the protected Preview in both designated browser profiles. The
+   same-origin gateway request keeps the Vercel protection cookie, and the
+   gateway sends only its own allowlisted headers to Edge. Establish the
+   paired POS session before requesting the key and compare its session ID
+   after mail delivery. Keep the key, email and credentials out of evidence.
+
+For rollback, disable the forgotten-key Edge flag first, check the queued,
+sending and unknown mail counts, and roll back the Preview. An already claimed
+SMTP send can still complete. Retain the schema and inspect unresolved mail
+before any further recovery work.
+
 The Vercel function `/api/owner-otp` also needs the following Preview-only
 runtime variables for the signed OTP request:
 

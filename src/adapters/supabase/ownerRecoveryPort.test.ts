@@ -20,8 +20,9 @@ it("sends email only to the gateway and exposes a uniform acceptance", async () 
   expect(await port.request("fixture@invalid.test")).toBe("unavailable");
   const [target, options] = fetchImpl.mock.calls[0];
   expect(target).toBe("/api/owner-otp");
-  expect(options?.credentials).toBe("omit");
+  expect(options?.credentials).toBe("same-origin");
   expect(new Headers(options?.headers).has("authorization")).toBe(false);
+  expect(new Headers(options?.headers).has("x-pos-employee-token")).toBe(false);
   expect(JSON.parse(String(options?.body))).toEqual({ action: "forgotStoreKey", email: "fixture@invalid.test" });
 });
 

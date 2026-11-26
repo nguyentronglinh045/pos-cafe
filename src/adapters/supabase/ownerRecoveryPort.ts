@@ -19,7 +19,7 @@ export function createForgotStoreKeyPort(fetchImpl: typeof fetch = fetch): IForg
     async request(email) {
       try {
         const response = await fetchImpl("/api/owner-otp", {
-          method: "POST", credentials: "omit", cache: "no-store", redirect: "error",
+          method: "POST", credentials: "same-origin", cache: "no-store", redirect: "error",
           headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "forgotStoreKey", email }),
           signal: AbortSignal.timeout(18_000),
         });
