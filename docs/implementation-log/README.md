@@ -23,6 +23,15 @@ Folder này ghi nhật ký implement theo phase. Mục tiêu là track nhanh nh�
 
 Các hồ sơ ghi lại lượt kiểm thử demo với dữ liệu mock. Tra [câu trả lời Q-N01-1…8 và các việc đã chốt](../workflow/tasks/team-week05-answers-2026-11-08.md) cùng với [bản đồ kiểm chứng](../testing.md#bản-đồ-bằng-chứng).
 
+<a id="team-week-6-7"></a>
+## Minh chứng kiểm thử của nhóm tuần 6–7
+
+- Tuần 6 có [hồ sơ của Lâm](../../lam-tuan-6/README.md) và [hồ sơ của Ngọc](../../ngoc-tuan-6/README.md). Hai snapshot giữ commit của tác giả tại PR [#43](https://github.com/nguyentronglinh045/pos-cafe/pull/43) và [#44](https://github.com/nguyentronglinh045/pos-cafe/pull/44).
+- Tuần 7 có [hồ sơ N01 và giao diện của Ngọc](../../ngoc-tuan-7/README.md). PR [#45](https://github.com/nguyentronglinh045/pos-cafe/pull/45) áp riêng phần minh chứng lên `docs` và ghi mã commit nguồn `2a84b6b`.
+- Mã giao diện tạo quán tuần 7 của Lâm và phần sửa nhãn demo được theo dõi tại PR [#46](https://github.com/nguyentronglinh045/pos-cafe/pull/46). Commit gốc của Lâm là `6b6260a`, commit sửa riêng là `c01704b`.
+
+Các snapshot gồm báo cáo và script tái hiện lượt chạy lịch sử. Dùng các liên kết trên để mở bản đã nhập sau khi nhánh làm việc được dọn. Trạng thái tự kiểm và giới hạn của từng lượt vẫn ghi theo báo cáo gốc.
+
 ## Khi Nào Nên Đọc
 
 - Khi cần biết phase nào đã xong, phase nào còn gap.
