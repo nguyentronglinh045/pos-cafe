@@ -21,6 +21,7 @@ export type OrderDrawerContext = {
 type AppState = {
   updateRequired: boolean;
   sessionNotice: string | null;
+  rePairingStore: boolean;
   screen: AppScreen;
   currentEmployee: EmployeeRosterEntry | null;
   employeeSessionVersion: number;
@@ -33,6 +34,8 @@ type AppState = {
   receiptPreview: ReceiptPreview | null;
   setCurrentEmployee: (employee: EmployeeRosterEntry | null) => void;
   setSessionNotice: (notice: string | null) => void;
+  beginRotatedStorePairing: (notice?: string) => void;
+  finishRotatedStorePairing: (screen: "passcode" | "storePairing", notice?: string) => void;
   startEmployeeSession: (employee: EmployeeRosterEntry, session: PermissionSession) => void;
   setScreen: (screen: AppScreen) => void;
   setActiveAreaId: (areaId: string) => void;
@@ -49,6 +52,7 @@ type AppState = {
 export const useAppStore = create<AppState>((set) => ({
   updateRequired: false,
   sessionNotice: null,
+  rePairingStore: false,
   screen: "landing",
   currentEmployee: null,
   employeeSessionVersion: 0,
@@ -64,6 +68,19 @@ export const useAppStore = create<AppState>((set) => ({
     set((state) => ({ currentEmployee: employee, employeeSessionVersion: state.employeeSessionVersion + 1 }));
   },
   setSessionNotice: sessionNotice => set({ sessionNotice }),
+  beginRotatedStorePairing: (notice) => {
+    clearDrawerExitGuard();
+    usePermissionSession.getState().clear();
+    set((state) => ({
+      rePairingStore: true, screen: "storePairing", sessionNotice: notice ?? null, currentEmployee: null,
+      employeeSessionVersion: state.employeeSessionVersion + 1,
+      activeAreaId: null, activeCategoryId: null, drawer: null, orderContext: null, paymentOrderId: null,
+      draftItems: [], receiptPreview: null,
+    }));
+  },
+  finishRotatedStorePairing: (screen, notice) => set({
+    rePairingStore: false, screen, sessionNotice: notice ?? null,
+  }),
   startEmployeeSession: (employee, session) => {
     clearDrawerExitGuard();
     if (session.kind === "required_pin_change") {

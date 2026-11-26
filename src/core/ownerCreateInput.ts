@@ -7,14 +7,8 @@ export function ownerRequestIdTimestamp(id: string): number {
   return Number.parseInt(id.slice(0, 13).replace("-", ""), 16);
 }
 
-export function parseOwnerCreateForm(input: unknown):
-  | { ok: true; form: OwnerCreateForm }
-  | { ok: false; code: "A_EMAIL_INVALID" | "A_REQUEST_INVALID"; field: keyof OwnerCreateForm } {
-  if (!input || typeof input !== "object") {
-    return { ok: false, code: "A_REQUEST_INVALID", field: "displayName" };
-  }
-  const value = input as Record<string, unknown>;
-  const rawEmail = typeof value.email === "string" ? value.email.trim() : "";
+export function parseOwnerEmail(value: unknown): string | null {
+  const rawEmail = typeof value === "string" ? value.trim() : "";
   const email = rawEmail.toLowerCase();
   const parts = email.split("@");
   const [local, domain] = parts;
@@ -23,8 +17,20 @@ export function parseOwnerCreateForm(input: unknown):
   if (!/^[\x21-\x7e]+$/.test(rawEmail) || parts.length !== 2 || email.length > 254 || local.length > 64 || !localPattern.test(local)
     || local.startsWith(".") || local.endsWith(".") || local.includes("..")
     || !domain.includes(".") || !domain.split(".").every(label => labelPattern.test(label))) {
-    return { ok: false, code: "A_EMAIL_INVALID", field: "email" };
+    return null;
   }
+  return email;
+}
+
+export function parseOwnerCreateForm(input: unknown):
+  | { ok: true; form: OwnerCreateForm }
+  | { ok: false; code: "A_EMAIL_INVALID" | "A_REQUEST_INVALID"; field: keyof OwnerCreateForm } {
+  if (!input || typeof input !== "object") {
+    return { ok: false, code: "A_REQUEST_INVALID", field: "displayName" };
+  }
+  const value = input as Record<string, unknown>;
+  const email = parseOwnerEmail(value.email);
+  if (!email) return { ok: false, code: "A_EMAIL_INVALID", field: "email" };
   const displayName = typeof value.displayName === "string" ? value.displayName.trim() : "";
   if (!displayName || Array.from(displayName).length > 120) {
     return { ok: false, code: "A_REQUEST_INVALID", field: "displayName" };

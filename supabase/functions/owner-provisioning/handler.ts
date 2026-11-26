@@ -1,4 +1,5 @@
 import { isIP } from "node:net";
+import { rotationCandidateBinding, runStoreKeyRotation, type RotationAuth } from "./rotation.ts";
 
 type Fields = Record<string, unknown>;
 type Form = { email: string; displayName: string; address: string; seedDemo: boolean; ownerPin: string };
@@ -14,6 +15,13 @@ export type OwnerDependencies = {
   ingressKey: CryptoKey;
   workerKey: CryptoKey;
   clock(): number;
+  forgotStoreKey?: boolean;
+  rotation?: {
+    auth: RotationAuth;
+    accessTokenTtlSeconds: number;
+    identifyStore?(jwt: string): Promise<string | null>;
+    warn?(event: string, data: Fields): void;
+  };
   schedule?(work: () => Promise<unknown>): void;
 };
 type MailOutcome = "submitted" | "rejected" | "failed_before_submit" | "unknown";
@@ -21,6 +29,7 @@ const text = new TextEncoder();
 const decoder = new TextDecoder();
 const uuid4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const uuid7 = /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const otpPattern = /^[0-9]{6}$/;
 const statuses = ["accepted", "unknown", "created", "failed", "unconfirmed", "not_accepted"];
 const errors = new Set([
@@ -29,11 +38,13 @@ const errors = new Set([
   "A_OTP_FORMAT_INVALID", "A_OTP_INVALID", "A_OTP_EXPIRED", "A_OTP_UNAVAILABLE",
   "A_OTP_ATTEMPTS_EXCEEDED", "A_ATTEMPT_ID_REUSED", "CREATE_INTENT_CONFLICT",
   "OWNER_STORE_LIMIT_REACHED", "CONFIRM_REJECTED",
+  "AUTH_REQUIRED", "EMPLOYEE_SESSION_REQUIRED", "OWNER_ROLE_REQUIRED", "PIN_CHANGE_REQUIRED",
+  "STORE_SUSPENDED", "STORE_NAME_MISMATCH",
 ]);
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-client-info",
+  "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-client-info, x-pos-employee-token",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
@@ -42,7 +53,9 @@ function response(value: unknown, status = 200): Response {
 }
 
 function error(code: string, serverNow?: number): Response {
-  const status = code.endsWith("_UNAVAILABLE") && !code.startsWith("A_OTP_") ? 503
+  const status = code === "AUTH_REQUIRED" || code === "EMPLOYEE_SESSION_REQUIRED" ? 401
+    : ["OWNER_ROLE_REQUIRED","STORE_SUSPENDED","PIN_CHANGE_REQUIRED"].includes(code) ? 403
+    : code.endsWith("_UNAVAILABLE") && !code.startsWith("A_OTP_") ? 503
     : ["A_REQUEST_ID_REUSED","CREATE_INTENT_ID_REUSED","A_ATTEMPT_ID_REUSED",
       "CREATE_INTENT_CONFLICT","OWNER_STORE_LIMIT_REACHED","CONFIRM_REJECTED"].includes(code) ? 409 : 400;
   return response({ ok: false, code, ...(serverNow === undefined ? {} : { serverNow }) }, status);
@@ -52,17 +65,23 @@ function record(value: unknown): Fields {
   return value && typeof value === "object" && !Array.isArray(value) ? value as Fields : {};
 }
 
-function formOf(value: unknown): Form | "A_EMAIL_INVALID" | "A_REQUEST_INVALID" {
-  const fields = record(value);
-  const rawEmail = typeof fields.email === "string" ? fields.email.trim() : "";
+function emailOf(value: unknown): string | null {
+  const rawEmail = typeof value === "string" ? value.trim() : "";
   const email = rawEmail.toLowerCase();
   const [local, domain, extra] = email.split("@");
   if (!/^[\x21-\x7e]+$/.test(rawEmail) || !local || !domain || extra !== undefined || email.length > 254 || local.length > 64
     || !/^[a-z0-9.!#$%&'*+/=?^_\x60{|}~-]+$/.test(local)
     || local.startsWith(".") || local.endsWith(".") || local.includes("..")
     || !domain.includes(".") || !domain.split(".").every((label) => /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(label))) {
-    return "A_EMAIL_INVALID";
+    return null;
   }
+  return email;
+}
+
+function formOf(value: unknown): Form | "A_EMAIL_INVALID" | "A_REQUEST_INVALID" {
+  const fields = record(value);
+  const email = emailOf(fields.email);
+  if (!email) return "A_EMAIL_INVALID";
   const displayName = typeof fields.displayName === "string" ? fields.displayName.trim() : "";
   const address = typeof fields.address === "string" ? fields.address.trim() : "";
   if (!displayName || [...displayName].length > 120 || [...address].length > 500
@@ -213,8 +232,9 @@ async function provision(deps: OwnerDependencies, operationId: string, leaseToke
   return { status: committed.status === "created" ? "created" : "unknown" };
 }
 
-async function processMail(deps: OwnerDependencies, kind: "otp" | "store_key") {
-  const key = kind === "otp" ? deps.otpEncryptionKey : deps.storeEncryptionKey;
+async function processMail(deps: OwnerDependencies, kind: "otp" | "rotation_otp" | "store_key" | "rotation_key") {
+  const isOtp = kind === "otp" || kind === "rotation_otp";
+  const key = isOtp ? deps.otpEncryptionKey : deps.storeEncryptionKey;
   if (!key) return;
   const claim = record(await deps.rpc(`owner_claim_${kind}_mail`));
   if (claim.state !== "claimed") return;
@@ -224,32 +244,188 @@ async function processMail(deps: OwnerDependencies, kind: "otp" | "store_key") {
   try {
     let subject: string;
     let body: string;
-    if (kind === "otp") {
+    if (isOtp) {
       const otp = await decrypt(key, claim.otpEncrypted, claim.otpEncryptionVersion,
-        JSON.stringify(["otp-mail", claim.challengeId, claim.email]));
+        kind === "otp" ? JSON.stringify(["otp-mail", claim.challengeId, claim.email])
+          : JSON.stringify(["rotation-otp-mail", claim.challengeId, claim.storeId]));
       if (!otpPattern.test(otp)) throw new Error("Invalid OTP envelope");
       subject = "POS Cafe - Ma xac nhan";
-      body = `Mã xác nhận tạo quán của bạn là ${otp}. Mã có hiệu lực trong 10 phút kể từ lúc phát.`;
-    } else {
+      const purpose = kind === "otp" ? "tạo quán" : "đổi Store Key";
+      body = `Mã xác nhận ${purpose} của bạn là ${otp}. Mã có hiệu lực trong 10 phút kể từ lúc phát.`;
+    } else if (kind === "store_key") {
       if (!validStoreNo(claim.storeNo) || typeof claim.operationId !== "string") throw new Error("Invalid store mail");
       const secret = await decrypt(key, claim.storeSecretEncrypted,
         claim.keyEncryptionVersion, claim.operationId);
       subject = "POS Cafe - Store Key";
       body = `${String(claim.displayName ?? "")}\n${String(claim.address ?? "")}\nStore Key: ${claim.storeNo}-${secret}`;
+    } else {
+      if (!validStoreNo(claim.storeNo) || typeof claim.storeId !== "string" || typeof claim.acceptedAttemptId !== "string"
+        || typeof claim.generation !== "string" || typeof claim.appliedAt !== "string") throw new Error("Invalid rotation mail");
+      const secret = await decrypt(key, claim.storeSecretEncrypted, claim.keyEncryptionVersion,
+        rotationCandidateBinding(claim.storeId, claim.acceptedAttemptId));
+      subject = "POS Cafe - Store Key";
+      body = `Store Key: ${String(claim.storeNo).padStart(4, "0")}-${secret}\nPhiên bản key: ${claim.generation}\nĐổi lúc: ${claim.appliedAt}`;
     }
     const checkedAt = performance.now();
     const decision = await deps.rpc(`owner_authorize_${kind}_submit`, args);
     const permit = record(decision);
-    const approved = kind === "store_key" ? decision === true : permit.allowed === true
-      && typeof permit.serverNow === "number" && typeof permit.deadline === "number"
-      && permit.deadline - permit.serverNow > performance.now() - checkedAt;
+    const approved = kind === "store_key" ? decision === true
+      : permit.allowed === true && (!isOtp || (typeof permit.serverNow === "number" && typeof permit.deadline === "number"
+        && permit.deadline - permit.serverNow > performance.now() - checkedAt));
     if (approved) {
+      if (kind === "rotation_key" && permit.warnSessions === true) {
+        body += "\nViệc đổi key vẫn đang hoàn tất. Máy vừa ghép bằng key mới có thể phải ghép lại.";
+      }
       outcome = "unknown";
       outcome = await deps.sendMail({ to: claim.email, subject, body, id: claim.id });
     }
   } finally {
     await deps.rpc(`owner_finish_${kind}_mail`, { ...args, p_status: outcome });
   }
+}
+
+async function processForgotKeyWork(deps: OwnerDependencies, cipher: CryptoKey) {
+  for (let n = 0; n < 16; n++) {
+    if (await deps.rpc("owner_prepare_forgot_key_mail") !== true) break;
+  }
+  for (let n = 0; n < 4; n++) {
+    const started = performance.now();
+    const claim = record(await deps.rpc("owner_claim_forgot_key_mail"));
+    if (claim.state === "skipped") continue;
+    if (claim.state !== "claimed" || typeof claim.id !== "string" || !uuid4.test(claim.id)
+      || typeof claim.claimToken !== "string" || !uuid4.test(claim.claimToken)) break;
+    const ids = { p_id: claim.id, p_claim_token: claim.claimToken };
+    let outcome: MailOutcome = "failed_before_submit";
+    try {
+      const email = emailOf(claim.email);
+      if (!email || !Array.isArray(claim.stores)) continue;
+      const lines: string[] = [];
+      for (const value of claim.stores) {
+        const shop = record(value);
+        if (!validStoreNo(shop.storeNo) || typeof shop.displayName !== "string" || typeof shop.address !== "string") continue;
+        const initial = shop.generation === "0" && typeof shop.operationId === "string" && uuid.test(shop.operationId);
+        const rotated = typeof shop.generation === "string" && /^[1-9]\d*$/.test(shop.generation)
+          && typeof shop.storeId === "string" && uuid.test(shop.storeId)
+          && typeof shop.acceptedAttemptId === "string" && uuid.test(shop.acceptedAttemptId);
+        const binding = initial ? String(shop.operationId) : rotated
+          ? rotationCandidateBinding(String(shop.storeId), String(shop.acceptedAttemptId)) : null;
+        if (!binding) continue;
+        const secret = await decrypt(cipher, shop.storeSecretEncrypted, shop.keyEncryptionVersion, binding).catch(() => null);
+        if (!secret || !/^[A-Z0-9]{32}$/.test(secret)) continue;
+        const number = initial ? String(shop.storeNo) : String(shop.storeNo).padStart(4, "0");
+        lines.push([shop.displayName, shop.address, `Store Key: ${number}-${secret}`,
+          ...(shop.warnSessions === true ? ["Việc đổi key vẫn đang hoàn tất. Máy vừa ghép bằng key mới có thể phải ghép lại."] : [])]
+          .filter(Boolean).join("\n"));
+      }
+      // The SMTP transport has a 12-second deadline. Leave time inside the 60-second database claim.
+      if (lines.length && performance.now() - started < 45_000) {
+        outcome = "unknown";
+        outcome = await deps.sendMail({ to: email, subject: "POS Cafe - Store Key",
+          body: `${lines.join("\n\n")}\n\nNếu nghi hộp thư đã bị lộ, hãy dùng chức năng Đổi Store Key.`, id: claim.id });
+      }
+    } finally {
+      await deps.rpc("owner_finish_forgot_key_mail", { ...ids, p_status: outcome });
+    }
+  }
+}
+
+function rotationWork(deps: OwnerDependencies, target?: string, expected?: string) {
+  const config = deps.rotation;
+  const cipher = deps.storeEncryptionKey;
+  if (!config || !cipher) return Promise.resolve(null);
+  return runStoreKeyRotation({
+    rpc: (name, args) => deps.rpc(name, args),
+    auth: config.auth, accessTokenTtlSeconds: config.accessTokenTtlSeconds,
+    decryptCandidate: (encoded, version, binding) => decrypt(cipher, encoded, version, binding),
+  }, target, expected);
+}
+
+async function reportRotationAlert(deps: OwnerDependencies) {
+  const alert = record(await deps.rpc("owner_claim_store_key_rotation_alert"));
+  if (typeof alert.id !== "string" || !uuid4.test(alert.id) ||
+    typeof alert.claimToken !== "string" || !uuid4.test(alert.claimToken)) return;
+  const warn = deps.rotation?.warn ?? ((event: string, data: Fields) => console.warn(event, data));
+  if (typeof alert.mailId === "string" && uuid4.test(alert.mailId)) {
+    const event = alert.mailKind === "forgot_store_key" ? "forgot_key_mail_needs_review" : "rotation_key_mail_needs_review";
+    warn(`owner_provisioning.${event}`, { alertId: alert.id, mailId: alert.mailId });
+  } else {
+    if (typeof alert.rotationId !== "string" || !uuid4.test(alert.rotationId) ||
+      typeof alert.storeId !== "string" || !uuid.test(alert.storeId) ||
+      typeof alert.generation !== "string" || !/^[1-9]\d*$/.test(alert.generation) ||
+      !["dispatch","probe","publish","finish"].includes(String(alert.phase)) ||
+      !["transport_not_called","ambiguous","probe_failed","database_failed"].includes(String(alert.outcome))) return;
+    warn("owner_provisioning.store_key_rotation_reconcile_failed",
+      { alertId: alert.id, rotationId: alert.rotationId, storeId: alert.storeId,
+        generation: alert.generation, phase: alert.phase, outcome: alert.outcome });
+  }
+  await deps.rpc("owner_finish_store_key_rotation_alert", { p_id: alert.id, p_claim_token: alert.claimToken });
+}
+
+async function handleRotation(deps: OwnerDependencies, request: Request, raw: string, input: Fields) {
+  const issue = input.action === "requestRotateStoreKeyOtp";
+  const jwt = request.headers.get("authorization")?.match(/^Bearer ([\w-]+\.[\w-]+\.[\w-]+)$/i)?.[1];
+  const employeeToken = request.headers.get("x-pos-employee-token");
+  const cipher = deps.storeEncryptionKey;
+  if (!deps.rotation?.identifyStore || !cipher) return error(issue ? "A_SEND_UNAVAILABLE" : "CREATE_VERIFY_UNAVAILABLE");
+  if (!jwt || jwt.length > 4096) return error("AUTH_REQUIRED");
+  if (!employeeToken || !/^[A-Za-z0-9_-]{43}$/.test(employeeToken)) return error("EMPLOYEE_SESSION_REQUIRED");
+  const name = typeof input.storeName === "string" ? input.storeName.trim() : "";
+  if (!name || [...name].length > 120 || name.includes("\0")) return error("A_REQUEST_INVALID");
+  const storeId = await deps.rotation.identifyStore(jwt);
+  if (!storeId) return error("AUTH_REQUIRED");
+  const common = {
+    p_store: storeId, p_store_name: name,
+    p_credential_hash: "\\x" + hex(await crypto.subtle.digest("SHA-256", text.encode(employeeToken))),
+  };
+  const digest = (challenge: string, otp: string) => hmac(deps.hmacKey,
+    JSON.stringify(["rotation-otp", challenge, storeId, otp]));
+  if (issue) {
+    if (typeof input.requestId !== "string" || !uuid7.test(input.requestId)) return error("A_REQUEST_INVALID");
+    const ip = await verifyIngress(request, raw, deps);
+    if (!ip) return error("A_SEND_UNAVAILABLE");
+    const challenge = crypto.randomUUID();
+    const otp = newOtp();
+    const result = record(await deps.rpc("owner_request_rotation_otp", {
+      ...common, p_request_id: input.requestId, p_source_ip: ip, p_challenge_id: challenge,
+      p_otp_digest: "\\x" + await digest(challenge, otp),
+      p_otp_encrypted: "\\x" + await encrypt(deps.otpEncryptionKey, otp,
+        JSON.stringify(["rotation-otp-mail", challenge, storeId])),
+    }));
+    if (result.status === "pending" || result.status === "applied" || result.status === "completed") {
+      return response({ status: result.status });
+    }
+    if (typeof result.challengeRef !== "string" || typeof result.serverNow !== "number"
+      || typeof result.resendNotBefore !== "number") return dbError(result, "A_SEND_UNAVAILABLE");
+    if (result.dispatchNew === true) deps.schedule?.(() => processMail(deps, "rotation_otp"));
+    return response({ ok: true, receipt: { challengeRef: result.challengeRef, serverNow: result.serverNow,
+      resendNotBefore: result.resendNotBefore } }, 202);
+  }
+  if (typeof input.attemptId !== "string" || !uuid7.test(input.attemptId)
+    || typeof input.challengeRef !== "string" || !uuid.test(input.challengeRef)) {
+    return error("A_REQUEST_INVALID");
+  }
+  if (typeof input.code !== "string" || !otpPattern.test(input.code)) return error("A_OTP_FORMAT_INVALID");
+  const candidate = newStoreSecret();
+  const challenge = input.challengeRef.toLowerCase();
+  const attempt = input.attemptId.toLowerCase();
+  const result = record(await deps.rpc("owner_verify_rotation_otp", {
+    ...common, p_attempt_id: attempt, p_challenge_id: challenge,
+    p_otp_digest: "\\x" + await digest(challenge, input.code),
+    p_ciphertext: "\\x" + await encrypt(cipher, candidate, rotationCandidateBinding(storeId, attempt)), p_version: 1,
+  }));
+  if (result.firstAcceptance === true && typeof result.rotationId === "string" && validStoreNo(result.storeNo)) {
+    try {
+      const dispatch = await rotationWork(deps, storeId, result.rotationId);
+      if (dispatch === "confirmed" && await rotationWork(deps, storeId, result.rotationId) === "applied") {
+        return response({ status: "applied", storeKey: `${String(result.storeNo).padStart(4, "0")}-${candidate}` });
+      }
+    } catch {
+      // The committed rotation can be reconciled by the signed worker.
+    }
+    return response({ status: "pending" }, 202);
+  }
+  return result.status === "pending" || result.status === "applied" || result.status === "completed"
+    ? response({ status: result.status }) : dbError(result, "CREATE_VERIFY_UNAVAILABLE");
 }
 
 export function makeOwnerHandler(deps: OwnerDependencies) {
@@ -273,6 +449,8 @@ export function makeOwnerHandler(deps: OwnerDependencies) {
           && await crypto.subtle.verify("HMAC", deps.workerKey, fromHex(signature), text.encode(`owner-work-v1\n${time}`));
         if (!allowed) return response({ ok: false }, 403);
         const expiredStoreKeyMails = await deps.rpc("owner_sweep_mail");
+        if (deps.rotation) await deps.rpc("owner_sweep_rotation_key_mail");
+        if (deps.forgotStoreKey) await deps.rpc("owner_sweep_forgot_key_mail");
         if (Array.isArray(expiredStoreKeyMails)) {
           for (const mailId of expiredStoreKeyMails) {
             if (typeof mailId === "string" && uuid4.test(mailId)) {
@@ -280,12 +458,32 @@ export function makeOwnerHandler(deps: OwnerDependencies) {
             }
           }
         }
-        await Promise.allSettled([processMail(deps, "otp"), processMail(deps, "store_key")]);
+        const work: Promise<unknown>[] = [processMail(deps, "otp"), processMail(deps, "store_key")];
+        if (deps.rotation && deps.storeEncryptionKey) {
+          work.push(processMail(deps, "rotation_otp"), processMail(deps, "rotation_key"),
+            rotationWork(deps).catch(() => console.warn("owner_provisioning.store_key_rotation_worker_unavailable")));
+        }
+        if (deps.forgotStoreKey && deps.storeEncryptionKey) work.push(processForgotKeyWork(deps, deps.storeEncryptionKey));
+        await Promise.allSettled(work);
+        if (deps.rotation || deps.forgotStoreKey) await reportRotationAlert(deps);
         const seed = await deps.rpc("owner_next_initial_seed");
         if (typeof seed === "string") await deps.rpc("owner_run_initial_seed", { p_operation_id: seed });
         return response({ ok: true });
       }
 
+      if (input.action === "forgotStoreKey") {
+        if (Object.keys(input).some((field) => field !== "action" && field !== "email")) return error("A_REQUEST_INVALID");
+        const email = emailOf(input.email);
+        if (!email) return error("A_EMAIL_INVALID");
+        const ip = deps.forgotStoreKey && deps.storeEncryptionKey ? await verifyIngress(request, raw, deps) : null;
+        if (!ip) return error("A_SEND_UNAVAILABLE");
+        await deps.rpc("owner_enqueue_forgot_store_key", { p_email: email, p_source_ip: ip });
+        return response({ ok: true }, 202);
+      }
+
+      if (input.action === "requestRotateStoreKeyOtp" || input.action === "verifyAndRotateStoreKey") {
+        return await handleRotation(deps, request, raw, input);
+      }
       if (input.action === "requestCreateStoreOtp") {
         if (typeof input.requestId !== "string" || !uuid7.test(input.requestId)
           || typeof input.intentId !== "string" || !uuid4.test(input.intentId)) return error("A_REQUEST_INVALID");
@@ -349,7 +547,8 @@ export function makeOwnerHandler(deps: OwnerDependencies) {
         ? response({ status: result.status }, result.status === "accepted" ? 202 : 200)
         : dbError(result, "CREATE_VERIFY_UNAVAILABLE");
     } catch {
-      return error(input.action === "requestCreateStoreOtp" ? "A_SEND_UNAVAILABLE" : "CREATE_VERIFY_UNAVAILABLE");
+      return error(input.action === "requestCreateStoreOtp" || input.action === "requestRotateStoreKeyOtp" || input.action === "forgotStoreKey"
+        ? "A_SEND_UNAVAILABLE" : "CREATE_VERIFY_UNAVAILABLE");
     }
   };
 }

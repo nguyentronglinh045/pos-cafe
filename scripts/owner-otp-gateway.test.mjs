@@ -93,3 +93,63 @@ test("OTP gateway refuses to trust general forwarding headers and does not act o
     assert.equal(result.statusCode, 503);
   }
 });
+
+test("forgot key uses signed ingress without credentials and removes all upstream result details", async () => {
+  const input = { action: "forgotStoreKey", email: "fixture@invalid.test" };
+  const ip = "192.0.2.45";
+  const handler = ownerOtpGateway({ env, clock, async fetchImpl(_url, init) {
+    assert.deepEqual(JSON.parse(init.body), input);
+    assert.equal(init.headers.authorization, undefined);
+    assert.equal(init.headers["x-pos-employee-token"], undefined);
+    const digest = createHash("sha256").update(init.body).digest("hex");
+    assert.equal(init.headers["x-pos-cafe-signature"], createHmac("sha256", key)
+      .update(`pos-cafe-otp-v1\n${clock()}\n${ip}\n${digest}`).digest("hex"));
+    return Response.json({ ok: true, address: "fixture", email: input.email, receipt: { storeKey: "fixture" } }, { status: 202 });
+  } });
+  const headers = { "x-vercel-forwarded-for": ip, authorization: "Bearer test.claim.signature", "x-pos-employee-token": "e".repeat(43) };
+  const result = response();
+  await handler({ method: "POST", body: input, headers }, result);
+  assert.equal(result.statusCode, 202);
+  assert.deepEqual(result.data, { ok: true });
+  assert.equal(result.headers["Cache-Control"], "no-store");
+  const sha = "a".repeat(40);
+  const demo = ownerOtpGateway({ env: { VERCEL: "1", VERCEL_ENV: "production", VERCEL_TARGET_ENV: "production",
+    VERCEL_GIT_COMMIT_REF: "main", VERCEL_GIT_COMMIT_SHA: sha, POS_PUBLIC_DEMO_SHA: sha,
+    POS_PUBLIC_DEMO_CLIENT_KEY: publishableKey, POS_PUBLIC_DEMO_OTP_INGRESS_KEY: key.toString("base64") },
+  clock, fetchImpl() { assert.fail("Public demo must not forward forgotten-key requests"); } });
+  const refused = response();
+  await demo({ method: "POST", body: input, headers }, refused);
+  assert.equal(refused.statusCode, 503);
+});
+
+test("rotation OTP forwards both credentials and never emits the registered email", async () => {
+  const rotation = { action: "requestRotateStoreKeyOtp", storeName: "Fixture" };
+  const headers = { "x-vercel-forwarded-for": "192.0.2.20", authorization: "Bearer test.claim.signature",
+    "x-pos-employee-token": "e".repeat(43) };
+  let requests = 0;
+  const handler = ownerOtpGateway({ env, clock, async fetchImpl(_url, init) {
+    requests++;
+    assert.equal(init.headers.authorization, headers.authorization);
+    assert.equal(init.headers["x-pos-employee-token"], headers["x-pos-employee-token"]);
+    if (requests === 2) return Response.json({ ok: false, code: "OWNER_ROLE_REQUIRED" }, { status: 403 });
+    if (requests === 3) return Response.json({ status: "pending", internal: "fixture" }, { status: 200 });
+    return Response.json({ ok: true, receipt: { challengeRef: "fixture", serverNow: 1, resendNotBefore: 2,
+      emailDisplay: "synthetic@invalid.test" } }, { status: 202 });
+  } });
+  const denied = response();
+  await handler({ method: "POST", body: rotation, headers: { ...headers, "x-pos-employee-token": undefined } }, denied);
+  assert.equal(denied.statusCode, 401);
+  assert.deepEqual(denied.data, { ok: false, code: "EMPLOYEE_SESSION_REQUIRED" });
+  const allowed = response();
+  await handler({ method: "POST", body: rotation, headers }, allowed);
+  assert.equal(requests, 1);
+  assert.deepEqual(allowed.data, { ok: true, receipt: { challengeRef: "fixture", serverNow: 1, resendNotBefore: 2 } });
+  const forbidden = response();
+  await handler({ method: "POST", body: rotation, headers }, forbidden);
+  assert.equal(forbidden.statusCode, 403);
+  assert.deepEqual(forbidden.data, { ok: false, code: "OWNER_ROLE_REQUIRED" });
+  const pending = response();
+  await handler({ method: "POST", body: rotation, headers }, pending);
+  assert.equal(pending.statusCode, 200);
+  assert.deepEqual(pending.data, { status: "pending" });
+});

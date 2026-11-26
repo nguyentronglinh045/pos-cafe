@@ -1,19 +1,22 @@
 import clsx from "clsx";
-import { AlertTriangle, Database, ReceiptText, Save, ShieldAlert, Store, Trash2 } from "lucide-react";
+import { AlertTriangle, Database, KeyRound, ReceiptText, Save, ShieldAlert, Store, Trash2 } from "lucide-react";
 import { Button, TextField } from "@mui/material";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { usePermission, usePermissionSession } from "@/features/shared/permissionSession";
+import { usePorts } from "@/features/shared/portsContext";
 import { useStoreSessionQuery } from "@/features/session";
 import { useStoreSettingsQuery, useUpdateSettingsMutation } from "@/features/admin";
 import { useAppStore } from "../../useAppStore";
 import { toToastError } from "../../appErrors";
 import { PortalDrawer } from "../../components/PortalDrawer";
 import { PortalPopup } from "../../components/PortalPopup";
+import { ForgotStoreKeyDialog } from "../../components/ForgotStoreKeyDialog";
 import { ClearDemoDialog } from "./ClearDemoDialog";
+import { StoreKeyRotationPanel } from "./StoreKeyRotationPanel";
 
-type SettingsSection = "info" | "bill" | "demo";
+type SettingsSection = "info" | "bill" | "demo" | "rotation";
 interface SettingsForm {
   displayName: string;
   address: string;
@@ -26,6 +29,8 @@ const SECTIONS: Array<{ key: SettingsSection; label: string; desc: string; detai
   { key: "bill", label: "Hoá đơn", desc: "Chân hoá đơn, xem trước bill", detail: "Dòng chữ in ở cuối mỗi hoá đơn.", icon: <ReceiptText size={18} /> },
   { key: "demo", label: "Bảo trì dữ liệu", desc: "Dữ liệu mẫu, đặt lại", detail: "Chỉ ảnh hưởng dữ liệu mẫu — dữ liệu bạn tự tạo được giữ nguyên.", icon: <Database size={18} /> },
 ];
+const ROTATION_SECTION = { key: "rotation" as const, label: "Đổi Store Key", desc: "Tạo key mới khi nghi bị lộ",
+  detail: "Chỉ chủ quán có thể đổi Store Key.", icon: <KeyRound size={18} /> };
 
 export function GeneralSettingsDrawer() {
   const closeDrawer = useAppStore((state) => state.closeDrawer);
@@ -33,6 +38,10 @@ export function GeneralSettingsDrawer() {
   const allowed = usePermission("settings.manage");
   const canClear = usePermission("data.clearDemo");
   const isOwner = usePermissionSession(state => state.bundle?.snapshot.role === "owner");
+  const verifiedOwnerStore = usePermissionSession(state =>
+    state.status === "verified" && state.bundle?.snapshot.role === "owner" ? state.bundle.snapshot.storeId : null);
+  const ownerGeneration = usePermissionSession(state => state.generation);
+  const { ownerRecovery, forgotStoreKey } = usePorts();
   const settingsQuery = useStoreSettingsQuery();
   const sessionQuery = useStoreSessionQuery();
   const storeNoLabel = sessionQuery.data?.status === "paired" ? String(sessionQuery.data.session.storeNo).padStart(4, "0") : "—";
@@ -44,6 +53,7 @@ export function GeneralSettingsDrawer() {
   const [nameError, setNameError] = useState("");
   const [confirmCancel, setConfirmCancel] = useState(false);
   const [clearOpen, setClearOpen] = useState(false);
+  const [forgotOpen, setForgotOpen] = useState(false);
 
   useEffect(() => {
     if (settingsQuery.data && !seeded) {
@@ -100,7 +110,11 @@ export function GeneralSettingsDrawer() {
     else closeDrawer();
   };
 
-  const activeSection = SECTIONS.find((s) => s.key === section) ?? SECTIONS[0];
+  const canRotate = !!ownerRecovery && sessionQuery.data?.status === "paired"
+    && sessionQuery.data.session.storeId === verifiedOwnerStore && sessionQuery.data.session.status !== "suspended";
+  const sections = canRotate ? [...SECTIONS, ROTATION_SECTION] : SECTIONS;
+  const activeSection = sections.find((s) => s.key === section) ?? SECTIONS[0];
+  const visibleSection = activeSection.key;
 
   if (!allowed) {
     return (
@@ -155,13 +169,13 @@ export function GeneralSettingsDrawer() {
           <div className="grid h-full min-h-0 grid-cols-[264px_minmax(0,1fr)] max-[980px]:grid-cols-1 max-[980px]:grid-rows-[auto_minmax(0,1fr)]">
             <aside className="grid min-h-0 grid-rows-[minmax(0,1fr)_auto] gap-3 border-r border-pos-line bg-pos-surface2 p-3.5 max-[980px]:grid-rows-none max-[980px]:border-b max-[980px]:border-r-0 max-[980px]:p-2">
               <div className="grid content-start gap-2 overflow-auto [scrollbar-width:thin] max-[980px]:flex max-[980px]:overflow-x-auto max-[980px]:overflow-y-hidden">
-                {SECTIONS.map((s) => (
+                {sections.map((s) => (
                   <button
                     key={s.key}
                     type="button"
                     className={clsx(
                       "flex min-h-14 cursor-pointer items-center gap-3 rounded-[10px] border p-3 text-left max-[980px]:min-h-11 max-[980px]:min-w-[150px] max-[980px]:shrink-0 max-[980px]:p-2.5",
-                      section === s.key
+                      visibleSection === s.key
                         ? "border-pos-primaryLine bg-white shadow-[0_8px_18px_rgb(15_23_42_/_6%)]"
                         : "border-transparent bg-transparent",
                     )}
@@ -171,7 +185,7 @@ export function GeneralSettingsDrawer() {
                     <span
                       className={clsx(
                         "grid h-9 w-9 shrink-0 place-items-center rounded-[9px]",
-                        section === s.key
+                        visibleSection === s.key
                           ? "bg-pos-primarySoft text-pos-primary"
                           : s.key === "demo"
                             ? "bg-[#fffbeb] text-pos-warning"
@@ -181,7 +195,7 @@ export function GeneralSettingsDrawer() {
                       {s.icon}
                     </span>
                     <span className="grid min-w-0 gap-0.5">
-                      <strong className={clsx("text-[13.5px] leading-tight", section === s.key && "text-pos-primary")}>{s.label}</strong>
+                      <strong className={clsx("text-[13.5px] leading-tight", visibleSection === s.key && "text-pos-primary")}>{s.label}</strong>
                       <span aria-hidden="true" className="text-[11.5px] leading-tight text-pos-muted max-[980px]:hidden">{s.desc}</span>
                     </span>
                   </button>
@@ -199,7 +213,9 @@ export function GeneralSettingsDrawer() {
                 <p>{activeSection.detail}</p>
               </div>
 
-              {section === "info" ? (
+              {visibleSection === "rotation" && ownerRecovery && canRotate ? (
+                <StoreKeyRotationPanel key={ownerGeneration} port={ownerRecovery} storeName={settingsQuery.data?.displayName ?? ""} />
+              ) : visibleSection === "info" ? (
                 <div className="grid content-start gap-5 rounded-pos border border-pos-line bg-pos-surface p-5 max-[980px]:p-3">
                   <TextField
                     label="Tên hiển thị quán"
@@ -214,8 +230,10 @@ export function GeneralSettingsDrawer() {
                   <TextField label="Địa chỉ" value={form.address} onChange={(e) => patch({ address: e.target.value })} size="small" fullWidth multiline minRows={2} helperText="In ngay dưới tên quán trên hoá đơn." />
                   {isOwner ? <TextField label="Múi giờ cửa hàng" value={form.timezone} onChange={e => patch({ timezone: e.target.value })} size="small" fullWidth helperText="Tên IANA, ví dụ Asia/Ho_Chi_Minh (UTC+7). Chỉ chủ quán được đổi." inputProps={{ "data-testid": "settings-timezone-input" }} />
                     : <p>Múi giờ cửa hàng: {form.timezone}</p>}
+                  {forgotStoreKey && <Button className="justify-self-start" onClick={() => setForgotOpen(true)}
+                    data-testid="settings-forgot-key">Quên Store Key?</Button>}
                 </div>
-              ) : section === "bill" ? (
+              ) : visibleSection === "bill" ? (
                 <div className="grid content-start gap-5 rounded-pos border border-pos-line bg-pos-surface p-5 max-[980px]:p-3">
                   <TextField label="Chân hoá đơn" value={form.billFooter} onChange={(e) => patch({ billFooter: e.target.value })} size="small" fullWidth multiline minRows={3} helperText="Xuống dòng để in thành nhiều dòng." />
                   <div className="grid gap-1.5 border-t border-dashed border-pos-line pt-3">
@@ -276,6 +294,7 @@ export function GeneralSettingsDrawer() {
       )}
 
       {clearOpen && <ClearDemoDialog onClose={() => setClearOpen(false)} />}
+      {forgotOpen && forgotStoreKey && <ForgotStoreKeyDialog port={forgotStoreKey} onClose={() => setForgotOpen(false)} />}
     </PortalDrawer>
   );
 }

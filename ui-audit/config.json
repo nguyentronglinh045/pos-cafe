@@ -190,6 +190,58 @@
       ]
     },
     {
+        "name": "forgot-store-key-pairing",
+        "describe": "yeu cau gui lai store key tu man ghep",
+        "route": "/?owner-recovery-mock=1",
+        "extends": "store-pairing",
+        "steps": [
+          { "click": "@pairing-forgot-key" },
+          { "waitFor": "@forgot-key-email" }
+        ]
+      },
+      {
+        "name": "forgot-store-key-settings",
+        "describe": "yeu cau gui lai store key tu cai dat",
+        "route": "/?owner-recovery-mock=1",
+        "extends": "settings",
+        "steps": [
+          { "click": "@settings-forgot-key" },
+          { "waitFor": "@forgot-key-email" }
+        ]
+      },
+      {
+      "name": "store-key-rotation",
+      "describe": "canh bao va nhap ten quan truoc khi doi store key",
+      "route": "/?owner-recovery-mock=1",
+      "extends": "settings",
+      "steps": [
+        { "click": "@settings-section-rotation" },
+        { "waitFor": "@rotation-store-name" }
+      ]
+    },
+    {
+      "name": "store-key-rotation-otp",
+      "describe": "nhap OTP doi store key voi fixture mock",
+      "route": "/?owner-recovery-mock=1",
+      "extends": "store-key-rotation",
+      "steps": [
+        { "fill": "@rotation-store-name", "value": "POS Demo" },
+        { "click": "@rotation-send-otp" },
+        { "waitFor": "@rotation-otp-input" }
+      ]
+    },
+    {
+      "name": "store-key-rotation-result",
+      "describe": "key moi va ghep lai may voi fixture mock",
+      "route": "/?owner-recovery-mock=1",
+      "extends": "store-key-rotation-otp",
+      "steps": [
+        { "fill": "@rotation-otp-input", "value": "540218" },
+        { "click": "@rotation-confirm" },
+        { "waitFor": "@store-key-rotation-success" }
+      ]
+    },
+    {
       "name": "clear-demo-dialog",
       "describe": "xac nhan xoa du lieu mau va rao chan don dang mo",
       "extends": "settings",

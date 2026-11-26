@@ -57,4 +57,13 @@
   <label id="offscreen-label"><input id="offscreen-label-input" type="checkbox">Nhãn cuộn tới được</label></div>
 <button id="small-button" aria-label="Nút thật nhỏ"></button>
 <button id="covered-button">Bị che thật</button><button id="cover">Lớp che</button>
+<div class="MuiDialog-root MuiModal-root" role="presentation">
+  <div id="mui-focus-start" tabindex="0" data-testid="sentinelStart"></div>
+  <div class="MuiDialog-container"><section class="MuiDialog-paper" role="dialog" aria-label="Hộp thoại kiểm thử">
+    <button id="mui-zero-button" data-testid="sentinelStart" aria-label="Nút thật không có kích thước"
+      style="display:block;width:0;height:0;padding:0;border:0"></button>
+    <div id="misplaced-focus-marker" tabindex="0" data-testid="sentinelEnd"></div>
+  </section></div>
+  <div id="mui-focus-end" tabindex="0" data-testid="sentinelEnd"></div>
+</div>
 </html>
