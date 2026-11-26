@@ -3,15 +3,22 @@ import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { usePairStoreMutation } from "@/features/session";
+import { usePorts } from "@/features/shared/portsContext";
+import { ForgotStoreKeyDialog } from "../components/ForgotStoreKeyDialog";
 import { useAppStore } from "../useAppStore";
 import { toToastError } from "../appErrors";
 
 const sampleStoreKey = "0001-X8F3QA";
 
 export function StorePairingScreen() {
+  const { forgotStoreKey } = usePorts();
   const setScreen = useAppStore((state) => state.setScreen);
+  const rePairingStore = useAppStore((state) => state.rePairingStore);
+  const notice = useAppStore((state) => state.sessionNotice);
+  const setNotice = useAppStore((state) => state.setSessionNotice);
   const [key, setKey] = useState("");
   const [error, setError] = useState("");
+  const [forgotOpen, setForgotOpen] = useState(false);
   const pairMutation = usePairStoreMutation();
 
   const validateKey = (value: string) => {
@@ -23,11 +30,13 @@ export function StorePairingScreen() {
   };
 
   const handleSubmit = () => {
+    if (loading) return;
     if (!validateKey(key)) {
       setError("Sai định dạng. Ví dụ: 0001-X8F3QA");
       return;
     }
     setError("");
+    setNotice(null);
     pairMutation.mutate(key.trim(), {
       onSuccess: () => {
         toast.success("Đã ghép thiết bị");
@@ -39,14 +48,14 @@ export function StorePairingScreen() {
     });
   };
 
-  const loading = pairMutation.isPending;
+  const loading = rePairingStore || pairMutation.isPending;
 
 
   return (
     <main className="box-border grid min-h-[100dvh] w-full place-items-center overflow-y-auto overflow-x-hidden bg-pos-bg p-4" data-testid="store-pairing-screen">
       <div className="w-[min(960px,100%)] overflow-hidden rounded-pos border border-pos-line bg-pos-surface">
         <header className="flex items-center justify-between border-b border-pos-line bg-pos-surface px-5 py-3.5">
-          <button className="inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent px-0 py-1 text-sm font-semibold text-pos-primary hover:underline" onClick={() => setScreen("landing")}>
+          <button className="inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent px-0 py-1 text-sm font-semibold text-pos-primary hover:underline" disabled={rePairingStore} onClick={() => { setNotice(null); setScreen("landing"); }}>
             <ArrowLeft size={16} />
             Quay lại
           </button>
@@ -64,6 +73,7 @@ export function StorePairingScreen() {
             </div>
 
             <div className="grid gap-1">
+              {notice && <p className="m-0 text-sm text-pos-warning" role="alert">{notice}</p>}
               <TextField
                 label="Store Key"
                 placeholder={sampleStoreKey}
@@ -71,6 +81,7 @@ export function StorePairingScreen() {
                 onChange={(e) => { setKey(e.target.value); setError(""); }}
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                 error={!!error}
+                disabled={rePairingStore}
                 helperText={error || "Mỗi thiết bị chỉ cần ghép một lần với quán."}
                 fullWidth
                 size="small"
@@ -88,7 +99,10 @@ export function StorePairingScreen() {
               {loading ? "Đang ghép..." : "Ghép thiết bị"}
             </Button>
 
-            <button className="min-h-6 cursor-pointer border-0 bg-transparent py-0.5 text-left text-[13px] font-semibold text-pos-primary hover:underline" onClick={() => setScreen("createStore")}>
+            {forgotStoreKey && <Button className="justify-self-start" disabled={loading} onClick={() => setForgotOpen(true)}
+              data-testid="pairing-forgot-key">Quên Store Key?</Button>}
+
+            <button className="min-h-6 cursor-pointer border-0 bg-transparent py-0.5 text-left text-[13px] font-semibold text-pos-primary hover:underline" disabled={rePairingStore} onClick={() => { setNotice(null); setScreen("createStore"); }}>
               Chưa có quán? Tạo quán mới
             </button>
           </div>
@@ -109,6 +123,7 @@ export function StorePairingScreen() {
           </aside>
         </div>
       </div>
+      {forgotOpen && forgotStoreKey && <ForgotStoreKeyDialog port={forgotStoreKey} onClose={() => setForgotOpen(false)} />}
     </main>
   );
 }

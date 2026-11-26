@@ -49,15 +49,16 @@ test('unknown/missing/duplicated CLI options and subset baseline acceptance fail
     { update: false, selftest: false, list: false, state: 'floor', viewport: 'tablet' });
 });
 
-test('audit matrix covers the existing states and both owner OTP states on all 3 viewports', () => {
+test('audit matrix covers owner creation, recovery and existing states on all 3 viewports', () => {
   const matrix = selectMatrix(config);
   assert.deepEqual(matrix.targets.map(target => target.name), [
     'landing', 'store-pairing', 'owner-create-form', 'owner-create-receipt',
     'passcode', 'floor', 'order-drawer', 'order-cart',
-    'menu-editor', 'report', 'employees', 'settings', 'clear-demo-dialog', 'payment',
+    'menu-editor', 'report', 'employees', 'settings', 'forgot-store-key-pairing', 'forgot-store-key-settings',
+    'store-key-rotation', 'store-key-rotation-otp', 'store-key-rotation-result', 'clear-demo-dialog', 'payment',
     'receipt-preview', 'compatibility-update-gate', 'create-store-preview-notice', 'required-pin-change',
   ]);
-  assert.equal(matrix.targets.length, 18);
+  assert.equal(matrix.targets.length, 23);
   assert.equal(matrix.viewports.length, 3);
   assert.deepEqual(matrix.viewports.map(vp => [vp.width, vp.height]), [[1024, 768], [1440, 900], [844, 390]]);
   const floor = matrix.targets.find(target => target.name === 'floor');

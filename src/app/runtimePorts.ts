@@ -2,6 +2,8 @@ import { createMockPermissionRuntime, createMockPermissionState } from "@/adapte
 import { checkMockOwnerPin, mockOwnerOtpPort, pairMockOwnerStore } from "@/adapters/mock/ownerOtpPort";
 import { createSupabaseBrowserClient, createSupabasePorts } from "@/adapters/supabase";
 import { createOwnerProvisioningPort } from "@/adapters/supabase/ownerProvisioningPort";
+import { createForgotStoreKeyPort, createOwnerRecoveryPort } from "@/adapters/supabase/ownerRecoveryPort";
+import { ownerRecoveryFixture } from "@/adapters/mock/ownerRecoveryFixture";
 import type { AppPorts } from "@/ports";
 import { usePermissionSession } from "@/features/shared/permissionSession";
 
@@ -14,6 +16,9 @@ export type RuntimePortEnv = {
   ownerCreateMock?: boolean;
   ownerCreateFixture?: boolean;
   ownerProvisioning?: boolean;
+  ownerRecovery?: boolean;
+  forgotStoreKey?: boolean;
+  ownerRecoveryMock?: boolean;
 };
 
 const hasSupabaseEnv = (env: RuntimePortEnv): boolean => Boolean(env.supabaseUrl && env.supabaseAnonKey);
@@ -35,19 +40,19 @@ export const createAppPorts = (env: RuntimePortEnv = {}): AppPorts => {
   const mode = resolveAppDataMode(env);
 
   if (mode === "supabase") {
-    const ports = createSupabasePorts(
-      createSupabaseBrowserClient({
-        url: env.supabaseUrl,
-        anonKey: env.supabaseAnonKey,
-        isCompatibilityBlocked: () => usePermissionSession.getState().compatibilityBlocked,
-      }), env.supabaseUrl,
-    );
-    if (env.ownerProvisioning && env.supabaseUrl && env.supabaseAnonKey) {
-      return { ...ports, storeProvisioning: createOwnerProvisioningPort({
-        url: env.supabaseUrl, publicKey: env.supabaseAnonKey,
-      }) };
-    }
-    return ports;
+    const client = createSupabaseBrowserClient({
+      url: env.supabaseUrl, anonKey: env.supabaseAnonKey,
+      isCompatibilityBlocked: () => usePermissionSession.getState().compatibilityBlocked,
+    });
+    const ports = createSupabasePorts(client, env.supabaseUrl);
+    if (!env.supabaseUrl || !env.supabaseAnonKey) return ports;
+    const connection = { url: env.supabaseUrl, publicKey: env.supabaseAnonKey };
+    return {
+      ...ports,
+      ...(env.ownerProvisioning ? { storeProvisioning: createOwnerProvisioningPort(connection) } : {}),
+      ...(env.ownerRecovery ? { ownerRecovery: createOwnerRecoveryPort({ ...connection, client }) } : {}),
+      ...(env.forgotStoreKey ? { forgotStoreKey: createForgotStoreKeyPort() } : {}),
+    };
   }
 
   const state = createMockPermissionState({ demoCredentials: true });
@@ -56,6 +61,7 @@ export const createAppPorts = (env: RuntimePortEnv = {}): AppPorts => {
     pair: pairMockOwnerStore, checkPin: checkMockOwnerPin,
     failSeedMenuAttempts: env.ownerCreateFixture ? 1 : 0,
   } : undefined);
+  const recovery = env.mode === "mock" && env.ownerRecoveryMock ? ownerRecoveryFixture(state, runtime.auth) : undefined;
   return {
     permission: {
       authority: runtime.authority,
@@ -69,7 +75,8 @@ export const createAppPorts = (env: RuntimePortEnv = {}): AppPorts => {
       print: runtime.print,
     },
     write: runtime.write,
-    auth: runtime.auth,
+    auth: recovery?.auth ?? runtime.auth,
+    ...(recovery ? { ownerRecovery: recovery.port, forgotStoreKey: { request: async () => "accepted" } } : {}),
     ...(env.mode === "mock" && env.ownerCreateMock ? { storeProvisioning: mockOwnerOtpPort } : {}),
     seed: runtime.seed,
     print: runtime.legacyPrint,
@@ -79,7 +86,8 @@ export const createAppPorts = (env: RuntimePortEnv = {}): AppPorts => {
 let viteEnvPorts: AppPorts | null = null;
 
 export const createAppPortsFromViteEnv = (): AppPorts => {
-  const ownerCreateMock = new URLSearchParams(window.location.search).get("owner-create-mock") === "1";
+  const params = new URLSearchParams(window.location.search);
+  const ownerCreateMock = params.get("owner-create-mock") === "1";
   if (ownerCreateMock && !import.meta.env.DEV) {
     throw new OwnerCreateMockConfigError("Bản xem thử tạo quán chỉ chạy trên máy phát triển.");
   }
@@ -90,5 +98,8 @@ export const createAppPortsFromViteEnv = (): AppPorts => {
     ownerCreateMock,
     ownerCreateFixture: import.meta.env.DEV && import.meta.env.VITE_OWNER_CREATE_FIXTURE === "1",
     ownerProvisioning: import.meta.env.VITE_OWNER_PROVISIONING === "1",
+    ownerRecovery: import.meta.env.VITE_OWNER_RECOVERY === "1",
+    forgotStoreKey: import.meta.env.VITE_FORGOT_STORE_KEY === "1",
+    ownerRecoveryMock: import.meta.env.DEV && params.get("owner-recovery-mock") === "1",
   }));
 };

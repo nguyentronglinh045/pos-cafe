@@ -152,6 +152,8 @@ export type AppPorts = {
   write: IWriteOperationRepo;
   auth: IAuthRepo;
   storeProvisioning?: import("./storeProvisioning").IStoreProvisioningPort;
+  ownerRecovery?: import("./ownerRecovery").IOwnerRecoveryPort;
+  forgotStoreKey?: import("./ownerRecovery").IForgotStoreKeyPort;
   seed: ISeedRepo;
   print: IPrintPort;
 };

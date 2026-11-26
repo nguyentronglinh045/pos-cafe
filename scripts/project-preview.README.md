@@ -42,6 +42,10 @@ and both `next` and `prev` null. Hidden or partial lists are refused.
 The build child receives only the validated public Vite values and a small OS
 environment allowlist; GitHub and Vercel credentials are excluded.
 The build sets `VITE_OWNER_PROVISIONING=1` for the validated `supabase` mode.
+Only the Supabase-backed Protected Preview build also sets `VITE_FORGOT_STORE_KEY=1`.
+Before using it with a test mailbox, apply the reviewed recovery database candidates
+on staging and enable `POS_CAFE_FORGOT_STORE_KEY_ENABLED=1` on `owner-provisioning`.
+Verify that the signed worker is running before submitting a recovery request.
 The Vercel function `/api/owner-otp` also needs the following Preview-only
 runtime variables for the signed OTP request:
 

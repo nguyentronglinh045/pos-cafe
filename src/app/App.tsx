@@ -38,6 +38,7 @@ function ActiveApp() {
   const serverSeed = seed?.getReadiness && seed.retryAll && seed.skipAll ? seed : undefined;
   const screen = useAppStore((state) => state.screen);
   const currentEmployee = useAppStore((state) => state.currentEmployee);
+  const rePairingStore = useAppStore((state) => state.rePairingStore);
   const requiredPinSession = usePermissionSession(state => state.requiredPinSession);
   const setScreen = useAppStore((state) => state.setScreen);
   const setCurrentEmployee = useAppStore((state) => state.setCurrentEmployee);
@@ -49,7 +50,7 @@ function ActiveApp() {
   }, [setScreen, storeProvisioning]);
 
   useEffect(() => {
-    if (!storeSessionQuery.data) {
+    if (rePairingStore || !storeSessionQuery.data) {
       return;
     }
 
@@ -61,18 +62,18 @@ function ActiveApp() {
       setCurrentEmployee(null);
       setScreen("landing");
     }
-  }, [currentEmployee, screen, setCurrentEmployee, setScreen, storeSessionQuery.data]);
+  }, [currentEmployee, rePairingStore, screen, setCurrentEmployee, setScreen, storeSessionQuery.data]);
 
   useEffect(() => {
-    if (storeSessionQuery.error) {
+    if (!rePairingStore && storeSessionQuery.error) {
       if (requireCompatibilityUpdate(storeSessionQuery.error)) return;
       toast.error(toToastError(storeSessionQuery.error));
       setCurrentEmployee(null);
       setScreen("landing");
     }
-  }, [setCurrentEmployee, setScreen, storeSessionQuery.error]);
+  }, [rePairingStore, setCurrentEmployee, setScreen, storeSessionQuery.error]);
 
-  if (storeSession?.status === "suspended") {
+  if (!rePairingStore && storeSession?.status === "suspended") {
     return (
       <main className="grid min-h-[100dvh] place-items-center bg-pos-bg p-6 text-pos-ink">
         <section className="max-w-md rounded-pos border border-pos-line bg-pos-surface p-6">

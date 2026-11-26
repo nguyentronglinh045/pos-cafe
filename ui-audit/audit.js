@@ -58,6 +58,17 @@
 
   function style(el) { return window.getComputedStyle(el); }
 
+  // pos-cafe local patch: MUI Dialog uses empty focus guards to keep Tab inside the dialog.
+  function muiDialogFocusGuard(el) {
+    if (el.tagName !== 'DIV' || el.tabIndex !== 0 || el.hasChildNodes() ||
+        !Array.from(el.attributes).every(attr => ['id', 'tabindex', 'data-testid'].includes(attr.name)) ||
+        !el.parentElement?.matches('.MuiDialog-root.MuiModal-root[role=presentation]')) return false;
+    const marker = el.getAttribute('data-testid');
+    const content = marker === 'sentinelStart' ? el.nextElementSibling :
+      marker === 'sentinelEnd' ? el.previousElementSibling : null;
+    return !!content?.matches('.MuiDialog-container') && !!content.querySelector(':scope > .MuiDialog-paper[role=dialog]');
+  }
+
   // pos-cafe local patch: the canonical 1px, zero-clip accessibility pattern
   // deliberately hides text. Only clipping rules use this; controls still audit.
   function screenReaderOnlyText(el) {
@@ -408,7 +419,7 @@
 
       // laid out but zero-size: invisible / unclickable control
       if (r.width === 0 || r.height === 0) {
-        if (!el.matches('input[type=file],input[type=checkbox],input[type=radio]')) {
+        if (!(r.height === 0 && muiDialogFocusGuard(el)) && !el.matches('input[type=file],input[type=checkbox],input[type=radio]')) {
           add('zero-size-interactive', 'error', el,
             'clickable element rendered ' + Math.round(r.width) + 'x' + Math.round(r.height));
         }

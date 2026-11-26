@@ -43,4 +43,10 @@ describe("production runtime ports", () => {
     await ports.permission!.session.revokeSession();
     await expect(ports.permission!.session.startSession(cashier.id, "111111")).resolves.toBeTruthy();
   });
+
+  it("only adds the synthetic recovery port in explicit mock mode", () => {
+    expect(createAppPorts({ ownerRecoveryMock: true }).ownerRecovery).toBeUndefined();
+    expect(createAppPorts({ mode: "mock", ownerRecovery: true }).ownerRecovery).toBeUndefined();
+    expect(createAppPorts({ mode: "mock", ownerRecoveryMock: true }).ownerRecovery).toBeDefined();
+  });
 });

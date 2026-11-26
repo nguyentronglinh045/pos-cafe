@@ -240,6 +240,12 @@ async function selftest() {
       trulyCoveredHitDetected: has('hit-blocked', '#covered-button'),
       trulyCoveredOverlapDetected: has('overlapping-controls', '#covered-button'),
     };
+    if (has('zero-size-interactive', '#mui-focus-start') || has('zero-size-interactive', '#mui-focus-end') ||
+        !has('zero-size-interactive', '#mui-zero-button') || !has('zero-size-interactive', '#misplaced-focus-marker')) {
+      errors.push('MUI Dialog focus guards must be distinguished from zero-size controls and misplaced markers');
+    } else {
+      console.log('MUI Dialog focus guards and zero-size controls OK');
+    }
   } catch (error) { errors.push(String(error.message || error)); }
   finally {
     try { await ctx?.close(); } catch (error) { errors.push(`Context cleanup failed: ${error.message}`); }
