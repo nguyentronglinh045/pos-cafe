@@ -22,11 +22,14 @@ it("neo đồng hồ theo phản hồi mới và chỉ gửi lại đúng mốc 
     return { result: mock.request(input, "192.0.2.1"), serverTime: Date.now() };
   });
   render(<OwnerCreateRequestScreen port={{
+    isMock: true,
     requestCreateStoreOtp: send,
     verifyAndAcceptCreate: vi.fn(),
     getCreateStatus: vi.fn(),
     confirmStoreKeySaved: vi.fn(),
   }} />);
+  expect(screen.getByTestId("owner-create-request")).toHaveTextContent("Dữ liệu mock");
+  expect(screen.getByTestId("owner-create-request")).toHaveTextContent("Chỉ dùng dữ liệu giả.");
   fireEvent.change(screen.getByLabelText(/^Email chủ quán/), { target: { value: "qa@example.com" } });
   fireEvent.change(screen.getByLabelText(/^Tên quán/), { target: { value: "Quán QA" } });
   fireEvent.change(screen.getByLabelText(/^PIN chủ quán/), { target: { value: "038251" } });

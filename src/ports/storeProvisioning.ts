@@ -4,6 +4,7 @@ import type {
 } from "@/domain/ownerCreate";
 
 export interface IStoreProvisioningPort {
+  readonly isMock?: true;
   requestCreateStoreOtp(input: RequestCreateStoreOtp): Promise<{
     result: CreateStoreOtpResponse;
     /** Fresh clock sample; a replay keeps the original receipt. */
