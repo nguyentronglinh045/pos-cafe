@@ -1,0 +1,466 @@
+[
+  {
+    "label": "T1",
+    "time": "08:47:22",
+    "viewport": {
+      "width": 568,
+      "height": 320,
+      "dpr": 1
+    },
+    "page": {
+      "width": 568,
+      "scrollWidth": 568,
+      "height": 320,
+      "scrollHeight": 320
+    },
+    "buttons": [
+      {
+        "label": "Đang mở",
+        "width": 79.703125,
+        "height": 24,
+        "fontSize": "12px",
+        "x": 11,
+        "y": 63.5
+      },
+      {
+        "label": "Đã thanh toán",
+        "width": 111.9375,
+        "height": 24,
+        "fontSize": "12px",
+        "x": 98.703125,
+        "y": 63.5
+      },
+      {
+        "label": "Hôm nay",
+        "width": 78.078125,
+        "height": 24,
+        "fontSize": "12px",
+        "x": 218.640625,
+        "y": 63.5
+      },
+      {
+        "label": "Tạo đơn mang đi",
+        "width": 252.28125,
+        "height": 36.5,
+        "fontSize": "14px",
+        "x": 304.71875,
+        "y": 57.25
+      },
+      {
+        "label": "Đóng",
+        "width": 546,
+        "height": 36.5,
+        "fontSize": "14px",
+        "x": 11,
+        "y": 101.75
+      },
+      {
+        "label": "Mở đơn",
+        "width": 66.390625,
+        "height": 26,
+        "fontSize": "12px",
+        "x": 39,
+        "y": 276.75
+      },
+      {
+        "label": "Thanh toán",
+        "width": 89.984375,
+        "height": 26,
+        "fontSize": "12px",
+        "x": 113.390625,
+        "y": 276.75
+      },
+      {
+        "label": "Mở đơn",
+        "width": 234,
+        "height": 30.75,
+        "fontSize": "13px",
+        "x": 382,
+        "y": 371.25
+      },
+      {
+        "label": "Thanh toán",
+        "width": 234,
+        "height": 30.75,
+        "fontSize": "13px",
+        "x": 382,
+        "y": 410
+      }
+    ],
+    "scroll": [
+      {
+        "tag": "DIV",
+        "cls": "min-h-0 overflow-auto bg-pos-bg p-3 max-[980px]:p-2",
+        "left": 0,
+        "top": 0,
+        "maxX": 72,
+        "maxY": 0
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-0 overflow-auto p-2.5 max-[980px]:p-2",
+        "left": 0,
+        "top": 0,
+        "maxX": 0,
+        "maxY": 19
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-0 overflow-auto p-2.5 max-[980px]:p-2",
+        "left": 0,
+        "top": 0,
+        "maxX": 0,
+        "maxY": 150
+      }
+    ],
+    "clippedText": []
+  },
+  {
+    "label": "T4c",
+    "time": "08:47:25",
+    "viewport": {
+      "width": 568,
+      "height": 320,
+      "dpr": 1
+    },
+    "page": {
+      "width": 568,
+      "scrollWidth": 568,
+      "height": 320,
+      "scrollHeight": 320
+    },
+    "buttons": [
+      {
+        "label": "Đang mở",
+        "width": 79.703125,
+        "height": 24,
+        "fontSize": "12px",
+        "x": 11,
+        "y": 63.5
+      },
+      {
+        "label": "Đã thanh toán",
+        "width": 111.9375,
+        "height": 24,
+        "fontSize": "12px",
+        "x": 98.703125,
+        "y": 63.5
+      },
+      {
+        "label": "Hôm nay",
+        "width": 78.078125,
+        "height": 24,
+        "fontSize": "12px",
+        "x": 218.640625,
+        "y": 63.5
+      },
+      {
+        "label": "Tạo đơn mang đi",
+        "width": 252.28125,
+        "height": 36.5,
+        "fontSize": "14px",
+        "x": 304.71875,
+        "y": 57.25
+      },
+      {
+        "label": "Đóng",
+        "width": 546,
+        "height": 36.5,
+        "fontSize": "14px",
+        "x": 11,
+        "y": 101.75
+      },
+      {
+        "label": "Mở đơn",
+        "width": 66.390625,
+        "height": 26,
+        "fontSize": "12px",
+        "x": -33,
+        "y": 276.75
+      },
+      {
+        "label": "Thanh toán",
+        "width": 89.984375,
+        "height": 26,
+        "fontSize": "12px",
+        "x": 41.390625,
+        "y": 276.75
+      },
+      {
+        "label": "Mở đơn",
+        "width": 234,
+        "height": 30.75,
+        "fontSize": "13px",
+        "x": 310,
+        "y": 221.25
+      },
+      {
+        "label": "Thanh toán",
+        "width": 234,
+        "height": 30.75,
+        "fontSize": "13px",
+        "x": 310,
+        "y": 260
+      }
+    ],
+    "scroll": [
+      {
+        "tag": "DIV",
+        "cls": "min-h-0 overflow-auto bg-pos-bg p-3 max-[980px]:p-2",
+        "left": 72,
+        "top": 0,
+        "maxX": 72,
+        "maxY": 0
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-0 overflow-auto p-2.5 max-[980px]:p-2",
+        "left": 0,
+        "top": 0,
+        "maxX": 0,
+        "maxY": 19
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-0 overflow-auto p-2.5 max-[980px]:p-2",
+        "left": 0,
+        "top": 150,
+        "maxX": 0,
+        "maxY": 150
+      }
+    ],
+    "clippedText": []
+  },
+  {
+    "label": "T4d",
+    "time": "08:47:26",
+    "viewport": {
+      "width": 568,
+      "height": 320,
+      "dpr": 1
+    },
+    "page": {
+      "width": 568,
+      "scrollWidth": 568,
+      "height": 320,
+      "scrollHeight": 320
+    },
+    "buttons": [
+      {
+        "label": "Đang mở",
+        "width": 79.703125,
+        "height": 24,
+        "fontSize": "12px",
+        "x": 11,
+        "y": 63.5
+      },
+      {
+        "label": "Đã thanh toán",
+        "width": 111.9375,
+        "height": 24,
+        "fontSize": "12px",
+        "x": 98.703125,
+        "y": 63.5
+      },
+      {
+        "label": "Hôm nay",
+        "width": 78.078125,
+        "height": 24,
+        "fontSize": "12px",
+        "x": 218.640625,
+        "y": 63.5
+      },
+      {
+        "label": "Tạo đơn mang đi",
+        "width": 252.28125,
+        "height": 36.5,
+        "fontSize": "14px",
+        "x": 304.71875,
+        "y": 57.25
+      },
+      {
+        "label": "Đóng",
+        "width": 546,
+        "height": 36.5,
+        "fontSize": "14px",
+        "x": 11,
+        "y": 101.75
+      },
+      {
+        "label": "Mở đơn",
+        "width": 66.390625,
+        "height": 26,
+        "fontSize": "12px",
+        "x": -33,
+        "y": 276.75
+      },
+      {
+        "label": "Thanh toán",
+        "width": 89.984375,
+        "height": 26,
+        "fontSize": "12px",
+        "x": 41.390625,
+        "y": 276.75
+      },
+      {
+        "label": "Mở đơn",
+        "width": 234,
+        "height": 30.75,
+        "fontSize": "13px",
+        "x": 310,
+        "y": 221.25
+      },
+      {
+        "label": "Thanh toán",
+        "width": 234,
+        "height": 30.75,
+        "fontSize": "13px",
+        "x": 310,
+        "y": 260
+      }
+    ],
+    "scroll": [
+      {
+        "tag": "DIV",
+        "cls": "min-h-0 overflow-auto bg-pos-bg p-3 max-[980px]:p-2",
+        "left": 72,
+        "top": 0,
+        "maxX": 72,
+        "maxY": 0
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-0 overflow-auto p-2.5 max-[980px]:p-2",
+        "left": 0,
+        "top": 0,
+        "maxX": 0,
+        "maxY": 19
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-0 overflow-auto p-2.5 max-[980px]:p-2",
+        "left": 0,
+        "top": 150,
+        "maxX": 0,
+        "maxY": 150
+      }
+    ],
+    "clippedText": []
+  },
+  {
+    "label": "T5",
+    "time": "08:47:26",
+    "viewport": {
+      "width": 568,
+      "height": 320,
+      "dpr": 1
+    },
+    "page": {
+      "width": 568,
+      "scrollWidth": 568,
+      "height": 320,
+      "scrollHeight": 320
+    },
+    "buttons": [
+      {
+        "label": "Đang mở",
+        "width": 79.703125,
+        "height": 24,
+        "fontSize": "12px",
+        "x": 11,
+        "y": 63.5
+      },
+      {
+        "label": "Đã thanh toán",
+        "width": 111.9375,
+        "height": 24,
+        "fontSize": "12px",
+        "x": 98.703125,
+        "y": 63.5
+      },
+      {
+        "label": "Hôm nay",
+        "width": 78.078125,
+        "height": 24,
+        "fontSize": "12px",
+        "x": 218.640625,
+        "y": 63.5
+      },
+      {
+        "label": "Tạo đơn mang đi",
+        "width": 252.28125,
+        "height": 36.5,
+        "fontSize": "14px",
+        "x": 304.71875,
+        "y": 57.25
+      },
+      {
+        "label": "Đóng",
+        "width": 546,
+        "height": 36.5,
+        "fontSize": "14px",
+        "x": 11,
+        "y": 101.75
+      },
+      {
+        "label": "Mở đơn",
+        "width": 66.390625,
+        "height": 26,
+        "fontSize": "12px",
+        "x": -33,
+        "y": 276.75
+      },
+      {
+        "label": "Thanh toán",
+        "width": 89.984375,
+        "height": 26,
+        "fontSize": "12px",
+        "x": 41.390625,
+        "y": 276.75
+      },
+      {
+        "label": "Mở đơn",
+        "width": 234,
+        "height": 30.75,
+        "fontSize": "13px",
+        "x": 310,
+        "y": 221.25
+      },
+      {
+        "label": "Thanh toán",
+        "width": 234,
+        "height": 30.75,
+        "fontSize": "13px",
+        "x": 310,
+        "y": 260
+      }
+    ],
+    "scroll": [
+      {
+        "tag": "DIV",
+        "cls": "min-h-0 overflow-auto bg-pos-bg p-3 max-[980px]:p-2",
+        "left": 72,
+        "top": 0,
+        "maxX": 72,
+        "maxY": 0
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-0 overflow-auto p-2.5 max-[980px]:p-2",
+        "left": 0,
+        "top": 0,
+        "maxX": 0,
+        "maxY": 19
+      },
+      {
+        "tag": "DIV",
+        "cls": "min-h-0 overflow-auto p-2.5 max-[980px]:p-2",
+        "left": 0,
+        "top": 150,
+        "maxX": 0,
+        "maxY": 150
+      }
+    ],
+    "clippedText": []
+  }
+]
