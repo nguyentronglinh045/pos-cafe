@@ -1,0 +1,2 @@
+Lượt 1 (08:31:19–08:31:22): chạy cả thư mục tests/ui-remake/integration, dừng khi nạp areas.spec.ts:
+Error: ENOENT artifacts/stitch/B01/v3/responsive-contract.proposed.json (areas.spec.ts:6)

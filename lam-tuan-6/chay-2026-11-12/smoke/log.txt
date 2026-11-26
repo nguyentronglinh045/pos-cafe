@@ -1,0 +1,30 @@
+START 12/11/2026 08:29:09 +0700
+exit=0
+END 12/11/2026 08:30:28 +0700
+[64/86] [small-landscape] › tests\smoke\pos-cafe.spec.ts:441:1 › payment drawer exposes complete action for occupied table
+[65/86] [small-landscape] › tests\smoke\pos-cafe.spec.ts:449:1 › payment drawer keeps secondary text readable on landscape viewports
+[66/86] [small-landscape] › tests\smoke\pos-cafe.spec.ts:462:1 › payment drawer keeps readable controls across approved landscape breakpoints
+[67/86] [small-landscape] › tests\smoke\report-presentation.spec.ts:4:1 › report chart preserves selection, tooltip, ranges and compact landscape layout
+[68/86] [small-landscape] › tests\smoke\pos-cafe.spec.ts:362:1 › wall, decor and table backgrounds persist from editor to POS floor
+[69/86] [portrait] › tests\smoke\permission-ui-closeout.spec.ts:20:3 › landscape permission controls › employees rows remain selectable through ordinary scrolling
+[70/86] [portrait] › tests\smoke\permission-ui-closeout.spec.ts:40:3 › landscape permission controls › payment selection and quantity controls stay accessible without paying
+[71/86] [portrait] › tests\smoke\permission-ui-closeout.spec.ts:86:1 › portrait shows rotation guidance after login and restores POS on landscape
+[72/86] [portrait] › tests\smoke\pos-cafe.spec.ts:119:1 › POS mock flow keeps primary actions visible on landscape viewports
+[73/86] [portrait] › tests\smoke\pos-cafe.spec.ts:92:1 › portrait pre-login flow keeps primary actions reachable
+[74/86] [portrait] › tests\smoke\pos-cafe.spec.ts:150:1 › floor plan stage keeps demo layout readable across landscape viewports
+[75/86] [portrait] › tests\smoke\pos-cafe.spec.ts:206:1 › admin mock modules are reachable without changing URL
+[76/86] [portrait] › tests\smoke\pos-cafe.spec.ts:283:1 › floor toolbar actions stay fully inside the floor workspace
+[77/86] [portrait] › tests\smoke\pos-cafe.spec.ts:311:1 › sample floor shows varied image decor across both areas
+[78/86] [portrait] › tests\smoke\pos-cafe.spec.ts:339:1 › round tables stay visually circular in the editor and POS floor
+[79/86] [portrait] › tests\smoke\pos-cafe.spec.ts:362:1 › wall, decor and table backgrounds persist from editor to POS floor
+[80/86] [portrait] › tests\smoke\pos-cafe.spec.ts:408:1 › employee permission editor gates payment after re-login
+[81/86] [portrait] › tests\smoke\pos-cafe.spec.ts:441:1 › payment drawer exposes complete action for occupied table
+[82/86] [portrait] › tests\smoke\pos-cafe.spec.ts:449:1 › payment drawer keeps secondary text readable on landscape viewports
+[83/86] [portrait] › tests\smoke\pos-cafe.spec.ts:462:1 › payment drawer keeps readable controls across approved landscape breakpoints
+[84/86] [portrait] › tests\smoke\report-presentation.spec.ts:4:1 › report chart preserves selection, tooltip, ranges and compact landscape layout
+[85/86] [portrait] › tests\smoke\pos-cafe.spec.ts:131:1 › ordering an item with modifiers opens the picker and adds the choice to the cart
+[86/86] [demo-runbook] › tests\smoke\demo-runbook.spec.ts:4:1 › kịch bản demo chính chạy liền mạch qua 14 bước
+  37 skipped
+  49 passed (1.3m)
+
+[exited with code 0]

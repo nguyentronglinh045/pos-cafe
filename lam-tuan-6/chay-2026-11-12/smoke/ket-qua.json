@@ -1,0 +1,3942 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\lam-tuan-6\\script\\playwright.lam-chrome.config.mjs",
+    "rootDir": "C:/Users/ngoc.vv/Music/KLTN/pos-cafe-main/pos-cafe-main/tests/smoke",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 6
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/ngoc.vv/AppData/Local/Temp/claude/064098fb8c0e499a/5cf3ea90-a876-461a-84b1-57fd504798ef/scratchpad/smoke-run/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "C:/Users/ngoc.vv/Music/KLTN/pos-cafe-main/pos-cafe-main/tests/smoke",
+        "testIgnore": [
+          "/demo-runbook\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "C:/Users/ngoc.vv/AppData/Local/Temp/claude/064098fb8c0e499a/5cf3ea90-a876-461a-84b1-57fd504798ef/scratchpad/smoke-run/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "tablet-landscape",
+        "name": "tablet-landscape",
+        "testDir": "C:/Users/ngoc.vv/Music/KLTN/pos-cafe-main/pos-cafe-main/tests/smoke",
+        "testIgnore": [
+          "/demo-runbook\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "C:/Users/ngoc.vv/AppData/Local/Temp/claude/064098fb8c0e499a/5cf3ea90-a876-461a-84b1-57fd504798ef/scratchpad/smoke-run/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "phone-landscape",
+        "name": "phone-landscape",
+        "testDir": "C:/Users/ngoc.vv/Music/KLTN/pos-cafe-main/pos-cafe-main/tests/smoke",
+        "testIgnore": [
+          "/demo-runbook\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "C:/Users/ngoc.vv/AppData/Local/Temp/claude/064098fb8c0e499a/5cf3ea90-a876-461a-84b1-57fd504798ef/scratchpad/smoke-run/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "small-landscape",
+        "name": "small-landscape",
+        "testDir": "C:/Users/ngoc.vv/Music/KLTN/pos-cafe-main/pos-cafe-main/tests/smoke",
+        "testIgnore": [
+          "/demo-runbook\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "C:/Users/ngoc.vv/AppData/Local/Temp/claude/064098fb8c0e499a/5cf3ea90-a876-461a-84b1-57fd504798ef/scratchpad/smoke-run/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "portrait",
+        "name": "portrait",
+        "testDir": "C:/Users/ngoc.vv/Music/KLTN/pos-cafe-main/pos-cafe-main/tests/smoke",
+        "testIgnore": [
+          "/demo-runbook\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "C:/Users/ngoc.vv/AppData/Local/Temp/claude/064098fb8c0e499a/5cf3ea90-a876-461a-84b1-57fd504798ef/scratchpad/smoke-run/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "demo-runbook",
+        "name": "demo-runbook",
+        "testDir": "C:/Users/ngoc.vv/Music/KLTN/pos-cafe-main/pos-cafe-main/tests/smoke",
+        "testIgnore": [],
+        "testMatch": [
+          "/demo-runbook\\.spec\\.ts/"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "C:\\Users\\ngoc.vv\\AppData\\Local\\Temp\\claude\\064098fb8c0e499a\\5cf3ea90-a876-461a-84b1-57fd504798ef\\scratchpad\\smoke-run\\ket-qua.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.60.0",
+    "workers": 6,
+    "webServer": {
+      "command": "npm run dev -- --host 127.0.0.1 --port 5175 --strictPort",
+      "env": {
+        "VITE_DATA_MODE": "mock",
+        "VITE_SUPABASE_URL": "",
+        "VITE_SUPABASE_ANON_KEY": ""
+      },
+      "url": "http://127.0.0.1:5175",
+      "reuseExistingServer": false,
+      "timeout": 60000,
+      "cwd": "C:/Users/ngoc.vv/Music/KLTN/pos-cafe-main/pos-cafe-main"
+    }
+  },
+  "suites": [
+    {
+      "title": "permission-ui-closeout.spec.ts",
+      "file": "permission-ui-closeout.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "portrait shows rotation guidance after login and restores POS on landscape",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "portrait-only rotation contract",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\permission-ui-closeout.spec.ts",
+                    "line": 87,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 1664,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:13.172Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "portrait-only rotation contract",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\permission-ui-closeout.spec.ts",
+                        "line": 87,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "bc94090aa56d88195938-8f18f7d81e31805abd3b",
+          "file": "permission-ui-closeout.spec.ts",
+          "line": 86,
+          "column": 1
+        },
+        {
+          "title": "portrait shows rotation guidance after login and restores POS on landscape",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "portrait-only rotation contract",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\permission-ui-closeout.spec.ts",
+                    "line": 87,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 1,
+                  "status": "skipped",
+                  "duration": 285,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:28.115Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "portrait-only rotation contract",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\permission-ui-closeout.spec.ts",
+                        "line": 87,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "bc94090aa56d88195938-bd359134711deb5ae0d2",
+          "file": "permission-ui-closeout.spec.ts",
+          "line": 86,
+          "column": 1
+        },
+        {
+          "title": "portrait shows rotation guidance after login and restores POS on landscape",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "portrait-only rotation contract",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\permission-ui-closeout.spec.ts",
+                    "line": 87,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 13,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 284,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:37.585Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "portrait-only rotation contract",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\permission-ui-closeout.spec.ts",
+                        "line": 87,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "bc94090aa56d88195938-b7afab65a795d55cfed7",
+          "file": "permission-ui-closeout.spec.ts",
+          "line": 86,
+          "column": 1
+        },
+        {
+          "title": "portrait shows rotation guidance after login and restores POS on landscape",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "portrait-only rotation contract",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\permission-ui-closeout.spec.ts",
+                    "line": 87,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 19,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 505,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:47.718Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "portrait-only rotation contract",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\permission-ui-closeout.spec.ts",
+                        "line": 87,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "bc94090aa56d88195938-0e8635954426abbb38ba",
+          "file": "permission-ui-closeout.spec.ts",
+          "line": 86,
+          "column": 1
+        },
+        {
+          "title": "portrait shows rotation guidance after login and restores POS on landscape",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 24,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 2329,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:59.734Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bc94090aa56d88195938-1e378d715c324fca3875",
+          "file": "permission-ui-closeout.spec.ts",
+          "line": 86,
+          "column": 1
+        }
+      ],
+      "suites": [
+        {
+          "title": "landscape permission controls",
+          "file": "permission-ui-closeout.spec.ts",
+          "line": 13,
+          "column": 6,
+          "specs": [
+            {
+              "title": "employees rows remain selectable through ordinary scrolling",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8031,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-12T01:29:13.236Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bc94090aa56d88195938-806b13d9ebf0e2472576",
+              "file": "permission-ui-closeout.spec.ts",
+              "line": 20,
+              "column": 3
+            },
+            {
+              "title": "payment selection and quantity controls stay accessible without paying",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8707,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-12T01:29:13.188Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bc94090aa56d88195938-3624bba0c8e23f1609d0",
+              "file": "permission-ui-closeout.spec.ts",
+              "line": 40,
+              "column": 3
+            },
+            {
+              "title": "employees rows remain selectable through ordinary scrolling",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet-landscape",
+                  "projectName": "tablet-landscape",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3851,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-12T01:29:27.668Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bc94090aa56d88195938-40ceee5545d4d8fdfad1",
+              "file": "permission-ui-closeout.spec.ts",
+              "line": 20,
+              "column": 3
+            },
+            {
+              "title": "payment selection and quantity controls stay accessible without paying",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet-landscape",
+                  "projectName": "tablet-landscape",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 4651,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-12T01:29:27.950Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bc94090aa56d88195938-0e367ae359b68ca8585e",
+              "file": "permission-ui-closeout.spec.ts",
+              "line": 40,
+              "column": 3
+            },
+            {
+              "title": "employees rows remain selectable through ordinary scrolling",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "phone-landscape",
+                  "projectName": "phone-landscape",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 3851,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-12T01:29:36.574Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bc94090aa56d88195938-2f2dec75596375aa5910",
+              "file": "permission-ui-closeout.spec.ts",
+              "line": 20,
+              "column": 3
+            },
+            {
+              "title": "payment selection and quantity controls stay accessible without paying",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "phone-landscape",
+                  "projectName": "phone-landscape",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 4848,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-12T01:29:37.297Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bc94090aa56d88195938-aa8733801e3716b70d42",
+              "file": "permission-ui-closeout.spec.ts",
+              "line": 40,
+              "column": 3
+            },
+            {
+              "title": "employees rows remain selectable through ordinary scrolling",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "small-landscape",
+                  "projectName": "small-landscape",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 6792,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-12T01:29:47.612Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bc94090aa56d88195938-c97858cda535f1cf4a19",
+              "file": "permission-ui-closeout.spec.ts",
+              "line": 20,
+              "column": 3
+            },
+            {
+              "title": "payment selection and quantity controls stay accessible without paying",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "small-landscape",
+                  "projectName": "small-landscape",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 7561,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-12T01:29:47.643Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bc94090aa56d88195938-6b09f5bc7d785015625b",
+              "file": "permission-ui-closeout.spec.ts",
+              "line": 40,
+              "column": 3
+            },
+            {
+              "title": "employees rows remain selectable through ordinary scrolling",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Business controls require landscape; portrait guidance is checked separately.",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\permission-ui-closeout.spec.ts",
+                        "line": 15,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "portrait",
+                  "projectName": "portrait",
+                  "results": [
+                    {
+                      "workerIndex": 23,
+                      "parallelIndex": 2,
+                      "status": "skipped",
+                      "duration": 304,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-12T01:29:59.719Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Business controls require landscape; portrait guidance is checked separately.",
+                          "location": {
+                            "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\permission-ui-closeout.spec.ts",
+                            "line": 15,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bc94090aa56d88195938-d3999dda91e599651b72",
+              "file": "permission-ui-closeout.spec.ts",
+              "line": 20,
+              "column": 3
+            },
+            {
+              "title": "payment selection and quantity controls stay accessible without paying",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Business controls require landscape; portrait guidance is checked separately.",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\permission-ui-closeout.spec.ts",
+                        "line": 15,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "portrait",
+                  "projectName": "portrait",
+                  "results": [
+                    {
+                      "workerIndex": 25,
+                      "parallelIndex": 4,
+                      "status": "skipped",
+                      "duration": 286,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-12T01:29:59.735Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Business controls require landscape; portrait guidance is checked separately.",
+                          "location": {
+                            "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\permission-ui-closeout.spec.ts",
+                            "line": 15,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "bc94090aa56d88195938-7e94f0b76b2ab05a4ed3",
+              "file": "permission-ui-closeout.spec.ts",
+              "line": 40,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "pos-cafe.spec.ts",
+      "file": "pos-cafe.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "portrait pre-login flow keeps primary actions reachable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "portrait-only assertion",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 93,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "skipped",
+                  "duration": 980,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:13.199Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "portrait-only assertion",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 93,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-82f771ad1f9a8dd7f581",
+          "file": "pos-cafe.spec.ts",
+          "line": 92,
+          "column": 1
+        },
+        {
+          "title": "POS mock flow keeps primary actions visible on landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 6140,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:13.297Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-f6397971adae97e34b6b",
+          "file": "pos-cafe.spec.ts",
+          "line": 119,
+          "column": 1
+        },
+        {
+          "title": "ordering an item with modifiers opens the picker and adds the choice to the cart",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 5964,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:13.240Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-7d9405f6130424df8cbb",
+          "file": "pos-cafe.spec.ts",
+          "line": 131,
+          "column": 1
+        },
+        {
+          "title": "floor plan stage keeps demo layout readable across landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 12431,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:14.733Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-c90f841014f0ff4289d0",
+          "file": "pos-cafe.spec.ts",
+          "line": 150,
+          "column": 1
+        },
+        {
+          "title": "admin mock modules are reachable without changing URL",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 8000,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:15.482Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-e8e81664c9809abfa412",
+          "file": "pos-cafe.spec.ts",
+          "line": 206,
+          "column": 1
+        },
+        {
+          "title": "floor toolbar actions stay fully inside the floor workspace",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 2454,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:19.949Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-ab3f96deb36e06711782",
+          "file": "pos-cafe.spec.ts",
+          "line": 283,
+          "column": 1
+        },
+        {
+          "title": "sample floor shows varied image decor across both areas",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 2593,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:19.977Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-1d51857618b69ba81d51",
+          "file": "pos-cafe.spec.ts",
+          "line": 311,
+          "column": 1
+        },
+        {
+          "title": "round tables stay visually circular in the editor and POS floor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3272,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:21.856Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-2853fddcbf478a58bc3c",
+          "file": "pos-cafe.spec.ts",
+          "line": 339,
+          "column": 1
+        },
+        {
+          "title": "wall, decor and table backgrounds persist from editor to POS floor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 4439,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:22.430Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-23fec58e520330663dbc",
+          "file": "pos-cafe.spec.ts",
+          "line": 362,
+          "column": 1
+        },
+        {
+          "title": "employee permission editor gates payment after re-login",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4427,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:22.547Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-4cf178bd919ed8349e2b",
+          "file": "pos-cafe.spec.ts",
+          "line": 408,
+          "column": 1
+        },
+        {
+          "title": "payment drawer exposes complete action for occupied table",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 2629,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:22.594Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-a4046841475719762763",
+          "file": "pos-cafe.spec.ts",
+          "line": 441,
+          "column": 1
+        },
+        {
+          "title": "payment drawer keeps secondary text readable on landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 2708,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:23.499Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-76528412190a3e97e9c5",
+          "file": "pos-cafe.spec.ts",
+          "line": 449,
+          "column": 1
+        },
+        {
+          "title": "payment drawer keeps readable controls across approved landscape breakpoints",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3571,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:25.152Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-6b51df419d24008d594c",
+          "file": "pos-cafe.spec.ts",
+          "line": 462,
+          "column": 1
+        },
+        {
+          "title": "portrait pre-login flow keeps primary actions reachable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "portrait-only assertion",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 93,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 3,
+                  "status": "skipped",
+                  "duration": 408,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:28.519Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "portrait-only assertion",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 93,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-9a6157f3d0851c087adb",
+          "file": "pos-cafe.spec.ts",
+          "line": 92,
+          "column": 1
+        },
+        {
+          "title": "POS mock flow keeps primary actions visible on landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2452,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:30.894Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-08147f20ef1cecca4089",
+          "file": "pos-cafe.spec.ts",
+          "line": 119,
+          "column": 1
+        },
+        {
+          "title": "ordering an item with modifiers opens the picker and adds the choice to the cart",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2613,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:28.992Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-c386257f7a3e8383b80a",
+          "file": "pos-cafe.spec.ts",
+          "line": 131,
+          "column": 1
+        },
+        {
+          "title": "floor plan stage keeps demo layout readable across landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 9259,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:29.508Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-a3de7328b397ada0492d",
+          "file": "pos-cafe.spec.ts",
+          "line": 150,
+          "column": 1
+        },
+        {
+          "title": "admin mock modules are reachable without changing URL",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 5326,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:31.640Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-e10c436416d7c612c127",
+          "file": "pos-cafe.spec.ts",
+          "line": 206,
+          "column": 1
+        },
+        {
+          "title": "floor toolbar actions stay fully inside the floor workspace",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 2253,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:31.965Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-e8f03a89b4ba4bb4639c",
+          "file": "pos-cafe.spec.ts",
+          "line": 283,
+          "column": 1
+        },
+        {
+          "title": "sample floor shows varied image decor across both areas",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only sample decor check",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 312,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 5,
+                  "status": "skipped",
+                  "duration": 170,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:33.030Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only sample decor check",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 312,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-c8498ba3d837d5cf90db",
+          "file": "pos-cafe.spec.ts",
+          "line": 311,
+          "column": 1
+        },
+        {
+          "title": "round tables stay visually circular in the editor and POS floor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only round table workflow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 340,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 5,
+                  "status": "skipped",
+                  "duration": 171,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:33.225Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only round table workflow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 340,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-5542bd49095d57ca980e",
+          "file": "pos-cafe.spec.ts",
+          "line": 339,
+          "column": 1
+        },
+        {
+          "title": "wall, decor and table backgrounds persist from editor to POS floor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only decor workflow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 363,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 5,
+                  "status": "skipped",
+                  "duration": 195,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:33.430Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only decor workflow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 363,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-8b4768f2205572ec4d15",
+          "file": "pos-cafe.spec.ts",
+          "line": 362,
+          "column": 1
+        },
+        {
+          "title": "employee permission editor gates payment after re-login",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only permission workflow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 409,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 283,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:33.650Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only permission workflow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 409,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-78159d112ce9a485df94",
+          "file": "pos-cafe.spec.ts",
+          "line": 408,
+          "column": 1
+        },
+        {
+          "title": "payment drawer exposes complete action for occupied table",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 2387,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:33.652Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-2ca32800600fbc288dec",
+          "file": "pos-cafe.spec.ts",
+          "line": 441,
+          "column": 1
+        },
+        {
+          "title": "payment drawer keeps secondary text readable on landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2295,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:33.959Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-fab3e2dd46069469f6a1",
+          "file": "pos-cafe.spec.ts",
+          "line": 449,
+          "column": 1
+        },
+        {
+          "title": "payment drawer keeps readable controls across approved landscape breakpoints",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "covers multiple landscape breakpoints in one run",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 463,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 358,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:34.245Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "covers multiple landscape breakpoints in one run",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 463,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-5788c041d047801877ec",
+          "file": "pos-cafe.spec.ts",
+          "line": 462,
+          "column": 1
+        },
+        {
+          "title": "portrait pre-login flow keeps primary actions reachable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "portrait-only assertion",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 93,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 14,
+                  "parallelIndex": 1,
+                  "status": "skipped",
+                  "duration": 273,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:38.725Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "portrait-only assertion",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 93,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-4f7acd7781079525de7c",
+          "file": "pos-cafe.spec.ts",
+          "line": 92,
+          "column": 1
+        },
+        {
+          "title": "POS mock flow keeps primary actions visible on landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 13,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2665,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:38.416Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-c97064e42616e3c98a60",
+          "file": "pos-cafe.spec.ts",
+          "line": 119,
+          "column": 1
+        },
+        {
+          "title": "ordering an item with modifiers opens the picker and adds the choice to the cart",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 15,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 3188,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:41.293Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-a307a9f4d14e369b83f9",
+          "file": "pos-cafe.spec.ts",
+          "line": 131,
+          "column": 1
+        },
+        {
+          "title": "floor plan stage keeps demo layout readable across landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 14,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 11978,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:39.635Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-0d0cce1eb1f8c49f983a",
+          "file": "pos-cafe.spec.ts",
+          "line": 150,
+          "column": 1
+        },
+        {
+          "title": "admin mock modules are reachable without changing URL",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 6089,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:40.839Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-6d3a5ecc60fbb4e712c8",
+          "file": "pos-cafe.spec.ts",
+          "line": 206,
+          "column": 1
+        },
+        {
+          "title": "floor toolbar actions stay fully inside the floor workspace",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 13,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2992,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:41.104Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-d549c155b6e6ef26f528",
+          "file": "pos-cafe.spec.ts",
+          "line": 283,
+          "column": 1
+        },
+        {
+          "title": "sample floor shows varied image decor across both areas",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only sample decor check",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 312,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 5,
+                  "status": "skipped",
+                  "duration": 310,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:42.582Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only sample decor check",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 312,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-72754da4d2c4c0a3f21d",
+          "file": "pos-cafe.spec.ts",
+          "line": 311,
+          "column": 1
+        },
+        {
+          "title": "round tables stay visually circular in the editor and POS floor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only round table workflow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 340,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 5,
+                  "status": "skipped",
+                  "duration": 415,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:42.924Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only round table workflow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 340,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-2996914e93855f97cef3",
+          "file": "pos-cafe.spec.ts",
+          "line": 339,
+          "column": 1
+        },
+        {
+          "title": "wall, decor and table backgrounds persist from editor to POS floor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only decor workflow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 363,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 5,
+                  "status": "skipped",
+                  "duration": 281,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:43.396Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only decor workflow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 363,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-815948d2167676cb91f5",
+          "file": "pos-cafe.spec.ts",
+          "line": 362,
+          "column": 1
+        },
+        {
+          "title": "employee permission editor gates payment after re-login",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only permission workflow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 409,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 5,
+                  "status": "skipped",
+                  "duration": 296,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:43.701Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only permission workflow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 409,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-d38b2bf9348fdccbdabb",
+          "file": "pos-cafe.spec.ts",
+          "line": 408,
+          "column": 1
+        },
+        {
+          "title": "payment drawer exposes complete action for occupied table",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 2469,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:44.027Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-3b210e973d6fcc35486f",
+          "file": "pos-cafe.spec.ts",
+          "line": 441,
+          "column": 1
+        },
+        {
+          "title": "payment drawer keeps secondary text readable on landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 13,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2715,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:44.131Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-45916a652b76bf0db7c8",
+          "file": "pos-cafe.spec.ts",
+          "line": 449,
+          "column": 1
+        },
+        {
+          "title": "payment drawer keeps readable controls across approved landscape breakpoints",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "covers multiple landscape breakpoints in one run",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 463,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 16,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 248,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:46.106Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "covers multiple landscape breakpoints in one run",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 463,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-9fc66a1418ac5c5c680f",
+          "file": "pos-cafe.spec.ts",
+          "line": 462,
+          "column": 1
+        },
+        {
+          "title": "portrait pre-login flow keeps primary actions reachable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "portrait-only assertion",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 93,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 20,
+                  "parallelIndex": 4,
+                  "status": "skipped",
+                  "duration": 925,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:47.802Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "portrait-only assertion",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 93,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-13a5ed4f24bc107a186f",
+          "file": "pos-cafe.spec.ts",
+          "line": 92,
+          "column": 1
+        },
+        {
+          "title": "POS mock flow keeps primary actions visible on landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 19,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5387,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:48.701Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-8b32d595e4742113ee52",
+          "file": "pos-cafe.spec.ts",
+          "line": 119,
+          "column": 1
+        },
+        {
+          "title": "ordering an item with modifiers opens the picker and adds the choice to the cart",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 20,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 5066,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:49.603Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-164f879f23caa57cf7a3",
+          "file": "pos-cafe.spec.ts",
+          "line": 131,
+          "column": 1
+        },
+        {
+          "title": "floor plan stage keeps demo layout readable across landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 21,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 9164,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:54.683Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-49edf35a82ec212b7432",
+          "file": "pos-cafe.spec.ts",
+          "line": 150,
+          "column": 1
+        },
+        {
+          "title": "admin mock modules are reachable without changing URL",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 19,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6343,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:54.130Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-261930259a0974665a2f",
+          "file": "pos-cafe.spec.ts",
+          "line": 206,
+          "column": 1
+        },
+        {
+          "title": "floor toolbar actions stay fully inside the floor workspace",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 18,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 2352,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:54.749Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-197130e4695535c1670e",
+          "file": "pos-cafe.spec.ts",
+          "line": 283,
+          "column": 1
+        },
+        {
+          "title": "sample floor shows varied image decor across both areas",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only sample decor check",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 312,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 20,
+                  "parallelIndex": 4,
+                  "status": "skipped",
+                  "duration": 354,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:54.731Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only sample decor check",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 312,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-8401dea894e19900dad2",
+          "file": "pos-cafe.spec.ts",
+          "line": 311,
+          "column": 1
+        },
+        {
+          "title": "round tables stay visually circular in the editor and POS floor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only round table workflow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 340,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 20,
+                  "parallelIndex": 4,
+                  "status": "skipped",
+                  "duration": 416,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:55.111Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only round table workflow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 340,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-3ca0b519b1e3082253a6",
+          "file": "pos-cafe.spec.ts",
+          "line": 339,
+          "column": 1
+        },
+        {
+          "title": "wall, decor and table backgrounds persist from editor to POS floor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only decor workflow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 363,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 22,
+                  "parallelIndex": 3,
+                  "status": "skipped",
+                  "duration": 268,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:58.150Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only decor workflow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 363,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-68ddaef6e196dd9d283f",
+          "file": "pos-cafe.spec.ts",
+          "line": 362,
+          "column": 1
+        },
+        {
+          "title": "employee permission editor gates payment after re-login",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only permission workflow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 409,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 17,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 231,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:55.517Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only permission workflow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 409,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-905af2dacc2e2fcdd67c",
+          "file": "pos-cafe.spec.ts",
+          "line": 408,
+          "column": 1
+        },
+        {
+          "title": "payment drawer exposes complete action for occupied table",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 20,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 3167,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:55.551Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-2fa25c59cc72070f43a6",
+          "file": "pos-cafe.spec.ts",
+          "line": 441,
+          "column": 1
+        },
+        {
+          "title": "payment drawer keeps secondary text readable on landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 17,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 2796,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:55.776Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-d1fce192e1a35882f0c3",
+          "file": "pos-cafe.spec.ts",
+          "line": 449,
+          "column": 1
+        },
+        {
+          "title": "payment drawer keeps readable controls across approved landscape breakpoints",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "covers multiple landscape breakpoints in one run",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 463,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 18,
+                  "parallelIndex": 5,
+                  "status": "skipped",
+                  "duration": 211,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:57.144Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "covers multiple landscape breakpoints in one run",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 463,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-1f963248bff2f8614ddd",
+          "file": "pos-cafe.spec.ts",
+          "line": 462,
+          "column": 1
+        },
+        {
+          "title": "portrait pre-login flow keeps primary actions reachable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 25,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 2129,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:00.364Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-5149d499f50f140c5e61",
+          "file": "pos-cafe.spec.ts",
+          "line": 92,
+          "column": 1
+        },
+        {
+          "title": "POS mock flow keeps primary actions visible on landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "landscape-only flow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 120,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 23,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 269,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:00.365Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "landscape-only flow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 120,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-197af2e7e96dde35bc67",
+          "file": "pos-cafe.spec.ts",
+          "line": 119,
+          "column": 1
+        },
+        {
+          "title": "ordering an item with modifiers opens the picker and adds the choice to the cart",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "landscape-only flow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 132,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 26,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 152,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:02.749Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "landscape-only flow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 132,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-16206b018a9c8ebdcb16",
+          "file": "pos-cafe.spec.ts",
+          "line": 131,
+          "column": 1
+        },
+        {
+          "title": "floor plan stage keeps demo layout readable across landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "landscape-only flow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 151,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 23,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 271,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:00.658Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "landscape-only flow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 151,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-1ec2ef5e2370478ddfb3",
+          "file": "pos-cafe.spec.ts",
+          "line": 150,
+          "column": 1
+        },
+        {
+          "title": "admin mock modules are reachable without changing URL",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "landscape-only flow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 207,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 23,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 234,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:00.953Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "landscape-only flow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 207,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-aa7dbbef8ab3c7ba54fb",
+          "file": "pos-cafe.spec.ts",
+          "line": 206,
+          "column": 1
+        },
+        {
+          "title": "floor toolbar actions stay fully inside the floor workspace",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "landscape-only floor toolbar",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 284,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 23,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 257,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:01.216Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "landscape-only floor toolbar",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 284,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-9e98b72e2faf50409eb7",
+          "file": "pos-cafe.spec.ts",
+          "line": 283,
+          "column": 1
+        },
+        {
+          "title": "sample floor shows varied image decor across both areas",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only sample decor check",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 312,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 23,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 189,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:01.498Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only sample decor check",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 312,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-5d1506897cdb8705b798",
+          "file": "pos-cafe.spec.ts",
+          "line": 311,
+          "column": 1
+        },
+        {
+          "title": "round tables stay visually circular in the editor and POS floor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only round table workflow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 340,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 23,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 161,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:01.704Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only round table workflow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 340,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-21c5d27faa50cc77397b",
+          "file": "pos-cafe.spec.ts",
+          "line": 339,
+          "column": 1
+        },
+        {
+          "title": "wall, decor and table backgrounds persist from editor to POS floor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only decor workflow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 363,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 23,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 156,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:01.901Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only decor workflow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 363,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-b3139f24e12a4bf02a29",
+          "file": "pos-cafe.spec.ts",
+          "line": 362,
+          "column": 1
+        },
+        {
+          "title": "employee permission editor gates payment after re-login",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "desktop-only permission workflow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 409,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 23,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 186,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:02.076Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "desktop-only permission workflow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 409,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-9cbc28e1558f34234254",
+          "file": "pos-cafe.spec.ts",
+          "line": 408,
+          "column": 1
+        },
+        {
+          "title": "payment drawer exposes complete action for occupied table",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "landscape-only flow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 442,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 23,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 169,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:02.281Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "landscape-only flow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 442,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-5a5326cda363b5e99f1f",
+          "file": "pos-cafe.spec.ts",
+          "line": 441,
+          "column": 1
+        },
+        {
+          "title": "payment drawer keeps secondary text readable on landscape viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "landscape-only flow",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 450,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 24,
+                  "parallelIndex": 3,
+                  "status": "skipped",
+                  "duration": 180,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:02.407Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "landscape-only flow",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 450,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-f43b481c5ddec75a8590",
+          "file": "pos-cafe.spec.ts",
+          "line": 449,
+          "column": 1
+        },
+        {
+          "title": "payment drawer keeps readable controls across approved landscape breakpoints",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "covers multiple landscape breakpoints in one run",
+                  "location": {
+                    "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                    "line": 463,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 23,
+                  "parallelIndex": 2,
+                  "status": "skipped",
+                  "duration": 156,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:02.471Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "covers multiple landscape breakpoints in one run",
+                      "location": {
+                        "file": "C:\\Users\\ngoc.vv\\Music\\KLTN\\pos-cafe-main\\pos-cafe-main\\tests\\smoke\\pos-cafe.spec.ts",
+                        "line": 463,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "0d38fef1bed62b121db2-f1da7be686ec84aa8fa0",
+          "file": "pos-cafe.spec.ts",
+          "line": 462,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "report-presentation.spec.ts",
+      "file": "report-presentation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "report chart preserves selection, tooltip, ranges and compact landscape layout",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 10030,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:25.306Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "673651947e1e8dfb8a35-e103cf137dfd31679777",
+          "file": "report-presentation.spec.ts",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "report chart preserves selection, tooltip, ranges and compact landscape layout",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet-landscape",
+              "projectName": "tablet-landscape",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 9517,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:34.682Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "673651947e1e8dfb8a35-5536e6418917f03d8e06",
+          "file": "report-presentation.spec.ts",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "report chart preserves selection, tooltip, ranges and compact landscape layout",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "phone-landscape",
+              "projectName": "phone-landscape",
+              "results": [
+                {
+                  "workerIndex": 15,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 10023,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:45.082Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "673651947e1e8dfb8a35-e482e4b5954643b28a3c",
+          "file": "report-presentation.spec.ts",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "report chart preserves selection, tooltip, ranges and compact landscape layout",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "small-landscape",
+              "projectName": "small-landscape",
+              "results": [
+                {
+                  "workerIndex": 18,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 8717,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:29:57.411Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "673651947e1e8dfb8a35-0c0a6004429b27a07c9f",
+          "file": "report-presentation.spec.ts",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "report chart preserves selection, tooltip, ranges and compact landscape layout",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "portrait",
+              "projectName": "portrait",
+              "results": [
+                {
+                  "workerIndex": 25,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 7877,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-12T01:30:02.560Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "673651947e1e8dfb8a35-10bb871f90805671fe3c",
+          "file": "report-presentation.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "demo-runbook.spec.ts",
+      "file": "demo-runbook.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "kịch bản demo chính chạy liền mạch qua 14 bước",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "demo-runbook",
+              "projectName": "demo-runbook",
+              "results": [
+                {
+                  "workerIndex": 27,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 23653,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Bước 1 — mở ứng dụng ở chế độ ngang",
+                      "duration": 486
+                    },
+                    {
+                      "title": "Bước 2 — ghép cửa hàng nếu thiết bị chưa được ghép",
+                      "duration": 260
+                    },
+                    {
+                      "title": "Bước 3 — đăng nhập quản lý bằng PIN",
+                      "duration": 711
+                    },
+                    {
+                      "title": "Bước 4 — mở bàn B01 đang trống",
+                      "duration": 144
+                    },
+                    {
+                      "title": "Bước 5 — tạo đơn ba Cà phê sữa Size L, tổng 108.000đ",
+                      "duration": 647
+                    },
+                    {
+                      "title": "Bước 6 — quay lại sơ đồ và thấy B01 đang phục vụ",
+                      "duration": 4583
+                    },
+                    {
+                      "title": "Bước 7 — mở lại đơn và chuyển sang thanh toán",
+                      "duration": 354
+                    },
+                    {
+                      "title": "Bước 8 — tách trả hai ly 72.000đ và ghi nhận doanh thu ngay",
+                      "duration": 419
+                    },
+                    {
+                      "title": "Bước 9 — kiểm tra tiền thiếu rồi thanh toán 36.000đ còn lại",
+                      "duration": 965
+                    },
+                    {
+                      "title": "Bước 10 — đóng hóa đơn và xác nhận B01 trở về trống",
+                      "duration": 85
+                    },
+                    {
+                      "title": "Bước 11 — đối chiếu hai đơn độc lập trong Lịch sử và số bill thật trong Báo cáo",
+                      "duration": 767
+                    },
+                    {
+                      "title": "Bước 12 — hủy đơn 72.000đ với lý do khác",
+                      "duration": 616
+                    },
+                    {
+                      "title": "Bước 13 — báo cáo loại đơn hủy khỏi doanh thu và ghi nhận tiền hủy",
+                      "duration": 135
+                    },
+                    {
+                      "title": "Bước 14 — bỏ quyền thanh toán, kiểm tạo/sửa đơn, rồi khôi phục quyền",
+                      "duration": 12269
+                    }
+                  ],
+                  "startTime": "2026-11-12T01:30:03.489Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\ngoc.vv\\AppData\\Local\\Temp\\claude\\064098fb8c0e499a\\5cf3ea90-a876-461a-84b1-57fd504798ef\\scratchpad\\smoke-run\\test-results\\demo-runbook-kịch-bản-demo-chính-chạy-liền-mạch-qua-14-bước-demo-runbook\\trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f23999f29b3b74e7a871-9af8a1829318134f666b",
+          "file": "demo-runbook.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-12T01:29:10.567Z",
+    "duration": 77878.734,
+    "expected": 49,
+    "skipped": 37,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
