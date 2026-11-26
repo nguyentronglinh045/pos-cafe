@@ -190,6 +190,12 @@ Chạy các ca trong `testplan.md` thuộc giai đoạn 1 theo mục Cách chạ
 - [x] 11.7a Lát Quên Store Key đã hiện thực và kiểm cục bộ trên PostgreSQL với SMTP giả và UI mock. [Phạm vi và bằng chứng local](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-quen-store-key-20261126).
 - [x] 11.7b Kiểm staging một quán từ màn Ghép thiết bị. Hộp thư đăng ký nhận đúng key hiện hành và tab đã ghép tải lại bằng cùng phiên Auth. [Bằng chứng staging](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#staging-quen-store-key-20261126).
 - [x] 11.7c TC-OWNER-49 đạt trên staging cho email đứng tên hai quán. Hai lối vào có cùng lời giải thích. Một yêu cầu từ Cài đặt gửi đúng hai key và giữ phiên Auth, phiên nhân viên của quán đã ghép. [Bằng chứng hai quán](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#tc-owner-49-hai-quan-staging-20261126).
+- [x] 11.7d Chạy lại TC-OWNER-50/51 và đối chiếu bốn nhánh TC-OWNER-100 trên PostgreSQL cô lập với SMTP giả, cùng Git tree của `e3021ef`. [Kết quả theo tiêu chí](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#tc-owner-50-51-100-20261126).
+- [x] 11.7e TC-OWNER-50 và 51 đạt qua Cài đặt, Supabase staging và Gmail trên Protected Preview `e3021ef`. Alias có 0 thư. Email đăng ký có đúng ba thư, yêu cầu thứ tư trong một giờ vẫn trả cùng thông báo và phát sinh 0 thư thêm. [Bằng chứng staging](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#tc-owner-50-51-100-20261126).
+- [x] 11.7f Sửa thứ tự TC-OWNER-100(c) và kiểm lại ca đồng thời, độ trễ với SMTP giả. Worker chỉ nhận email sau khi trình duyệt đọc phản hồi, hiện thông báo chung và xác nhận biên nhận. [Kiểm lại bản sửa](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#tc-owner-100c-receipt-20261126).
+- [x] 11.7g Chốt theo bộ bằng chứng Linh duyệt ngày 26/11/2026, gồm PostgreSQL cô lập với SMTP giả và Protected Preview `0aa9345`. Bằng chứng TC-OWNER-49…51 trên Protected Preview thuộc `e3021ef`. [Quyết định nghiệm thu 11.7g](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#chot-nghiem-thu-117g-20261126).
+  - [x] Chốt sửa và phát hành trên Protected Preview `0aa9345`. Worker chạy lúc xác nhận đang dừng và tạo 0 thư. Sau xác nhận, đúng một thư được gửi cho hộp thư thử. Alias có cùng thông báo và 0 thư.
+  - **Chưa chạy trên hosted** · TC-OWNER-100(a), (b), (d) ở ngưỡng hạn mức dùng chung và phần SMTP chậm, so độ trễ phản hồi của TC-OWNER-100(c).
 
 ## 11b. Gửi mã theo loại thao tác
 
