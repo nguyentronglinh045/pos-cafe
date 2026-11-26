@@ -1,6 +1,10 @@
 # Kế hoạch kiểm thử
 
-Cập nhật ngày 24/11/2026. TC-OWNER-112 và các tiêu chí T08 bổ sung trong bản này đang ở mức kế hoạch. Kết quả giai đoạn 1 được ghi theo từng phiên bản trong [hồ sơ T06](../../../docs/workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md). Mã yêu cầu nằm trong `specs/`, mã use case nằm trong `usecases.md`.
+Cập nhật ngày 26/11/2026. TC-OWNER-112 có biên bản staging riêng. Kết quả Quên Store Key và các ca còn lại của lát này được ghi bên dưới. Kết quả giai đoạn 1 được ghi theo từng phiên bản trong [hồ sơ T06](../../../docs/workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md). Mã yêu cầu nằm trong `specs/`, mã use case nằm trong `usecases.md`.
+
+Lát Quên Store Key kiểm local các nhánh của TC-OWNER-49…51 và 100. Bộ kiểm dùng handler thật với PostgreSQL cô lập, SMTP giả và UI mock. [Bằng chứng local](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-quen-store-key-20261126).
+
+TC-OWNER-49 đạt trên Protected Preview `e3021ef` qua gateway thật, Gmail và Chrome 24tx. Lượt #0033 từ màn Ghép thiết bị gửi đúng key và giữ cùng phiên Auth khi tải lại. Lượt #0034 và #0035 so lời giải thích ở cả hai lối vào, gửi đúng một thư từ Cài đặt có đủ hai key hiện hành và giữ cùng phiên Auth, phiên nhân viên khi mở Báo cáo. TC-OWNER-50, 51, 100 và đổi chủ/email qua ứng dụng chưa chạy trên staging ở lượt này. [Bằng chứng một quán](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#staging-quen-store-key-20261126) · [Bằng chứng hai quán](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#tc-owner-49-hai-quan-staging-20261126).
 
 Dữ liệu chung: email `owner.a@example.com`; intent I1 = `40000000-0000-4000-8000-000000000001` (I2…I8 cùng dạng, đuôi `0002`…`0008`); tên "Quán A", địa chỉ rỗng, không dữ liệu mẫu, PIN 638251; mã 012345 phát lúc 10:00, hạn 10:10; mã định danh yêu cầu và lần nhập là UUID v7 sinh đúng giờ trừ khi ghi khác; số quán cấp ra 42. Ký hiệu ví dụ: q1, q2… là các lần gửi yêu cầu mã; R1, R2… là biên nhận tương ứng; a1, a2… là các lần nhập mã; C4 là mã được phát cho q4; O1, O2… là các yêu cầu tạo quán. Mức: `ĐV` đơn vị, `TH` tích hợp (qua lớp gọi server, xem mục Cách chạy), `GD` giao diện, `RS` rà soát tĩnh.
 

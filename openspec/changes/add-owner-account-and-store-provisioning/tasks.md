@@ -180,13 +180,16 @@ Chạy các ca trong `testplan.md` thuộc giai đoạn 1 theo mục Cách chạ
 
 ## 11. Quên Store Key
 
-- [ ] 11.1 Hành động `forgotStoreKey`, không cần đăng nhập, không cần mã
-- [ ] 11.2 Luôn trả phản hồi chung chung, không tiết lộ email có tồn tại hay không
-- [ ] 11.3 Giới hạn 3 lần mỗi giờ tính theo email, cộng giới hạn theo địa chỉ mạng và trần toàn dự án; trả phản hồi trước rồi mới tra chủ và gửi thư; bỏ quán ở `pending` ra khỏi thư; từ `applied` cho phép gửi key hiện tại
-- [ ] 11.4 Dựng email liệt kê dạng danh sách: tên cửa hàng, địa chỉ lấy từ `store_settings`, Store Key
-- [ ] 11.5 Thêm câu nhắc dùng chức năng cấp lại nếu nghi hộp thư đã bị lộ
-- [ ] 11.6 Một thành phần giao diện dùng chung, gắn ở hai lối vào: màn ghép thiết bị và mục Cài đặt
+- [x] 11.1 Hành động `forgotStoreKey`, không cần đăng nhập, không cần mã
+- [x] 11.2 Luôn trả phản hồi chung chung, không tiết lộ email có tồn tại hay không
+- [x] 11.3 Giới hạn 3 lần mỗi giờ tính theo email, cộng giới hạn theo địa chỉ mạng và trần toàn dự án; trả phản hồi trước rồi mới tra chủ và gửi thư; bỏ quán ở `pending` ra khỏi thư; từ `applied` cho phép gửi key hiện tại
+- [x] 11.4 Dựng email liệt kê dạng danh sách: tên cửa hàng, địa chỉ lấy từ `store_settings`, Store Key
+- [x] 11.5 Thêm câu nhắc dùng chức năng cấp lại nếu nghi hộp thư đã bị lộ
+- [x] 11.6 Một thành phần giao diện dùng chung, gắn ở hai lối vào: màn ghép thiết bị và mục Cài đặt
 - [ ] 11.7 Kiểm thử: TC-OWNER-49…51, 100
+- [x] 11.7a Lát Quên Store Key đã hiện thực và kiểm cục bộ trên PostgreSQL với SMTP giả và UI mock. [Phạm vi và bằng chứng local](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-quen-store-key-20261126).
+- [x] 11.7b Kiểm staging một quán từ màn Ghép thiết bị. Hộp thư đăng ký nhận đúng key hiện hành và tab đã ghép tải lại bằng cùng phiên Auth. [Bằng chứng staging](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#staging-quen-store-key-20261126).
+- [x] 11.7c TC-OWNER-49 đạt trên staging cho email đứng tên hai quán. Hai lối vào có cùng lời giải thích. Một yêu cầu từ Cài đặt gửi đúng hai key và giữ phiên Auth, phiên nhân viên của quán đã ghép. [Bằng chứng hai quán](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#tc-owner-49-hai-quan-staging-20261126).
 
 ## 11b. Gửi mã theo loại thao tác
 

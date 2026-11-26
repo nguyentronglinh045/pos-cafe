@@ -1,6 +1,6 @@
 # Ma trận truy vết
 
-Cập nhật ngày 24/11/2026. Ma trận nối yêu cầu với use case và tiêu chí kiểm trong `testplan.md`. Trạng thái thực thi giai đoạn 1 nằm trong hồ sơ T06. Các tiêu chí T08 và ca gỡ ghép bổ sung ngày 24/11 chưa chạy.
+Cập nhật ngày 26/11/2026. Ma trận nối yêu cầu với use case và tiêu chí kiểm trong `testplan.md`. Trạng thái thực thi giai đoạn 1 nằm trong hồ sơ T06. Hàng REQ-OWNER-09 liên kết kết quả Quên Store Key. Ca gỡ ghép TC-OWNER-112 có biên bản staging riêng.
 
 | Requirement | Use case | Test case |
 | --- | --- | --- |
@@ -12,7 +12,7 @@ Cập nhật ngày 24/11/2026. Ma trận nối yêu cầu với use case và ti�
 | REQ-OWNER-06 — F5 bỏ form, giữ mã tra sau Xác nhận | UC-OWNER-01, 02, 03, 04 | TC-OWNER-06, 28, 101, 104, 106, 109, 110 |
 | REQ-OWNER-07 — Quy tắc chung của mã xác nhận | UC-OWNER-01, 02, 09, 10, 11, 12, 13 | TC-OWNER-19, 20, 31, 32, 64, 75, 76, 80, 83, 84, 97, 99, 102, 06, 103, 107, 23, 108 |
 | REQ-OWNER-08 — Thao tác của chủ quán trong Cài đặt | UC-OWNER-09, 11, 12, 13 | TC-OWNER-77, 85, 86, 97 |
-| REQ-OWNER-09 — Quên Store Key | UC-OWNER-08, 09 | TC-OWNER-49, 50, 51, 87, 100 |
+| REQ-OWNER-09 — Quên Store Key | UC-OWNER-08, 09 | TC-OWNER-49, 50, 51, 87, 100. [Phạm vi kiểm local](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-quen-store-key-20261126). [TC-OWNER-49 đạt trên staging](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#tc-owner-49-hai-quan-staging-20261126) |
 | REQ-OWNER-10 — Cấp lại Store Key | UC-OWNER-08, 09 | TC-OWNER-52, 53, 54, 55, 87 |
 | REQ-OWNER-11 — Quên PIN chỉ dành cho chủ quán | UC-OWNER-10 | TC-OWNER-56, 57, 58, 59, 86, 97 |
 | REQ-OWNER-12 — Đổi email chủ | UC-OWNER-11 | TC-OWNER-60, 61, 62, 63, 64, 88, 99 |

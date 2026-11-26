@@ -197,7 +197,7 @@ Cập nhật 2026-11-05. Mã lỗi khai ở `design.md`. Dữ liệu ví dụ d�
 | email | chuỗi | Có | Như UC-OWNER-01 | `owner.a@example.com` |
 
 - **Luồng chính:** 1. Chủ chọn “Quên Store Key?” ở màn ghép thiết bị hoặc mục Cài đặt. Hộp thoại hiển thị lời nhắc “Nhập email chủ quán đã đăng ký để nhận lại Store Key đang dùng. Việc gửi lại không đổi key hay đăng xuất các máy đã ghép.” 2. Nhập email rồi bấm “Gửi key hiện tại qua email”. 3. Hệ thống trả phản hồi chung. 4. Nếu email đứng tên quán, thư chứa danh sách quán và key tới hộp thư.
-- **Luồng thay thế:** 4a. Email không đứng tên quán nào: phản hồi giống hệt, không có thư. 4b. Khi chưa xác nhận key mới đã được lưu (`pending`), thư bỏ qua quán đó. Từ `applied`, thư có thể gửi key mới đang có hiệu lực. Nếu việc thu hồi phiên còn dở, thư nhắc chủ “Việc đổi key vẫn đang hoàn tất. Máy vừa ghép bằng key mới có thể phải ghép lại.” Phản hồi trên màn hình vẫn dùng thông báo chung.
+- **Luồng thay thế:** 4a. Email không đứng tên quán nào: phản hồi giống hệt, không có thư. 4b. Khi chưa xác nhận key mới đã được lưu (`pending`), thư bỏ qua quán đó. Từ `applied`, thư có thể gửi key mới đang có hiệu lực. Trước `session_warning_until = applied_at + access_token_ttl`, thư nhắc chủ “Việc đổi key vẫn đang hoàn tất. Máy vừa ghép bằng key mới có thể phải ghép lại.” `completed` không tắt sớm cảnh báo này. Phản hồi trên màn hình vẫn dùng thông báo chung.
 - **Luồng ngoại lệ:** email sai dạng ⇒ `A_EMAIL_INVALID` "Địa chỉ email không hợp lệ. Vui lòng kiểm tra lại."; quá 3 lần trong một giờ, hoặc hết giới hạn theo địa chỉ mạng và trần toàn dự án: phản hồi vẫn giống hệt, không có thư thêm. Giới hạn theo địa chỉ mạng đếm mọi yêu cầu đúng dạng, trước khi xét giới hạn theo email, kể cả yêu cầu cho email không có quán.
 - **Đầu ra:**
 

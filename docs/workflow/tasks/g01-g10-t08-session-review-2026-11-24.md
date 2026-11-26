@@ -71,3 +71,88 @@ Trên `main@209aecc`, T06 cấp Store Key đầu tiên khi tạo quán, cho sao 
 Các ca trên là kế hoạch kiểm. Giữ thông tin xác thực trong môi trường thử và lưu kết quả đã che bí mật.
 
 **Kiểm tra tài liệu ngày 24/11/2026.** OpenSpec strict và kiểm tra diff đạt. Hai lượt rà độc lập về nghiệp vụ POS và phạm vi phiên Auth đã duyệt bản cuối. TC-OWNER-112 đã bổ sung hai nhánh dọn phiên của adapter. TC-OWNER-52 đã bổ sung điều kiện máy B tự về luồng ghép khi nhận biết mất phiên.
+
+## Hiện thực và kiểm thử Quên Store Key
+
+<a id="kiem-quen-store-key-20261126"></a>
+
+### Lát Quên Store Key ngày 26/11/2026
+
+Linh giao hiện thực gửi lại key hiện hành về email đã đăng ký. Màn Ghép thiết bị và Cài đặt dùng chung hộp thoại, nhập email rồi nhận thông báo chung. Gateway bỏ mọi dữ liệu riêng khỏi phản hồi và không chuyển credential khi nhận `forgotStoreKey`. Worker xử lý yêu cầu đã xếp hàng bằng candidate `owner-store-key-forgot.sql`. Phần UI và backend có flag riêng, mặc định tắt. Ở mốc kiểm local này, luồng chưa bật trên staging.
+
+Hàng chờ gửi theo email hiện hành có một binding cho mỗi quán. Lúc cấp quyền gửi, worker bỏ binding lệch chủ, địa chỉ thư hoặc thế hệ. Quán `pending` không xuất hiện. Từ `applied`, thư có key mới và cảnh báo nếu còn trong cửa sổ TTL, kể cả sau `completed`. Thư ghi tên, địa chỉ hiện hành và key của các quán còn hợp lệ. Luồng không thay Store Key hay gọi Auth. Kết quả gửi `unknown` giữ hàng rào của thư Store Key, không gửi lại tự động và phát cảnh báo bền vững bằng ID để người vận hành đối soát. Intake và thư còn `queued` hết hạn sau 90 phút kể từ khi nhận yêu cầu. Hàng thư có kết quả cuối và binding tương ứng được dọn theo lô sau ba ngày nếu không gắn cảnh báo. Ca SQL xác nhận các mốc dọn và việc giữ rào `unknown`.
+
+Kiểm backend qua handler thật và PostgreSQL 16.15 loopback trong bản sao fixture T08, với SMTP giả. Các ca phủ quyền RPC và bảng riêng, phản hồi thống nhất trước khi tra chủ, nhiều quán kể cả quán tạm ngưng, giới hạn IP/email/dự án dùng chung, `pending` và `applied`, cảnh báo trước và sau TTL, binding cũ sau đổi chủ/email, và mất kết quả SMTP khi đang gửi. Nhánh đổi chủ/email dùng phép thay đổi dữ liệu fixture để kiểm bộ lọc của worker. Thao tác đổi chủ/email của sản phẩm vẫn cần triển khai và kiểm riêng.
+
+Linh duyệt sửa UI Audit sau khi hai trạng thái trên ba viewport báo sáu dương tính giả `zero-size-interactive`. Ảnh và DOM xác định các phần tử được báo có chiều cao 0, nằm cạnh `.MuiDialog-container` và giữ vòng Tab. Bộ đo nhận diện đúng cấu trúc MUI đang render. Selftest bổ sung kiểm hai phần tử giữ focus, một nút thật kích thước 0 và một phần tử gắn marker sai chỗ. Baseline giữ nguyên. Hai trạng thái chạy lại đều exit 0 với tổng 0 phát hiện trên sáu cặp.
+
+| Phép kiểm local | Kết quả |
+| --- | --- |
+| Áp SQL candidate và `node --test tests/contracts/forgotStoreKey.local.test.mjs` | Áp từ bản sao fixture đã có ba candidate rotation. Exit 0 cho SQL và 11 mục Node test, gồm nhóm cha. |
+| Deno `check` Edge và `test` hồi quy T06 | Exit 0. Hồi quy T06 đạt 3 ca và 2 bước con trên DB loopback với Auth/SMTP giả. |
+| Gateway, release-policy, UI Audit runtime và kiểm bằng chứng UI | Exit 0. 94 ca Node đạt. |
+| `npm test -- --maxWorkers=4` và `npm run build` | Exit 0. 119 file, 1.268 ca qua Vitest. TypeScript/Vite build đạt với cảnh báo Vite. |
+| `npm run smoke -- --workers=2 tests/smoke/forgot-store-key.spec.ts tests/smoke/store-key-rotation.spec.ts` | Exit 0. 8 lượt desktop/landscape đạt, 2 portrait bỏ qua theo phạm vi Cài đặt. Có kiểm vòng Tab trong hộp thoại. |
+| `npm run ui-audit:selftest` và hai trạng thái `forgot-store-key-pairing`, `forgot-store-key-settings` | Exit 0. Selftest giữ 23 phát hiện mẫu, 14 quy tắc, 16 phép kiểm vùng bấm và đạt ca MUI bổ sung. Audit local đạt 6/6 cặp. |
+
+Code và test dựa trên `main@a2fa0fa`, manifest `84c3a1488426c7fa5ef8c174275317573ef76e48`. Để chạy lại SQL trên cụm loopback đã dùng, tạo bản sao cô lập của fixture `pos_cafe_t06_contract_t08review`, áp `owner-store-key-forgot.sql` rồi đặt `POS_CAFE_T08_TEST_DSN` tới bản sao có tên bắt đầu bằng `pos_cafe_t06_contract_t08forgot`. Bản vá, manifest và log kiểm được giữ local. Bản vá đã qua `git apply --reverse --check`. OpenSpec strict đạt.
+
+Phép kiểm local dùng SMTP giả. Hai lượt kiểm email và phiên thật trên staging nằm ở các mục bên dưới.
+
+**Hướng dẫn đọc code.** Theo luồng từ `ForgotStoreKeyDialog` qua `createForgotStoreKeyPort`, `api/owner-otp.js` và nhánh `forgotStoreKey` của Edge. Đối chiếu `owner_enqueue_forgot_store_key` với test phản hồi trước tra chủ, và `owner_claim_forgot_key_mail` với các ca binding hết hiệu lực và quota. Chưa có lượt đọc code trực tiếp của Linh được ghi nhận.
+
+**Review lát Quên Store Key.** Hai reviewer AI độc lập cùng `APPROVE` manifest source `84c3a1488426c7fa5ef8c174275317573ef76e48` và diff docs `2da5b3722d159eddfd365282ea9c491b3ed1bd47` trước metadata này. Reviewer an toàn kiểm quyền, quota, mốc lưu dữ liệu, chỉ mục dọn và rào khi SMTP chưa rõ. Reviewer hợp đồng kiểm luồng UI, thư hiện hành, cửa sổ TTL, tranh quyền gửi và phạm vi test. Các phát hiện về intake/queued hết hạn, dọn thư terminal theo lô, pin kiểm phát hành và danh mục UI Audit đã được xử lý. Candidate cuối được kiểm lại với đầy đủ các nhánh này.
+
+<a id="staging-quen-store-key-20261126"></a>
+
+### Triển khai staging Quên Store Key ngày 26/11/2026
+
+Linh giao bật riêng Quên Store Key và kiểm nhận key hiện hành cùng khả năng giữ phiên máy đã ghép trên Chrome profile 24tx và nguyentronglinh045. Linh duyệt mở PR và merge khi đủ review và CI. T08 dùng schema chung với đổi key, cờ đổi key chưa bật. [PR #47](https://github.com/nguyentronglinh045/pos-cafe/pull/47)
+
+- Preflight trong profile 24tx xác nhận đúng Supabase staging, RPC T06, cron `pos-cafe-owner-work` và quán thử #0033 `active`. Hai schema T08 và hai cờ Edge còn vắng trước lượt áp.
+- Áp SQL bốn candidate trong một giao dịch, SHA-256 `5e28b77731a559f9425e0053beb9e11b0c6f70a48fba2bb796e76d4793841873`. SQL Editor xác nhận thành công. Hậu kiểm thấy schema, hai chỉ mục mail cần thiết, quyền chỉ `service_role` đối với RPC kiểm, và chưa có lượt quên key.
+- Deploy hàm `owner-provisioning` với hai cờ còn vắng. Các tệp `index.ts`, `handler.ts` và `rotation.ts` đọc lại khớp source `4e81a78` sau chuẩn hóa xuống dòng. Hai tệp phụ trợ khớp nguồn trước khi deploy. Hành động đọc trạng thái T06 trả HTTP 200 `not_accepted` với mã thử chưa dùng đã cũ. Edge ghi POST 200 ở nhịp worker 10:33:02 sau khi deploy.
+- Chỉ đặt `POS_CAFE_FORGOT_STORE_KEY_ENABLED=1`. Cờ TTL của đổi key tiếp tục vắng. Sau khi đặt cờ, Edge ghi POST 200 ở nhịp 10:36:03. Receipt này xác nhận backend và worker, chưa xác nhận thư thật.
+- Rà phát hành trước commit `4e81a78` phát hiện request cần giữ cookie bảo vệ Vercel và runbook cần kiểm rõ trình tự bật cờ. Bản đã sửa giữ cookie same-origin ở phía browser, bỏ credential trong request chuyển tiếp ở gateway, kiểm backend theo thứ tự cờ tắt, SQL, Edge, worker, cờ Quên Store Key, Preview. Hai reviewer duyệt `4e81a78`.
+- CI của `4e81a78` qua các pha sớm và dừng ở smoke do hai ca portrait mới được skip ngoài danh sách 37 ca cho phép. Bản `787e48d` kiểm lối vào Ghép thiết bị ở portrait và hướng dẫn xoay máy, rồi chạy các bước Cài đặt ở landscape. Không đổi danh sách skip. Chromium kiểm 10/10 lượt, hai reviewer duyệt commit này. Chờ CI chính thức trên PR và trên `main`.
+
+Smoke local trên `787e48d` đạt 69 lượt, 37 lượt bỏ qua theo danh sách trước đó, 0 lỗi và 0 lượt không ổn định. UI Audit toàn bộ đạt 69 cặp trạng thái và viewport, 0 phát hiện. OpenSpec strict đạt.
+
+CI của PR và push nhánh trên đúng head `787e48d` đều đạt. PR #47 merge thành `e3021ef`, có cùng Git tree đã rà `1aa061ae`. Tại mốc merge, push CI `45751813514`, attempt 1, đang chạy trên chính commit `main` này. Phép kiểm hành vi dùng Protected Preview của `e3021ef` sau khi CI và workflow deploy đạt.
+
+Push CI `45751813514` attempt 1 qua smoke và dừng ở UI Audit với `COMMAND_FAILED`, `REPORT_MISSING`, `RESULT_INVALID`. Pha mất khoảng 339 giây, gồm ca PIN riêng và lượt toàn ma trận có giới hạn 330 giây. Dấu hiệu phù hợp với việc tiến trình chạm giới hạn, log công khai không xác nhận nguyên nhân. Đã chạy lại trên đúng commit `main`, giữ gate và phạm vi kiểm.
+
+Push CI attempt 2 đạt trên đúng `e3021ef`. Workflow `45755385135` qua bước duyệt của môi trường `Preview` và xác nhận Vercel `READY` ở chế độ Supabase staging, auth readiness và permission contract đều đạt. Đối chiếu sau deploy xác nhận định tuyến production và cấu hình bảo vệ Preview giữ nguyên. [CI của main](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45751813514/attempts/2) · [Workflow Preview](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45755385135)
+
+Linh chỉ định dùng Chrome 24tx có quyền truy cập Protected Preview. Phép kiểm một quán dùng hai tab của profile này.
+
+#### Phép kiểm staging một quán từ màn Ghép thiết bị
+
+- Quán thử #0033 ở thế hệ key `0` và có 0 bản ghi phiên Auth trước khi ghép. Đối chiếu email đăng ký của quán với hộp thư 24tx. Ghép một tab bằng key từ thư gốc và thấy màn chọn nhân viên. Đọc lại Supabase được đúng một phiên Auth và chưa có thư `forgot_store_key` cho quán.
+- Giữ tab đã ghép, gửi đúng một yêu cầu từ hộp thoại Ghép thiết bị ở tab còn lại. UI trả lời chung “Nếu email này đứng tên quán, thư chứa Store Key đã được gửi.” Gmail nhận một thư mới tại địa chỉ đăng ký. Giá trị key đầy đủ trong DOM khớp từng ký tự với key từ thư gốc đã ghép thành công, gồm cả số quán. Hậu kiểm có một thư `submitted` với binding đúng thế hệ.
+- Tải lại tab đã ghép sau khi nhận thư. Ứng dụng mở màn chọn nhân viên và tải danh sách nhân viên của #0033 mà không yêu cầu ghép lại. Đối chiếu cùng định danh phiên Auth trước và sau qua dấu vân tay tính trong DB. Số phiên là 1 và thế hệ key là `0` ở cả hai mốc. Hồ sơ chỉ lưu kết quả so khớp.
+
+Lượt #0033 kiểm một phần TC-OWNER-49 trên Preview `e3021ef`, tới màn chọn nhân viên. Lượt hai quán bên dưới bổ sung lối Cài đặt và phép kiểm POS sau khi đăng nhập Chủ quán. Các ca UI Đổi Store Key 12.9 giữ trạng thái hiện tại.
+
+Hai reviewer AI độc lập duyệt phần bằng chứng staging và cập nhật OpenSpec ở phạm vi 11.7b. OpenSpec strict đạt.
+
+#### Chuẩn bị ca một email đứng tên hai quán ngày 26/11/2026
+
+Linh chỉ định dùng email chính của 24tx và cho phép đọc mã kiểm thử trong Gmail trên Chrome 24tx. Truy vấn staging trước lượt tạo xác nhận email chính đứng tên 0 quán. Tạo dữ liệu thử bằng luồng T06 trên một Protected Preview khác cùng Supabase staging để giữ phiên #0033 trên bản Preview nghiệm thu.
+
+Linh nhập PIN thử và gửi mã lần lượt cho A và B. Codex xác nhận A qua Gmail 24tx. Với B, màn xác minh đã cho phép gửi lại và chưa thấy thư khớp lượt hiện tại, nên Codex gửi lại một mã rồi dùng thư mới để xác minh. Biên nhận tạo quán và thư ban đầu khớp key cho #0034 và #0035. Supabase xác nhận cả hai quán `active`, thế hệ key `0` và cùng đứng tên email chính 24tx.
+
+Trên Preview nghiệm thu `e3021ef`, Codex gỡ ghép phiên thử #0033 của Chrome 24tx sau khi phép kiểm trước đã xong. Hộp thoại ở lối Ghép thiết bị giải thích gửi key đang dùng về email đăng ký và giữ phiên đã ghép. Codex đóng hộp thoại mà chưa gửi, ghép quán A #0034 bằng key từ thư gốc và mở bước PIN Chủ quán.
+
+<a id="tc-owner-49-hai-quan-staging-20261126"></a>
+
+#### TC-OWNER-49 hai quán từ Cài đặt
+
+- Linh giao Codex đăng nhập bằng PIN thử đã cung cấp và ưu tiên phát hiện lỗi trong phạm vi ca hiện tại. Codex mở được Báo cáo từ phiên Chủ quán của #0034. Trước khi gửi, Supabase ghi nhận một phiên Auth, một phiên nhân viên còn hiệu lực, hai quán ở thế hệ key `0` và chưa có thư Quên Store Key cho email chính của 24tx.
+- Hộp thoại **Cài đặt → Quên Store Key** có cùng lời giải thích và nút gửi như lối Ghép thiết bị. Gửi đúng một yêu cầu, nhận phản hồi chung. Đóng hộp thoại trở lại Cài đặt và phiên Chủ quán vẫn mở. Supabase ghi một thư `submitted` có hai binding `34:0` và `35:0`.
+- Gmail nhận đúng một thư mới gửi đến địa chỉ chính đã đăng ký, xác nhận trong chi tiết người nhận. Mở đầy đủ thư và đối chiếu qua DOM. Hai mục đúng tên, địa chỉ và từng ký tự của key gốc tương ứng #0034, #0035. Gmail rút gọn phần quán B trong hội thoại cùng tiêu đề. Nút **Hiển thị nội dung bị rút gọn** hiển thị phần còn lại.
+- Sau khi nhận thư, mở lại Báo cáo và chọn **7 ngày** bằng chính phiên POS đang mở. Không cần nhập lại PIN hoặc ghép lại. Supabase xác nhận dấu vân tay phiên Auth và phiên nhân viên của #0034 trùng trước/sau, cả hai quán vẫn ở thế hệ key `0`.
+
+TC-OWNER-49 đạt trên Protected Preview `e3021ef` bằng Chrome 24tx. Không ghi PIN, OTP, key, địa chỉ email, mã phiên hay dấu vân tay vào hồ sơ. TC-OWNER-50, 51, 100 và UI Đổi Store Key 12.9 không thuộc lượt chạy này.
+
+Hai reviewer AI độc lập duyệt bằng chứng và cập nhật OpenSpec ở phạm vi 11.7c. OpenSpec strict đạt.

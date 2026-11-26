@@ -203,6 +203,14 @@ Ví dụ: chủ vừa nhận mã quên PIN vẫn nhận được mã chuyển qu
 
 Thời gian chờ tính theo email và loại thao tác, không theo quán. Vì vậy tạo đủ 5 quán mất ít nhất 40 phút, và chủ nhiều quán làm cùng một loại thao tác ở hai quán phải cách nhau 10 phút. Ngoại lệ là mã reset: không có thời gian chờ và không có giới hạn theo email, gửi mã mới thì mã trước bị hủy, kể cả mã reset của quán khác cùng chủ (quyết định 43).
 
+### Hiện thực nhận và gửi thư Quên Store Key
+
+`forgotStoreKey` nhận email chuẩn hóa qua gateway ký địa chỉ mạng và SHA-256 của body. RPC intake dùng chung khóa IP với lượt phát OTP tạo quán và đổi key. Nó giữ hàng yêu cầu riêng tư có email chờ xử lý và mốc nhận để đếm IP trong một giờ. RPC trả cùng kết quả dù còn slot hay hết slot. Edge và gateway cùng trả HTTP 202 với `{ "ok": true }` cho yêu cầu đã tiếp nhận hợp lệ. Chỉ worker có chữ ký mới tra chủ, tạo thư và đọc các bản mã. Sau khi lấy hàng chờ, worker bỏ email khỏi ledger IP trong cùng giao dịch. Yêu cầu chưa xử lý và thư `queued` hết hạn sau 90 phút kể từ lúc nhận ban đầu. Nếu worker gián đoạn lâu hơn mốc này thì chủ gửi yêu cầu mới sau khi dịch vụ hoạt động lại.
+
+Worker lưu một thư với binding cho từng quán thuộc email hiện hành. Lượt `pending` loại quán đó. Claim đồng thời cấp quyền gửi dưới khóa quán theo thứ tự ID, khóa hàng thư rồi khóa quota. Cùng giao dịch, worker kiểm lại owner/email, generation, trạng thái rotation và mốc cảnh báo. Binding lệch bị loại, các binding còn hợp lệ vẫn được gửi. Bản mã chỉ đi ra cho worker sau khi claim. Key gốc dùng ID operation tạo quán làm dữ liệu xác thực AES-GCM. Key đã đổi dùng ID quán và attempt đã nhận. Tên và địa chỉ lấy từ cài đặt hiện hành. Thư chỉ gửi về email đã đăng ký, gồm các quán đang tạm ngưng nếu binding còn hợp lệ.
+
+Khi cấp quyền gửi, hàng `sending` giữ một slot trong giới hạn ba thư mỗi email mỗi giờ và 400 lượt của dự án theo ngày Việt Nam, dùng chung với OTP. `submitted` giữ slot, kết quả xác định không gửi trả slot. `unknown` giữ slot vì SMTP có thể đã nhận thư, tiếp tục giữ hàng rào của thư Store Key và ghi cảnh báo chỉ có ID. Worker không tự gửi lại hàng `unknown`. Sau ba ngày, tác vụ dọn xóa theo lô thư quên key đã có kết quả cuối và binding của chúng. Nó giữ các hàng có cảnh báo, `sending` và `unknown` để đối soát hoặc tiếp tục giữ rào. Cờ `POS_CAFE_FORGOT_STORE_KEY_ENABLED` và `VITE_FORGOT_STORE_KEY` mặc định tắt. Khi phát hành, áp candidate sau SQL rotation rồi mới bật backend và UI.
+
 ### Mỗi mã gắn với gì
 
 | Loại thao tác | Gắn với | Gửi tới |
