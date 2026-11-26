@@ -4,6 +4,8 @@ import { isIP } from "node:net";
 const stagingProject = "ineckiashpwloncxnbqx";
 const stagingUrl = `https://${stagingProject}.supabase.co`;
 const publishableKey = /^sb_publishable_[A-Za-z0-9_-]{16,256}(?![\s\S])/;
+const receiptId = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const forgotReceiptHeader = "x-pos-cafe-forgot-receipt";
 
 export function publicDemoClientKey(env) {
   if (env.VERCEL !== "1" || env.VERCEL_ENV !== "production" || env.VERCEL_TARGET_ENV !== "production"
@@ -34,11 +36,18 @@ export function ownerOtpGateway({ env = process.env, fetchImpl = fetch, clock = 
       return response.status(400).json({ ok: false, code: "A_REQUEST_INVALID" });
     }
     if (!input || typeof input !== "object" || Array.isArray(input) ||
-      !["requestCreateStoreOtp", "requestRotateStoreKeyOtp", "forgotStoreKey"].includes(input.action)) {
+      !["requestCreateStoreOtp", "requestRotateStoreKeyOtp", "forgotStoreKey", "confirmForgotStoreKeyReceipt"].includes(input.action)) {
       return response.status(400).json({ ok: false, code: "A_REQUEST_INVALID" });
     }
     const rotation = input.action === "requestRotateStoreKeyOtp";
     const forgot = input.action === "forgotStoreKey";
+    const confirmForgot = input.action === "confirmForgotStoreKeyReceipt";
+    if (forgot && input.receiptProtocol !== 1) {
+      return response.status(503).json({ ok: false, code: "A_SEND_UNAVAILABLE" });
+    }
+    if (confirmForgot && (typeof input.receipt !== "string" || !receiptId.test(input.receipt))) {
+      return response.status(400).json({ ok: false, code: "A_REQUEST_INVALID" });
+    }
     const authorization = request.headers.authorization;
     const employeeToken = request.headers["x-pos-employee-token"];
     if (rotation && (typeof authorization !== "string" || authorization.length > 4103
@@ -48,14 +57,16 @@ export function ownerOtpGateway({ env = process.env, fetchImpl = fetch, clock = 
     if (rotation && (typeof employeeToken !== "string" || !/^[A-Za-z0-9_-]{43}$/.test(employeeToken))) {
       return response.status(401).json({ ok: false, code: "EMPLOYEE_SESSION_REQUIRED" });
     }
-    const raw = JSON.stringify(input);
-    if (Buffer.byteLength(raw) > 8192) return response.status(400).json({ ok: false, code: "A_REQUEST_INVALID" });
+    const inputJson = JSON.stringify(input);
+    if (Buffer.byteLength(inputJson) > 8192) return response.status(400).json({ ok: false, code: "A_REQUEST_INVALID" });
+    const raw = forgot ? JSON.stringify({ action: "prepareForgotStoreKey", email: input.email })
+      : confirmForgot ? JSON.stringify({ action: input.action, receipt: input.receipt }) : inputJson;
 
     const ip = request.headers["x-vercel-forwarded-for"];
     const demoKey = publicDemoClientKey(env);
     const key = Buffer.from((demoKey ? env.POS_PUBLIC_DEMO_OTP_INGRESS_KEY : env.POS_CAFE_OTP_INGRESS_KEY) ?? "", "base64");
     const apiKey = demoKey ?? env.POS_CAFE_OWNER_SUPABASE_PUBLISHABLE_KEY ?? "";
-    if ((forgot && demoKey) || (!demoKey && (env.VERCEL !== "1" || env.VERCEL_ENV !== "preview" || env.VERCEL_TARGET_ENV !== "preview"
+    if (((forgot || confirmForgot) && demoKey) || (!demoKey && (env.VERCEL !== "1" || env.VERCEL_ENV !== "preview" || env.VERCEL_TARGET_ENV !== "preview"
       || env.POS_PREVIEW_DATA_MODE !== "supabase"
       || env.POS_PREVIEW_SUPABASE_URL !== stagingUrl || env.POS_CAFE_OWNER_SUPABASE_PROJECT_REF !== stagingProject
       || !publishableKey.test(apiKey) || apiKey !== env.POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY))
@@ -76,8 +87,15 @@ export function ownerOtpGateway({ env = process.env, fetchImpl = fetch, clock = 
         },
       });
       const result = await reply.json();
-      if (forgot) {
-        if (reply.status === 202 && result?.ok === true) return response.status(202).json({ ok: true });
+      if (forgot || confirmForgot) {
+        if (reply.status === 202 && result?.ok === true) {
+          if (forgot) {
+            const receipt = reply.headers.get(forgotReceiptHeader);
+            if (!receipt || !receiptId.test(receipt)) return response.status(503).json({ ok: false, code: "A_SEND_UNAVAILABLE" });
+            response.setHeader(forgotReceiptHeader, receipt);
+          }
+          return response.status(202).json({ ok: true });
+        }
         if (reply.status === 400 && result?.ok === false && ["A_EMAIL_INVALID", "A_REQUEST_INVALID"].includes(result.code)) {
           return response.status(400).json({ ok: false, code: result.code });
         }

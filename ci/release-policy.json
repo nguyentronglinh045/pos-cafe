@@ -72,7 +72,7 @@
     "scripts/permission-t04-image-browser.mjs": "cbd0d983d5ff46ad49dd60d14aca16d9e0efc1513fde4c73dfb9b44e87ddaa03",
     "scripts/permission-t04-image-browser.test.mjs": "a11c2ce46661341d9aed9214eccbfe161a50a237895b7820d94e6ceeccc9c785",
     "scripts/permission-t04-image-browser-control.mjs": "84f55a9a882f11bca1032f610366f6636993445c65b3dec8559731e0caa5121d",
-    "api/owner-otp.js": "856d607369ee8f6092b611490d637e56cea1279e170e67344e3071be61a784fa",
+    "api/owner-otp.js": "bb217291a31f59be6fc2f56f3852b63b9f7186a2f024c92c0c9c8da3676a79ec",
     "scripts/project-public-demo.mjs": "5b88b3afb7b6dcdc065e3c02952a28a9c7f9511283ea8fbeb71312df7a808b1c",
     ".github/workflows/frontend-release.yml": "012d5d93ae0bf23bdcfc90d253974e312db39e4157000c85d0b3bdca666cdfa9"
   },

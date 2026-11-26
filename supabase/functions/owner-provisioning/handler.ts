@@ -440,6 +440,8 @@ export function makeOwnerHandler(deps: OwnerDependencies) {
     } catch {
       return error("A_REQUEST_INVALID");
     }
+    const prepareForgot = input.action === "prepareForgotStoreKey";
+    const confirmForgot = input.action === "confirmForgotStoreKeyReceipt";
     try {
       if (input.action === "processOwnerWork") {
         const time = request.headers.get("x-pos-cafe-time") ?? "";
@@ -471,14 +473,24 @@ export function makeOwnerHandler(deps: OwnerDependencies) {
         return response({ ok: true });
       }
 
-      if (input.action === "forgotStoreKey") {
-        if (Object.keys(input).some((field) => field !== "action" && field !== "email")) return error("A_REQUEST_INVALID");
-        const email = emailOf(input.email);
-        if (!email) return error("A_EMAIL_INVALID");
+      if (input.action === "forgotStoreKey") return error("A_SEND_UNAVAILABLE");
+      if (prepareForgot || confirmForgot) {
+        const field = prepareForgot ? "email" : "receipt";
+        if (Object.keys(input).some((key) => key !== "action" && key !== field)) return error("A_REQUEST_INVALID");
+        const email = prepareForgot ? emailOf(input.email) : null;
+        if (prepareForgot && !email) return error("A_EMAIL_INVALID");
+        if (confirmForgot && (typeof input.receipt !== "string" || !uuid4.test(input.receipt))) return error("A_REQUEST_INVALID");
         const ip = deps.forgotStoreKey && deps.storeEncryptionKey ? await verifyIngress(request, raw, deps) : null;
         if (!ip) return error("A_SEND_UNAVAILABLE");
-        await deps.rpc("owner_enqueue_forgot_store_key", { p_email: email, p_source_ip: ip });
-        return response({ ok: true }, 202);
+        const accepted = response({ ok: true }, 202);
+        if (prepareForgot) {
+          const receipt = crypto.randomUUID();
+          await deps.rpc("owner_enqueue_forgot_store_key", { p_email: email, p_source_ip: ip, p_receipt_id: receipt });
+          accepted.headers.set("x-pos-cafe-forgot-receipt", receipt);
+        } else {
+          await deps.rpc("owner_confirm_forgot_store_key_receipt", { p_receipt_id: input.receipt });
+        }
+        return accepted;
       }
 
       if (input.action === "requestRotateStoreKeyOtp" || input.action === "verifyAndRotateStoreKey") {
@@ -547,7 +559,7 @@ export function makeOwnerHandler(deps: OwnerDependencies) {
         ? response({ status: result.status }, result.status === "accepted" ? 202 : 200)
         : dbError(result, "CREATE_VERIFY_UNAVAILABLE");
     } catch {
-      return error(input.action === "requestCreateStoreOtp" || input.action === "requestRotateStoreKeyOtp" || input.action === "forgotStoreKey"
+      return error(input.action === "requestCreateStoreOtp" || input.action === "requestRotateStoreKeyOtp" || prepareForgot || confirmForgot
         ? "A_SEND_UNAVAILABLE" : "CREATE_VERIFY_UNAVAILABLE");
     }
   };

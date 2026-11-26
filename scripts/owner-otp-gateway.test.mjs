@@ -94,17 +94,23 @@ test("OTP gateway refuses to trust general forwarding headers and does not act o
   }
 });
 
-test("forgot key uses signed ingress without credentials and removes all upstream result details", async () => {
-  const input = { action: "forgotStoreKey", email: "fixture@invalid.test" };
+test("forgot key forwards only the signed recovery fields and returns a generic receipt", async () => {
+  const input = { action: "forgotStoreKey", email: "fixture@invalid.test", receiptProtocol: 1 };
+  const receipt = "98765432-1234-4234-8234-987654321098";
+  const confirm = { action: "confirmForgotStoreKeyReceipt", receipt };
   const ip = "192.0.2.45";
   const handler = ownerOtpGateway({ env, clock, async fetchImpl(_url, init) {
-    assert.deepEqual(JSON.parse(init.body), input);
+    const forwarded = JSON.parse(init.body);
+    const preparing = forwarded.action === "prepareForgotStoreKey";
+    assert.deepEqual(forwarded, preparing ? { action: "prepareForgotStoreKey", email: input.email } : confirm);
     assert.equal(init.headers.authorization, undefined);
     assert.equal(init.headers["x-pos-employee-token"], undefined);
     const digest = createHash("sha256").update(init.body).digest("hex");
     assert.equal(init.headers["x-pos-cafe-signature"], createHmac("sha256", key)
       .update(`pos-cafe-otp-v1\n${clock()}\n${ip}\n${digest}`).digest("hex"));
-    return Response.json({ ok: true, address: "fixture", email: input.email, receipt: { storeKey: "fixture" } }, { status: 202 });
+    return Response.json({ ok: true, address: "fixture", email: input.email, receipt: { storeKey: "fixture" } }, {
+      status: 202, headers: { "x-pos-cafe-forgot-receipt": receipt },
+    });
   } });
   const headers = { "x-vercel-forwarded-for": ip, authorization: "Bearer test.claim.signature", "x-pos-employee-token": "e".repeat(43) };
   const result = response();
@@ -112,14 +118,39 @@ test("forgot key uses signed ingress without credentials and removes all upstrea
   assert.equal(result.statusCode, 202);
   assert.deepEqual(result.data, { ok: true });
   assert.equal(result.headers["Cache-Control"], "no-store");
+  assert.equal(result.headers["x-pos-cafe-forgot-receipt"], receipt);
+  const confirmed = response();
+  await handler({ method: "POST", body: { ...confirm, email: "must-not-forward@invalid.test" }, headers }, confirmed);
+  assert.equal(confirmed.statusCode, 202);
+  assert.deepEqual(confirmed.data, { ok: true });
+  assert.equal(confirmed.headers["x-pos-cafe-forgot-receipt"], undefined);
   const sha = "a".repeat(40);
   const demo = ownerOtpGateway({ env: { VERCEL: "1", VERCEL_ENV: "production", VERCEL_TARGET_ENV: "production",
     VERCEL_GIT_COMMIT_REF: "main", VERCEL_GIT_COMMIT_SHA: sha, POS_PUBLIC_DEMO_SHA: sha,
     POS_PUBLIC_DEMO_CLIENT_KEY: publishableKey, POS_PUBLIC_DEMO_OTP_INGRESS_KEY: key.toString("base64") },
   clock, fetchImpl() { assert.fail("Public demo must not forward forgotten-key requests"); } });
-  const refused = response();
-  await demo({ method: "POST", body: input, headers }, refused);
-  assert.equal(refused.statusCode, 503);
+  for (const body of [input, confirm]) {
+    const refused = response();
+    await demo({ method: "POST", body, headers }, refused);
+    assert.equal(refused.statusCode, 503);
+  }
+});
+
+test("forgot key rejects an obsolete client and downstream success without a receipt", async () => {
+  const headers = { "x-vercel-forwarded-for": "192.0.2.45" };
+  const input = { action: "forgotStoreKey", email: "fixture@invalid.test" };
+  let forwarded = 0;
+  const gateway = ownerOtpGateway({ env, clock, async fetchImpl() {
+    forwarded++;
+    return Response.json({ ok: true }, { status: 202 });
+  } });
+  for (const body of [input, { ...input, receiptProtocol: 1 }]) {
+    const result = response();
+    await gateway({ method: "POST", body, headers }, result);
+    assert.equal(result.statusCode, 503);
+    assert.deepEqual(result.data, { ok: false, code: "A_SEND_UNAVAILABLE" });
+  }
+  assert.equal(forwarded, 1);
 });
 
 test("rotation OTP forwards both credentials and never emits the registered email", async () => {

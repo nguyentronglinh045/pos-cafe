@@ -76,7 +76,7 @@ export const createAppPorts = (env: RuntimePortEnv = {}): AppPorts => {
     },
     write: runtime.write,
     auth: recovery?.auth ?? runtime.auth,
-    ...(recovery ? { ownerRecovery: recovery.port, forgotStoreKey: { request: async () => "accepted" } } : {}),
+    ...(recovery ? { ownerRecovery: recovery.port, forgotStoreKey: { request: async () => ({ kind: "accepted" as const }) } } : {}),
     ...(env.mode === "mock" && env.ownerCreateMock ? { storeProvisioning: mockOwnerOtpPort } : {}),
     seed: runtime.seed,
     print: runtime.legacyPrint,
