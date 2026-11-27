@@ -76,7 +76,7 @@ function checkRejectedRefresh(reply) {
     && refreshDenials.has(reply.body?.error_code), "Revoked session refresh was not rejected as expected.");
 }
 
-async function exercise(kind, before) {
+async function createFixture() {
   const email = "t08-" + randomBytes(8).toString("hex") + "@example.test";
   const previous = randomBytes(20).toString("hex");
   const current = randomBytes(20).toString("hex");
@@ -84,19 +84,25 @@ async function exercise(kind, before) {
   check(created.status === 200 && /^[0-9a-f-]{36}$/i.test(created.body?.id),
     "Fixture creation failed (HTTP " + created.status + ").");
   const login = (password) => request("/token?grant_type=password", { email, password });
+  const update = () => request("/admin/users/" + created.body.id, { password: current }, { method: "PUT", admin: true });
+  return { previous, current, login, update };
+}
+
+async function exercise(kind, before) {
+  const { previous, current, login, update } = await createFixture();
   const first = await login(previous);
   const second = await login(previous);
   const earlier = [claim(first), claim(second)];
   check(earlier[0].session_id !== earlier[1].session_id, "Baseline sessions are not independent.");
   const perform = kind === "password grant" ? () => login(previous) : () => refresh(first.body.refresh_token);
-  const oldTokens = [first.body.refresh_token, second.body.refresh_token];
+  let priorResultToken;
   if (before) {
     const prior = await perform();
     earlier.push(claim(prior));
-    oldTokens.push(prior.body.refresh_token);
+    priorResultToken = prior.body.refresh_token;
   }
-  const update = await request("/admin/users/" + created.body.id, { password: current }, { method: "PUT", admin: true });
-  check(update.status === 200, "Admin password update failed (HTTP " + update.status + ").");
+  const updated = await update();
+  check(updated.status === 200, "Admin password update failed (HTTP " + updated.status + ").");
   const rotationCompleted = Math.floor(Date.now() / 1000);
   if (!before) {
     const later = await perform();
@@ -107,6 +113,7 @@ async function exercise(kind, before) {
       checkRejectedRefresh(later);
     }
   }
+  const oldTokens = [priorResultToken, second.body.refresh_token, first.body.refresh_token].filter(Boolean);
   for (const token of new Set(oldTokens)) checkRejectedRefresh(await refresh(token));
   await delay(1100);
   const fresh = await login(current);
@@ -120,6 +127,42 @@ async function exercise(kind, before) {
     && renewedClaim.exp > freshClaim.exp && renewed.body.refresh_token !== fresh.body.refresh_token,
   "Refresh did not advance the new session as expected.");
   console.log("PASS sequential HTTP: " + kind + " " + (before ? "before" : "after") + " update; TTL " + ttl);
+}
+
+async function exerciseOverlappingRefresh() {
+  const { previous, current, login, update } = await createFixture();
+  const prior = await Promise.all([login(previous), login(previous)]);
+  const priorClaims = prior.map(claim);
+  check(priorClaims[0].session_id !== priorClaims[1].session_id, "Baseline sessions are not independent.");
+
+  const [first, second, updated] = await Promise.all([
+    refresh(prior[0].body.refresh_token),
+    refresh(prior[1].body.refresh_token),
+    update(),
+  ]);
+  check(updated.status === 200, "Admin password update failed during concurrent HTTP submission.");
+  const baselineTokens = prior.map((reply) => reply.body.refresh_token);
+  const latestTokens = [...baselineTokens];
+  const outcomes = [first, second].map((reply, index) => {
+    if (reply.status !== 200) {
+      checkRejectedRefresh(reply);
+      return "denied";
+    }
+    check(claim(reply).session_id === priorClaims[index].session_id,
+      "An overlapping refresh changed its session identity.");
+    latestTokens[index] = reply.body.refresh_token;
+    return "token returned, later denied";
+  });
+  // Probe newest tokens first so retrying a superseded token cannot affect this check.
+  for (const token of new Set([...latestTokens, ...baselineTokens])) checkRejectedRefresh(await refresh(token));
+
+  const fresh = await login(current);
+  const freshClaim = claim(fresh);
+  check(priorClaims.every((entry) => entry.session_id !== freshClaim.session_id),
+    "Current password reused a revoked session.");
+  check(claim(await refresh(fresh.body.refresh_token)).session_id === freshClaim.session_id,
+    "The new session could not renew.");
+  console.log("PASS concurrent HTTP refresh and Admin submission: " + outcomes.join(", "));
 }
 
 const migration = spawnSync(binary, ["migrate"], { env: authEnv, stdio: "ignore", timeout: 60_000 });
@@ -144,6 +187,12 @@ try {
         process.exitCode = 1;
       }
     }
+  }
+  try {
+    await exerciseOverlappingRefresh();
+  } catch (error) {
+    console.error("FAIL concurrent HTTP refresh and Admin submission: " + error.message);
+    process.exitCode = 1;
   }
 } finally {
   service.kill("SIGTERM");
