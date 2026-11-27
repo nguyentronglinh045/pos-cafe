@@ -44,10 +44,17 @@ jobs:
           binary="$(find "$auth_dir" -type f -name auth -print -quit)"
           test -n "$binary" && test -x "$binary"
           printf 'T08_AUTH_BIN=%s\n' "$binary" >> "$GITHUB_ENV"
-          docker exec "$POSTGRES_CONTAINER" psql -X -v ON_ERROR_STOP=1 -U postgres -d t08_auth_contract -c 'create schema auth'
+          docker exec "$POSTGRES_CONTAINER" psql -X -v ON_ERROR_STOP=1 -U postgres -d t08_auth_contract \
+            -c 'create schema auth; create schema private; create role anon; create role authenticated; create role service_role; create role authenticator;'
+          docker exec -i "$POSTGRES_CONTAINER" psql -X -v ON_ERROR_STOP=1 -U postgres -d t08_auth_contract \
+            < "$GITHUB_WORKSPACE/supabase/candidate/permission-compatibility-prepare.sql"
+          docker exec "$POSTGRES_CONTAINER" psql -X -v ON_ERROR_STOP=1 -U postgres -d t08_auth_contract \
+            -c 'update private.permission_contract_gate set strict=true where singleton;'
       - name: Install the Edge Auth SDK in runner temp
         run: >-
           npm install --prefix "$RUNNER_TEMP/t08-auth-sdk" --cache "$RUNNER_TEMP/t08-auth-npm-cache"
           --no-save --ignore-scripts --no-audit --no-fund @supabase/supabase-js@2.45.0
       - name: Verify TC-OWNER-55 against Auth v2.198.0
+        env:
+          T08_AUTH_POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
         run: node --experimental-transform-types tests/contracts/t08-auth-order.ci.mjs --tc-owner-55

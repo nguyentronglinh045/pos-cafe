@@ -183,8 +183,9 @@ try {
   }
   check(healthy, "Auth service is unhealthy.");
   if (process.argv.includes("--tc-owner-55")) {
-    await exerciseRotationAuthProbe({ origin, ttl, adminToken, anonToken: roleToken("anon"),
-      request, claim, refresh, checkRejectedRefresh });
+    const deps = { origin, ttl, adminToken, anonToken: roleToken("anon"), request, claim, refresh, checkRejectedRefresh };
+    await exerciseRotationAuthProbe(deps);
+    await exerciseRotationAuthProbe({ ...deps, strictContract: true });
   } else {
     for (const kind of ["password grant", "refresh"]) {
       for (const before of [true, false]) {

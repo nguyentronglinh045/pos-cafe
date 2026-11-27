@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import { createHmac, randomBytes, randomUUID } from "node:crypto";
 import { once } from "node:events";
 import { createServer } from "node:http";
@@ -10,8 +11,30 @@ function check(condition, message) {
   if (!condition) throw new Error(message);
 }
 
+function permissionStatus(header = "") {
+  const container = process.env.T08_AUTH_POSTGRES_CONTAINER;
+  check(/^[a-f0-9]{64}$/.test(container ?? ""), "Missing designated PostgreSQL fixture container.");
+  const result = spawnSync("docker", ["exec", "-i", container, "psql", "-XqAt", "-U", "postgres",
+    "-d", "t08_auth_contract", "--set=ON_ERROR_STOP=1", "--set=VERBOSITY=verbose", "--set=marker=" + header, "-f", "-"], {
+    encoding: "utf8", timeout: 5_000, input: `
+      begin;
+      set local role authenticated;
+      select set_config('request.jwt.claims', '{"role":"authenticated"}', true);
+      select set_config('request.path', '/rpc/permission_get_store_session', true);
+      select set_config('request.headers', case when :'marker' = '' then '{}'::jsonb
+        else jsonb_build_object('x-pos-permission-contract', :'marker') end::text, true);
+      select public.permission_contract_pre_request();
+      rollback;
+    `,
+  });
+  if (result.status === 0) return 200;
+  check(result.status === 3 && /PGRST:.*WRITE_PROTOCOL_UNSUPPORTED/.test(result.stderr)
+    && /"status":\s*426/.test(result.stderr), "Unexpected PostgreSQL permission hook result.");
+  return 426;
+}
+
 export async function exerciseRotationAuthProbe({ origin, ttl, adminToken, anonToken, request, claim,
-  refresh, checkRejectedRefresh }) {
+  refresh, checkRejectedRefresh, strictContract = false }) {
   const storeNo = 20000 + randomBytes(2).readUInt16BE();
   const email = `store${storeNo}@store.pos.local`;
   const previous = randomBytes(16).toString("hex").toUpperCase();
@@ -39,10 +62,15 @@ export async function exerciseRotationAuthProbe({ origin, ttl, adminToken, anonT
   let probe;
   let bridgeError;
 
-  function rpc(name, args, bearer) {
+  function rpc(name, args, bearer, contract) {
     if (name === "permission_get_store_session") {
       check(probe && bearer === `Bearer ${probe.body.access_token}`, "Lookup did not use the probe session.");
       calls.push("lookup");
+      if (strictContract) {
+        check(contract === undefined && permissionStatus(contract) === 426,
+          "Expected the strict hook to reject the Edge request without a contract header.");
+        return { code: "WRITE_PROTOCOL_UNSUPPORTED" };
+      }
       return { ok: true, data: { storeId, storeNo } };
     }
     check(bearer === `Bearer ${adminToken}`, "Worker RPC did not use service authorization.");
@@ -62,6 +90,11 @@ export async function exerciseRotationAuthProbe({ origin, ttl, adminToken, anonT
       return { status: "recorded" };
     }
     if (name === "owner_report_store_key_rotation" && phase === "probe") {
+      if (strictContract) {
+        check(args.p_outcome === "probe_failed", "Worker unexpectedly passed the strict permission hook.");
+        phase = "probe_failed";
+        return { status: "recorded" };
+      }
       check(args.p_outcome === "confirmed", "Worker did not confirm the Auth probe.");
       phase = "publish";
       return { status: "confirmed" };
@@ -85,8 +118,10 @@ export async function exerciseRotationAuthProbe({ origin, ttl, adminToken, anonT
       const payload = Buffer.concat(body);
       const bearer = incoming.headers.authorization;
       if (path.pathname.startsWith("/rest/v1/rpc/")) {
-        const value = rpc(path.pathname.slice("/rest/v1/rpc/".length), JSON.parse(payload), bearer);
-        reply.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify(value));
+        const value = rpc(path.pathname.slice("/rest/v1/rpc/".length), JSON.parse(payload), bearer,
+          incoming.headers["x-pos-permission-contract"]);
+        const status = value?.code === "WRITE_PROTOCOL_UNSUPPORTED" ? 426 : 200;
+        reply.writeHead(status, { "content-type": "application/json" }).end(JSON.stringify(value));
         return;
       }
 
@@ -145,7 +180,9 @@ export async function exerciseRotationAuthProbe({ origin, ttl, adminToken, anonT
     };
     globalThis.Deno = { env: { get: (name) => env[name] }, serve(value) { handler = value; } };
     try {
-      await import("../../supabase/functions/owner-provisioning/index.ts");
+      const entry = new URL("../../supabase/functions/owner-provisioning/index.ts", import.meta.url);
+      entry.searchParams.set("strictFixture", String(strictContract));
+      await import(entry.href);
     } finally {
       hooks.deregister();
       delete globalThis.Deno;
@@ -162,6 +199,7 @@ export async function exerciseRotationAuthProbe({ origin, ttl, adminToken, anonT
     };
 
     const login = (password) => request("/token?grant_type=password", { email, password });
+    if (strictContract) check(permissionStatus("2") === 200, "Strict control with version 2 was rejected.");
     claim(await login(previous));
     await work();
     check(phase === "probe" && calls.join(",") === "update", "Dispatch did not recover as a single ambiguous update.");
@@ -170,12 +208,17 @@ export async function exerciseRotationAuthProbe({ origin, ttl, adminToken, anonT
     const companion = await login(candidate);
     const companionId = claim(companion).session_id;
     await work();
-    check(phase === "publish" && calls.join(",") === "update,password grant,lookup,local logout",
+    check(phase === (strictContract ? "probe_failed" : "publish")
+      && calls.join(",") === "update,password grant,lookup,local logout",
       "Unexpected Edge Auth calls after recovery.");
     check(claim(probe).session_id !== companionId, "Probe and companion sessions were not independent.");
     checkRejectedRefresh(await refresh(probe.body.refresh_token));
     check(claim(await refresh(companion.body.refresh_token)).session_id === companionId,
       "Local logout affected the independent companion session.");
+    if (strictContract) {
+      console.log("REPRODUCED TC-OWNER-55 strict gate: header v2 control allowed; Edge request rejected with 426; probe_failed, local logout HTTP 204, probe refresh denied, companion refresh accepted.");
+      return;
+    }
     await work();
     await work();
     check(phase === "completed" && calls.join(",") === "update,password grant,lookup,local logout",
