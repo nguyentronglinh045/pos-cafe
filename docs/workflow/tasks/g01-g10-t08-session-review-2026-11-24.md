@@ -1,5 +1,7 @@
 # T08 · Máy đã ghép còn làm được gì sau khi cấp lại Store Key?
 
+Cập nhật ngày 27/11/2026. [Kết quả Auth gửi đồng thời và gia hạn A/B](#kiem-auth-dong-thoi-va-refresh-ab-20261127).
+
 Xem [kết quả mục 12.10 ngày 25/11/2026](#kiem-auth-1210-20261125) để biết kết quả đổi mật khẩu trên staging và các giới hạn. Phân tích ngày 24/11 bên dưới dùng nguồn Auth v2.197.0.
 
 ## Bốn lựa chọn đã chốt ngày 24/11/2026
@@ -591,3 +593,85 @@ Ngày 27/11/2026, Linh giao kiểm ba tiêu chí còn thiếu và trực tiếp 
 Công cụ probe chỉ giữ proof và token trong bộ nhớ, xuất HTTP, lớp lỗi, TTL và phép so khớp. Đã xóa trạng thái công cụ khi xong. Một lần lọc danh sách Gmail ban đầu để lọt key thử #0038 trong đầu ra công cụ. Bằng chứng lưu lại đã che giá trị đó, OTP, PIN, email, token và ID phiên.
 
 Hai reviewer AI độc lập **APPROVE** hồ sơ SHA-256 `50D8D263906699B7AAEA0B371E0BFD8A1685C9BB1C2CAF31E2EC6360EE4E55FD` trước dòng này. Reviewer nghiệm thu đối chiếu proof, thời hạn, hành vi A/B và trạng thái checklist. Reviewer triển khai đối chiếu CI và Preview, Auth, hàng đợi, worker và cấu hình cuối. Hai reviewer đọc hồ sơ và nguồn. OpenSpec strict và kiểm tra diff đạt.
+
+<a id="kiem-hoi-quy-co-lap-129-20261127"></a>
+
+### Kiểm hồi quy cô lập phần còn lại của 12.9
+
+Ngày 27/11/2026, Linh giao push tài liệu liên quan trước rồi tiếp tục kiểm. Hồ sơ 12.8–12.10 và các lượt staging #0037–39 đã lên nhánh tài liệu `docs-t08-rotation-acceptance-20261127`, commit `756285b`, base `docs@027fd45`. Hai reviewer đã duyệt tree `8669a36b`. Lượt hồi quy dưới đây dùng checkout sạch `79408f8`, cùng Git tree `8f45b503489877b71fa7bcc16a66b6f1a3fc6f93` với `main@cd3e3e3`. Không có diff SQL và contract rotation giữa `0aa9345` và `cd3e3e3`.
+
+| Lệnh tại worktree code | Môi trường | Kết quả và phạm vi |
+| --- | --- | --- |
+| `node --test tests/contracts/ownerStoreKeyRotation.local.test.mjs` | Node v24.16.0, PostgreSQL 16.15 loopback, bản sao database kiểm thử cục bộ, đã áp `owner-store-key-forgot-receipt.sql`, Auth và SMTP giả | Exit 0, Node báo 8/8 mục gồm suite cha và 7 tiểu ca. TC-OWNER-53 ghi lỗi tên, TC-OWNER-54 ghi khóa lượt nhập sau năm lần sai. Phần hồi quy TC-OWNER-55/87/113/114 gồm replay, mất phản hồi Auth, tranh claim và token cũ, ngưỡng sáu lỗi, hàng rào mail và hai thứ tự tranh chấp mail T06 với bắt đầu rotation. |
+| `node node_modules/vitest/vitest.mjs run src/app/drawers/admin/StoreKeyRotationPanel.test.tsx src/adapters/supabase/authPermissionContract.test.ts` | Vitest 4.1.10, môi trường kiểm component và adapter | Exit 0, 24/24, 2 tệp. |
+| `node node_modules/@playwright/test/cli.js test tests/smoke/store-key-rotation.spec.ts --workers=2 --retries=0 --trace=off --reporter=line` | Chromium local, Vite ở chế độ mock | Exit 0, 5/5. Kiểm lớp xác minh quyền, giữ form OTP và màn key khi chuyển tab, ghép một chạm và nhập lại PIN theo năm kích thước. Vite cảnh báo về import thiếu phần mở rộng với bộ nạp cấu hình tương lai. |
+
+Database thử dừng sau khi chạy. Báo cáo Node đã che thông tin xác thực và giữ trong local notes. Bản sao cho phép tái hiện lần kiểm trong cùng môi trường. Lượt này giữ staging và Production ở cấu hình hiện hành. 12.9 vẫn mở. Ca TC-OWNER-115 cần Auth thật v2.198.0 trong môi trường cô lập để dựng thứ tự commit, cùng phần claim/refresh của chính phiên A/B và RPC dùng JWT cũ đúng contract trên staging.
+
+Hai reviewer AI độc lập **APPROVE** checkpoint local. Reviewer nghiệm thu đối chiếu tiểu ca và giới hạn. Reviewer triển khai đối chiếu Git tree, remote, phạm vi loopback và trạng thái dừng PostgreSQL. OpenSpec strict và kiểm tra diff đạt.
+
+<a id="kiem-auth-that-jwt-0040-20261127"></a>
+
+### Kiểm thứ tự Auth thật và JWT cũ trên quán #0040
+
+Ngày 27/11/2026, Linh giao tiếp tục 12.9 và trực tiếp xác nhận đổi key trên A. Hai Protected Preview A và B giữ source `cd3e3e3` tại hai origin khác nhau trong Chrome 24tx. Dùng quán thử #0040 tạo qua T06, hộp thử riêng và PIN thử. Cả hai máy vào POS trước đổi. Bật tạm TTL Edge 3.600 giây sau khi kiểm 0/0/0 lượt mở, challenge còn hạn, thư rotation chưa xử lý và có HTTP 200 gần nhất của worker. Gửi một OTP đổi key lúc 15:26:11. Hai lần nhận lại quyền trước đó vẫn thấy ô xác nhận trống và chưa có lượt đổi. Linh hoàn thành xác nhận trực tiếp sau khi Codex đưa mã vào clipboard để Linh tự dán và bấm nút trên A.
+
+| Tiêu chí | Quan sát |
+| --- | --- |
+| Thứ tự HTTP trên Auth thật cô lập | Runner Linux GitHub Actions dùng archive Auth chính thức `v2.198.0` đã đối chiếu SHA-256 và image `postgres:16.15-bookworm`, chỉ dùng loopback và fixture tổng hợp. Run `45964444922/1` tại commit `b032e50` đạt 4/4. Phiên đã nhận token từ password grant hoặc refresh trước Admin update bị thu hồi sau update. Password grant và refresh bắt đầu sau Admin update bị từ chối với credential cũ. Phiên dùng key mới có ID khác, `iat` sau đổi, TTL 3.600 giây và refresh thành công. Mỗi ca bảo đảm thứ tự HTTP bằng phản hồi đã về. Ca giao dịch chồng lấn của TC-OWNER-115 vẫn thiếu. [Lượt Auth cô lập](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45964444922). |
+| RPC đọc bằng access JWT cũ sau đổi | Trước đổi, cả hai phiên probe riêng của #0040 gọi `permission_get_store_session` với `x-pos-permission-contract: 2` thành công, đúng số quán. Sau đổi, JWT cũ còn hạn của cả hai phiên vẫn trả HTTP 200, `ok: true` và đúng quán, phù hợp quyết định 42. Hai refresh token cũ đều bị từ chối với HTTP 400 `refresh_token_not_found`. Password grant bằng key cũ HTTP 400 `invalid_credentials`. |
+| Phiên mới sau đổi | Hai phiên probe mới độc lập. ID khác hai phiên cũ. RPC đúng quán trả HTTP 200. Refresh từng phiên mới HTTP 200, cùng ID phiên mới, tăng `iat` và `exp`, nhận refresh token mới. Probe đã logout cục bộ hai phiên mới, xóa trạng thái trong bộ nhớ và dừng. |
+| Hai phiên trình duyệt | A bấm “Dùng key mới trên máy này” và vào màn PIN #0040. Có lúc đã nhập PIN và bấm mở khoá mà vẫn thấy màn PIN. Tải lại riêng tab A rồi nhập PIN thì vào POS. Chưa xác định nguyên nhân của lần mở khóa đầu. B hiện thông báo “Phiên ghép thiết bị đã mất hiệu lực” và form ghép trước thao tác ghép lại, rồi dùng key mới và PIN vào POS. SQL cuối đọc thế hệ 1, `completed`, 0 phiên trước `applied`, 2 phiên có refresh token chưa thu hồi. Hàng Auth và UI chứng minh kết quả ghép. CUA không thu được phản hồi Auth chứa claim/token của chính hai phiên trình duyệt; các phép gọi trực tiếp trong bảng là phiên probe. |
+| Hoàn nguyên staging | SQL xác nhận #0040 `completed`, thế hệ 1, một thư giao key `submitted`, 0 rotation mở, 0 challenge còn hạn, 0 thư rotation chưa ổn định. Gỡ cờ lúc 15:37:07. Readback cờ rotation vắng, cờ Quên Store Key còn. Qua một nhịp cron, SQL đọc 0/0/0, một HTTP 200 và một lượt cron thành công. Hai tab A/B ở POS, Chrome và máy vẫn mở. |
+
+[POS light CI của nhánh probe](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45964444920) báo `ui-audit` không có report hợp lệ, cùng nhóm tín hiệu với attempt 1 của CI main `45945781701`. Chưa xác định nguyên nhân. Run riêng của Auth đạt trên commit probe, còn kết quả nghiệm thu UI giữ gắn với deployment `cd3e3e3`. Hai tệp của runner chỉ nằm trên nhánh thử, chưa hợp nhất vào main.
+
+**Trạng thái 12.9.** Đã bổ sung RPC dùng JWT cũ đúng header trên staging và bốn thứ tự HTTP trên Auth thật cô lập. Mục 12.9 vẫn mở cho claim/refresh trực tiếp của chính phiên trình duyệt A/B, ca giao dịch chồng lấn TC-OWNER-115 và phần bằng chứng lỗi, đồng thời, operator còn thiếu. Mã, key, PIN, email, token và thông tin phiên không có trong biên bản. Một lần gắn cửa sổ Chrome trước đó hiển thị email profile và URL Preview trong đầu ra công cụ. Không lưu giá trị vào biên bản.
+
+Hai reviewer AI độc lập **APPROVE** hồ sơ SHA-256 `8A02BC22138EBAC33970F193D66FD7CB26F3F50C9A39C915B2568901D462F317` trước dòng này. Reviewer nghiệm thu đối chiếu kết quả RPC/refresh, phạm vi A/B và thứ tự HTTP. Reviewer triển khai đối chiếu CI, môi trường và việc hoàn nguyên. OpenSpec strict và kiểm tra diff đạt.
+
+<a id="kiem-mat-http-worker-cu-20261127"></a>
+
+### Kiểm thêm nhánh lỗi và worker cũ của 12.9
+
+Ngày 27/11/2026, Linh hỏi phần còn thiếu có thể kiểm ngay hay cần ghi nhận là chưa kiểm. Hai phép thử hợp đồng chạy trên PostgreSQL 16.15 loopback, Node v24.16.0, Auth và SMTP giả. Source ứng dụng `cd3e3e3` giữ nguyên. Commit local `8fd6c3a` chỉ đổi `tests/contracts/ownerStoreKeyRotation.local.test.mjs`, Git tree `db162a26cef962658f6e0addcc5b23064ec7b512`. Chạy `node --test --test-reporter=tap tests/contracts/ownerStoreKeyRotation.local.test.mjs` với DSN database thử riêng. Exit 0, 7 tiểu ca đạt cùng nhóm cha, 0 lỗi và 0 bỏ qua. TAP đã lọc nằm trong Git local notes. Đã dừng PostgreSQL sau lượt kiểm.
+
+| Phạm vi | Kết quả |
+| --- | --- |
+| TC-OWNER-55(b) · Mất phản hồi HTTP sau `applied` | Handler thật hoàn tất với HTTP 200 và DB ở `applied`. Server kiểm trên loopback ngắt socket trước khi client nhận header/body, client nhận `UND_ERR_SOCKET`. Gửi lại cùng attempt chỉ trả trạng thái. Worker đi tới `completed`. Có đúng một lần đổi mật khẩu, 0 lần probe, một lượt đổi, một audit, một thư key ở SMTP giả và generation 1. Thư chứa key khớp với kết quả handler ban đầu. |
+| TC-OWNER-113 · RPC của worker R1 khi R2 tiến triển | Gửi lại báo cáo dispatch, báo cáo probe, ghi `applied` và hoàn tất bằng token R1 cũ khi R2 lần lượt `pending`, `applied` và `completed`. Mọi lời gọi cũ trả null. Key và generation giữ đúng ở từng mốc, R2 hoàn tất và có đúng hai audit cho hai lượt. Bằng chứng nằm ở lớp DB. Ma trận Auth spy toàn phần vẫn còn mở. |
+| TC-OWNER-53 · Khóa nút khi gõ sai tên | Protected Preview A `cd3e3e3` với fixture #0040. Tên sai hoặc trống giữ nút Gửi mã vô hiệu. Tên đúng mở nút. Xóa lại nội dung nhập. Lượt này dừng ở điều kiện UI, 0 yêu cầu gửi OTP từ thao tác kiểm. Backend trả `STORE_NAME_MISMATCH` đã kiểm trong contract local. Cấu hình staging giữ trạng thái sau hoàn nguyên #0040. |
+
+**Trạng thái 12.9.** Đã kiểm TC-OWNER-55(b) trong môi trường cô lập, bổ sung bước kiểm RPC worker cũ và xác nhận khóa nút sai tên trên Preview. Claim/refresh của chính phiên trình duyệt A/B và giao dịch Auth chồng lấn của TC-OWNER-115 tiếp tục ghi **Chưa kiểm** ở mức tiêu chí đó. Ma trận Auth spy và mail/operator còn phần thiếu bằng chứng. Lượt này chỉ thêm test và tài liệu, cũng chưa phát hiện lỗi sản phẩm mới.
+
+Hai reviewer AI độc lập **APPROVE** test tree `db162a26cef962658f6e0addcc5b23064ec7b512` và hồ sơ SHA-256 `50CA17849EC36089DDF6A61D75BE38ECED544C709AFCF6EF4677F0EF915D2F3A` trước dòng này. OpenSpec strict và kiểm tra diff đạt.
+
+<a id="kiem-dua-thu-va-moc-refresh-ab-20261127"></a>
+
+### Kiểm đua nhận thư rotation và mốc gia hạn A/B
+
+Ngày 27/11/2026, Linh giao tiếp tục. Test local `d9a1bd6` mở rộng `tests/contracts/ownerStoreKeyRotation.local.test.mjs` trên source ứng dụng `cd3e3e3`. Git tree `bca97158d1987b4f102b1f0215c1ca8360bfc1be`. Dùng Node v24.16.0 và PostgreSQL 16.15 loopback với database fixture cô lập. Chạy `node --test --test-reporter=tap tests/contracts/ownerStoreKeyRotation.local.test.mjs`, exit 0, 8 tiểu ca và nhóm cha đều đạt. TAP đã lọc giữ local. PostgreSQL đã dừng.
+
+**TC-OWNER-114 ở lớp DB.** Hai worker tranh đúng thư rotation của fixture. `pg_blocking_pids` xác nhận worker B thực sự chờ trước khi A commit. Sau commit chỉ A nhận thư. Trong lúc `sending`, lượt đổi mới bị chặn. Quyền giao SMTP cấp đúng một lần. Sau khi ghi trạng thái giả lập `submitted`, quay được thế hệ kế tiếp. Kiểm DB xác nhận thư thế hệ cũ hết điều kiện gửi. Thư thế hệ mới không còn cảnh báo khi mô phỏng đã qua mốc 3.600 giây. Phép kiểm không gọi SMTP thật. Nhánh thư giao chậm và nhánh đổi email/chủ vẫn thiếu bằng chứng.
+
+**Đối chiếu phiên thật của #0040.** Lúc 15:59:48, cả hai Protected Preview `cd3e3e3` vẫn hiển thị POS #0040. SQL chỉ đọc tổng hợp xác nhận thế hệ 1, đúng 2 phiên còn tồn tại, cả hai tạo sau `applied`, tạo lúc 15:35:29 và 15:37:43, 0/2 phiên có `refreshed_at` lớn hơn `created_at`. Kết quả này là mốc trước refresh. Với TTL 3.600 giây và điều kiện nhịp SDK, bắt đầu kiểm lại từ khoảng 16:34–16:36 nếu Chrome và SDK vẫn hoạt động. Cột `refreshed_at` là tín hiệu phía server. Đủ 2/2 tại mốc sau sẽ bổ sung bằng chứng gia hạn tự động của fixture. Phép đo trực tiếp request và so claim của chính A/B vẫn cần bằng chứng riêng để chốt tiêu chí. [Nguồn cập nhật thời điểm refresh](https://github.com/supabase/auth/blob/v2.198.0/internal/tokens/service.go#L612-L639) · [Nguồn chu kỳ SDK](https://github.com/supabase/supabase-js/blob/v2.108.1/packages/core/auth-js/src/GoTrueClient.ts#L5299-L5315).
+
+Lượt này dùng SQL staging chỉ đọc, chưa phát OTP và giữ hai tab POS mở. Không ghi JWT, refresh token hoặc ID phiên vào hồ sơ. Mục 12.9 vẫn mở.
+
+Hai reviewer AI độc lập **APPROVE** Git tree test `bca97158d1987b4f102b1f0215c1ca8360bfc1be` và hồ sơ sau khi sửa liên kết nguồn Auth. Dossier trước dòng này có SHA-256 `2204664203FADED5BD23BBE597C3E652C636946CFAC0BC7453D7D301F6032B38`. OpenSpec strict và kiểm tra diff đạt.
+
+<a id="kiem-auth-dong-thoi-va-refresh-ab-20261127"></a>
+
+### Auth HTTP đồng thời và gia hạn phiên A/B
+
+Ngày 27/11/2026, Linh giao theo dõi tiếp. Lượt Auth cô lập trên nhánh test `test/t08-auth-order-20261127`, commit `c875e7e`, tree `e4418e59c52d808bb81b9206f5e669cdedbc35d3`. Job `45971400523/1` chạy Auth thật `v2.198.0` và PostgreSQL 16.15 loopback trên runner GitHub, giữ dữ liệu tổng hợp. Bốn ca HTTP tuần tự và một ca gửi đồng thời đạt. Trong ca đồng thời, hai refresh của hai phiên cũ và yêu cầu Admin đổi mật khẩu cùng được gửi trước khi chờ phản hồi. Hai refresh trả token. Sau khi cả ba phản hồi về, từng token mới nhất của phiên cũ bị từ chối trước khi thử lại token đời trước. Phiên dùng key mới có ID khác và gia hạn được. Lượt kiểm chỉ xác định thứ tự gửi/chờ HTTP. Không đo thứ tự commit hoặc tạo điểm chặn trong Auth. [Kết quả CI Auth](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45971400523).
+
+Lúc 16:12:35, SQL chỉ đọc trên fixture #0040 xác nhận vẫn hai phiên tạo lúc 15:35:29 và 15:37:43. Cả hai chưa có mốc refresh trong hàng session. Audit PostgreSQL cho actor của fixture có 0 sự kiện `token_refreshed` sau baseline 15:59:48. Không truy xuất token hoặc ID phiên. Chờ cửa sổ SDK của từng tab. CUA đọc được DOM, chưa lấy được Resource Timing hoặc phản hồi HTTP cụ thể từ Chrome. [Nguồn SDK xử lý hiển thị tab](https://github.com/supabase/supabase-js/blob/v2.108.1/packages/core/auth-js/src/GoTrueClient.ts).
+
+- Lúc 16:34:32, với A ở nền trước, SQL ghi 1/2 phiên có mốc refresh và vẫn cùng hai mốc tạo phiên ban đầu. Sau đó chuyển tab thuộc origin B lên nền trước qua tìm tab của Chrome. Thao tác này giữ phiên ghép hiện có.
+- Lúc 16:36:44, SQL ghi 2/2 phiên có mốc refresh, với mốc tạo không đổi là 15:35:29 và 15:37:43. Cột `refreshed_at` có kiểu `timestamp without time zone` và dữ liệu UTC. Hai mốc 09:34:01 và 09:36:01 UTC tương ứng **16:34:01** và **16:36:01** giờ Việt Nam. Bản đọc đầu đã thực hiện chuyển múi giờ cho cột này theo kiểu timestamptz, nên kết luận giờ dùng hai giá trị UTC đã đối chiếu lại với kiểu cột. Audit PostgreSQL vẫn ghi 0 sự kiện sau baseline. Bằng chứng refresh thành công đến từ việc Auth cập nhật đúng hai hàng session. UI A/B vẫn ở POS #0040. Không phát OTP trong lượt theo dõi. [Nguồn ghi thời điểm refresh của Auth](https://github.com/supabase/auth/blob/v2.198.0/internal/tokens/service.go#L612-L639).
+- POS light CI của nhánh kiểm cũng đạt ở run `45971400550/1`. Source ứng dụng ở staging giữ `cd3e3e3`. [POS light CI](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/45971400550).
+
+**Trạng thái 12.9.** Đã xác nhận phía server gia hạn thành công trên chính hai phiên A/B mới của #0040. Chưa thu response HTTP hoặc giá trị claim `iat`/`exp` từ chính hai tab. Ca Auth mới chứng minh kết quả của các yêu cầu HTTP gửi đồng thời, còn thứ tự commit có kiểm soát của TC-OWNER-115 vẫn mở. Mục 12.9 giữ mở cho các tiêu chí này và phần ma trận mail/operator còn thiếu. Một lần đọc danh sách tab Chrome hiển thị tên định danh dashboard và URL loopback của probe đã dừng trong đầu ra công cụ. Hồ sơ chỉ ghi số đếm và thời gian.
+
+Hai reviewer AI độc lập **APPROVE** hồ sơ SHA-256 `3FC48C7A10F3B06360B15C1179F2ECAD4C9C1D5C843037ABCA04A98881740E15` trước dòng này. Reviewer nghiệm thu đối chiếu phạm vi A/B và thứ tự HTTP. Reviewer triển khai đối chiếu hai lượt CI, mốc UTC và nội dung đã che định danh. OpenSpec strict và kiểm tra diff đạt.
