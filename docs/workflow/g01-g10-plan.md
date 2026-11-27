@@ -3,6 +3,8 @@
 Cập nhật **27/11/2026** với [kết quả kiểm 12.9 của T08](tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-auth-dong-thoi-va-refresh-ab-20261127). Ngày 19/11, PR #37 vào `main` và CI sau merge đạt 18/18 bước. Ngày 18/11 đã đóng gói bản vá SQL/Edge và hồ sơ các lượt kiểm T06 trên staging. Mốc T02 ngày 02/11 dựa trên mã nguồn `28a3dc54a846463ba150d50ab323658d6ed1372c` và tài liệu đầu vào `991652224afcd125065d92ad0d657abf289f1842`. T04 cập nhật ngày 08/11. Các hồ sơ được dẫn lưu yêu cầu chi tiết và minh chứng theo từng task.
 
 <a id="next"></a>
+T08 có thêm bằng chứng cô lập cho TC-OWNER-113, 87 và 55. Mục 12.9 còn mở cho các tiêu chí cần Auth thật hoặc ma trận lỗi/đồng thời còn thiếu và các phần đang theo dõi bên trên. [Biên bản worker và phục hồi key](tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-worker-113-87-55-co-lap-20261127).
+
 ## Ưu tiên triển khai tiếp theo
 
 **Gói sửa attribution T02 đã merge và kiểm chứng U/P/C, PR CI và CI main**, đủ 18 phase trên mỗi event. Phần còn mở của T02 là recipe R-APP và nguyên nhân UI lịch sử UNKNOWN; không cần lặp khảo sát hoặc CI chỉ để chuyển việc. [Hồ sơ T02](tasks/g01-g10-t02-2026-10-28.md) ghi source/giới hạn. **T04 — hoàn thiện đặc tả owner/email** đã viết xong và merge vào docs ngày 08/11/2026 (PR #18), chưa triển khai; các task tiếp nhận khác tuân theo ưu tiên hiện hành của chủ dự án. T01 và T03-A đã khảo sát xong, T03-A giữ NO_CHANGE; không làm lại inventory. Readiness không tạo quyền triển khai, chạy backend hoặc đổi yêu cầu owner.

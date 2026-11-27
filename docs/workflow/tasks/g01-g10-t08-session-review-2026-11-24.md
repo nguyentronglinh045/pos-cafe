@@ -675,3 +675,27 @@ Lúc 16:12:35, SQL chỉ đọc trên fixture #0040 xác nhận vẫn hai phiên
 **Trạng thái 12.9.** Đã xác nhận phía server gia hạn thành công trên chính hai phiên A/B mới của #0040. Chưa thu response HTTP hoặc giá trị claim `iat`/`exp` từ chính hai tab. Ca Auth mới chứng minh kết quả của các yêu cầu HTTP gửi đồng thời, còn thứ tự commit có kiểm soát của TC-OWNER-115 vẫn mở. Mục 12.9 giữ mở cho các tiêu chí này và phần ma trận mail/operator còn thiếu. Một lần đọc danh sách tab Chrome hiển thị tên định danh dashboard và URL loopback của probe đã dừng trong đầu ra công cụ. Hồ sơ chỉ ghi số đếm và thời gian.
 
 Hai reviewer AI độc lập **APPROVE** hồ sơ SHA-256 `3FC48C7A10F3B06360B15C1179F2ECAD4C9C1D5C843037ABCA04A98881740E15` trước dòng này. Reviewer nghiệm thu đối chiếu phạm vi A/B và thứ tự HTTP. Reviewer triển khai đối chiếu hai lượt CI, mốc UTC và nội dung đã che định danh. OpenSpec strict và kiểm tra diff đạt.
+
+<a id="kiem-worker-113-87-55-co-lap-20261127"></a>
+
+### Kiểm worker và khôi phục Store Key trên PostgreSQL cô lập
+
+Ngày 27/11/2026, Linh giao kiểm TC-OWNER-113 trước, rồi TC-OWNER-87 và TC-OWNER-55 trên môi trường cô lập. Linh loại TC-OWNER-114 khỏi lượt kiểm. Source ứng dụng, Edge và candidate SQL trùng `main@cd3e3e3d5058d7b77a353fc2b0ab456b4971c76c`. Mã test nối từ `d9a1bd6` với Git blob `f56995a2de653bd3aa6d0a7a12fa67bb30d85e8a` của `tests/contracts/ownerStoreKeyRotation.local.test.mjs`.
+
+Lượt cuối kết thúc lúc 20:10:49 UTC+7. Node `24.16.0` và `pg` `8.23.0` chạy trên Windows, kết nối PostgreSQL `16.15` tại loopback. DB `pos_cafe_t06_contract_t08worker113` tách từ seed T08 dùng candidate SQL rotation, OTP, mail và quên key, gồm cả migration xác nhận biên nhận quên key. Mỗi phép kiểm tạo quán và tài khoản tổng hợp. Handler, khóa PostgreSQL và HTTP loopback chạy thật. Auth và SMTP dùng bộ giả lập. Lệnh chạy từ worktree nhánh test như sau, với `POS_CAFE_T08_TEST_DSN` trỏ vào DB cô lập.
+
+```sh
+node --test --test-reporter=tap --test-skip-pattern='service-only|respects key mail|rotation mail has one|legacy T06 mail|signed worker drives|rotation mail alert remains' tests/contracts/ownerStoreKeyRotation.local.test.mjs
+```
+
+**Kết quả.** Exit `0`, 7 ca con đạt cùng bộ điều phối, 0 lỗi. TAP local `t08-worker-113-87-55-final-20261127.txt` có SHA-256 `A83DF799D86FB2C96390885BD78A178619C056DCF6B71DF50C722A7FA1EA9A15`. Bộ lọc lượt đầu chọn nhầm các ca ngoài phạm vi, gồm ca 114 có sẵn. Lượt đó bị loại khỏi kết luận. Lượt kiểm trọng tâm của 113 và lượt cuối đều loại ca 114.
+
+| Ca | Kết quả đo được | Bằng chứng còn thiếu |
+| --- | --- | --- |
+| TC-OWNER-113 | Hai kết nối tranh khóa PostgreSQL, một claim thắng. Lỗi giải mã trước transport phát 0 lệnh Auth và cho phép token mới. Worker nhận lại lease gọi một probe sau lệnh đổi đã được ghi bởi Auth giả. R2 chỉ bắt đầu sau R1 `completed`. Khi R2 lần lượt `pending`, `applied`, `completed`, RPC ghi cũ bị từ chối và worker gọi lại với R1 không phát Auth update mới. Worker R1 đang đợi phản hồi cũng bị từ chối lúc báo kết quả muộn. Hai lần đổi hợp lệ khớp generation và bí mật mô phỏng sau `applied`. | Chưa ngắt worker thật ở mọi ranh giới RPC. Bộ giả đếm `changePassword` và `verifyPassword`. Chưa thu trace sign-out qua adapter Auth thật trong các lịch xen kẽ. |
+| TC-OWNER-87 | Kiểm tiếp tục từ `pending` và dừng trước transport sau khi đã claim dispatch. Ở nhánh này, cả sáu probe âm tính giữ cùng token, lần sáu tạo một cảnh báo DB, lần bảy không gọi Auth. `stores` giữ generation cũ, 0 audit và 0 thư. Mất phản hồi Auth hoặc dừng trước khi ghi xác nhận đều phục hồi qua probe và đúng một Auth update giả. Sau khi ghi xác nhận, công bố key và hoàn tất chỉ qua DB. Yêu cầu đổi key lặp khi `pending` hoặc `applied` chỉ trả trạng thái theo phép kiểm HTTP. Yêu cầu quên key được xác nhận khi `pending` nhưng worker bỏ quán. Khi `applied`, thư lấy key hiện hành. | Chưa chạy ba thao tác đổi email, chuyển quyền và reset ở hai trạng thái. Chưa quan sát password grant/logout local thật, cảnh báo ở kênh operator hoặc từng loại phản hồi Auth qua transport thật. Bản đang kiểm chỉ ghi `no_effect` cho `transport_not_called`. Chưa có mã HTTP trong allowlist được hiện thực để kiểm nhánh này. |
+| TC-OWNER-55 | Auth giả ghi một lần đổi rồi mất phản hồi, worker phục hồi bằng một probe. Ở đường Edge, socket loopback bị đóng sau khi handler ghi `applied` và tạo phản hồi `200`. Client gặp `UND_ERR_SOCKET`, gửi lại đúng attempt chỉ nhận trạng thái, worker hoàn tất mà tổng số gọi Auth vẫn là 1 update và 0 probe trên đường này. Thư rotation và thư Quên Store Key chứa key hiện hành và không chứa key cũ của fixture. DB có 1 rotation, 1 generation mới, 1 audit, 1 thư rotation và 1 thư quên key được yêu cầu riêng. | Chưa kiểm password grant và logout phiên tạm trên Auth thật trong ca mất phản hồi. Trạng thái `submitted` do SMTP giả trả về. Chưa đo giao thư thật trong ca này. |
+
+Lượt này chưa đủ để đóng 12.9. PostgreSQL cô lập đã dừng sau phép kiểm, clone fixture giữ local để đối chiếu. Không dùng staging hoặc tạo bản triển khai trong lượt này. Hồ sơ lưu kết quả và số đếm, đã che các dữ liệu xác thực của fixture.
+
+Hai reviewer AI độc lập **APPROVE** test blob `f56995a2de653bd3aa6d0a7a12fa67bb30d85e8a`, hồ sơ trước đoạn này `208977f791d55852656a41d280290a9e75302207`, testplan `fb54ee61177a2071085ea2a7b0c2fe0c0aa90adc` và kế hoạch `a0a92e1703867549a90e797e598da2ec42f3c079`. Một reviewer đối chiếu assertions và tiêu chí nghiệm thu. Reviewer còn lại kiểm nguồn, môi trường, TAP và phạm vi bàn giao. OpenSpec strict và kiểm tra diff đạt.
