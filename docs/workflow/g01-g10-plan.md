@@ -5,7 +5,7 @@ Cập nhật **27/11/2026** với [kết quả kiểm 12.9 của T08](tasks/g01-
 <a id="next"></a>
 T08 có thêm bằng chứng cô lập cho TC-OWNER-113, 87 và 55. Mục 12.9 còn mở cho các tiêu chí cần Auth thật hoặc ma trận lỗi/đồng thời còn thiếu và các phần đang theo dõi bên trên. [Biên bản worker và phục hồi key](tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-worker-113-87-55-co-lap-20261127).
 
-Lượt Auth thật của TC-OWNER-55 xác nhận password grant và logout local. Mục 12.9 còn lỗi nhánh phục hồi khi Data API strict vì lookup của Edge thiếu header contract. [Biên bản Auth thật](tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-auth-that-password-grant-logout-local-55-20261127).
+TC-OWNER-55(a) đạt trên Auth thật và hook strict cô lập sau khi sửa header lookup của Edge ở `9c9822c`. Worker xác nhận probe sau khi mất phản hồi Auth và hoàn tất qua RPC mô phỏng. Mục 12.9 còn mở cho các tiêu chí khác chưa có bằng chứng đầy đủ. [Biên bản chạy lại sau sửa](tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-lai-strict-sau-sua-header-tc55a-20261127).
 
 ## Ưu tiên triển khai tiếp theo
 

@@ -1,6 +1,6 @@
 # Kế hoạch kiểm thử
 
-TC-OWNER-55(a) có thêm bằng chứng Auth thật cô lập ngày 27/11/2026. Password grant bằng key mới và logout `local` đạt. Khi dùng hook PostgreSQL strict thật, adapter thiếu header contract trên `permission_get_store_session` nên nhận 426 và worker báo `probe_failed`. Nhánh khôi phục strict còn mở. [Biên bản Auth thật và hook strict](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-auth-that-password-grant-logout-local-55-20261127).
+TC-OWNER-55(a) đạt lại ngày 27/11/2026 với Auth thật và hook PostgreSQL strict thật trên runner cô lập sau khi sửa header của Edge. Hook chấp nhận header `2` của probe và vẫn trả 426 khi thiếu header. Logout `local` chỉ thu hồi refresh của probe. Worker hoàn tất qua RPC mô phỏng. Staging và TC-OWNER-114 nằm ngoài lượt này. [Biên bản chạy lại sau sửa](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-lai-strict-sau-sua-header-tc55a-20261127).
 
 Lượt ngày 27/11/2026 trên PostgreSQL cô lập có 7 phép kiểm đạt cho TC-OWNER-113, 87 và 55, gồm worker tranh claim, RPC worker cũ qua hai generation, phục hồi sau khi mất phản hồi và Quên Store Key trong `pending`/`applied`. Auth và SMTP dùng bộ giả lập. Lượt kiểm trọng tâm bỏ qua TC-OWNER-114 theo phạm vi Linh giao. [Kết quả và tiêu chí còn thiếu](../../../docs/workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-worker-113-87-55-co-lap-20261127).
 
