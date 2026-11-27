@@ -10,11 +10,12 @@ import { useStoreSessionQuery } from "@/features/session";
 import { useStoreSettingsQuery, useUpdateSettingsMutation } from "@/features/admin";
 import { useAppStore } from "../../useAppStore";
 import { toToastError } from "../../appErrors";
+import { bundleHas } from "../../permissionUi";
 import { PortalDrawer } from "../../components/PortalDrawer";
 import { PortalPopup } from "../../components/PortalPopup";
 import { ForgotStoreKeyDialog } from "../../components/ForgotStoreKeyDialog";
 import { ClearDemoDialog } from "./ClearDemoDialog";
-import { StoreKeyRotationPanel } from "./StoreKeyRotationPanel";
+import { StoreKeyRotationPanel, useRotationOtpRequest, type RotationOtpReceipt } from "./StoreKeyRotationPanel";
 
 type SettingsSection = "info" | "bill" | "demo" | "rotation";
 interface SettingsForm {
@@ -32,6 +33,12 @@ const SECTIONS: Array<{ key: SettingsSection; label: string; desc: string; detai
 const ROTATION_SECTION = { key: "rotation" as const, label: "Đổi Store Key", desc: "Tạo key mới khi nghi bị lộ",
   detail: "Chỉ chủ quán có thể đổi Store Key.", icon: <KeyRound size={18} /> };
 
+function rotationOtpOwnerStore(state: ReturnType<typeof usePermissionSession.getState>) {
+  const snapshot = state.bundle?.snapshot;
+  return snapshot?.role === "owner" && bundleHas(state.bundle, "settings.manage")
+    ? snapshot.storeId : null;
+}
+
 export function GeneralSettingsDrawer() {
   const closeDrawer = useAppStore((state) => state.closeDrawer);
   const currentEmployee = useAppStore((state) => state.currentEmployee);
@@ -40,11 +47,13 @@ export function GeneralSettingsDrawer() {
   const isOwner = usePermissionSession(state => state.bundle?.snapshot.role === "owner");
   const verifiedOwnerStore = usePermissionSession(state =>
     state.status === "verified" && state.bundle?.snapshot.role === "owner" ? state.bundle.snapshot.storeId : null);
+  const ownerOtpStore = usePermissionSession(rotationOtpOwnerStore);
   const ownerGeneration = usePermissionSession(state => state.generation);
   const { ownerRecovery, forgotStoreKey } = usePorts();
   const settingsQuery = useStoreSettingsQuery();
   const sessionQuery = useStoreSessionQuery();
-  const storeNoLabel = sessionQuery.data?.status === "paired" ? String(sessionQuery.data.session.storeNo).padStart(4, "0") : "—";
+  const pairedStore = sessionQuery.data?.status === "paired" ? sessionQuery.data.session : null;
+  const storeNoLabel = pairedStore ? String(pairedStore.storeNo).padStart(4, "0") : "—";
   const updateSettingsMutation = useUpdateSettingsMutation(currentEmployee);
   const [seeded, setSeeded] = useState(false);
   const [base, setBase] = useState<SettingsForm | null>(null);
@@ -54,6 +63,26 @@ export function GeneralSettingsDrawer() {
   const [confirmCancel, setConfirmCancel] = useState(false);
   const [clearOpen, setClearOpen] = useState(false);
   const [forgotOpen, setForgotOpen] = useState(false);
+  const [pendingOtp, setPendingOtp] = useState<{ scope: string; receipt: RotationOtpReceipt } | null>(null);
+  // This scope can survive a permission refresh. Rendering still requires verified authority below.
+  const otpScope = ownerRecovery && pairedStore && pairedStore.status !== "suspended"
+    && ownerOtpStore === pairedStore.storeId ? `${ownerGeneration}:${pairedStore.storeId}` : null;
+  const otpRequest = useRotationOtpRequest(otpScope);
+  const rotationStoreName = settingsQuery.data?.displayName.trim();
+  const currentReceipt = pendingOtp?.scope === otpScope && pendingOtp.receipt.storeName === rotationStoreName
+    ? pendingOtp.receipt : null;
+
+  useEffect(() => {
+    if (pendingOtp && (pendingOtp.scope !== otpScope || (rotationStoreName !== undefined && !currentReceipt))) {
+      setPendingOtp(null);
+    }
+  }, [otpScope, rotationStoreName, currentReceipt, pendingOtp]);
+
+  function updatePendingOtp(receipt: RotationOtpReceipt | null) {
+    const current = usePermissionSession.getState();
+    if (!otpScope || current.generation !== ownerGeneration || rotationOtpOwnerStore(current) !== ownerOtpStore) return;
+    setPendingOtp(receipt ? { scope: otpScope, receipt } : null);
+  }
 
   useEffect(() => {
     if (settingsQuery.data && !seeded) {
@@ -110,8 +139,8 @@ export function GeneralSettingsDrawer() {
     else closeDrawer();
   };
 
-  const canRotate = !!ownerRecovery && sessionQuery.data?.status === "paired"
-    && sessionQuery.data.session.storeId === verifiedOwnerStore && sessionQuery.data.session.status !== "suspended";
+  const canRotate = !!ownerRecovery && !!pairedStore && pairedStore.storeId === verifiedOwnerStore
+    && pairedStore.status !== "suspended";
   const sections = canRotate ? [...SECTIONS, ROTATION_SECTION] : SECTIONS;
   const activeSection = sections.find((s) => s.key === section) ?? SECTIONS[0];
   const visibleSection = activeSection.key;
@@ -214,7 +243,8 @@ export function GeneralSettingsDrawer() {
               </div>
 
               {visibleSection === "rotation" && ownerRecovery && canRotate ? (
-                <StoreKeyRotationPanel key={ownerGeneration} port={ownerRecovery} storeName={settingsQuery.data?.displayName ?? ""} />
+                <StoreKeyRotationPanel key={otpScope} port={ownerRecovery} storeName={rotationStoreName ?? ""}
+                  pendingOtp={currentReceipt} setPendingOtp={updatePendingOtp} otpRequest={otpRequest} />
               ) : visibleSection === "info" ? (
                 <div className="grid content-start gap-5 rounded-pos border border-pos-line bg-pos-surface p-5 max-[980px]:p-3">
                   <TextField

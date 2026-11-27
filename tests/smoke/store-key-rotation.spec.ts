@@ -19,7 +19,27 @@ test("owner rotates Store Key and re-pairs the current machine before entering P
   await expect(send).toBeDisabled();
   await page.getByTestId("rotation-store-name").fill("POS Demo");
   await send.click();
-  await page.getByTestId("rotation-otp-input").fill("540218");
+  const otp = page.getByTestId("rotation-otp-input");
+  await otp.fill("540");
+  await page.evaluate(() => {
+    Object.defineProperty(document, "visibilityState", { configurable: true, value: "hidden" });
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+  const gate = page.getByTestId("permission-verification-gate");
+  await expect(gate).toBeVisible();
+  await expect(otp).toHaveCount(0);
+  await page.evaluate(() => {
+    Reflect.deleteProperty(document, "visibilityState");
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+  await expect(gate).toHaveCount(0);
+  await expect(otp).toBeVisible();
+  await expect(otp).toBeEnabled();
+  await expect(otp).toHaveValue("");
+  await expect(send).toBeDisabled();
+  await expect(page.getByTestId("rotation-store-name")).toHaveValue("POS Demo");
+  await expect(page.getByTestId("rotation-confirm")).toBeDisabled();
+  await otp.fill("540218");
   await page.getByTestId("rotation-confirm").click();
   await expect(page.getByLabel("Store Key mới")).toHaveText(/^0001-[A-Z0-9]{32}$/);
   await page.getByRole("button", { name: "Dùng key mới trên máy này" }).click();
