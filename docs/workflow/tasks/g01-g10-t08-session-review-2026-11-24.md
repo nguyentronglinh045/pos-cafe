@@ -767,3 +767,9 @@ Lượt ba của CI đạt trên đúng head `9c9822c` và GitHub chuyển PR sa
 Nhánh `fix/t08-rotation-probe-contract-20261127` đã xóa trên GitHub và local sau khi đối chiếu đúng SHA đã merge và xác nhận nhánh không gắn với worktree. POS light CI của commit trên `main` đang chạy tại thời điểm bàn giao hồ sơ. Phạm vi TC-OWNER-55(a) và quyết định nghiệm thu hẹp 12.9 giữ theo biên bản phía trên. TC-OWNER-114 được bỏ qua. Lượt này chưa phát hành Edge lên staging hoặc Production. [CI sau merge](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46025937054).
 
 Hai reviewer AI độc lập **APPROVE** hồ sơ trước đoạn này `71142e765d7ddc4b349af9d249ed0dd11c49d702` và kế hoạch `ee0e487ce64abe980286a0f76dcba158cc45216e`. Hai lượt rà đối chiếu CI, commit merge, nhánh đã xóa và phạm vi phát hành. OpenSpec strict và kiểm tra diff đạt.
+
+#### Kết quả CI sau merge
+
+Ngày 27/11/2026, POS light CI `46025937054/1` trên lượt push `main@b2394e07dbd6b9c753aa1db256d1235b8b2d2d0a` chạy từ 22:33:19 đến 22:47:54 giờ Việt Nam và **đạt 18/18 bước ở lượt đầu**, gồm `edge-resolution`, `permission-pg16`, `smoke` và `ui-audit`. [CI sau merge, lượt 1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46025937054/attempts/1).
+
+Reviewer AI độc lập **APPROVE** bản cập nhật hồ sơ `2253970b0372de7a502200f2f016dd3ead39479b` trước đoạn này và kế hoạch `b4ff09f864dacde1453671f17b0106357bdf2481` sau khi đối chiếu SHA, thời gian và 18 kết quả PASS trong log GitHub Actions. OpenSpec strict và kiểm tra diff đạt.

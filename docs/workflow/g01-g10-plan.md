@@ -5,7 +5,7 @@ Cập nhật **27/11/2026** với [quyết định nghiệm thu 12.9 của T08](
 <a id="next"></a>
 Linh chốt mục 12.9 của T08 theo phạm vi đã kiểm ngày 27/11/2026. Phạm vi gồm UI A/B trên Protected Preview và các nhánh đã kiểm cô lập. Các phần thiếu bằng chứng cùng quyết định bỏ qua TC-OWNER-114 đã được ghi nhận. [Quyết định nghiệm thu 12.9](tasks/g01-g10-t08-session-review-2026-11-24.md#chot-129-pham-vi-da-kiem-20261127).
 
-TC-OWNER-55(a) đạt trên Auth thật và hook strict cô lập với bản sửa header Edge `9c9822c`. Worker xác nhận probe sau khi mất phản hồi Auth và hoàn tất qua RPC mô phỏng. PR #53 đã merge bản sửa vào `main@b2394e0` sau CI bắt buộc và nhánh đã merge đã được xóa. Bản sửa chưa phát hành lên staging. [Biên bản merge](tasks/g01-g10-t08-session-review-2026-11-24.md#pr-53-sua-header-edge-20261127).
+TC-OWNER-55(a) đạt trên Auth thật và hook strict cô lập với bản sửa header Edge `9c9822c`. Worker xác nhận probe sau khi mất phản hồi Auth và hoàn tất qua RPC mô phỏng. PR #53 đã merge bản sửa vào `main@b2394e0` sau CI bắt buộc và nhánh đã merge đã được xóa. POS light CI sau merge đạt 18/18 bước ở lượt đầu. Bản sửa chưa phát hành lên staging. [Biên bản merge và CI](tasks/g01-g10-t08-session-review-2026-11-24.md#pr-53-sua-header-edge-20261127).
 
 ## Ưu tiên triển khai tiếp theo
 
