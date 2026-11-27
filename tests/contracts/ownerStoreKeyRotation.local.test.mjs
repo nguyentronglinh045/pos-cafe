@@ -307,6 +307,64 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
     expectStatus(await begin(db, first.store, first.owner), "pending");
   });
 
+  await t.test("rotation mail has one claimant and reports the warning for its current generation", async () => {
+    const { store, owner } = await fixture(db);
+    const claimMail = (worker) => value(worker, "select public.owner_claim_rotation_key_mail() as value");
+    const authorize = (worker, mail) => value(worker,
+      "select public.owner_authorize_rotation_key_submit($1,$2) as value", [mail.id, mail.claimToken]);
+    const finishMail = (worker, mail) => value(worker,
+      "select public.owner_finish_rotation_key_mail($1,$2,'submitted') as value", [mail.id, mail.claimToken]);
+
+    async function completeRotation(secret) {
+      const rotation = await begin(db, store, owner, randomUUID(), secret);
+      expectStatus(rotation, "pending");
+      const dispatch = await claim(workerA, store);
+      expectStatus(await report(workerA, dispatch, "confirmed"), "confirmed");
+      const publish = await claim(workerA, store);
+      expectStatus(await advance(workerA, publish), "applied");
+      const finish = await claim(workerA, store);
+      expectStatus(await advance(workerA, finish, null), "completed");
+      const mailId = await value(db, `update private.mail_dispatches
+        set queued_at=(select min(queued_at)-interval '1 second' from private.mail_dispatches
+          where kind='rotation_store_key' and status='queued')
+        where rotation_id=$1 and kind='rotation_store_key' returning id as value`, [rotation.id]);
+      assert.ok(mailId);
+      return { rotation, mailId };
+    }
+
+    const first = await completeRotation("02");
+    const blockedPid = await value(workerB, "select pg_backend_pid() as value");
+    await workerA.query("begin");
+    let winner;
+    let contender;
+    try {
+      winner = await claimMail(workerA);
+      assert.equal(winner?.id, first.mailId);
+      contender = claimMail(workerB);
+      await assertBlocked(db, blockedPid);
+    } finally {
+      await workerA.query("commit");
+      if (contender) assert.equal(await contender, null);
+    }
+    assert.match(JSON.stringify(await begin(db, store, owner)), /CREATE_VERIFY_UNAVAILABLE/);
+    assert.deepEqual(await authorize(workerA, winner), { allowed: true, warnSessions: true });
+    assert.equal(await authorize(workerB, winner), null);
+    assert.equal(await finishMail(workerA, winner), true);
+
+    const second = await completeRotation("03");
+    assert.notEqual(second.mailId, first.mailId);
+    assert.equal(await value(db, "select private.owner_rotation_key_mail_current($1) as value", [first.mailId]), false);
+    assert.equal(await authorize(workerB, winner), null);
+    await db.query(`update private.store_key_rotations
+      set applied_at=statement_timestamp()-interval '61 minutes',
+          session_warning_until=statement_timestamp()-interval '1 minute' where id=$1`, [second.rotation.id]);
+    const current = await claimMail(workerB);
+    assert.equal(current?.id, second.mailId);
+    assert.equal(current?.generation, "2");
+    assert.deepEqual(await authorize(workerB, current), { allowed: true, warnSessions: false });
+    assert.equal(await finishMail(workerB, current), true);
+  });
+
   await t.test("legacy T06 mail and rotation admission serialize in both lock orders", async () => {
     const mailWins = await fixture(db);
     const mailId = await createLegacyMail(db, mailWins);
