@@ -5,6 +5,8 @@ Cập nhật **27/11/2026** với [kết quả kiểm 12.9 của T08](tasks/g01-
 <a id="next"></a>
 T08 có thêm bằng chứng cô lập cho TC-OWNER-113, 87 và 55. Mục 12.9 còn mở cho các tiêu chí cần Auth thật hoặc ma trận lỗi/đồng thời còn thiếu và các phần đang theo dõi bên trên. [Biên bản worker và phục hồi key](tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-worker-113-87-55-co-lap-20261127).
 
+Lượt Auth thật của TC-OWNER-55 xác nhận password grant và logout local. Mục 12.9 còn lỗi nhánh phục hồi khi Data API strict vì lookup của Edge thiếu header contract. [Biên bản Auth thật](tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-auth-that-password-grant-logout-local-55-20261127).
+
 ## Ưu tiên triển khai tiếp theo
 
 **Gói sửa attribution T02 đã merge và kiểm chứng U/P/C, PR CI và CI main**, đủ 18 phase trên mỗi event. Phần còn mở của T02 là recipe R-APP và nguyên nhân UI lịch sử UNKNOWN; không cần lặp khảo sát hoặc CI chỉ để chuyển việc. [Hồ sơ T02](tasks/g01-g10-t02-2026-10-28.md) ghi source/giới hạn. **T04 — hoàn thiện đặc tả owner/email** đã viết xong và merge vào docs ngày 08/11/2026 (PR #18), chưa triển khai; các task tiếp nhận khác tuân theo ưu tiên hiện hành của chủ dự án. T01 và T03-A đã khảo sát xong, T03-A giữ NO_CHANGE; không làm lại inventory. Readiness không tạo quyền triển khai, chạy backend hoặc đổi yêu cầu owner.
