@@ -1,7 +1,7 @@
-name: T08 isolated Auth order
+name: T08 isolated TC-OWNER-55 Auth
 on:
   push:
-    branches: [test/t08-auth-order-20261127]
+    branches: [test/t08-owner55-auth-20261127]
 
 permissions:
   contents: read
@@ -45,5 +45,9 @@ jobs:
           test -n "$binary" && test -x "$binary"
           printf 'T08_AUTH_BIN=%s\n' "$binary" >> "$GITHUB_ENV"
           docker exec "$POSTGRES_CONTAINER" psql -X -v ON_ERROR_STOP=1 -U postgres -d t08_auth_contract -c 'create schema auth'
-      - name: Verify Auth v2.198.0
-        run: node tests/contracts/t08-auth-order.ci.mjs
+      - name: Install the Edge Auth SDK in runner temp
+        run: >-
+          npm install --prefix "$RUNNER_TEMP/t08-auth-sdk" --cache "$RUNNER_TEMP/t08-auth-npm-cache"
+          --no-save --ignore-scripts --no-audit --no-fund @supabase/supabase-js@2.45.0
+      - name: Verify TC-OWNER-55 against Auth v2.198.0
+        run: node --experimental-transform-types tests/contracts/t08-auth-order.ci.mjs --tc-owner-55
