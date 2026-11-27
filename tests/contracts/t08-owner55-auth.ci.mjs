@@ -60,19 +60,20 @@ export async function exerciseRotationAuthProbe({ origin, ttl, adminToken, anonT
   let phase = "dispatch";
   let runToken;
   let probe;
+  let lookupContract;
   let bridgeError;
 
   function rpc(name, args, bearer, contract) {
     if (name === "permission_get_store_session") {
       check(probe && bearer === `Bearer ${probe.body.access_token}`, "Lookup did not use the probe session.");
       calls.push("lookup");
-      if (strictContract) {
-        check(contract === undefined && permissionStatus(contract) === 426,
-          "Expected the strict hook to reject the Edge request without a contract header.");
+      lookupContract = contract;
+      if (strictContract && permissionStatus(contract) === 426) {
         return { code: "WRITE_PROTOCOL_UNSUPPORTED" };
       }
       return { ok: true, data: { storeId, storeNo } };
     }
+    check(contract === undefined, "Permission marker was sent on an unrelated worker RPC.");
     check(bearer === `Bearer ${adminToken}`, "Worker RPC did not use service authorization.");
     if (idleRpcs.has(name)) return null;
     if (name === "owner_next_store_key_rotation") return phase === "completed" ? null : storeId;
@@ -90,11 +91,6 @@ export async function exerciseRotationAuthProbe({ origin, ttl, adminToken, anonT
       return { status: "recorded" };
     }
     if (name === "owner_report_store_key_rotation" && phase === "probe") {
-      if (strictContract) {
-        check(args.p_outcome === "probe_failed", "Worker unexpectedly passed the strict permission hook.");
-        phase = "probe_failed";
-        return { status: "recorded" };
-      }
       check(args.p_outcome === "confirmed", "Worker did not confirm the Auth probe.");
       phase = "publish";
       return { status: "confirmed" };
@@ -130,6 +126,7 @@ export async function exerciseRotationAuthProbe({ origin, ttl, adminToken, anonT
         && path.searchParams.get("grant_type") === "password";
       const logout = incoming.method === "POST" && path.pathname === "/auth/v1/logout";
       check(update || passwordGrant || logout, "Unexpected Auth transport.");
+      check(incoming.headers["x-pos-permission-contract"] === undefined, "Permission marker was sent to Auth.");
       if (logout) check(probe && bearer === `Bearer ${probe.body.access_token}`
         && path.searchParams.get("scope") === "local", "Logout did not target only the probe session.");
       const authReply = await fetch(origin + path.pathname.slice("/auth/v1".length) + path.search, {
@@ -199,7 +196,7 @@ export async function exerciseRotationAuthProbe({ origin, ttl, adminToken, anonT
     };
 
     const login = (password) => request("/token?grant_type=password", { email, password });
-    if (strictContract) check(permissionStatus("2") === 200, "Strict control with version 2 was rejected.");
+    if (strictContract) check(permissionStatus() === 426, "Strict hook allowed the missing-header control.");
     claim(await login(previous));
     await work();
     check(phase === "probe" && calls.join(",") === "update", "Dispatch did not recover as a single ambiguous update.");
@@ -208,22 +205,20 @@ export async function exerciseRotationAuthProbe({ origin, ttl, adminToken, anonT
     const companion = await login(candidate);
     const companionId = claim(companion).session_id;
     await work();
-    check(phase === (strictContract ? "probe_failed" : "publish")
-      && calls.join(",") === "update,password grant,lookup,local logout",
+    check(phase === "publish" && calls.join(",") === "update,password grant,lookup,local logout",
       "Unexpected Edge Auth calls after recovery.");
+    check(lookupContract === "2", "Edge lookup did not use permission contract version 2.");
     check(claim(probe).session_id !== companionId, "Probe and companion sessions were not independent.");
     checkRejectedRefresh(await refresh(probe.body.refresh_token));
     check(claim(await refresh(companion.body.refresh_token)).session_id === companionId,
       "Local logout affected the independent companion session.");
-    if (strictContract) {
-      console.log("REPRODUCED TC-OWNER-55 strict gate: header v2 control allowed; Edge request rejected with 426; probe_failed, local logout HTTP 204, probe refresh denied, companion refresh accepted.");
-      return;
-    }
     await work();
     await work();
     check(phase === "completed" && calls.join(",") === "update,password grant,lookup,local logout",
       "Database-only continuation produced additional Auth calls.");
-    console.log("PASS TC-OWNER-55: one Admin update, one password grant, local logout HTTP 204, probe refresh denied, companion refresh accepted, no further Auth calls.");
+    const gate = strictContract ? "strict hook accepted Edge header v2; missing-header control returned 426"
+      : "simulated lookup accepted Edge header v2";
+    console.log(`PASS TC-OWNER-55(a): ${gate}; one Admin update, one password grant, local logout HTTP 204, probe refresh denied, companion refresh accepted, completed, no further Auth calls.`);
   } finally {
     await new Promise((done) => gateway.close(done));
   }
