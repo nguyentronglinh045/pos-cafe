@@ -1,7 +1,7 @@
 import { Alert, Button, TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { newOwnerRequestId } from "@/core/ownerCreateInput";
-import { usePermissionSession } from "@/features/shared/permissionSession";
+import { sessionHasPermission, usePermissionSession } from "@/features/shared/permissionSession";
 import type { IOwnerRecoveryPort, RotationConfirmation, RotationError, RotationOtpRequest, RotationStatus } from "@/ports/ownerRecovery";
 import { useRotatedStorePairing } from "../../useRotatedStorePairing";
 
@@ -26,11 +26,48 @@ const messages: Record<RotationError, string> = {
   CREATE_VERIFY_UNAVAILABLE: "Chưa xác nhận được kết quả. Vui lòng thử lại.",
 };
 
-export function StoreKeyRotationPanel({ port, storeName }: { port: IOwnerRecoveryPort; storeName: string }) {
+export type RotationOtpReceipt = { id: string; deadline: number; storeName: string; timeOffset: number };
+
+export function useRotationOtpRequest(scope: string | null) {
+  const request = useRef<{ scope: string; input: RotationOtpRequest; inFlight: boolean } | null>(null);
+  const [issuingScope, setIssuingScope] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (request.current?.scope !== scope) request.current = null;
+    setIssuingScope(current => current === scope ? current : null);
+  }, [scope]);
+
+  return {
+    issuing: scope !== null && issuingScope === scope,
+    begin(input: RotationOtpRequest) {
+      if (!scope) return null;
+      const previous = request.current?.scope === scope ? request.current : null;
+      if (previous?.inFlight) return null;
+      const next = previous?.input.storeName === input.storeName ? previous.input : input;
+      request.current = { scope, input: next, inFlight: true };
+      setIssuingScope(scope);
+      return next;
+    },
+    finish(input: RotationOtpRequest, keepRequest: boolean) {
+      if (request.current?.input !== input || request.current.scope !== scope) return false;
+      request.current = keepRequest ? { ...request.current, inFlight: false } : null;
+      setIssuingScope(null);
+      return true;
+    },
+  };
+}
+
+export function StoreKeyRotationPanel({ port, storeName, pendingOtp, setPendingOtp, otpRequest }: {
+  port: IOwnerRecoveryPort;
+  storeName: string;
+  pendingOtp: RotationOtpReceipt | null;
+  setPendingOtp: (receipt: RotationOtpReceipt | null) => void;
+  otpRequest: ReturnType<typeof useRotationOtpRequest>;
+}) {
   const pairing = useRotatedStorePairing();
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
-  const [receipt, setReceipt] = useState<{ id: string; deadline: number } | null>(null);
+  const [attemptReceipt, setAttemptReceipt] = useState<RotationOtpReceipt | null>(null);
   const [now, setNow] = useState(Date.now);
   const [busy, setBusy] = useState<"issue" | "confirm" | null>(null);
   const [status, setStatus] = useState<RotationStatus | "uncertain" | null>(null);
@@ -39,10 +76,12 @@ export function StoreKeyRotationPanel({ port, storeName }: { port: IOwnerRecover
   const [copyNotice, setCopyNotice] = useState("");
   const issueRequest = useRef<RotationOtpRequest | null>(null);
   const proof = useRef<RotationConfirmation | null>(null);
-  const timeOffset = useRef(0);
+  const timeOffset = useRef<number | null>(null);
   const inFlight = useRef(false);
   const mounted = useRef(true);
   const generation = usePermissionSession(state => state.generation);
+  const receipt = attemptReceipt ?? pendingOtp;
+  const issuing = busy === "issue" || otpRequest.issuing;
 
   useEffect(() => {
     mounted.current = true;
@@ -56,12 +95,13 @@ export function StoreKeyRotationPanel({ port, storeName }: { port: IOwnerRecover
 
   const stillOwner = () => {
     const state = usePermissionSession.getState();
-    return mounted.current && state.generation === generation && state.status === "verified"
-      && state.bundle?.snapshot.role === "owner";
+    return mounted.current && state.generation === generation && state.bundle?.snapshot.role === "owner"
+      && sessionHasPermission("settings.manage", state);
   };
-  const matchingName = !!storeName.trim() && name.trim() === storeName.trim();
+  const enteredName = receipt?.storeName ?? name.trim();
+  const matchingName = !!storeName.trim() && enteredName === storeName.trim();
   const wait = Math.max(0, Math.ceil(((receipt?.deadline ?? now) - now) / 1_000));
-  const stamp = () => newOwnerRequestId(Date.now() + timeOffset.current);
+  const stamp = () => newOwnerRequestId(Date.now() + (timeOffset.current ?? receipt?.timeOffset ?? 0));
   function start(kind: "issue" | "confirm") {
     if (inFlight.current || !stillOwner()) return false;
     inFlight.current = true;
@@ -80,7 +120,8 @@ export function StoreKeyRotationPanel({ port, storeName }: { port: IOwnerRecover
     issueRequest.current = null;
     proof.current = null;
     setCode("");
-    setReceipt(null);
+    setAttemptReceipt(null);
+    setPendingOtp(null);
     setStatus(null);
     if (error === "AUTH_REQUIRED") void pairing.requireStorePairing(notice);
     else pairing.requireEmployeePin(notice);
@@ -88,20 +129,28 @@ export function StoreKeyRotationPanel({ port, storeName }: { port: IOwnerRecover
   }
 
   async function issue(checkAgain = false) {
-    if ((!checkAgain && (!matchingName || wait > 0)) || !start("issue")) return;
-    const input = issueRequest.current ?? { storeName: name.trim(), requestId: stamp() };
+    if (issuing || (!checkAgain && (!matchingName || wait > 0)) || !start("issue")) return;
+    const input = otpRequest.begin(issueRequest.current ?? { storeName: enteredName, requestId: stamp() });
+    if (!input) { finish(); return; }
     issueRequest.current = input;
+    let keepRequest = true;
+    let issuedReceipt: RotationOtpReceipt | null = null;
     try {
       const result = await port.requestRotationOtp(input);
-      if (!stillOwner()) return;
+      keepRequest = result.kind === "status" || (result.kind === "error" && result.code === "A_SEND_UNAVAILABLE");
       if (result.kind === "receipt") {
         const receivedAt = Date.now();
         timeOffset.current = result.serverNow - receivedAt;
+        issuedReceipt = { id: result.challengeRef, deadline: result.resendNotBefore - timeOffset.current,
+          storeName: input.storeName, timeOffset: timeOffset.current };
+        if (!stillOwner()) return;
         setNow(receivedAt);
-        setReceipt({ id: result.challengeRef, deadline: receivedAt + result.resendNotBefore - result.serverNow });
+        setAttemptReceipt(null);
         setCode("");
         proof.current = null;
         issueRequest.current = null;
+      } else if (!stillOwner()) {
+        return;
       } else if (result.kind === "status") {
         setStatus(result.status);
       } else if (!handleSessionError(result.code, false)) {
@@ -111,14 +160,21 @@ export function StoreKeyRotationPanel({ port, storeName }: { port: IOwnerRecover
       }
     } catch {
       if (stillOwner()) setMessage(messages.A_SEND_UNAVAILABLE);
-    } finally { finish(); }
+    } finally {
+      if (otpRequest.finish(input, keepRequest) && issuedReceipt) setPendingOtp(issuedReceipt);
+      finish();
+    }
   }
 
   async function confirm(checkAgain = false) {
     const input = proof.current ?? (receipt && matchingName && otpPattern.test(code)
-      ? { storeName: name.trim(), challengeRef: receipt.id, code, attemptId: stamp() } : null);
+      ? { storeName: enteredName, challengeRef: receipt.id, code, attemptId: stamp() } : null);
     if (!input || (!checkAgain && !wait) || !start("confirm")) return;
     proof.current = input;
+    // A confirmation may change the key even if its response is lost while away.
+    // Only a receipt that is waiting for OTP entry may survive unmounting.
+    setAttemptReceipt(receipt);
+    setPendingOtp(null);
     try {
       const result = await port.confirmRotation(input);
       if (!stillOwner()) return;
@@ -136,9 +192,12 @@ export function StoreKeyRotationPanel({ port, storeName }: { port: IOwnerRecover
       } else if (!handleSessionError(result.code, true)) {
         if (result.serverNow !== undefined) timeOffset.current = result.serverNow - Date.now();
         proof.current = null;
+        setAttemptReceipt(null);
         if (result.code === "A_OTP_EXPIRED") {
-          setReceipt(null);
+          setName(enteredName);
           setCode("");
+        } else if (receipt) {
+          setPendingOtp({ ...receipt, timeOffset: timeOffset.current ?? receipt.timeOffset });
         }
         setStatus(null);
         setMessage(messages[result.code]);
@@ -199,13 +258,13 @@ export function StoreKeyRotationPanel({ port, storeName }: { port: IOwnerRecover
         Sau khi đổi, key cũ không ghép thêm máy được. Mọi máy, kể cả máy này, sẽ phải ghép lại.
         Máy đang sử dụng có thể tiếp tục hoạt động đến khi phiên hiện tại hết hạn.
       </Alert>
-      <TextField size="small" fullWidth label="Gõ lại tên quán" autoComplete="off" value={name}
+      <TextField size="small" fullWidth label="Gõ lại tên quán" autoComplete="off" value={receipt?.storeName ?? name}
         onChange={event => { setName(event.target.value); setMessage(""); issueRequest.current = null; }}
-        disabled={!!receipt || busy !== null} inputProps={{ maxLength: 120, "data-testid": "rotation-store-name" }} />
+        disabled={!!receipt || busy !== null || issuing} inputProps={{ maxLength: 120, "data-testid": "rotation-store-name" }} />
       <div className="flex flex-wrap items-center gap-2">
-        <Button type="button" variant="outlined" disabled={!matchingName || !!wait || busy !== null}
+        <Button type="button" variant="outlined" disabled={!matchingName || !!wait || busy !== null || issuing}
           onClick={() => void issue()} data-testid="rotation-send-otp">
-          {busy === "issue" ? "Đang gửi mã..." : receipt ? "Gửi lại mã" : "Gửi mã"}
+          {issuing ? "Đang gửi mã..." : receipt ? "Gửi lại mã" : "Gửi mã"}
         </Button>
         <span className="text-xs text-pos-muted">
           {wait ? `Có thể gửi lại sau ${Math.floor(wait / 60)}:${String(wait % 60).padStart(2, "0")}.`
@@ -215,10 +274,10 @@ export function StoreKeyRotationPanel({ port, storeName }: { port: IOwnerRecover
       {receipt && <>
         <TextField size="small" fullWidth label="Mã xác nhận" autoComplete="one-time-code" value={code}
           onChange={event => { setCode(event.target.value.replace(/\D/g, "").slice(0, 6)); setMessage(""); proof.current = null; }}
-          disabled={busy !== null || !wait}
+          disabled={busy !== null || issuing || !wait}
           inputProps={{ inputMode: "numeric", maxLength: 6, "data-testid": "rotation-otp-input" }} />
         <Button type="submit" variant="contained" className="justify-self-start"
-          disabled={busy !== null || !wait || !otpPattern.test(code)} data-testid="rotation-confirm">
+          disabled={busy !== null || issuing || !wait || !otpPattern.test(code)} data-testid="rotation-confirm">
           {busy === "confirm" ? "Đang xác nhận..." : "Tạo key mới"}
         </Button>
       </>}

@@ -1,12 +1,14 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { useState } from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import { createAppPorts } from "@/app/runtimePorts";
 import { useAppStore } from "@/app/useAppStore";
 import { PortsContext } from "@/features/shared/portsContext";
 import { usePermissionSession } from "@/features/shared/permissionSession";
-import type { IOwnerRecoveryPort, RotationConfirmResult } from "@/ports/ownerRecovery";
-import { StoreKeyRotationPanel } from "./StoreKeyRotationPanel";
+import type { IOwnerRecoveryPort, RotationConfirmResult, RotationOtpResult } from "@/ports/ownerRecovery";
+import { GeneralSettingsDrawer } from "./GeneralSettingsDrawer";
+import { StoreKeyRotationPanel, useRotationOtpRequest, type RotationOtpReceipt } from "./StoreKeyRotationPanel";
 
 const name = "POS Demo";
 const key = `0001-${"A".repeat(32)}`;
@@ -15,8 +17,8 @@ const owner = { id: "30000000-0000-4000-8000-000000000011", name: "Chủ quán" 
 const receipt = () => ({ kind: "receipt" as const, challengeRef, serverNow: Date.now(),
   resendNotBefore: Date.now() + 600_000 });
 
-async function mount(port: IOwnerRecoveryPort) {
-  const ports = createAppPorts({ mode: "mock" });
+async function mount(port: IOwnerRecoveryPort, useDrawer = false) {
+  const ports = { ...createAppPorts({ mode: "mock" }), ownerRecovery: port };
   await ports.auth.pairStore("0001-X8F3QA");
   const session = await ports.permission.session.startSession(owner.id, "123456");
   useAppStore.getState().startEmployeeSession(owner, session);
@@ -25,10 +27,16 @@ async function mount(port: IOwnerRecoveryPort) {
   const pair = vi.spyOn(ports.auth, "pairStore");
   const unpair = vi.spyOn(ports.auth, "unpairStore");
   const revokeEmployee = vi.spyOn(ports.permission!.session, "revokeSession");
+  function Panel() {
+    const [pendingOtp, setPendingOtp] = useState<RotationOtpReceipt | null>(null);
+    const otpRequest = useRotationOtpRequest("fixture");
+    return <StoreKeyRotationPanel port={port} storeName={name} pendingOtp={pendingOtp}
+      setPendingOtp={setPendingOtp} otpRequest={otpRequest} />;
+  }
   render(<PortsContext.Provider value={ports}><QueryClientProvider client={queries}>
-    <StoreKeyRotationPanel port={port} storeName={name} />
+    {useDrawer ? <GeneralSettingsDrawer /> : <Panel />}
   </QueryClientProvider></PortsContext.Provider>);
-  return { pair, originalPair, unpair, revokeEmployee, queries, auth: ports.auth };
+  return { pair, originalPair, unpair, revokeEmployee, queries, auth: ports.auth, session };
 }
 
 async function sendAndEnterCode() {
@@ -45,6 +53,40 @@ afterEach(() => {
   useAppStore.getState().setCurrentEmployee(null);
   useAppStore.setState({ rePairingStore: false, screen: "landing", sessionNotice: null });
   vi.restoreAllMocks();
+});
+
+it.each([false, true])("retains one pending send for the owner across verification (early response: %s)", async earlyResponse => {
+  let deliver!: (value: RotationOtpResult) => void;
+  const requestRotationOtp = vi.fn<IOwnerRecoveryPort["requestRotationOtp"]>()
+    .mockImplementation(() => new Promise(resolve => { deliver = resolve; }));
+  const { session, queries } = await mount({ requestRotationOtp, confirmRotation: vi.fn() }, true);
+  fireEvent.click(await screen.findByTestId("settings-section-rotation"));
+  fireEvent.change(screen.getByTestId("rotation-store-name"), { target: { value: name } });
+  const send = screen.getByTestId("rotation-send-otp");
+  await waitFor(() => expect(send).toBeEnabled());
+  fireEvent.click(send);
+
+  act(() => usePermissionSession.getState().setStatus("unverified"));
+  if (earlyResponse) await act(async () => { deliver(receipt()); });
+  expect(screen.queryByTestId("rotation-otp-input")).not.toBeInTheDocument();
+
+  act(() => usePermissionSession.getState().setStatus("verified"));
+  if (!earlyResponse) {
+    const remountedSend = await screen.findByTestId("rotation-send-otp");
+    expect(remountedSend).toHaveTextContent("Đang gửi mã");
+    expect(remountedSend).toBeDisabled();
+    expect(screen.getByTestId("rotation-store-name")).toBeDisabled();
+    fireEvent.click(remountedSend);
+    expect(requestRotationOtp).toHaveBeenCalledTimes(1);
+    await act(async () => { deliver(receipt()); });
+  }
+  expect(await screen.findByTestId("rotation-otp-input")).toHaveValue("");
+  expect(requestRotationOtp).toHaveBeenCalledTimes(1);
+
+  act(() => usePermissionSession.getState().begin(session));
+  expect(screen.getByTestId("rotation-store-name")).toHaveValue("");
+  expect(screen.queryByTestId("rotation-otp-input")).not.toBeInTheDocument();
+  queries.clear();
 });
 
 it("reuses the exact attempt and OTP after losing the confirmation response", async () => {
