@@ -5,6 +5,50 @@ import { SupabaseWriteOperationRepo } from "./writeOperationRepo";
 import type { SupabaseAnyClient } from "./repoShared";
 
 describe("current-device store logout", () => {
+  it("reports SDK sign-out only when this device did not initiate it", async () => {
+    let emit!: (event: string) => void;
+    const unsubscribe = vi.fn();
+    const onAuthStateChange = vi.fn((listener: typeof emit) => {
+      emit = listener;
+      return { data: { subscription: { unsubscribe } } };
+    });
+    const signOut = vi.fn(async () => { emit("SIGNED_OUT"); return { error: null }; });
+    const client = { auth: { signOut, onAuthStateChange } } as unknown as SupabaseAnyClient;
+    const auth = new SupabaseAuthRepo(client);
+    const lost = vi.fn();
+    const stop = auth.onStoreSessionLost(lost);
+
+    await auth.unpairStore();
+    emit("INITIAL_SESSION");
+    emit("TOKEN_REFRESHED");
+    expect(lost).not.toHaveBeenCalled();
+    emit("SIGNED_OUT");
+    expect(lost).toHaveBeenCalledOnce();
+    stop();
+    expect(unsubscribe).toHaveBeenCalledOnce();
+  });
+
+  it("completes a deliberate unpair when refresh failed after the SDK removed the session", async () => {
+    let emit!: (event: string) => void;
+    const onAuthStateChange = vi.fn((listener: typeof emit) => {
+      emit = listener;
+      return { data: { subscription: { unsubscribe: vi.fn() } } };
+    });
+    const error = { code: "refresh_token_not_found", message: "Refresh token not found" };
+    const signOut = vi.fn().mockResolvedValueOnce({ error }).mockImplementationOnce(async () => {
+      emit("SIGNED_OUT");
+      return { error };
+    });
+    const client = { auth: { signOut, onAuthStateChange } } as unknown as SupabaseAnyClient;
+    const auth = new SupabaseAuthRepo(client);
+    const lost = vi.fn();
+    auth.onStoreSessionLost(lost);
+
+    await expect(auth.unpairStore()).rejects.toMatchObject({ code: "AUTH_REQUIRED" });
+    await expect(auth.unpairStore()).resolves.toBeUndefined();
+    expect(lost).not.toHaveBeenCalled();
+  });
+
   it("clears the employee credential and revokes only the current store session", async () => {
     const signOut = vi.fn().mockResolvedValue({ error: null });
     const client = { auth: { signOut } } as unknown as SupabaseAnyClient;

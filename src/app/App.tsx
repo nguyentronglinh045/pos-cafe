@@ -1,6 +1,9 @@
 import { useContext, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useStoreSessionQuery } from "@/features/session";
+import { sessionQueryKeys } from "@/features/session/useSessionFlow";
+import type { StoreSessionBootstrap } from "@/features/session/sessionFlow";
 import { PermissionLifecycle } from "./PermissionLifecycle";
 import { useAppStore } from "./useAppStore";
 import { toToastError } from "./appErrors";
@@ -33,6 +36,8 @@ export function App() {
 
 function ActiveApp() {
   const appPorts = useContext(PortsContext);
+  const auth = appPorts?.auth;
+  const queryClient = useQueryClient();
   const storeProvisioning = appPorts?.storeProvisioning;
   const seed = appPorts?.permission?.initialSeed;
   const serverSeed = seed?.getReadiness && seed.retryAll && seed.skipAll ? seed : undefined;
@@ -48,6 +53,19 @@ function ActiveApp() {
   useEffect(() => {
     if (storeProvisioning && restoreOwnerCreateAttempt()) setScreen("createStore");
   }, [setScreen, storeProvisioning]);
+
+  useEffect(() => auth?.onStoreSessionLost?.(() => {
+    const app = useAppStore.getState();
+    const cachedStore = queryClient.getQueryData<StoreSessionBootstrap>(sessionQueryKeys.storeSession);
+    if (app.rePairingStore || cachedStore?.status !== "paired") return;
+
+    const notice = "Phiên ghép thiết bị đã mất hiệu lực. Hãy dùng Store Key hiện hành để ghép lại.";
+    app.beginRotatedStorePairing(notice);
+    void queryClient.cancelQueries();
+    queryClient.clear();
+    queryClient.setQueryData(sessionQueryKeys.storeSession, { status: "unpaired", session: null });
+    app.finishRotatedStorePairing("storePairing", notice);
+  }), [auth, queryClient]);
 
   useEffect(() => {
     if (rePairingStore || !storeSessionQuery.data) {
