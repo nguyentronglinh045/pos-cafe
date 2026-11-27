@@ -734,3 +734,22 @@ Lượt chạy GitHub Actions `46012854273/1` diễn ra từ 21:06:04 đến 21:
 Tệp local `t08-owner55-strict-fixed-46012854273-20261127.txt` giữ metadata và hai dòng kết quả đã che dữ liệu, SHA-256 `739454D5A85858593DBAD17DF0BF0D3D8FCEAEEBFD8A4052B911901081B75EC6`. Bản sửa và test được giữ trên các nhánh chủ đề riêng. Lượt này không dùng staging hoặc tạo bản triển khai.
 
 Hai reviewer AI độc lập **APPROVE** bản sửa `9c9822c`, test `00c4eb56`, hồ sơ trước đoạn này `5c88e154f8ad25ba495695be30c4c0ce8bbad753`, testplan `02d78c343f8ae09031f7f775632770c94f1e90d8` và kế hoạch `b8547d07b40a602094cf3819537dc32ae0661bcf`. Một lượt rà đối chiếu đường Auth và tiêu chí nghiệm thu. Lượt còn lại kiểm nguồn, phạm vi cô lập, CI và phạm vi push. OpenSpec strict và kiểm tra diff đạt.
+
+<a id="chot-129-pham-vi-da-kiem-20261127"></a>
+
+### Chốt mục 12.9 theo phạm vi đã kiểm
+
+Ngày 27/11/2026, Linh đồng ý nghiệm thu mục 12.9 theo phạm vi đã kiểm và yêu cầu push hồ sơ. Linh chốt bỏ các phép kiểm còn lại khỏi lần nghiệm thu này và tiếp tục bỏ qua TC-OWNER-114. Kết quả của các lượt đã chạy được giữ theo đúng môi trường, commit và mức chứng minh. Mục 12.9 được đánh dấu hoàn tất theo phạm vi này.
+
+| Ca | Bằng chứng được ghi nhận | Phần nằm ngoài phạm vi chốt |
+| --- | --- | --- |
+| TC-OWNER-52 | UI #0038–#0039 trên Protected Preview `cd3e3e3` ghi nhận A ghép một chạm, B tự về màn ghép và hai máy vào POS bằng PIN. Phép gọi trực tiếp Edge ở #0039 xác nhận biên nhận lượt tạo cũ chỉ trả trạng thái sau đổi key. SQL #0040 ghi nhận hai phiên trình duyệt mới tự gia hạn. | Phản hồi HTTP và claim `iat`/`exp` của chính hai tab A/B. Thao tác sao chép key trên Preview. |
+| TC-OWNER-53, 54 | Hồi quy sai tên và khóa sau năm lần sai OTP ở môi trường cô lập. TC-OWNER-53 có thêm kiểm trạng thái nút khi gõ sai tên trên Preview. | — |
+| TC-OWNER-55 | TC-OWNER-55(a) đạt trên Auth và hook strict thật ở runner cô lập với bản sửa `9c9822c`. Các nhánh mất HTTP Edge và gửi lại đã kiểm cô lập. | PostgREST/Edge triển khai với bản sửa, toàn chuỗi DB và Auth cùng fixture, thư đến hộp thư trong chính ca mất phản hồi. |
+| TC-OWNER-87, 113 | Kiểm phần phục hồi worker, ngưỡng cảnh báo trong DB, tranh claim, token cũ và hai generation xen kẽ trong môi trường cô lập. | Đổi email, chuyển quyền, reset, kênh cảnh báo operator và các điểm gián đoạn, lỗi transport hoặc lịch xen kẽ còn thiếu trong biên bản. |
+| TC-OWNER-114 | Bỏ qua cho lần chốt này. Giữ bằng chứng từng lượt trong lịch sử. | Toàn bộ tiêu chí của ca trong lần nghiệm thu này. |
+| TC-OWNER-115 | Đã kiểm thứ tự gửi/chờ HTTP và ca Auth gửi đồng thời trong môi trường cô lập. | Thứ tự commit có kiểm soát theo testplan. |
+
+**Phạm vi phát hành.** Bản sửa Edge `9c9822c` đã push trên nhánh `fix/t08-rotation-probe-contract-20261127`. CI Auth strict và POS light CI đều đạt. Bản vá chưa merge vào `main` và chưa triển khai lên staging. Quyết định lần này chốt nghiệm thu 12.9 theo bằng chứng hiện có. [CI thử strict](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46012854273) · [POS light CI của bản vá](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46013157522).
+
+Hai reviewer AI độc lập **APPROVE** hồ sơ trước đoạn này `8fbd1d0e1578c761cebfccb0855c4d08fb1286f3`, checklist `6ad28148d2e2fe7c4afd54bcece9cf1509a279d8`, testplan `d862251b2db4e890a867e5bc1973efcf7dc63270` và kế hoạch `8c65d055825a89584c2275a5e1c835da9cbac81a`. Hai lượt rà bao phủ phạm vi nghiệm thu, nguồn bằng chứng và trạng thái phát hành. OpenSpec strict và kiểm tra diff đạt.
