@@ -25,6 +25,14 @@ Các quyết định Q5/Q6 yêu cầu xác minh owner qua hồ sơ hỗ trợ ng
 - **Kết quả tạo chưa rõ.** Khi Auth hoặc DB chưa xác định được kết quả, lượt tạo có thể giữ một suất cho tới khi có xác minh riêng. Lượt tra chỉ đọc và hệ thống từ chối ghi muộn theo hợp đồng. Tự động đối soát, dọn tài khoản dở và cảnh báo cho trường hợp này thuộc phạm vi sau đồ án theo quyết định 48. [Hợp đồng và quyết định](../openspec/changes/add-owner-account-and-store-provisioning/proposal.md#quyết-định-đã-chốt).
 - **Phạm vi đã kiểm.** Protected Preview và staging đã kiểm OTP, ghép, PIN và R07. Gói SQL/Edge đã vào `main` tại `9a1f23d` qua PR #32. T06 còn chờ kiểm thử hồi quy trên bản ứng viên phát hành để hoàn tất nghiệm thu. Hộp thư gửi riêng là việc T05. Hai nhãn mock trên Preview còn chờ sửa. [PR #32](https://github.com/nguyentronglinh045/pos-cafe/pull/32) · [Việc còn lại của T06](workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#t06-con-lai-2026-11-17).
 
+## Đổi Store Key T08
+
+Linh chốt A + M-A ngày 25/11/2026. Phạm vi hiện thực được theo dõi riêng trong hồ sơ T08. [Quyết định 59–60](../openspec/changes/add-owner-account-and-store-provisioning/proposal.md#quyết-định-đã-chốt) · [Hồ sơ T08](workflow/tasks/g01-g10-t08-session-review-2026-11-24.md).
+
+- **Kết quả Auth chưa rõ.** Khi đối soát lỗi sáu lần trong cùng pha, hệ thống lưu một cảnh báo và dừng tự động. Giữ `pending` giúp tránh phát lại lệnh có thể đến muộn. Trong lúc đó quán bị bỏ qua khi gửi lại key. Thiết kế yêu cầu đổi email, chuyển quyền và reset phải chờ. Phần tích hợp của các thao tác này và quy trình người vận hành nằm trong hồ sơ T08. Hết thời gian chờ không tự mở lại lượt.
+- **Thư gửi chậm.** Hàng rào kiểm thế hệ và chủ hiện hành trước khi gửi, giữ quy trình nhận key trực tiếp qua email. Thư đang gửi hoặc chưa rõ kết quả có thể trì hoãn đổi key, đổi email và chuyển quyền. SMTP đã tiếp nhận có thể giao thư cũ sau một lần đổi key, email hoặc chủ. Nếu chỉ đổi email hoặc chuyển quyền, thư ở hộp thư cũ có thể vẫn chứa key còn hiệu lực.
+- **Phiên thiết bị.** Theo quyết định 42, access JWT đã cấp có thể còn được chấp nhận tới biên hết hạn của dịch vụ. Phép kiểm tuần tự 12.10 đo TTL staging 3.600 giây và thấy phiên cũ không làm mới được. Lượt 12.9 quan sát mốc UI quay lại màn ghép trên #0038. Kiểm đồng thời Auth vẫn cần bằng chứng riêng. [Bằng chứng 12.10](workflow/tasks/g01-g10-t08-session-review-2026-11-24.md#kiem-auth-1210-20261125).
+
 ## Dữ liệu mẫu và trạng thái cửa hàng
 
 [Quyết định R06 ngày 26/10](spec-reconciliation.md#r06-decisions) chấp nhận retry seed tại thông báo chung. Reseed sau xóa được hoãn. T06 đã kiểm seed ban đầu và fallback thử lại/bỏ mẫu ở PostgreSQL cô lập. [Bằng chứng TC-09](workflow/tasks/g01-g10-t06-owner-implementation-2026-11-11.md#tc09-local-2026-11-17).

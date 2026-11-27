@@ -197,7 +197,7 @@ Cập nhật 2026-11-05. Mã lỗi khai ở `design.md`. Dữ liệu ví dụ d�
 | email | chuỗi | Có | Như UC-OWNER-01 | `owner.a@example.com` |
 
 - **Luồng chính:** 1. Chủ chọn “Quên Store Key?” ở màn ghép thiết bị hoặc mục Cài đặt. Hộp thoại hiển thị lời nhắc “Nhập email chủ quán đã đăng ký để nhận lại Store Key đang dùng. Việc gửi lại không đổi key hay đăng xuất các máy đã ghép.” 2. Nhập email rồi bấm “Gửi key hiện tại qua email”. 3. Hệ thống trả phản hồi chung. 4. Nếu email đứng tên quán, thư chứa danh sách quán và key tới hộp thư.
-- **Luồng thay thế:** 4a. Email không đứng tên quán nào: phản hồi giống hệt, không có thư. 4b. Khi chưa xác nhận key mới đã được lưu (`pending`), thư bỏ qua quán đó. Từ `applied`, thư có thể gửi key mới đang có hiệu lực. Trước `session_warning_until = applied_at + access_token_ttl`, thư nhắc chủ “Việc đổi key vẫn đang hoàn tất. Máy vừa ghép bằng key mới có thể phải ghép lại.” `completed` không tắt sớm cảnh báo này. Phản hồi trên màn hình vẫn dùng thông báo chung.
+- **Luồng thay thế:** 4a. Email không đứng tên quán nào: phản hồi giống hệt, không có thư. 4b. Khi chưa xác nhận key mới đã được lưu (`pending`), thư bỏ qua quán đó. Từ `applied`, thư có thể gửi key mới đang có hiệu lực. Trước `session_warning_until = applied_at + access_token_ttl`, thư nhắc chủ “Việc đổi key vẫn đang hoàn tất. Máy vừa ghép bằng key mới có thể phải ghép lại.” `completed` không tắt sớm cảnh báo này. Đây không phải một bước Auth hậu kỳ của worker. Phản hồi trên màn hình vẫn dùng thông báo chung.
 - **Luồng ngoại lệ:** email sai dạng ⇒ `A_EMAIL_INVALID` "Địa chỉ email không hợp lệ. Vui lòng kiểm tra lại."; quá 3 lần trong một giờ, hoặc hết giới hạn theo địa chỉ mạng và trần toàn dự án: phản hồi vẫn giống hệt, không có thư thêm. Giới hạn theo địa chỉ mạng đếm mọi yêu cầu đúng dạng, trước khi xét giới hạn theo email, kể cả yêu cầu cho email không có quán.
 - **Đầu ra:**
 
@@ -225,18 +225,20 @@ Cập nhật 2026-11-05. Mã lỗi khai ở `design.md`. Dữ liệu ví dụ d�
 | requestId, attemptId | UUID v7 | Có (máy sinh) | Như UC-OWNER-01, 02 | — |
 
 - **Luồng chính:** 1. Mở Cài đặt, chọn “Đổi Store Key”. 2. Đọc cảnh báo “Dùng khi bạn nghi Store Key đã lộ, chẳng hạn nhân viên đã nghỉ việc vẫn còn biết key. Sau khi đổi, key cũ không ghép thêm máy được. Mọi máy, kể cả máy này, sẽ phải ghép lại. Máy đang sử dụng có thể tiếp tục hoạt động đến khi phiên hiện tại hết hạn.” 3. Gõ lại tên quán. 4. Bấm gửi mã tới email đã đăng ký. 5. Nhập mã rồi xác nhận bằng nút “Tạo key mới”. 6. Khi hoàn tất, hệ thống hiển thị key mới kèm nút sao chép. 7. Chủ có thể bấm “Dùng key mới trên máy này” để ghép bằng key đang hiển thị, sau đó nhập lại PIN nhân viên để vào POS.
-- **Luồng thay thế:** 6a. Mất phản hồi: gửi lại đúng lần nhập mã không sinh key lần hai; key mới có trong thư. Máy đã bị đăng xuất thì không gửi lại được, và key mới vẫn có trong thư. 6b. Dừng giữa chừng: trả trạng thái chưa rõ; tiến trình đối soát làm tiếp. 6c. Đang có lần cấp lại làm dở: chỉ trả trạng thái chưa rõ, không dùng mã. 6d. Khi đã lưu key mới và bước thu hồi còn dở, chủ có thể nhận key hiện tại qua luồng quên key của UC-OWNER-08.
+- **Luồng thay thế:** 6a. Mất phản hồi: gửi lại đúng lần nhập mã không sinh key lần hai; key mới có trong thư hoặc qua luồng quên key sau khi đã `applied`. Máy đã bị đăng xuất thì không gửi lại được. 6b. Dừng khi `pending`: trả trạng thái chưa rõ; worker dùng đúng ID/thế hệ và bí mật ứng viên để xác minh rồi làm tiếp, không sinh bí mật hay phát lệnh Auth thứ hai khi kết quả lệnh trước chưa rõ. 6c. Đang có lần cấp lại `pending` hoặc `applied`: yêu cầu cấp lại mới chỉ trả trạng thái lần đang làm, không dùng mã. 6d. Khi đã `applied`, chủ có thể nhận key hiện tại qua UC-OWNER-08; thư cảnh báo “Việc đổi key vẫn đang hoàn tất. Máy vừa ghép bằng key mới có thể phải ghép lại.” tới `session_warning_until`, kể cả rotation đã `completed`. 6e. Dừng sau `applied`: worker chỉ đối soát database để chuyển `completed`, không gọi Auth lần nữa.
 - **Luồng ngoại lệ:** `EMPLOYEE_SESSION_REQUIRED` "Phiên nhân viên không còn hợp lệ. Vui lòng đăng nhập lại."; `PIN_CHANGE_REQUIRED` "Bạn cần đổi PIN trước khi sử dụng quán."; `STORE_NAME_MISMATCH` "Tên quán chưa đúng. Vui lòng gõ lại đúng tên quán."; `OWNER_ROLE_REQUIRED` "Chỉ tài khoản chủ quán mới thực hiện được thao tác này."; `STORE_SUSPENDED` "Quán đang tạm ngưng nên chưa thực hiện được thao tác này."; các lỗi mã như UC-OWNER-02.
 - **Đầu ra:**
 
 | Đầu ra | Nội dung |
 | --- | --- |
 | Dữ liệu trả về | Store Key mới |
-| Trạng thái hệ thống | Bí mật mới đã mã hóa; mật khẩu tài khoản kỹ thuật đổi; key cũ không ghép được nữa |
+| Trạng thái hệ thống | `pending` giữ key ứng viên kín; `applied` là điểm mật khẩu Auth và key mã hóa trên `stores` đã khớp, refresh session cũ đã bị thu hồi; `completed` xác nhận đối soát database đã xong |
 | Thông báo | “Đã đổi Store Key. Hãy sao chép key mới để ghép lại các máy.” |
 | Tác dụng phụ | Thư gửi kèm; nhật ký `store_key_regenerated`, không chứa key |
 
-- **Tiêu chí chấp nhận:** không có mã thì key không đổi; key cũ không ghép được nữa; gửi lại không đổi key lần hai.
+- **Tiêu chí chấp nhận:** không có mã thì key không đổi; key cũ không ghép được nữa; gửi lại không đổi key lần hai; worker/lượt cũ không thể đặt lại key hoặc thu hồi phiên của lượt mới hơn; thư chứa key đúng thế hệ và đúng chủ tại điểm cho phép gửi.
+
+- **Ngoại lệ M-A:** Nếu thư chứa key của quán đang gửi hoặc chưa rõ SMTP đã nhận, yêu cầu mới nhận `CREATE_VERIFY_UNAVAILABLE` với thông báo “Chưa xác nhận được kết quả. Vui lòng thử lại.” Hệ thống giữ nguyên mã và không tạo lượt mới. Với thư đã được SMTP nhận, tính hiện hành của key được xác định lúc cho phép gửi. Thư có thể tới sau lượt đổi tiếp.
 - **Truy vết:** REQ-OWNER-04, 07, 08, 09, 10.
 
 ## UC-OWNER-10 — Chủ quên PIN
