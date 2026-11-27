@@ -17,13 +17,14 @@ on:
         required: true
         type: string
       data_mode:
-        description: 'Expected Preview data mode; Supabase requires reviewed Preview-only public configuration'
+        description: 'Expected Preview configuration; enable Store Key rotation only for an approved staging run'
         default: mock
         required: true
         type: choice
         options:
           - mock
           - supabase
+          - supabase_rotation
 
 permissions:
   contents: read
