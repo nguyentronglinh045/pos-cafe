@@ -753,3 +753,17 @@ Ngày 27/11/2026, Linh đồng ý nghiệm thu mục 12.9 theo phạm vi đã ki
 **Phạm vi phát hành.** Bản sửa Edge `9c9822c` đã push trên nhánh `fix/t08-rotation-probe-contract-20261127`. CI Auth strict và POS light CI đều đạt. Bản vá chưa merge vào `main` và chưa triển khai lên staging. Quyết định lần này chốt nghiệm thu 12.9 theo bằng chứng hiện có. [CI thử strict](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46012854273) · [POS light CI của bản vá](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46013157522).
 
 Hai reviewer AI độc lập **APPROVE** hồ sơ trước đoạn này `8fbd1d0e1578c761cebfccb0855c4d08fb1286f3`, checklist `6ad28148d2e2fe7c4afd54bcece9cf1509a279d8`, testplan `d862251b2db4e890a867e5bc1973efcf7dc63270` và kế hoạch `8c65d055825a89584c2275a5e1c835da9cbac81a`. Hai lượt rà bao phủ phạm vi nghiệm thu, nguồn bằng chứng và trạng thái phát hành. OpenSpec strict và kiểm tra diff đạt.
+
+<a id="pr-53-sua-header-edge-20261127"></a>
+
+### Đưa bản sửa header Edge vào PR #53
+
+Ngày 27/11/2026, Linh yêu cầu merge bản sửa Edge vào `main`, xóa nhánh sau khi merge và cập nhật hồ sơ. PR #53 có head `9c9822cf7bd39034a82c1996e04e4e7b721f2ead`, base `cd3e3e3d5058d7b77a353fc2b0ab456b4971c76c` và chỉ sửa `supabase/functions/owner-provisioning/index.ts`. Cây mã GitHub tạo để kiểm PR là `ab93c8c91458a25ff95d5a40aebc94cdc769a2ad`, trùng cây mã của head đã rà. Blob Edge tiếp tục khớp lượt TC-OWNER-55(a) với Auth và hook strict cô lập. [PR #53](https://github.com/nguyentronglinh045/pos-cafe/pull/53) · [CI Auth strict](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46012854273).
+
+GitHub yêu cầu check `Build, unit, tooling and mock UI` cho PR vào `main`. Hai lượt đầu của run `46018579826` đạt 17 bước rồi thất bại ở `ui-audit`, với mã thoát `1` và thời lượng lần lượt 338,124 và 338,256 giây. Lượt hai đếm đủ 69/69 trong ma trận nhưng bước vẫn thất bại. Nhãn `REPORT_MISSING` thuộc bộ chẩn đoán chung của bước. Lượt hai đã đọc kết quả JSON để đếm ma trận. Thời lượng quan sát phù hợp với giới hạn 330 giây của tiến trình audit đầy đủ bên trong, nhưng log công khai chưa xác nhận nguyên nhân. Lượt chạy lại giữ nguyên commit và các bước kiểm. [CI của PR](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46018579826).
+
+Lượt ba của CI đạt trên đúng head `9c9822c` và GitHub chuyển PR sang trạng thái cho phép merge. PR #53 merge vào `main` lúc 22:33:16 giờ Việt Nam, commit `b2394e07dbd6b9c753aa1db256d1235b8b2d2d0a`. Đã xác minh hai parent đúng base và head ở trên, cây mã sau merge khớp cây đã rà và commit xuất hiện trên `origin/main`. [CI PR lượt ba](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46018579826/attempts/3) · [Commit merge](https://github.com/nguyentronglinh045/pos-cafe/commit/b2394e07dbd6b9c753aa1db256d1235b8b2d2d0a).
+
+Nhánh `fix/t08-rotation-probe-contract-20261127` đã xóa trên GitHub và local sau khi đối chiếu đúng SHA đã merge và xác nhận nhánh không gắn với worktree. POS light CI của commit trên `main` đang chạy tại thời điểm bàn giao hồ sơ. Phạm vi TC-OWNER-55(a) và quyết định nghiệm thu hẹp 12.9 giữ theo biên bản phía trên. TC-OWNER-114 được bỏ qua. Lượt này chưa phát hành Edge lên staging hoặc Production. [CI sau merge](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46025937054).
+
+Hai reviewer AI độc lập **APPROVE** hồ sơ trước đoạn này `71142e765d7ddc4b349af9d249ed0dd11c49d702` và kế hoạch `ee0e487ce64abe980286a0f76dcba158cc45216e`. Hai lượt rà đối chiếu CI, commit merge, nhánh đã xóa và phạm vi phát hành. OpenSpec strict và kiểm tra diff đạt.
