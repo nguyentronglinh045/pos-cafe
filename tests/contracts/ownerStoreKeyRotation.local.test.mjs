@@ -6,7 +6,7 @@ import { setTimeout as delay } from "node:timers/promises";
 import { test } from "node:test";
 import pg from "pg";
 import { makeOwnerHandler } from "../../supabase/functions/owner-provisioning/handler.ts";
-import { rotationCandidateBinding } from "../../supabase/functions/owner-provisioning/rotation.ts";
+import { rotationCandidateBinding, runStoreKeyRotation } from "../../supabase/functions/owner-provisioning/rotation.ts";
 
 const dsn = process.env.POS_CAFE_T08_TEST_DSN;
 const target = dsn && new URL(dsn);
@@ -281,6 +281,184 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
     assert.equal(await value(workerA, "select public.owner_claim_store_key_rotation_alert() as value"), null);
   });
 
+  await t.test("TC-OWNER-113 worker contention and late handoff across generations", { timeout: 10_000 }, async () => {
+    const { store, owner } = await fixture(db);
+    const r1 = await begin(db, store, owner);
+    const candidate = new Map([["02", "B".repeat(32)], ["03", "C".repeat(32)]]);
+    const dispatchTokens = [];
+    const updates = [];
+    const probes = [];
+    const firstUpdate = Promise.withResolvers();
+    const releaseFirst = Promise.withResolvers();
+    let current;
+    const observe = (name, _args, result) => {
+      if (name === "owner_claim_store_key_rotation" && result?.phase === "dispatch") {
+        dispatchTokens.push(result.dispatchToken);
+      }
+    };
+    const deps = {
+      accessTokenTtlSeconds: 3600,
+      async decryptCandidate(ciphertext) { return candidate.get(ciphertext); },
+      auth: {
+        async changePassword(id, password) {
+          assert.equal(id, store);
+          updates.push(dispatchTokens.at(-1));
+          current = password;
+          if (updates.length === 1) {
+            firstUpdate.resolve();
+            await releaseFirst.promise;
+          }
+          return true;
+        },
+        async verifyPassword(id, _number, password) {
+          assert.equal(id, store);
+          probes.push(updates.length);
+          return current === password;
+        },
+      },
+    };
+    const wa = { ...deps, rpc: rpcClient(workerA, observe) };
+    const wb = { ...deps, rpc: rpcClient(workerB, observe) };
+    const run = (worker, rotation) => runStoreKeyRotation(worker, store, rotation.id);
+    const noEffect = { ...wa, async decryptCandidate() { throw new Error("Fixture fails before transport"); } };
+    assert.equal(await run(noEffect, r1), "recorded");
+    assert.deepEqual(updates, []);
+    assert.equal(await run(wb, r1), null);
+    await forceDue(db, r1.id);
+
+    const oldWorker = run(wa, r1);
+    let lateReport;
+    try {
+      await Promise.race([firstUpdate.promise, oldWorker.then(() => assert.fail("Expected a dispatched update"))]);
+      assert.equal(await run(wb, r1), null);
+      assert.equal(dispatchTokens.length, 2);
+      assert.notEqual(dispatchTokens[0], dispatchTokens[1]);
+      assert.deepEqual(updates, [dispatchTokens[1]]);
+      assert.deepEqual(await begin(db, store, owner), r1);
+      assert.deepEqual(await storeKey(db, store), { generation: 0, ciphertext: "01" });
+
+      await expireRun(db, r1.id);
+      assert.equal(await run(wb, r1), "confirmed");
+      assert.deepEqual(probes, [1]);
+      assert.equal(await run(wb, r1), "applied");
+      expectStatus(await begin(db, store, owner), "applied");
+      assert.deepEqual(await storeKey(db, store), { generation: 1, ciphertext: "02" });
+      assert.ok(current === candidate.get("02"));
+      assert.equal(await run(wb, r1), "completed");
+
+      const r2 = await begin(db, store, owner, randomUUID(), "03");
+      assert.equal(r2.generation, 2);
+      assert.equal(await run(wb, r1), null);
+      assert.deepEqual(updates, [dispatchTokens[1]]);
+      assert.equal(await run(wb, r2), "confirmed");
+      assert.deepEqual(await storeKey(db, store), { generation: 1, ciphertext: "02" });
+      assert.equal(await run(wb, r2), "applied");
+      assert.equal(await run(wb, r1), null);
+      assert.equal(await run(wb, r2), "completed");
+      assert.equal(await run(wb, r1), null);
+      assert.deepEqual(updates, dispatchTokens.slice(1));
+      assert.equal(updates.length, 2);
+      assert.deepEqual(probes, [1]);
+      assert.deepEqual(await storeKey(db, store), { generation: 2, ciphertext: "03" });
+      assert.ok(current === candidate.get("03"));
+    } finally {
+      releaseFirst.resolve();
+      lateReport = await oldWorker;
+    }
+    assert.equal(lateReport, null);
+  });
+
+  await t.test("TC-OWNER-87 lost dispatch before Auth stops after six negative probes", async () => {
+    const { store, owner } = await fixture(db);
+    const rotation = await begin(db, store, owner);
+    const abandoned = await claim(workerA, store);
+    assert.equal(abandoned.phase, "dispatch");
+    const phases = [];
+    const rpc = rpcClient(workerB, (name, _args, result) => {
+      if (name === "owner_claim_store_key_rotation" && result) {
+        assert.equal(result.dispatchToken, abandoned.dispatchToken);
+        phases.push(result.phase);
+      }
+    });
+    let updates = 0;
+    let probes = 0;
+    const run = () => runStoreKeyRotation({
+      rpc, accessTokenTtlSeconds: 3600,
+      async decryptCandidate() { return "B".repeat(32); },
+      auth: {
+        async changePassword() { updates++; return false; },
+        async verifyPassword() { probes++; return false; },
+      },
+    }, store, rotation.id);
+    assert.equal(await run(), null);
+    await expireRun(db, rotation.id);
+    for (let i = 0; i < 6; i++) {
+      await forceDue(db, rotation.id);
+      assert.equal(await run(), "recorded");
+      assert.equal(await value(db, `select count(*)::int as value from private.store_key_rotation_alerts
+        where rotation_id=$1 and phase='probe' and outcome='probe_failed'`, [rotation.id]), Number(i === 5));
+    }
+    await forceDue(db, rotation.id);
+    assert.equal(await run(), null);
+    assert.equal(updates, 0);
+    assert.equal(probes, 6);
+    assert.deepEqual(phases, Array(6).fill("probe"));
+    expectStatus(await begin(db, store, owner), "pending");
+    assert.deepEqual(await storeKey(db, store), { generation: 0, ciphertext: "01" });
+    assert.equal(await value(db, "select count(*)::int as value from private.mail_dispatches where rotation_id=$1",
+      [rotation.id]), 0);
+    assert.equal(await value(db, "select count(*)::int as value from private.store_admin_log where store_id=$1", [store]), 0);
+  });
+
+  for (const boundary of ["lost Auth response", "lost before confirmed report"]) {
+    await t.test(`TC-OWNER-55/87 probe recovers from ${boundary}`, async () => {
+      const { store, owner } = await fixture(db);
+      const rotation = await begin(db, store, owner);
+      const calls = [];
+      const password = "B".repeat(32);
+      let current;
+      const dbRpc = rpcClient(workerA);
+      const deps = {
+        rpc: dbRpc, accessTokenTtlSeconds: 3600,
+        async decryptCandidate() { return password; },
+        auth: {
+          async changePassword(_id, candidate) {
+            calls.push("change");
+            current = candidate;
+            if (boundary === "lost Auth response") throw new Error(boundary);
+            return true;
+          },
+          async verifyPassword(_id, _number, candidate) { calls.push("probe"); return current === candidate; },
+        },
+      };
+      if (boundary === "lost before confirmed report") {
+        const interrupted = { ...deps, rpc(name, args) {
+          if (name === "owner_report_store_key_rotation" && args.p_outcome === "confirmed") throw new Error(boundary);
+          return dbRpc(name, args);
+        } };
+        await assert.rejects(runStoreKeyRotation(interrupted, store, rotation.id), { message: boundary });
+        await expireRun(db, rotation.id);
+      } else {
+        assert.equal(await runStoreKeyRotation(deps, store, rotation.id), "recorded");
+        await forceDue(db, rotation.id);
+      }
+      const resume = () => runStoreKeyRotation({ ...deps, rpc: rpcClient(workerB) }, store, rotation.id);
+      assert.deepEqual(calls, ["change"]);
+      assert.deepEqual(await storeKey(db, store), { generation: 0, ciphertext: "01" });
+      assert.equal(await resume(), "confirmed");
+      assert.deepEqual(await storeKey(db, store), { generation: 0, ciphertext: "01" });
+      assert.equal(await resume(), "applied");
+      assert.equal(await resume(), "completed");
+      assert.deepEqual(calls, ["change", "probe"]);
+      assert.deepEqual(await storeKey(db, store), { generation: 1, ciphertext: "02" });
+      assert.equal(await value(db, "select count(*)::int as value from private.store_key_rotation_dispatches where rotation_id=$1",
+        [rotation.id]), 1);
+      assert.equal(await value(db, "select count(*)::int as value from private.mail_dispatches where rotation_id=$1",
+        [rotation.id]), 1);
+      assert.equal(await value(db, "select count(*)::int as value from private.store_admin_log where store_id=$1", [store]), 1);
+    });
+  }
+
   await t.test("rotation start respects key mail fence and prunes only the affected queued recovery binding", async () => {
     const first = await fixture(db);
     const second = await fixture(db, first);
@@ -500,7 +678,7 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
   });
 
   await t.test("OTP, owner authorization, lost HTTP response after applied and replay through the Edge handler", async (t) => {
-    const { store, email } = await fixture(db);
+    const { store, owner, email } = await fixture(db);
     const name = "Fixture Rotation";
     await db.query("update public.stores set name=$2 where id=$1", [store, name]);
     const token = randomBytes(32).toString("base64url");
@@ -516,6 +694,17 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
       from public.employees where id=$3`, [digest(cashierToken), store, cashierId]);
     const key = await crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
     const signer = await crypto.subtle.generateKey({ name: "HMAC", hash: "SHA-256" }, false, ["sign", "verify"]);
+    const legacyMail = await createLegacyMail(db, { store, owner, email });
+    const operation = await value(db, `update private.mail_dispatches set status='failed_before_submit'
+      where id=$1 returning operation_id as value`, [legacyMail]);
+    const oldSecret = "Z".repeat(32);
+    const encoder = new TextEncoder();
+    const nonce = randomBytes(12);
+    const oldCiphertext = await crypto.subtle.encrypt({
+      name: "AES-GCM", iv: nonce, additionalData: encoder.encode(operation),
+    }, key, encoder.encode(oldSecret));
+    await db.query("update public.stores set key_secret_encrypted=$2 where id=$1",
+      [store, Buffer.concat([nonce, Buffer.from(oldCiphertext)])]);
     const [ipB, ipC, ipD] = randomBytes(3);
     const ip = `10.${ipB}.${ipC}.${ipD}`;
     const messages = [];
@@ -531,6 +720,7 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
       createAuth: () => assert.fail("T06 provisioning must not run"),
       async sendMail(message) { messages.push(message); return "submitted"; },
       hmacKey: signer, ingressKey: signer, workerKey: signer, otpEncryptionKey: key, storeEncryptionKey: key,
+      forgotStoreKey: true,
       clock: Date.now,
       rotation: { accessTokenTtlSeconds: 3600, identifyStore: async (jwt) => jwt === "a.b.c" ? store : null,
         warn: (event, payload) => alerts.push([event, payload]),
@@ -546,7 +736,7 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
           } },
       },
     });
-    async function invoke(input, additions = {}, signed = false) {
+    async function invokeResponse(input, additions = {}, signed = false) {
       const raw = JSON.stringify(input);
       const headers = { authorization: "Bearer a.b.c", "x-pos-employee-token": token, ...additions };
       if (signed) {
@@ -558,8 +748,21 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
           [input.action === "processOwnerWork" ? "x-pos-cafe-worker-signature" : "x-pos-cafe-signature"]:
             Buffer.from(signedBytes).toString("hex") });
       }
-      const result = await handler(new Request("http://localhost/owner", { method: "POST", body: raw, headers }));
+      return handler(new Request("http://localhost/owner", { method: "POST", body: raw, headers }));
+    }
+    async function invoke(input, additions = {}, signed = false) {
+      const result = await invokeResponse(input, additions, signed);
       return { status: result.status, body: await result.json() };
+    }
+    async function requestForgot() {
+      const prepared = await invokeResponse({ action: "prepareForgotStoreKey", email }, {}, true);
+      assert.equal(prepared.status, 202);
+      assert.deepEqual(await prepared.json(), { ok: true });
+      const receipt = prepared.headers.get("x-pos-cafe-forgot-receipt");
+      assert.ok(receipt);
+      assert.deepEqual(await invoke({ action: "confirmForgotStoreKeyReceipt", receipt }, {}, true),
+        { status: 202, body: { ok: true } });
+      return receipt;
     }
     const input = { action: "requestRotateStoreKeyOtp", requestId: timedId(), storeName: name };
     assert.equal((await invoke(input, {}, false)).body.code, "A_SEND_UNAVAILABLE");
@@ -630,6 +833,13 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
       const authStarted = await Promise.race([started.then(() => true), firstRequest.then(() => false)]);
       assert.ok(authStarted, "Auth transport was never called");
       assert.deepEqual(await invoke(pendingRequest, {}, true), { status: 200, body: { status: "pending" } });
+      const pendingForgot = await requestForgot();
+      assert.equal((await invoke({ action: "processOwnerWork" }, {}, true)).status, 200);
+      assert.equal(messages.length, 1);
+      assert.equal(await value(db, `select (receipt_confirmed_at is not null and canonical_email is null) as value
+        from private.forgot_store_key_requests where id=$1`, [pendingForgot]), true);
+      assert.equal(await value(db, "select count(*)::int as value from private.mail_dispatches where kind='forgot_store_key' and canonical_email=$1",
+        [email]), 0);
     } finally { continueChange(); }
     const lost = await firstRequest;
     if (serverError) throw serverError;
@@ -646,11 +856,25 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
     assert.equal((await invoke({ ...good, challengeRef: randomUUID() })).body.code, "A_ATTEMPT_ID_REUSED");
     const appliedRequest = { ...input, requestId: timedId() };
     assert.deepEqual(await invoke(appliedRequest, {}, true), { status: 200, body: { status: "applied" } });
-    assert.equal((await invoke({ action: "processOwnerWork" }, {}, true)).status, 200);
-    assert.equal(messages.length, 2);
-    assert.equal(messages[1].to, email);
-    assert.ok(messages[1].body.includes(applied.body.storeKey));
-    assert.match(messages[1].body, /Việc đổi key vẫn đang hoàn tất/);
+    await requestForgot();
+    // Other fixtures can leave an older rotation mail ahead of this one in the shared test queue.
+    const queueSize = await value(db, `select count(*)::int as value from private.mail_dispatches
+      where kind='rotation_store_key' and status='queued'`);
+    const supportForStore = () => messages.slice(1).filter((message) => message.to === email);
+    for (let i = 0; i < queueSize && supportForStore().length < 2; i++) {
+      assert.equal((await invoke({ action: "processOwnerWork" }, {}, true)).status, 200);
+    }
+    const support = supportForStore();
+    assert.equal(support.length, 2);
+    const rotationMail = support.find((message) => message.body.includes("Phiên bản key:"));
+    const forgotMail = support.find((message) => message.body.includes("Nếu nghi hộp thư đã bị lộ"));
+    assert.ok(rotationMail?.body.includes(applied.body.storeKey));
+    assert.ok(forgotMail?.body.includes(applied.body.storeKey));
+    assert.ok(support.every((message) => !message.body.includes(oldSecret)));
+    assert.match(rotationMail.body, /Việc đổi key vẫn đang hoàn tất/);
+    assert.equal(await value(db, `select count(*)::int as value from private.mail_dispatches m
+      join private.key_mail_bindings b on b.mail_id=m.id where b.store_id=$1 and b.generation=1
+      and m.kind='forgot_store_key' and m.status='submitted'`, [store]), 1);
     assert.deepEqual((await invoke(good)).body, { status: "completed" });
     assert.deepEqual(await invoke(pendingRequest, {}, true), { status: 200, body: { status: "completed" } });
     assert.deepEqual(await invoke(appliedRequest, {}, true), { status: 200, body: { status: "completed" } });
@@ -672,7 +896,7 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
     const another = await invoke({ ...input, requestId: timedId() }, {}, true);
     assert.notEqual(another.body.receipt.challengeRef, first.body.receipt.challengeRef);
     await invoke({ action: "processOwnerWork" }, {}, true);
-    const secondCode = /là ([0-9]{6})\./.exec(messages[2].body)?.[1];
+    const secondCode = /là ([0-9]{6})\./.exec(messages.at(-1).body)?.[1];
     assert.ok(secondCode);
     const badOtp = { ...confirm, challengeRef: another.body.receipt.challengeRef,
       code: secondCode === "000000" ? "000001" : "000000", attemptId: "" };
@@ -700,16 +924,18 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
     assert.equal((await invoke(sharedCap, {}, true)).body.receipt.challengeRef, sharedCap.requestId);
     assert.equal(await value(db,`select count(*)::int as value from private.rotation_otp_scope where store_id=$1`,[store]),2);
 
-    const mailId = await value(db, `update private.mail_dispatches m set status='unknown'
-      from private.store_key_rotations r where m.rotation_id=r.id and r.store_id=$1 returning m.id as value`, [store]);
-    // Discard the first sweep response. A later worker must still see the durable mail alert.
-    await value(workerA, "select public.owner_sweep_rotation_key_mail() as value");
-    await invoke({ action: "processOwnerWork" }, {}, true);
-    assert.equal(alerts.length, 1);
-    assert.equal(alerts[0][0], "owner_provisioning.rotation_key_mail_needs_review");
-    assert.deepEqual(Object.keys(alerts[0][1]).sort(), ["alertId", "mailId"]);
-    assert.equal(alerts[0][1].mailId, mailId);
-    await invoke({ action: "processOwnerWork" }, {}, true);
-    assert.equal(alerts.length, 1);
+    await t.test("rotation mail alert remains available after a lost sweep response", async () => {
+      const mailId = await value(db, `update private.mail_dispatches m set status='unknown'
+        from private.store_key_rotations r where m.rotation_id=r.id and r.store_id=$1 returning m.id as value`, [store]);
+      // Discard the first sweep response. A later worker must still see the durable mail alert.
+      await value(workerA, "select public.owner_sweep_rotation_key_mail() as value");
+      await invoke({ action: "processOwnerWork" }, {}, true);
+      const relevant = () => alerts.filter(([, payload]) => payload.mailId === mailId);
+      assert.equal(relevant().length, 1);
+      assert.equal(relevant()[0][0], "owner_provisioning.rotation_key_mail_needs_review");
+      assert.deepEqual(Object.keys(relevant()[0][1]).sort(), ["alertId", "mailId"]);
+      await invoke({ action: "processOwnerWork" }, {}, true);
+      assert.equal(relevant().length, 1);
+    });
   });
 });
