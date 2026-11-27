@@ -8,7 +8,7 @@ import { PortsContext } from "@/features/shared/portsContext";
 import { usePermissionSession } from "@/features/shared/permissionSession";
 import type { IOwnerRecoveryPort, RotationConfirmResult, RotationOtpResult } from "@/ports/ownerRecovery";
 import { GeneralSettingsDrawer } from "./GeneralSettingsDrawer";
-import { StoreKeyRotationPanel, useRotationOtpRequest, type RotationOtpReceipt } from "./StoreKeyRotationPanel";
+import { StoreKeyRotationPanel, useRotationOtpRequest, useRotationResult, type RotationOtpReceipt } from "./StoreKeyRotationPanel";
 
 const name = "POS Demo";
 const key = `0001-${"A".repeat(32)}`;
@@ -30,8 +30,9 @@ async function mount(port: IOwnerRecoveryPort, useDrawer = false) {
   function Panel() {
     const [pendingOtp, setPendingOtp] = useState<RotationOtpReceipt | null>(null);
     const otpRequest = useRotationOtpRequest("fixture");
+    const rotationResult = useRotationResult("fixture", () => usePermissionSession.getState().bundle?.snapshot.role === "owner");
     return <StoreKeyRotationPanel port={port} storeName={name} pendingOtp={pendingOtp}
-      setPendingOtp={setPendingOtp} otpRequest={otpRequest} />;
+      setPendingOtp={setPendingOtp} otpRequest={otpRequest} rotationResult={rotationResult} />;
   }
   render(<PortsContext.Provider value={ports}><QueryClientProvider client={queries}>
     {useDrawer ? <GeneralSettingsDrawer /> : <Panel />}
@@ -43,6 +44,7 @@ async function sendAndEnterCode() {
   const send = screen.getByTestId("rotation-send-otp");
   expect(send).toBeDisabled();
   fireEvent.change(screen.getByTestId("rotation-store-name"), { target: { value: ` ${name} ` } });
+  await waitFor(() => expect(send).toBeEnabled());
   fireEvent.click(send);
   fireEvent.change(await screen.findByTestId("rotation-otp-input"), { target: { value: "540218" } });
   return screen.getByTestId("rotation-confirm");
@@ -87,6 +89,70 @@ it.each([false, true])("retains one pending send for the owner across verificati
   expect(screen.getByTestId("rotation-store-name")).toHaveValue("");
   expect(screen.queryByTestId("rotation-otp-input")).not.toBeInTheDocument();
   queries.clear();
+});
+
+it.each([false, true])("shows the returned key only after the same owner is verified again (response while hidden: %s)", async responseWhileHidden => {
+  let deliver!: (value: RotationConfirmResult) => void;
+  const confirmRotation = vi.fn<IOwnerRecoveryPort["confirmRotation"]>()
+    .mockImplementation(() => new Promise(resolve => { deliver = resolve; }));
+  const { pair, queries, session } = await mount({ requestRotationOtp: async () => receipt(), confirmRotation }, true);
+  fireEvent.click(await screen.findByTestId("settings-section-rotation"));
+  fireEvent.click(await sendAndEnterCode());
+
+  if (!responseWhileHidden) {
+    await act(async () => { deliver({ kind: "key", storeKey: key }); });
+    expect(screen.getByLabelText("Store Key mới")).toHaveTextContent(key);
+  }
+  act(() => usePermissionSession.getState().setStatus("unverified"));
+  if (responseWhileHidden) await act(async () => { deliver({ kind: "key", storeKey: key }); });
+  expect(screen.queryByLabelText("Store Key mới")).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Dùng key mới trên máy này" })).not.toBeInTheDocument();
+
+  act(() => usePermissionSession.getState().setStatus("verified"));
+  expect(screen.getByLabelText("Store Key mới")).toHaveTextContent(key);
+  expect(confirmRotation).toHaveBeenCalledTimes(1);
+  expect(pair).not.toHaveBeenCalled();
+  expect(window.sessionStorage.length).toBe(0);
+  expect(window.localStorage.length).toBe(0);
+
+  act(() => usePermissionSession.getState().begin(session));
+  expect(screen.queryByLabelText("Store Key mới")).not.toBeInTheDocument();
+  queries.clear();
+});
+
+it.each([false, true])("keeps a recovery notice for an uncertain confirmation (response while hidden: %s)", async responseWhileHidden => {
+  let deliver!: (value: RotationConfirmResult) => void;
+  const confirmRotation = vi.fn<IOwnerRecoveryPort["confirmRotation"]>()
+    .mockImplementation(() => new Promise(resolve => { deliver = resolve; }));
+  await mount({ requestRotationOtp: async () => receipt(), confirmRotation }, true);
+  fireEvent.click(await screen.findByTestId("settings-section-rotation"));
+  fireEvent.click(await sendAndEnterCode());
+  if (!responseWhileHidden) {
+    await act(async () => { deliver({ kind: "uncertain" }); });
+    expect(screen.getByRole("button", { name: "Kiểm tra lại" })).toBeVisible();
+  }
+  act(() => usePermissionSession.getState().setStatus("unverified"));
+  if (responseWhileHidden) await act(async () => { deliver({ kind: "uncertain" }); });
+  expect(screen.queryByTestId("store-key-rotation-status")).not.toBeInTheDocument();
+
+  act(() => usePermissionSession.getState().setStatus("verified"));
+  expect(screen.getByTestId("store-key-rotation-status")).toHaveTextContent(/Chưa xác định.*email đã đăng ký/);
+  expect(screen.queryByRole("button", { name: "Kiểm tra lại" })).not.toBeInTheDocument();
+  expect(confirmRotation).toHaveBeenCalledTimes(1);
+});
+
+it("discards a confirmation result after the owner leaves the rotation section", async () => {
+  let deliver!: (value: RotationConfirmResult) => void;
+  const confirmRotation = vi.fn<IOwnerRecoveryPort["confirmRotation"]>()
+    .mockImplementation(() => new Promise(resolve => { deliver = resolve; }));
+  await mount({ requestRotationOtp: async () => receipt(), confirmRotation }, true);
+  fireEvent.click(await screen.findByTestId("settings-section-rotation"));
+  fireEvent.click(await sendAndEnterCode());
+  fireEvent.click(screen.getByTestId("settings-section-info"));
+  await act(async () => { deliver({ kind: "key", storeKey: key }); });
+  fireEvent.click(screen.getByTestId("settings-section-rotation"));
+  expect(screen.queryByLabelText("Store Key mới")).not.toBeInTheDocument();
+  expect(screen.queryByTestId("rotation-otp-input")).not.toBeInTheDocument();
 });
 
 it("reuses the exact attempt and OTP after losing the confirmation response", async () => {

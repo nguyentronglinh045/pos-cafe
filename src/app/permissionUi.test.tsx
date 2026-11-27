@@ -5,6 +5,7 @@ import { createCandidateRuntimeFixture, activateCandidateUi } from "@/test/candi
 import { PortsContext } from "@/features/shared/portsContext";
 import { usePermissionSession, permissionQueryKey } from "@/features/shared/permissionSession";
 import { MockPermissionSignalPort } from "@/adapters/mock/permissionSignalPort";
+import type { IAuthRepo } from "@/ports";
 import type { PermissionOverrides } from "@/domain/permissions";
 import { App } from "./App";
 import { WriteLifecycle } from "./WriteLifecycle";
@@ -14,8 +15,11 @@ vi.mock("react-hot-toast",()=>({default:Object.assign(vi.fn(),{success:vi.fn(),e
 
 const clients: QueryClient[] = [];
 afterEach(() => { cleanup(); clients.splice(0).forEach(client => client.clear()); useAppStore.getState().setCurrentEmployee(null); vi.restoreAllMocks(); vi.clearAllMocks(); });
-async function setup(role: "manager" | "waiter" = "manager", overrides?: PermissionOverrides) {
+async function setup(role: "manager" | "waiter" = "manager", overrides?: PermissionOverrides,
+  onStoreSessionLost?: IAuthRepo["onStoreSessionLost"],
+) {
   const fixture = await createCandidateRuntimeFixture({ role, overrides });
+  if (onStoreSessionLost) Object.assign(fixture.ports.auth, { onStoreSessionLost });
   activateCandidateUi(fixture);
   const client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
   clients.push(client);
@@ -26,6 +30,35 @@ async function setup(role: "manager" | "waiter" = "manager", overrides?: Permiss
 const signal = (f: Awaited<ReturnType<typeof setup>>) => (f.runtime.signals as MockPermissionSignalPort).emitStore({ storeId: f.state.storeId, topic: "permission", revision: f.owner.permissionRevision, eventId: crypto.randomUUID() });
 
 describe("permission UI lifecycle", () => {
+  it("returns a paired device directly to pairing when Auth reports session loss", async () => {
+    let loseSession!: () => void;
+    const unsubscribe = vi.fn();
+    const f = await setup("manager", undefined, listener => { loseSession = listener; return unsubscribe; });
+    await waitFor(() => expect(f.client.getQueryData(["session", "store"])).toMatchObject({ status: "paired" }));
+    fireEvent.click(screen.getByTestId("nav-menu-editor"));
+    expect(useAppStore.getState().drawer).toBe("menuEditor");
+    const previousStore = await f.ports.auth.getStoreSession();
+    let finishRead!: (session: typeof previousStore) => void;
+    const getStoreSession = vi.spyOn(f.ports.auth, "getStoreSession")
+      .mockImplementationOnce(() => new Promise(resolve => { finishRead = resolve; })).mockResolvedValue(null);
+    void f.client.refetchQueries({ queryKey: ["session", "store"] });
+    await waitFor(() => expect(getStoreSession).toHaveBeenCalled());
+    const unpair = vi.spyOn(f.ports.auth, "unpairStore");
+    act(() => loseSession());
+
+    expect(await screen.findByTestId("store-pairing-screen")).toBeVisible();
+    expect(screen.getByText(/Phiên ghép thiết bị đã mất hiệu lực/)).toBeVisible();
+    expect(screen.queryByTestId("floor-view")).not.toBeInTheDocument();
+    expect(useAppStore.getState()).toMatchObject({ drawer: null, currentEmployee: null });
+    expect(usePermissionSession.getState().session).toBeNull();
+    expect(unpair).not.toHaveBeenCalled();
+    await act(async () => { finishRead(previousStore); });
+    expect(f.client.getQueryData(["session", "store"])).toMatchObject({ status: "unpaired" });
+    expect(screen.getByTestId("store-pairing-screen")).toBeVisible();
+    cleanup();
+    expect(unsubscribe).toHaveBeenCalledOnce();
+  });
+
   it("shows baseline floor but hides unavailable modules and rejects direct drawer opening", async () => {
     const f = await setup("waiter");
     expect(screen.queryByTestId("nav-report")).not.toBeInTheDocument();

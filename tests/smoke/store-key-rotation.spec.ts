@@ -21,17 +21,16 @@ test("owner rotates Store Key and re-pairs the current machine before entering P
   await send.click();
   const otp = page.getByTestId("rotation-otp-input");
   await otp.fill("540");
-  await page.evaluate(() => {
-    Object.defineProperty(document, "visibilityState", { configurable: true, value: "hidden" });
+  const switchTab = (hidden: boolean) => page.evaluate((hidden) => {
+    if (hidden) Object.defineProperty(document, "visibilityState", { configurable: true, value: "hidden" });
+    else Reflect.deleteProperty(document, "visibilityState");
     document.dispatchEvent(new Event("visibilitychange"));
-  });
+  }, hidden);
   const gate = page.getByTestId("permission-verification-gate");
+  await switchTab(true);
   await expect(gate).toBeVisible();
   await expect(otp).toHaveCount(0);
-  await page.evaluate(() => {
-    Reflect.deleteProperty(document, "visibilityState");
-    document.dispatchEvent(new Event("visibilitychange"));
-  });
+  await switchTab(false);
   await expect(gate).toHaveCount(0);
   await expect(otp).toBeVisible();
   await expect(otp).toBeEnabled();
@@ -41,8 +40,18 @@ test("owner rotates Store Key and re-pairs the current machine before entering P
   await expect(page.getByTestId("rotation-confirm")).toBeDisabled();
   await otp.fill("540218");
   await page.getByTestId("rotation-confirm").click();
-  await expect(page.getByLabel("Store Key mới")).toHaveText(/^0001-[A-Z0-9]{32}$/);
-  await page.getByRole("button", { name: "Dùng key mới trên máy này" }).click();
+  const key = page.getByLabel("Store Key mới");
+  const pair = page.getByRole("button", { name: "Dùng key mới trên máy này" });
+  await expect(key).toHaveText(/^0001-[A-Z0-9]{32}$/);
+  const returnedKey = await key.textContent();
+  await switchTab(true);
+  await expect(gate).toBeVisible();
+  await expect(key).toHaveCount(0);
+  await expect(pair).toHaveCount(0);
+  await switchTab(false);
+  await expect(gate).toHaveCount(0);
+  await expect(key).toHaveText(returnedKey!);
+  await pair.click();
   await expect(page.getByTestId("passcode-screen")).toBeVisible();
   await expect(page.getByTestId("floor-view")).toHaveCount(0);
   await page.getByTestId("employee-30000000-0000-4000-8000-000000000011").click();

@@ -9,6 +9,8 @@ import { clearEmployeeCredential } from "./employeeCredential";
 import { writeError } from "@/core/writeErrors";
 
 export class SupabaseAuthRepo implements IAuthRepo {
+  private readonly localSignOuts = new Set<{ sessionRemoved: boolean }>();
+
   constructor(private readonly client: SupabaseAnyClient) {}
 
   private async requirePermissionContract(): Promise<void> {
@@ -28,15 +30,40 @@ export class SupabaseAuthRepo implements IAuthRepo {
     const session = await this.getStoreSession();
 
     if (!session || session.storeNo !== parsed.storeNo) {
-      await this.client.auth.signOut({ scope: "local" });
+      await this.signOutLocally();
       throw new AppError("AUTH_REQUIRED", "Store Key không đúng.");
     }
   }
 
   async unpairStore(): Promise<void> {
     clearEmployeeCredential(this.client);
-    const { error } = await this.client.auth.signOut({ scope: "local" });
+    const { error } = await this.signOutLocally();
     throwIfError(error, "AUTH_REQUIRED");
+  }
+
+  onStoreSessionLost(listener: () => void): () => void {
+    const { data: { subscription } } = this.client.auth.onAuthStateChange(event => {
+      if (event !== "SIGNED_OUT") return;
+      if (this.localSignOuts.size === 0) listener();
+      for (const attempt of this.localSignOuts) attempt.sessionRemoved = true;
+    });
+    return () => subscription.unsubscribe();
+  }
+
+  private async signOutLocally() {
+    const attempt = { sessionRemoved: false };
+    this.localSignOuts.add(attempt);
+    try {
+      const result = await this.client.auth.signOut({ scope: "local" });
+      // Loading the SDK session during sign-out can fail to refresh and already
+      // remove it. An observed SIGNED_OUT confirms the local unpair in that case.
+      return attempt.sessionRemoved ? { error: null } : result;
+    } catch (error) {
+      if (!attempt.sessionRemoved) throw error;
+      return { error: null };
+    } finally {
+      this.localSignOuts.delete(attempt);
+    }
   }
 
   async getStoreSession(): Promise<StoreSession | null> {

@@ -1,6 +1,10 @@
 import { useContext, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useStoreSessionQuery } from "@/features/session";
+import { sessionQueryKeys } from "@/features/session/useSessionFlow";
+import type { StoreSessionBootstrap } from "@/features/session/sessionFlow";
+import type { IAuthRepo } from "@/ports";
 import { PermissionLifecycle } from "./PermissionLifecycle";
 import { useAppStore } from "./useAppStore";
 import { toToastError } from "./appErrors";
@@ -27,8 +31,12 @@ export function CompatibilityUpdateGate({ reload = () => window.location.reload(
 
 export function App() {
   const updateRequired = useAppStore((state) => state.updateRequired);
+  const auth = useContext(PortsContext)?.auth;
   if (updateRequired) return <CompatibilityUpdateGate />;
-  return <ActiveApp />;
+  return <>
+    {auth?.onStoreSessionLost && <StoreSessionLoss auth={auth} />}
+    <ActiveApp />
+  </>;
 }
 
 function ActiveApp() {
@@ -111,4 +119,23 @@ function ActiveApp() {
       )}
     </>
   );
+}
+
+function StoreSessionLoss({ auth }: { auth: IAuthRepo }) {
+  const queryClient = useQueryClient();
+
+  useEffect(() => auth.onStoreSessionLost?.(() => {
+    const app = useAppStore.getState();
+    const cachedStore = queryClient.getQueryData<StoreSessionBootstrap>(sessionQueryKeys.storeSession);
+    if (app.rePairingStore || cachedStore?.status !== "paired") return;
+
+    const notice = "Phiên ghép thiết bị đã mất hiệu lực. Hãy dùng Store Key hiện hành để ghép lại.";
+    app.beginRotatedStorePairing(notice);
+    void queryClient.cancelQueries();
+    queryClient.clear();
+    queryClient.setQueryData(sessionQueryKeys.storeSession, { status: "unpaired", session: null });
+    app.finishRotatedStorePairing("storePairing", notice);
+  }), [auth, queryClient]);
+
+  return null;
 }

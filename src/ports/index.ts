@@ -47,6 +47,7 @@ export interface IAuthRepo {
   pairStore(storeKey: string): Promise<void>;
   unpairStore(): Promise<void>;
   getStoreSession(): Promise<StoreSession | null>;
+  onStoreSessionLost?(listener: () => void): () => void;
 }
 
 export interface IEmployeeRepo {
