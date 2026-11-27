@@ -8,6 +8,8 @@ const projectId='prj_7xwZL8MUEccVL2o0EvxoCtIYJ1en';
 const supabaseUrl='https://ineckiashpwloncxnbqx.supabase.co',publishableKey='sb_publishable_SYNTHETIC_PUBLIC_0123456789';
 const functionalGroup={POS_PREVIEW_DATA_MODE:'supabase',POS_PREVIEW_SUPABASE_URL:supabaseUrl,POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY:publishableKey};
 const functionalRows=()=>Object.entries(functionalGroup).map(([key,value])=>({key,value,type:'plain',visibility:'config',target:['preview']}));
+const rotationFlag={key:'POS_PREVIEW_OWNER_RECOVERY',value:'1',type:'plain',visibility:'config',target:['preview']};
+const publicConfig={...functionalGroup,[rotationFlag.key]:rotationFlag.value};
 const encryptedConfigRows=()=>functionalRows().map((row,i)=>({...row,id:`env_public_${i}`,type:'encrypted',value:`ciphertext_${i}`,
   configurationId:null,customEnvironmentIds:[],securityIssues:[],decrypted:false,lastEditedByDisplayName:'Operator',lastEditedByPrincipal:{type:'user'}}));
 const protectionFields=['ssoProtection','passwordProtection','trustedIps','trustedSources','protectionBypass','optionsAllowlist'];
@@ -70,9 +72,9 @@ function fixture(options={}) {
       else if(parsed.pathname.startsWith(`/v1/projects/${projectId}/env/`)){
         assert.equal(request.method,'GET');assert.deepEqual([...parsed.searchParams.keys()],['slug']);
         const id=parsed.pathname.split('/').at(-1);
-        const row=(options.envResponse?.envs??options.envRows??[]).find(item=>item.id===id&&Object.hasOwn(functionalGroup,item.key));
-        assert.ok(row,'Only the three selected public Config IDs may be read');
-        data={...structuredClone(row),value:functionalGroup[row.key],decrypted:true};options.revealed?.(data,configReads);
+        const row=(options.envResponse?.envs??options.envRows??[]).find(item=>item.id===id&&Object.hasOwn(publicConfig,item.key));
+        assert.ok(row,'Only selected public Config IDs may be read');
+        data={...structuredClone(row),value:publicConfig[row.key],decrypted:true};options.revealed?.(data,configReads);
       }
       else if(parsed.pathname==='/v13/deployments'&&request.method==='POST') {
         if(options.postError)throw options.postError;data={id:'dpl_preview',target:null};
@@ -471,7 +473,46 @@ test('data_mode is an exact expectation and cannot switch provider config or rel
     const f=fixture(options),result=await f.run();assert.equal(result.dataMode,'mock');assert.equal(result.supabaseProjectRef,null);
     assert.equal(result.authReadiness,'NOT_RUN');assert.equal(result.permissionContractReadiness,'NOT_RUN');
     assert.equal(f.calls.some(call=>new URL(call.url).hostname.endsWith('.supabase.co')),false);
+    const post=f.calls.find(call=>call.method==='POST'&&new URL(call.url).hostname==='api.vercel.com');
+    assert.equal(new URL(post.url).searchParams.get('forceNew'),'1');
   }
+});
+
+test('Store Key rotation requires the exact Preview opt-in and leaves normal and Production builds off',async()=>{
+  assert.equal(previewBuildEnvironment({VERCEL_ENV:'preview',...publicConfig}).VITE_OWNER_RECOVERY,'1');
+  assert.equal(previewBuildEnvironment({VERCEL_ENV:'preview',...functionalGroup,VITE_OWNER_RECOVERY:'1'}).VITE_OWNER_RECOVERY,undefined);
+  assert.throws(()=>previewBuildEnvironment({VERCEL_ENV:'preview',...publicConfig,[rotationFlag.key]:'0'}),
+    {code:'FRONTEND_PREVIEW_CONFIG'});
+  const productionBuild=previewBuildEnvironment({VERCEL:'1',VERCEL_ENV:'production',VERCEL_TARGET_ENV:'production',
+    VERCEL_GIT_COMMIT_REF:'main',VERCEL_GIT_COMMIT_SHA:sha,POS_PUBLIC_DEMO_SHA:sha,POS_PUBLIC_DEMO_CLIENT_KEY:publishableKey,
+    ...publicConfig,VITE_OWNER_RECOVERY:'1'});
+  assert.equal(productionBuild.VITE_OWNER_RECOVERY,undefined);
+
+  const validRows=[...functionalRows(),rotationFlag];
+  for(const options of [{dataMode:'supabase',envRows:validRows},
+    {dataMode:'supabase_rotation',envRows:functionalRows()},
+    ...[{value:'0'},{target:['preview','production']},{gitBranch:'main'},{visibility:'secret'}].map(flag=>
+      ({dataMode:'supabase_rotation',envRows:[...functionalRows(),{...rotationFlag,...flag}]}))]){
+    const f=fixture(options);await reject(f.run,'CONFIG');assert.equal(f.postCount(),0);
+  }
+  const f=fixture({dataMode:'supabase_rotation',envRows:validRows});
+  const result=await f.run();
+  assert.equal(f.postCount(),1);assert.equal(result.dataMode,'supabase');assert.equal(result.ownerRecovery,true);
+  const post=f.calls.find(call=>call.method==='POST'&&new URL(call.url).hostname==='api.vercel.com');
+  assert.equal(new URL(post.url).searchParams.get('forceNew'),'1');
+  assert.deepEqual(JSON.parse(post.body),{name:'pos-cafe',project:projectId,gitSource:{type:'github',repoId,ref:'main',sha}});
+  const normalBuild=fixture({dataMode:'supabase',envRows:functionalRows()});
+  const normal=await normalBuild.run();
+  const normalPost=normalBuild.calls.find(call=>call.method==='POST'&&new URL(call.url).hostname==='api.vercel.com');
+  assert.equal(new URL(normalPost.url).searchParams.get('forceNew'),'1');
+  assert.equal(JSON.parse(normalPost.body).gitSource.sha,JSON.parse(post.body).gitSource.sha);
+  assert.equal(normal.ownerRecovery,false);
+  assert.notEqual(normal.configurationSha256,result.configurationSha256);
+
+  const encryptedRotation={...rotationFlag,id:'env_public_rotation',type:'encrypted',value:'ciphertext_rotation'};
+  const encrypted=fixture({dataMode:'supabase_rotation',envRows:[...encryptedConfigRows(),encryptedRotation]});
+  assert.equal((await encrypted.run()).ownerRecovery,true);
+  assert.equal(encrypted.calls.filter(call=>new URL(call.url).pathname.endsWith('/env/env_public_rotation')).length,2);
 });
 
 test('functional Preview checks public readiness before its one minimal Vercel POST and exposes only safe receipts',async()=>{
@@ -485,6 +526,7 @@ test('functional Preview checks public readiness before its one minimal Vercel P
   assert.equal(publicCalls[1].body,'{}');
   const deploymentPost=f.calls.find(call=>new URL(call.url).hostname==='api.vercel.com'&&call.method==='POST');
   assert.ok(f.calls.indexOf(deploymentPost)>f.calls.indexOf(publicCalls[1]));
+  assert.equal(new URL(deploymentPost.url).searchParams.get('forceNew'),'1');
   assert.deepEqual(JSON.parse(deploymentPost.body),{name:'pos-cafe',project:projectId,gitSource:{type:'github',repoId,ref:'main',sha}});
   for(const call of f.calls){
     const host=new URL(call.url).hostname,headers=JSON.stringify(call.headers);

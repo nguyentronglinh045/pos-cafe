@@ -12,13 +12,15 @@ environment supplies VERCEL_TOKEN, the secret POS_PUBLIC_DEMO_OTP_INGRESS_KEY
 and the public variable POS_PUBLIC_DEMO_CLIENT_KEY. The release verifies staging
 readiness and the project/domain, sets Production-only demo variables, then
 checks the final domain binding. Automatic Git deployment stays disabled.
-To recover from a failed run, inspect its deployment ID before retrying the same run.
-A rerun reconciles the existing deployment for that run. For a terminal build error, fix the cause and start a new approved dispatch.
+To recover from a failed run, inspect its deployment ID and the build outcome.
+Each invocation requests a fresh deployment. If a POST may have created a
+deployment, find that deployment and verify its outcome before
+starting a new approved dispatch.
 For an incident after traffic changes, use Vercel Instant Rollback to restore the previous deployment.
 
 `data_mode` is an expectation checked before creating a deployment. It does not
 write Vercel settings. Default `mock` requires no `POS_PREVIEW_*` variables.
-For `supabase`, configure exactly these three public **Config** environment
+For both Supabase modes, configure these three public **Config** environment
 variables on the pinned Vercel project, with target **Preview only**, no branch
 override or custom environment:
 
@@ -28,12 +30,30 @@ override or custom environment:
 | `POS_PREVIEW_SUPABASE_URL` | `https://ineckiashpwloncxnbqx.supabase.co` |
 | `POS_PREVIEW_SUPABASE_PUBLISHABLE_KEY` | That project's public `sb_publishable_...` key |
 
+For an approved rotation acceptance run, add exactly one more public **Config**
+variable, `POS_PREVIEW_OWNER_RECOVERY=1`, scoped to Preview with no branch
+override. Dispatch with `data_mode=supabase_rotation`. The workflow requires the
+flag in this mode and refuses it in normal `supabase` mode. It records
+`ownerRecovery: true` for the validated project configuration. The fresh build
+keeps a later Preview on the same SHA from reusing a bundle built with a
+different configuration.
+After the build reaches a terminal state, restore the variable to absent and
+verify the removal before the next Preview build. If the result is ambiguous,
+resolve the deployment status first. A failed or canceled build still requires
+restoring the flag.
+The flag affects new Preview builds. Existing deployment URLs keep their
+compiled UI. The shared Supabase Edge flag separately controls whether the
+operation and worker run. Leave it off until the intended UI is visible on the
+recorded deployment and the acceptance fixture, two independent sessions and
+baseline queue have been verified. Allow the rotation
+and mail to drain before restoring the Edge flag to absent.
+
 These values become public browser configuration. Never use a secret/service key.
 The deploy helper accepts `plain` rows and dashboard Config rows stored as
 `encrypted` with `visibility: config`. It reads the latter by individual ID only
-after validating the complete list, the three keys and their Preview-only scope.
+after validating the complete list, the expected keys and their Preview-only scope.
 It checks the returned identity and scope, then validates the public values.
-Partial lists, duplicate or extra `POS_PREVIEW_*` keys, Secret rows and shared
+Partial lists, duplicate or unexpected `POS_PREVIEW_*` keys, Secret rows and shared
 Production scopes fail closed. Existing `VITE_*` and runtime secrets stay outside
 the individual reads.
 Supported wrappers are `envs` alone, `envs` plus `hiddenProductionEnvCount: 0`,
@@ -43,6 +63,7 @@ The build child receives only the validated public Vite values and a small OS
 environment allowlist; GitHub and Vercel credentials are excluded.
 The build sets `VITE_OWNER_PROVISIONING=1` for the validated `supabase` mode.
 Only the Supabase-backed Protected Preview build also sets `VITE_FORGOT_STORE_KEY=1`.
+Only its opt-in rotation build sets `VITE_OWNER_RECOVERY=1`.
 For the forgotten-key rollout, use this sequence on the pinned staging project:
 
 1. Verify the T06 schema, the existing Edge function and the signed worker.
