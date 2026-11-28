@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
+import { once } from "node:events";
+import { createServer } from "node:http";
 import { setTimeout as delay } from "node:timers/promises";
 import { test } from "node:test";
 import pg from "pg";
@@ -135,7 +137,7 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
     assert.match(JSON.stringify(await begin(db, store, owner)), /STORE_SUSPENDED/);
   });
 
-  await t.test("one dispatch under real contention, stale token rejected, lost response resumes with probe", async () => {
+  await t.test("one dispatch under contention, recovery by probe, and stale writes rejected across generations", async () => {
     const { store, owner } = await fixture(db);
     const attempt = randomUUID();
     const rotation = await begin(db, store, owner, attempt);
@@ -202,9 +204,32 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
     assert.equal(next.generation, 2);
     assert.equal(await value(db, "select status as value from private.mail_dispatches where rotation_id=$1", [rotation.id]),
       "failed_before_submit");
-    assert.equal(await report(workerA, first, "transport_not_called"), null);
-    assert.equal(await advance(workerB, finish), null);
-    assert.equal((await claim(workerA, store)).ciphertext, "03");
+    const secondDispatch = await claim(workerA, store);
+    assert.equal(secondDispatch.phase, "dispatch");
+    assert.equal(secondDispatch.ciphertext, "03");
+    assert.notEqual(secondDispatch.dispatchToken, first.dispatchToken);
+    async function rejectPreviousWorkerWrites() {
+      assert.equal(await report(workerA, first, "transport_not_called"), null);
+      assert.equal(await report(workerB, probe, "confirmed"), null);
+      assert.equal(await advance(workerA, publish), null);
+      assert.equal(await advance(workerB, finish), null);
+    }
+    await rejectPreviousWorkerWrites();
+    assert.deepEqual(await storeKey(db, store), { generation: 1, ciphertext: "02" });
+
+    expectStatus(await report(workerA, secondDispatch, "confirmed"), "confirmed");
+    const secondPublish = await claim(workerB, store);
+    assert.equal(secondPublish.phase, "publish");
+    expectStatus(await advance(workerB, secondPublish), "applied");
+    await rejectPreviousWorkerWrites();
+    assert.deepEqual(await storeKey(db, store), { generation: 2, ciphertext: "03" });
+
+    const secondFinish = await claim(workerA, store);
+    assert.equal(secondFinish.phase, "finish");
+    expectStatus(await advance(workerA, secondFinish, null), "completed");
+    await rejectPreviousWorkerWrites();
+    assert.deepEqual(await storeKey(db, store), { generation: 2, ciphertext: "03" });
+    assert.equal(await value(db, "select count(*)::int as value from private.store_admin_log where store_id=$1", [store]), 2);
   });
 
   await t.test("proven no effect makes a new attempt, ambiguity stops after six probe failures", async () => {
@@ -280,6 +305,64 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
       [{ store_id: first.store }]);
     await setMailState("submitted");
     expectStatus(await begin(db, first.store, first.owner), "pending");
+  });
+
+  await t.test("rotation mail has one claimant and reports the warning for its current generation", async () => {
+    const { store, owner } = await fixture(db);
+    const claimMail = (worker) => value(worker, "select public.owner_claim_rotation_key_mail() as value");
+    const authorize = (worker, mail) => value(worker,
+      "select public.owner_authorize_rotation_key_submit($1,$2) as value", [mail.id, mail.claimToken]);
+    const finishMail = (worker, mail) => value(worker,
+      "select public.owner_finish_rotation_key_mail($1,$2,'submitted') as value", [mail.id, mail.claimToken]);
+
+    async function completeRotation(secret) {
+      const rotation = await begin(db, store, owner, randomUUID(), secret);
+      expectStatus(rotation, "pending");
+      const dispatch = await claim(workerA, store);
+      expectStatus(await report(workerA, dispatch, "confirmed"), "confirmed");
+      const publish = await claim(workerA, store);
+      expectStatus(await advance(workerA, publish), "applied");
+      const finish = await claim(workerA, store);
+      expectStatus(await advance(workerA, finish, null), "completed");
+      const mailId = await value(db, `update private.mail_dispatches
+        set queued_at=(select min(queued_at)-interval '1 second' from private.mail_dispatches
+          where kind='rotation_store_key' and status='queued')
+        where rotation_id=$1 and kind='rotation_store_key' returning id as value`, [rotation.id]);
+      assert.ok(mailId);
+      return { rotation, mailId };
+    }
+
+    const first = await completeRotation("02");
+    const blockedPid = await value(workerB, "select pg_backend_pid() as value");
+    await workerA.query("begin");
+    let winner;
+    let contender;
+    try {
+      winner = await claimMail(workerA);
+      assert.equal(winner?.id, first.mailId);
+      contender = claimMail(workerB);
+      await assertBlocked(db, blockedPid);
+    } finally {
+      await workerA.query("commit");
+      if (contender) assert.equal(await contender, null);
+    }
+    assert.match(JSON.stringify(await begin(db, store, owner)), /CREATE_VERIFY_UNAVAILABLE/);
+    assert.deepEqual(await authorize(workerA, winner), { allowed: true, warnSessions: true });
+    assert.equal(await authorize(workerB, winner), null);
+    assert.equal(await finishMail(workerA, winner), true);
+
+    const second = await completeRotation("03");
+    assert.notEqual(second.mailId, first.mailId);
+    assert.equal(await value(db, "select private.owner_rotation_key_mail_current($1) as value", [first.mailId]), false);
+    assert.equal(await authorize(workerB, winner), null);
+    await db.query(`update private.store_key_rotations
+      set applied_at=statement_timestamp()-interval '61 minutes',
+          session_warning_until=statement_timestamp()-interval '1 minute' where id=$1`, [second.rotation.id]);
+    const current = await claimMail(workerB);
+    assert.equal(current?.id, second.mailId);
+    assert.equal(current?.generation, "2");
+    assert.deepEqual(await authorize(workerB, current), { allowed: true, warnSessions: false });
+    assert.equal(await finishMail(workerB, current), true);
   });
 
   await t.test("legacy T06 mail and rotation admission serialize in both lock orders", async () => {
@@ -416,7 +499,7 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
     assert.doesNotMatch(mailBodies[0], /Việc đổi key vẫn đang hoàn tất/);
   });
 
-  await t.test("OTP, owner authorization, Auth, key delivery and replay through the Edge handler", async () => {
+  await t.test("OTP, owner authorization, lost HTTP response after applied and replay through the Edge handler", async (t) => {
     const { store, email } = await fixture(db);
     const name = "Fixture Rotation";
     await db.query("update public.stores set name=$2 where id=$1", [store, name]);
@@ -438,6 +521,7 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
     const messages = [];
     const updates = [];
     const alerts = [];
+    let probes = 0;
     let startedChange;
     let continueChange;
     const started = new Promise((resolve) => { startedChange = resolve; });
@@ -456,7 +540,10 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
           await releaseChange;
           return true;
         },
-          verifyPassword: () => assert.fail("No probe necessary after the Admin acknowledgement") },
+          verifyPassword() {
+            probes++;
+            assert.fail("No probe necessary after the Admin acknowledgement");
+          } },
       },
     });
     async function invoke(input, additions = {}, signed = false) {
@@ -507,17 +594,53 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
     assert.equal(await value(db, "select failed_attempts as value from private.otp_challenges where id=$1",
       [confirm.challengeRef]), 1);
     const good = { ...confirm, code, attemptId: timedId() };
-    const inFlight = invoke(good);
-    await Promise.race([started, inFlight.then(() => assert.fail("Auth transport was never called"))]);
+    let applied;
+    let serverError;
+    const transport = createServer(async (request, reply) => {
+      try {
+        assert.equal(request.url, "/owner");
+        assert.equal(request.method, "POST");
+        const chunks = [];
+        for await (const chunk of request) chunks.push(chunk);
+        const response = await handler(new Request("http://localhost/owner", {
+          method: request.method, headers: request.headers, body: Buffer.concat(chunks),
+        }));
+        applied = { status: response.status, body: await response.json() };
+      } catch (error) {
+        serverError = error;
+      } finally {
+        // The handler has finished, but the client receives no response headers or body.
+        reply.destroy();
+      }
+    });
+    transport.listen(0, "127.0.0.1");
+    t.after(() => new Promise(resolve => transport.close(resolve)));
+    await once(transport, "listening");
+    const firstRequest = fetch(`http://127.0.0.1:${transport.address().port}/owner`, {
+      method: "POST",
+      headers: { authorization: "Bearer a.b.c", "x-pos-employee-token": token, "content-type": "application/json" },
+      body: JSON.stringify(good),
+      signal: AbortSignal.timeout(10_000),
+    }).then(
+      () => null,
+      error => error,
+    );
     const pendingRequest = { ...input, requestId: timedId() };
     try {
+      const authStarted = await Promise.race([started.then(() => true), firstRequest.then(() => false)]);
+      assert.ok(authStarted, "Auth transport was never called");
       assert.deepEqual(await invoke(pendingRequest, {}, true), { status: 200, body: { status: "pending" } });
     } finally { continueChange(); }
-    const applied = await inFlight;
+    const lost = await firstRequest;
+    if (serverError) throw serverError;
+    assert.equal(lost?.cause?.code, "UND_ERR_SOCKET");
+    assert.equal(applied?.status, 200);
     assert.equal(applied.body.status, "applied");
     assert.equal(updates.length, 1);
     assert.equal(updates[0][0], store);
     assert.ok(applied.body.storeKey.endsWith("-" + updates[0][1]));
+    assert.equal(await value(db, "select status as value from private.store_key_rotations where store_id=$1", [store]),
+      "applied");
     assert.deepEqual((await invoke(good)).body, { status: "applied" });
     assert.equal((await invoke({ ...good, code: wrong.code })).body.code, "A_ATTEMPT_ID_REUSED");
     assert.equal((await invoke({ ...good, challengeRef: randomUUID() })).body.code, "A_ATTEMPT_ID_REUSED");
@@ -532,6 +655,17 @@ test("T08 store key rotation PostgreSQL contracts", async (t) => {
     assert.deepEqual(await invoke(pendingRequest, {}, true), { status: 200, body: { status: "completed" } });
     assert.deepEqual(await invoke(appliedRequest, {}, true), { status: 200, body: { status: "completed" } });
     assert.equal(updates.length, 1);
+    assert.equal(probes, 0);
+    assert.deepEqual(await value(db, `
+      select jsonb_build_object(
+        'generation', s.key_generation,
+        'rotations', (select count(*) from private.store_key_rotations where store_id=s.id),
+        'audit', (select count(*) from private.store_admin_log where store_id=s.id and action='store_key_regenerated'),
+        'keyMail', (select count(*) from private.mail_dispatches m
+          join private.store_key_rotations r on r.id=m.rotation_id
+          where r.store_id=s.id and m.kind='rotation_store_key' and m.status='submitted')
+      ) as value from public.stores s where s.id=$1`, [store]),
+    { generation: 1, rotations: 1, audit: 1, keyMail: 1 });
 
     await db.query(`update private.otp_challenges set issued_at=now()-interval '11 minutes',
       expires_at=now()-interval '1 minute' where id=$1`, [confirm.challengeRef]);
