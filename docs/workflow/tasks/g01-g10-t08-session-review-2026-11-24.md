@@ -773,3 +773,26 @@ Hai reviewer AI độc lập **APPROVE** hồ sơ trước đoạn này `71142e7
 Ngày 27/11/2026, POS light CI `46025937054/1` trên lượt push `main@b2394e07dbd6b9c753aa1db256d1235b8b2d2d0a` chạy từ 22:33:19 đến 22:47:54 giờ Việt Nam và **đạt 18/18 bước ở lượt đầu**, gồm `edge-resolution`, `permission-pg16`, `smoke` và `ui-audit`. [CI sau merge, lượt 1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46025937054/attempts/1).
 
 Reviewer AI độc lập **APPROVE** bản cập nhật hồ sơ `2253970b0372de7a502200f2f016dd3ead39479b` trước đoạn này và kế hoạch `b4ff09f864dacde1453671f17b0106357bdf2481` sau khi đối chiếu SHA, thời gian và 18 kết quả PASS trong log GitHub Actions. OpenSpec strict và kiểm tra diff đạt.
+
+<a id="ci-main-64fcc84-20261128"></a>
+
+### CI sau merge bốn PR kiểm thử T08 ngày 28/11/2026
+
+Bốn PR kiểm thử đã vào `main`. SHA cuối `64fcc845618308963d459be0d86fc00749dbe7fb` có cây mã `002e8a1f14857c942baede71a5a39a37b9e88b0e`, trùng cây mã của head PR #58 đã rà. [Commit merge cuối](https://github.com/nguyentronglinh045/pos-cafe/commit/64fcc845618308963d459be0d86fc00749dbe7fb).
+
+Hai lượt CI cũ của PR #58 dừng ở `ui-audit` sau khoảng 339 giây. Dữ liệu phù hợp với giới hạn 330 giây của tiến trình chạy toàn ma trận. Log cũ thiếu tín hiệu thoát của tiến trình con để xác nhận trực tiếp. Commit `0a01c6c` cho ma trận dùng thời gian còn lại trong ngân sách 450 giây đang có. Commit `e813cf7` cập nhật SHA-256 của runner trong chính sách phát hành. CI của PR và nhánh đều đạt 18/18 bước với UI Audit 69/69 trước merge. [CI lỗi trước sửa](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46119619569) · [CI PR sau sửa](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46122980796) · [CI nhánh sau sửa](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46122976622).
+
+Bộ kiểm Auth T08 có đường chạy thủ công từ `main` sau khi dọn các nhánh. Lượt `46118346050/1` đã kiểm đường này trên `main@5cf21ba` với 7/7 ca đạt, gồm năm ca thứ tự Auth và hai ca TC-OWNER-55(a). Lượt đó có minh chứng riêng. [CI Auth cô lập](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46118346050).
+
+POS light CI `46124331497/1` trên lượt push `main@64fcc84` chạy từ 15:07:28 đến 15:22:17 giờ Việt Nam. Cả **18/18 bước đạt ở lượt đầu**, gồm `edge-resolution`, `permission-pg16`, `smoke` và `ui-audit`. UI Audit chạy 69 ca, 69 đạt, 0 lỗi, 0 bỏ qua. Pha audit kết thúc sau 333,628 giây với mã thoát `0`. Bước kiểm bộ ảnh PIN tổng hợp cũng thành công. [CI sau merge, lượt 1](https://github.com/nguyentronglinh045/pos-cafe/actions/runs/46124331497/attempts/1).
+
+Linh yêu cầu chỉ dọn bốn nhánh kiểm thử sau khi CI đúng commit đạt. Sau khi GitHub báo thành công, đã đối chiếu SHA ở đầu từng nhánh GitHub và local với head PR, kiểm cả bốn head nằm trong lịch sử `main` rồi xóa các nhánh dưới đây ở cả hai nơi. Đã đọc lại danh sách ref và xác nhận cả bốn nhánh đã vắng.
+
+| PR | Nhánh đã xóa | Head đã merge | Commit merge vào `main` |
+| --- | --- | --- | --- |
+| [#55](https://github.com/nguyentronglinh045/pos-cafe/pull/55) | `test/t08-auth-order-20261127` | `24dbd66` | `6a53e20` |
+| [#57](https://github.com/nguyentronglinh045/pos-cafe/pull/57) | `test/t08-owner55-auth-20261127` | `8d52b2b` | `5cf21ba` |
+| [#56](https://github.com/nguyentronglinh045/pos-cafe/pull/56) | `test/t08-response-loss-20261127` | `4692920` | `6c56e1b` |
+| [#58](https://github.com/nguyentronglinh045/pos-cafe/pull/58) | `test/t08-worker-recovery-20261127` | `e813cf7` | `64fcc84` |
+
+Đây là bằng chứng CI trên mã sau merge. Phạm vi nghiệm thu 12.9 giữ theo quyết định ngày 27/11. TC-OWNER-114 nằm ngoài lượt kiểm này. Lượt theo dõi không phát hành lên staging hoặc Production.

@@ -1,11 +1,13 @@
 # Kế hoạch kỹ thuật G01–G10 của POS Cafe
 
-Cập nhật **27/11/2026** với [quyết định nghiệm thu 12.9 của T08](tasks/g01-g10-t08-session-review-2026-11-24.md#chot-129-pham-vi-da-kiem-20261127). Ngày 19/11, PR #37 vào `main` và CI sau merge đạt 18/18 bước. Ngày 18/11 đã đóng gói bản vá SQL/Edge và hồ sơ các lượt kiểm T06 trên staging. Mốc T02 ngày 02/11 dựa trên mã nguồn `28a3dc54a846463ba150d50ab323658d6ed1372c` và tài liệu đầu vào `991652224afcd125065d92ad0d657abf289f1842`. T04 cập nhật ngày 08/11. Các hồ sơ được dẫn lưu yêu cầu chi tiết và minh chứng theo từng task.
+Cập nhật **28/11/2026** với [CI sau merge bốn PR kiểm thử T08](tasks/g01-g10-t08-session-review-2026-11-24.md#ci-main-64fcc84-20261128) và [quyết định nghiệm thu 12.9](tasks/g01-g10-t08-session-review-2026-11-24.md#chot-129-pham-vi-da-kiem-20261127). Ngày 19/11, PR #37 vào `main` và CI sau merge đạt 18/18 bước. Ngày 18/11 đã đóng gói bản vá SQL/Edge và hồ sơ các lượt kiểm T06 trên staging. Mốc T02 ngày 02/11 dựa trên mã nguồn `28a3dc54a846463ba150d50ab323658d6ed1372c` và tài liệu đầu vào `991652224afcd125065d92ad0d657abf289f1842`. T04 cập nhật ngày 08/11. Các hồ sơ được dẫn lưu yêu cầu chi tiết và minh chứng theo từng task.
 
 <a id="next"></a>
 Linh chốt mục 12.9 của T08 theo phạm vi đã kiểm ngày 27/11/2026. Phạm vi gồm UI A/B trên Protected Preview và các nhánh đã kiểm cô lập. Các phần thiếu bằng chứng cùng quyết định bỏ qua TC-OWNER-114 đã được ghi nhận. [Quyết định nghiệm thu 12.9](tasks/g01-g10-t08-session-review-2026-11-24.md#chot-129-pham-vi-da-kiem-20261127).
 
 TC-OWNER-55(a) đạt trên Auth thật và hook strict cô lập với bản sửa header Edge `9c9822c`. Worker xác nhận probe sau khi mất phản hồi Auth và hoàn tất qua RPC mô phỏng. PR #53 đã merge bản sửa vào `main@b2394e0` sau CI bắt buộc và nhánh đã merge đã được xóa. POS light CI sau merge đạt 18/18 bước ở lượt đầu. Bản sửa chưa phát hành lên staging. [Biên bản merge và CI](tasks/g01-g10-t08-session-review-2026-11-24.md#pr-53-sua-header-edge-20261127).
+
+Bốn PR kiểm thử T08 #55–#58 đã merge vào `main`. POS light CI `46124331497/1` sau merge trên `main@64fcc84` đạt 18/18 bước với UI Audit 69/69 ca. Đã xóa cả bốn nhánh đã merge trên GitHub và local. Bộ kiểm Auth cô lập có đường chạy thủ công từ `main`. [Biên bản CI và dọn nhánh](tasks/g01-g10-t08-session-review-2026-11-24.md#ci-main-64fcc84-20261128).
 
 ## Ưu tiên triển khai tiếp theo
 
