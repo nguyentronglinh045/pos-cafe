@@ -28,6 +28,8 @@ function rotationConfig(): Parameters<typeof makeOwnerHandler>[0]["rotation"] {
     || accessTokenTtlSeconds > 2147483647) throw new Error("Invalid store rotation configuration");
   const boundedFetch: typeof fetch = (input, init) =>
     fetch(input, { ...init, signal: AbortSignal.timeout(12_000), redirect: "error" });
+  const storeSessionRpc = "permission_get_store_session";
+  const storeSessionRpcUrl = new URL(`${url.replace(/\/$/, "")}/rest/v1/rpc/${storeSessionRpc}`).href;
   return {
     accessTokenTtlSeconds,
     async identifyStore(jwt) {
@@ -55,7 +57,13 @@ function rotationConfig(): Parameters<typeof makeOwnerHandler>[0]["rotation"] {
       async verifyPassword(storeId, storeNo, password) {
         const isolated = createClient(url, anonKey, {
           auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
-          global: { fetch: boundedFetch },
+          global: { fetch(input, init) {
+            const requestUrl = input instanceof Request ? input.url : String(input);
+            if (requestUrl !== storeSessionRpcUrl) return boundedFetch(input, init);
+            const headers = new Headers(init?.headers ?? (input instanceof Request ? input.headers : undefined));
+            headers.set("x-pos-permission-contract", "2");
+            return boundedFetch(input, { ...init, headers });
+          } },
         });
         const { data, error } = await isolated.auth.signInWithPassword({
           email: `store${storeNo}@store.pos.local`, password,
@@ -66,7 +74,7 @@ function rotationConfig(): Parameters<typeof makeOwnerHandler>[0]["rotation"] {
         let cleaned = false;
         try {
           if (!error && data.user?.id === storeId) {
-            const store = await isolated.rpc("permission_get_store_session");
+            const store = await isolated.rpc(storeSessionRpc);
             matches = !store.error && store.data?.ok === true && store.data.data?.storeId === storeId
               && store.data.data?.storeNo === storeNo;
           }
