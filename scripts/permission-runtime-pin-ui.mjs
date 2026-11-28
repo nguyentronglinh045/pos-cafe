@@ -121,8 +121,9 @@ async function main(){
  if(target.status!==0){process.exitCode=1;return;}
  // Targeted output stays private. The existing full-matrix normalizer receives
  // exactly the real full-matrix stdout, never 3 targeted rows relabeled as48.
+ // The full matrix shares the existing deadline with the targeted PIN check.
  const remaining=childDeadline-Date.now()-1000;check(remaining>0);
- const full=spawnSync(process.execPath,['ui-audit/run.mjs'],{cwd:root,env:process.env,timeout:Math.min(330000,remaining),killSignal:'SIGKILL',maxBuffer:1024**2});guard();
+ const full=spawnSync(process.execPath,['ui-audit/run.mjs'],{cwd:root,env:process.env,timeout:remaining,killSignal:'SIGKILL',maxBuffer:1024**2});guard();
  if(full.stdout)process.stdout.write(full.stdout);if(full.stderr)process.stderr.write(full.stderr);
  check(!full.error&&!full.signal&&hash(readFileSync(root+'/ui-audit/baseline.json'))===baseline);process.exitCode=full.status===0?0:1;
 }

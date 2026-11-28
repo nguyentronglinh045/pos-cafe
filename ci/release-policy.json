@@ -38,7 +38,7 @@
     "scripts/permission-runtime-vitest-reporter.mjs": "aff12fd7758d63f83b22608e47a906feb363455e5472b8de4b2661cfe6f478f4",
     "scripts/project-ci-results.test.mjs": "2595157e6aac810a5e308e6b918b5844617ede0aec1d34dde40ca6fa527d42cf",
     "scripts/permission-runtime-stage.mjs": "bfcede0b296d329ab22fe1eabaacb7ece8f12413add07fc1527d2b96a8295119",
-    "scripts/permission-runtime-pin-ui.mjs": "a5effa0a9c2a97ad1c35151aa4f8bfb1a35331e3d88edf9f4cdd4fc82bae93f1",
+    "scripts/permission-runtime-pin-ui.mjs": "4335b1c6f90b096a9d553b6031abb6198cf9ff84f320ca05f9838f9cabde3c9b",
     "scripts/permission-pin-ui-policy.mjs": "d23227f8f872c33aa02634e80695577cdf6caaa0040a116f19bc7c1f2adc906e",
     "ui-audit/required-pin-change.html": "8ae36b6c25b987f3090c6222c99fd52653f70788974699cb3e14a883d37f40b9",
     "ui-audit/runtime.mjs": "41af4591f6e1c9b6171adb46f169ff274b3a4358e075dedc8a65143b9ff181ce",
