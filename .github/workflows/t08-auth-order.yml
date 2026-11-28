@@ -1,0 +1,49 @@
+name: T08 isolated Auth order
+on:
+  push:
+    branches: [test/t08-auth-order-20261127]
+
+permissions:
+  contents: read
+
+jobs:
+  auth-order:
+    if: github.repository_id == '1263057386'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    services:
+      postgres:
+        image: postgres:16.15-bookworm
+        env:
+          POSTGRES_DB: t08_auth_contract
+          POSTGRES_PASSWORD: t08-ci-fixture-only
+        ports: [127.0.0.1:55482:5432]
+        options: >-
+          --health-cmd "pg_isready -U postgres -d t08_auth_contract"
+          --health-interval 2s --health-timeout 3s --health-retries 12
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.16.0'
+          package-manager-cache: false
+      - name: Prepare isolated Auth
+        env:
+          POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
+        run: |
+          set -euo pipefail
+          auth_dir="$RUNNER_TEMP/t08-auth"
+          mkdir -p "$auth_dir"
+          cd "$auth_dir"
+          archive="auth-v2.198.0-amd64.tar.xz"
+          curl --fail --silent --show-error --location --max-time 45 "https://github.com/supabase/auth/releases/download/v2.198.0/$archive" --output "$archive"
+          printf '%s  %s\n' '4abe9134d7615faa9149cab514acada8e7133cd69d2ccd96fdcef0d795c05171' "$archive" | sha256sum --check --status
+          tar -xJf "$archive"
+          binary="$(find "$auth_dir" -type f -name auth -print -quit)"
+          test -n "$binary" && test -x "$binary"
+          printf 'T08_AUTH_BIN=%s\n' "$binary" >> "$GITHUB_ENV"
+          docker exec "$POSTGRES_CONTAINER" psql -X -v ON_ERROR_STOP=1 -U postgres -d t08_auth_contract -c 'create schema auth'
+      - name: Verify Auth v2.198.0
+        run: node tests/contracts/t08-auth-order.ci.mjs
