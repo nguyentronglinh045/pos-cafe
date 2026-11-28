@@ -6,10 +6,15 @@ import { exerciseRotationAuthProbe } from "./t08-owner55-auth.ci.mjs";
 
 const temp = process.env.RUNNER_TEMP;
 const binary = process.env.T08_AUTH_BIN;
+const topicPush = process.env.GITHUB_EVENT_NAME === "push"
+  && process.env.GITHUB_REF === "refs/heads/test/t08-owner55-auth-20261127";
+const mainDispatch = process.env.GITHUB_EVENT_NAME === "workflow_dispatch"
+  && process.env.GITHUB_REF === "refs/heads/main";
+const suite = process.env.T08_AUTH_SUITE ?? (process.argv.includes("--tc-owner-55") ? "owner55" : "auth-order");
 if (process.platform !== "linux" || process.env.GITHUB_ACTIONS !== "true"
   || process.env.RUNNER_ENVIRONMENT !== "github-hosted"
   || process.env.GITHUB_REPOSITORY_ID !== "1263057386"
-  || process.env.GITHUB_REF !== "refs/heads/test/t08-owner55-auth-20261127"
+  || (!topicPush && !mainDispatch) || !["both", "auth-order", "owner55"].includes(suite)
   || !temp || !binary || !resolve(binary).startsWith(resolve(temp, "t08-auth") + sep)) {
   throw new Error("Use the designated GitHub-hosted Auth contract job.");
 }
@@ -182,11 +187,7 @@ try {
     await delay(150);
   }
   check(healthy, "Auth service is unhealthy.");
-  if (process.argv.includes("--tc-owner-55")) {
-    const deps = { origin, ttl, adminToken, anonToken: roleToken("anon"), request, claim, refresh, checkRejectedRefresh };
-    await exerciseRotationAuthProbe(deps);
-    await exerciseRotationAuthProbe({ ...deps, strictContract: true });
-  } else {
+  if (suite !== "owner55") {
     for (const kind of ["password grant", "refresh"]) {
       for (const before of [true, false]) {
         try {
@@ -203,6 +204,11 @@ try {
       console.error("FAIL concurrent HTTP refresh and Admin submission: " + error.message);
       process.exitCode = 1;
     }
+  }
+  if (suite !== "auth-order") {
+    const deps = { origin, ttl, adminToken, anonToken: roleToken("anon"), request, claim, refresh, checkRejectedRefresh };
+    await exerciseRotationAuthProbe(deps);
+    await exerciseRotationAuthProbe({ ...deps, strictContract: true });
   }
 } finally {
   service.kill("SIGTERM");

@@ -1,16 +1,29 @@
-name: T08 isolated TC-OWNER-55 Auth
+name: T08 isolated Auth contracts
 on:
   push:
     branches: [test/t08-owner55-auth-20261127]
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: Isolated Auth contract suite
+        type: choice
+        options: [both, auth-order, owner55]
+        default: both
+        required: true
 
 permissions:
   contents: read
 
 jobs:
   auth-order:
-    if: github.repository_id == '1263057386'
+    if: >-
+      github.repository_id == '1263057386' &&
+      ((github.event_name == 'push' && github.ref == 'refs/heads/test/t08-owner55-auth-20261127') ||
+       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))
     runs-on: ubuntu-24.04
     timeout-minutes: 8
+    env:
+      T08_AUTH_SUITE: ${{ inputs.suite || 'both' }}
     services:
       postgres:
         image: postgres:16.15-bookworm
@@ -51,10 +64,11 @@ jobs:
           docker exec "$POSTGRES_CONTAINER" psql -X -v ON_ERROR_STOP=1 -U postgres -d t08_auth_contract \
             -c 'update private.permission_contract_gate set strict=true where singleton;'
       - name: Install the Edge Auth SDK in runner temp
+        if: env.T08_AUTH_SUITE != 'auth-order'
         run: >-
           npm install --prefix "$RUNNER_TEMP/t08-auth-sdk" --cache "$RUNNER_TEMP/t08-auth-npm-cache"
           --no-save --ignore-scripts --no-audit --no-fund @supabase/supabase-js@2.45.0
-      - name: Verify TC-OWNER-55 against Auth v2.198.0
+      - name: Verify isolated contracts against Auth v2.198.0
         env:
           T08_AUTH_POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
-        run: node --experimental-transform-types tests/contracts/t08-auth-order.ci.mjs --tc-owner-55
+        run: node --experimental-transform-types tests/contracts/t08-auth-order.ci.mjs
